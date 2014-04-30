@@ -47,7 +47,7 @@ public final class ChartFactory {
      *            the field providing the values for the pie parts.
      * @return a new pie chart
      */
-    public static final Chart producePieChart(Object[] objects, ISTDataViewersField nameField,
+    public static Chart producePieChart(Object[] objects, ISTDataViewersField nameField,
             List<IChartField> valFields, String title) {
 
         ChartView view;
@@ -111,7 +111,7 @@ public final class ChartFactory {
      * @return a new 2D bar chart
      */
 
-    public static final Chart produceBarChart(Object[] objects, final ISTDataViewersField nameField,
+    public static Chart produceBarChart(Object[] objects, final ISTDataViewersField nameField,
             List<IChartField> valFields, String title, boolean horizontal) {
         ChartView view;
         try {

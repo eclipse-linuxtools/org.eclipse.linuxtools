@@ -32,16 +32,16 @@ import org.eclipse.linuxtools.systemtap.structures.TreeNode;
  * @author Ryan Morse
  * @since 2.0
  */
-public class ProbeParser extends TapsetParser {
+public final class ProbeParser extends TapsetParser {
 
-    static final String probeRegex = "(?s)(?<!\\w)probe\\s+{0}\\s*\\+?="; //$NON-NLS-1$
-    private static final String tapsetProbeRegex = "probe {0} \\+?="; //$NON-NLS-1$
+    static final String PROBE_REGEX = "(?s)(?<!\\w)probe\\s+{0}\\s*\\+?="; //$NON-NLS-1$
+    private static final String TAPSET_PROBE_REGEX = "probe {0} \\+?="; //$NON-NLS-1$
 
     private TreeNode probes;
     private TreeNode statics;
     private TreeNode aliases;
 
-    static ProbeParser parser = null;
+    private static ProbeParser parser = null;
     public static ProbeParser getInstance(){
         if (parser != null) {
             return parser;
@@ -247,7 +247,7 @@ public class ProbeParser extends TapsetParser {
     private String findDefinitionOf(String probeName) {
         SharedParser sparser = SharedParser.getInstance();
         String tapsetContents = sparser.getTapsetContents();
-        Matcher probeMatcher = Pattern.compile(MessageFormat.format(tapsetProbeRegex, Pattern.quote(probeName))).matcher(tapsetContents);
+        Matcher probeMatcher = Pattern.compile(MessageFormat.format(TAPSET_PROBE_REGEX, Pattern.quote(probeName))).matcher(tapsetContents);
         if (!probeMatcher.find()) {
             return null;
         }

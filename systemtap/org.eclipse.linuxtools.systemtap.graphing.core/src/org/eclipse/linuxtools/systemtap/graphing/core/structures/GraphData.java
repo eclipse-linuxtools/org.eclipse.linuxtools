@@ -11,7 +11,7 @@
 
 package org.eclipse.linuxtools.systemtap.graphing.core.structures;
 
-public class GraphData {
+public class GraphData implements Cloneable {
     public int xSeries;
     public int[] ySeries;
     public String key;

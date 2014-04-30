@@ -34,7 +34,7 @@ import org.eclipse.linuxtools.systemtap.structures.TreeNode;
  */
 public class FunctionParser extends TapsetParser {
 
-    static FunctionParser parser = null;
+    private static FunctionParser parser = null;
     private TreeNode functions;
 
     /**
@@ -42,11 +42,11 @@ public class FunctionParser extends TapsetParser {
      */
     public static final String UNKNOWN_TYPE = "unknown"; //$NON-NLS-1$
 
-    private static final String functionRegex = "(?s)(?<!\\w)function\\s+{0}(?:\\s*:\\s*(\\w+))?\\s*\\(([^)]+?)?\\)"; //$NON-NLS-1$
-    private static final Pattern pFunction = Pattern.compile("function (?!_)(\\w+) \\(.*?\\)"); //$NON-NLS-1$
-    private static final Pattern pParams = Pattern.compile("(\\w+)(?:\\s*:\\s*(\\w+))?"); //$NON-NLS-1$
-    private static final Pattern pAllCaps = Pattern.compile("[A-Z_1-9]*"); //$NON-NLS-1$
-    private static final Pattern pReturn = Pattern.compile("\\sreturn\\W"); //$NON-NLS-1$
+    private static final String FUNC_REGEX = "(?s)(?<!\\w)function\\s+{0}(?:\\s*:\\s*(\\w+))?\\s*\\(([^)]+?)?\\)"; //$NON-NLS-1$
+    private static final Pattern P_FUNCTION = Pattern.compile("function (?!_)(\\w+) \\(.*?\\)"); //$NON-NLS-1$
+    private static final Pattern P_PARAM = Pattern.compile("(\\w+)(?:\\s*:\\s*(\\w+))?"); //$NON-NLS-1$
+    private static final Pattern P_ALL_CAP = Pattern.compile("[A-Z_1-9]*"); //$NON-NLS-1$
+    private static final Pattern P_RETURN = Pattern.compile("\\sreturn\\W"); //$NON-NLS-1$
 
     public static FunctionParser getInstance(){
         if (parser != null) {
@@ -121,10 +121,10 @@ public class FunctionParser extends TapsetParser {
                     filename = mFilename.group(1).toString();
                     scriptText = null;
                 } else if (filename != null) {
-                    Matcher mFunction = pFunction.matcher(tok);
+                    Matcher mFunction = P_FUNCTION.matcher(tok);
                     if (mFunction.matches()) {
                         String functionName = mFunction.group(1);
-                        if (pAllCaps.matcher(functionName).matches()) {
+                        if (P_ALL_CAP.matcher(functionName).matches()) {
                             // Ignore ALL_CAPS functions, since they are not meant for end-user use.
                             continue;
                         }
@@ -141,14 +141,14 @@ public class FunctionParser extends TapsetParser {
     }
 
     private void addFunctionFromScript(String functionName, String scriptText, String scriptFilename) {
-        String regex = MessageFormat.format(functionRegex, functionName);
+        String regex = MessageFormat.format(FUNC_REGEX, functionName);
         Matcher mScript = Pattern.compile(regex).matcher(scriptText);
         if (mScript.find()) {
             String functionLine = mScript.group();
             String functionType = mScript.group(1);
             // If the function has no return type, look for a "return" statement to check
             // if it's really a void function, or if its return type is just unspecified
-            if (functionType == null && getNextBlockContents(scriptText, mScript.end(), pReturn)) {
+            if (functionType == null && getNextBlockContents(scriptText, mScript.end(), P_RETURN)) {
                 functionType = UNKNOWN_TYPE;
             }
             TreeDefinitionNode function = new TreeDefinitionNode(
@@ -175,7 +175,7 @@ public class FunctionParser extends TapsetParser {
 
     private void addParamsFromString(String params, TreeNode parentFunction) {
         if (params != null) {
-            Matcher mParams = pParams.matcher(params);
+            Matcher mParams = P_PARAM.matcher(params);
             while (mParams.find()) {
                 parentFunction.add(new TreeNode(
                         new FuncparamNodeData(mParams.group(), mParams.group(2)),

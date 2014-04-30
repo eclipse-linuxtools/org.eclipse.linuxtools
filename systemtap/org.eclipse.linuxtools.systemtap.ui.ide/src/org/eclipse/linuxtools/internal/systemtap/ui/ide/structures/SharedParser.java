@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 
-public class SharedParser extends TapsetParser {
+public final class SharedParser extends TapsetParser {
 
     static final String TAG_FILE = "# file"; //$NON-NLS-1$
     /**
@@ -28,7 +28,7 @@ public class SharedParser extends TapsetParser {
 
     private String tapsetContents = null;
 
-    static SharedParser parser = null;
+    private static SharedParser parser = null;
     public static SharedParser getInstance(){
         if (parser != null) {
             return parser;

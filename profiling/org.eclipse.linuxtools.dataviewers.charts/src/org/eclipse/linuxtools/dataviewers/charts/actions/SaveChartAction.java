@@ -43,7 +43,7 @@ import org.swtchart.Chart;
  */
 public class SaveChartAction extends Action {
 
-    private static final String[] saveAsImageExt =
+    private static final String[] EXTENSIONS =
         { "*.png", "*.bmp", "*.jpg", "*.jpeg", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     private static final String DEFAULT_EXT = "png"; //$NON-NLS-1$
     private static final String DEFAULT_TITLE = "newChart"; //$NON-NLS-1$
@@ -155,7 +155,7 @@ public class SaveChartAction extends Action {
     private File askForAndPrepareFile() {
         final Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
         final FileDialog dialog = new FileDialog(shell, SWT.SAVE);
-        dialog.setFilterExtensions(saveAsImageExt);
+        dialog.setFilterExtensions(EXTENSIONS);
         dialog.setText(Messages.ChartConstants_SAVE_CHART_DIALOG_TEXT);
         dialog.setFileName(title);
 

@@ -52,7 +52,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
  * This class provides a support for link-to-source
  *
  */
-public class STLink2SourceSupport {
+public final class STLink2SourceSupport {
 
     private STLink2SourceSupport() {
     }

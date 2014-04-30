@@ -20,13 +20,11 @@ import org.eclipse.linuxtools.systemtap.graphing.core.aggregates.MaxAggregate;
 import org.eclipse.linuxtools.systemtap.graphing.core.aggregates.MinAggregate;
 import org.eclipse.linuxtools.systemtap.graphing.core.aggregates.SumAggregate;
 
-
-
 public final class AggregateFactory {
 
     private AggregateFactory() {}
 
-    private static final String[] AGGREGATE_NAMES = new String[] {
+    private static String[] AGGREGATE_NAMES = new String[] {
         Localization.getString("AggregateFactory.AverageAggregate"), //$NON-NLS-1$
         Localization.getString("AggregateFactory.CountAggregate"), //$NON-NLS-1$
         Localization.getString("AggregateFactory.MaxAggregate"), //$NON-NLS-1$
@@ -34,7 +32,7 @@ public final class AggregateFactory {
         Localization.getString("AggregateFactory.SumAggregate") //$NON-NLS-1$
     };
 
-    private static final String[] AGGREGATION_DESCRIPTIONS = new String[] {
+    private static String[] AGGREGATION_DESCRIPTIONS = new String[] {
         Localization.getString("AggregateFactory.AverageDescription"), //$NON-NLS-1$
         Localization.getString("AggregateFactory.CountDescription"), //$NON-NLS-1$
         Localization.getString("AggregateFactory.MaxDescription"), //$NON-NLS-1$
@@ -42,7 +40,7 @@ public final class AggregateFactory {
         Localization.getString("AggregateFactory.SumDescription") //$NON-NLS-1$
     };
 
-    static final String[] AGGREGATES = new String[] {
+    static String[] AGGREGATES = new String[] {
         AverageAggregate.ID,
         CountAggregate.ID,
         MaxAggregate.ID,
@@ -75,7 +73,7 @@ public final class AggregateFactory {
         return -1;
     }
 
-    public static final IDataAggregate createAggregate(String id) {
+    public static IDataAggregate createAggregate(String id) {
         switch(getIndex(id)) {
             case 0:
                 return new AverageAggregate();

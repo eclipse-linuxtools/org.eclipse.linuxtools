@@ -26,8 +26,8 @@ import org.eclipse.linuxtools.tools.launch.core.factory.CdtSpawnerProcessFactory
  */
 public class STNM {
 
-    private static Pattern UNDEF_PATTERN = Pattern.compile("^\\s+U\\s+(\\S+)"); //$NON-NLS-1$
-    private static Pattern NORMAL_PATTERN = Pattern.compile("^(\\S+)\\s+([AaTtBbDd])\\s+(\\S+)"); //$NON-NLS-1$
+    private static final Pattern UNDEF_PATTERN = Pattern.compile("^\\s+U\\s+(\\S+)"); //$NON-NLS-1$
+    private static final Pattern NORMAL_PATTERN = Pattern.compile("^(\\S+)\\s+([AaTtBbDd])\\s+(\\S+)"); //$NON-NLS-1$
 
     private final STNMSymbolsHandler handler;
 

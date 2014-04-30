@@ -27,7 +27,7 @@ public class ProbeNodeData implements ISearchableNode {
      */
     @Override
     public String getSearchToken() {
-        return MessageFormat.format(ProbeParser.probeRegex, name);
+        return MessageFormat.format(ProbeParser.PROBE_REGEX, name);
     }
 
     @Override
