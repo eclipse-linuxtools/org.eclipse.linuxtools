@@ -233,9 +233,7 @@ public class ReportComparisonView extends Viewer {
             tmpFile.toFile().delete();
             Files.copy(stream.getContents(), tmpFile);
             return new org.eclipse.core.runtime.Path(tmpFile.toString());
-        } catch (IOException e) {
-            return null;
-        } catch (CoreException e) {
+        } catch (IOException|CoreException e) {
             return null;
         }
     }
