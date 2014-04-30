@@ -71,9 +71,6 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
         this.stpMetadataSingleton = STPMetadataSingleton.getInstance();
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#computeCompletionProposals(org.eclipse.jface.text.ITextViewer, int)
-     */
     @Override
     public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer,
             int offset) {
@@ -99,9 +96,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
                     }
                 }
             }
-        } catch (BadLocationException e1) {
-            return NO_COMPLETIONS;
-        } catch (BadPartitioningException e) {
+        } catch (BadLocationException|BadPartitioningException e) {
             return NO_COMPLETIONS;
         }
 
@@ -192,9 +187,7 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
                         TapsetLibrary.getAndCacheDocumentation("probe::" + probe + "::" + variableName)); //$NON-NLS-1$ //$NON-NLS-2$
             }
             return result;
-        } catch (BadLocationException e) {
-            return NO_COMPLETIONS;
-        } catch (BadPartitioningException e) {
+        } catch (BadLocationException|BadPartitioningException e) {
             return NO_COMPLETIONS;
         }
     }
@@ -391,42 +384,27 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
         this.stpMetadataSingleton.waitForInitialization();
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#computeContextInformation(org.eclipse.jface.text.ITextViewer, int)
-     */
     @Override
     public IContextInformation[] computeContextInformation(ITextViewer viewer,
             int offset) {
         return NO_CONTEXTS;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getCompletionProposalAutoActivationCharacters()
-     */
     @Override
     public char[] getCompletionProposalAutoActivationCharacters() {
         return PROPOSAL_ACTIVATION_CHARS;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getContextInformationAutoActivationCharacters()
-     */
     @Override
     public char[] getContextInformationAutoActivationCharacters() {
         return PROPOSAL_ACTIVATION_CHARS;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getContextInformationValidator()
-     */
     @Override
     public IContextInformationValidator getContextInformationValidator() {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getErrorMessage()
-     */
     @Override
     public String getErrorMessage() {
         // TODO: When does this trigger?
@@ -468,10 +446,8 @@ public class STPCompletionProcessor implements IContentAssistProcessor, ITextHov
                 documentation = TapsetLibrary.getDocumentation("probe::" + probe + "::"+ keyword); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
-        } catch (BadLocationException e) {
-            // Bad hover location; just ignore it.
-        } catch (BadPartitioningException e) {
-            // Bad hover scenario, just ignore it.
+        } catch (BadLocationException|BadPartitioningException e) {
+            // Bad hover location/scenario; just ignore it.
         }
 
         return documentation;

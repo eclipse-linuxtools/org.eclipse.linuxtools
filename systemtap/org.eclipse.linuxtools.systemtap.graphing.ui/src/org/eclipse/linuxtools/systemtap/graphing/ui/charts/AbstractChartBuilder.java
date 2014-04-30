@@ -99,8 +99,6 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
      */
     protected ChartMouseMoveListener chartMouseMoveListener = null;
 
-    public abstract void updateDataSet();
-
     /**
      * A reference to the SystemTap Graphing preference store.
      * @since 3.0
@@ -184,22 +182,24 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
     /**
      * Builds X axis.
      */
-    protected void buildXAxis() {}
+    protected abstract void buildXAxis();
 
     /**
      * Builds Y axis.
      */
-    protected void buildYAxis() {}
+    protected abstract void buildYAxis();
 
     /**
      * Builds X series.
      */
-    protected void buildXSeries() {}
+    protected abstract void buildXSeries();
 
     /**
      * Builds Y series.
      */
-    protected void buildYSeries() {}
+    protected abstract void buildYSeries();
+
+    public abstract void updateDataSet();
 
     /**
      * Builds legend.

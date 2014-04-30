@@ -92,9 +92,6 @@ public final class STPHeuristicScanner implements STPSymbols {
      * Stops upon a non-whitespace (as defined by {@link Character#isWhitespace(char)}) character.
      */
     private static class NonWhitespace extends StopCondition {
-        /*
-         * @see org.eclipse.cdt.internal.ui.text.CHeuristicScanner.StopCondition#stop(char)
-         */
         @Override
         public boolean stop(char ch, int position, boolean forward) {
             return !Character.isWhitespace(ch);
@@ -107,17 +104,11 @@ public final class STPHeuristicScanner implements STPSymbols {
      * @see NonWhitespace
      */
     private final class NonWhitespaceDefaultPartition extends NonWhitespace {
-        /*
-         * @see org.eclipse.cdt.internal.ui.text.CHeuristicScanner.StopCondition#stop(char)
-         */
         @Override
         public boolean stop(char ch, int position, boolean forward) {
             return super.stop(ch, position, true) && isDefaultPartition(position);
         }
 
-        /*
-         * @see org.eclipse.cdt.internal.ui.text.CHeuristicScanner.StopCondition#nextPosition(int, boolean)
-         */
         @Override
         public int nextPosition(int position, boolean forward) {
             ITypedRegion partition= getPartition(position);
@@ -141,9 +132,6 @@ public final class STPHeuristicScanner implements STPSymbols {
      * Stops upon a non-java identifier (as defined by {@link Character#isJavaIdentifierPart(char)}) character.
      */
     private static class NonJavaIdentifierPart extends StopCondition {
-        /*
-         * @see org.eclipse.cdt.internal.ui.text.CHeuristicScanner.StopCondition#stop(char)
-         */
         @Override
         public boolean stop(char ch, int position, boolean forward) {
             return !Character.isJavaIdentifierPart(ch);
@@ -156,31 +144,28 @@ public final class STPHeuristicScanner implements STPSymbols {
      * @see NonJavaIdentifierPart
      */
     private final class NonJavaIdentifierPartDefaultPartition extends NonJavaIdentifierPart {
-        /*
-         * @see org.eclipse.cdt.internal.ui.text.CHeuristicScanner.StopCondition#stop(char)
-         */
         @Override
         public boolean stop(char ch, int position, boolean forward) {
             return super.stop(ch, position, true) || !isDefaultPartition(position);
         }
 
-        /*
-         * @see org.eclipse.cdt.internal.ui.text.CHeuristicScanner.StopCondition#nextPosition(int, boolean)
-         */
         @Override
         public int nextPosition(int position, boolean forward) {
             ITypedRegion partition= getPartition(position);
-            if (fPartition.equals(partition.getType()))
+            if (fPartition.equals(partition.getType())) {
                 return super.nextPosition(position, forward);
+            }
 
             if (forward) {
                 int end= partition.getOffset() + partition.getLength();
-                if (position < end)
+                if (position < end) {
                     return end;
+                }
             } else {
                 int offset= partition.getOffset();
-                if (position > offset)
+                if (position > offset) {
                     return offset - 1;
+                }
             }
             return super.nextPosition(position, forward);
         }
@@ -225,17 +210,20 @@ public final class STPHeuristicScanner implements STPSymbols {
         @Override
         public int nextPosition(int position, boolean forward) {
             ITypedRegion partition= getPartition(position);
-            if (fPartition.equals(partition.getType()))
+            if (fPartition.equals(partition.getType())) {
                 return super.nextPosition(position, forward);
+            }
 
             if (forward) {
                 int end= partition.getOffset() + partition.getLength();
-                if (position < end)
+                if (position < end) {
                     return end;
+                }
             } else {
                 int offset= partition.getOffset();
-                if (position > offset)
+                if (position > offset) {
                     return offset - 1;
+                }
             }
             return super.nextPosition(position, forward);
         }
@@ -310,8 +298,9 @@ public final class STPHeuristicScanner implements STPSymbols {
      */
     public int nextToken(int start, int bound) {
         int pos= scanForward(start, bound, fNonWS);
-        if (pos == NOT_FOUND)
+        if (pos == NOT_FOUND) {
             return TokenEOF;
+        }
         try {
             // check for string or char literal
             char ch = fDocument.getChar(pos);
@@ -400,10 +389,11 @@ public final class STPHeuristicScanner implements STPSymbols {
             // assume an identifier or keyword
             int from= pos, to;
             pos= scanForward(pos + 1, bound, fNonIdent);
-            if (pos == NOT_FOUND)
+            if (pos == NOT_FOUND) {
                 to= bound == UNBOUND ? fDocument.getLength() : bound;
-            else
+            } else {
                 to= pos;
+            }
 
             String identOrKeyword;
             try {
@@ -432,8 +422,9 @@ public final class STPHeuristicScanner implements STPSymbols {
      */
     public int previousToken(int start, int bound) {
         int pos= scanBackward(start, bound, fNonWSDefaultPart);
-        if (pos == NOT_FOUND)
+        if (pos == NOT_FOUND) {
             return TokenEOF;
+        }
 
         fPos--;
 
@@ -503,10 +494,11 @@ public final class STPHeuristicScanner implements STPSymbols {
             // assume an ident or keyword
             int from, to= pos + 1;
             pos= scanBackward(pos - 1, bound, fNonIdent);
-            if (pos == NOT_FOUND)
+            if (pos == NOT_FOUND) {
                 from= bound == UNBOUND ? 0 : bound + 1;
-            else
+            } else {
                 from= pos + 1;
+            }
 
             String identOrKeyword;
             try {
@@ -681,16 +673,19 @@ public final class STPHeuristicScanner implements STPSymbols {
             start -= 1;
             while (true) {
                 start= scanForward(start + 1, bound, new CharacterMatch(new char[] {openingPeer, closingPeer}));
-                if (start == NOT_FOUND)
+                if (start == NOT_FOUND) {
                     return NOT_FOUND;
+                }
 
-                if (fDocument.getChar(start) == openingPeer)
+                if (fDocument.getChar(start) == openingPeer) {
                     depth++;
-                else
+                } else {
                     depth--;
+                }
 
-                if (depth == 0)
+                if (depth == 0) {
                     return start;
+                }
             }
 
         } catch (BadLocationException e) {
@@ -790,8 +785,9 @@ public final class STPHeuristicScanner implements STPSymbols {
     private int scanForward(int start, int bound, StopCondition condition) {
         Assert.isLegal(start >= 0);
 
-        if (bound == UNBOUND)
+        if (bound == UNBOUND) {
             bound= fDocument.getLength();
+        }
 
         Assert.isLegal(bound <= fDocument.getLength());
 
@@ -800,8 +796,9 @@ public final class STPHeuristicScanner implements STPSymbols {
             while (fPos < bound) {
 
                 fChar= fDocument.getChar(fPos);
-                if (condition.stop(fChar, fPos, true))
+                if (condition.stop(fChar, fPos, true)) {
                     return fPos;
+                }
 
                 fPos= condition.nextPosition(fPos, true);
             }
@@ -835,8 +832,9 @@ public final class STPHeuristicScanner implements STPSymbols {
      * @return the highest position in (<code>bound</code>, <code>start</code> for which <code>condition</code> holds, or <code>NOT_FOUND</code> if none can be found
      */
     private int scanBackward(int start, int bound, StopCondition condition) {
-        if (bound == UNBOUND)
+        if (bound == UNBOUND) {
             bound= -1;
+        }
 
         Assert.isLegal(bound >= -1);
         Assert.isLegal(start < fDocument.getLength() );
@@ -846,8 +844,9 @@ public final class STPHeuristicScanner implements STPSymbols {
             while (fPos > bound) {
 
                 fChar= fDocument.getChar(fPos);
-                if (condition.stop(fChar, fPos, false))
+                if (condition.stop(fChar, fPos, false)) {
                     return fPos;
+                }
 
                 fPos= condition.nextPosition(fPos, false);
             }
@@ -863,8 +862,7 @@ public final class STPHeuristicScanner implements STPSymbols {
      * @return <code>true</code> if <code>position</code> is in the default partition of <code>fDocument</code>, <code>false</code> otherwise
      */
     private boolean isDefaultPartition(int position) {
-        String type = getPartition(position).getType();
-        return fPartition.equals(type);
+        return fPartition.equals(getPartition(position).getType());
     }
 
     /**
@@ -918,8 +916,9 @@ public final class STPHeuristicScanner implements STPSymbols {
      * @return <code>true</code> if the code is a conditional statement or loop without a block, <code>false</code> otherwise
      */
     public boolean isBracelessBlockStart(int position, int bound) {
-        if (position < 1)
+        if (position < 1) {
             return false;
+        }
 
         switch (previousToken(position, bound)) {
             case TokenDO:

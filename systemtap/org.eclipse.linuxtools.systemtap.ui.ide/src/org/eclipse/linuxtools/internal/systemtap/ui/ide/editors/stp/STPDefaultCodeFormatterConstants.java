@@ -103,19 +103,6 @@ public class STPDefaultCodeFormatterConstants {
     public static final String FORMATTER_BRACE_POSITION_FOR_METHOD_DECLARATION = IDEPlugin.PLUGIN_ID + ".formatter.brace_position_for_method_declaration"; //$NON-NLS-1$
     /**
      * <pre>
-     * FORMATTER / Option to position the braces of a switch statement
-     *     - option id:         "org.eclipse.cdt.core.formatter.brace_position_for_switch"
-     *     - possible values:   { END_OF_LINE, NEXT_LINE, NEXT_LINE_SHIFTED, NEXT_LINE_ON_WRAP }
-     *     - default:           END_OF_LINE
-     * </pre>
-     * @see #END_OF_LINE
-     * @see #NEXT_LINE
-     * @see #NEXT_LINE_SHIFTED
-     * @see #NEXT_LINE_ON_WRAP
-     */
-    public static final String FORMATTER_BRACE_POSITION_FOR_SWITCH = IDEPlugin.PLUGIN_ID + ".formatter.brace_position_for_switch"; //$NON-NLS-1$
-    /**
-     * <pre>
      * FORMATTER / Option to position the braces of a type declaration
      *     - option id:         "org.eclipse.cdt.core.formatter.brace_position_for_type_declaration"
      *     - possible values:   { END_OF_LINE, NEXT_LINE, NEXT_LINE_SHIFTED, NEXT_LINE_ON_WRAP }
@@ -183,28 +170,6 @@ public class STPDefaultCodeFormatterConstants {
     public static final String FORMATTER_INDENT_BODY_DECLARATIONS_COMPARE_TO_NAMESPACE_HEADER = IDEPlugin.PLUGIN_ID + ".formatter.indent_body_declarations_compare_to_namespace_header"; //$NON-NLS-1$
     /**
      * <pre>
-     * FORMATTER / Option to indent empty lines
-     *     - option id:         "org.eclipse.cdt.core.formatter.indent_empty_lines"
-     *     - possible values:   { TRUE, FALSE }
-     *     - default:           FALSE
-     * </pre>
-     * @see #TRUE
-     * @see #FALSE
-     */
-    public static final String FORMATTER_INDENT_EMPTY_LINES = IDEPlugin.PLUGIN_ID + ".formatter.indent_empty_lines"; //$NON-NLS-1$
-    /**
-     * <pre>
-     * FORMATTER / Option to indent inside line comments at column 0
-     *     - option id:         "org.eclipse.cdt.core.formatter.indent_inside_line_comments"
-     *     - possible values:   { TRUE, FALSE }
-     *     - default:           FALSE
-     * </pre>
-     * @see #TRUE
-     * @see #FALSE
-     */
-    public static final String FORMATTER_INDENT_INSIDE_LINE_COMMENTS = IDEPlugin.PLUGIN_ID + ".formatter.indent_inside_line_comments"; //$NON-NLS-1$
-    /**
-     * <pre>
      * FORMATTER / Option to indent statements inside a block
      *     - option id:         "org.eclipse.cdt.core.formatter.indent_statements_compare_to_block"
      *     - possible values:   { TRUE, FALSE }
@@ -261,15 +226,6 @@ public class STPDefaultCodeFormatterConstants {
      * @see #MIXED
      */
     public static final String FORMATTER_TAB_CHAR = IDEPlugin.PLUGIN_ID + ".formatter.tabulation.char"; //$NON-NLS-1$
-    /**
-     * <pre>
-     * FORMATTER / Option to specify the equivalent number of spaces that represents one tabulation
-     *     - option id:         "org.eclipse.cdt.core.formatter.tabulation.size"
-     *     - possible values:   "&lt;n&gt;", where n is zero or a positive integer
-     *     - default:           "4"
-     * </pre>
-     */
-    public static final String FORMATTER_TAB_SIZE = IDEPlugin.PLUGIN_ID + ".formatter.tabulation.size"; //$NON-NLS-1$
 
     /**
      * <pre>

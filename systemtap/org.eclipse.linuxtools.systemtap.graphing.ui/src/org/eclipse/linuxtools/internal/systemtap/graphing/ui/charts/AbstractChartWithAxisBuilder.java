@@ -297,4 +297,8 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
         buildXSeries();
         chartMouseMoveListener.update();
     }
+
+    @Override
+    protected void buildYSeries() {
+    }
 }

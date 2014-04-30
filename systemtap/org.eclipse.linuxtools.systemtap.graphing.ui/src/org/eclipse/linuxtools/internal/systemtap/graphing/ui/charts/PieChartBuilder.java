@@ -119,4 +119,13 @@ public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
         buildXSeries();
         chartMouseMoveListener.update();
     }
+
+    @Override
+    protected void buildYAxis() {
+
+    }
+
+    @Override
+    protected void buildYSeries() {
+    }
 }

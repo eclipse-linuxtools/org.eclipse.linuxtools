@@ -72,27 +72,18 @@ public class STPReconcilingStrategy  implements IReconcilingStrategy,
         this.currentDocument = document;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.reconciler.IReconcilingStrategy#reconcile(org.eclipse.jface.text.IRegion)
-     */
     @Override
     public void reconcile(IRegion partition) {
         // Just rebuild the whole document
         initialReconcile();
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.reconciler.IReconcilingStrategy#reconcile(org.eclipse.jface.text.reconciler.DirtyRegion, org.eclipse.jface.text.IRegion)
-     */
     @Override
     public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {
         //Just rebuild the whole document
         initialReconcile();
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.reconciler.IReconcilingStrategyExtension#initialReconcile()
-     */
     @Override
     public void initialReconcile() {
         endOfDocumentPostion = currentDocument.getLength();
@@ -104,9 +95,6 @@ public class STPReconcilingStrategy  implements IReconcilingStrategy,
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.reconciler.IReconcilingStrategyExtension#setProgressMonitor(org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     public void setProgressMonitor(IProgressMonitor monitor) {
 

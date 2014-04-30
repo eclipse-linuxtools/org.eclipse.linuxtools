@@ -29,7 +29,7 @@ public class DirectoryValidator implements IInputValidator {
         if(null == s) {
             return Messages.DirectoryValidator_NotNull;
         }
-        if(s.length() < 1) {
+        if(s.isEmpty()) {
             return Messages.DirectoryValidator_FolderName;
         }
         if(!s.endsWith("/")) {//$NON-NLS-1$

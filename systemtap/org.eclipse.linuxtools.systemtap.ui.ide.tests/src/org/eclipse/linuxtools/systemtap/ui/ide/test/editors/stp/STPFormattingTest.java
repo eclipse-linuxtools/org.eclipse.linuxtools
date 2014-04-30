@@ -20,9 +20,9 @@ import org.eclipse.jface.text.DocumentCommand;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.jface.text.IDocumentPartitioner;
+import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPAutoEditStrategy;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPPartitionScanner;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPPartitioner;
 import org.eclipse.linuxtools.systemtap.ui.ide.test.editors.stp.AbstractAutoEditTest.AutoEditTester;
 import org.eclipse.linuxtools.systemtap.ui.tests.SystemtapTest;
 import org.junit.Test;
@@ -67,7 +67,7 @@ public class STPFormattingTest extends SystemtapTest{
      * @param owner may be null
      */
     private void setupDocumentPartitioner(IDocument document, String partitioning) {
-        IDocumentPartitioner partitioner = new STPPartitioner(new STPPartitionScanner(), STPPartitionScanner.STP_PARTITION_TYPES);
+        IDocumentPartitioner partitioner = new FastPartitioner(new STPPartitionScanner(), STPPartitionScanner.STP_PARTITION_TYPES);
         if (document instanceof IDocumentExtension3) {
             IDocumentExtension3 extension3= (IDocumentExtension3) document;
             extension3.setDocumentPartitioner(partitioning, partitioner);

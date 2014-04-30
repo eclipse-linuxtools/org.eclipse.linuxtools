@@ -179,7 +179,7 @@ public class RunScriptHandler extends AbstractHandler {
                 return null;
             }
             final String[] script = buildStandardScript();
-            final String[] envVars = getEnvironmentVariables();
+            final String[] envVars = EnvironmentVariablesPreferencePage.getEnvironmentVariables();
             if (continueRun) {
                 Display.getDefault().asyncExec(new Runnable() {
                     @Override
@@ -509,10 +509,6 @@ public class RunScriptHandler extends AbstractHandler {
 
         script[script.length-2]=modname;
         return script;
-    }
-
-    private String[] getEnvironmentVariables() {
-        return EnvironmentVariablesPreferencePage.getEnvironmentVariables();
     }
 
     @Override

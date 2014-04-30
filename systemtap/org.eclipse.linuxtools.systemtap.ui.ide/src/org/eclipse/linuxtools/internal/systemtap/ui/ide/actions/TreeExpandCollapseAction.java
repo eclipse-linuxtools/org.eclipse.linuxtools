@@ -81,9 +81,11 @@ public class TreeExpandCollapseAction extends Action implements
         Object[] objs = viewer.getViewer().getVisibleExpandedElements();
         boolean doExpand = true;
 
-        for(int i = 0; i < objs.length; i++)
-            if(objs[i] == o)
+        for(Object obj : objs) {
+            if(obj == o) {
                 doExpand = false;
+            }
+        }
 
         if(doExpand) {
             viewer.getViewer().expandToLevel(o,1);
