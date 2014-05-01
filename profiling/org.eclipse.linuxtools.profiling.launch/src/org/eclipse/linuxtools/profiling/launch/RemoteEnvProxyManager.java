@@ -28,7 +28,7 @@ public class RemoteEnvProxyManager extends RemoteProxyManager implements IRemote
     @Override
     public Map<String, String> getEnv(IProject project) throws CoreException {
         String scheme = mapping.getSchemeFromNature(project);
-        if (scheme!=null) {
+        if (scheme != null) {
             IRemoteEnvProxyManager manager = (IRemoteEnvProxyManager) getRemoteManager(scheme);
             return manager.getEnv(project);
         }

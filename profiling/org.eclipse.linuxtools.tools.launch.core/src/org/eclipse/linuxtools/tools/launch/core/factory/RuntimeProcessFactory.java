@@ -253,11 +253,11 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
             IPath path;
             IRemoteCommandLauncher launcher;
 
+            envp = updateEnvironment(envp, project);
             if (project != null) {
                 IRemoteFileProxy proxy = RemoteProxyManager.getInstance().getFileProxy(project);
                 path = new Path(proxy.toPath(uri));
                 launcher = RemoteProxyManager.getInstance().getLauncher(project);
-                envp = updateEnvironment(envp, project);
                 if (dir != null) {
                     changeToDir = new Path(proxy.toPath(dir.toURI()));
                 }

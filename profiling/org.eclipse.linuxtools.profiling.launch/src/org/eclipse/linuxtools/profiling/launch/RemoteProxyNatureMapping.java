@@ -39,7 +39,7 @@ public class RemoteProxyNatureMapping {
         for(int i = 0; i < infos.length; i++) {
             IConfigurationElement configurationElement = infos[i];
             if (configurationElement.getName().equals(MANAGER_NAME)) {
-                for (int j=0;j<natures.length;j++) {
+                for (int j = 0; j < natures.length; j++) {
                     if (configurationElement.getAttribute(NATURE_ID).equals(natures[j])) {
                         return configurationElement.getAttribute(SCHEME_ID);
                     }
