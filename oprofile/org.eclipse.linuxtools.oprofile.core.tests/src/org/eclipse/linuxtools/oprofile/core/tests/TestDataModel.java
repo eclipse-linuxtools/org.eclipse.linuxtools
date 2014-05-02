@@ -20,42 +20,42 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TestDataModel {
-	private TestingOpModelRoot _testRoot;
+    private TestingOpModelRoot _testRoot;
 
-	@Before
-	public void setUp() {
-		_testRoot = new TestingOpModelRoot();
-		_testRoot.refreshModel();
-	}
+    @Before
+    public void setUp() {
+        _testRoot = new TestingOpModelRoot();
+        _testRoot.refreshModel();
+    }
 
-	@Test
-	public void testParse() {
-		OpModelSession[] sessions = _testRoot.getSessions();
-		assertEquals(3, sessions.length);
-		assertEquals(TestingOpModelRoot.NAME_E1, sessions[0].getName());
-		assertEquals(TestingOpModelRoot.NAME_E2, sessions[1].getName());
+    @Test
+    public void testParse() {
+        OpModelSession[] sessions = _testRoot.getSessions();
+        assertEquals(3, sessions.length);
+        assertEquals(TestingOpModelRoot.NAME_E1, sessions[0].getName());
+        assertEquals(TestingOpModelRoot.NAME_E2, sessions[1].getName());
 
-		OpModelEvent[] e1_sessions = sessions[0].getEvents(), e2_sessions = sessions[1].getEvents();
-		assertEquals(1, e1_sessions.length);
-		assertEquals(4, e2_sessions.length);
+        OpModelEvent[] e1_sessions = sessions[0].getEvents(), e2_sessions = sessions[1].getEvents();
+        assertEquals(1, e1_sessions.length);
+        assertEquals(4, e2_sessions.length);
 
-		assertEquals(205000, e1_sessions[0].getCount());
-		assertEquals(205000, e2_sessions[0].getCount());
-		assertEquals(200000, e2_sessions[1].getCount());
-		assertEquals(OpModelImage.IMAGE_PARSE_ERROR, e2_sessions[2].getCount());
-		assertEquals(0, e2_sessions[3].getCount());
+        assertEquals(205000, e1_sessions[0].getCount());
+        assertEquals(205000, e2_sessions[0].getCount());
+        assertEquals(200000, e2_sessions[1].getCount());
+        assertEquals(OpModelImage.IMAGE_PARSE_ERROR, e2_sessions[2].getCount());
+        assertEquals(0, e2_sessions[3].getCount());
 
-		assertEquals(TestingOpModelRoot.NAME_E1_S1, e1_sessions[0].getName());
-		assertEquals(TestingOpModelRoot.NAME_E2_S1, e2_sessions[0].getName());
-		assertEquals(TestingOpModelRoot.NAME_E2_S2, e2_sessions[1].getName());
-		assertEquals(TestingOpModelRoot.NAME_E2_S3, e2_sessions[2].getName());
-		assertEquals(TestingOpModelRoot.NAME_E2_S4, e2_sessions[3].getName());
+        assertEquals(TestingOpModelRoot.NAME_E1_S1, e1_sessions[0].getName());
+        assertEquals(TestingOpModelRoot.NAME_E2_S1, e2_sessions[0].getName());
+        assertEquals(TestingOpModelRoot.NAME_E2_S2, e2_sessions[1].getName());
+        assertEquals(TestingOpModelRoot.NAME_E2_S3, e2_sessions[2].getName());
+        assertEquals(TestingOpModelRoot.NAME_E2_S4, e2_sessions[3].getName());
 
-		//further image parsing is tested in the TestModelDataParse testParse
-	}
+        //further image parsing is tested in the TestModelDataParse testParse
+    }
 
-	@Test
-	public void testStringOutput() {
-		assertEquals(TestingOpModelRoot.ROOT_OUTPUT, _testRoot.toString());
-	}
+    @Test
+    public void testStringOutput() {
+        assertEquals(TestingOpModelRoot.ROOT_OUTPUT, _testRoot.toString());
+    }
 }

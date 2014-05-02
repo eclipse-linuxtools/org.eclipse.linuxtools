@@ -28,63 +28,63 @@ import org.eclipse.linuxtools.internal.oprofile.launch.launching.OprofileLaunchC
  *
  */
 public final class TestingOprofileLaunchConfigurationDelegate extends
-		OprofileLaunchConfigurationDelegate {
-	public boolean eventsIsNull;
-	public OprofileDaemonOptions _options;
+        OprofileLaunchConfigurationDelegate {
+    public boolean eventsIsNull;
+    public OprofileDaemonOptions _options;
 
-	@Override
-	protected void oprofileDumpSamples() {
-		return;
-	}
+    @Override
+    protected void oprofileDumpSamples() {
+        return;
+    }
 
-	@Override
-	protected void oprofileReset() {
-		return;
-	}
+    @Override
+    protected void oprofileReset() {
+        return;
+    }
 
-	@Override
-	protected void oprofileShutdown() {
-		return;
-	}
+    @Override
+    protected void oprofileShutdown() {
+        return;
+    }
 
-	@Override
-	protected boolean oprofileStatus() {
-		return false;
-	}
+    @Override
+    protected boolean oprofileStatus() {
+        return false;
+    }
 
-	@Override
-	protected void oprofileStartCollection() {
-		return;
-	}
+    @Override
+    protected void oprofileStartCollection() {
+        return;
+    }
 
-	@Override
-	protected void oprofileSetupDaemon(OprofileDaemonOptions options,
-			OprofileDaemonEvent[] events) {
-		_options = options;
-		eventsIsNull = events == null ? true : false;
-		return;
-	}
+    @Override
+    protected void oprofileSetupDaemon(OprofileDaemonOptions options,
+            OprofileDaemonEvent[] events) {
+        _options = options;
+        eventsIsNull = events == null ? true : false;
+        return;
+    }
 
-	@Override
-	protected void postExec(LaunchOptions options,
-			OprofileDaemonEvent[] daemonEvents, Process process) {
-		super.postExec(options, daemonEvents, process);
+    @Override
+    protected void postExec(LaunchOptions options,
+            OprofileDaemonEvent[] daemonEvents, Process process) {
+        super.postExec(options, daemonEvents, process);
 
-		try {
-			process.waitFor();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+        try {
+            process.waitFor();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	protected OprofileCounter[] oprofileCounters(ILaunchConfiguration config) {
-		return new OprofileCounter[0];
+    @Override
+    protected OprofileCounter[] oprofileCounters(ILaunchConfiguration config) {
+        return new OprofileCounter[0];
 
-	}
+    }
 
-	@Override
-	protected URI oprofileWorkingDirURI(ILaunchConfiguration config){
-		return oprofileProject().getLocationURI();
-	}
+    @Override
+    protected URI oprofileWorkingDirURI(ILaunchConfiguration config){
+        return oprofileProject().getLocationURI();
+    }
 }

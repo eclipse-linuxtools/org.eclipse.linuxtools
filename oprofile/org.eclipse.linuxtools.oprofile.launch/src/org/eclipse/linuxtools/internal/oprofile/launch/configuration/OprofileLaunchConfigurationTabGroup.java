@@ -6,16 +6,16 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.launch.configuration;
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationTabGroup;
 
 public class OprofileLaunchConfigurationTabGroup extends ProfileLaunchConfigurationTabGroup {
-	@Override
-	public AbstractLaunchConfigurationTab[] getProfileTabs() {
-		return new AbstractLaunchConfigurationTab[] { new OprofileSetupTab(), new OprofileEventConfigTab() };
-	}
+    @Override
+    public AbstractLaunchConfigurationTab[] getProfileTabs() {
+        return new AbstractLaunchConfigurationTab[] { new OprofileSetupTab(), new OprofileEventConfigTab() };
+    }
 }

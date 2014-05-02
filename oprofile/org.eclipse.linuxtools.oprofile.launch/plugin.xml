@@ -58,7 +58,7 @@
             modes="linuxtools">
          <contextualLaunch>
            <enablement>
-<!-- FIXME: this is not a proper enablement condition -->           
+<!-- FIXME: this is not a proper enablement condition -->
              <with variable="selection">
              	<count value="1"></count>
 

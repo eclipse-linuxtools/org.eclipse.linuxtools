@@ -15,52 +15,52 @@ import org.osgi.framework.BundleContext;
 
 public class TestPlugin extends Plugin {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.tests"; //$NON-NLS-1$
-	
-	public static final String SYMBOL1_FILENAME = "/test/path/for/src/image.cpp"; //$NON-NLS-1$
-	public static final String SYMBOL2_FILENAME = "/test/path/for/src/image2.cpp"; //$NON-NLS-1$
+    // The plug-in ID
+    public static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.tests"; //$NON-NLS-1$
 
-	public static final String DEP2_SYMBOL1_FILENAME = "dl-lookup.c"; //$NON-NLS-1$
-	public static final String DEP2_SYMBOL2_FILENAME = "rawmemchr.c"; //$NON-NLS-1$
-	public static final String DEP4_SYMBOL_FILENAME = ""; //$NON-NLS-1$
-	
-	// The shared instance
-	private static TestPlugin plugin = null;
-	
-	/**
-	 * The constructor
-	 */
-	public TestPlugin() {
-	}
+    public static final String SYMBOL1_FILENAME = "/test/path/for/src/image.cpp"; //$NON-NLS-1$
+    public static final String SYMBOL2_FILENAME = "/test/path/for/src/image2.cpp"; //$NON-NLS-1$
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
-	}
+    public static final String DEP2_SYMBOL1_FILENAME = "dl-lookup.c"; //$NON-NLS-1$
+    public static final String DEP2_SYMBOL2_FILENAME = "rawmemchr.c"; //$NON-NLS-1$
+    public static final String DEP4_SYMBOL_FILENAME = ""; //$NON-NLS-1$
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
-	}
+    // The shared instance
+    private static TestPlugin plugin = null;
 
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
-	public static TestPlugin getDefault() {
-		return plugin;
-	}
+    /**
+     * The constructor
+     */
+    public TestPlugin() {
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+     */
+    @Override
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
+        plugin = this;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+     */
+    @Override
+    public void stop(BundleContext context) throws Exception {
+        plugin = null;
+        super.stop(context);
+    }
+
+    /**
+     * Returns the shared instance
+     *
+     * @return the shared instance
+     */
+    public static TestPlugin getDefault() {
+        return plugin;
+    }
 
 }

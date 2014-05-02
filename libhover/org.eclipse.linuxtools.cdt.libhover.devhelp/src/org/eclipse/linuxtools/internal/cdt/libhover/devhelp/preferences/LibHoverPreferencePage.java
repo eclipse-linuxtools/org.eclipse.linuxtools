@@ -131,8 +131,8 @@ public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
                 Display.getDefault().syncExec(new Runnable() {
                     @Override
                     public void run() {
-                    	if (generateButton != null)
-                    		generateButton.setEnabled(true);
+                        if (generateButton != null)
+                            generateButton.setEnabled(true);
                     }
                 });
             }

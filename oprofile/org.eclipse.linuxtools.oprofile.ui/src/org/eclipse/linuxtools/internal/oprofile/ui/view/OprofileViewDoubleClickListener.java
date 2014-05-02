@@ -29,49 +29,49 @@ import org.eclipse.ui.PartInitException;
  *
  * Different things occur based on the event:
  *
- *   UiModelEvent 		- nothing (?)
- *   UiModelSession 	- save the session to a different name
- *   UiModelImage 		- nothing (?)
- *   UiModelSymbol		- nothing (?)
- *   UiModelSample		- go to line number in appropriate file
+ *   UiModelEvent         - nothing (?)
+ *   UiModelSession     - save the session to a different name
+ *   UiModelImage         - nothing (?)
+ *   UiModelSymbol        - nothing (?)
+ *   UiModelSample        - go to line number in appropriate file
  */
 public class OprofileViewDoubleClickListener implements IDoubleClickListener {
-	@Override
-	public void doubleClick(DoubleClickEvent event) {
-		TreeViewer tv = (TreeViewer) event.getSource();
-		TreeSelection tsl = (TreeSelection) tv.getSelection();
-		IUiModelElement element = (IUiModelElement) tsl.getFirstElement();
+    @Override
+    public void doubleClick(DoubleClickEvent event) {
+        TreeViewer tv = (TreeViewer) event.getSource();
+        TreeSelection tsl = (TreeSelection) tv.getSelection();
+        IUiModelElement element = (IUiModelElement) tsl.getFirstElement();
 
-		try {
-			if (element instanceof UiModelEvent) {
-				// UiModelEvent event = (UiModelEvent)element;
+        try {
+            if (element instanceof UiModelEvent) {
+                // UiModelEvent event = (UiModelEvent)element;
 
-			} else if (element instanceof UiModelSession) {
-				/* moved into an action menu */
-			} else if (element instanceof UiModelImage) {
-				// UiModelImage image = (UiModelImage)element;
+            } else if (element instanceof UiModelSession) {
+                /* moved into an action menu */
+            } else if (element instanceof UiModelImage) {
+                // UiModelImage image = (UiModelImage)element;
 
-			} else if (element instanceof UiModelSymbol) {
-				final UiModelSymbol symbol = (UiModelSymbol) element;
-				final String fileName = symbol.getFileName();
-				int line = symbol.getLineNumber();
+            } else if (element instanceof UiModelSymbol) {
+                final UiModelSymbol symbol = (UiModelSymbol) element;
+                final String fileName = symbol.getFileName();
+                int line = symbol.getLineNumber();
 
-				ProfileUIUtils.openEditorAndSelect(fileName, line);
+                ProfileUIUtils.openEditorAndSelect(fileName, line);
 
-			} else if (element instanceof UiModelSample) {
-				// jump to line number in the appropriate file
-				UiModelSample sample = (UiModelSample) element;
-				int line = sample.getLine();
+            } else if (element instanceof UiModelSample) {
+                // jump to line number in the appropriate file
+                UiModelSample sample = (UiModelSample) element;
+                int line = sample.getLine();
 
-				// get file name from the parent sample
-				final String fileName = sample.getFile();
-				ProfileUIUtils.openEditorAndSelect(fileName, line);
-			}
-		} catch (BadLocationException e1) {
-			e1.printStackTrace();
-		} catch (PartInitException e2) {
-			e2.printStackTrace();
-		}
-	}
+                // get file name from the parent sample
+                final String fileName = sample.getFile();
+                ProfileUIUtils.openEditorAndSelect(fileName, line);
+            }
+        } catch (BadLocationException e1) {
+            e1.printStackTrace();
+        } catch (PartInitException e2) {
+            e2.printStackTrace();
+        }
+    }
 
 }

@@ -22,7 +22,7 @@
   <packaging>eclipse-feature</packaging>
 
   <name>Linux Tools OProfile Integration Feature</name>
-  
+
   <build>
     <plugins>
       <plugin>

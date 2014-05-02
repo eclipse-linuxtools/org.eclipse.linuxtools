@@ -62,123 +62,123 @@ import org.eclipse.ui.part.ViewPart;
  *   ui model parsing in a separate thread.
  */
 public class OprofileView extends ViewPart implements ISelectionChangedListener {
-	private TreeViewer viewer;
-	private IAction deleteSessionAction;
-	private IAction saveDefaultSessionAction;
+    private TreeViewer viewer;
+    private IAction deleteSessionAction;
+    private IAction saveDefaultSessionAction;
 
-	@Override
-	public void createPartControl(Composite parent) {
-		createTreeViewer(parent);
-		createActionMenu();
+    @Override
+    public void createPartControl(Composite parent) {
+        createTreeViewer(parent);
+        createActionMenu();
 
-		OprofileUiPlugin.getDefault().setOprofileView(this);
-	}
+        OprofileUiPlugin.getDefault().setOprofileView(this);
+    }
 
-	private void createTreeViewer(Composite parent) {
-		viewer = new TreeViewer(parent, SWT.SINGLE);
-		viewer.setContentProvider(new OprofileViewContentProvider());
-		viewer.setLabelProvider(new OprofileViewLabelProvider());
-		viewer.addDoubleClickListener(new OprofileViewDoubleClickListener());
-		viewer.addSelectionChangedListener(this);
-	}
+    private void createTreeViewer(Composite parent) {
+        viewer = new TreeViewer(parent, SWT.SINGLE);
+        viewer.setContentProvider(new OprofileViewContentProvider());
+        viewer.setLabelProvider(new OprofileViewLabelProvider());
+        viewer.addDoubleClickListener(new OprofileViewDoubleClickListener());
+        viewer.addSelectionChangedListener(this);
+    }
 
-	private void createActionMenu() {
-		IMenuManager manager = getViewSite().getActionBars().getMenuManager();
+    private void createActionMenu() {
+        IMenuManager manager = getViewSite().getActionBars().getMenuManager();
 
-		manager.add(new OprofileViewLogReaderAction());
-		manager.add(new OprofileViewRefreshAction());
-		saveDefaultSessionAction = new OprofileViewSaveDefaultSessionAction();
-		manager.add(saveDefaultSessionAction);
-		deleteSessionAction = new OprofileViewDeleteSessionAction(getTreeViewer());
-		manager.add(deleteSessionAction);
+        manager.add(new OprofileViewLogReaderAction());
+        manager.add(new OprofileViewRefreshAction());
+        saveDefaultSessionAction = new OprofileViewSaveDefaultSessionAction();
+        manager.add(saveDefaultSessionAction);
+        deleteSessionAction = new OprofileViewDeleteSessionAction(getTreeViewer());
+        manager.add(deleteSessionAction);
 
-		MenuManager sortMenu = new MenuManager(
-				OprofileUiMessages.getString("view.menu.sortby.label")); //$NON-NLS-1$
+        MenuManager sortMenu = new MenuManager(
+                OprofileUiMessages.getString("view.menu.sortby.label")); //$NON-NLS-1$
 
-		for (UiModelRoot.SortType s : UiModelRoot.SortType.values()) {
-			sortMenu.add(new OprofileViewSortAction(s,
-					OprofileViewSortAction.sortTypeMap.get(s)));
-		}
-		manager.add(sortMenu);
+        for (UiModelRoot.SortType s : UiModelRoot.SortType.values()) {
+            sortMenu.add(new OprofileViewSortAction(s,
+                    OprofileViewSortAction.sortTypeMap.get(s)));
+        }
+        manager.add(sortMenu);
 
-	}
+    }
 
-	private TreeViewer getTreeViewer() {
-		return viewer;
-	}
+    private TreeViewer getTreeViewer() {
+        return viewer;
+    }
 
-	/**
-	 * Extremely convoluted way of getting the running and parsing to happen in
-	 *   a separate thread, with a progress monitor. In most cases and on fast
-	 *   machines this will probably only be a blip.
-	 */
-	public void refreshView() {
-		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(OprofileUiPlugin.ID_OPROFILE_VIEW);
-		} catch (PartInitException e) {
-			e.printStackTrace();
-		}
+    /**
+     * Extremely convoluted way of getting the running and parsing to happen in
+     *   a separate thread, with a progress monitor. In most cases and on fast
+     *   machines this will probably only be a blip.
+     */
+    public void refreshView() {
+        try {
+            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(OprofileUiPlugin.ID_OPROFILE_VIEW);
+        } catch (PartInitException e) {
+            e.printStackTrace();
+        }
 
-		IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
-			@Override
-			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-				monitor.beginTask(OprofileUiMessages.getString("view.dialog.parsing.text"), 2); //$NON-NLS-1$
+        IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
+            @Override
+            public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                monitor.beginTask(OprofileUiMessages.getString("view.dialog.parsing.text"), 2); //$NON-NLS-1$
 
-				OpModelRoot dataModelRoot = OpModelRoot.getDefault();
-				dataModelRoot.refreshModel();
-				monitor.worked(1);
+                OpModelRoot dataModelRoot = OpModelRoot.getDefault();
+                dataModelRoot.refreshModel();
+                monitor.worked(1);
 
-				final UiModelRoot UiRoot = UiModelRoot.getDefault();
-				UiRoot.refreshModel();
+                final UiModelRoot UiRoot = UiModelRoot.getDefault();
+                UiRoot.refreshModel();
 
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						OprofileUiPlugin.getDefault().getOprofileView().getTreeViewer().setInput(UiRoot);
-					}
-				});
-				monitor.worked(1);
-				monitor.done();
-			}
-		};
+                Display.getDefault().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        OprofileUiPlugin.getDefault().getOprofileView().getTreeViewer().setInput(UiRoot);
+                    }
+                });
+                monitor.worked(1);
+                monitor.done();
+            }
+        };
 
-		ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
-		try {
-			dialog.run(true, false, refreshRunner);
-		} catch (InvocationTargetException|InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+        ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
+        try {
+            dialog.run(true, false, refreshRunner);
+        } catch (InvocationTargetException|InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	public void selectionChanged(SelectionChangedEvent event) {
-		TreeSelection tsl = (TreeSelection) viewer.getSelection();
-		if (tsl.getFirstElement() instanceof UiModelSession) {
-			if (!deleteSessionAction.isEnabled()) {
-				deleteSessionAction.setEnabled(true);
-			}
+    @Override
+    public void selectionChanged(SelectionChangedEvent event) {
+        TreeSelection tsl = (TreeSelection) viewer.getSelection();
+        if (tsl.getFirstElement() instanceof UiModelSession) {
+            if (!deleteSessionAction.isEnabled()) {
+                deleteSessionAction.setEnabled(true);
+            }
 
-			if (((UiModelSession) tsl.getFirstElement()).isDefaultSession()) {
-				if (!saveDefaultSessionAction.isEnabled()) {
-					saveDefaultSessionAction.setEnabled(true);
-				}
-			}
-		} else {
-			deleteSessionAction.setEnabled(false);
-			saveDefaultSessionAction.setEnabled(false);
+            if (((UiModelSession) tsl.getFirstElement()).isDefaultSession()) {
+                if (!saveDefaultSessionAction.isEnabled()) {
+                    saveDefaultSessionAction.setEnabled(true);
+                }
+            }
+        } else {
+            deleteSessionAction.setEnabled(false);
+            saveDefaultSessionAction.setEnabled(false);
 
-		}
+        }
 
-	}
+    }
 
-	@Override
-	public void setFocus() {
-		// TODO Auto-generated method stub
-	}
+    @Override
+    public void setFocus() {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	public void dispose() {
-		super.dispose();
-		viewer.removeSelectionChangedListener(this);
-	}
+    @Override
+    public void dispose() {
+        super.dispose();
+        viewer.removeSelectionChangedListener(this);
+    }
 }

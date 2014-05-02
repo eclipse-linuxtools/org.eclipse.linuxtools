@@ -24,58 +24,58 @@ import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
  */
 
 public class OpModelRoot {
-	//single instance
-	private static OpModelRoot modelRoot = new OpModelRoot();
+    //single instance
+    private static OpModelRoot modelRoot = new OpModelRoot();
 
-	private OpModelSession[] session;
+    private OpModelSession[] session;
 
-	protected OpModelRoot() {
-		session = null;
-	}
+    protected OpModelRoot() {
+        session = null;
+    }
 
-	public static OpModelRoot getDefault() {
-		return modelRoot;
-	}
+    public static OpModelRoot getDefault() {
+        return modelRoot;
+    }
 
-	public void refreshModel() {
-		//TODO-performance/interactivity: some persistence for events/sessions
-		// that dont change from run to run (non default sessions)
+    public void refreshModel() {
+        //TODO-performance/interactivity: some persistence for events/sessions
+        // that dont change from run to run (non default sessions)
 
-		session = getNewSessions();
-		if (session != null) {
-			for (int i = 0; i < session.length; i++) {
-				if (session[i] != null)
-					session[i].refreshModel();
-			}
-		}
-	}
+        session = getNewSessions();
+        if (session != null) {
+            for (int i = 0; i < session.length; i++) {
+                if (session[i] != null)
+                    session[i].refreshModel();
+            }
+        }
+    }
 
-	/**
-	 * return list of session collected on this system as well as events under each of them.
-	 * @return collected sessions list
-	 * @since 3.0
-	 */
-	protected OpModelSession[] getNewSessions() {
-		//launch `opxml sessions`, gather up events & the sessions under them
-		return Oprofile.getSessions();
-	}
+    /**
+     * return list of session collected on this system as well as events under each of them.
+     * @return collected sessions list
+     * @since 3.0
+     */
+    protected OpModelSession[] getNewSessions() {
+        //launch `opxml sessions`, gather up events & the sessions under them
+        return Oprofile.getSessions();
+    }
 
 
-	public OpModelSession[] getSessions() {
-		return session;
-	}
+    public OpModelSession[] getSessions() {
+        return session;
+    }
 
-	@Override
-	public String toString() {
-		String s = ""; //$NON-NLS-1$
-		if (session != null) {
-			for (int i = 0; i < session.length; i++) {
-				if (session[i] != null) {
-					s += "Session: "; //$NON-NLS-1$
-					s += session[i].toString("\t"); //$NON-NLS-1$
-				}
-			}
-		}
-		return s;
-	}
+    @Override
+    public String toString() {
+        String s = ""; //$NON-NLS-1$
+        if (session != null) {
+            for (int i = 0; i < session.length; i++) {
+                if (session[i] != null) {
+                    s += "Session: "; //$NON-NLS-1$
+                    s += session[i].toString("\t"); //$NON-NLS-1$
+                }
+            }
+        }
+        return s;
+    }
 }

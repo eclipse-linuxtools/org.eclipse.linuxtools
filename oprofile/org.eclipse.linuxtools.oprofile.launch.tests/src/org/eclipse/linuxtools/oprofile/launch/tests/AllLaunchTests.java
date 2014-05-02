@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	TestLaunching.class, TestManualLaunching.class, TestSetup.class, TestLaunchingExternalProject.class
+    TestLaunching.class, TestManualLaunching.class, TestSetup.class, TestLaunchingExternalProject.class
 })
 public class AllLaunchTests {
 }

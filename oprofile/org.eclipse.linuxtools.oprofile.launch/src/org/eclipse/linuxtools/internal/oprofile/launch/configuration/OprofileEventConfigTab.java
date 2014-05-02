@@ -12,7 +12,7 @@
  * CounterSubTab Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation (before subclassing)
  *    Kent Sebastian <ksebasti@redhat.com> - turned into a sub class,
- * 	     changed layouts, fixed up some interactivity issues, ..
+ *          changed layouts, fixed up some interactivity issues, ..
  *
  * UnitMaskViewer Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
@@ -32,45 +32,45 @@ import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchPlugin;
  */
 public class OprofileEventConfigTab extends AbstractEventConfigTab {
 
-	@Override
-	protected boolean getOprofileTimerMode() {
-		return Oprofile.getTimerMode();
-	}
+    @Override
+    protected boolean getOprofileTimerMode() {
+        return Oprofile.getTimerMode();
+    }
 
-	@Override
-	public OprofileCounter getOprofileCounter(int i) {
-		return new OprofileCounter(i);
-	}
+    @Override
+    public OprofileCounter getOprofileCounter(int i) {
+        return new OprofileCounter(i);
+    }
 
-	@Override
-	protected OprofileCounter[] getOprofileCounters(ILaunchConfiguration config) {
-		return OprofileCounter.getCounters(config);
-	}
+    @Override
+    protected OprofileCounter[] getOprofileCounters(ILaunchConfiguration config) {
+        return OprofileCounter.getCounters(config);
+    }
 
-	@Override
-	protected int getNumberOfOprofileCounters() {
-		return Oprofile.getNumberOfCounters();
-	}
+    @Override
+    protected int getNumberOfOprofileCounters() {
+        return Oprofile.getNumberOfCounters();
+    }
 
-	@Override
-	protected IProject getOprofileProject() {
-		return Oprofile.OprofileProject.getProject();
-	}
+    @Override
+    protected IProject getOprofileProject() {
+        return Oprofile.OprofileProject.getProject();
+    }
 
-	@Override
-	protected void setOprofileProject(IProject project) {
-		Oprofile.OprofileProject.setProject(project);
-	}
+    @Override
+    protected void setOprofileProject(IProject project) {
+        Oprofile.OprofileProject.setProject(project);
+    }
 
-	@Override
-	protected void updateOprofileInfo() {
-		Oprofile.updateInfo();
-	}
+    @Override
+    protected void updateOprofileInfo() {
+        Oprofile.updateInfo();
+    }
 
-	@Override
-	protected boolean checkEventSetupValidity(int counter, String name,
-			int maskValue) {
-		return OprofileLaunchPlugin.getCache().checkEvent(counter, name, maskValue);
-	}
+    @Override
+    protected boolean checkEventSetupValidity(int counter, String name,
+            int maskValue) {
+        return OprofileLaunchPlugin.getCache().checkEvent(counter, name, maskValue);
+    }
 
 }

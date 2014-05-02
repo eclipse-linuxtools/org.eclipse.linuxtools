@@ -24,64 +24,64 @@ import org.eclipse.linuxtools.oprofile.ui.model.UiModelSession;
 
 public class OprofileViewDeleteSessionAction extends Action {
 
-	private TreeViewer treeViewer;
+    private TreeViewer treeViewer;
 
-	public OprofileViewDeleteSessionAction(TreeViewer tree) {
-		super("Delete Session"); //$NON-NLS-1$
-		treeViewer = tree;
-		setEnabled(false);
-	}
+    public OprofileViewDeleteSessionAction(TreeViewer tree) {
+        super("Delete Session"); //$NON-NLS-1$
+        treeViewer = tree;
+        setEnabled(false);
+    }
 
-	@Override
-	public void run() {
-		TreeSelection tsl = (TreeSelection) treeViewer.getSelection();
-		if (tsl.getFirstElement() instanceof UiModelSession) {
-			UiModelSession sess = (UiModelSession) tsl.getFirstElement();
-			deleteSession(sess);
-		}
+    @Override
+    public void run() {
+        TreeSelection tsl = (TreeSelection) treeViewer.getSelection();
+        if (tsl.getFirstElement() instanceof UiModelSession) {
+            UiModelSession sess = (UiModelSession) tsl.getFirstElement();
+            deleteSession(sess);
+        }
 
-		OprofileUiPlugin.getDefault().getOprofileView().refreshView();
-	}
+        OprofileUiPlugin.getDefault().getOprofileView().refreshView();
+    }
 
-	/**
-	 * Delete the session with the specified name for the specified event
-	 * @param sessionName The name of the session to delete
-	 * @param eventName The name of the event containing the session
-	 */
-	private void deleteSession(UiModelSession sess) {
-		String sessionName = sess.getLabelText();
-		IUiModelElement[] modelEvents = sess.getChildren();
-		try {
-			for (int i = 0; i < modelEvents.length; i++) {
-				OprofileCorePlugin
-						.getDefault()
-						.getOpcontrolProvider()
-						.deleteSession(sessionName,
-								modelEvents[i].getLabelText());
-			}
-			// clear out collected data by this session
-			// check if profile is done through operf or oprofile
-			if (Oprofile.OprofileProject.getProfilingBinary().equals(
-					Oprofile.OprofileProject.OPERF_BINARY)) {
-				// delete operf_data folder
-				deleteOperfDataFolder(Oprofile.OprofileProject.getProject()
-						.getFolder(Oprofile.OprofileProject.OPERF_DATA));
-			} else {
-				OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();
-			}
-		} catch (OpcontrolException e) {
-			OprofileCorePlugin.showErrorDialog("opcontrolProvider", e); //$NON-NLS-1$
-		}
-	}
+    /**
+     * Delete the session with the specified name for the specified event
+     * @param sessionName The name of the session to delete
+     * @param eventName The name of the event containing the session
+     */
+    private void deleteSession(UiModelSession sess) {
+        String sessionName = sess.getLabelText();
+        IUiModelElement[] modelEvents = sess.getChildren();
+        try {
+            for (int i = 0; i < modelEvents.length; i++) {
+                OprofileCorePlugin
+                        .getDefault()
+                        .getOpcontrolProvider()
+                        .deleteSession(sessionName,
+                                modelEvents[i].getLabelText());
+            }
+            // clear out collected data by this session
+            // check if profile is done through operf or oprofile
+            if (Oprofile.OprofileProject.getProfilingBinary().equals(
+                    Oprofile.OprofileProject.OPERF_BINARY)) {
+                // delete operf_data folder
+                deleteOperfDataFolder(Oprofile.OprofileProject.getProject()
+                        .getFolder(Oprofile.OprofileProject.OPERF_DATA));
+            } else {
+                OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();
+            }
+        } catch (OpcontrolException e) {
+            OprofileCorePlugin.showErrorDialog("opcontrolProvider", e); //$NON-NLS-1$
+        }
+    }
 
-	public static void deleteOperfDataFolder(IFolder operfData)	{
-		if(operfData.exists()) {
-			try {
-				operfData.delete(true,null);
-			} catch (CoreException e) {
-				OprofileCorePlugin.showErrorDialog("opcontrolProvider", e); //$NON-NLS-1$
-			}
-		}
+    public static void deleteOperfDataFolder(IFolder operfData) {
+        if(operfData.exists()) {
+            try {
+                operfData.delete(true,null);
+            } catch (CoreException e) {
+                OprofileCorePlugin.showErrorDialog("opcontrolProvider", e); //$NON-NLS-1$
+            }
+        }
 
-	}
+    }
 }

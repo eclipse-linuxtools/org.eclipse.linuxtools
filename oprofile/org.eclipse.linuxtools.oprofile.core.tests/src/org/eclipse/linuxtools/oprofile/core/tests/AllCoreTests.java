@@ -15,8 +15,8 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ TestModelDataParse.class, TestModelDataPreParse.class,
-		TestSessionsParse.class, TestCheckEventsParse.class,
-		TestCheckEventsPreParse.class, TestInfoPreParse.class,
-		TestInfoParse.class, TestDataModel.class })
+        TestSessionsParse.class, TestCheckEventsParse.class,
+        TestCheckEventsPreParse.class, TestInfoPreParse.class,
+        TestInfoParse.class, TestDataModel.class })
 public class AllCoreTests {
 }

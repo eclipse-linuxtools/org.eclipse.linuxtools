@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation,
- *    	adapted from Keith Seitz's ProfileContentProvider
+ *        adapted from Keith Seitz's ProfileContentProvider
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.ui.view;
 
@@ -21,37 +21,37 @@ import org.eclipse.linuxtools.oprofile.ui.model.IUiModelElement;
  */
 public class OprofileViewContentProvider implements ITreeContentProvider {
 
-	@Override
-	public Object[] getChildren(Object element) {
-		Assert.isLegal(element instanceof IUiModelElement, "in OprofileViewContentProvider"); //$NON-NLS-1$
-		return ((IUiModelElement) element).getChildren();
-	}
+    @Override
+    public Object[] getChildren(Object element) {
+        Assert.isLegal(element instanceof IUiModelElement, "in OprofileViewContentProvider"); //$NON-NLS-1$
+        return ((IUiModelElement) element).getChildren();
+    }
 
-	@Override
-	public Object getParent(Object element) {
-		Assert.isLegal(element instanceof IUiModelElement, "in OprofileViewContentProvider"); //$NON-NLS-1$
-		return ((IUiModelElement) element).getParent();
-	}
+    @Override
+    public Object getParent(Object element) {
+        Assert.isLegal(element instanceof IUiModelElement, "in OprofileViewContentProvider"); //$NON-NLS-1$
+        return ((IUiModelElement) element).getParent();
+    }
 
-	@Override
-	public boolean hasChildren(Object element) {
-		Assert.isLegal(element instanceof IUiModelElement, "in OprofileViewContentProvider"); //$NON-NLS-1$
-		return ((IUiModelElement) element).hasChildren();
-	}
+    @Override
+    public boolean hasChildren(Object element) {
+        Assert.isLegal(element instanceof IUiModelElement, "in OprofileViewContentProvider"); //$NON-NLS-1$
+        return ((IUiModelElement) element).hasChildren();
+    }
 
-	@Override
-	public Object[] getElements(Object parentElement) {
-		return getChildren(parentElement);
-	}
+    @Override
+    public Object[] getElements(Object parentElement) {
+        return getChildren(parentElement);
+    }
 
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-	}
+    @Override
+    public void dispose() {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		// TODO Auto-generated method stub
-	}
+    @Override
+    public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+        // TODO Auto-generated method stub
+    }
 
 }

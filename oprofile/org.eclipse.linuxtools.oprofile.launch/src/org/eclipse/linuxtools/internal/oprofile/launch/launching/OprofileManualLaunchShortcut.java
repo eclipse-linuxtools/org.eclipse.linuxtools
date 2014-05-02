@@ -25,38 +25,38 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
  *   find binaries and create a default launch if one doesn't exist.
  */
 public class OprofileManualLaunchShortcut extends ProfileLaunchShortcut {
-	@Override
-	protected ILaunchConfigurationType getLaunchConfigType() {
-		return getLaunchManager().getLaunchConfigurationType(OprofileLaunchPlugin.ID_LAUNCH_PROFILE_MANUAL);
-	}
+    @Override
+    protected ILaunchConfigurationType getLaunchConfigType() {
+        return getLaunchManager().getLaunchConfigurationType(OprofileLaunchPlugin.ID_LAUNCH_PROFILE_MANUAL);
+    }
 
-	/**
-	 * Default settings for the OProfile-specific option tabs.
-	 */
-	@Override
-	protected void setDefaultProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
-		//default global setup options
-		LaunchOptions options = new LaunchOptions();
-		options.saveConfiguration(wc);
+    /**
+     * Default settings for the OProfile-specific option tabs.
+     */
+    @Override
+    protected void setDefaultProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
+        //default global setup options
+        LaunchOptions options = new LaunchOptions();
+        options.saveConfiguration(wc);
 
-		//default event option
-		wc.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
-	}
+        //default event option
+        wc.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
+    }
 
-	@Override
-	protected ILaunchConfiguration findLaunchConfiguration(IBinary bin, String mode) {
-		ILaunchConfiguration config = super.findLaunchConfiguration(bin, mode);
+    @Override
+    protected ILaunchConfiguration findLaunchConfiguration(IBinary bin, String mode) {
+        ILaunchConfiguration config = super.findLaunchConfiguration(bin, mode);
 
-		//hijack the launch config and add in the manual profile value, which will be
-		// used in the delegate
-		try {
-			ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-			wc.setAttribute(OprofileLaunchPlugin.ATTR_MANUAL_PROFILE, true);
-			wc.doSave();
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+        //hijack the launch config and add in the manual profile value, which will be
+        // used in the delegate
+        try {
+            ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
+            wc.setAttribute(OprofileLaunchPlugin.ATTR_MANUAL_PROFILE, true);
+            wc.doSave();
+        } catch (CoreException e) {
+            e.printStackTrace();
+        }
 
-		return config;
-	}
+        return config;
+    }
 }

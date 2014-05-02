@@ -24,39 +24,39 @@ import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSession;
  */
 public interface IOpxmlProvider {
 
-	/**
-	 * Returns an <code>IRunnableWithProgress</code> that fetches generic information from opxml
-	 * @param info <code>OpInfo</code> object for results
-	 * @return <code>IRunnableWithProgress</code> that may be run by the caller
-	 */
-	IRunnableWithProgress info(OpInfo info);
+    /**
+     * Returns an <code>IRunnableWithProgress</code> that fetches generic information from opxml
+     * @param info <code>OpInfo</code> object for results
+     * @return <code>IRunnableWithProgress</code> that may be run by the caller
+     */
+    IRunnableWithProgress info(OpInfo info);
 
-	/**
-	 * Returns an <code>IRunnableWithProgress</code> that fetches samples for the
-	 * given <code>OpModelSession</code>
-	 * @param eventName the event for which to fetch samples
-	 * @param sessionName the session for which to fetch samples
-	 * @param image the image being profiled to be returned to the caller
-	 * @return <code>IRunnableWithProgress</code> that may be run by the caller
-	 */
-	IRunnableWithProgress modelData(String eventName, String sessionName, OpModelImage image);
+    /**
+     * Returns an <code>IRunnableWithProgress</code> that fetches samples for the
+     * given <code>OpModelSession</code>
+     * @param eventName the event for which to fetch samples
+     * @param sessionName the session for which to fetch samples
+     * @param image the image being profiled to be returned to the caller
+     * @return <code>IRunnableWithProgress</code> that may be run by the caller
+     */
+    IRunnableWithProgress modelData(String eventName, String sessionName, OpModelImage image);
 
-	/**
-	 * Returns an <code>IRunnableWithProgress</code> that checks the validity of the given
-	 * event, unit mask, and counter combination
-	 * @param ctr the counter
-	 * @param event the String event name
-	 * @param um the integer unit mask
-	 * @param eventValid a size one array to hold the return result (see <code>CheckEventsProcessor</code>)
-	 * @return <code>IRunnableWithProgress</code> that may be run by the caller
-	 */
-	IRunnableWithProgress checkEvents(int ctr, String event, int um, int[] eventValid);
+    /**
+     * Returns an <code>IRunnableWithProgress</code> that checks the validity of the given
+     * event, unit mask, and counter combination
+     * @param ctr the counter
+     * @param event the String event name
+     * @param um the integer unit mask
+     * @param eventValid a size one array to hold the return result (see <code>CheckEventsProcessor</code>)
+     * @return <code>IRunnableWithProgress</code> that may be run by the caller
+     */
+    IRunnableWithProgress checkEvents(int ctr, String event, int um, int[] eventValid);
 
-	/**
-	 * Returns an <code>IRunnableWithProgress</code> that fetches the list of sessions
-	 * @param info the <code>OpInfo</code> for oprofile
-	 * @param sessionList an <code>ArrayList</code> in which to return the list of sessions
-	 * @return <code>IRunnableWithProgress</code> that may be run by the caller
-	 */
-	IRunnableWithProgress sessions(ArrayList<OpModelSession> sessionList);
+    /**
+     * Returns an <code>IRunnableWithProgress</code> that fetches the list of sessions
+     * @param info the <code>OpInfo</code> for oprofile
+     * @param sessionList an <code>ArrayList</code> in which to return the list of sessions
+     * @return <code>IRunnableWithProgress</code> that may be run by the caller
+     */
+    IRunnableWithProgress sessions(ArrayList<OpModelSession> sessionList);
 }

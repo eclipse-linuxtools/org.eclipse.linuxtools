@@ -38,74 +38,74 @@ import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 
 public class TestLaunching extends AbstractTest {
-	private ILaunchConfiguration config;
-	private Shell testShell;
+    private ILaunchConfiguration config;
+    private Shell testShell;
 
-	@Before
-	public void setUp() throws Exception {
-		proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "primeTest"); //$NON-NLS-1$
-		config = createConfiguration(proj.getProject());
-		testShell = new Shell(Display.getDefault());
-		testShell.setLayout(new GridLayout());
-	}
+    @Before
+    public void setUp() throws Exception {
+        proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "primeTest"); //$NON-NLS-1$
+        config = createConfiguration(proj.getProject());
+        testShell = new Shell(Display.getDefault());
+        testShell.setLayout(new GridLayout());
+    }
 
-	@After
-	public void tearDown() throws Exception {
-		testShell.dispose();
-		deleteProject(proj);
-	}
+    @After
+    public void tearDown() throws Exception {
+        testShell.dispose();
+        deleteProject(proj);
+    }
 
-	@Override
-	protected ILaunchConfigurationType getLaunchConfigType() {
-		return getLaunchManager().getLaunchConfigurationType(OprofileLaunchPlugin.ID_LAUNCH_PROFILE);
-	}
+    @Override
+    protected ILaunchConfigurationType getLaunchConfigType() {
+        return getLaunchManager().getLaunchConfigurationType(OprofileLaunchPlugin.ID_LAUNCH_PROFILE);
+    }
 
-	@Override
-	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
-		OprofileTestingEventConfigTab configTab = new OprofileTestingEventConfigTab();
-		OprofileSetupTab setupTab = new OprofileSetupTab();
-		configTab.setOprofileProject(proj.getProject());
-		configTab.setDefaults(wc);
-		setupTab.setDefaults(wc);
-	}
-	@Test
-	public void testDefaultLaunch() throws CoreException {
-		TestingOprofileLaunchConfigurationDelegate delegate = new TestingOprofileLaunchConfigurationDelegate();
-		ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
+    @Override
+    protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
+        OprofileTestingEventConfigTab configTab = new OprofileTestingEventConfigTab();
+        OprofileSetupTab setupTab = new OprofileSetupTab();
+        configTab.setOprofileProject(proj.getProject());
+        configTab.setDefaults(wc);
+        setupTab.setDefaults(wc);
+    }
+    @Test
+    public void testDefaultLaunch() throws CoreException {
+        TestingOprofileLaunchConfigurationDelegate delegate = new TestingOprofileLaunchConfigurationDelegate();
+        ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
 
-		LaunchTestingOptions options = new LaunchTestingOptions();
-		options.setOprofileProject(proj.getProject());
-		options.loadConfiguration(config);
-		assertTrue(options.isValid());
-		assertTrue(options.getBinaryImage().isEmpty());
-		assertTrue(options.getKernelImageFile().isEmpty());
-		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
-		Oprofile.OprofileProject.setProfilingBinary(Oprofile.OprofileProject.OPCONTROL_BINARY);
-		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
-	}
-	@Test
-	public void testEventLaunch() throws CoreException {
-		TestingOprofileLaunchConfigurationDelegate delegate = new TestingOprofileLaunchConfigurationDelegate();
-		ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
+        LaunchTestingOptions options = new LaunchTestingOptions();
+        options.setOprofileProject(proj.getProject());
+        options.loadConfiguration(config);
+        assertTrue(options.isValid());
+        assertTrue(options.getBinaryImage().isEmpty());
+        assertTrue(options.getKernelImageFile().isEmpty());
+        assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
+        Oprofile.OprofileProject.setProfilingBinary(Oprofile.OprofileProject.OPCONTROL_BINARY);
+        delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
+    }
+    @Test
+    public void testEventLaunch() throws CoreException {
+        TestingOprofileLaunchConfigurationDelegate delegate = new TestingOprofileLaunchConfigurationDelegate();
+        ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
 
-		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-		wc.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, false);
-		wc.setAttribute(OprofileLaunchPlugin.attrConterEnabled(0), true);
-		wc.setAttribute(OprofileLaunchPlugin.attrCounterCount(0), 100000);
-		wc.setAttribute(OprofileLaunchPlugin.attrConterEvent(0, 0),	"FAKE_EVENT"); //$NON-NLS-1$
-		wc.setAttribute(OprofileLaunchPlugin.attrCounterProfileKernel(0), true);
-		wc.setAttribute(OprofileLaunchPlugin.attrCounterProfileUser(0), true);
-		wc.setAttribute(OprofileLaunchPlugin.attrCounterUnitMask(0), 0);
-		wc.doSave();
-		LaunchTestingOptions options = new LaunchTestingOptions();
-		options.setOprofileProject(proj.getProject());
-		options.loadConfiguration(config);
-		assertTrue(options.isValid());
-		assertTrue(options.getBinaryImage().isEmpty());
-		assertTrue(options.getKernelImageFile().isEmpty());
-		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
+        ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
+        wc.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, false);
+        wc.setAttribute(OprofileLaunchPlugin.attrConterEnabled(0), true);
+        wc.setAttribute(OprofileLaunchPlugin.attrCounterCount(0), 100000);
+        wc.setAttribute(OprofileLaunchPlugin.attrConterEvent(0, 0), "FAKE_EVENT"); //$NON-NLS-1$
+        wc.setAttribute(OprofileLaunchPlugin.attrCounterProfileKernel(0), true);
+        wc.setAttribute(OprofileLaunchPlugin.attrCounterProfileUser(0), true);
+        wc.setAttribute(OprofileLaunchPlugin.attrCounterUnitMask(0), 0);
+        wc.doSave();
+        LaunchTestingOptions options = new LaunchTestingOptions();
+        options.setOprofileProject(proj.getProject());
+        options.loadConfiguration(config);
+        assertTrue(options.isValid());
+        assertTrue(options.getBinaryImage().isEmpty());
+        assertTrue(options.getKernelImageFile().isEmpty());
+        assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
 
-		Oprofile.OprofileProject.setProfilingBinary(Oprofile.OprofileProject.OPCONTROL_BINARY);
-		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
-	}
+        Oprofile.OprofileProject.setProfilingBinary(Oprofile.OprofileProject.OPCONTROL_BINARY);
+        delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
+    }
 }

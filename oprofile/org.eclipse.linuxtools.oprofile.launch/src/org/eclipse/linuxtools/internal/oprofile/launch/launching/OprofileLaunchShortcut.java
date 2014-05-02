@@ -25,40 +25,40 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
  *   find binaries and create a default launch if one doesn't exist.
  */
 public class OprofileLaunchShortcut extends ProfileLaunchShortcut {
-	@Override
-	protected ILaunchConfigurationType getLaunchConfigType() {
+    @Override
+    protected ILaunchConfigurationType getLaunchConfigType() {
 
-		return getLaunchManager().getLaunchConfigurationType(OprofileLaunchPlugin.ID_LAUNCH_PROFILE);
-	}
+        return getLaunchManager().getLaunchConfigurationType(OprofileLaunchPlugin.ID_LAUNCH_PROFILE);
+    }
 
-	/**
-	 * Default settings for the OProfile-specific option tabs.
-	 */
-	@Override
-	protected void setDefaultProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
-		//default global setup options
-		LaunchOptions options = new LaunchOptions();
-		options.saveConfiguration(wc);
+    /**
+     * Default settings for the OProfile-specific option tabs.
+     */
+    @Override
+    protected void setDefaultProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
+        //default global setup options
+        LaunchOptions options = new LaunchOptions();
+        options.saveConfiguration(wc);
 
-		//default event option
-		wc.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
-	}
+        //default event option
+        wc.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
+    }
 
-	//need to have this here because a saved launch config will have the manual
-	// attribute left over, and a previous manual run will still run manually
-	// even if launched from the non-manual shortcut
-	@Override
-	protected ILaunchConfiguration findLaunchConfiguration(IBinary bin, String mode) {
-		ILaunchConfiguration config = super.findLaunchConfiguration(bin, mode);
+    //need to have this here because a saved launch config will have the manual
+    // attribute left over, and a previous manual run will still run manually
+    // even if launched from the non-manual shortcut
+    @Override
+    protected ILaunchConfiguration findLaunchConfiguration(IBinary bin, String mode) {
+        ILaunchConfiguration config = super.findLaunchConfiguration(bin, mode);
 
-		try {
-			ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-			wc.setAttribute(OprofileLaunchPlugin.ATTR_MANUAL_PROFILE, false);
-			wc.doSave();
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+        try {
+            ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
+            wc.setAttribute(OprofileLaunchPlugin.ATTR_MANUAL_PROFILE, false);
+            wc.doSave();
+        } catch (CoreException e) {
+            e.printStackTrace();
+        }
 
-		return config;
-	}
+        return config;
+    }
 }

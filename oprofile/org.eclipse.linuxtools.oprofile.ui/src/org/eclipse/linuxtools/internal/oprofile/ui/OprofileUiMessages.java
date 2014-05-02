@@ -24,7 +24,7 @@ public final class OprofileUiMessages {
     }
 
     public static String getString(String key) {
-        try	{
+        try {
             return RESOURCE_BUNDLE.getString(key);
         } catch (MissingResourceException e) {
             return '!' + key + '!';

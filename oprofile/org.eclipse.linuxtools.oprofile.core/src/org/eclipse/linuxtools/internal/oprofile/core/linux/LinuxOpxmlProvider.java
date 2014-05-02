@@ -29,35 +29,35 @@ import org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions.SessionsProc
  */
 public class LinuxOpxmlProvider implements IOpxmlProvider {
 
-	@Override
-	public IRunnableWithProgress info(final OpInfo info) {
-		return new OpInfoRunner(info);
-	}
+    @Override
+    public IRunnableWithProgress info(final OpInfo info) {
+        return new OpInfoRunner(info);
+    }
 
-	//public because it is used in OpInfo.java:getInfo()
-	public class OpInfoRunner implements IRunnableWithProgress {
-		private boolean b;
-		private final OpInfo info;
+    //public because it is used in OpInfo.java:getInfo()
+    public class OpInfoRunner implements IRunnableWithProgress {
+        private boolean b;
+        private final OpInfo info;
 
-		public OpInfoRunner(OpInfo info) {
-			this.info = info;
-		}
+        public OpInfoRunner(OpInfo info) {
+            this.info = info;
+        }
 
-		public boolean run0(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-			run(monitor);
-			return b;
-		}
+        public boolean run0(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+            run(monitor);
+            return b;
+        }
 
-		@Override
-		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        @Override
+        public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
             OpxmlRunner runner = new OpxmlRunner();
             String[] args = new String[] { OpxmlConstants.OPXML_INFO };
             b = runner.run(args, info);
-		}
-	}
+        }
+    }
 
-	@Override
-	public IRunnableWithProgress modelData(final String eventName, final String sessionName, final OpModelImage image) {
+    @Override
+    public IRunnableWithProgress modelData(final String eventName, final String sessionName, final OpModelImage image) {
         return new IRunnableWithProgress() {
             @Override
             public void run(IProgressMonitor monitor)
@@ -74,8 +74,8 @@ public class LinuxOpxmlProvider implements IOpxmlProvider {
         };
     }
 
-	@Override
-	public IRunnableWithProgress checkEvents(final int ctr, final String event, final int um, final int[] eventValid) {
+    @Override
+    public IRunnableWithProgress checkEvents(final int ctr, final String event, final int um, final int[] eventValid) {
         return new IRunnableWithProgress() {
             @Override
             public void run(IProgressMonitor monitor) {
@@ -86,14 +86,14 @@ public class LinuxOpxmlProvider implements IOpxmlProvider {
                 runner.run(args, eventValid);
             }
         };
-	}
+    }
 
-	/**
-	 *  return list of session collected on this system as well as events under each of them.
-	 *  @since 3.0
-	 */
-	@Override
-	public IRunnableWithProgress sessions(final ArrayList<OpModelSession> sessionList) {
+    /**
+     *  return list of session collected on this system as well as events under each of them.
+     *  @since 3.0
+     */
+    @Override
+    public IRunnableWithProgress sessions(final ArrayList<OpModelSession> sessionList) {
         return new IRunnableWithProgress() {
             @Override
             public void run(IProgressMonitor monitor) {
@@ -105,5 +105,5 @@ public class LinuxOpxmlProvider implements IOpxmlProvider {
                 runner.run(args, sinfo);
             }
         };
-	}
+    }
 }

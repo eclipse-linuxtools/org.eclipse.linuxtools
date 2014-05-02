@@ -78,8 +78,8 @@ public class ParseDevHelp {
             this.func = func;
             this.funcName = funcName.trim();
             if (this.funcName.endsWith("()")) { //$NON-NLS-1$
-            	// Remove () at end of function name and remove all space chars which might be
-            	// non-breaking space chars which unfortunately do not get caught by the trim() method.
+                // Remove () at end of function name and remove all space chars which might be
+                // non-breaking space chars which unfortunately do not get caught by the trim() method.
                 this.funcName = this.funcName.replaceAll("\\(\\)", "").replaceAll("\\p{javaSpaceChar}",""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             }
         }
@@ -139,18 +139,18 @@ public class ParseDevHelp {
                             description.append(rowTag);
                         }
                     } else if ("H4".equals(name.rawname)) { //$NON-NLS-1$
-                    	description.append("<br><br>"); //$NON-NLS-1$
+                        description.append("<br><br>"); //$NON-NLS-1$
                     }
                 }
             } else {
-            	if ("DIV".equals(name.rawname)) { //$NON-NLS-1$
-            		String className = a.getValue("class"); //$NON-NLS-1$
-            		if ("refsect2".equals(className)) { //$NON-NLS-1$
-            			refsect2 = true;
-            		} else {
-            			refsect2 = false;
-            		}
-            	}
+                if ("DIV".equals(name.rawname)) { //$NON-NLS-1$
+                    String className = a.getValue("class"); //$NON-NLS-1$
+                    if ("refsect2".equals(className)) { //$NON-NLS-1$
+                        refsect2 = true;
+                    } else {
+                        refsect2 = false;
+                    }
+                }
             }
         }
 
@@ -183,7 +183,7 @@ public class ParseDevHelp {
                         }
                         rowIgnore = false;
                     } else if ("H4".equals(name.rawname)) { //$NON-NLS-1$
-                    	description.append("</br></br>"); //$NON-NLS-1$
+                        description.append("</br></br>"); //$NON-NLS-1$
                     }
                 }
             }

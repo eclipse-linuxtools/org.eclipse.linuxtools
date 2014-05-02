@@ -59,101 +59,101 @@ public class CheckDevhelp {
         f.delete();
     }
 
-	@Test
-	public void testParse() throws IOException {
-		ParseDevHelp.DevHelpParser p = new ParseDevHelp.DevHelpParser(
-				"/usr/share/gtk-doc/html"); //$NON-NLS-1$
-		LibHoverInfo hover = p.parse(new NullProgressMonitor());
-		assertNotNull(hover);
-		Map<String, FunctionInfo> functions = hover.functions;
-		assertNotNull(functions);
-		assertFalse(functions.isEmpty());
-		// Now, output the LibHoverInfo for caching later
-		IPath location = LibhoverPlugin.getDefault().getStateLocation()
-				.append("C"); //$NON-NLS-1$
-		File ldir = new File(location.toOSString());
-		ldir.mkdir();
-		location = location.append("devhelp.libhover"); //$NON-NLS-1$
-		try (FileOutputStream f = new FileOutputStream(location.toOSString());
-				ObjectOutputStream out = new ObjectOutputStream(f)) {
-			out.writeObject(hover);
-		}
-		IPreferenceStore ps = LibhoverPlugin.getDefault().getPreferenceStore();
-		ps.setValue(CACHE_EXT_LIBHOVER, true);
-		LibHover.getLibHoverDocs();
-		Collection<LibHoverLibrary> c = LibHover.getLibraries();
-		assertFalse(c.isEmpty());
-		boolean found = false;
-		for (LibHoverLibrary l : c) {
-			if (l.getName().equals("devhelp")) { //$NON-NLS-1$
-				found = true;
-			}
-		}
-		assertTrue(found);
-	}
-	
-	@Test
-	public void testParseMyApp() throws IOException {
-		// We need to have a devhelp directory with contents to test.
-		// Copy over the needed devhelp/html2 contents in this test plug-in
-		// to the workspace.  This test verifies: bug 433507 and also
-		// tests non-breaking spaces used in latest gtk-doc devhelp generation.
-		ClassLoader cl = getClass().getClassLoader();
-		Bundle bundle = null;
-		if (cl instanceof BundleReference) {
-			bundle = ((BundleReference) cl).getBundle();
-		}
-		IWorkspace ws = ResourcesPlugin.getWorkspace();
-		IPath wslocpath = ws.getRoot().getLocation();
+    @Test
+    public void testParse() throws IOException {
+        ParseDevHelp.DevHelpParser p = new ParseDevHelp.DevHelpParser(
+                "/usr/share/gtk-doc/html"); //$NON-NLS-1$
+        LibHoverInfo hover = p.parse(new NullProgressMonitor());
+        assertNotNull(hover);
+        Map<String, FunctionInfo> functions = hover.functions;
+        assertNotNull(functions);
+        assertFalse(functions.isEmpty());
+        // Now, output the LibHoverInfo for caching later
+        IPath location = LibhoverPlugin.getDefault().getStateLocation()
+                .append("C"); //$NON-NLS-1$
+        File ldir = new File(location.toOSString());
+        ldir.mkdir();
+        location = location.append("devhelp.libhover"); //$NON-NLS-1$
+        try (FileOutputStream f = new FileOutputStream(location.toOSString());
+                ObjectOutputStream out = new ObjectOutputStream(f)) {
+            out.writeObject(hover);
+        }
+        IPreferenceStore ps = LibhoverPlugin.getDefault().getPreferenceStore();
+        ps.setValue(CACHE_EXT_LIBHOVER, true);
+        LibHover.getLibHoverDocs();
+        Collection<LibHoverLibrary> c = LibHover.getLibraries();
+        assertFalse(c.isEmpty());
+        boolean found = false;
+        for (LibHoverLibrary l : c) {
+            if (l.getName().equals("devhelp")) { //$NON-NLS-1$
+                found = true;
+            }
+        }
+        assertTrue(found);
+    }
 
-		IPath outfilepath = wslocpath.append("devhelp/html2/myapp"); //$NON-NLS-1$
-		File outfiledir = outfilepath.toFile();
-		assertTrue(outfiledir.mkdirs());
-		outfilepath = outfilepath.append("myapp.devhelp2"); //$NON-NLS-1$
-		File outfile = outfilepath.toFile();
-		IPath outfilepath2 = wslocpath.append("devhelp/html2/myapp/myapp.html"); //$NON-NLS-1$
-		File outfile2 = outfilepath2.toFile();
-		IPath outfilepath3 = wslocpath.append("devhelp/html2/myapp/myapp2.html"); //$NON-NLS-1$
-		File outfile3 = outfilepath3.toFile();
-		IPath outfilepath4 = wslocpath.append("devhelp/html2/myapp/style.css"); //$NON-NLS-1$
-		File outfile4 = outfilepath4.toFile();
-		outfile.createNewFile();
-		outfile2.createNewFile();
-		outfile3.createNewFile();
-		outfile4.createNewFile();
-		try (InputStream in = FileLocator.openStream(bundle, new Path(
-				"devhelp/html2/myapp/myapp.devhelp2"), false)) { //$NON-NLS-1$
-			Files.copy(in, Paths.get(outfile.toURI()), StandardCopyOption.REPLACE_EXISTING);
-		}
-		try (InputStream in2 = FileLocator.openStream(bundle, new Path(
-				"devhelp/html2/myapp/myapp.html"), false)) { //$NON-NLS-1$
-			Files.copy(in2, Paths.get(outfile2.toURI()), StandardCopyOption.REPLACE_EXISTING);
-		}
-		try (InputStream in3 = FileLocator.openStream(bundle, new Path(
-				"devhelp/html2/myapp/myapp2.html"), false)) { //$NON-NLS-1$
-			Files.copy(in3, Paths.get(outfile3.toURI()), StandardCopyOption.REPLACE_EXISTING);
-		}
-		try (InputStream in4 = FileLocator.openStream(bundle, new Path(
-				"devhelp/html2/myapp/myapp2.html"), false)) { //$NON-NLS-1$
-			Files.copy(in4, Paths.get(outfile4.toURI()), StandardCopyOption.REPLACE_EXISTING);
-		}
+    @Test
+    public void testParseMyApp() throws IOException {
+        // We need to have a devhelp directory with contents to test.
+        // Copy over the needed devhelp/html2 contents in this test plug-in
+        // to the workspace.  This test verifies: bug 433507 and also
+        // tests non-breaking spaces used in latest gtk-doc devhelp generation.
+        ClassLoader cl = getClass().getClassLoader();
+        Bundle bundle = null;
+        if (cl instanceof BundleReference) {
+            bundle = ((BundleReference) cl).getBundle();
+        }
+        IWorkspace ws = ResourcesPlugin.getWorkspace();
+        IPath wslocpath = ws.getRoot().getLocation();
 
-		IPath x = wslocpath.append("devhelp/html2"); //$NON-NLS-1$
-		ParseDevHelp.DevHelpParser p = new ParseDevHelp.DevHelpParser(x.toOSString());
-		LibHoverInfo hover = p.parse(new NullProgressMonitor());
-		assertNotNull(hover);
-		Map<String, FunctionInfo> functions = hover.functions;
-		assertNotNull(functions);
-		assertFalse(functions.isEmpty());
-		FunctionInfo f = functions.get("myapp_init"); //$NON-NLS-1$
-		assertNotNull(f);
-		String desc = f.getDescription();
-		assertFalse(desc.isEmpty());
-		String endOfDesc = desc.substring(desc.length() - 50);
-		assertEquals("pointer to application's argv. </p></dd>\n\n\n</dl>\n\n", endOfDesc); //$NON-NLS-1$
-		FunctionInfo g = functions.get("myapp_init_check"); //$NON-NLS-1$
-		assertNotNull(g);
-	}
+        IPath outfilepath = wslocpath.append("devhelp/html2/myapp"); //$NON-NLS-1$
+        File outfiledir = outfilepath.toFile();
+        assertTrue(outfiledir.mkdirs());
+        outfilepath = outfilepath.append("myapp.devhelp2"); //$NON-NLS-1$
+        File outfile = outfilepath.toFile();
+        IPath outfilepath2 = wslocpath.append("devhelp/html2/myapp/myapp.html"); //$NON-NLS-1$
+        File outfile2 = outfilepath2.toFile();
+        IPath outfilepath3 = wslocpath.append("devhelp/html2/myapp/myapp2.html"); //$NON-NLS-1$
+        File outfile3 = outfilepath3.toFile();
+        IPath outfilepath4 = wslocpath.append("devhelp/html2/myapp/style.css"); //$NON-NLS-1$
+        File outfile4 = outfilepath4.toFile();
+        outfile.createNewFile();
+        outfile2.createNewFile();
+        outfile3.createNewFile();
+        outfile4.createNewFile();
+        try (InputStream in = FileLocator.openStream(bundle, new Path(
+                "devhelp/html2/myapp/myapp.devhelp2"), false)) { //$NON-NLS-1$
+            Files.copy(in, Paths.get(outfile.toURI()), StandardCopyOption.REPLACE_EXISTING);
+        }
+        try (InputStream in2 = FileLocator.openStream(bundle, new Path(
+                "devhelp/html2/myapp/myapp.html"), false)) { //$NON-NLS-1$
+            Files.copy(in2, Paths.get(outfile2.toURI()), StandardCopyOption.REPLACE_EXISTING);
+        }
+        try (InputStream in3 = FileLocator.openStream(bundle, new Path(
+                "devhelp/html2/myapp/myapp2.html"), false)) { //$NON-NLS-1$
+            Files.copy(in3, Paths.get(outfile3.toURI()), StandardCopyOption.REPLACE_EXISTING);
+        }
+        try (InputStream in4 = FileLocator.openStream(bundle, new Path(
+                "devhelp/html2/myapp/myapp2.html"), false)) { //$NON-NLS-1$
+            Files.copy(in4, Paths.get(outfile4.toURI()), StandardCopyOption.REPLACE_EXISTING);
+        }
+
+        IPath x = wslocpath.append("devhelp/html2"); //$NON-NLS-1$
+        ParseDevHelp.DevHelpParser p = new ParseDevHelp.DevHelpParser(x.toOSString());
+        LibHoverInfo hover = p.parse(new NullProgressMonitor());
+        assertNotNull(hover);
+        Map<String, FunctionInfo> functions = hover.functions;
+        assertNotNull(functions);
+        assertFalse(functions.isEmpty());
+        FunctionInfo f = functions.get("myapp_init"); //$NON-NLS-1$
+        assertNotNull(f);
+        String desc = f.getDescription();
+        assertFalse(desc.isEmpty());
+        String endOfDesc = desc.substring(desc.length() - 50);
+        assertEquals("pointer to application's argv. </p></dd>\n\n\n</dl>\n\n", endOfDesc); //$NON-NLS-1$
+        FunctionInfo g = functions.get("myapp_init_check"); //$NON-NLS-1$
+        assertNotNull(g);
+    }
 
     @Test
     public void testTocProvider() {

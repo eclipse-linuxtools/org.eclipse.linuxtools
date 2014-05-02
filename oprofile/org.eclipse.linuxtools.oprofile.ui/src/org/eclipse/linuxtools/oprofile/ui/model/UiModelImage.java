@@ -26,104 +26,104 @@ import org.eclipse.swt.graphics.Image;
  * @since 1.1
  */
 public class UiModelImage implements IUiModelElement {
-	private IUiModelElement parent;		//parent element, may be UiModelSession or UiModelDependent
-	private OpModelImage image;			//the node in the data model
-	private UiModelSymbol symbols[];		//this node's child (symbols)
-	private int totalCount;				//total number of samples
+    private IUiModelElement parent;        //parent element, may be UiModelSession or UiModelDependent
+    private OpModelImage image;            //the node in the data model
+    private UiModelSymbol symbols[];        //this node's child (symbols)
+    private int totalCount;                //total number of samples
 
-	/**
-	 * Constructor to the UiModelImage class
-	 * @param parent The parent element
-	 * @param image The image node object in the data model
-	 * @param totalCount The total number of samples
-	 * @param depCount The number of samples from dependent images
-	 */
-	public UiModelImage(IUiModelElement parent, OpModelImage image, int totalCount, int depCount) {
-		this.parent = parent;
-		this.image = image;
-		this.symbols = null;
-		this.totalCount = totalCount+depCount;//totalCount;
-		refreshModel();
-	}
-	/**
-	 * Create the ui symbols from the data model.
-	 */
-	private void refreshModel() {
-		OpModelSymbol[] dataModelSymbols = image.getSymbols();
+    /**
+     * Constructor to the UiModelImage class
+     * @param parent The parent element
+     * @param image The image node object in the data model
+     * @param totalCount The total number of samples
+     * @param depCount The number of samples from dependent images
+     */
+    public UiModelImage(IUiModelElement parent, OpModelImage image, int totalCount, int depCount) {
+        this.parent = parent;
+        this.image = image;
+        this.symbols = null;
+        this.totalCount = totalCount+depCount;//totalCount;
+        refreshModel();
+    }
+    /**
+     * Create the ui symbols from the data model.
+     */
+    private void refreshModel() {
+        OpModelSymbol[] dataModelSymbols = image.getSymbols();
 
-		//dependent images may not have symbols
-		if (dataModelSymbols != null) {
-			symbols = new UiModelSymbol[dataModelSymbols.length];
+        //dependent images may not have symbols
+        if (dataModelSymbols != null) {
+            symbols = new UiModelSymbol[dataModelSymbols.length];
 
-			for (int i = 0; i < dataModelSymbols.length; i++) {
-				symbols[i] = new UiModelSymbol(this, dataModelSymbols[i], totalCount);
-			}
-		}
-	}
+            for (int i = 0; i < dataModelSymbols.length; i++) {
+                symbols[i] = new UiModelSymbol(this, dataModelSymbols[i], totalCount);
+            }
+        }
+    }
 
-	@Override
-	public String toString() {
-		if (image.getCount() == OpModelImage.IMAGE_PARSE_ERROR) {
-			return OprofileUiMessages.getString("opxmlParse.error.multipleImages"); //$NON-NLS-1$
-		} else {
-			double countPercentage = (double)(image.getCount() ) / (double)totalCount;
-			String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
+    @Override
+    public String toString() {
+        if (image.getCount() == OpModelImage.IMAGE_PARSE_ERROR) {
+            return OprofileUiMessages.getString("opxmlParse.error.multipleImages"); //$NON-NLS-1$
+        } else {
+            double countPercentage = (double)(image.getCount() ) / (double)totalCount;
+            String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
 
-			return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in")+" " + image.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
-	}
+            return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in")+" " + image.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        }
+    }
 
-	/** IUiModelElement functions **/
-	@Override
-	public String getLabelText() {
-		return toString();
-	}
+    /** IUiModelElement functions **/
+    @Override
+    public String getLabelText() {
+        return toString();
+    }
 
-	/**
-	 * Returns the children of this element.
-	 * @return An array of child elements or null
-	 */
-	@Override
-	public IUiModelElement[] getChildren() {
-		IUiModelElement children[] = null;
+    /**
+     * Returns the children of this element.
+     * @return An array of child elements or null
+     */
+    @Override
+    public IUiModelElement[] getChildren() {
+        IUiModelElement children[] = null;
 
-		if (symbols != null) {
-			children = new IUiModelElement[symbols.length];
+        if (symbols != null) {
+            children = new IUiModelElement[symbols.length];
 
-			for (int i = 0; i < symbols.length; i++) {
-				children[i] = symbols[i];
-			}
-		}
-		if (UiModelRoot.SortType.FUNCTION == UiModelRoot.getSortingType()) {
-			Arrays.sort(children, UiModelSorting.getInstance());
-			return children;
-		}
-		return children;
-	}
-	/**
-	 * Returns if the element has any children.
-	 * @return true if the element has children, false otherwise
-	 */
-	@Override
-	public boolean hasChildren() {
-		return (symbols == null || symbols.length == 0 ? false : true);
-	}
+            for (int i = 0; i < symbols.length; i++) {
+                children[i] = symbols[i];
+            }
+        }
+        if (UiModelRoot.SortType.FUNCTION == UiModelRoot.getSortingType()) {
+            Arrays.sort(children, UiModelSorting.getInstance());
+            return children;
+        }
+        return children;
+    }
+    /**
+     * Returns if the element has any children.
+     * @return true if the element has children, false otherwise
+     */
+    @Override
+    public boolean hasChildren() {
+        return (symbols == null || symbols.length == 0 ? false : true);
+    }
 
-	/**
-	 * Returns the element's parent.
-	 * @return parent The parent element or null
-	 */
-	@Override
-	public IUiModelElement getParent() {
-		return parent;
-	}
+    /**
+     * Returns the element's parent.
+     * @return parent The parent element or null
+     */
+    @Override
+    public IUiModelElement getParent() {
+        return parent;
+    }
 
-	/**
-	 * Returns the Image to display next to the text in the tree viewer.
-	 * @return an Image object of the icon
-	 */
-	@Override
-	public Image getLabelImage() {
-		return OprofileUiPlugin.getImageDescriptor(OprofileUiPlugin.IMAGE_ICON).createImage();
-	}
+    /**
+     * Returns the Image to display next to the text in the tree viewer.
+     * @return an Image object of the icon
+     */
+    @Override
+    public Image getLabelImage() {
+        return OprofileUiPlugin.getImageDescriptor(OprofileUiPlugin.IMAGE_ICON).createImage();
+    }
 }

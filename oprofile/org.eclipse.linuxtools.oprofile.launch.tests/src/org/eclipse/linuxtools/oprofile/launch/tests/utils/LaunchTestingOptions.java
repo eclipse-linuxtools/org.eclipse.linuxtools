@@ -14,14 +14,14 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.linuxtools.internal.oprofile.launch.configuration.LaunchOptions;
 
 public class LaunchTestingOptions extends LaunchOptions {
-	private IProject project;
+    private IProject project;
 
-	public void setOprofileProject(IProject proj) {
-		project = proj;
-	}
+    public void setOprofileProject(IProject proj) {
+        project = proj;
+    }
 
-	@Override
-	protected IProject getOprofileProject() {
-		return project;
-	}
+    @Override
+    protected IProject getOprofileProject() {
+        return project;
+    }
 }

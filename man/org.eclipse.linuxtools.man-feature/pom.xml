@@ -27,7 +27,7 @@
   <version>1.0.0-SNAPSHOT</version>
 
   <name>Linux Tools Man Feature (Incubation)</name>
-  
+
   <build>
     <plugins>
       <plugin>

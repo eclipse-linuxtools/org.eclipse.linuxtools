@@ -20,11 +20,11 @@ import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSession;
  *       of the plugin unless there is a major b0rk-up with the xml parsers..
  */
 public class TestingOpModelEvent4 extends OpModelEvent {
-	public TestingOpModelEvent4(OpModelSession session, String name) {
-		super(session, name);
-	}
-	@Override
-	protected OpModelImage getNewImage() {
-		return null;
-	}
+    public TestingOpModelEvent4(OpModelSession session, String name) {
+        super(session, name);
+    }
+    @Override
+    protected OpModelImage getNewImage() {
+        return null;
+    }
 }

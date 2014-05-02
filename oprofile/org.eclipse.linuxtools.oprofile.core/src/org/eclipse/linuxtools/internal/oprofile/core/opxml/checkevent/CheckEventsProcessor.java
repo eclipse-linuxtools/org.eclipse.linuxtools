@@ -18,10 +18,10 @@ import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
  * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.OpxmlRunner
  */
 public class CheckEventsProcessor extends XMLProcessor {
-    public static final int INVALID_UNKNOWN = 0;	//unexpected error
-    public static final int EVENT_OK = 1;			//valid
-    public static final int INVALID_UMASK = 3;		//invalid unit mask value
-    public static final int INVALID_COUNTER = 4;	//invalid event for given counter number
+    public static final int INVALID_UNKNOWN = 0;    //unexpected error
+    public static final int EVENT_OK = 1;            //valid
+    public static final int INVALID_UMASK = 3;        //invalid unit mask value
+    public static final int INVALID_COUNTER = 4;    //invalid event for given counter number
 
     private static final String RESULT_TAG = "result"; //$NON-NLS-1$
     private static final String CHECK_EVENTS_TAG ="check-events"; //$NON-NLS-1$

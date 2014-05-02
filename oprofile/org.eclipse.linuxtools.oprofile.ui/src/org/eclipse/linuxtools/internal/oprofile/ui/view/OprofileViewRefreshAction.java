@@ -6,8 +6,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.ui.view;
 
 import org.eclipse.jface.action.Action;
@@ -15,15 +15,15 @@ import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
 
 /**
- * Refresh menu item. 
+ * Refresh menu item.
  */
 public class OprofileViewRefreshAction extends Action {
-	public OprofileViewRefreshAction() {
-		super(OprofileUiMessages.getString("view.actions.refresh.label")); //$NON-NLS-1$
-	}
-	
-	@Override
-	public void run() {
-		OprofileUiPlugin.getDefault().getOprofileView().refreshView();
-	}
+    public OprofileViewRefreshAction() {
+        super(OprofileUiMessages.getString("view.actions.refresh.label")); //$NON-NLS-1$
+    }
+
+    @Override
+    public void run() {
+        OprofileUiPlugin.getDefault().getOprofileView().refreshView();
+    }
 }

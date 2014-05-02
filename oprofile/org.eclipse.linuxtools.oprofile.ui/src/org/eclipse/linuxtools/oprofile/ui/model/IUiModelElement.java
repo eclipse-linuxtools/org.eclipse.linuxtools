@@ -6,8 +6,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.oprofile.ui.model;
 
 import org.eclipse.swt.graphics.Image;
@@ -17,34 +17,34 @@ import org.eclipse.swt.graphics.Image;
  * @since 1.1
  */
 public interface IUiModelElement {
-	/**
-	 * Returns the text to display in the tree viewer as required by the label provider.
-	 * @return text describing this element
-	 */
-	String getLabelText();
+    /**
+     * Returns the text to display in the tree viewer as required by the label provider.
+     * @return text describing this element
+     */
+    String getLabelText();
 
-	/**
-	 * Returns the children of this element.
-	 * @return an array of IUiModelElements
-	 */
-	IUiModelElement[] getChildren();
-	
-	/**
-	 * Returns if this element has any children. Unless there is no data in
-	 * a session, only samples should not have any children.
-	 * @return true if children, false if no children
-	 */
-	boolean hasChildren();
-	
-	/**
-	 * Returns the parent element.
-	 * @return the parent element
-	 */
-	IUiModelElement getParent();
+    /**
+     * Returns the children of this element.
+     * @return an array of IUiModelElements
+     */
+    IUiModelElement[] getChildren();
 
-	/**
-	 * Returns the Image to display next to the text in the tree viewer.
-	 * @return an Image object of the icon
-	 */
-	Image getLabelImage();
+    /**
+     * Returns if this element has any children. Unless there is no data in
+     * a session, only samples should not have any children.
+     * @return true if children, false if no children
+     */
+    boolean hasChildren();
+
+    /**
+     * Returns the parent element.
+     * @return the parent element
+     */
+    IUiModelElement getParent();
+
+    /**
+     * Returns the Image to display next to the text in the tree viewer.
+     * @return an Image object of the icon
+     */
+    Image getLabelImage();
 }

@@ -36,28 +36,28 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
     /* Launch Configuration attributes */
 
     // Global options \\
-    public static final String ATTR_KERNEL_IMAGE_FILE = ID_LAUNCH_PROFILE + ".KERNEL_IMAGE"; 			//$NON-NLS-1$
-    public static final String ATTR_SEPARATE_SAMPLES = ID_LAUNCH_PROFILE + ".SEPARATE_SAMPLES"; 		//$NON-NLS-1$
-    public static final String ATTR_USE_DEFAULT_EVENT = ID_LAUNCH_PROFILE + ".USE_DEFAULT_EVENT";		//$NON-NLS-1$
-    public static final String ATTR_EXECUTIONS_NUMBER = ID_LAUNCH_PROFILE + ".EXECUTIONS_NUMBER";		//$NON-NLS-1$
+    public static final String ATTR_KERNEL_IMAGE_FILE = ID_LAUNCH_PROFILE + ".KERNEL_IMAGE";             //$NON-NLS-1$
+    public static final String ATTR_SEPARATE_SAMPLES = ID_LAUNCH_PROFILE + ".SEPARATE_SAMPLES";         //$NON-NLS-1$
+    public static final String ATTR_USE_DEFAULT_EVENT = ID_LAUNCH_PROFILE + ".USE_DEFAULT_EVENT";        //$NON-NLS-1$
+    public static final String ATTR_EXECUTIONS_NUMBER = ID_LAUNCH_PROFILE + ".EXECUTIONS_NUMBER";        //$NON-NLS-1$
 
     /**
      * @since 2.1
      */
-    public static final String ATTR_OPROFILE_COMBO_TEXT = ID_LAUNCH_PROFILE + ".OPROFILE_COMBO_TEXT";		//$NON-NLS-1$
+    public static final String ATTR_OPROFILE_COMBO_TEXT = ID_LAUNCH_PROFILE + ".OPROFILE_COMBO_TEXT";        //$NON-NLS-1$
 
     // Manual Profile string \\
-    public static final String ATTR_MANUAL_PROFILE = ID_LAUNCH_PROFILE + ".MANUAL_PROFILE";		//$NON-NLS-1$
+    public static final String ATTR_MANUAL_PROFILE = ID_LAUNCH_PROFILE + ".MANUAL_PROFILE";        //$NON-NLS-1$
 
     // Counter Attributes \\
-    private static final String attrCounter(int nr) { return ID_LAUNCH_PROFILE + ".COUNTER_" + nr; } 					//$NON-NLS-1$
-    public static final String attrConterEnabled(int nr)  { return attrCounter(nr) + ".ENABLED"; } 					//$NON-NLS-1$
-    public static final String attrConterEvent(int nr, int ev) { return attrCounter(nr)  + ".EVENT " + ev; } 						//$NON-NLS-1$
-    public static final String attrCounterProfileKernel(int nr) { return attrCounter(nr) + ".PROFILE_KERNEL"; }		//$NON-NLS-1$
-    public static final String attrCounterProfileUser(int nr) { return attrCounter(nr) + ".PROFILE_USER"; } 		//$NON-NLS-1$
-    public static final String attrCounterCount(int nr) { return attrCounter(nr) + ".COUNT"; } 						//$NON-NLS-1$
-    public static final String attrCounterUnitMask(int nr) { return  attrCounter(nr) + ".UNIT_MASK"; } 				//$NON-NLS-1$
-    public static final String attrNumberOfEvents(int nr) { return attrCounter(nr) + ".EVENTS"; }					//$NON-NLS-1$
+    private static final String attrCounter(int nr) { return ID_LAUNCH_PROFILE + ".COUNTER_" + nr; }                     //$NON-NLS-1$
+    public static final String attrConterEnabled(int nr)  { return attrCounter(nr) + ".ENABLED"; }                     //$NON-NLS-1$
+    public static final String attrConterEvent(int nr, int ev) { return attrCounter(nr)  + ".EVENT " + ev; }                         //$NON-NLS-1$
+    public static final String attrCounterProfileKernel(int nr) { return attrCounter(nr) + ".PROFILE_KERNEL"; }        //$NON-NLS-1$
+    public static final String attrCounterProfileUser(int nr) { return attrCounter(nr) + ".PROFILE_USER"; }         //$NON-NLS-1$
+    public static final String attrCounterCount(int nr) { return attrCounter(nr) + ".COUNT"; }                         //$NON-NLS-1$
+    public static final String attrCounterUnitMask(int nr) { return  attrCounter(nr) + ".UNIT_MASK"; }                 //$NON-NLS-1$
+    public static final String attrNumberOfEvents(int nr) { return attrCounter(nr) + ".EVENTS"; }                    //$NON-NLS-1$
 
 
     public static final String ICON_PATH = "icons/"; //$NON-NLS-1$

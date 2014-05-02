@@ -24,7 +24,7 @@
 			<pageAppendum>
 = Updating This Document =
 
-This document is maintained in a collaborative wiki.  If you wish to update or modify this document please visit 
+This document is maintained in a collaborative wiki.  If you wish to update or modify this document please visit
 http://wiki.eclipse.org/Linux_Tools_Project/OProfile/User_Guide .
                  </pageAppendum>
 		</mediawiki-to-eclipse-help>
@@ -44,9 +44,9 @@ Problems with userguide source are usually caused by improper use of HTML markup
 or inadvertently starting a line with a space character (in MediaWiki this starts a preformatted block)
 		</echo>
 
-		<!-- 
+		<!--
 		Don't bother with DTD validation: we only care if the files are well-formed.
-		We therefore provide an empty DTD 
+		We therefore provide an empty DTD
 		-->
 		<echo file="tmp/__empty.dtd" message="" />
 		<xmlvalidate lenient="true">

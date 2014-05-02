@@ -13,13 +13,13 @@ package org.eclipse.linuxtools.internal.rdt.proxy;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.rdt.proxy.messages"; //$NON-NLS-1$
-	public static String RDTCommandLauncher_malformed_env_var_string;
-	static {
-	   // initialize resource bundle
-	   NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-	}
+    private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.rdt.proxy.messages"; //$NON-NLS-1$
+    public static String RDTCommandLauncher_malformed_env_var_string;
+    static {
+       // initialize resource bundle
+       NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
 
-	private Messages() {
-	}
+    private Messages() {
+    }
 }

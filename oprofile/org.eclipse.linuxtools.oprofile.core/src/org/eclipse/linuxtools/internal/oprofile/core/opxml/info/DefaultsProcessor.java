@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.core.opxml.info;
 
 import java.util.HashMap;
@@ -21,32 +21,32 @@ import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
  * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.OpxmlRunner
  */
 public class DefaultsProcessor extends XMLProcessor {
-	// XML tags reconize by this processor (public)
-	public static final String SAMPLE_DIR = "sample-dir"; //$NON-NLS-1$
-	public static final String LOCK_FILE = "lock-file"; //$NON-NLS-1$
-	public static final String LOG_FILE = "log-file"; //$NON-NLS-1$
-	public static final String DUMP_STATUS = "dump-status"; //$NON-NLS-1$
-	protected HashMap<String,String> map = new HashMap<>();
+    // XML tags reconize by this processor (public)
+    public static final String SAMPLE_DIR = "sample-dir"; //$NON-NLS-1$
+    public static final String LOCK_FILE = "lock-file"; //$NON-NLS-1$
+    public static final String LOG_FILE = "log-file"; //$NON-NLS-1$
+    public static final String DUMP_STATUS = "dump-status"; //$NON-NLS-1$
+    protected HashMap<String,String> map = new HashMap<>();
 
-	/**
-	 * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#reset()
-	 */
-	@Override
-	public void reset(Object callData) {
-		map.clear();
-	}
+    /**
+     * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#reset()
+     */
+    @Override
+    public void reset(Object callData) {
+        map.clear();
+    }
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor#endElement(java.lang.String, java.lang.Object)
-	 */
-	@Override
-	public void endElement(String name, Object callData) {
-		if (name.equals(OpInfoProcessor.DEFAULTS_TAG)) {
-			OpInfo info = (OpInfo) callData;
-			info.setDefaults(map);
-			OprofileSAXHandler.getInstance(callData).pop(name);
-		} else {
-			map.put(name, characters);
-		}
-	}
+    /* (non-Javadoc)
+     * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor#endElement(java.lang.String, java.lang.Object)
+     */
+    @Override
+    public void endElement(String name, Object callData) {
+        if (name.equals(OpInfoProcessor.DEFAULTS_TAG)) {
+            OpInfo info = (OpInfo) callData;
+            info.setDefaults(map);
+            OprofileSAXHandler.getInstance(callData).pop(name);
+        } else {
+            map.put(name, characters);
+        }
+    }
 }

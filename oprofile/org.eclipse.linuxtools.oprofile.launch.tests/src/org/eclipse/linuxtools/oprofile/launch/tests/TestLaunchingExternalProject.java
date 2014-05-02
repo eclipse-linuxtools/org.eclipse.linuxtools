@@ -43,74 +43,74 @@ import org.osgi.framework.FrameworkUtil;
 
 public class TestLaunchingExternalProject extends AbstractTest {
 
-	private final Path EXTERNAL_PROJECT_PATH = new Path("/tmp/eclipse-oprofile-ext_project_test"); //$NON-NLS-1$
-	private final String PROJECT_NAME = "primeTest"; //$NON-NLS-1$
-	private ILaunchConfiguration config;
-	private Shell testShell;
-	private IProject externalProject;	// external project to work with
+    private final Path EXTERNAL_PROJECT_PATH = new Path("/tmp/eclipse-oprofile-ext_project_test"); //$NON-NLS-1$
+    private final String PROJECT_NAME = "primeTest"; //$NON-NLS-1$
+    private ILaunchConfiguration config;
+    private Shell testShell;
+    private IProject externalProject;    // external project to work with
 
-	@Before
-	public void setUp() throws Exception {
-		// Setup a temporary workspace external path
-		File tempExternalProjectPath = EXTERNAL_PROJECT_PATH.toFile();
-		// create directory if not existing
-		if (!tempExternalProjectPath.exists()) {
-			tempExternalProjectPath.mkdir();
-		}
-		externalProject = createExternalProjectAndBuild(FrameworkUtil.getBundle(this.getClass()),
-				PROJECT_NAME, EXTERNAL_PROJECT_PATH);
-		config = createConfiguration(externalProject);
-		testShell = new Shell(Display.getDefault());
-		testShell.setLayout(new GridLayout());
-	}
+    @Before
+    public void setUp() throws Exception {
+        // Setup a temporary workspace external path
+        File tempExternalProjectPath = EXTERNAL_PROJECT_PATH.toFile();
+        // create directory if not existing
+        if (!tempExternalProjectPath.exists()) {
+            tempExternalProjectPath.mkdir();
+        }
+        externalProject = createExternalProjectAndBuild(FrameworkUtil.getBundle(this.getClass()),
+                PROJECT_NAME, EXTERNAL_PROJECT_PATH);
+        config = createConfiguration(externalProject);
+        testShell = new Shell(Display.getDefault());
+        testShell.setLayout(new GridLayout());
+    }
 
-	@After
-	public void tearDown() throws Exception {
-		testShell.dispose();
-		externalProject.delete(true, null); // delete project
-		// cleanup temporary directory
-		File tempExternalProjectPath = EXTERNAL_PROJECT_PATH.toFile();
-		if (tempExternalProjectPath.exists()) {
-			tempExternalProjectPath.delete();
-		}
-	}
+    @After
+    public void tearDown() throws Exception {
+        testShell.dispose();
+        externalProject.delete(true, null); // delete project
+        // cleanup temporary directory
+        File tempExternalProjectPath = EXTERNAL_PROJECT_PATH.toFile();
+        if (tempExternalProjectPath.exists()) {
+            tempExternalProjectPath.delete();
+        }
+    }
 
-	// Implemented abstract method of AbstractTest
-	@Override
-	protected ILaunchConfigurationType getLaunchConfigType() {
-		return getLaunchManager().getLaunchConfigurationType(OprofileLaunchPlugin.ID_LAUNCH_PROFILE);
-	}
+    // Implemented abstract method of AbstractTest
+    @Override
+    protected ILaunchConfigurationType getLaunchConfigType() {
+        return getLaunchManager().getLaunchConfigurationType(OprofileLaunchPlugin.ID_LAUNCH_PROFILE);
+    }
 
-	// Implemented abstract method of AbstractTest
-	@Override
-	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
-		OprofileTestingEventConfigTab configTab = new OprofileTestingEventConfigTab();
-		configTab.setOprofileProject(externalProject);
-		OprofileSetupTab setupTab = new OprofileSetupTab();
-		configTab.setDefaults(wc);
-		setupTab.setDefaults(wc);
-	}
+    // Implemented abstract method of AbstractTest
+    @Override
+    protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
+        OprofileTestingEventConfigTab configTab = new OprofileTestingEventConfigTab();
+        configTab.setOprofileProject(externalProject);
+        OprofileSetupTab setupTab = new OprofileSetupTab();
+        configTab.setDefaults(wc);
+        setupTab.setDefaults(wc);
+    }
 
-	/**
-	 * Testcase for Eclipse BugZilla 321905/RedHat BZ
-	 *
-	 * @throws CoreException
-	 */
-	@Test
-	public void testLaunchExternalProject() throws CoreException {
-		LaunchTestingOptions options = new LaunchTestingOptions();
-		options.setOprofileProject(externalProject);
-		options.loadConfiguration(config);
+    /**
+     * Testcase for Eclipse BugZilla 321905/RedHat BZ
+     *
+     * @throws CoreException
+     */
+    @Test
+    public void testLaunchExternalProject() throws CoreException {
+        LaunchTestingOptions options = new LaunchTestingOptions();
+        options.setOprofileProject(externalProject);
+        options.loadConfiguration(config);
 
-		TestingOprofileLaunchConfigurationDelegate delegate = new TestingOprofileLaunchConfigurationDelegate();
-		ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
+        TestingOprofileLaunchConfigurationDelegate delegate = new TestingOprofileLaunchConfigurationDelegate();
+        ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
 
-		assertTrue(options.isValid());
-		assertTrue(options.getBinaryImage().isEmpty());
-		assertTrue(options.getKernelImageFile().isEmpty());
-		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
+        assertTrue(options.isValid());
+        assertTrue(options.getBinaryImage().isEmpty());
+        assertTrue(options.getKernelImageFile().isEmpty());
+        assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
 
-		OprofileProject.setProfilingBinary(OprofileProject.OPCONTROL_BINARY);
-		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
-	}
+        OprofileProject.setProfilingBinary(OprofileProject.OPCONTROL_BINARY);
+        delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
+    }
 }

@@ -6,88 +6,88 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
+ *******************************************************************************/
 
 package org.eclipse.linuxtools.internal.oprofile.core.model;
 
 /**
  * This class represents a debugging symbol, the symbol output
  *  from opxml. If a symbol exists, it must have samples (which are
- *  OpModelSamples), although those samples may or may not have 
+ *  OpModelSamples), although those samples may or may not have
  *  complete debug info.
  */
 public class OpModelSymbol {
-	private String name;
-	private String file;
-	private int line;
-	private int count;
-	private OpModelSample[] samples;
-	private String printTabs = ""; 	//for nice output //$NON-NLS-1$
-	
-	public OpModelSymbol() {
-		name = ""; //$NON-NLS-1$
-		file = ""; //$NON-NLS-1$
-		count = 0;
-		samples = null;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String name;
+    private String file;
+    private int line;
+    private int count;
+    private OpModelSample[] samples;
+    private String printTabs = "";     //for nice output //$NON-NLS-1$
 
-	public void setFilePath(String file) {
-		this.file = file;
-	}
+    public OpModelSymbol() {
+        name = ""; //$NON-NLS-1$
+        file = ""; //$NON-NLS-1$
+        count = 0;
+        samples = null;
+    }
 
-	public void setLine(int line){
-		this.line = line;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setCount(int count) {
-		this.count = count;
-	}
+    public void setFilePath(String file) {
+        this.file = file;
+    }
 
-	public void setSamples(OpModelSample[] samples) {
-		this.samples = samples;
-	}
+    public void setLine(int line){
+        this.line = line;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setCount(int count) {
+        this.count = count;
+    }
 
-	public String getFilePath() {
-		return file;
-	}
+    public void setSamples(OpModelSample[] samples) {
+        this.samples = samples;
+    }
 
-	public int getLine(){
-		return line;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public int getCount() {
-		return count;
-	}
+    public String getFilePath() {
+        return file;
+    }
 
-	public OpModelSample[] getSamples() {
-		return samples;
-	}
+    public int getLine(){
+        return line;
+    }
 
-	public String toString(String tabs) {
-		printTabs = tabs;
-		String s = toString();
-		printTabs = ""; //$NON-NLS-1$
-		return s;
-	}
+    public int getCount() {
+        return count;
+    }
 
-	@Override
-	public String toString() {
-		String s = name + ", File: " + file + ", Count: " + count + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		if (samples != null) {
-			for (int i = 0; i < samples.length; i++) {
-				s += printTabs + "Sample: "; //$NON-NLS-1$
-				s += samples[i].toString();
-			}
-		}
-		return s;
-	}
+    public OpModelSample[] getSamples() {
+        return samples;
+    }
+
+    public String toString(String tabs) {
+        printTabs = tabs;
+        String s = toString();
+        printTabs = ""; //$NON-NLS-1$
+        return s;
+    }
+
+    @Override
+    public String toString() {
+        String s = name + ", File: " + file + ", Count: " + count + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        if (samples != null) {
+            for (int i = 0; i < samples.length; i++) {
+                s += printTabs + "Sample: "; //$NON-NLS-1$
+                s += samples[i].toString();
+            }
+        }
+        return s;
+    }
 }

@@ -33,41 +33,41 @@ import org.xml.sax.XMLReader;
  * simulating when the session was not created from within the eclipse plugin.
  */
 public class TestingOpModelEvent3 extends OpModelEvent {
-	private static final String REL_PATH_TO_TEST_XML = "resources/test_model-data_multiple_image.xml"; //$NON-NLS-1$
+    private static final String REL_PATH_TO_TEST_XML = "resources/test_model-data_multiple_image.xml"; //$NON-NLS-1$
 
-	public TestingOpModelEvent3(OpModelSession session, String name) {
-		super(session, name);
-	}
-	@Override
-	protected OpModelImage getNewImage() {
-		/* this code mostly taken from OpxmlRunner */
-		OpModelImage parsedImage = null;
-		try {
-			XMLReader reader = null;
-			parsedImage = new OpModelImage();
-			ModelDataProcessor.CallData image = new ModelDataProcessor.CallData(parsedImage);
-			OprofileSAXHandler handler = OprofileSAXHandler.getInstance(image);
+    public TestingOpModelEvent3(OpModelSession session, String name) {
+        super(session, name);
+    }
+    @Override
+    protected OpModelImage getNewImage() {
+        /* this code mostly taken from OpxmlRunner */
+        OpModelImage parsedImage = null;
+        try {
+            XMLReader reader = null;
+            parsedImage = new OpModelImage();
+            ModelDataProcessor.CallData image = new ModelDataProcessor.CallData(parsedImage);
+            OprofileSAXHandler handler = OprofileSAXHandler.getInstance(image);
 
-			// Create XMLReader
-			SAXParserFactory factory = SAXParserFactory.newInstance();
-			reader = factory.newSAXParser().getXMLReader();
+            // Create XMLReader
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            reader = factory.newSAXParser().getXMLReader();
 
-			// Set content/error handlers
-			reader.setContentHandler(handler);
-			reader.setErrorHandler(handler);
+            // Set content/error handlers
+            reader.setContentHandler(handler);
+            reader.setErrorHandler(handler);
 
-			String filePath = FileLocator.toFileURL(FileLocator.find(TestPlugin.getDefault().getBundle(), new Path(REL_PATH_TO_TEST_XML), null)).getFile();
-			reader.parse(new InputSource(new FileReader(filePath)));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		}
+            String filePath = FileLocator.toFileURL(FileLocator.find(TestPlugin.getDefault().getBundle(), new Path(REL_PATH_TO_TEST_XML), null)).getFile();
+            reader.parse(new InputSource(new FileReader(filePath)));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
 
-		return parsedImage;
-	}
+        return parsedImage;
+    }
 }

@@ -7,8 +7,8 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *    Kent Sebastian <ksebasti@redhat.com> - 
- *******************************************************************************/ 
+ *    Kent Sebastian <ksebasti@redhat.com> -
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.core;
 
 import org.eclipse.core.runtime.CoreException;
@@ -19,14 +19,14 @@ import org.eclipse.core.runtime.IStatus;
 * the cause of the exception.
 */
 public class OpcontrolException extends CoreException {
-	//without this there's a warning..
-	private static final long serialVersionUID = 8508930482724912901L;
+    //without this there's a warning..
+    private static final long serialVersionUID = 8508930482724912901L;
 
-	/**
-	 * Constructor to this class
-	 * @param status The status object of this exception
-	 */
-	public OpcontrolException(IStatus status) {
-		super(status);
-	}
+    /**
+     * Constructor to this class
+     * @param status The status object of this exception
+     */
+    public OpcontrolException(IStatus status) {
+        super(status);
+    }
 }

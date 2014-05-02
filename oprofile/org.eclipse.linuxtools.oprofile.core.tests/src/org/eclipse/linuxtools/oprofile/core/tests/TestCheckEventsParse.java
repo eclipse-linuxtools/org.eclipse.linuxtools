@@ -27,43 +27,43 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 public class TestCheckEventsParse {
-	private static final String REL_PATH_TO_TEST_XML_OK = "resources/test_check-event_ok.xml"; //$NON-NLS-1$
-	private static final String REL_PATH_TO_TEST_XML_INVALID_UMASK = "resources/test_check-event_invalid_umask.xml"; //$NON-NLS-1$
-	private static final String REL_PATH_TO_TEST_XML_INVALID_COUNTER = "resources/test_check-event_invalid_counter.xml"; //$NON-NLS-1$
-	private int[] test_ok, test_invalid_umask, test_invalid_counter;
+    private static final String REL_PATH_TO_TEST_XML_OK = "resources/test_check-event_ok.xml"; //$NON-NLS-1$
+    private static final String REL_PATH_TO_TEST_XML_INVALID_UMASK = "resources/test_check-event_invalid_umask.xml"; //$NON-NLS-1$
+    private static final String REL_PATH_TO_TEST_XML_INVALID_COUNTER = "resources/test_check-event_invalid_counter.xml"; //$NON-NLS-1$
+    private int[] test_ok, test_invalid_umask, test_invalid_counter;
 
-	@Before
-	public void setUp() throws Exception {
-		test_ok = new int[1];
-		setUpHelper(REL_PATH_TO_TEST_XML_OK, test_ok);
-		test_invalid_umask = new int[1];
-		setUpHelper(REL_PATH_TO_TEST_XML_INVALID_UMASK, test_invalid_umask);
-		test_invalid_counter = new int[1];
-		setUpHelper(REL_PATH_TO_TEST_XML_INVALID_COUNTER, test_invalid_counter);
-	}
+    @Before
+    public void setUp() throws Exception {
+        test_ok = new int[1];
+        setUpHelper(REL_PATH_TO_TEST_XML_OK, test_ok);
+        test_invalid_umask = new int[1];
+        setUpHelper(REL_PATH_TO_TEST_XML_INVALID_UMASK, test_invalid_umask);
+        test_invalid_counter = new int[1];
+        setUpHelper(REL_PATH_TO_TEST_XML_INVALID_COUNTER, test_invalid_counter);
+    }
 
-	//helper
-	private void setUpHelper(String fileToParse, final int[] resultArray) throws Exception {
-		/* this code mostly taken from OpxmlRunner */
-		XMLReader reader = null;
-		OprofileSAXHandler handler = OprofileSAXHandler.getInstance(resultArray);
+    //helper
+    private void setUpHelper(String fileToParse, final int[] resultArray) throws Exception {
+        /* this code mostly taken from OpxmlRunner */
+        XMLReader reader = null;
+        OprofileSAXHandler handler = OprofileSAXHandler.getInstance(resultArray);
 
-		// Create XMLReader
+        // Create XMLReader
         SAXParserFactory factory = SAXParserFactory.newInstance();
-		reader = factory.newSAXParser().getXMLReader();
+        reader = factory.newSAXParser().getXMLReader();
 
-		// Set content/error handlers
-		reader.setContentHandler(handler);
-		reader.setErrorHandler(handler);
+        // Set content/error handlers
+        reader.setContentHandler(handler);
+        reader.setErrorHandler(handler);
 
-		String filePath = FileLocator.toFileURL(FileLocator.find(FrameworkUtil.getBundle(this.getClass()), new Path(fileToParse), null)).getFile();
-		reader.parse(new InputSource(new FileReader(filePath)));
-	}
+        String filePath = FileLocator.toFileURL(FileLocator.find(FrameworkUtil.getBundle(this.getClass()), new Path(fileToParse), null)).getFile();
+        reader.parse(new InputSource(new FileReader(filePath)));
+    }
 
-	@Test
-	public void testParse() {
-		assertEquals(CheckEventsProcessor.EVENT_OK, test_ok[0]);
-		assertEquals(CheckEventsProcessor.INVALID_UMASK, test_invalid_umask[0]);
-		assertEquals(CheckEventsProcessor.INVALID_COUNTER, test_invalid_counter[0]);
-	}
+    @Test
+    public void testParse() {
+        assertEquals(CheckEventsProcessor.EVENT_OK, test_ok[0]);
+        assertEquals(CheckEventsProcessor.INVALID_UMASK, test_invalid_umask[0]);
+        assertEquals(CheckEventsProcessor.INVALID_COUNTER, test_invalid_counter[0]);
+    }
 }
