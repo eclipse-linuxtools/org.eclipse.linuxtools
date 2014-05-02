@@ -21,9 +21,9 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.GraphingUIPlugin;
-import org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.listeners.ChartMouseMoveListener;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.GraphingPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.graphing.core.adapters.IAdapter;
+import org.eclipse.linuxtools.systemtap.graphing.ui.charts.listeners.AbstractChartMouseMoveListener;
 import org.eclipse.linuxtools.systemtap.structures.listeners.IUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -69,17 +69,17 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
     protected static final Color RED = Display.getDefault().getSystemColor(SWT.COLOR_RED);
 
     protected static final Color[] COLORS = {
-                                                RED,
-                                                Display.getDefault().getSystemColor(SWT.COLOR_GREEN),
-                                                Display.getDefault().getSystemColor(SWT.COLOR_BLUE),
-                                                Display.getDefault().getSystemColor(SWT.COLOR_YELLOW),
-                                                Display.getDefault().getSystemColor(SWT.COLOR_MAGENTA),
-                                                Display.getDefault().getSystemColor(SWT.COLOR_CYAN),
-                                                BLACK,
-                                                new Color(Display.getDefault(), 64, 128, 128),
-                                                new Color(Display.getDefault(), 255, 165, 0),
-                                                new Color(Display.getDefault(), 128, 128, 128),
-                                                };
+        RED,
+        Display.getDefault().getSystemColor(SWT.COLOR_GREEN),
+        Display.getDefault().getSystemColor(SWT.COLOR_BLUE),
+        Display.getDefault().getSystemColor(SWT.COLOR_YELLOW),
+        Display.getDefault().getSystemColor(SWT.COLOR_MAGENTA),
+        Display.getDefault().getSystemColor(SWT.COLOR_CYAN),
+        BLACK,
+        new Color(Display.getDefault(), 64, 128, 128),
+        new Color(Display.getDefault(), 255, 165, 0),
+        new Color(Display.getDefault(), 128, 128, 128),
+    };
     /**
      * Chart instance.
      */
@@ -97,7 +97,7 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
      * It is null by default.
      * @since 3.0
      */
-    protected ChartMouseMoveListener chartMouseMoveListener = null;
+    protected AbstractChartMouseMoveListener chartMouseMoveListener = null;
 
     /**
      * A reference to the SystemTap Graphing preference store.

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class GraphingCorePlugin {
 
     @SuppressWarnings("unchecked")
-    public static <T> ArrayList<T>[] createArrayList(int size, T instance) {
+    public static <T> ArrayList<T>[] createArrayList(int size) {
         return new ArrayList[size];
     }
 }

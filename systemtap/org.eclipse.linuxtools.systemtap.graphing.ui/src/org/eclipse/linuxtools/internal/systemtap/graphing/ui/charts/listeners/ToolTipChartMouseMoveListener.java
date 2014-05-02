@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.listeners;
 
+import org.eclipse.linuxtools.systemtap.graphing.ui.charts.listeners.AbstractChartMouseMoveListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
@@ -21,7 +22,7 @@ import org.swtchart.Chart;
 /**
  * @since 3.0
  */
-public class ToolTipChartMouseMoveListener extends ChartMouseMoveListener {
+public class ToolTipChartMouseMoveListener extends AbstractChartMouseMoveListener {
     private static final int TIP_OFFSET = 20;
     protected final Shell tipShell;
     protected final Text tipText;

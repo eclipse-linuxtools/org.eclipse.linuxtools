@@ -46,7 +46,7 @@ public class UniqueFilter implements IDataSetFilter {
         }
 
         List<Object>[] newData = Copier.copy(data);
-        ArrayList<Object>[] aggregates = GraphingCorePlugin.createArrayList(newData.length, new Object());
+        ArrayList<Object>[] aggregates = GraphingCorePlugin.createArrayList(newData.length);
         for(int i=0; i<aggregates.length;i++) {
             aggregates[i] = new ArrayList<>();
         }

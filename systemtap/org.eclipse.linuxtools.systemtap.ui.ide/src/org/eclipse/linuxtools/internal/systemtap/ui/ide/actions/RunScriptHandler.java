@@ -167,7 +167,7 @@ public class RunScriptHandler extends AbstractHandler {
             prepareNonLocalScript();
         }
         final String[] script = buildStandardScript();
-        final String[] envVars = getEnvironmentVariables();
+        final String[] envVars = EnvironmentVariablesPreferencePage.getEnvironmentVariables();
         Display.getDefault().asyncExec(new Runnable() {
             @Override
             public void run() {
@@ -431,12 +431,6 @@ public class RunScriptHandler extends AbstractHandler {
     private String getFileNameWithoutExtension(String fileName) {
         int dotIndex = fileName.lastIndexOf('.');
         return dotIndex != -1 ? fileName.substring(0, dotIndex) : fileName;
-    }
-
-    private String[] getEnvironmentVariables() {
-        String[] envVars = EnvironmentVariablesPreferencePage.getEnvironmentVariables();
-        // TODO update these with vals? If project is null & PATH not set?
-        return envVars;
     }
 
     @Override

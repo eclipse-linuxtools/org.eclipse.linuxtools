@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - Initial API and implementation.
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.listeners;
+package org.eclipse.linuxtools.systemtap.graphing.ui.charts.listeners;
 
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -17,21 +17,24 @@ import org.eclipse.swt.widgets.Composite;
 import org.swtchart.Chart;
 
 /**
- * Clients may override this listener class to display data values of the chart as they
- * are hovered over by the mouse.
- * @author aferrazz
+ * An abstract listener class for displaying data values of a chart as it
+ * is hovered over by the mouse.
+ *
+ * Clients must override this class to specify how the listener should react
+ * to different kinds of mouse behaviour.
  * @since 3.0
  */
-public abstract class ChartMouseMoveListener implements MouseMoveListener {
+public abstract class AbstractChartMouseMoveListener implements MouseMoveListener {
     protected final Chart chart;
     protected MouseEvent lastMouseEvent = null;
 
     /**
-     * Constructor.
+     * Create a listener to react to mouse movements made in the provided chart region.
      * @param chart The chart that this listener is watching.
-     * @param hoverArea The plot area of the chart this listener is applied to.
+     * @param hoverArea The plot area of the chart in which this listener will react
+     * to mouse movement.
      */
-    public ChartMouseMoveListener(Chart chart, final Composite hoverArea) {
+    public AbstractChartMouseMoveListener(Chart chart, final Composite hoverArea) {
         this.chart = chart;
         final MouseMoveListener thisListener = this;
         hoverArea.addMouseTrackListener(new MouseTrackAdapter() {

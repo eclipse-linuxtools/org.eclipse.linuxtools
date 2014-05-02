@@ -26,6 +26,7 @@ public class IndexedObject implements Comparable<IndexedObject>{
         return val.toString();
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public int compareTo(IndexedObject o) {
         if(o != null) {

@@ -35,7 +35,7 @@ public class GraphSelectorEditorInput implements IEditorInput {
     }
 
     @Override
-    public Object getAdapter(Class adapter) {
+    public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
         return null;
     }
 

@@ -112,7 +112,8 @@ public final class GraphFactory {
         return null;
     }
 
-    public static boolean isMultiGraph(String id) {
+    // TODO leave in id paramter to cover possible future support of more graph types.
+    public static boolean isMultiGraph(@SuppressWarnings("unused") String id) {
         return true;
     }
 
@@ -121,40 +122,40 @@ public final class GraphFactory {
         AbstractChartBuilder builder = null;
 
         switch (getIndex(gd.graphID)) {
-        case 0:
-            builder = new ScatterChartBuilder(comp, style, gd.title,
-                    new ScrollAdapter((IHistoricalDataSet) data, gd.xSeries,
-                            gd.ySeries, gd.key));
-            break;
-        case 1:
-            builder = new LineChartBuilder(comp, style, gd.title,
-                    new ScrollAdapter((IHistoricalDataSet) data, gd.xSeries,
-                            gd.ySeries, gd.key));
-            break;
-        case 2:
-            if (!(data instanceof IBlockDataSet) || (null != gd.key)) {
-                builder = new BarChartBuilder(comp, style, gd.title,
-                        new ScrollAdapter((IHistoricalDataSet) data,
-                                gd.xSeries, gd.ySeries, gd.key));
+            case 0:
+                builder = new ScatterChartBuilder(comp, style, gd.title,
+                        new ScrollAdapter((IHistoricalDataSet) data, gd.xSeries,
+                                gd.ySeries, gd.key));
+                break;
+            case 1:
+                builder = new LineChartBuilder(comp, style, gd.title,
+                        new ScrollAdapter((IHistoricalDataSet) data, gd.xSeries,
+                                gd.ySeries, gd.key));
+                break;
+            case 2:
+                if (!(data instanceof IBlockDataSet) || (null != gd.key)) {
+                    builder = new BarChartBuilder(comp, style, gd.title,
+                            new ScrollAdapter((IHistoricalDataSet) data,
+                                    gd.xSeries, gd.ySeries, gd.key));
 
-            } else {
-                builder = new BarChartBuilder(comp, style, gd.title,
-                        new BlockAdapter((IBlockDataSet) data, gd.xSeries,
-                                gd.ySeries));
+                } else {
+                    builder = new BarChartBuilder(comp, style, gd.title,
+                            new BlockAdapter((IBlockDataSet) data, gd.xSeries,
+                                    gd.ySeries));
 
-            }
-            break;
-        case 3:
-            builder = new AreaChartBuilder(comp, style, gd.title,
-                    new ScrollAdapter((IHistoricalDataSet) data, gd.xSeries,
-                            gd.ySeries, gd.key));
-            break;
-        case 4:
-            builder = new PieChartBuilder(comp, style, gd.title,
-                    new ScrollAdapter((IHistoricalDataSet) data, gd.xSeries,
-                            gd.ySeries, gd.key));
+                }
+                break;
+            case 3:
+                builder = new AreaChartBuilder(comp, style, gd.title,
+                        new ScrollAdapter((IHistoricalDataSet) data, gd.xSeries,
+                                gd.ySeries, gd.key));
+                break;
+            case 4:
+                builder = new PieChartBuilder(comp, style, gd.title,
+                        new ScrollAdapter((IHistoricalDataSet) data, gd.xSeries,
+                                gd.ySeries, gd.key));
 
-            break;
+                break;
         }
         return builder;
     }

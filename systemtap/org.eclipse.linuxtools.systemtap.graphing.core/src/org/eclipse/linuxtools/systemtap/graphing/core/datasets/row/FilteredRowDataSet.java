@@ -127,7 +127,7 @@ public class FilteredRowDataSet extends RowDataSet implements IFilteredDataSet {
     }
 
     private ArrayList<Object>[] getFilterData() {
-        ArrayList<Object>[] data = GraphingCorePlugin.createArrayList(original.getColCount(), new Object());
+        ArrayList<Object>[] data = GraphingCorePlugin.createArrayList(original.getColCount());
         for(int i=0; i<data.length; i++) {
             data[i] = new ArrayList<>();
         }
