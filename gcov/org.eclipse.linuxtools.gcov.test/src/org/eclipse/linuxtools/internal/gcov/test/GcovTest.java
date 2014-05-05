@@ -6,6 +6,7 @@ import static org.eclipse.swtbot.swt.finder.waits.Conditions.waitForWidget;
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.widgetIsEnabled;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.InputStream;
@@ -17,6 +18,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -45,7 +47,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.hamcrest.Matcher;
@@ -56,6 +57,10 @@ public abstract class GcovTest {
     private static final String PROJECT_EXPLORER = "Project Explorer";
     private static SWTBotView projectExplorer;
     private static SWTBotShell mainShell;
+
+    private static SWTWorkbenchBot bot;
+    private static String testProjectName;
+    private static String testProjectType;
 
     private static final class UnCheckTest implements ICondition {
         SWTBotCheckBox checkBox;
@@ -116,10 +121,12 @@ public abstract class GcovTest {
         }
     }
 
-    public static SWTWorkbenchBot init(String PROJECT_NAME, String PROJECT_TYPE)
+    public static SWTWorkbenchBot init(String projectName, String projectType)
             throws Exception {
-        SWTWorkbenchBot bot = new SWTWorkbenchBot();
-        bot.captureScreenshot(PROJECT_NAME + ".beforeClass.1.jpg");
+        bot = new SWTWorkbenchBot();
+        testProjectName = projectName;
+        testProjectType = projectType;
+        bot.captureScreenshot(projectName + ".beforeClass.1.jpg");
         try {
             bot.viewByTitle("Welcome").close();
             // hide Subclipse Usage stats popup if present/installed
@@ -139,7 +146,7 @@ public abstract class GcovTest {
             }
         }
 
-        bot.captureScreenshot(PROJECT_NAME + ".beforeClass.2.jpg");
+        bot.captureScreenshot(projectName + ".beforeClass.2.jpg");
         // Turn off automatic building by default
         SWTBotMenu windowsMenu = bot.menu("Window");
         windowsMenu.menu("Preferences").click();
@@ -159,9 +166,9 @@ public abstract class GcovTest {
 
         // define & repopulate project explorer
         projectExplorer = bot.viewByTitle(PROJECT_EXPLORER);
-        GcovTest.createProject(bot, PROJECT_NAME, PROJECT_TYPE);
-        GcovTest.populateProject(bot, PROJECT_NAME);
-        GcovTest.compileProject(bot, PROJECT_NAME);
+        createProject();
+        populateProject();
+        compileProject();
         return bot;
     }
 
@@ -190,10 +197,12 @@ public abstract class GcovTest {
     public static void cleanup(SWTWorkbenchBot bot) {
         // clear project explorer
         exitProjectFolder(bot);
-        projectExplorer.setFocus();
-        SWTBotTree treeBot = projectExplorer.bot().tree();
-        for (SWTBotTreeItem treeItem : treeBot.getAllItems()) {
-            removeTreeItem(bot, treeItem);
+        IProject project = ResourcesPlugin.getWorkspace().getRoot()
+            .getProject(testProjectName);
+        try {
+            project.delete(true, new ProgressMonitor());
+        } catch (CoreException e) {
+            fail("Project deletion failed");
         }
     }
 
@@ -221,18 +230,18 @@ public abstract class GcovTest {
         }
     }
 
-    public static void createProject(SWTWorkbenchBot bot, String projectName, String projectType) {
+    public static void createProject() {
         mainShell.activate();
         SWTBotMenu fileMenu = bot.menu("File");
         SWTBotMenu newMenu = fileMenu.menu("New");
-        SWTBotMenu projectMenu = newMenu.menu(projectType);
+        SWTBotMenu projectMenu = newMenu.menu(testProjectType);
         projectMenu.click();
 
-        SWTBotShell shell = bot.shell(projectType);
+        SWTBotShell shell = bot.shell(testProjectType);
         shell.activate();
 
         bot.tree().expandNode("Makefile project").select("Empty Project");
-        bot.textWithLabel("Project name:").setText(projectName);
+        bot.textWithLabel("Project name:").setText(testProjectName);
         bot.table().select("Linux GCC");
 
         bot.button("Next >").click();
@@ -240,12 +249,12 @@ public abstract class GcovTest {
         bot.waitUntil(Conditions.shellCloses(shell));
     }
 
-    public static void populateProject(SWTWorkbenchBot bot, String projectName) throws Exception {
+    public static void populateProject() throws Exception {
         IProject project = ResourcesPlugin.getWorkspace().getRoot()
-                .getProject(projectName);
+                .getProject(testProjectName);
         try (InputStream is = FileLocator.openStream(
                 FrameworkUtil.getBundle(GcovTest.class), new Path("resource/"
-                        + projectName + "/content"), false);
+                        + testProjectName + "/content"), false);
                 LineNumberReader lnr = new LineNumberReader(
                         new InputStreamReader(is))) {
             String filename;
@@ -254,7 +263,7 @@ public abstract class GcovTest {
                 final IFile ifile = project.getFile(filename);
                 InputStream fis = FileLocator.openStream(FrameworkUtil
                         .getBundle(GcovTest.class), new Path("resource/"
-                        + projectName + "/" + filename), false);
+                        + testProjectName + "/" + filename), false);
                 ifile.create(fis, true, pm);
                 bot.waitUntil(new DefaultCondition() {
 
@@ -272,45 +281,15 @@ public abstract class GcovTest {
         }
     }
 
-    public static void compileProject(SWTWorkbenchBot bot, String projectName) {
+    public static void compileProject() {
         SWTBotTree treeBot = projectExplorer.bot().tree();
         treeBot.setFocus();
-        treeBot = treeBot.select(projectName);
+        treeBot = treeBot.select(testProjectName);
         bot.waitUntil(Conditions.treeHasRows(treeBot, 1));
         mainShell.activate();
         SWTBotMenu menu = bot.menu("Build Project");
         menu.click();
         bot.waitUntil(new JobsRunning(ResourcesPlugin.FAMILY_MANUAL_BUILD), 30000);
-    }
-
-    private static void removeTreeItem(SWTWorkbenchBot bot,
-            SWTBotTreeItem treeItem) {
-        String shellTitle = "Delete Resources";
-        treeItem.contextMenu("Delete").click();
-        Matcher<Shell> withText = withText(shellTitle);
-        bot.waitUntil(Conditions.waitForShell(withText));
-        SWTBotShell deleteShell = bot.shell(shellTitle);
-        deleteShell.activate();
-        bot.button("OK").click();
-        // Another shell (with the same name!) may appear if resources aren't synced.
-        // If it does appear, it will be a child of the first shell.
-        try {
-            bot.waitUntil(Conditions.shellCloses(deleteShell));
-        } catch (TimeoutException e) {
-            SWTBotShell deleteShell2;
-            try {
-                deleteShell2 = bot.shell(shellTitle, deleteShell.widget);
-            } catch (WidgetNotFoundException e2) {
-                // If the other shell isn't found, that means the first one just didn't close.
-                System.out.println("ERROR: \"Delete Resources\" shell did not close, and no extra shell appeared");
-                throw e;
-            }
-            System.out.println("Deleting out-of-sync resources - new \"Delete Resources\" shell found");
-            deleteShell2.activate();
-            bot.button("Continue").click();
-            bot.waitUntil(Conditions.shellCloses(deleteShell2));
-            bot.waitUntil(Conditions.shellCloses(deleteShell));
-        }
     }
 
     private static TreeSet<String> getGcovFiles(SWTWorkbenchBot bot, String projectName) throws Exception {
