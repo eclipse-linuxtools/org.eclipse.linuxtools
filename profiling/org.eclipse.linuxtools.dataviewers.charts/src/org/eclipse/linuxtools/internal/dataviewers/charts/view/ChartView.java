@@ -75,11 +75,6 @@ public class ChartView extends ViewPart {
 
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     public void createPartControl(Composite parent) {
         this.parent = parent;
@@ -97,11 +92,6 @@ public class ChartView extends ViewPart {
         manager.update(true);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
-     */
     @Override
     public void setFocus() {
         if (parent != null && !parent.isDisposed()) {

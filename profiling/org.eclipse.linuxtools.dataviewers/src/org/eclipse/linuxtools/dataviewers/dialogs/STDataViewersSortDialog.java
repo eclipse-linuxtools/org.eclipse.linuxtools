@@ -62,18 +62,12 @@ public class STDataViewersSortDialog extends TrayDialog {
         this.dirty = false;
     }
 
-    /*
-     * (non-Javadoc) Method declared on Window.
-     */
     @Override
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
         newShell.setText(STDataViewersMessages.sortDialog_title);
     }
 
-    /*
-     * (non-Javadoc) Method declared on Dialog.
-     */
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite composite = (Composite) super.createDialogArea(parent);

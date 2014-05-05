@@ -40,27 +40,16 @@ public class STDataViewersImages {
         STDataViewersActivator activator = STDataViewersActivator.getDefault();
         ICON_BASE_URL = activator.getBundle().getEntry(pathSuffix);
         imageRegistry = activator.getImageRegistry();
-        if (imageRegistry == null)
+        if (imageRegistry == null) {
             imageRegistry = new ImageRegistry(PlatformUI.getWorkbench().getDisplay());
+        }
     }
 
     public static final String IMG_EXPORT = "export.gif";
     public static final String IMG_EDIT_PROPERTIES = "prop_edt.gif";
-    public static final String IMG_PERCENTAGE = "percentage.gif";
-
-    public static final String IMG_SEARCH = "search.gif";
-
-    public static final String IMG_PRINT = "printer.gif";
-    public static final String IMG_LEFT = "left.gif";
-    public static final String IMG_LEFTEND = "left-end.gif";
-    public static final String IMG_RIGHT = "right.gif";
-    public static final String IMG_RIGHTEND = "right-end.gif";
-    public static final String IMG_SAVE_TXT = "IMG_SAVE_TXT";
 
     public static final String IMG_EXPANDALL = "expand_all.gif";
     public static final String IMG_COLLAPSEALL = "collapse_all.gif";
-
-    public static final String IMG_FILTER = "filter_ps.gif";
 
     public static final String IMG_SORT = "sort.gif";
 
@@ -70,24 +59,13 @@ public class STDataViewersImages {
     private static void declareImages() {
         declareRegistryImage(IMG_EXPORT, "export.gif");
         declareRegistryImage(IMG_EDIT_PROPERTIES, "prop_edt.gif");
-        declareRegistryImage(IMG_PERCENTAGE, "percentage.gif");
 
         declareRegistryImage(ISharedImages.IMG_OBJS_INFO_TSK, "info_obj.gif");
         declareRegistryImage(ISharedImages.IMG_TOOL_FORWARD, "forward_nav.gif");
         declareRegistryImage(ISharedImages.IMG_TOOL_BACK, "backward_nav.gif");
 
-        declareRegistryImage(IMG_SEARCH, "search.gif");
-
-        declareRegistryImage(IMG_PRINT, "printer.gif");
-        declareRegistryImage(IMG_LEFT, "left.gif");
-        declareRegistryImage(IMG_LEFTEND, "left-end.gif");
-        declareRegistryImage(IMG_RIGHT, "right.gif");
-        declareRegistryImage(IMG_RIGHTEND, "right-end.gif");
-
         declareRegistryImage(IMG_EXPANDALL, "expand_all.gif");
         declareRegistryImage(IMG_COLLAPSEALL, "collapse_all.gif");
-
-        declareRegistryImage(IMG_FILTER, "filter_ps.gif");
 
         declareRegistryImage(IMG_SORT, "sort.gif");
     }

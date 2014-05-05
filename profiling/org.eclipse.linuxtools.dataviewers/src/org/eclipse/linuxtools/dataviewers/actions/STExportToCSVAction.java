@@ -52,11 +52,6 @@ public class STExportToCSVAction extends Action {
         this.exporter = new STDataViewersCSVExporter(stViewer);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.action.Action#run()
-     */
     @Override
     public void run() {
         STDataViewersExportToCSVDialog dialog = new STDataViewersExportToCSVDialog(stViewer.getViewer().getControl()

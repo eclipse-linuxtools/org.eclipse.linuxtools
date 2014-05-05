@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.dataviewers.abstractviewers;
 
-/*
+/**
  * This interface contains the constants used during an export action
  */
 public interface STDataViewersCSVExporterConstants {

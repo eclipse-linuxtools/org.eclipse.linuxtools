@@ -83,7 +83,7 @@ public class STDataViewersCSVExporter {
 
     private boolean exportTreePrefix = false;
 
-    /*
+    /**
      * It creates a new instance of exporter
      *
      * @param stViewer
@@ -96,7 +96,7 @@ public class STDataViewersCSVExporter {
         restoreState();
     }
 
-    /*
+    /**
      * Gets from the .setting the export parameters
      */
     public void restoreState() {
@@ -191,7 +191,7 @@ public class STDataViewersCSVExporter {
 
     }
 
-    /*
+    /**
      * Save into the .setting the export parameters
      */
     public void saveState() {
@@ -217,7 +217,7 @@ public class STDataViewersCSVExporter {
         }
     }
 
-    /*
+    /**
      * Sets to default the parameters used during the export
      */
     public void resetState() {

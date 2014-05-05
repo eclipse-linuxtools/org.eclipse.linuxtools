@@ -69,11 +69,11 @@ public abstract class AbstractSTTreeViewer extends AbstractSTViewer {
         return tree;
     }
 
-    @Override
     /**
      * Create the columns in the tree.
      *
      */
+    @Override
     protected void createColumns() {
         Tree tree = getViewer().getTree();
         TableLayout layout = new TableLayout();

@@ -20,9 +20,6 @@ import org.eclipse.jface.viewers.OpenEvent;
 import org.eclipse.linuxtools.dataviewers.listeners.STDisposeListener;
 import org.eclipse.linuxtools.dataviewers.listeners.STHeaderListener;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -98,13 +95,13 @@ public abstract class AbstractSTViewer {
 
         // building columns manager
         // (needs the columns to be created first)
-        STDataViewersHideShowManager manager = buildHideShowManager();
+        STDataViewersHideShowManager manager = new STDataViewersHideShowManager(this);
         manager.restoreState(viewerSettings);
         setHideShowManager(manager);
 
         // building the column comparator
         // (needs the columns to be created first)
-        STDataViewersComparator comparator = buildComparator();
+        STDataViewersComparator comparator = new STDataViewersComparator(getColumns());
         comparator.restoreState(viewerSettings);
         setComparator(comparator);
         setSortIndicators();
@@ -138,29 +135,13 @@ public abstract class AbstractSTViewer {
             }
         });
 
-        viewer.getControl().addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                handleKeyPressed(e);
-            }
-        });
-
-        viewer.getControl().addDisposeListener(createDisposeListener());
+        viewer.getControl().addDisposeListener(new STDisposeListener(this));
 
     }
 
     // //////////////////////////
     // Columns manager utilities
     // //////////////////////////
-
-    /**
-     * Build a hide/show manager from the default settings. It is different if it is for a TreeViewer or a TableViewer.
-     *
-     * @return AbstractSTViewerHideShowManager
-     */
-    protected STDataViewersHideShowManager buildHideShowManager() {
-        return new STDataViewersHideShowManager(this);
-    }
 
     /**
      * Set this manager to be the new hide/show manager. This should only be called if the columns have been created.
@@ -176,15 +157,6 @@ public abstract class AbstractSTViewer {
     // //////////////////
     // Sorting utilities
     // //////////////////
-
-    /**
-     * Build a comparator from the default settings.
-     *
-     * @return STProfTableComparator Newly created comparator with default settings.
-     */
-    protected STDataViewersComparator buildComparator() {
-        return new STDataViewersComparator(getColumns());
-    }
 
     /**
      * Return the table sorter portion of the sorter.
@@ -283,14 +255,16 @@ public abstract class AbstractSTViewer {
      * @return the position
      */
     private int restoreHorizontalScrollBarPosition() {
-        if (viewerSettings == null)
+        if (viewerSettings == null) {
             // no settings saved
             return 0;
+        }
 
         String position = viewerSettings.get(STDataViewersSettings.TAG_VIEWER_STATE_HORIZONTAL_POSITION);
-        if (position == null)
+        if (position == null) {
             // no horizontal position saved
             return 0;
+        }
 
         try {
             return Integer.parseInt(position);
@@ -357,12 +331,14 @@ public abstract class AbstractSTViewer {
         viewerSettings.put(STDataViewersSettings.TAG_VIEWER_STATE_COLUMN_ORDER, columnOrderStrings);
 
         // save hide show manager
-        if (getHideShowManager() != null)
+        if (getHideShowManager() != null) {
             getHideShowManager().saveState(viewerSettings);
+        }
 
         // save sort
-        if (getTableSorter() != null)
+        if (getTableSorter() != null) {
             getTableSorter().saveState(viewerSettings);
+        }
 
         // save vertical position
         Scrollable scrollable = (Scrollable) viewer.getControl();
@@ -379,16 +355,6 @@ public abstract class AbstractSTViewer {
     // //////////////////////////
     // Listeners for this viewer
     // //////////////////////////
-
-    /**
-     * Creates the dispose listener used by the viewer to save its state when it is closed. This method is called at the
-     * end of the viewer initialization (init() method).
-     *
-     * @return the new header listener
-     */
-    private DisposeListener createDisposeListener() {
-        return new STDisposeListener(this);
-    }
 
     /**
      * Creates the header listener used by the columns to check when their header is selected (used by sorting). This
@@ -446,18 +412,6 @@ public abstract class AbstractSTViewer {
     // ///////////////////////////////////////////////////////////
 
     /**
-     * Handle key pressed events, called each time a key pressed event is detected in the viewer
-     * <p>
-     * Subclasses may override it.
-     * </p>
-     *
-     * @param event Unused parameter.
-     */
-    protected void handleKeyPressed(KeyEvent event) {
-        // nothing, intended to be overridden
-    }
-
-    /**
      * Handle the open event, called each time the viewer is opened
      * <p>
      * Subclasses may override it.
@@ -465,9 +419,7 @@ public abstract class AbstractSTViewer {
      *
      * @param event Unused event.
      */
-    protected void handleOpenEvent(OpenEvent event) {
-        // nothing, intended to be overridden
-    }
+    protected abstract void handleOpenEvent(OpenEvent event);
 
     // ///////////////////////////////////////////////
     // Abstract methods to implement when subclassing

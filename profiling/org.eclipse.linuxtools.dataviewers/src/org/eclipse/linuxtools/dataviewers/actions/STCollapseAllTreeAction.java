@@ -35,11 +35,6 @@ public class STCollapseAllTreeAction extends Action {
         this.stViewer = stViewer;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.action.Action#run()
-     */
     @Override
     public void run() {
         Object input = stViewer.getViewer().getInput();
