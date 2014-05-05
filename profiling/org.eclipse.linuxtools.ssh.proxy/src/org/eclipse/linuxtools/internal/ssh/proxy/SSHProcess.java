@@ -82,6 +82,7 @@ public class SSHProcess extends Process {
             try {
                 Thread.sleep(DELAY);
             } catch (InterruptedException e) {
+                //ignore
             }
         }
 

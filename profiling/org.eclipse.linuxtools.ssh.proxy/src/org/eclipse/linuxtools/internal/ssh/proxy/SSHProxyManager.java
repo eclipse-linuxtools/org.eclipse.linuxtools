@@ -69,6 +69,7 @@ public class SSHProxyManager implements IRemoteEnvProxyManager {
                 os = os.substring(0, os.indexOf('\n'));
             }
         } catch (InterruptedException|IOException e) {
+            //ignore
         }
         return os;
     }

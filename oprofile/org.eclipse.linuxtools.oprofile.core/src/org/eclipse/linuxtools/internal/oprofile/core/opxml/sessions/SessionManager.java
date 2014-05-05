@@ -45,7 +45,7 @@ public class SessionManager {
 	public final static String NAME = "name"; //$NON-NLS-1$
 	public final static String CURRENT = "current"; //$NON-NLS-1$
 	public final static String OPXML_PREFIX = PLUGIN_LOC + "/opxml_"; //$NON-NLS-1$
-	public final static String SESSION_LOCATION = OPXML_PREFIX + SESSIONS; //$NON-NLS-1$
+	public final static String SESSION_LOCATION = OPXML_PREFIX + SESSIONS;
 	public final static String MODEL_DATA = "model-data"; //$NON-NLS-1$
 
 	public Document doc;
