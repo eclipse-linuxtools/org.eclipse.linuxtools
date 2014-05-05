@@ -61,6 +61,9 @@ public class RemoteProxyManager implements IRemoteProxyManager {
         return lfp;
     }
     /**
+     * @param schemeId
+     * @return The {@link IRemoteProxyManager} for the given scheme.
+     * @throws CoreException
      * @since 2.1
      */
     protected IRemoteProxyManager getRemoteManager(String schemeId) throws CoreException {
@@ -166,7 +169,9 @@ public class RemoteProxyManager implements IRemoteProxyManager {
      * of pure remote and sync projects. Synchronized projects
      * have a cached path and a remote one, and this method
      * returns the remote one.
-     * @return string containing the project location
+     * @param project
+     * @return The project location.
+     * @throws CoreException
      * @since 2.2
      */
     public String getRemoteProjectLocation(IProject project) throws CoreException {

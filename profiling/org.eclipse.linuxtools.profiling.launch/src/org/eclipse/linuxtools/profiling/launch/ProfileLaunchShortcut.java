@@ -75,8 +75,10 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 
     /**
      * Locate a configuration to relaunch for the given type.  If one cannot be found, create one.
+     * @param bin The binary to look launch for.
+     * @param mode
      *
-     * @return a re-useable config or <code>null</code> if none
+     * @return A re-useable config or <code>null</code> if none.
      */
     protected ILaunchConfiguration findLaunchConfiguration(IBinary bin, String mode) {
         ILaunchConfiguration configuration = null;
@@ -188,7 +190,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 
     /**
      * Method searchAndLaunch.
-     * @param objects
+     * @param elements
      * @param mode
      */
     private void searchAndLaunch(final Object[] elements, String mode) {
@@ -267,6 +269,8 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 
     /**
      * Prompts the user to select a  binary
+     * @param binList
+     * @param mode
      *
      * @return the selected binary or <code>null</code> if none.
      */
@@ -315,8 +319,10 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 
     /**
      * Show a selection dialog that allows the user to choose one of the specified
-     * launch configurations.  Return the chosen config, or <code>null</code> if the
-     * user cancelled the dialog.
+     * launch configurations.
+     * @param configList
+     * @param mode
+     * @return The chosen config, or <code>null</code> if the user cancelled the dialog.
      */
     protected ILaunchConfiguration chooseConfiguration(List<ILaunchConfiguration> configList, String mode) {
         IDebugModelPresentation labelProvider = DebugUITools.newDebugModelPresentation();

@@ -139,6 +139,7 @@ public class ResourceSelectorWidget {
      * Create the area for user entry.
      *
      * @param composite
+     * @param uriLabelText
      */
     private void createUserEntryArea(Composite composite, String uriLabelText) {
         // location label
@@ -182,11 +183,6 @@ public class ResourceSelectorWidget {
         });
 
         uriField.addModifyListener(new ModifyListener() {
-            /*
-             * (non-Javadoc)
-             *
-             * @see org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.events.ModifyEvent)
-             */
             @Override
             public void modifyText(ModifyEvent e) {
                 updateFilesystemSelector(uriField.getText());

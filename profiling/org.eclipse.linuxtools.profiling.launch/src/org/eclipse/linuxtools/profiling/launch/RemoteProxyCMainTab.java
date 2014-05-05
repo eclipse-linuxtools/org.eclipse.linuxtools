@@ -1042,7 +1042,9 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 
     /**
      * Set the program name attributes on the working copy based on the
-     * ICElement
+     * ICElement.
+     * @param cElement
+     * @param config
      */
     protected void initializeProgramName(ICElement cElement,
             ILaunchConfigurationWorkingCopy config) {

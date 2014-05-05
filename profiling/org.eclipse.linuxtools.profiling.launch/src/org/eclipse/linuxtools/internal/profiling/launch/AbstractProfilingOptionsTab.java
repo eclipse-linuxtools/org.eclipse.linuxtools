@@ -220,8 +220,7 @@ public abstract class AbstractProfilingOptionsTab extends AbstractLaunchConfigur
 
     /**
      * Set the provider attribute in the specified configuration.
-     *
-     * @param configuration a configuration
+     * @param providerId The new provider id.
      */
     private void setProvider(String providerId) {
         try {
@@ -310,15 +309,15 @@ public abstract class AbstractProfilingOptionsTab extends AbstractLaunchConfigur
     }
 
     /**
-     * Get index of specific name in the combo items list
+     * Get index of specific name in the combo items list.
      *
-     * @param name name of item
-     * @return index of given name, -1 if it not found
+     * @param name Name of item
+     * @return Index of given name, -1 if it not found.
      */
-    private int getItemIndex(Combo combo, String name) {
-        int itemCount = combo.getItemCount();
+    private int getItemIndex(String name) {
+        int itemCount = providerCombo.getItemCount();
         for (int i = 0; i < itemCount; i++) {
-            if (combo.getItem(i).equals(name)) {
+            if (providerCombo.getItem(i).equals(name)) {
                 return i;
             }
         }
@@ -333,7 +332,7 @@ public abstract class AbstractProfilingOptionsTab extends AbstractLaunchConfigur
      */
     private int getComboItemIndexFromId(String id) {
         String providerName = getComboItemNameFromId(id);
-        return getItemIndex(providerCombo, providerName);
+        return getItemIndex(providerName);
     }
 
     @Override

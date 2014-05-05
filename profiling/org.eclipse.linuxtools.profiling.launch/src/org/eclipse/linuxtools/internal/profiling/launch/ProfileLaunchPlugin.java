@@ -37,6 +37,7 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
 
     /**
      * Convenience method which returns the unique identifier of this plugin.
+     * @return The identifier.
      * @since 1.1
      */
     public static String getUniqueIdentifier() {

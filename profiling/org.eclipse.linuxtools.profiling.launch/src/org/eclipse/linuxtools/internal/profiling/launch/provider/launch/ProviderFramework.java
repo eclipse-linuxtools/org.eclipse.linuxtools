@@ -289,6 +289,8 @@ public class ProviderFramework {
      * extensions of the
      * <code>org.eclipse.linuxtools.profiling.launch.launchProvider</code>
      * extensions point.
+     * @param id
+     * @return The name of the tool if found.
      *
      * @since 2.0
      */
@@ -310,6 +312,7 @@ public class ProviderFramework {
      * with id <code>toolId</code>.
      *
      * @param toolId String unique id of the tool.
+     * @param attribute
      * @return String description of tool.
      * @since 2.0
      */
@@ -456,6 +459,7 @@ public class ProviderFramework {
      * it will look for the provider with the highest priority for the specified type.
      * If this fails, it will look for the default provider.
      *
+     * @param wc
      * @param type a profiling type
      * @return a provider id that contributes to the specified type
      * @since 2.0

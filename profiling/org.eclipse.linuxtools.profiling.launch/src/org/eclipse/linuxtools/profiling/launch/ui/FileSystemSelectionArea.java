@@ -185,9 +185,10 @@ public class FileSystemSelectionArea {
     }
 
     /**
-     * Set the filesystem selection combo box to the specified scheme.  If the scheme isn't
-     * legal, throw a CoreException.
+     * Set the filesystem selection combo box to the specified scheme.
+     *
      * @param scheme name of scheme, e.g. "rse"
+     * @throws CoreException If scheme is illegal.
      */
     public void setSelectedFileSystem(String scheme) throws CoreException {
         Iterator<FileSystemElement> fsEltItr = fsElements.iterator();
