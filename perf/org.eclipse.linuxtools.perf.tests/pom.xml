@@ -31,8 +31,6 @@
           <configuration>
             <useUIHarness>true</useUIHarness>
             <useUIThread>true</useUIThread>
-            <testSuite>org.eclipse.linuxtools.perf.tests</testSuite>
-            <testClass>org.eclipse.linuxtools.internal.perf.tests.AllPerfTests</testClass>
         </configuration>
       </plugin>
     </plugins>
