@@ -325,11 +325,11 @@ public abstract class GcovTest {
         // The following cannot be tested on 4.2 because the SWTBot implementation of toolbarButton()
         // is broken there because it relies PartPane having a method getPane() which is no longer true.
         botView.toolbarButton("Sort coverage per function").click();
-        dumpCSV(bot, botView, projectName, "function", testProducedReference);
+        dumpCSV(botView, "function", testProducedReference);
         botView.toolbarButton("Sort coverage per file").click();
-        dumpCSV(bot, botView, projectName, "file", testProducedReference);
+        dumpCSV(botView, "file", testProducedReference);
         botView.toolbarButton("Sort coverage per folder").click();
-        dumpCSV(bot, botView, projectName, "folder", testProducedReference);
+        dumpCSV(botView, "folder", testProducedReference);
         botView.close();
     }
 
@@ -416,9 +416,8 @@ public abstract class GcovTest {
         botView.close();
     }
 
-    private static void dumpCSV(SWTWorkbenchBot bot, SWTBotView botView, String projectName, String type,
-            boolean testProducedReference) {
-        IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+    private static void dumpCSV(SWTBotView botView, String type, boolean testProducedReference) {
+        IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(testProjectName);
         botView.toolbarButton("Export to CSV").click();
         SWTBotShell shell = bot.shell("Export to CSV");
         shell.activate();
@@ -426,9 +425,9 @@ public abstract class GcovTest {
         new File(s).delete();
         bot.text().setText(s);
         bot.button("OK").click();
-        bot.waitUntil(new JobsRunning(STExportToCSVAction.EXPORT_TO_CSV_JOB_FAMILY), 3000);
+        bot.waitUntil(new JobsRunning(STExportToCSVAction.EXPORT_TO_CSV_JOB_FAMILY), 5000);
         if (testProducedReference) {
-            String ref = STJunitUtils.getAbsolutePath(FrameworkUtil.getBundle(GcovTest.class).getSymbolicName(), "resource/" + projectName + "/" + type + ".csv");
+            String ref = STJunitUtils.getAbsolutePath(FrameworkUtil.getBundle(GcovTest.class).getSymbolicName(), "resource/" + testProjectName + "/" + type + ".csv");
             STJunitUtils.compareIgnoreEOL(project.getLocation() + "/" + type + "-dump.csv", ref, false);
         }
     }
