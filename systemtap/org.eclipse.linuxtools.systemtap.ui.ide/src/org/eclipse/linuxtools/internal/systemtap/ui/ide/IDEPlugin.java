@@ -97,8 +97,12 @@ public class IDEPlugin extends AbstractUIPlugin {
         if (path == null) {
             path = ""; //$NON-NLS-1$
         }
+        int port = p.getInt(ConsoleLogPreferenceConstants.PORT_NUMBER);
+        if (port == 0) {
+            port = p.getDefaultInt(ConsoleLogPreferenceConstants.PORT_NUMBER);
+        }
         try {
-            return new URI("ssh", user, host, -1, path, null, null); //$NON-NLS-1$
+            return new URI("ssh", user, host, port, path, null, null); //$NON-NLS-1$
         } catch (URISyntaxException uri) {
             return null;
         }

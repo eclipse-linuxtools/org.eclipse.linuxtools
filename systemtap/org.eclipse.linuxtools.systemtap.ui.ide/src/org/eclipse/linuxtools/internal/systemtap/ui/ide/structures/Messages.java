@@ -23,6 +23,8 @@ public class Messages extends NLS {
     public static String TapsetParser_CannotRunStapMessage;
     public static String TapsetParser_CannotRunStapTitle;
     public static String TapsetParser_ErrorRunningSystemtap;
+    public static String TapsetParser_RemoteCredentialErrorTitle;
+    public static String TapsetParser_RemoteCredentialErrorMessage;
     public static String SharedParser_NoOutput;
     static {
         // initialize resource bundle

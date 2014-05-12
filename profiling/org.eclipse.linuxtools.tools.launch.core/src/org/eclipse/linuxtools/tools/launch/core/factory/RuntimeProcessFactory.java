@@ -220,7 +220,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
      *
      * @since 1.1
      */
-    public Process exec(String cmdarray[], String[] envp, IFileStore dir, IProject project)
+    public Process exec(String[] cmdarray, String[] envp, IFileStore dir, IProject project)
             throws IOException {
         return exec(cmdarray, envp, dir, project, null);
     }
@@ -239,7 +239,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
      *
      * @since 3.0
      */
-    public Process exec(String cmdarray[], String[] envp, IFileStore dir, IProject project, PTY pty)
+    public Process exec(String[] cmdarray, String[] envp, IFileStore dir, IProject project, PTY pty)
             throws IOException {
 
         Process p = null;
@@ -276,9 +276,9 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
             cmdarray = cmdlist.toArray(new String[0]);
 
             if (pty == null) {
-                p = launcher.execute(path, cmdarray, envp, changeToDir , new NullProgressMonitor());
+                p = launcher.execute(path, cmdarray, envp, changeToDir, new NullProgressMonitor());
             } else {
-                p = launcher.execute(path, cmdarray, envp, changeToDir , new NullProgressMonitor(), pty);
+                p = launcher.execute(path, cmdarray, envp, changeToDir, new NullProgressMonitor(), pty);
             }
         } catch (CoreException e) {
             e.printStackTrace();

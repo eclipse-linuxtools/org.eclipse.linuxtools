@@ -11,7 +11,6 @@
 
 package org.eclipse.linuxtools.systemtap.ui.consolelog.preferences;
 
-import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
@@ -44,13 +43,6 @@ public class ConsoleLogPreferencePage extends FieldEditorPreferencePage implemen
                 getFieldEditorParent());
         passwordField.getTextControl(getFieldEditorParent()).setEchoChar('*');
         addField(passwordField);
-
-        addField(new BooleanFieldEditor(ConsoleLogPreferenceConstants.REMEMBER_SERVER,
-                Messages.ConsoleLogPreferencePage_AlwaysConnectToHost, getFieldEditorParent()));
-
-        addField(new IntegerFieldEditor(ConsoleLogPreferenceConstants.SAVE_LENGTH,
-                Messages.ConsoleLogPreferencePage_SecondsToSaveData, getFieldEditorParent()));
-
     }
 
     @Override

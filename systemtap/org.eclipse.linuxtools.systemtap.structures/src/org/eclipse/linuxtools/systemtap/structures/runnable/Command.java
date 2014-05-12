@@ -60,13 +60,20 @@ public class Command implements Runnable {
     private List<IGobblerListener> errorListeners = new ArrayList<>();    //Only used to allow adding listeners before creating the StreamGobbler
     private int returnVal = Integer.MAX_VALUE;
 
-    private String[] cmd;
-    private String[] envVars;
+    /**
+     * @since 3.0
+     */
+    protected final String[] cmd;
+    /**
+     * @since 3.0
+     */
+    protected final String[] envVars;
+
     protected Process process;
     /**
      * @since 2.1
      */
-    protected IProject project = null;
+    protected final IProject project;
     private final LoggingStreamDaemon logger;
 
     public static final int ERROR_STREAM = 0;
@@ -91,18 +98,13 @@ public class Command implements Runnable {
      * This must be called by the implementing class in order to start the
      * StreamGobbler.
      * @param cmd The entire command to run
-     * @param envVars List of all environment variables to use
-     * @param project The project this script belongs to or null
+     * @param envVars List of all environment variables to use, or <code>null</code> if none
+     * @param project The project this script belongs to, or <code>null</code> if projectless
      * @since 2.1
      */
     public Command(String[] cmd, String[] envVars, IProject project) {
-        if (cmd != null) {
-            this.cmd = Arrays.copyOf(cmd, cmd.length);
-        }
-
-        if (envVars != null) {
-            this.envVars = Arrays.copyOf(envVars, envVars.length);
-        }
+        this.cmd = cmd != null ? Arrays.copyOf(cmd, cmd.length) : null;
+        this.envVars = envVars != null ? Arrays.copyOf(envVars, envVars.length) : null;
         this.project = project;
         logger = new LoggingStreamDaemon();
         addInputStreamListener(logger);
@@ -115,7 +117,7 @@ public class Command implements Runnable {
      */
     public void start() throws CoreException {
         IStatus status = init();
-        if(status.isOK()) {
+        if (status.isOK()) {
             Thread t = new Thread(this, cmd[0]);
             t.start();
             started = true;
@@ -135,7 +137,7 @@ public class Command implements Runnable {
         try {
             process = RuntimeProcessFactory.getFactory().exec(cmd, envVars, project);
 
-            if (process == null){
+            if (process == null) {
                 return new Status(IStatus.ERROR, StructuresPlugin.PLUGIN_ID, Messages.Command_failedToRunSystemtap);
             }
 
@@ -155,11 +157,11 @@ public class Command implements Runnable {
      * properly to the process itself.
      * @since 2.0
      */
-    protected void transferListeners(){
-        for(IGobblerListener listener :inputListeners) {
+    protected void transferListeners() {
+        for (IGobblerListener listener : inputListeners) {
             inputGobbler.addDataListener(listener);
         }
-        for(IGobblerListener listener: errorListeners) {
+        for (IGobblerListener listener : errorListeners) {
             errorGobbler.addDataListener(listener);
         }
     }
@@ -185,15 +187,15 @@ public class Command implements Runnable {
      * on this command.
      */
     public synchronized void stop() {
-        if(!stopped) {
-            if(null != errorGobbler) {
+        if (!stopped) {
+            if (errorGobbler != null) {
                 errorGobbler.stop();
             }
-            if(null != inputGobbler) {
+            if (inputGobbler != null) {
                 inputGobbler.stop();
             }
             try {
-                if(process != null){
+                if (process != null) {
                     process.waitFor();
                 }
             } catch (InterruptedException e) {
@@ -249,7 +251,7 @@ public class Command implements Runnable {
      * @param listener A listener to monitor the InputStream from the Process
      */
     public void addInputStreamListener(IGobblerListener listener) {
-        if(null != inputGobbler) {
+        if (inputGobbler != null) {
             inputGobbler.addDataListener(listener);
         } else {
             inputListeners.add(listener);
@@ -261,7 +263,7 @@ public class Command implements Runnable {
      * @param listener A listener to monitor the ErrorStream from the Process
      */
     public void addErrorStreamListener(IGobblerListener listener) {
-        if(null != errorGobbler) {
+        if (errorGobbler != null) {
             errorGobbler.addDataListener(listener);
         } else {
             errorListeners.add(listener);
@@ -273,7 +275,7 @@ public class Command implements Runnable {
      * @param listener An </code>IGobblerListener</code> that is monitoring the stream.
      */
     public void removeInputStreamListener(IGobblerListener listener) {
-        if(null != inputGobbler) {
+        if (inputGobbler != null) {
             inputGobbler.removeDataListener(listener);
         } else {
             inputListeners.remove(listener);
@@ -285,7 +287,7 @@ public class Command implements Runnable {
      * @param listener An </code>IGobblerListener</code> that is monitoring the stream.
      */
     public void removeErrorStreamListener(IGobblerListener listener) {
-        if(null != errorGobbler) {
+        if (errorGobbler != null) {
             errorGobbler.removeDataListener(listener);
         } else {
             errorListeners.remove(listener);
@@ -306,7 +308,7 @@ public class Command implements Runnable {
      * referenced after this is called.
      */
     public void dispose() {
-        if(!disposed) {
+        if (!disposed) {
             stop();
             disposed = true;
 
@@ -316,12 +318,12 @@ public class Command implements Runnable {
             inputListeners = null;
             errorListeners = null;
 
-            if(null != inputGobbler) {
+            if (inputGobbler != null) {
                 inputGobbler.dispose();
             }
             inputGobbler = null;
 
-            if(null != errorGobbler) {
+            if (errorGobbler != null) {
                 errorGobbler.dispose();
             }
             errorGobbler = null;

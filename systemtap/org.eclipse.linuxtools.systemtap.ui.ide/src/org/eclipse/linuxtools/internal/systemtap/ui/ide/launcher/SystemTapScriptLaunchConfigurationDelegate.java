@@ -44,7 +44,8 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.RemoteScriptOpt
 public class SystemTapScriptLaunchConfigurationDelegate extends
         LaunchConfigurationDelegate {
 
-    private static String LOCALHOST = "localhost"; //$NON-NLS-1$
+    static final String LOCALHOST = "localhost"; //$NON-NLS-1$
+    static final int DEFAULT_PORT = 22;
     static final String CONFIGURATION_TYPE = "org.eclipse.linuxtools.systemtap.ui.ide.SystemTapLaunchConfigurationType"; //$NON-NLS-1$
 
     private IProject[] scriptProject;
@@ -139,7 +140,9 @@ public class SystemTapScriptLaunchConfigurationDelegate extends
                         configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.USER_NAME_ATTR, ""), //$NON-NLS-1$
                         configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.USER_PASS_ATTR, ""), //$NON-NLS-1$
                         configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.LOCAL_HOST_ATTR, true) ? LOCALHOST :
-                        configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.HOST_NAME_ATTR, LOCALHOST)));
+                        configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.HOST_NAME_ATTR, LOCALHOST),
+                        configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.USE_DEFAULT_PORT_ATTR, true) ? DEFAULT_PORT :
+                        configuration.getAttribute(SystemTapScriptLaunchConfigurationTab.PORT_ATTR, DEFAULT_PORT)));
 
         String value = configuration.getAttribute(IDEPreferenceConstants.STAP_CMD_OPTION[IDEPreferenceConstants.KEY], ""); //$NON-NLS-1$
         if (!value.isEmpty()) {

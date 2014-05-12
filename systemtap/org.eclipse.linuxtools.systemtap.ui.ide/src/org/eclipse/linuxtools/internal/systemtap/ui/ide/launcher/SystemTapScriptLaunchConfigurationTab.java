@@ -32,6 +32,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -56,18 +58,41 @@ public class SystemTapScriptLaunchConfigurationTab extends
     static final String USER_PASS_ATTR = "userPassword"; //$NON-NLS-1$
     static final String LOCAL_HOST_ATTR = "executeOnLocalHost"; //$NON-NLS-1$
     static final String HOST_NAME_ATTR = "hostName"; //$NON-NLS-1$
+    static final String PORT_ATTR = "port"; //$NON-NLS-1$
+    static final String USE_DEFAULT_PORT_ATTR = "useDefaultPort"; //$NON-NLS-1$
 
     private Text scriptPathText;
     private Button currentUserCheckButton;
     private Text userNameText;
+    private Label userNameLabel;
     private Text userPasswordText;
+    private Label userPasswordLabel;
     private Button localHostCheckButton;
     private Group hostSettingsGroup;
     private Text hostNameText;
-    private Label userNameLabel;
-    private Label userPasswordLabel;
-    private Label hostNamelabel;
+    private Label hostNameLabel;
+    private Text portText;
+    private Label portLabel;
+    private Button portCheckButton;
     private FileDialog fileDialog;
+
+    SelectionListener checkListener = new SelectionListener() {
+
+        @Override
+        public void widgetSelected(SelectionEvent e) {
+            update();
+        }
+
+        @Override
+        public void widgetDefaultSelected(SelectionEvent e) {
+            update();
+        }
+
+        private void update() {
+            updateLaunchConfigurationDialog();
+        }
+
+    };
 
     /**
      * @return The path of the chosen script the Run Configuration will be applied to,
@@ -81,7 +106,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
     @Override
     public void createControl(Composite parent) {
 
-        this.fileDialog = new FileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OPEN);
+        fileDialog = new FileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OPEN);
         fileDialog.setText(Messages.SystemTapScriptLaunchConfigurationTab_selectScript);
         fileDialog.setFilterPath(Platform.getLocation().toOSString());
 
@@ -98,7 +123,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
         layout = new GridLayout();
         layout.numColumns = 2;
         scriptSettingsGroup.setLayout(layout);
-        this.scriptPathText = new Text(scriptSettingsGroup,  SWT.SINGLE | SWT.BORDER);
+        scriptPathText = new Text(scriptSettingsGroup,  SWT.SINGLE | SWT.BORDER);
         scriptPathText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         scriptPathText.addModifyListener(new ModifyListener() {
             @Override
@@ -133,43 +158,26 @@ public class SystemTapScriptLaunchConfigurationTab extends
         layout.numColumns = 2;
         userSettingsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-        this.currentUserCheckButton = new Button(userSettingsGroup, SWT.CHECK);
+        currentUserCheckButton = new Button(userSettingsGroup, SWT.CHECK);
         currentUserCheckButton.setText(Messages.SystemTapScriptLaunchConfigurationTab_currentUser);
         currentUserCheckButton.setSelection(true);
         gridData = new GridData();
         gridData.horizontalSpan = 2;
         currentUserCheckButton.setLayoutData(gridData);
+        currentUserCheckButton.addSelectionListener(checkListener);
 
-        this.userNameLabel = new Label(userSettingsGroup, SWT.NONE);
+        userNameLabel = new Label(userSettingsGroup, SWT.NONE);
         userNameLabel.setText(Messages.SystemTapScriptLaunchConfigurationTab_username);
-        this.userNameText = new Text(userSettingsGroup, SWT.SINGLE | SWT.BORDER);
+        userNameText = new Text(userSettingsGroup, SWT.SINGLE | SWT.BORDER);
         userNameText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-        this.userPasswordLabel = new Label(userSettingsGroup, SWT.NONE);
+        userPasswordLabel = new Label(userSettingsGroup, SWT.NONE);
         userPasswordLabel.setText(Messages.SystemTapScriptLaunchConfigurationTab_password);
-        this.userPasswordText = new Text(userSettingsGroup, SWT.SINGLE | SWT.BORDER | SWT.PASSWORD);
+        userPasswordText = new Text(userSettingsGroup, SWT.SINGLE | SWT.BORDER | SWT.PASSWORD);
         userPasswordText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
         userSettingsGroup.setLayoutData( new GridData(SWT.FILL, SWT.FILL, true, false));
         userSettingsGroup.setText(Messages.SystemTapScriptLaunchConfigurationTab_user);
-
-        currentUserCheckButton.addSelectionListener(new SelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                update();
-            }
-
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
-                update();
-            }
-
-            private void update() {
-                boolean enable = !currentUserCheckButton.getSelection();
-                setUserGroupEnablement(enable);
-                updateLaunchConfigurationDialog();
-            }
-        });
 
         userNameText.addModifyListener(new ModifyListener() {
             @Override
@@ -193,32 +201,51 @@ public class SystemTapScriptLaunchConfigurationTab extends
         hostSettingsGroup.setLayout(layout);
         layout.numColumns = 2;
 
-        this.localHostCheckButton = new Button(hostSettingsGroup, SWT.CHECK);
+        localHostCheckButton = new Button(hostSettingsGroup, SWT.CHECK);
         localHostCheckButton.setText(Messages.SystemTapScriptLaunchConfigurationTab_runLocally);
         gridData = new GridData();
         gridData.horizontalSpan = 2;
 
-        this.hostNamelabel = new Label(hostSettingsGroup, SWT.NONE);
-        hostNamelabel.setText(Messages.SystemTapScriptLaunchConfigurationTab_hostname);
-        this.hostNameText = new Text(hostSettingsGroup, SWT.SINGLE | SWT.BORDER);
+        hostNameLabel = new Label(hostSettingsGroup, SWT.NONE);
+        hostNameLabel.setText(Messages.SystemTapScriptLaunchConfigurationTab_hostname);
+        hostNameText = new Text(hostSettingsGroup, SWT.SINGLE | SWT.BORDER);
         hostNameText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         localHostCheckButton.setLayoutData(gridData);
-        localHostCheckButton.addSelectionListener(new SelectionListener() {
+        localHostCheckButton.addSelectionListener(checkListener);
+        hostNameText.addModifyListener(new ModifyListener() {
             @Override
-            public void widgetSelected(SelectionEvent e) {
-                update();
-            }
-
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
-                update();
-            }
-
-            private void update() {
+            public void modifyText(ModifyEvent e) {
                 updateLaunchConfigurationDialog();
             }
         });
-        hostNameText.addModifyListener(new ModifyListener() {
+
+        portCheckButton = new Button(hostSettingsGroup, SWT.CHECK);
+        portCheckButton.setText(Messages.SystemTapScriptLaunchConfigurationTab_useDefaultPort);
+        gridData = new GridData();
+        gridData.horizontalSpan = 2;
+        portCheckButton.setLayoutData(gridData);
+        portCheckButton.addSelectionListener(checkListener);
+
+        portLabel = new Label(hostSettingsGroup, SWT.NONE);
+        portLabel.setText(Messages.SystemTapScriptLaunchConfigurationTab_port);
+        portText = new Text(hostSettingsGroup, SWT.SINGLE | SWT.BORDER);
+        portText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        portText.setTextLimit(5);
+        portText.addVerifyListener(new VerifyListener() {
+            @Override
+            public void verifyText(VerifyEvent e) {
+                if (e.keyCode == SWT.BS) {
+                    return;
+                }
+                for (int i = 0, n = e.text.length(); i < n; i++) {
+                    if (!Character.isDigit(e.text.charAt(i))) {
+                        e.doit = false;
+                        return;
+                    }
+                }
+            }
+        });
+        portText.addModifyListener(new ModifyListener() {
             @Override
             public void modifyText(ModifyEvent e) {
                 updateLaunchConfigurationDialog();
@@ -237,18 +264,26 @@ public class SystemTapScriptLaunchConfigurationTab extends
     }
 
     private void setHostGroupEnablement(boolean enable) {
-        hostNamelabel.setEnabled(enable);
         hostNameText.setEnabled(enable);
+        hostNameLabel.setEnabled(enable);
+        portCheckButton.setEnabled(enable);
+
+        boolean portEnabled = enable && !portCheckButton.getSelection();
+        portText.setEnabled(portEnabled);
+        portLabel.setEnabled(portEnabled);
     }
 
     @Override
     public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-        configuration.setAttribute(SCRIPT_PATH_ATTR, this.getSelectedScriptPath());
+        configuration.setAttribute(SCRIPT_PATH_ATTR, getSelectedScriptPath());
         configuration.setAttribute(CURRENT_USER_ATTR, true);
         configuration.setAttribute(USER_NAME_ATTR, ""); //$NON-NLS-1$
         configuration.setAttribute(USER_PASS_ATTR, ""); //$NON-NLS-1$
         configuration.setAttribute(LOCAL_HOST_ATTR, true);
         configuration.setAttribute(HOST_NAME_ATTR, ""); //$NON-NLS-1$
+        configuration.setAttribute(PORT_ATTR,
+                SystemTapScriptLaunchConfigurationDelegate.DEFAULT_PORT);
+        configuration.setAttribute(USE_DEFAULT_PORT_ATTR, true);
     }
 
     @Override
@@ -260,6 +295,9 @@ public class SystemTapScriptLaunchConfigurationTab extends
             this.userPasswordText.setText(configuration.getAttribute(USER_PASS_ATTR, "")); //$NON-NLS-1$
             this.localHostCheckButton.setSelection(configuration.getAttribute(LOCAL_HOST_ATTR, true));
             this.hostNameText.setText(configuration.getAttribute(HOST_NAME_ATTR, "")); //$NON-NLS-1$
+            this.portText.setText(Integer.toString(configuration.getAttribute(PORT_ATTR,
+                    SystemTapScriptLaunchConfigurationDelegate.DEFAULT_PORT)));
+            this.portCheckButton.setSelection(configuration.getAttribute(USE_DEFAULT_PORT_ATTR, true));
         } catch (CoreException e) {
             ExceptionErrorDialog.openError(Messages.SystemTapScriptLaunchConfigurationTab_errorInitializingTab, e);
         }
@@ -273,6 +311,10 @@ public class SystemTapScriptLaunchConfigurationTab extends
         configuration.setAttribute(USER_PASS_ATTR, this.userPasswordText.getText());
         configuration.setAttribute(LOCAL_HOST_ATTR, this.localHostCheckButton.getSelection());
         configuration.setAttribute(HOST_NAME_ATTR, this.hostNameText.getText());
+
+        configuration.setAttribute(USE_DEFAULT_PORT_ATTR, portCheckButton.getSelection());
+        String portString = this.portText.getText();
+        configuration.setAttribute(PORT_ATTR, !portString.isEmpty() ? Integer.valueOf(portString) : 0);
 
         boolean enable = !currentUserCheckButton.getSelection();
         setUserGroupEnablement(enable);

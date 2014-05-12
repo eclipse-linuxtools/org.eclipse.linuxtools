@@ -74,6 +74,8 @@ public class Messages extends NLS {
     public static String SystemTapScriptLaunchConfigurationTab_password;
     public static String SystemTapScriptLaunchConfigurationTab_user;
     public static String SystemTapScriptLaunchConfigurationTab_host;
+    public static String SystemTapScriptLaunchConfigurationTab_useDefaultPort;
+    public static String SystemTapScriptLaunchConfigurationTab_port;
     public static String SystemTapScriptLaunchConfigurationTab_runLocally;
     public static String SystemTapScriptLaunchConfigurationTab_hostname;
     public static String SystemTapScriptLaunchConfigurationTab_general;

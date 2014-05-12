@@ -102,9 +102,9 @@ public class ScriptConsole extends IOConsole {
         IConsole ic[] = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
         if (null != ic) {
             for (IConsole consoleIterator: ic) {
-                if (consoleIterator instanceof ScriptConsole){
+                if (consoleIterator instanceof ScriptConsole) {
                     ScriptConsole activeConsole = (ScriptConsole) consoleIterator;
-                    if(activeConsole.getName().endsWith(name) && activeConsole.isRunning()) {
+                    if (activeConsole.getName().endsWith(name) && activeConsole.isRunning()) {
                         return true;
                     }
                 }
@@ -127,12 +127,12 @@ public class ScriptConsole extends IOConsole {
             IConsole ic[] = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
 
             //Prevent running the same script twice
-            if(null != ic) {
+            if (ic != null) {
                 ScriptConsole activeConsole;
                 for (IConsole consoleIterator: ic) {
-                    if (consoleIterator instanceof ScriptConsole){
+                    if (consoleIterator instanceof ScriptConsole) {
                         activeConsole = (ScriptConsole) consoleIterator;
-                        if(activeConsole.getName().endsWith(name)) {
+                        if (activeConsole.getName().endsWith(name)) {
                             //Stop any script currently running, and terminate stream listeners.
                             if (activeConsole.isRunning()) {
                                 activeConsole.stop();
@@ -159,11 +159,11 @@ public class ScriptConsole extends IOConsole {
                 }
             }
 
-            if(null == console) {
+            if (console == null) {
                 console = new ScriptConsole(name, null);
                 ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[] {console});
             }
-        } catch(NullPointerException npe) {
+        } catch (NullPointerException npe) {
             console = null;
         }
         return console;
@@ -178,10 +178,10 @@ public class ScriptConsole extends IOConsole {
         IConsole ic[] = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
         ScriptConsole console;
 
-        for(IConsole con : ic) {
-            if (con instanceof ScriptConsole){
+        for (IConsole con : ic) {
+            if (con instanceof ScriptConsole) {
                 console = (ScriptConsole)con;
-                if(console.isRunning()){
+                if (console.isRunning()) {
                     return true;
                 }
             }
@@ -197,8 +197,8 @@ public class ScriptConsole extends IOConsole {
         IConsole ic[] = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
         ScriptConsole console;
 
-        for(IConsole con : ic) {
-            if (con instanceof ScriptConsole){
+        for (IConsole con : ic) {
+            if (con instanceof ScriptConsole) {
                 console = (ScriptConsole)con;
                 console.stop();
             }
@@ -225,7 +225,7 @@ public class ScriptConsole extends IOConsole {
     private void createErrorDaemon(IErrorParser parser) {
         ErrorView errorView = null;
         IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ErrorView.ID);
-        if(ivp instanceof ErrorView) {
+        if (ivp instanceof ErrorView) {
             errorView = ((ErrorView)ivp);
         }
         errorDaemon = new ErrorStreamDaemon(this, errorView, parser);
@@ -248,15 +248,15 @@ public class ScriptConsole extends IOConsole {
         if (waitingToStart()) {
             return;
         }
-        cmd = new ScpExec(command, remoteOptions);
+        cmd = new ScpExec(command, remoteOptions, envVars);
 
-        this.stopCommand = new Runnable() {
+        stopCommand = new Runnable() {
             private final Command stopcmd = cmd;
             private final String stopString = getStopString();
 
             @Override
             public void run() {
-                ScpExec stop = new ScpExec(new String[]{stopString}, remoteOptions);
+                ScpExec stop = new ScpExec(new String[]{stopString}, remoteOptions, null);
                 try {
                     synchronized (stopcmd) {
                         while (stopcmd.isRunning()) {
@@ -265,7 +265,7 @@ public class ScriptConsole extends IOConsole {
                         }
                     }
                 } catch (CoreException e) {
-                    // Failed to start the 'stop' process. Ignore.
+                    ExceptionErrorDialog.openError(Localization.getString("ScriptConsole.ErrorKillingStap"), e.getMessage(), e); //$NON-NLS-1$
                 } catch (InterruptedException e) {
                     // Wait was interrupted. Exit.
                 }
@@ -291,7 +291,7 @@ public class ScriptConsole extends IOConsole {
         cmd = new Command(command, envVars, project);
         final IProject proj = project;
 
-        this.stopCommand = new Runnable() {
+        stopCommand = new Runnable() {
             private final Command stopcmd = cmd;
             String stopString = getStopString();
 
@@ -305,7 +305,7 @@ public class ScriptConsole extends IOConsole {
                         }
                     }
                 } catch (IOException e) {
-                    ExceptionErrorDialog.openError(Localization.getString("ScriptConsole.ErrorKillingStap"), e); //$NON-NLS-1$
+                    ExceptionErrorDialog.openError(Localization.getString("ScriptConsole.ErrorKillingStap"), e.getMessage(), e); //$NON-NLS-1$
                 } catch (InterruptedException e) {
                     //Wait was interrupted. Exit.
                 }
@@ -314,7 +314,7 @@ public class ScriptConsole extends IOConsole {
         this.run(cmd, errorParser);
     }
 
-    private void run(final Command cmd, IErrorParser errorParser){
+    private void run(final Command cmd, IErrorParser errorParser) {
         final Runnable onCmdStop = new Runnable() {
             @Override
             public void run() {
@@ -350,7 +350,9 @@ public class ScriptConsole extends IOConsole {
                 try {
                     cmd.start();
                 } catch (final CoreException e) {
-                    ExceptionErrorDialog.openError(e.getMessage(), e);
+                    ExceptionErrorDialog.openError(
+                            Localization.getString("ScriptConsole.ErrorRunningStapTitle"), //$NON-NLS-1$
+                            Localization.getString("ScriptConsole.ErrorRunningStapMessage"), e);//$NON-NLS-1$
                     cmd.dispose();
                     return;
                 }
@@ -379,7 +381,7 @@ public class ScriptConsole extends IOConsole {
         });
     }
 
-    private synchronized void notifyConsoleObservers(){
+    private synchronized void notifyConsoleObservers() {
         boolean started = hasStarted();
         boolean running = isRunning();
         for (ScriptConsoleObserver observer : inactiveConsoleObservers) {
@@ -394,7 +396,7 @@ public class ScriptConsole extends IOConsole {
     /**
      * @since 2.0
      */
-    public synchronized void addScriptConsoleObserver(ScriptConsoleObserver observer){
+    public synchronized void addScriptConsoleObserver(ScriptConsoleObserver observer) {
         activeConsoleObservers.add(observer);
         observer.runningStateChanged(hasStarted(), !isRunning());
     }
@@ -402,7 +404,7 @@ public class ScriptConsole extends IOConsole {
     /**
      * @since 3.0
      */
-    public synchronized void removeScriptConsoleObserver(ScriptConsoleObserver observer){
+    public synchronized void removeScriptConsoleObserver(ScriptConsoleObserver observer) {
         if (activeConsoleObservers.contains(observer)) {
             inactiveConsoleObservers.add(observer);
         }
@@ -478,14 +480,14 @@ public class ScriptConsole extends IOConsole {
     public synchronized void stop() {
         if (isRunning() && (stopCommandThread == null || !stopCommandThread.isAlive())) {
             // Stop the underlying stap process
-            stopCommandThread = new Thread(this.stopCommand);
+            stopCommandThread = new Thread(stopCommand);
             stopCommandThread.start();
         }
     }
 
-    private String getModuleName(){
-        if(this.moduleName == null){
-            moduleName = this.getName();
+    private String getModuleName() {
+        if (moduleName == null) {
+            moduleName = getName();
             int lastSlash = moduleName.lastIndexOf('/')+1;
             if (lastSlash < 0) {
                 lastSlash = 0;
@@ -495,10 +497,10 @@ public class ScriptConsole extends IOConsole {
                 moduleName = moduleName.substring(lastSlash, lastDot);
             }
         }
-        return this.moduleName;
+        return moduleName;
     }
 
-    private String getStopString(){
+    private String getStopString() {
         return "pkill -SIGINT -f stapio.*"+ getModuleName();  //$NON-NLS-1$
     }
     /**
@@ -506,16 +508,16 @@ public class ScriptConsole extends IOConsole {
      */
     @Override
     public void dispose() {
-        if(!isDisposed()) {
-            if(null != cmd) {
+        if (!isDisposed()) {
+            if (cmd != null) {
                 cmd.dispose();
             }
             cmd = null;
-            if(null != errorDaemon) {
+            if (errorDaemon != null) {
                 errorDaemon.dispose();
             }
             errorDaemon = null;
-            if(null != consoleDaemon) {
+            if (consoleDaemon != null) {
                 consoleDaemon.dispose();
             }
             consoleDaemon = null;
@@ -529,7 +531,7 @@ public class ScriptConsole extends IOConsole {
     @Override
     public void setName(String name) {
         super.setName(name);
-        if(null != ConsolePlugin.getDefault()) {
+        if (ConsolePlugin.getDefault() != null) {
             ConsolePlugin.getDefault().getConsoleManager().refresh(this);
         }
     }

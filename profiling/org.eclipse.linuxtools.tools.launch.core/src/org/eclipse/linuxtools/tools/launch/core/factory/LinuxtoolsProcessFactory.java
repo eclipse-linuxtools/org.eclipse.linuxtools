@@ -21,7 +21,7 @@ import org.eclipse.linuxtools.profiling.launch.RemoteEnvProxyManager;
 import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathProperty;
 
 /*
- * Abstract class with usefull functions for ProcessFactory classes.
+ * Abstract class with useful functions for ProcessFactory classes.
  */
 public abstract class LinuxtoolsProcessFactory {
     private static final String PATH = "PATH"; //$NON-NLS-1$

@@ -29,6 +29,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.PreferenceCo
 import org.eclipse.linuxtools.man.parser.ManPage;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.linuxtools.systemtap.structures.listeners.IUpdateListener;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
@@ -141,6 +142,7 @@ public final class TapsetLibrary {
     private static void init() {
         IPreferenceStore preferenceStore = IDEPlugin.getDefault().getPreferenceStore();
         preferenceStore.addPropertyChangeListener(propertyChangeListener);
+        ConsoleLogPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(credentialChangeListener);
 
         functionParser.addListener(functionCompletionListener);
         probeParser.addListener(probeCompletionListener);
@@ -158,7 +160,8 @@ public final class TapsetLibrary {
         public void propertyChange(PropertyChangeEvent event) {
             String property = event.getProperty();
             if (property.equals(IDEPreferenceConstants.P_TAPSETS)
-                    || property.equals(PreferenceConstants.P_ENV.SYSTEMTAP_TAPSET.toPrefKey())) {
+                    || property.equals(PreferenceConstants.P_ENV.SYSTEMTAP_TAPSET.toPrefKey())
+                    || property.equals(IDEPreferenceConstants.P_REMOTE_PROBES)) {
                 runStapParser();
             } else if (property.equals(IDEPreferenceConstants.P_STORED_TREE)) {
                 if (event.getNewValue().equals(false)) {
@@ -170,6 +173,13 @@ public final class TapsetLibrary {
                     TreeSettings.setTrees(functionTree, probeTree);
                 }
             }
+        }
+    };
+
+    private static final IPropertyChangeListener credentialChangeListener = new IPropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent event) {
+            runStapParser();
         }
     };
 

@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -31,9 +32,13 @@ import org.eclipse.linuxtools.systemtap.structures.runnable.StringStreamGobbler;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.JSchException;
@@ -52,6 +57,7 @@ import com.jcraft.jsch.JSchException;
 public abstract class TapsetParser extends Job {
 
     private static AtomicBoolean displayingError = new AtomicBoolean(false);
+    private static AtomicBoolean displayingCredentialDialog = new AtomicBoolean(false);
 
     private ArrayList<IUpdateListener> listeners = new ArrayList<>();
     private boolean cancelRequested = false;
@@ -135,6 +141,7 @@ public abstract class TapsetParser extends Job {
                 .getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
         boolean noTapsets = tapsets[0].trim().isEmpty();
         boolean noOptions = options[0].trim().isEmpty();
+        final boolean remote = IDEPlugin.getDefault().getPreferenceStore().getBoolean(IDEPreferenceConstants.P_REMOTE_PROBES);
 
         int size = probe != null ? 2 : 1;
         if (!noTapsets) {
@@ -147,7 +154,8 @@ public abstract class TapsetParser extends Job {
         args = new String[size];
         args[0] = "stap"; //$NON-NLS-1$
         if (probe != null) {
-            args[size-1] = probe;
+            // Workaround for the fact that remote & local execution methods use string args differently
+            args[size - 1] = !remote ? probe : '\'' + probe + '\'';
         }
 
         //Add extra tapset directories
@@ -158,59 +166,101 @@ public abstract class TapsetParser extends Job {
             }
         }
         if (!noOptions) {
-            for (int i = 0, s = noTapsets ? 1 : 1 + tapsets.length*2; i<options.length; i++) {
+            for (int i = 0, s = noTapsets ? 1 : 1 + tapsets.length*2; i < options.length; i++) {
                 args[s + i] = options[i];
             }
         }
 
         try {
-            if (IDEPlugin.getDefault().getPreferenceStore().getBoolean(IDEPreferenceConstants.P_REMOTE_PROBES)) {
-                StringOutputStream str = new StringOutputStream();
-                StringOutputStream strErr = new StringOutputStream();
-
-                IPreferenceStore p = ConsoleLogPlugin.getDefault().getPreferenceStore();
-                String user = p.getString(ConsoleLogPreferenceConstants.SCP_USER);
-                String host = p.getString(ConsoleLogPreferenceConstants.HOST_NAME);
-                String password = p.getString(ConsoleLogPreferenceConstants.SCP_PASSWORD);
-
-                Channel channel = SystemtapProcessFactory.execRemoteAndWait(args, str, strErr, user, host, password);
-                if (channel == null) {
-                    displayError(Messages.TapsetParser_CannotRunStapTitle, Messages.TapsetParser_CannotRunStapMessage);
-                }
-
-                return (!getErrors ? str : strErr).toString();
+            if (!remote) {
+                return runLocalStap(args, getErrors);
             } else {
-                Process process = RuntimeProcessFactory.getFactory().exec(
-                        args, EnvironmentVariablesPreferencePage.getEnvironmentVariables(), null);
-                if (process == null) {
-                    displayError(Messages.TapsetParser_CannotRunStapTitle, Messages.TapsetParser_CannotRunStapMessage);
-                    return null;
-                }
-
-                StringStreamGobbler gobbler = new StringStreamGobbler(process.getInputStream());
-                StringStreamGobbler egobbler = null;
-                gobbler.start();
-                if (getErrors) {
-                    egobbler = new StringStreamGobbler(process.getErrorStream());
-                    egobbler.start();
-                }
-                process.waitFor();
-                gobbler.stop();
-                if (egobbler == null) {
-                    return gobbler.getOutput().toString();
-                } else {
-                    egobbler.stop();
-                    return egobbler.getOutput().toString();
-                }
+                return runRemoteStapAttempt(args, getErrors);
             }
-
-        } catch (JSchException|IOException e) {
+        } catch (IOException e) {
             displayError(Messages.TapsetParser_ErrorRunningSystemtap, e.getMessage());
         } catch (InterruptedException e) {
             // Interrupted; exit.
         }
 
         return null;
+    }
+
+    private String runLocalStap(String[] args, boolean getErrors) throws IOException, InterruptedException {
+        Process process = RuntimeProcessFactory.getFactory().exec(
+                args, EnvironmentVariablesPreferencePage.getEnvironmentVariables(), null);
+        if (process == null) {
+            displayError(Messages.TapsetParser_CannotRunStapTitle, Messages.TapsetParser_CannotRunStapMessage);
+            return null;
+        }
+
+        StringStreamGobbler gobbler = new StringStreamGobbler(process.getInputStream());
+        StringStreamGobbler egobbler = null;
+        gobbler.start();
+        if (getErrors) {
+            egobbler = new StringStreamGobbler(process.getErrorStream());
+            egobbler.start();
+        }
+        process.waitFor();
+        gobbler.stop();
+        if (egobbler == null) {
+            return gobbler.getOutput().toString();
+        } else {
+            egobbler.stop();
+            return egobbler.getOutput().toString();
+        }
+    }
+
+    private String runRemoteStapAttempt(String[] args, boolean getErrors) {
+        int attemptsLeft = 3;
+        while (true) {
+            try {
+                return runRemoteStap(args, getErrors);
+            } catch (JSchException e) {
+                if (!(e.getCause() instanceof ConnectException) || --attemptsLeft == 0) {
+                    askIfEditCredentials();
+                    return null;
+                }
+            }
+        }
+    }
+
+    private String runRemoteStap(String[] args, boolean getErrors) throws JSchException {
+        StringOutputStream str = new StringOutputStream();
+        StringOutputStream strErr = new StringOutputStream();
+
+        IPreferenceStore p = ConsoleLogPlugin.getDefault().getPreferenceStore();
+        String user = p.getString(ConsoleLogPreferenceConstants.SCP_USER);
+        String host = p.getString(ConsoleLogPreferenceConstants.HOST_NAME);
+        String password = p.getString(ConsoleLogPreferenceConstants.SCP_PASSWORD);
+        int port = p.getInt(ConsoleLogPreferenceConstants.PORT_NUMBER);
+
+        Channel channel = SystemtapProcessFactory.execRemoteAndWait(args, str, strErr, user, host, password,
+                port, EnvironmentVariablesPreferencePage.getEnvironmentVariables());
+        if (channel == null) {
+            displayError(Messages.TapsetParser_CannotRunStapTitle, Messages.TapsetParser_CannotRunStapMessage);
+        }
+
+        return (!getErrors ? str : strErr).toString();
+    }
+
+    private void askIfEditCredentials() {
+        if (displayingCredentialDialog.compareAndSet(false, true)) {
+            PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+                @Override
+                public void run() {
+                    Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+                    MessageBox dialog = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+                    dialog.setText(Messages.TapsetParser_RemoteCredentialErrorTitle);
+                    dialog.setMessage(Messages.TapsetParser_RemoteCredentialErrorMessage);
+                    if (dialog.open() == SWT.YES) {
+                        String pageID = "org.eclipse.linuxtools.systemtap.prefs.consoleLog"; //$NON-NLS-1$
+                        PreferencesUtil.createPreferenceDialogOn(shell, pageID, new String[]{pageID}, null).open();
+                    }
+                    displayingCredentialDialog.set(false);
+                }
+            });
+        }
     }
 
     private void displayError(final String title, final String error) {

@@ -12,13 +12,8 @@
 package org.eclipse.linuxtools.systemtap.ui.consolelog.preferences;
 
 public interface ConsoleLogPreferenceConstants {
-    //ide
     String HOST_NAME = "host"; //$NON-NLS-1$
     String PORT_NUMBER = "port"; //$NON-NLS-1$
-    String DB_COMMIT = "commit"; //$NON-NLS-1$
-    String SAVE_LENGTH = "saveLength"; //$NON-NLS-1$
-    String REMEMBER_SERVER = "rememberServer"; //$NON-NLS-1$
     String SCP_USER = "scpuser"; //$NON-NLS-1$
     String SCP_PASSWORD = "scppassword"; //$NON-NLS-1$
-    String REMEMBER_SCPUSER = "rememberscpuser"; //$NON-NLS-1$
 }
