@@ -18,6 +18,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
  * This <code>Action</code> exports all data in the currently-active {@link GraphSelectorEditor}
@@ -26,14 +27,14 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ExportDataSetHandler extends AbstractHandler {
 
-    private GraphSelectorEditor getActiveGraphEditor() {
-        IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+    private GraphSelectorEditor getActiveGraphEditor(ExecutionEvent event) {
+        IEditorPart editor = HandlerUtil.getActiveEditor(event);
         return editor instanceof GraphSelectorEditor ? (GraphSelectorEditor) editor : null;
     }
 
     @Override
     public Object execute(ExecutionEvent event) {
-        GraphSelectorEditor editor = getActiveGraphEditor();
+        GraphSelectorEditor editor = getActiveGraphEditor(event);
         if (editor == null) {
             return null;
         }
@@ -47,11 +48,6 @@ public class ExportDataSetHandler extends AbstractHandler {
             editor.getActiveDisplaySet().getDataSet().writeToFile(new File(path));
         }
         return null;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return getActiveGraphEditor() != null;
     }
 
 }

@@ -12,11 +12,12 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
 
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class ImportTapsetHandler extends IDEHandler {
+public class ImportTapsetHandler extends AbstractHandler {
 
     @Override
     public Object execute(ExecutionEvent event) {

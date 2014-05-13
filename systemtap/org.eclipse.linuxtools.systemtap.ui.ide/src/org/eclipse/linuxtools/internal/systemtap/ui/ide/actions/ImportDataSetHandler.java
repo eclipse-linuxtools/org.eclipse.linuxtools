@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPerspective;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IFilteredDataSet;
@@ -39,7 +40,7 @@ import org.eclipse.ui.WorkbenchException;
  * into an external file, which can be imported back in later.
  * @author Andrew Ferrazzutti
  */
-public class ImportDataSetHandler extends IDEHandler {
+public class ImportDataSetHandler extends AbstractHandler {
 
     @Override
     public Object execute(ExecutionEvent event) {

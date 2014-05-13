@@ -45,11 +45,6 @@ public class SaveGraphImageHandler extends AbstractHandler {
         return null;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return getActiveGraphEditor() != null;
-    }
-
     private GraphSelectorEditor getActiveGraphEditor() {
         IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().
                 getActivePage().getActiveEditor();

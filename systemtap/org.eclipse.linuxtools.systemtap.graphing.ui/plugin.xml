@@ -35,8 +35,7 @@
             name="%command.save.name"
             description="%command.save.desc"
             categoryId="org.eclipse.linuxtools.systemtap.graphing.ui.category.file"
-            id="org.eclipse.linuxtools.systemtap.graphing.ui.commands.SaveGraphImage"
-            defaultHandler="org.eclipse.linuxtools.internal.systemtap.graphing.ui.handlers.SaveGraphImageHandler"/>
+            id="org.eclipse.linuxtools.systemtap.graphing.ui.commands.SaveGraphImage"/>
     </extension>
 
     <extension
@@ -53,6 +52,17 @@
     </extension>
 
     <extension
+        point="org.eclipse.ui.handlers">
+        <handler
+            class="org.eclipse.linuxtools.internal.systemtap.graphing.ui.handlers.SaveGraphImageHandler"
+            commandId="org.eclipse.linuxtools.systemtap.graphing.ui.commands.SaveGraphImage">
+            <activeWhen>
+                <reference definitionId="org.eclipse.linuxtools.systemtap.graphing.ui.graphEditorEnablement"/>
+            </activeWhen>
+        </handler>
+    </extension>
+
+    <extension
         point="org.eclipse.ui.editors">
         <editor
             class="org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditor"
@@ -60,6 +70,19 @@
             id="org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditor"
             name="Graphs">
         </editor>
+    </extension>
+
+    <extension
+        point="org.eclipse.core.expressions.definitions">
+        <definition
+            id="org.eclipse.linuxtools.systemtap.graphing.ui.graphEditorEnablement">
+         <with
+               variable="activeEditorId">
+            <equals
+                  value="org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditor">
+            </equals>
+         </with>
+      </definition>
     </extension>
 
 </plugin>

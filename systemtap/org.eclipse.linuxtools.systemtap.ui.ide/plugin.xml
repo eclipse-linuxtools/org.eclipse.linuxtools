@@ -272,8 +272,7 @@
             name="%command.import.name"
             description="%command.import.desc"
             categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.file"
-            id="org.eclipse.linuxtools.systemtap.ui.ide.commands.ImportTapset"
-            defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ImportTapsetHandler">
+            id="org.eclipse.linuxtools.systemtap.ui.ide.commands.ImportTapset">
       </command>
 
       <category
@@ -285,8 +284,7 @@
             name="%action.run.name"
             description="%action.run.desc"
             categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.run"
-            id="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptCommand"
-            defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptHandler">
+            id="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptCommand">
       </command>
 
       <category
@@ -298,15 +296,13 @@
             name="%action.dataExport.name"
             description="%action.dataExport.desc"
             categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.data"
-            id="org.eclipse.linuxtools.systemtap.ui.ide.ExportDataSetCommand"
-            defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ExportDataSetHandler">
+            id="org.eclipse.linuxtools.systemtap.ui.ide.ExportDataSetCommand">
       </command>
       <command
             name="%action.dataImport.name"
             description="%action.dataImport.desc"
             categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.data"
-            id="org.eclipse.linuxtools.systemtap.ui.ide.ImportDataSetCommand"
-            defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ImportDataSetHandler">
+            id="org.eclipse.linuxtools.systemtap.ui.ide.ImportDataSetCommand">
       </command>
 
       <category
@@ -357,6 +353,45 @@
 
    <extension
          point="org.eclipse.ui.handlers">
+      <handler
+            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptHandler"
+            commandId="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptCommand">
+         <activeWhen>
+            <with
+                   variable="activeEditor">
+                <instanceof
+                      value="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor">
+                </instanceof>
+             </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ImportTapsetHandler"
+            commandId="org.eclipse.linuxtools.systemtap.ui.ide.commands.ImportTapset">
+         <activeWhen>
+            <reference
+                  definitionId="org.eclipse.linuxtools.systemtap.ui.ide.perspectiveEnablement">
+            </reference>
+         </activeWhen>
+      </handler>
+      <handler
+            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ImportDataSetHandler"
+            commandId="org.eclipse.linuxtools.systemtap.ui.ide.ImportDataSetCommand">
+         <activeWhen>
+            <reference
+                  definitionId="org.eclipse.linuxtools.systemtap.ui.ide.perspectiveEnablement">
+            </reference>
+         </activeWhen>
+      </handler>
+      <handler
+            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ExportDataSetHandler"
+            commandId="org.eclipse.linuxtools.systemtap.ui.ide.ExportDataSetCommand">
+         <activeWhen>
+            <reference
+                  definitionId="org.eclipse.linuxtools.systemtap.graphing.ui.graphEditorEnablement">
+            </reference>
+         </activeWhen>
+      </handler>
       <handler
             class="org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers.DefinitionHandler"
             commandId="org.eclipse.linuxtools.systemtap.ui.ide.definitionMenu">
@@ -520,6 +555,19 @@
             name="%editor.context.name"
             parentId="org.eclipse.ui.textEditorScope">
       </context>
+   </extension>
+
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="org.eclipse.linuxtools.systemtap.ui.ide.perspectiveEnablement">
+         <with
+               variable="activeWorkbenchWindow.activePerspective">
+            <equals
+                  value="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
+            </equals>
+         </with>
+      </definition>
    </extension>
 
 </plugin>
