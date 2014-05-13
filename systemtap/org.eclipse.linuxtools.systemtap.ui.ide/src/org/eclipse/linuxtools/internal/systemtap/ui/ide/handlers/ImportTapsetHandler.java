@@ -10,7 +10,7 @@
  *     Red Hat - migration to Handler implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;

@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse, Anithra P J
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -69,7 +69,7 @@ public class RunScriptChartHandler extends RunScriptHandler {
                 }
             }
         } catch (WorkbenchException we) {
-            ExceptionErrorDialog.openError(Messages.RunScriptChartAction_couldNotSwitchToGraphicPerspective, we);
+            ExceptionErrorDialog.openError(Messages.RunScriptChartHandler_couldNotSwitchToGraphicPerspective, we);
         }
         super.scriptConsoleInitialized(console);
     }

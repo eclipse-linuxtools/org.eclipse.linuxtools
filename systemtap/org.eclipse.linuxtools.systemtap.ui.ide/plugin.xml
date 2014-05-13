@@ -83,7 +83,7 @@
          <command
                commandId="org.eclipse.linuxtools.systemtap.ui.ide.commands.ImportTapset"
                icon="icons/actions/import_wiz.gif"
-               label="%action.import.name"
+               label="%command.import.name"
                style="push">
             <visibleWhen
                   checkEnabled="true">
@@ -97,7 +97,7 @@
          <command
                commandId="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptCommand"
                icon="icons/actions/run/run_exc.gif"
-               label="%action.run.desc"
+               label="%command.run.desc"
                style="push">
             <visibleWhen
                   checkEnabled="true">
@@ -111,7 +111,7 @@
          <command
                commandId="org.eclipse.linuxtools.systemtap.ui.ide.ExportDataSetCommand"
                icon="icons/actions/exportpref_obj.gif"
-               label="%action.dataExport.name"
+               label="%command.dataExport.name"
                style="push">
             <visibleWhen
                   checkEnabled="true">
@@ -120,7 +120,7 @@
          <command
                commandId="org.eclipse.linuxtools.systemtap.ui.ide.ImportDataSetCommand"
                icon="icons/actions/importpref_obj.gif"
-               label="%action.dataImport.name"
+               label="%command.dataImport.name"
                style="push">
             <visibleWhen
                   checkEnabled="true">
@@ -281,8 +281,8 @@
             id="org.eclipse.linuxtools.systemtap.ui.ide.category.run">
       </category>
       <command
-            name="%action.run.name"
-            description="%action.run.desc"
+            name="%command.run.name"
+            description="%command.run.desc"
             categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.run"
             id="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptCommand">
       </command>
@@ -293,14 +293,14 @@
             id="org.eclipse.linuxtools.systemtap.ui.ide.category.data">
       </category>
       <command
-            name="%action.dataExport.name"
-            description="%action.dataExport.desc"
+            name="%command.dataExport.name"
+            description="%command.dataExport.desc"
             categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.data"
             id="org.eclipse.linuxtools.systemtap.ui.ide.ExportDataSetCommand">
       </command>
       <command
-            name="%action.dataImport.name"
-            description="%action.dataImport.desc"
+            name="%command.dataImport.name"
+            description="%command.dataImport.desc"
             categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.data"
             id="org.eclipse.linuxtools.systemtap.ui.ide.ImportDataSetCommand">
       </command>
@@ -315,14 +315,14 @@
             categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.source"
             description="%command.toggleComment.desc"
             id="org.eclipse.linuxtools.systemtap.ui.ide.toggleComment"
-            defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ToggleCommentHandler">
+            defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers.ToggleCommentHandler">
       </command>
       <command
             name="%command.indent.name"
             description="%command.indent.desc"
             categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.source"
             id="org.eclipse.linuxtools.systemtap.ui.ide.indent"
-            defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.IndentHandler">
+            defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers.IndentHandler">
       </command>
 
       <category
@@ -331,8 +331,8 @@
             id="org.eclipse.linuxtools.systemtap.ui.ide.category.tapset">
       </category>
       <command
-          name="%action.viewDefinition.name"
-          description="%action.viewDefinition.desc"
+          name="%command.viewDefinition.name"
+          description="%command.viewDefinition.desc"
           categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.tapset"
           id="org.eclipse.linuxtools.systemtap.ui.ide.definitionMenu">
       </command>
@@ -354,7 +354,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.RunScriptHandler"
+            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers.RunScriptHandler"
             commandId="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptCommand">
          <activeWhen>
             <with
@@ -366,7 +366,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ImportTapsetHandler"
+            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers.ImportTapsetHandler"
             commandId="org.eclipse.linuxtools.systemtap.ui.ide.commands.ImportTapset">
          <activeWhen>
             <reference
@@ -375,7 +375,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ImportDataSetHandler"
+            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers.ImportDataSetHandler"
             commandId="org.eclipse.linuxtools.systemtap.ui.ide.ImportDataSetCommand">
          <activeWhen>
             <reference
@@ -384,7 +384,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ExportDataSetHandler"
+            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers.ExportDataSetHandler"
             commandId="org.eclipse.linuxtools.systemtap.ui.ide.ExportDataSetCommand">
          <activeWhen>
             <reference
@@ -485,7 +485,7 @@
                                     value="org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor">
                               </equals>
                            </with>
-                         </and>
+                        </and>
                      </or>
                   </iterate>
                </with>

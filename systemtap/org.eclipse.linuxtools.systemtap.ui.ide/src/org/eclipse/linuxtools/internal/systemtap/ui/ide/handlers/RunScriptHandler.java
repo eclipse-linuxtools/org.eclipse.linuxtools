@@ -8,7 +8,7 @@
  *     Jeff Briggs, Henry Hughes, Ryan Morse, Roland Grunberg, Anithra P J
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,7 +36,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.ProgressMonitorPart;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.SystemTapScriptLaunch;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.EnvironmentVariablesPreferencePage;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
@@ -175,8 +174,8 @@ public class RunScriptHandler extends AbstractHandler {
                 if (ScriptConsole.instanceIsRunning(name)) {
                     MessageDialog dialog = new MessageDialog(
                             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                            Messages.RunScriptAction_alreadyRunningDialogTitle, null,
-                            MessageFormat.format(Messages.RunScriptAction_alreadyRunningDialogMessage, fileName),
+                            Messages.RunScriptHandler_AlreadyRunningDialogTitle, null,
+                            MessageFormat.format(Messages.RunScriptHandler_AlreadyRunningDialogMessage, fileName),
                             MessageDialog.QUESTION, new String[]{"Yes", "No"}, 0); //$NON-NLS-1$ //$NON-NLS-2$
                     if (dialog.open() != Window.OK) {
                         if (launch != null) {
@@ -412,7 +411,7 @@ public class RunScriptHandler extends AbstractHandler {
         Matcher modNameMatch = validModName.matcher(modname);
         if (!modNameMatch.matches()) {
             continueRun = false;
-            throw new ExecutionException(Messages.ScriptRunAction_InvalidScriptMessage);
+            throw new ExecutionException(Messages.RunScriptHandler_InvalidScriptMessage);
         }
 
         String[] script = new String[cmdList.size() + 4];
@@ -433,9 +432,9 @@ public class RunScriptHandler extends AbstractHandler {
         return dotIndex != -1 ? fileName.substring(0, dotIndex) : fileName;
     }
 
-    @Override
+    /*@Override
     public boolean isEnabled() {
         return (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor() instanceof STPEditor);
-    }
+    }*/
 
 }

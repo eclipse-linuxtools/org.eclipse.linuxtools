@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2013 Red Hat.
+ * Copyright (c) 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *      Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,7 +41,6 @@ import org.eclipse.ui.WorkbenchException;
  * This <code>Action</code> imports data from an external file to populate
  * a {@link GraphSelectorEditor}.
  * into an external file, which can be imported back in later.
- * @author Andrew Ferrazzutti
  */
 public class ImportDataSetHandler extends AbstractHandler {
 
@@ -79,7 +81,7 @@ public class ImportDataSetHandler extends AbstractHandler {
         } catch (IOException ioe) {
             ExceptionErrorDialog.openError(Messages.ImportDataSetAction_FileInvalid, ioe);
         } catch (WorkbenchException we) {
-            ExceptionErrorDialog.openError(Messages.RunScriptChartAction_couldNotSwitchToGraphicPerspective, we);
+            ExceptionErrorDialog.openError(Messages.RunScriptChartHandler_couldNotSwitchToGraphicPerspective, we);
         }
 
         return null;

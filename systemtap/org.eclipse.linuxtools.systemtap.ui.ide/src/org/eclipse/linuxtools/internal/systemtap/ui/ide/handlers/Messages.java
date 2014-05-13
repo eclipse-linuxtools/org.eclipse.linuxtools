@@ -17,6 +17,15 @@ import org.eclipse.osgi.util.NLS;
  */
 public class Messages extends NLS {
     private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers.messages"; //$NON-NLS-1$
+    public static String RunScriptHandler_InvalidScriptMessage;
+    public static String RunScriptHandler_AlreadyRunningDialogTitle;
+    public static String RunScriptHandler_AlreadyRunningDialogMessage;
+    public static String RunScriptChartHandler_couldNotSwitchToGraphicPerspective;
+    public static String DataSetFileExtension;
+    public static String ExportDataSetAction_DialogTitle;
+    public static String ImportDataSetAction_DialogTitle;
+    public static String ImportDataSetAction_FileInvalid;
+    public static String ImportDataSetAction_FileNotFound;
     public static String AddStapProbe_editorError;
     public static String AddStapProbe_unableToInsertProbe;
     public static String CEditor_probeInsertFailed;

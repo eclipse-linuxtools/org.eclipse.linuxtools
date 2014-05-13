@@ -11,7 +11,7 @@
  *     Anton Leherbauer (Wind River Systems)
  *     Red Hat Inc. - modified for use in SystemTap
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;

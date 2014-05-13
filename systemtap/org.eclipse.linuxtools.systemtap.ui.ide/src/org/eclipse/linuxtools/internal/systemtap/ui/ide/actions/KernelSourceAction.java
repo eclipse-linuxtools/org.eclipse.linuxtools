@@ -79,7 +79,7 @@ public class KernelSourceAction extends BrowserViewAction {
                     try {
                         wb.getActiveWorkbenchWindow().getActivePage().openEditor(input, CDT_EDITOR_ID);
                     } catch (PartInitException e) {
-                        ExceptionErrorDialog.openError(Messages.ScriptRunAction_errorDialogTitle, e);
+                        ExceptionErrorDialog.openError(Localization.getString("KernelSourceAction.CantOpenEditor"), e); //$NON-NLS-1$
                     }
                 }
             } else {

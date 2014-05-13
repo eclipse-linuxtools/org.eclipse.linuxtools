@@ -18,8 +18,8 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.Region;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ToggleCommentHandler;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPDocumentProvider;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers.ToggleCommentHandler;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

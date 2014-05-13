@@ -1,12 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2013 Red Hat.
+ * Copyright (c) 2013 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *      Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.ide.actions;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers;
 
 import java.io.File;
 import java.text.MessageFormat;
@@ -23,7 +26,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 /**
  * This <code>Action</code> exports all data in the currently-active {@link GraphSelectorEditor}
  * into an external file, which can be imported back in later with {@link ImportDataSetHandler}.
- * @author Andrew Ferrazzutti
  */
 public class ExportDataSetHandler extends AbstractHandler {
 
