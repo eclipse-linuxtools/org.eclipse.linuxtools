@@ -213,30 +213,6 @@
             category="org.eclipse.linuxtools.systemtap.prefs.view">
       </page>
       <page
-            name="%preference.editor.name"
-            id="org.eclipse.linuxtools.systemtap.prefs.ide.editor"
-            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.EditorPreferencePage"
-            category="org.eclipse.linuxtools.systemtap.prefs.ide">
-      </page>
-      <page
-            name="%preference.codeAssist.name"
-            id="org.eclipse.linuxtools.systemtap.prefs.ide.codeassist"
-            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.CodeAssistPreferencePage"
-            category="org.eclipse.linuxtools.systemtap.prefs.ide.editor">
-      </page>
-      <page
-            name="%preference.conditionalFilter.name"
-            id="org.eclipse.linuxtools.systemtap.prefs.ide.conditionalfilters"
-            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.ConditionalFilterPreferencePage"
-            category="org.eclipse.linuxtools.systemtap.prefs.ide.editor">
-      </page>
-      <page
-            name="%preference.syntaxColor.name"
-            id="org.eclipse.linuxtools.systemtap.prefs.ide.syntaxcoloring"
-            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.SyntaxColoringPreferencePage"
-            category="org.eclipse.linuxtools.systemtap.prefs.ide.editor">
-      </page>
-      <page
             name="%preference.path.name"
             id="org.eclipse.linuxtools.systemtap.prefs.ide.path"
             class="org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.PathPreferencePage"

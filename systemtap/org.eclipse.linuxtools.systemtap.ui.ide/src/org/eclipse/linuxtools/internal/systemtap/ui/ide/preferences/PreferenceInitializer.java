@@ -17,11 +17,8 @@ import java.io.InputStreamReader;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPColorConstants;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
-import org.eclipse.swt.graphics.RGB;
 
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
@@ -52,24 +49,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         //ide.stap.tapsets
         store.setDefault(IDEPreferenceConstants.P_TAPSETS, ""); //$NON-NLS-1$
 
-        //ide.editor
-        PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_EDITOR_BACKGROUND, new RGB(255,255,255));
-        store.setDefault(IDEPreferenceConstants.P_SHOW_LINE_NUMBERS, false);
-
-        //ide.editor.codeassist
-        store.setDefault(IDEPreferenceConstants.P_USE_CODE_ASSIST, true);
-        store.setDefault(IDEPreferenceConstants.P_COMPLETION, IDEPreferenceConstants.P_COMPLETION_INSERT);
-        store.setDefault(IDEPreferenceConstants.P_ACTIVATION_DELAY, 200);
-        store.setDefault(IDEPreferenceConstants.P_ACTIVATION_TRIGGER, "."); //$NON-NLS-1$
-
-        //ide.editor.conditionalfilters
-        store.setDefault(IDEPreferenceConstants.P_CONDITIONAL_FILTERS,
-                "if(pid=currentpid)" + File.pathSeparator + //$NON-NLS-1$
-                "if(execname=cmdname)" + File.pathSeparator + //$NON-NLS-1$
-                "if(cpu=0)" + File.pathSeparator + //$NON-NLS-1$
-                "if(caller=functionname)"); //$NON-NLS-1$
-
-
         //ide.stap.stapoptions
         for(int i=0; i<IDEPreferenceConstants.STAP_BOOLEAN_OPTIONS.length; i++) {
             store.setDefault(IDEPreferenceConstants.STAP_BOOLEAN_OPTIONS[i][IDEPreferenceConstants.KEY], false);
@@ -78,15 +57,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         for(int i=0; i<IDEPreferenceConstants.STAP_STRING_OPTIONS.length; i++) {
             store.setDefault(IDEPreferenceConstants.STAP_STRING_OPTIONS[i][IDEPreferenceConstants.KEY], ""); //$NON-NLS-1$
         }
-
-        //ide.editor.syntaxcoloring
-        PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_DEFAULT_COLOR, STPColorConstants.DEFAULT);
-        PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_KEYWORD_COLOR, STPColorConstants.KEYWORD);
-        PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_EMBEDDED_C_COLOR, STPColorConstants.EMBEDDEDC);
-        PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_EMBEDDED_COLOR, STPColorConstants.EMBEDDED);
-        PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_COMMENT_COLOR, STPColorConstants.COMMENT);
-        PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_TYPE_COLOR, STPColorConstants.TYPE);
-        PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_STRING_COLOR, STPColorConstants.STP_STRING);
 
     }
 

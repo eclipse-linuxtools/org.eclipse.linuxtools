@@ -24,21 +24,6 @@ public class IDEPreferenceConstants {
     //ide.stap.tapsets
     public static final String P_TAPSETS = "TapsetPreference"; //$NON-NLS-1$
 
-    //ide.editor
-    public static final String P_EDITOR_BACKGROUND = "EditorBackgroundPreference"; //$NON-NLS-1$
-    public static final String P_SHOW_LINE_NUMBERS = "ShowLineNumbers"; //$NON-NLS-1$
-
-    //ide.editor.codeassist
-    public static final String P_USE_CODE_ASSIST = "UseCodeAssistPreference"; //$NON-NLS-1$
-    public static final String P_COMPLETION = "CompletionPreference"; //$NON-NLS-1$
-    public static final String P_COMPLETION_INSERT = "CompletionInsertPreference"; //$NON-NLS-1$
-    public static final String P_COMPLETION_OVERWRITE = "CompletionOverwritePreference"; //$NON-NLS-1$
-    public static final String P_ACTIVATION_DELAY = "ActivationDelayPreference"; //$NON-NLS-1$
-    public static final String P_ACTIVATION_TRIGGER = "ActivationTriggerPreference"; //$NON-NLS-1$
-
-    //ide.editor.preferenceconstants
-    public static final String P_CONDITIONAL_FILTERS = "ConditionalFilters"; //$NON-NLS-1$
-
     public static final int FLAG = 0;
     public static final int LABEL = 1;
     public static final int KEY = 2;
@@ -61,20 +46,5 @@ public class IDEPreferenceConstants {
         {"-x", "Target PID", "xStapPreference", "Set target() to the given PID. This allows scripts to be written that filter on a specific process."}}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
     public static final String[] STAP_CMD_OPTION = new String[] {"-c", "CMD run CMD under systemtap", "cStapPreference", "start the probes, run CMD, and exit when it finishes"};  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-
-    //ide.editor.syntaxcoloring
-    public static final String P_STP_DEFAULT_COLOR = "stpDefaultColorPreference"; //$NON-NLS-1$
-    public static final String P_STP_KEYWORD_COLOR = "stpKeywordColorPreference"; //$NON-NLS-1$
-    public static final String P_STP_EMBEDDED_C_COLOR = "stpEmbeddedCColorPreference"; //$NON-NLS-1$
-    public static final String P_STP_EMBEDDED_COLOR = "stpEmbeddedColorPreference"; //$NON-NLS-1$
-    public static final String P_STP_COMMENT_COLOR = "stpCommentColorPreference"; //$NON-NLS-1$
-    public static final String P_STP_TYPE_COLOR = "stpTypeColorPreference"; //$NON-NLS-1$
-    public static final String P_STP_STRING_COLOR = "stpStringColorPreference"; //$NON-NLS-1$
-    public static final String P_C_DEFAULT_COLOR = "cDefaultColorPreference"; //$NON-NLS-1$
-    public static final String P_C_KEYWORD_COLOR = "cKeywordColorPreference"; //$NON-NLS-1$
-    public static final String P_C_COMMENT_COLOR = "cCommentColorPreference"; //$NON-NLS-1$
-    public static final String P_C_PREPROCESSOR_COLOR = "cPreprocessorColorPreference"; //$NON-NLS-1$
-    public static final String P_C_TYPE_COLOR = "cTypeColorPreference"; //$NON-NLS-1$
-    public static final String P_C_STRING_COLOR = "cStringColorPreference"; //$NON-NLS-1$
 
 }
