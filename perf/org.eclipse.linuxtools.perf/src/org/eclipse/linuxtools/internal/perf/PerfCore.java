@@ -250,10 +250,6 @@ public class PerfCore {
             ArrayList<String> newCommand = new ArrayList<>();
             newCommand.addAll(Arrays.asList(base));
             try {
-                if (new Version(3, 11, 0).compareTo(perfVersion) > 0) {
-                    // Removed as of 4a4d371a4dfbd3b84a7eab8d535d4c7c3647b09e from perf upstream (kernel)
-                    newCommand.add("-f"); //$NON-NLS-1$
-                }
                 if (config.getAttribute(PerfPlugin.ATTR_Record_Realtime, PerfPlugin.ATTR_Record_Realtime_default)) {
                     newCommand.add("-r"); //$NON-NLS-1$
                     int priority = config.getAttribute(PerfPlugin.ATTR_Record_Realtime_Priority, PerfPlugin.ATTR_Record_Realtime_Priority_default);
