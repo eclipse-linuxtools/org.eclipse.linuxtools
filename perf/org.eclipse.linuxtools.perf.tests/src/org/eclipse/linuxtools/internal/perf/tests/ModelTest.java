@@ -349,7 +349,7 @@ public class ModelTest extends AbstractTest {
         String[] recordString = PerfCore.getRecordString(tempConfig, new Version(0, 0, 0));
         assertNotNull(recordString);
 
-        String[] expectedString = { PerfPlugin.PERF_COMMAND, "record", "-f",
+        String[] expectedString = { PerfPlugin.PERF_COMMAND, "record",
                 "-r", "2", "-v", "-M", "-e", "cpu-cycles", "-e", "cache-misses",
                 "-e", "cpu-clock" };
         assertArrayEquals(expectedString, recordString);
