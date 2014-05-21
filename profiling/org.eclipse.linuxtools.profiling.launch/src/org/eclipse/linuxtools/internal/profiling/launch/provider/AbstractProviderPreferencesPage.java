@@ -44,6 +44,7 @@ public class AbstractProviderPreferencesPage extends
     @Override
     public void setInitializationData(IConfigurationElement config,
             String propertyName, Object data) {
+        @SuppressWarnings("unchecked")
         Hashtable<String, String> parameters = (Hashtable<String, String>) data;
         String profilingType = parameters
                 .get(ProviderProfileConstants.INIT_DATA_TYPE_KEY);

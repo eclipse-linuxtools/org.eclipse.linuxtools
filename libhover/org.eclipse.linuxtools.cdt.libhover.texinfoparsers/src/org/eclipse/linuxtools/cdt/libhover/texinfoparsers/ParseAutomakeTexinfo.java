@@ -119,7 +119,7 @@ public class ParseAutomakeTexinfo {
     static final Pattern RightAnglePattern    = Pattern.compile(">");
 
 
-    private static Map macroMap;
+    private static Map<String, MacroDef> macroMap;
 
     static class MacroParms {
         String[] parms;
@@ -441,8 +441,9 @@ public class ParseAutomakeTexinfo {
             is.mark(100);
             String il = is.readLine();
             m = MacroPattern.matcher(s + il);
-            if (m.matches()) fd = BuildMacroDef(m);
-            else {
+            if (m.matches()) {
+                fd = BuildMacroDef(m);
+            } else {
                 is.reset();
                 m = MacroPattern2.matcher(s);
                 if (m.matches()) {
@@ -462,9 +463,9 @@ public class ParseAutomakeTexinfo {
                 Matcher mx2 = MacroPatternx2.matcher(il);
                 MacroParms mp = fd.Parameters;
                 while (mx.matches() || mx2.matches()) {
-                    if (mx.matches())
-                    mp = AddMacroDefxParms(mp, mx);
-                    else {
+                    if (mx.matches()) {
+                        mp = AddMacroDefxParms(mp, mx);
+                    } else {
                         MacroParms mpnew = new MacroParms(new String[0]);
                         mp.nextParms = mpnew;
                         mp = mpnew;
@@ -479,8 +480,9 @@ public class ParseAutomakeTexinfo {
                 is.reset();
             }
 
-            if (macroMap.get(fd.MacroName) != null)
+            if (macroMap.get(fd.MacroName) != null) {
                 return null;
+            }
             macroMap.put(fd.MacroName, fd);
         }
 
@@ -545,18 +547,22 @@ public class ParseAutomakeTexinfo {
                 }
             }
         }
-        if (aa.length() > 0) WriteString(os, "        " + aa);
+        if (aa.length() > 0) {
+            WriteString(os, "        " + aa);
+        }
         WriteString(os, spaces + "</synopsis>");
     }
 
     private static void HandleDefmacro(BufferedWriter os, BufferedReader is, String s) throws IOException {
         String il;
         MacroDef md = null;
-        List FDefs = new ArrayList();
+        List<MacroDef> FDefs = new ArrayList<>();
 
         while (null != (il = is.readLine())) {
             if (il.startsWith(Defmac)) {
-                if (null != (md = HandleMacroDef(is, il))) FDefs.add(md);
+                if (null != (md = HandleMacroDef(is, il))) {
+                    FDefs.add(md);
+                }
             }
             else if (il.startsWith("@comment") ||
                     il.startsWith("@c ")) {    // comment -- ignore it
@@ -564,7 +570,7 @@ public class ParseAutomakeTexinfo {
             else if (il.startsWith("@subsection") ||
                     il.startsWith("@section")) {
                 for (int kk = 0; kk < FDefs.size(); kk++) {
-                    md = (MacroDef)FDefs.get(kk);
+                    md = FDefs.get(kk);
 
                     WriteString(os, "  <macro id=\"" + md.MacroName + "\">");
 
@@ -579,16 +585,19 @@ public class ParseAutomakeTexinfo {
                         mp = mp.nextParms;
                     } while (mp != null);
 
-                    if (null != md.Synopsis) WriteSynopsis(os, md.Synopsis, false);
+                    if (null != md.Synopsis) {
+                        WriteSynopsis(os, md.Synopsis, false);
+                    }
 
                     WriteString(os, "  </macro>");
                 }
                 return;
             }
             else {
-                if (md != null)
+                if (md != null) {
                     md.Synopsis = ((md.Synopsis == null) ? "" : md.Synopsis + " " ) + ((il.length() == 0) ? "&lt;br&gt;&lt;br&gt;" :
                         il.startsWith("@item") ? killTags(il) + "<eol>" : killTags(il));
+                }
             }
         }
         FDefs.clear();
@@ -596,6 +605,7 @@ public class ParseAutomakeTexinfo {
     }
 
     private static class OnlyTexi implements FilenameFilter {
+        @Override
         public boolean accept(File dir, String s) {
             return (s.endsWith(".texi")) ? true : false;
         }
@@ -603,38 +613,34 @@ public class ParseAutomakeTexinfo {
 
     public static void BuildXMLFromTexinfo(String srcdir, String dstdir) {
         try {
-            macroMap = new HashMap();
+            macroMap = new HashMap<>();
             BufferedWriter os = new BufferedWriter(new FileWriter(dstdir));
 
             CreateHeader(os);
-//            CreateLicense(os);
-
             WriteString(os, "<macros>");
 
             try {
                 String[] dir = new java.io.File(srcdir).list(new OnlyTexi());
                 for (int i = 0; i < dir.length; i++) {
                     String qFile = srcdir.endsWith("/")
-                    ? srcdir + dir[i]
-                                   : srcdir + "/" + dir[i];
+                            ? srcdir + dir[i]
+                                    : srcdir + "/" + dir[i];
 
-                    try {
-                        BufferedReader is = new BufferedReader(new FileReader(qFile));
-                        String il;
+                            try (BufferedReader is = new BufferedReader(new FileReader(qFile))) {
+                                String il;
 
-                        while (null != (il = is.readLine())) {
-                            Matcher mm1 = MacroSection1.matcher(il);
-                            Matcher mm2 = MacroSection2.matcher(il);
-                            if (mm1.matches() || mm2.matches()) {
-                                HandleDefmacro(os, is, il);
+                                while (null != (il = is.readLine())) {
+                                    Matcher mm1 = MacroSection1.matcher(il);
+                                    Matcher mm2 = MacroSection2.matcher(il);
+                                    if (mm1.matches() || mm2.matches()) {
+                                        HandleDefmacro(os, is, il);
+                                    }
+                                }
                             }
-                        }
-                        is.close();
-                    }
-                    catch (IOException e) {
-                        System.out.println("Input File IOException: " + e);
-                        return;
-                    }
+                            catch (IOException e) {
+                                System.out.println("Input File IOException: " + e);
+                                return;
+                            }
                 }
             }
             catch (NullPointerException e) {

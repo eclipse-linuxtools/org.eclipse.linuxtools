@@ -30,6 +30,7 @@ public class ProviderLaunchConfigurationTabGroup extends
     @Override
     public void setInitializationData(IConfigurationElement config,
             String propertyName, Object data) {
+        @SuppressWarnings("unchecked")
         Map<String, String> parameters = (Map<String, String>) data;
         String profilingType = parameters
                 .get(ProviderProfileConstants.INIT_DATA_TYPE_KEY);

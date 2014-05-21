@@ -21,6 +21,7 @@ public class GcovLaunchShortcut extends ProfileLaunchShortcut {
     @Override
     protected void setDefaultProfileAttributes(
             ILaunchConfigurationWorkingCopy wc) {
+        // Pass
     }
 
     /**

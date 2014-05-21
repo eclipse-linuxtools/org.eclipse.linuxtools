@@ -9,6 +9,7 @@
  *     Red Hat Incorporated - initial API and implementation
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.libhover.texinfoparsers;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -144,7 +145,7 @@ public class ParseAutoconfTexinfo {
         Matcher mm;
 
         mm = ParmBracketPattern.matcher(tt);
-        tt= mm.replaceAll("$1");
+        tt = mm.replaceAll("$1");
 
         mm = OVarPattern.matcher(tt);
         tt = mm.replaceAll("[$1]");
@@ -163,7 +164,6 @@ public class ParseAutoconfTexinfo {
 
         return tt;
     }
-
 
     private static String killTags(String tt) {
         Matcher mm;
@@ -244,7 +244,6 @@ public class ParseAutoconfTexinfo {
             ss = tt;
             tt = mm.replaceAll("<TT>$1</TT>");
         }
-
 
         ss = "";
         while (ss != tt) {
@@ -342,9 +341,9 @@ public class ParseAutoconfTexinfo {
             tt = mm.replaceAll("</DL>");
         }
 
-        //FIXME: if there ever is a @itemize @bullet within a
-        //       @itemize @minus or vice-versa, the following
-        //       logic will get it wrong.
+        // FIXME: if there ever is a @itemize @bullet within a
+        // @itemize @minus or vice-versa, the following
+        // logic will get it wrong.
         ss = "";
         while (ss != tt) {
             mm = ItemizeMinusPattern.matcher(tt);
@@ -413,20 +412,21 @@ public class ParseAutoconfTexinfo {
         return null;
     }
 
-    private static MacroDef HandleMacroDef(BufferedReader is, String s) throws IOException {
+    private static MacroDef HandleMacroDef(BufferedReader is, String s)
+            throws IOException {
         MacroDef fd = null;
 
         Matcher m = MacroPattern.matcher(s);
 
         if (m.matches()) {
             fd = BuildMacroDef(m);
-        }
-        else {                        // assume the line got split and retry
+        } else { // assume the line got split and retry
             is.mark(100);
             String il = is.readLine();
             m = MacroPattern.matcher(s + il);
-            if (m.matches()) fd = BuildMacroDef(m);
-            else {
+            if (m.matches()) {
+                fd = BuildMacroDef(m);
+            } else {
                 is.reset();
                 m = MacroPattern2.matcher(s);
                 if (m.matches()) {
@@ -446,9 +446,9 @@ public class ParseAutoconfTexinfo {
                 Matcher mx2 = MacroPatternx2.matcher(il);
                 MacroParms mp = fd.Parameters;
                 while (mx.matches() || mx2.matches()) {
-                    if (mx.matches())
-                    mp = AddMacroDefxParms(mp, mx);
-                    else {
+                    if (mx.matches()) {
+                        mp = AddMacroDefxParms(mp, mx);
+                    } else {
                         MacroParms mpnew = new MacroParms(new String[0]);
                         mp.nextParms = mpnew;
                         mp = mpnew;
@@ -463,17 +463,18 @@ public class ParseAutoconfTexinfo {
                 is.reset();
             }
 
-            if (macroMap.get(fd.MacroName) != null)
+            if (macroMap.get(fd.MacroName) != null) {
                 return null;
+            }
             macroMap.put(fd.MacroName, fd);
         }
 
         return fd;
     }
 
-    private static void WriteString(BufferedWriter os, String s) throws IOException {
-        //    System.out.println(s);
-        os.write(s+"\n", 0, 1+s.length());
+    private static void WriteString(BufferedWriter os, String s)
+            throws IOException {
+        os.write(s + "\n", 0, 1 + s.length());
     }
 
     private static void CreateHeader(BufferedWriter os) throws IOException {
@@ -502,13 +503,12 @@ public class ParseAutoconfTexinfo {
         WriteString(os, "");
     }
 
-
-
     private static void CreateTrailer(BufferedWriter os) throws IOException {
         WriteString(os, "</macros>");
     }
 
-    private static void WriteSynopsis(BufferedWriter os, String Synopsis, boolean indent)  throws IOException {
+    private static void WriteSynopsis(BufferedWriter os, String Synopsis,
+            boolean indent) throws IOException {
         String ss = killTags(Synopsis);
         String[] tt = ss.split("\\s");
         String aa = "";
@@ -519,8 +519,7 @@ public class ParseAutoconfTexinfo {
                 if (tt[pp].equals("&lt;br&gt;")) {
                     WriteString(os, spaces + aa + "&lt;/P&gt;&lt;P&gt;\n");
                     aa = "";
-                }
-                else {
+                } else {
                     if ((aa.length() + tt[pp].length()) > 64) {
                         WriteString(os, spaces + aa);
                         aa = "";
@@ -529,28 +528,33 @@ public class ParseAutoconfTexinfo {
                 }
             }
         }
-        if (aa.length() > 0) WriteString(os, "        " + aa);
+        if (aa.length() > 0) {
+            WriteString(os, "        " + aa);
+        }
         WriteString(os, spaces + "</synopsis>");
     }
 
-    private static void HandleDefmacro(BufferedWriter os, BufferedReader is, String s) throws IOException {
+    private static void HandleDefmacro(BufferedWriter os, BufferedReader is,
+            String s) throws IOException {
         String il;
         MacroDef md;
-        List<MacroDef> FDefs = new ArrayList<MacroDef>();
+        List<MacroDef> FDefs = new ArrayList<>();
         String Synopsis = null;
 
-        if (null != (md = HandleMacroDef(is, s))) FDefs.add(md);
+        if (null != (md = HandleMacroDef(is, s))) {
+            FDefs.add(md);
+        }
 
         while (null != (il = is.readLine())) {
             if (il.startsWith("@defmac")) {
-                if (null != (md = HandleMacroDef(is, il))) FDefs.add(md);
-            }
-            else if (il.startsWith("@comment") ||
-                    il.startsWith("@c ")) {    // comment -- ignore it
-            }
-            else if (il.startsWith("@end defmac")) {
+                if (null != (md = HandleMacroDef(is, il))) {
+                    FDefs.add(md);
+                }
+            } else if (il.startsWith("@comment") || il.startsWith("@c ")) {
+                // comment -- ignore it
+            } else if (il.startsWith("@end defmac")) {
                 for (int kk = 0; kk < FDefs.size(); kk++) {
-                    md = (MacroDef)FDefs.get(kk);
+                    md = FDefs.get(kk);
 
                     WriteString(os, "  <macro id=\"" + md.MacroName + "\">");
 
@@ -559,21 +563,24 @@ public class ParseAutoconfTexinfo {
                         WriteString(os, "      <prototype>");
                         String[] parms = mp.parms;
                         for (int i = 0; i < parms.length; i++) {
-                            WriteString(os, "        <parameter content=\"" + parms[i] + "\"/>");
+                            WriteString(os, "        <parameter content=\""
+                                    + parms[i] + "\"/>");
                         }
                         WriteString(os, "      </prototype>");
                         mp = mp.nextParms;
                     } while (mp != null);
 
-                    if (null != Synopsis) WriteSynopsis(os, Synopsis, false);
+                    if (null != Synopsis) {
+                        WriteSynopsis(os, Synopsis, false);
+                    }
 
                     WriteString(os, "  </macro>");
                 }
                 return;
-            }
-            else {
-                Synopsis = ((Synopsis == null) ? "" : Synopsis + " " ) + ((il.length() == 0) ? "<br>" :
-                    il.startsWith("@item") ? il + "<eol>" : il);
+            } else {
+                Synopsis = ((Synopsis == null) ? "" : Synopsis + " ")
+                        + ((il.length() == 0) ? "<br>"
+                                : il.startsWith("@item") ? il + "<eol>" : il);
 
             }
         }
@@ -582,6 +589,7 @@ public class ParseAutoconfTexinfo {
     }
 
     private static class OnlyTexi implements FilenameFilter {
+        @Override
         public boolean accept(File dir, String s) {
             return (s.endsWith(".texi")) ? true : false;
         }
@@ -589,39 +597,34 @@ public class ParseAutoconfTexinfo {
 
     public static void BuildXMLFromTexinfo(String srcdir, String dstdir) {
         try {
-            macroMap = new HashMap<String, MacroDef>();
+            macroMap = new HashMap<>();
             BufferedWriter os = new BufferedWriter(new FileWriter(dstdir));
 
             CreateHeader(os);
-//            CreateLicense(os);
 
             WriteString(os, "<macros>");
 
             try {
                 String[] dir = new java.io.File(srcdir).list(new OnlyTexi());
                 for (int i = 0; i < dir.length; i++) {
-                    String qFile = srcdir.endsWith("/")
-                    ? srcdir + dir[i]
-                                   : srcdir + "/" + dir[i];
+                    String qFile = srcdir.endsWith("/") ? srcdir + dir[i]
+                            : srcdir + "/" + dir[i];
 
-                    try {
-                        BufferedReader is = new BufferedReader(new FileReader(qFile));
+                    try (BufferedReader is = new BufferedReader(new FileReader(
+                            qFile))) {
                         String il;
 
                         while (null != (il = is.readLine())) {
-                            if (il.startsWith("@defmac")) {    // handle @defmac x]
+                            if (il.startsWith("@defmac")) { // handle @defmac x]
                                 HandleDefmacro(os, is, il);
                             }
                         }
-                        is.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         System.out.println("Input File IOException: " + e);
                         return;
                     }
                 }
-            }
-            catch (NullPointerException e) {
+            } catch (NullPointerException e) {
                 System.out.println("NullPointerException: " + e);
                 return;
             }
@@ -629,8 +632,7 @@ public class ParseAutoconfTexinfo {
             CreateTrailer(os);
 
             os.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Output File IOException: " + e);
             return;
         }

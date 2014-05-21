@@ -469,12 +469,12 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
         gd.horizontalSpan = colSpan;
         mainComp.setLayoutData(gd);
 
-        enableCopyFromExeButton = createCheckButton(mainComp, "Copy C/C++ executable from:");
+        enableCopyFromExeButton = createCheckButton(mainComp, ProxyLaunchMessages.copy_cpp_executable);
         copyFromExeSelector = new ResourceSelectorWidget(mainComp,
                 ResourceSelectorWidget.ResourceType.FILE,
-                2, "C/C++ executable origin", null); //$NON-NLS-1$
+                2, ProxyLaunchMessages.executable_origin, null);
         toLabel = new Label(mainComp, SWT.NONE);
-        toLabel.setText("To:");
+        toLabel.setText(ProxyLaunchMessages.to);
 
         // The "copy from" check box is initially off, the selector and "To:" label
         // are disabled.
@@ -898,38 +898,31 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
         } catch (URISyntaxException e) {
             // this will have been dealt with by previous checks of the Program and Working
             // directory
-            System.err.println("internal error. URI syntax error in working directory or program");
+            System.err.println(ProxyLaunchMessages.uri_syntax_error);
             return false;
         }
-        {
-            String wdScheme = wdURI.getScheme();
-            String progScheme = progURI.getScheme();
-            if (wdScheme == null && progScheme == null) {
-                // local filesystem. No further tests are needed.
-                setErrorMessage(null);
-                return true;
-
-            }
-            if (!equal(wdScheme, progScheme)) {
-                setErrorMessage(ProxyLaunchMessages.scheme_of_working_directory_and_program_do_not_match);
-                return false;
-            }
+        String wdScheme = wdURI.getScheme();
+        String progScheme = progURI.getScheme();
+        if (wdScheme == null && progScheme == null) {
+            // local filesystem. No further tests are needed.
+            setErrorMessage(null);
+            return true;
         }
-        {
-            String wdAuth = wdURI.getAuthority();
-            String progAuth = progURI.getAuthority();
-            if (!equal(wdAuth, progAuth)) {
-                setErrorMessage(ProxyLaunchMessages.connection_of_working_directory_and_program_do_not_match);
-                return false;
-            }
+        if (!equal(wdScheme, progScheme)) {
+            setErrorMessage(ProxyLaunchMessages.scheme_of_working_directory_and_program_do_not_match);
+            return false;
         }
-        {
-            String wdQuery = wdURI.getQuery();
-            String progQuery = progURI.getQuery();
-            if (!equal(wdQuery, progQuery)) {
-                setErrorMessage(ProxyLaunchMessages.connection_of_working_directory_and_program_do_not_match);
-                return false;
-            }
+        String wdAuth = wdURI.getAuthority();
+        String progAuth = progURI.getAuthority();
+        if (!equal(wdAuth, progAuth)) {
+            setErrorMessage(ProxyLaunchMessages.connection_of_working_directory_and_program_do_not_match);
+            return false;
+        }
+        String wdQuery = wdURI.getQuery();
+        String progQuery = progURI.getQuery();
+        if (!equal(wdQuery, progQuery)) {
+            setErrorMessage(ProxyLaunchMessages.connection_of_working_directory_and_program_do_not_match);
+            return false;
         }
         setErrorMessage(null);
         return true;

@@ -14,9 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.net.ConnectException;
 import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -116,45 +114,43 @@ public class LibHoverLibrary {
         // the user will never access or ultimately need it if another library
         // supplies the information first.
         if (!haveReadHoverInfo) {
-            URI acDoc;
-            try {
-                acDoc = new URI(location);
-                IPath p = URIUtil.toPath(acDoc);
-                InputStream docStream = null;
-                if (p == null) {
-                    URL url = acDoc.toURL();
-                    URLConnection c = url.openConnection();
-                    c.setReadTimeout(5000); // pick a timeout value less than 15s (default)
-                    docStream = c.getInputStream();
-                } else {
-                    try {
-                        // Try to open the file local to the plug-in declaring the
-                        // extension...or fall back to the libhover plug-in itself
-                        // if no name space for the plug-in is stored.
-                        Bundle bundle = LibhoverPlugin.getDefault().getBundle();
-                        String nameSpace = getNameSpace();
-                        if (nameSpace != null)
-                            bundle = Platform.getBundle(nameSpace);
-                        docStream = FileLocator.openStream(bundle, p, false);
-                    } catch (IOException e) {
-                        // File is not local to plug-in, try file system.
-                        docStream = new FileInputStream(p.toFile());
-                    }
-                }
-                ObjectInputStream input = new ObjectInputStream(docStream);
+            try (InputStream docStream = getDocStreamForHoverInfo();
+                    ObjectInputStream input = new ObjectInputStream(docStream)) {
                 hoverInfo = (LibHoverInfo)input.readObject();
                 haveReadHoverInfo = true;
-                input.close();
-                docStream.close();
             } catch (URISyntaxException|MalformedURLException|ClassNotFoundException e) {
                 e.printStackTrace();
-            } catch (ConnectException|SocketTimeoutException e) {
-                // Do nothing..time-out exception
             } catch (IOException e) {
                 // Do nothing as empty devhelp causes this
             }
         }
         return hoverInfo;
+    }
+
+    private InputStream getDocStreamForHoverInfo() throws URISyntaxException, IOException {
+        URI acDoc = new URI(location);
+        IPath p = URIUtil.toPath(acDoc);
+        if (p == null) {
+            URL url = acDoc.toURL();
+            URLConnection c = url.openConnection();
+            c.setReadTimeout(5000); // pick a timeout value less than 15s (default)
+            return c.getInputStream();
+        } else {
+            // Try to open the file local to the plug-in declaring the
+            // extension...or fall back to the libhover plug-in itself
+            // if no name space for the plug-in is stored.
+            Bundle bundle = LibhoverPlugin.getDefault().getBundle();
+            String nameSpace = getNameSpace();
+            if (nameSpace != null) {
+                bundle = Platform.getBundle(nameSpace);
+            }
+            try {
+                return FileLocator.openStream(bundle, p, false);
+            } catch (IOException e) {
+                // File is not local to plug-in, try file system.
+                return new FileInputStream(p.toFile());
+            }
+        }
     }
 
     /**
@@ -212,21 +208,22 @@ public class LibHoverLibrary {
         while (count > 0 && i < className.length()) {
             char x = className.charAt(i);
             switch (x) {
-            case ('<'):
-                ++count;
-            break;
-            case ('>'):
-                --count;
-                if (count == 0)
+                case ('<'):
+                    ++count;
+                break;
+                case ('>'):
+                    --count;
+                if (count == 0) {
                     templateTypes.add(className.substring(startIndex, i).trim());
-            break;
-            case (','): {
-                if (count == 1) {
-                    templateTypes.add(className.substring(startIndex, i).trim());
-                    startIndex = i + 1;
                 }
-            }
-            break;
+                break;
+                case (','): {
+                    if (count == 1) {
+                        templateTypes.add(className.substring(startIndex, i).trim());
+                        startIndex = i + 1;
+                    }
+                }
+                break;
             }
             ++i;
         }

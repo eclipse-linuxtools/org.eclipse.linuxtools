@@ -9,9 +9,19 @@
  *     Red Hat Incorporated - initial API and implementation
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.libhover.texinfoparsers;
-import java.io.*;
-import java.util.regex.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.EmptyStackException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //This file contains a texinfo parser that can be
 //run to create the Autotools glibc.xml file.
@@ -124,8 +134,8 @@ public class ParseNewlibTexinfo {
     static final Pattern LeftAnglePattern    = Pattern.compile("<");
     static final Pattern RightAnglePattern    = Pattern.compile(">");
 
-    static List IncludeList = new ArrayList();
-    static Stack readers = new Stack();
+    static List<String> IncludeList = new ArrayList<>();
+    static Stack<BufferedReader> readers = new Stack<>();
 
     static class FunctionDef {
         String ReturnType;
@@ -147,11 +157,12 @@ public class ParseNewlibTexinfo {
         Object[] IncludeList;
     }
 
-    private static FunctionDef FindFunctionDef(String name, List FDefs) {
-        for (Iterator iterator = FDefs.iterator(); iterator.hasNext();) {
-            FunctionDef k = (FunctionDef) iterator.next();
-            if (k.FunctionName.equals(name))
+    private static FunctionDef FindFunctionDef(String name, List<FunctionDef> FDefs) {
+        for (Iterator<FunctionDef> iterator = FDefs.iterator(); iterator.hasNext();) {
+            FunctionDef k = iterator.next();
+            if (k.FunctionName.equals(name)) {
                 return k;
+            }
         }
         return null;
     }
@@ -188,15 +199,16 @@ public class ParseNewlibTexinfo {
         return fd;
     }
 
-    private static void HandleFunctionDefs(BufferedReader is, List FDefs) throws IOException {
+    private static void HandleFunctionDefs(BufferedReader is, List<FunctionDef> FDefs) throws IOException {
         FunctionDef fd;
         String il = null;
         boolean preRead = false;
 
         while (preRead || (il = is.readLine()) != null) {
             preRead = false;
-            if (il.startsWith("@end example"))
+            if (il.startsWith("@end example")) {
                 return;
+            }
 
             Matcher m = DeftypefunPattern.matcher(il);
             Matcher m2 = DeftypefunPattern2.matcher(il);
@@ -204,29 +216,33 @@ public class ParseNewlibTexinfo {
             Matcher mm = IncludePattern.matcher(il);
 
             if (mm.matches()) {
-                if (!IncludeList.contains(mm.group(1)))
+                if (!IncludeList.contains(mm.group(1))) {
                     IncludeList.add(mm.group(1));
+                }
             }
             else if (m.matches()) {
                 fd = FindFunctionDef(m.group(FunctionNameIndex), FDefs);
-                if (fd != null)
+                if (fd != null) {
                     BuildFunctionDef(m, fd);
-                else
+                } else {
                     System.out.println("Missing findex for " + m.group(FunctionNameIndex));
+                }
             }
             else if (m2.matches()) {
                 fd = FindFunctionDef(m2.group(FunctionName2Index), FDefs);
-                if (fd != null)
+                if (fd != null) {
                     BuildFunctionDef2(m2, fd);
-                else
+                } else {
                     System.out.println("Missing findex for " + m2.group(FunctionName2Index));
+                }
             }
             else if (m3.matches()) {
                 fd = FindFunctionDef(m3.group(FunctionNameIndex), FDefs);
-                if (fd != null)
+                if (fd != null) {
                     BuildFunctionDef(m3, fd);
-                else
+                } else {
                     System.out.println("Missing findex for " + m3.group(FunctionName2Index));
+                }
             }
             else if (il.trim().length() > 0) {
                 il = il.trim();
@@ -312,20 +328,11 @@ public class ParseNewlibTexinfo {
         if (null != Synopsis) {
             for (int pp = 0; pp < tt.length; pp++) {
                 WriteString(os, spaces + tt[pp]);
-//                if (tt[pp].equals("<br>")) {
-//                    WriteString(os, spaces + aa + "\n");
-//                    aa = "";
-//                }
-//                else {
-//                    if ((aa.length() + tt[pp].length()) > 64) {
-//                        WriteString(os, spaces + aa);
-//                        aa = "";
-//                    }
-//                    aa = aa + " " + tt[pp];
-//                }
             }
         }
-        if (aa.length() > 0) WriteString(os, "        " + aa);
+        if (aa.length() > 0) {
+            WriteString(os, "        " + aa);
+        }
         WriteString(os, spaces + "</synopsis>");
     }
 
@@ -353,8 +360,9 @@ public class ParseNewlibTexinfo {
         while (null != (il = is.readLine())) {
             if (il.startsWith("@page") ||
                     il.startsWith("@section") ||
-                    il.startsWith("@node"))
+                    il.startsWith("@node")) {
                 break;
+            }
             Description = ((Description == null) ? "" : Description + " " ) + ((il.length() == 0) ? "<br><br>" :
                 il + "<eol>");
         }
@@ -365,17 +373,18 @@ public class ParseNewlibTexinfo {
     private static void HandleFunction(BufferedWriter os, BufferedReader is, String s, String builddir) throws IOException {
         String il;
         FunctionDef fd;
-        List FDefs = new ArrayList();
+        List<FunctionDef> FDefs = new ArrayList<>();
         String Description = null;
         boolean synopsisMarker = false;
 
         IncludeList.clear();
         Matcher mmf = FindexPattern.matcher(s);
         fd = new FunctionDef();
-        if (mmf.matches())
+        if (mmf.matches()) {
             fd.FunctionName = mmf.group(1);
-        else
+        } else {
             return;
+        }
         FDefs.add(fd);
 
         while (null != (il = is.readLine())) {
@@ -407,11 +416,11 @@ public class ParseNewlibTexinfo {
             // otherwise ignore line
         }
 
-        String name = ((FunctionDef)FDefs.get(0)).FunctionName;
+        String name = FDefs.get(0).FunctionName;
 
         if (FDefs.size() > 1) {
             for (int kk = 0; kk < FDefs.size(); kk++) {
-                fd = (FunctionDef)FDefs.get(kk);
+                fd = FDefs.get(kk);
 
                 WriteString(os, "  <construct id=\"function-" + fd.FunctionName + "\" type=\"function\">");
 
@@ -419,9 +428,9 @@ public class ParseNewlibTexinfo {
 
                 WriteString(os, "      <prototype>");
                 String[] parms = fd.Parameters;
-                if (parms == null)
+                if (parms == null) {
                     System.out.println("null parms for findex " + fd.FunctionName);
-                else {
+                } else {
                     for (int i = 0; i < parms.length; i++) {
                         String parm = TexinfoUtils.stripProtoTags(parms[i]);
                         WriteString(os, "        <parameter content=\"" + parm + "\"/>");
@@ -439,8 +448,9 @@ public class ParseNewlibTexinfo {
                     WriteString(os, "      </headers>");
                 }
 
-                if (null != Description)
+                if (null != Description) {
                     WriteString(os, "      <groupsynopsis id=\"group-" + name + "\"/>");
+                }
 
 
                 WriteString(os, "    </function>");
@@ -454,7 +464,7 @@ public class ParseNewlibTexinfo {
             }
         }
         else {
-            fd = (FunctionDef)FDefs.get(0);
+            fd = FDefs.get(0);
 
             WriteString(os, "  <construct id=\"function-" + fd.FunctionName + "\" type=\"function\">");
 
@@ -462,9 +472,9 @@ public class ParseNewlibTexinfo {
 
             WriteString(os, "      <prototype>");
             String[] parms = fd.Parameters;
-            if (parms == null)
+            if (parms == null) {
                 System.out.println("null parms for findex " + fd.FunctionName);
-            else {
+            } else {
                 for (int i = 0; i < parms.length; i++) {
                     String parm = TexinfoUtils.stripProtoTags(parms[i]);
                     WriteString(os, "        <parameter content=\"" + parm + "\"/>");
@@ -482,7 +492,9 @@ public class ParseNewlibTexinfo {
                 WriteString(os, "      </headers>");
             }
 
-            if (null != Description) WriteDescription(os, Description, false);
+            if (null != Description) {
+                WriteDescription(os, Description, false);
+            }
 
             WriteString(os, "    </function>");
             WriteString(os, "  </construct>");
@@ -512,11 +524,12 @@ public class ParseNewlibTexinfo {
                         else if (il.startsWith("@ignore")) {
                             ignore = true;
                         }
-                        else if (il.startsWith("@end ignore"))
+                        else if (il.startsWith("@end ignore")) {
                             ignore = false;
+                        }
                     }
                     is.close();
-                    is = (BufferedReader)readers.pop();
+                    is = readers.pop();
                 }
             }
             catch (IOException e) {
@@ -536,16 +549,12 @@ public class ParseNewlibTexinfo {
     }
 
     public static void BuildXMLFromTexinfo(String srcdir, String builddir, String dstdir) {
-        try {
-            BufferedWriter os = new BufferedWriter(new FileWriter(dstdir));
-
+        try (BufferedWriter os = new BufferedWriter(new FileWriter(dstdir))) {
             CreateHeader(os);
-//            CreateLicense(os);
 
             WriteString(os, "<descriptions>");
             BuildXMLFromTexinfo2(srcdir, builddir, os, "libc");
             BuildXMLFromTexinfo2(srcdir, builddir, os, "libm");
-
 
             CreateTrailer(os);
 
