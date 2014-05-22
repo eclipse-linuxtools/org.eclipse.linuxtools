@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Marzia Maugeri <marzia.maugeri@st.com> - initial API and implementation
+ *    Lev Ufimtsev <lufimtse@redhat.com>     - added green/red progress bars
  *******************************************************************************/
 package org.eclipse.linuxtools.dataviewers.abstractviewers;
 
@@ -69,25 +70,52 @@ public abstract class AbstractPercentageDrawerField extends AbstractSTDataViewer
         float d = getPercentage(item.getData());
         int percent = (int) (d + 0.5);
         GC gc = event.gc;
-        int width = (widthcol - 1) * percent / 100;
-        if (width > 0) {
-            Color background = gc.getBackground();
-            int alpha = gc.getAlpha();
-            gc.setAlpha(128);
-            gc.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
-            gc.fillRectangle(event.x, event.y, width, event.height);
-            gc.setBackground(display.getSystemColor(SWT.COLOR_LIST_SELECTION));
-            gc.fillRectangle(event.x, event.y, width, event.height);
-            gc.setAlpha(alpha);
-            gc.setBackground(background);
+
+        //--Define the size of the Progress bar.
+        int totalProgBarLength = (int) (widthcol * 0.3); //This makes it grow/shrink dynamically.
+        if (totalProgBarLength > 0) {
+            // ------------------------------------------------------
+            // ------------------- Draw Progress bar
+            // ------------------------------------------------------
+
+            // ---- Shared elements
+            int totalProgBarHeight = (int) (event.height * 0.5);
+
+            // --- Draw Green (covered) part
+            gc.setBackground(display.getSystemColor(SWT.COLOR_DARK_GREEN));
+            int progBarGreenWidth = (int) (totalProgBarLength * (percent * 0.01));
+            int progBarGreenHorizontalPos = event.x;
+            int progBarGreenHeight = (int) (event.height * 0.5);
+            int progBarGreenVerticalPos = event.y + (totalProgBarHeight / 2) + 1;
+            gc.fillRectangle(progBarGreenHorizontalPos, progBarGreenVerticalPos, progBarGreenWidth,
+                    progBarGreenHeight);
+
+            // --- Draw Red (uncovered) Part
+            gc.setBackground(display.getSystemColor(SWT.COLOR_DARK_RED));
+            int progBarRedWidth = totalProgBarLength - progBarGreenWidth;
+            int progBarRedHorizontalPos = progBarGreenHorizontalPos + progBarGreenWidth;
+            int progBarRedHeight = progBarGreenHeight;
+            int progBarRedVerticalPos = progBarGreenVerticalPos;
+            gc.fillRectangle(progBarRedHorizontalPos, progBarRedVerticalPos, progBarRedWidth,
+                    progBarRedHeight);
         }
+        // ------------------------------------------------------
+        // ------------------- Draw text next to Progress bar
+        // ------------------------------------------------------
+
+        //------- Define the 'text' format.  % text     e.g 94.0%
         String text = "%";
         text = (isSettedNumberFormat() ? getNumberFormat().format(d) : d) + text;
         Point size = gc.textExtent(text);
         int offset = Math.max(0, (event.height - size.y) / 2);
+
+        //------- Position the text
         Color foreground = gc.getForeground();
         gc.setForeground(display.getSystemColor(SWT.COLOR_LIST_FOREGROUND));
-        gc.drawText(text, event.x + 2, event.y + offset, true);
+
+        //add offset of progress bar. (so that the text is to the right of the progress bar).
+        int progBarOffset = totalProgBarLength + (widthcol / 20); //(prog bar size) + (20th of column widht)
+        gc.drawText(text, event.x + progBarOffset, event.y + offset, true);
         gc.setForeground(foreground);
     }
 
