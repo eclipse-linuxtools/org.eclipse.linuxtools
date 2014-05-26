@@ -32,7 +32,8 @@
         <configuration>
              <useUIHarness>true</useUIHarness>
           <useUIThread>false</useUIThread>
-          <product>org.eclipse.platform.ide</product>
+	  <product>org.eclipse.platform.ide</product>
+	  <runOrder>alphabetical</runOrder>
         </configuration>
       </plugin>
     </plugins>

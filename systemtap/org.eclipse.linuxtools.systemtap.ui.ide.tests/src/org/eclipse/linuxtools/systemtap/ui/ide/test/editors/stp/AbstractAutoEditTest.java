@@ -24,12 +24,11 @@ import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.TextUtilities;
-import org.eclipse.linuxtools.systemtap.ui.tests.SystemtapTest;
 
 /**
  * IAutoEditStrategy related tests
  */
-public class AbstractAutoEditTest extends SystemtapTest {
+public class AbstractAutoEditTest {
 
     private String name;
 

@@ -19,8 +19,6 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.ProbeNodeData;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.ProbevarNodeData;
 import org.eclipse.linuxtools.systemtap.structures.TreeDefinitionNode;
@@ -39,10 +37,6 @@ public final class ProbeParser extends TreeTapsetParser {
     public static final String PROBE_REGEX = "(?s)(?<!\\w)probe\\s+{0}\\s*\\+?="; //$NON-NLS-1$
     private static final String TAPSET_PROBE_REGEX = "probe {0} \\+?="; //$NON-NLS-1$
 
-    private TreeNode probes;
-    private TreeNode statics;
-    private TreeNode aliases;
-
     private static ProbeParser parser = null;
     public static ProbeParser getInstance(){
         if (parser != null) {
@@ -56,16 +50,15 @@ public final class ProbeParser extends TreeTapsetParser {
         super("Probe Parser"); //$NON-NLS-1$
     }
 
+    /**
+     * @param tree To be valid, the first-level children of this tree must
+     * be two nodes respectively named "Static Probes" and "Probe Alias".
+     */
     @Override
-    public synchronized TreeNode getTree() {
-        return probes;
-    }
-
-    @Override
-    public void dispose() {
-        probes.dispose();
-        statics.dispose();
-        aliases.dispose();
+    protected String isValidTree(TreeNode tree) {
+        return tree.getChildByName(Messages.ProbeParser_staticProbes) != null
+                && tree.getChildByName(Messages.ProbeParser_aliasProbes) != null
+                ? null : Messages.ProbeParser_illegalArgMessage;
     }
 
     /**
@@ -74,29 +67,10 @@ public final class ProbeParser extends TreeTapsetParser {
      *    Root->Named Groups->ProbePoints->Variables
      */
     @Override
-    protected IStatus run(IProgressMonitor monitor) {
-        super.run(monitor);
-        boolean canceled = !addStaticProbes(monitor);
-        if (!canceled) {
-            canceled = !addProbeAliases(monitor);
-        }
-        constructRootTree();
-        return new Status(!monitor.isCanceled() ? IStatus.OK : IStatus.CANCEL,
-                IDEPlugin.PLUGIN_ID, ""); //$NON-NLS-1$
-    }
-
-    @Override
-    protected void resetTree() {
-        probes = new TreeNode(null, false);
-        statics = new TreeNode(Messages.ProbeParser_staticProbes, false);
-        aliases = new TreeNode(Messages.ProbeParser_aliasProbes, false);
-    }
-
-    private void constructRootTree() {
-        statics.sortTree();
-        aliases.sortTree();
-        probes.add(statics);
-        probes.add(aliases);
+    protected IStatus runAction(IProgressMonitor monitor) {
+        addStaticProbes(monitor);
+        addProbeAliases(monitor, tree.getChildAt(0));
+        return super.runAction(monitor);
     }
 
     /**
@@ -106,23 +80,33 @@ public final class ProbeParser extends TreeTapsetParser {
      * <code>true</code> otherwise.
      */
     private boolean addStaticProbes(IProgressMonitor monitor) {
+        TreeNode statics = new TreeNode(Messages.ProbeParser_staticProbes, false);
+        tree.add(statics);
+        if (monitor.isCanceled()) {
+            return false;
+        }
+
         String probeDump = runStap(new String[]{"--dump-probe-types"}, null, false); //$NON-NLS-1$
         if (probeDump == null) {
-            return true;
+            return false;
         }
-        TreeNode group = null;
+
+        boolean canceled = false;
         try (Scanner st = new Scanner(probeDump)) {
+            TreeNode group = null;
             while (st.hasNextLine()) {
                 if (monitor.isCanceled()) {
-                    return false;
+                    canceled = true;
+                    break;
                 }
                 String tokenString = st.nextLine();
                 String probeName = (new StringTokenizer(tokenString)).nextToken();
                 group = addOrFindProbeGroup(extractProbeGroupName(probeName), group, statics);
                 group.add(makeStaticProbeNode(probeName));
             }
-            return true;
         }
+        statics.sortTree();
+        return !canceled;
     }
 
     /**
@@ -132,16 +116,25 @@ public final class ProbeParser extends TreeTapsetParser {
      * @return <code>false</code> if a cancelation prevented all probes from being added;
      * <code>true</code> otherwise.
      */
-    private boolean addProbeAliases(IProgressMonitor monitor) {
+    private boolean addProbeAliases(IProgressMonitor monitor, TreeNode statics) {
+        TreeNode aliases = new TreeNode(Messages.ProbeParser_aliasProbes, false);
+        tree.add(aliases);
+        if (statics == null || monitor.isCanceled()) {
+            return false;
+        }
+
         String probeDump = runStap(new String[]{"-L"}, "**", false); //$NON-NLS-1$ //$NON-NLS-2$
         if (probeDump == null) {
-            return true;
+            return false;
         }
-        TreeNode group = null;
+
+        boolean canceled = false;
         try (Scanner st = new Scanner(probeDump)) {
+            TreeNode group = null;
             while (st.hasNextLine()) {
                 if (monitor.isCanceled()) {
-                    return false;
+                    canceled = false;
+                    break;
                 }
                 String tokenString = st.nextLine();
                 // If the token starts with '_' or '__' it is a private probe so
@@ -154,15 +147,17 @@ public final class ProbeParser extends TreeTapsetParser {
                 String probeName = probeTokenizer.nextToken();
 
                 String groupName = extractProbeGroupName(tokenString);
-                if (!isStaticProbeGroup(groupName)) {
+                // Only add this group if it is not a static probe group
+                if (statics.getChildByName(groupName) == null) {
                     TreeNode probeNode = makeProbeAliasNode(probeName);
                     group = addOrFindProbeGroup(groupName, group, aliases);
                     group.add(probeNode);
                     addAllVarNodesToProbeNode(probeTokenizer, probeNode);
                 }
             }
-            return true;
         }
+        aliases.sortTree();
+        return !canceled;
     }
 
     /**
@@ -215,10 +210,6 @@ public final class ProbeParser extends TreeTapsetParser {
 
     private TreeNode makeProbeAliasNode(String probeName) {
         return new TreeDefinitionNode(new ProbeNodeData(probeName), probeName, findDefinitionOf(probeName), true);
-    }
-
-    private boolean isStaticProbeGroup(String groupName) {
-        return statics.getChildByName(groupName) != null;
     }
 
     /**

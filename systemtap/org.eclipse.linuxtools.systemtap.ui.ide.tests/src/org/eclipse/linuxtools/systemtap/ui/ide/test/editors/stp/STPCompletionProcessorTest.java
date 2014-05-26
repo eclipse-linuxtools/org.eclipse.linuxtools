@@ -14,8 +14,18 @@ package org.eclipse.linuxtools.systemtap.ui.ide.test.editors.stp;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.Assert.fail;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
@@ -23,10 +33,12 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPCompletionProcessor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPDocumentProvider;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
-import org.eclipse.linuxtools.systemtap.ui.tests.SystemtapTest;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.osgi.framework.FrameworkUtil;
 
-public class STPCompletionProcessorTest extends SystemtapTest {
+public class STPCompletionProcessorTest {
 
     private static String TEST_STP_SCRIPT = ""+
             "\n"+
@@ -54,6 +66,35 @@ public class STPCompletionProcessorTest extends SystemtapTest {
         public MockSTPEditor(IDocument document) {
             super();
             setDocumentProvider(new MockSTPDocumentProvider(document));
+        }
+    }
+
+    /**
+     * Use pre-written contents to populate the Function & Probe views.
+     */
+    @BeforeClass
+    public static void prepareTrees() {
+        TapsetLibrary.stop();
+        IPath path = new Path(System.getenv("HOME")). //$NON-NLS-1$
+                append(".systemtapgui").append("TreeSettings").
+                addFileExtension("xml"); //$NON-NLS-1$
+
+        try (InputStream is = FileLocator.openStream(
+                FrameworkUtil.getBundle(STPCompletionProcessorTest.class),
+                new Path("helpers/TreeSettings.xml"), false);
+                BufferedReader br = new BufferedReader(
+                        new InputStreamReader(is));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(path.toFile()))) {
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                writer.write(line);
+                writer.newLine();
+            }
+            writer.flush();
+            TapsetLibrary.readTreeFile();
+        } catch (IOException e) {
+            fail("Unable to read dummy function/probe tree file for testing");
         }
     }
 
@@ -102,11 +143,8 @@ public class STPCompletionProcessorTest extends SystemtapTest {
         assertTrue(!proposalsContain(proposals, "function "));
     }
 
-    //TODO Create dummy probe/function data to test with instead of relying on stap.
     @Test
     public void testProbeCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
-
         String prefix = "probe ";
         ICompletionProposal[] proposals = getCompletionsForPrefix(prefix);
         assertTrue(proposalsContain(proposals, "syscall"));
@@ -115,8 +153,6 @@ public class STPCompletionProcessorTest extends SystemtapTest {
 
     @Test
     public void testMultiProbeCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
-
         String prefix = "probe begin,e";
         ICompletionProposal[] proposals = getCompletionsForPrefix(prefix);
         assertTrue(proposalsContain(proposals, "end"));
@@ -135,8 +171,6 @@ public class STPCompletionProcessorTest extends SystemtapTest {
 
     @Test
     public void testStaticProbeCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
-
         ICompletionProposal[] proposals = getCompletionsForPrefix("probe kernel.");
         assertTrue(proposalsContain(proposals, "kernel.function(string)"));
         assertTrue(proposalsContain(proposals, "kernel.mark(string)"));
@@ -144,8 +178,6 @@ public class STPCompletionProcessorTest extends SystemtapTest {
 
     @Test
     public void testEndProbeCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
-
         Document testDocument = new Document(TEST_STP_SCRIPT);
         @SuppressWarnings("unused")
         MockSTPEditor editor = new MockSTPEditor(testDocument);
@@ -168,8 +200,6 @@ public class STPCompletionProcessorTest extends SystemtapTest {
 
     @Test
     public void testProbeVariableCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
-
         Document testDocument = new Document(TEST_STP_SCRIPT);
         @SuppressWarnings("unused")
         MockSTPEditor editor = new MockSTPEditor(testDocument);
@@ -191,8 +221,6 @@ public class STPCompletionProcessorTest extends SystemtapTest {
 
     @Test
     public void testStaticProbeNormalizationCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
-
         ICompletionProposal[] proposals = getCompletionsForPrefix("probe kernel.function(\"PATTERNASDF\").");
         assertTrue(proposalsContain(proposals, "kernel.function(string).return"));
 
@@ -227,8 +255,6 @@ public class STPCompletionProcessorTest extends SystemtapTest {
 
     @Test
     public void testFunctionCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
-
         Document testDocument = new Document(TEST_STP_SCRIPT);
         @SuppressWarnings("unused")
         MockSTPEditor editor = new MockSTPEditor(testDocument);

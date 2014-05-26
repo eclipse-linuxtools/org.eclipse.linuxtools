@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.systemtap.ui.ide.test.editors.stp;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assume.assumeTrue;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
@@ -24,10 +23,9 @@ import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPAutoEditStrategy;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPPartitionScanner;
 import org.eclipse.linuxtools.systemtap.ui.ide.test.editors.stp.AbstractAutoEditTest.AutoEditTester;
-import org.eclipse.linuxtools.systemtap.ui.tests.SystemtapTest;
 import org.junit.Test;
 
-public class STPFormattingTest extends SystemtapTest{
+public class STPFormattingTest {
 
     /**
      * A DocumentCommand with public constructor and exec method.
@@ -92,7 +90,6 @@ public class STPFormattingTest extends SystemtapTest{
 
     @Test
     public void testEndProbeCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
         AutoEditTester tester = createAutoEditTester();
 
         tester.type("probe end {\n");
@@ -108,7 +105,6 @@ public class STPFormattingTest extends SystemtapTest{
 
     @Test
     public void testSquareBracketCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
         AutoEditTester tester = createAutoEditTester();
 
         tester.type("probe end {\n");
@@ -168,7 +164,6 @@ public class STPFormattingTest extends SystemtapTest{
 
     @Test
     public void testBracketCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
         AutoEditTester tester = createAutoEditTester();
 
         tester.type("probe end {\n");
@@ -195,7 +190,6 @@ public class STPFormattingTest extends SystemtapTest{
 
     @Test
     public void testQuoteCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
         AutoEditTester tester = createAutoEditTester();
 
         tester.type("probe end {\n");
@@ -249,7 +243,6 @@ public class STPFormattingTest extends SystemtapTest{
 
     @Test
     public void testIfCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
         AutoEditTester tester = createAutoEditTester();
 
         tester.type("probe end {\n");
@@ -278,7 +271,6 @@ public class STPFormattingTest extends SystemtapTest{
 
     @Test
     public void testElseBracketCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
         AutoEditTester tester = createAutoEditTester();
 
         tester.type("probe end {\n");
@@ -309,7 +301,6 @@ public class STPFormattingTest extends SystemtapTest{
 
     @Test
     public void testForCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
         AutoEditTester tester = createAutoEditTester();
 
         tester.type("probe end {\n");
@@ -331,7 +322,6 @@ public class STPFormattingTest extends SystemtapTest{
 
     @Test
     public void testForBracketCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
         AutoEditTester tester = createAutoEditTester();
 
         tester.type("probe end {\n");
@@ -354,7 +344,6 @@ public class STPFormattingTest extends SystemtapTest{
 
     @Test
     public void testWhileCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
         AutoEditTester tester = createAutoEditTester();
 
         tester.type("probe end {\n");
@@ -376,7 +365,6 @@ public class STPFormattingTest extends SystemtapTest{
 
     @Test
     public void testWhileBracketCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
         AutoEditTester tester = createAutoEditTester();
 
         tester.type("probe end {\n");
@@ -399,7 +387,6 @@ public class STPFormattingTest extends SystemtapTest{
 
     @Test
     public void testForeachBracketCompletion() throws BadLocationException {
-        assumeTrue(stapInstalled);
         AutoEditTester tester = createAutoEditTester();
 
         tester.type("probe end {\n");

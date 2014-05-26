@@ -24,7 +24,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
- * This <code>Action</code> exports all data in the currently-active {@link GraphSelectorEditor}
+ * This handler exports all data in the currently-active {@link GraphSelectorEditor}
  * into an external file, which can be imported back in later with {@link ImportDataSetHandler}.
  */
 public class ExportDataSetHandler extends AbstractHandler {

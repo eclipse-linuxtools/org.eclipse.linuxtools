@@ -18,9 +18,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.CommentRemover;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.FuncparamNodeData;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.FunctionNodeData;
 import org.eclipse.linuxtools.systemtap.structures.TreeDefinitionNode;
@@ -37,7 +35,6 @@ import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 public final class FunctionParser extends TreeTapsetParser {
 
     private static FunctionParser parser = null;
-    private TreeNode functions;
 
     /**
      * The descriptor used for unresolvable types.
@@ -62,31 +59,13 @@ public final class FunctionParser extends TreeTapsetParser {
         super("Function Parser"); //$NON-NLS-1$
     }
 
-    @Override
-    public synchronized TreeNode getTree() {
-        return functions;
-    }
-
-    @Override
-    protected void resetTree() {
-        functions = new TreeNode(null, false);
-    }
-
-    @Override
-    public void dispose() {
-        functions.dispose();
-    }
-
     /**
      * Runs stap to collect all available tapset functions.
      */
     @Override
-    protected IStatus run(IProgressMonitor monitor) {
-        super.run(monitor);
-        boolean canceled = !addFunctions(monitor);
-        functions.sortTree();
-        return new Status(!canceled ? IStatus.OK : IStatus.CANCEL,
-                IDEPlugin.PLUGIN_ID, ""); //$NON-NLS-1$
+    protected IStatus runAction(IProgressMonitor monitor) {
+        addFunctions(monitor);
+        return super.runAction(monitor);
     }
 
     /**
@@ -100,11 +79,17 @@ public final class FunctionParser extends TreeTapsetParser {
      * <code>true</code> otherwise.
      */
     private boolean addFunctions(IProgressMonitor monitor) {
+        if (monitor.isCanceled()) {
+            return false;
+        }
+
         String tapsetContents = SharedParser.getInstance().getTapsetContents();
         if (tapsetContents == null) {
             // Functions are only drawn from the tapset dump, so exit if it's empty.
             return true;
         }
+
+        boolean canceled = false;
         try (Scanner st = new Scanner(tapsetContents)) {
             String filename = null;
             String scriptText = null;
@@ -112,7 +97,8 @@ public final class FunctionParser extends TreeTapsetParser {
             SharedParser sparser = SharedParser.getInstance();
             while (st.hasNextLine()) {
                 if (monitor.isCanceled()) {
-                    return false;
+                    canceled = true;
+                    break;
                 }
                 String tok = st.nextLine();
                 Matcher mFilename = sparser.filePattern.matcher(tok);
@@ -135,8 +121,9 @@ public final class FunctionParser extends TreeTapsetParser {
                     }
                 }
             }
-            return true;
         }
+        tree.sortTree();
+        return !canceled;
     }
 
     private void addFunctionFromScript(String functionName, String scriptText, String scriptFilename) {
@@ -153,7 +140,7 @@ public final class FunctionParser extends TreeTapsetParser {
             TreeDefinitionNode function = new TreeDefinitionNode(
                     new FunctionNodeData(functionLine, functionType),
                     functionName, scriptFilename, true);
-            functions.add(function);
+            tree.add(function);
             addParamsFromString(mScript.group(2), function);
         }
     }
