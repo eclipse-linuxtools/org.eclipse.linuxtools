@@ -4,7 +4,7 @@
 LTTng (Linux Trace Toolkit, next generation) is a highly efficient tracing tool for Linux that can be used to track down kernel and application performance issues as well as troubleshoot problems involving multiple concurrent processes and threads. It consists of a set of kernel modules, daemons - to collect the raw tracing data - and a set of tools to control, visualize and analyze the generated data. It also provides support for user space application instrumentation.
 For more information about LTTng, refer to the project [http://lttng.org site]
 
-'''Note''': This User Guide covers the integration of the latest LTTng (v2.0) in Eclipse. The legacy version (v0.x) of both the tracer and the LTTng integration are no longer being maintained.
+'''Note''': This User Guide covers the integration of the latest LTTng (up to v2.4) in Eclipse.
 
 == About Tracing ==
 
@@ -14,7 +14,7 @@ Tracing is similar to logging: it consists in recording events that happen in a 
 
 Traces may include events from the operating system kernel (IRQ handler entry/exit, system call entry/exit, scheduling activity, network activity, etc). They can also consists of application events (a.k.a UST - User Space Tracing) or a mix of the two.
 
-For the maximum level of detail, tracing events may be viewed like a log file. However, trace analyzers and viewers are available to derive useful information from the raw data. These programs must be specially designed to handle quickly the enormous amount of data a trace may contain.
+For the maximum level of detail, tracing events may be viewed like a log file. However, trace analyzers and viewers are available to derive useful information from the raw data coupled with knowledge of the traced program. These programs must be specially designed to handle quickly the enormous amount of data a trace may contain.
 
 == LTTng integration ==
 
@@ -30,10 +30,16 @@ The LTTng Eclipse plug-in provides the following views:
 
 These views can be extended or tailored for specific trace types (e.g. kernel, HW, user app).
 
-At present, the LTTng Eclipse plug-in for Eclipse supports the following kernel-oriented analysis:
+At present, the LTTng Eclipse plug-in for Eclipse supports the following kernel-oriented views:
 
 * ''Control Flow'' - to visualize processes state transitions
 * ''Resources'' - to visualize system resources state transitions
+* ''CPU usage'' - to visualize the usage of the processor with respect to the time in traces
+
+It also supports the following User Space traces views:
+
+* ''Memory Usage'' - to visualize the memory usage per thread with respect to time in the traces
+* ''Call Stack'' - to visualize the call stack's evolution over time
 
 Although the control and fetching parts are targeted at the LTTng tracer, the underlying framework can also be used to process any trace that complies with the ''Common Trace Format'' ([http://www.efficios.com/ctf CTF]). CTF specifies a very efficient and compact binary trace format that is meant to be application-, architecture-, and language-agnostic.
 
@@ -47,11 +53,14 @@ The LTTng Eclipse plug-in has a number of features to allow efficient handling o
 * Views synchronization of currently selected time or time range, and window time range
 * Efficient searching and filtering of events
 * Support for trace bookmarks
+* Support for importing and exporting trace packages
 
 There is also support for the integration of non-LTTng trace types:
 
 * Built-in CTF parser
 * Dynamic creation of customized parsers (for XML and text traces)
+* Dynamic creation of customized state systems (from XML files)
+* Dynamic creation of customized views (from XML files)
 
 = Installation =
 
@@ -81,9 +90,16 @@ The LTTng plug-ins are structured as a stack of features/plug-ins as following:
 ** ''Feature'': org.eclipse.linuxtools.ctf
 ** ''Plug-ins'': org.eclipse.linuxtools.ctf.core, org.eclipse.linuxtools.ctf.parser
 
+* '''State System Core''' - State system for TMF
+** ''Plug-ins'': org.eclipse.linuxtools.statesystem.core
+
 * '''TMF''' - ''Tracing and Monitoring Framework'' a framework for generic trace processing
 ** ''Feature'': org.eclipse.linuxtools.tmf
-** ''Plug-ins'': org.eclipse.linuxtools.tmf.core, org.eclipse.linuxtools.tmf.ui
+** ''Plug-ins'': org.eclipse.linuxtools.tmf.core, org.eclipse.linuxtools.tmf.ui. org.eclipse.linuxtools.tmf.analysis.xml.core, org.eclipse.linuxtools.tmf.analysis.xml.ui
+
+* '''CTF support for TMF''' - CTF support for the TMF Feature
+** ''Feature'': org.eclipse.linuxtools.tmf.ctf
+** ''Plug-ins'': org.eclipse.linuxtools.tmf.ctf.core
 
 * '''LTTng''' - The wrapper for the LTTng tracer control. Can be used for kernel or application tracing.
 ** ''Feature'': org.eclipse.linuxtools.lttng2.control
@@ -93,15 +109,21 @@ The LTTng plug-ins are structured as a stack of features/plug-ins as following:
 ** ''Feature'': org.eclipse.linuxtools.lttng2.kernel
 ** ''Plug-ins'': org.eclipse.linuxtools.lttng2.kernel.core, org.eclipse.linuxtools.lttng2.kernel.ui
 
+* '''LTTng UST''' - Analysis components specific to Linux userspace traces
+** ''Feature'': org.eclipse.linuxtools.lttng2.ust
+** ''Plug-ins'': org.eclipse.linuxtools.lttng2.ust.core, org.eclipse.linuxtools.lttng2.ust.ui
+
 == LTTng Eclipse Dependencies ==
 
-The Eclipse LTTng controls the LTTng tracer through an ''ssh'' connection even if the tracer is running locally (the 'degenerate' case).
+The Eclipse LTTng controls the LTTng tracer through an ''ssh'' connection, if the tracer is running locally it can use or bypass the ''ssh'' connection.
 
 Therefore, the target system (where the tracer runs) needs to run an ''ssh'' server as well as ''sftp'' server (for file transfer) to which you have permission to connect.
 
 On the host side (where Eclipse is running), you also need to have Eclipse RSE (Remote System Explorer) installed to handle the SSH connection and transport. The RSE can be installed the standard way (''Help'' > ''Install New Software...'' > ''General Purpose Tools'' > ''Remote System Explorer End-User Runtime'').
 
 == Installation Verification ==
+
+If you do not have any, sample LTTng traces can be found here [http://lttng.org/download]. At the bottom of the page there is a link to some sample LTTng 2.0 kernel traces. The trace needs to be uncompressed to be read.
 
 Here are the quick steps to verify that your installation is functional:
 
@@ -112,8 +134,8 @@ Here are the quick steps to verify that your installation is functional:
 ** Enter the name of your project (e.g. "MyLTTngProject")
 ** The project will be created. It will contain 2 empty folders: "Traces" and "Experiments"
 * Open a sample trace
-** Right-click on the newly created project "Traces" folder and select "Open Trace Directory..."
-** Navigate to the sample LTTng trace that you want to visualize
+** Right-click on the newly created project "Traces" folder and select "Open Trace..."
+** Navigate to the sample LTTng trace that you want to visualize and select any file in the trace folder
 ** The newly imported trace should appear under the Traces folder
 * Visualize the trace
 ** Expand the Traces folder
@@ -123,8 +145,6 @@ Here are the quick steps to verify that your installation is functional:
 If an error message is displayed, you might want to double-check that the trace type is correctly set (right-click on the trace and "Select Trace Type...").
 
 Refer to [[#Tracing Perspective]] for detailed description of the views and their usage.
-
-To download sample LTTng traces, go to [http://lttng.org/download]. At the bottom of the page there is a link to some sample LTTng 2.0 kernel traces.
 
 = LTTng =
 
