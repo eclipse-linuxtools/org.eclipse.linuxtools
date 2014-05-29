@@ -55,6 +55,7 @@ public class IDEPlugin extends AbstractUIPlugin {
 
         workbenchListener = new IDECloseMonitor();
         plugin.getWorkbench().addWorkbenchListener(workbenchListener);
+        TapsetLibrary.init();
     }
 
     /**

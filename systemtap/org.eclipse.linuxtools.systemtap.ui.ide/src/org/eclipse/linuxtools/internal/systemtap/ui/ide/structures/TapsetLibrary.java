@@ -50,6 +50,8 @@ public final class TapsetLibrary {
     private static final IUpdateListener functionCompletionListener = new ParseCompletionListener(functionParser);
     private static final IUpdateListener probeCompletionListener = new ParseCompletionListener(probeParser);
 
+    private static boolean initialized = false;
+
     public static TreeNode getProbes() {
         return probeTree;
     }
@@ -139,19 +141,26 @@ public final class TapsetLibrary {
         return documentation;
     }
 
-    private static void init() {
-        IPreferenceStore preferenceStore = IDEPlugin.getDefault().getPreferenceStore();
-        preferenceStore.addPropertyChangeListener(propertyChangeListener);
-        ConsoleLogPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(credentialChangeListener);
+    /**
+     * Initialize all listeners associated with loading tapset contents, and perform
+     * the first tapset load operation. Note that subsequent calls to this method will have no effect.
+     */
+    public synchronized static void init() {
+        if (!initialized) {
+            initialized = true;
+            IPreferenceStore preferenceStore = IDEPlugin.getDefault().getPreferenceStore();
+            preferenceStore.addPropertyChangeListener(propertyChangeListener);
+            ConsoleLogPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(credentialChangeListener);
 
-        functionParser.addListener(functionCompletionListener);
-        probeParser.addListener(probeCompletionListener);
+            functionParser.addListener(functionCompletionListener);
+            probeParser.addListener(probeCompletionListener);
 
-        if (preferenceStore.getBoolean(IDEPreferenceConstants.P_STORED_TREE)
-                && isTreeFileCurrent()) {
-            readTreeFile();
-        } else {
-            runStapParser();
+            if (preferenceStore.getBoolean(IDEPreferenceConstants.P_STORED_TREE)
+                    && isTreeFileCurrent()) {
+                readTreeFile();
+            } else {
+                runStapParser();
+            }
         }
     }
 
@@ -447,9 +456,5 @@ public final class TapsetLibrary {
         try {
             cacheProbeManpages.join();
         } catch (InterruptedException e) {}
-    }
-
-    static {
-        init();
     }
 }
