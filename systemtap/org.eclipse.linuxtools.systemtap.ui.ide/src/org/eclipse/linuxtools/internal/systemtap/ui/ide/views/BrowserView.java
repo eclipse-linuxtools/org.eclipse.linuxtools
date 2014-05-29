@@ -154,10 +154,6 @@ public abstract class BrowserView extends ViewPart {
             collapseHandler.dispose();
             collapseHandler = null;
         }
-        if (tree != null) {
-            tree.dispose();
-            tree = null;
-        }
         if (viewer != null) {
             if (doubleClickAction != null) {
                 viewer.removeDoubleClickListener(doubleClickAction);
