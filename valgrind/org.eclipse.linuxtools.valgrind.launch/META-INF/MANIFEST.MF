@@ -28,16 +28,13 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.linuxtools.valgrind.ui,
  org.eclipse.ui.model,
  org.eclipse.ui.views.navigator
-Export-Package: org.eclipse.linuxtools.internal.valgrind.launch;
-  x-friends:="org.eclipse.linuxtools.valgrind.cachegrind,
-   org.eclipse.linuxtools.valgrind.helgrind,
-   org.eclipse.linuxtools.valgrind.massif,
-   org.eclipse.linuxtools.valgrind.memcheck,
-   org.eclipse.linuxtools.valgrind.launch,
-   org.eclipse.linuxtools.valgrind.tests,
-   org.eclipse.linuxtools.valgrind.cachegrind.tests,
-   org.eclipse.linuxtools.valgrind.helgrind.tests,
-   org.eclipse.linuxtools.valgrind.massif.tests,
-   org.eclipse.linuxtools.valgrind.memcheck.tests",
- org.eclipse.linuxtools.valgrind.launch
+Export-Package: org.eclipse.linuxtools.internal.valgrind.launch; x-fri
+ ends:="org.eclipse.linuxtools.valgrind.cachegrind,  org.eclipse.linux
+ tools.valgrind.helgrind,  org.eclipse.linuxtools.valgrind.massif,  or
+ g.eclipse.linuxtools.valgrind.memcheck,  org.eclipse.linuxtools.valgr
+ ind.launch,  org.eclipse.linuxtools.valgrind.tests,  org.eclipse.linu
+ xtools.valgrind.cachegrind.tests,  org.eclipse.linuxtools.valgrind.he
+ lgrind.tests,  org.eclipse.linuxtools.valgrind.massif.tests,  org.ecl
+ ipse.linuxtools.valgrind.memcheck.tests",org.eclipse.linuxtools.valgr
+ ind.launch
 Bundle-Localization: plugin

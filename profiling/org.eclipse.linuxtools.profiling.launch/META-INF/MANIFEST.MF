@@ -29,10 +29,11 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.jface.text,
  org.eclipse.ui,
  org.eclipse.ui.console
-Export-Package: org.eclipse.linuxtools.internal.profiling.launch;x-internal:=true,
- org.eclipse.linuxtools.internal.profiling.launch.provider;x-friends:="org.eclipse.linuxtools.gprof.test",
- org.eclipse.linuxtools.internal.profiling.launch.provider.launch;x-friends:="org.eclipse.linuxtools.gprof.test",
- org.eclipse.linuxtools.profiling.launch,
- org.eclipse.linuxtools.profiling.launch.ui
+Export-Package: org.eclipse.linuxtools.internal.profiling.launch;x-int
+ ernal:=true,org.eclipse.linuxtools.internal.profiling.launch.provider
+ ;x-friends:="org.eclipse.linuxtools.gprof.test",org.eclipse.linuxtool
+ s.internal.profiling.launch.provider.launch;x-friends:="org.eclipse.l
+ inuxtools.gprof.test",org.eclipse.linuxtools.profiling.launch,org.ecl
+ ipse.linuxtools.profiling.launch.ui
 Bundle-Localization: plugin
 Bundle-Vendor: %Bundle-Vendor.0

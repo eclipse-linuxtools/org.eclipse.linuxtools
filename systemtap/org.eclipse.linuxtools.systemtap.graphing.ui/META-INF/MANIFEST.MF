@@ -6,14 +6,13 @@ Bundle-Version: 3.0.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.internal.systemtap.graphing.ui.GraphingUIPlugin
 Bundle-Vendor: %bundleProvider
 Bundle-Localization: plugin
-Export-Package: org.eclipse.linuxtools.systemtap.graphing.ui,
- org.eclipse.linuxtools.systemtap.graphing.ui.charts,
- org.eclipse.linuxtools.systemtap.graphing.ui.charts.listeners,
- org.eclipse.linuxtools.systemtap.graphing.ui.datadisplay,
- org.eclipse.linuxtools.systemtap.graphing.ui.views,
- org.eclipse.linuxtools.systemtap.graphing.ui.widgets,
- org.eclipse.linuxtools.systemtap.graphing.ui.wizards.dataset,
- org.eclipse.linuxtools.systemtap.graphing.ui.wizards.graph
+Export-Package: org.eclipse.linuxtools.systemtap.graphing.ui,org.eclip
+ se.linuxtools.systemtap.graphing.ui.charts,org.eclipse.linuxtools.sys
+ temtap.graphing.ui.charts.listeners,org.eclipse.linuxtools.systemtap.
+ graphing.ui.datadisplay,org.eclipse.linuxtools.systemtap.graphing.ui.
+ views,org.eclipse.linuxtools.systemtap.graphing.ui.widgets,org.eclips
+ e.linuxtools.systemtap.graphing.ui.wizards.dataset,org.eclipse.linuxt
+ ools.systemtap.graphing.ui.wizards.graph
 Require-Bundle: org.eclipse.linuxtools.systemtap.graphing.core,
  org.eclipse.linuxtools.systemtap.structures,
  org.eclipse.ui,
