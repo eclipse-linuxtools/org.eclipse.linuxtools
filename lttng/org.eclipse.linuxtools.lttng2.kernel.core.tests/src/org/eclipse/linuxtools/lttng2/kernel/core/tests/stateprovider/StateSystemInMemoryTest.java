@@ -26,12 +26,14 @@ import org.eclipse.linuxtools.tmf.core.trace.ITmfTrace;
 import org.eclipse.linuxtools.tmf.ctf.core.CtfTmfTrace;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 
 /**
  * State system tests using the in-memory back-end.
  *
  * @author Alexandre Montplaisir
  */
+@Ignore
 public class StateSystemInMemoryTest extends StateSystemTest {
 
     private static TestLttngKernelAnalysisModule module;
