@@ -32,9 +32,9 @@
 		<h1 id="SystemTap_Graphing">SystemTap Graphing</h1>
 		<h2 id="Getting_Started_2">Getting Started</h2>
 		<h3 id="Introduction">Introduction</h3>
-		<p>TWhen a SystemTap script is launched under a Run Configuration with the 
+		<p>When a SystemTap script is launched under a Run Configuration with the 
 			<b>Graph the output of this script run</b> option enabled, it is possible to plot its output in graph form. (If you are unfamiliar with how to load or write a SystemTap script, please review the 
-			<a href="SystemTap-IDE.html#IDE_Tutorial">IDE Tutorial</a> in the SystemTap IDE User's Guide.) A variety of graph types are available for plotting the output of Systemtap scripts:
+			<a href="SystemTap-IDE.html#IDE_Tutorial">IDE Tutorial</a> in the SystemTap IDE User's Guide.) A variety of graph types are available for plotting the output of SystemTap scripts:
 		</p>
 		<ul>
 			<li>
@@ -64,9 +64,10 @@
 			<b>Run As -&gt; Run Configurations...</b> and view the configuration you created earlier. If not, follow that tutorial now, and return here when you have finished.
 		</p>
 		<p>Once the Run Configuration menu is opened with your configuration selected, click on the 
-			<b>Graphing</b> tab. At the bottom of the window, a section labelled 
+			<b>Graphing</b> tab. At the bottom of the window, a section labeled 
 			<b>Graph Set #</b> displays a list of all graphs created for the currently-selected 
-			<b>Regular Expression</b> (the # in "Graph Set #" indicates which expression is chosen). There is also a set of buttons related to graph configuration:
+			<b>Regular Expression</b> (the # in 
+			<b>Graph Set #</b> indicates which expression is chosen). There is also a set of buttons related to graph configuration:
 		</p>
 		<ul>
 			<li>
@@ -110,41 +111,42 @@
 				<b>Y Series 0</b> - The class of data that will provide the graph's Y series data, relative to the X axis. A capturing group from your regular expression must be used for this.
 			</li>
 			<li>
-				<b>Y Series 1, 2, 3</b>... - If you have included more than one capturing group in your regular expression, you may choose to provide your graph with multiple Y series data, each of which will be plotted relative to the same X series axis you specified earlier. They will appear as a seperate set of data points on your graph, labelled by title. When you do not want to include any extra Y series values, choose 
+				<b>Y Series 1, 2, 3</b>... - If you have included more than one capturing group in your regular expression, you may choose to provide your graph with multiple Y series data, each of which will be plotted relative to the same X series axis you specified earlier. They will appear as a separate set of data points on your graph, labeled by title. When you do not want to include any extra Y series values, choose 
 				<b>NA</b>.
 			</li>
 		</ul>
 		<p>Note that two different series may not share the same data selection.</p>
 		<h2 id="Concepts_2">Concepts</h2>
 		<h3 id="Data_Table">Data Table</h3>
-		<p>The Data Table is a view that is always available when running a script with the chart option. It intitially starts empty and populates as it recieves information parsed from the console originally from the script. The Data Table is a visualization of the data structure that every other graph type spawns from.</p>
+		<p>The Data Table is a view that is always available when running a script with the chart option. It initially starts empty and populates as it recieves information parsed from the console originally from the script. The Data Table is a visualization of the data structure that every other graph type spawns from.</p>
 		<p>
-			<img border="0" src="images/SystemtapGraphDataView.png"/> 
+			<img border="0" src="images/SystemtapGraphDataView.png"/>
 		</p>
-		<p>The columns of the Data Table can be resized at will by dragging the seperation lines between column headers. In addition, the information in the data table can be 
-			<a href="#Importing_a_Data_Set">saved and loaded</a> without having to re-run the script. Furthermore, the user can populate the Data Table without having to run a script if a script's output has been saved into a file, see 
-			<a href="#Opening_Script_Output">Opening Script Output</a>.Right clicking the Data Table provides a menu with the following options: 
+		<p>The columns of the Data Table can be resized at will by dragging the separation lines between column headers, as long as the 
+			<b>Auto resize columns</b> option (in Preferences-&gt;SystemTap-&gt;Graphing-&gt;Data Table) has been deactivated. In addition, the information in the data table can be 
+			<a href="#Importing_a_Data_Set">saved and loaded</a> without having to re-run the script. Furthermore, the user can populate the Data Table without having to run a script if a script's output has been saved into a file; see 
+			<a href="#Opening_Script_Output">Opening Script Output</a>. Right clicking the Data Table provides a menu with the following options:
 		</p>
 		<ul>
 			<li>
-				<b>Format as...</b> - Depending on which column the user right clicked, this allows the user to format that column's data as one of the following: 
+				<b>Format as...</b> - Depending on which column the user right clicked, this allows the user to format that column's data as one of the following:
 				<ul>
-					<li>Unformated - No formating is applied. </li>
-					<li>String </li>
-					<li>Date </li>
-					<li>Double </li>
-					<li>Hex </li>
-					<li>Octal </li>
-					<li>Binary   </li>
+					<li>Unformatted - No formatting is applied.</li>
+					<li>String</li>
+					<li>Date</li>
+					<li>Double</li>
+					<li>Hex</li>
+					<li>Octal</li>
+					<li>Binary</li>
 				</ul>
 			</li>
 			<li>
 				<b>Add Filter...</b> - Adds a 
-				<a href="#Filters">filter</a> to the Data Table. 
+				<a href="#Filters">filter</a> to the Data Table.
 			</li>
 			<li>
 				<b>Remove Filter...</b> - Removes a 
-				<a href="#Filters">filter</a> from the Data Table. 
+				<a href="#Filters">filter</a> from the Data Table.
 			</li>
 			<li>
 				<b>Manually Resize</b> - Allows the user to resize column width without bouncing back to the minimum based on the largest value.
@@ -156,48 +158,39 @@
 			<a href="#Create_Graph_Wizard">Create Graph</a> wizard once the Data Table is populated. The Graphing Perspective can support multiple graphs from one Data Table. Each are updated and can be viewed by navigating through the tabs shown at the top of each Graph Set while in the Graph Selector View.
 		</p>
 		<h4 id="Scatter_Graph">Scatter Graph</h4>
-		<p>A Scatter Graph uses Cartesian coordinates to show the relation of two or more quantitative variables.</p>
-		<p>Creating a Scatter Graph will prompt the user for three values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the Y Series; here you select which series of data you want to plot along the Y Axis.
-			Optionally you can add extra Y Series; here you select another series of data you want to plot along the Y Axis.</p>
+		<p>A Scatter Graph uses Cartesian coordinates to show the relation of two or more quantitative variables. All values must be numeric.</p>
 		<p>
 			<img border="0" src="images/Scatter.png"/>
 		</p>
 		<h4 id="Line_Graph">Line Graph</h4>
-		<p>The Line Graph is traditionally ideal for horozontally depicting non-cumulative data over, say, time.</p>
-		<p>Creating a Line Graph will prompt the user for three values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the Y Series; here you select which series of data you want to plot along the Y Axis.
-			Optionally you can add extra Y Series; here you select another series of data you want to plot along the Y Axis.</p>
+		<p>The Line Graph is traditionally ideal for horizontally depicting non-cumulative data over, say, time. All values must be numeric.</p>
 		<p>
 			<img border="0" src="images/Line.png"/>
 		</p>
 		<h4 id="Area_Graph">Area Graph</h4>
-		<p>The Area Graph is traditionally ideal for horozontally depicting non-cumulative data over, say, time.</p>
-		<p>Creating an Area Graph will prompt the user for three values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the Y Series; here you select which series of data you want to plot along the Y Axis.
-			Optionally you can add extra Y Series; here you select another series of data you want to plot along the Y Axis.</p>
+		<p>The Area Graph is traditionally ideal for horizontally depicting non-cumulative data over, say, time. All values must be numeric.</p>
 		<p>
 			<img border="0" src="images/Area.png"/>
 		</p>
 		<h4 id="Bar_Graph">Bar Graph</h4>
-		<p>The Bar Graph typically uses bars to show frequencies or values. </p>
-		<p>Creating a Bar Graph will prompt the user for three values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select which series of data you want to plot along the X Axis. The third option is the Y Series; here you select which series of data you want to plot along the Y Axis. 
-			Optionally you can add extra Y Series; here you select another series of data you want to plot along the Y Axis.</p>
+		<p>The Bar Graph typically uses bars to show frequencies or values. Labels can be given to bars by applying string values to the x-axis. Y-axis values, though, must be numeric.</p>
 		<p>
 			<img border="0" src="images/Bar.png"/>
 		</p>
 		<h4 id="Pie_Graph">Pie Graph</h4>
-		<p>The Pie Graph uses a pie to show percentages.</p>
-		<p>Creating a Pie Graph will prompt the user for three values. The first is the title and is fully cosmetic. The option to turn on and off the title is given to the user, and its off by default. The second option is X Series; here you select the series to be used as labels of each area of the pie chart. The third option is the Y Series; here you select which series of data will be used to calculate the percentages of each area of the pie chart. Optionally you can add extra Y Series, each of which will draw another Pie containing that series' data.</p>
+		<p>The Pie Graph uses a pie to show percentages. One pie is drawn for each data series provided. Titles can be given to slices by applying string values to the x-axis. Y-axis values, though, must be numeric.</p>
 		<p>
 			<img border="0" src="images/Pie.png"/>
 		</p>
 		<h3 id="Filters">Filters</h3>
-		<p>Filters are screens that you can set on your Data Table to limit the quantity of samples you wish to work with. Filters are very often used in restricting the sheer amount of information available to make data tables and graphs more substantial to people.</p>
+		<p>Filters are screens that you can set on your Data Table to limit the quantity of samples you wish to work with. Filters are very often used in restricting the sheer amount of information available to make data tables and graphs more substantial and manageable.</p>
 		<p>The following options exist to work with Filters in the Data Table:</p>
 		<ul>
 			<li>
-				<b>Add Filter...</b> - Adds a Filter to the Data Table.
+				<b>Add Filter...</b> - Adds a Filter to the Data Table. Multiple filters may be applied at a time.
 			</li>
 			<li>
-				<b>Remove Filter...</b> - Removes a Filter from the Data Table. 
+				<b>Remove Filter...</b> - Removes a Filter from the Data Table. All currently applied filters will be listed in a drop-down menu; the user may select which of them to remove.
 			</li>
 		</ul>
 		<p>When you select 
@@ -206,13 +199,15 @@
 		<p>
 			<img border="0" src="images/StapDataFilters.png"/>
 		</p>
-		<p>What follows is a breakdown of each Filter type:</p>
+		<p>What follows is a breakdown of each Filter type, and an example of how each affects this sample data set:</p>
+		<p>
+			<img border="0" src="images/UnfilteredDataset.png"/>
+		</p>
 		<ul>
 			<li>
-				<b>Match Filter</b> - This filter removes everything from the data set where the selected column's 
+				<b>Match Filter</b> - This filter either removes or keeps everything from the data set where the selected selected column's value matches the chosen value.
 			</li>
 		</ul>
-		<p>value does not match the chosen value.</p>
 		<p>
 			<img border="0" src="images/Match.png"/>
 		</p>
@@ -222,10 +217,9 @@
 		</p>
 		<ul>
 			<li>
-				<b>Range Filter</b> - This filter removes everything from the data set that is not included in the 
+				<b>Range Filter</b> - This filter keeps everything from the data set that is either inside or outside the selected range of values. Note that it is possible to use unbounded ranges by leaving either the lower or upper bound blank.
 			</li>
 		</ul>
-		<p>selected range of values.</p>
 		<p>
 			<img border="0" src="images/Range.png"/>
 		</p>
@@ -278,25 +272,71 @@
 			</li>
 		</ul>
 		<h3 id="Graph_Interaction">Graph Interaction</h3>
+		<h4 id="Graph_Options">Graph Options</h4>
 		<p>Each of the 
-			<a href="#Data_Graph_Types">Graph Types</a> have similar options that can be used in the Graphical
-			Perspective:
+			<a href="#Data_Graph_Types">Graph Types</a> have similar options that can be used in the Graph Selector View:
 		</p>
 		<ul>
 			<li>
-				<b>Zoom Bar</b> - The graph types that use axes (Scatter, Line, Area, and Bar graphs) support this control. This enables the user to reduce the number of X-axis values that are plotted on the graph, to effectively zoom in and out on the graph's display. Sliding the bar left reduces the range of the X-axis that is plotted (zoom in), and sliding right increases it (zoom out).
+				<b>Legend</b> - This option turns on and off the legend, particularly useful in the graph types that show multiple series.
+			</li>
+			<li>
+				<b>Graph Scrolling/Scaling</b> - It is possible to zoom &amp; scroll through any graph axis. Different controls are provided for navigating through continuous and discrete axes.
 			</li>
 		</ul>
 		<p>
-			<img border="0" src="images/ZoomX.png"/>
+			<img border="0" src="images/GraphNavBefore.png"/>
+		</p>
+		<p>To zoom in/out of a continuous axis (ie Scatter/Line/Area Graph), use the +/- buttons or the Scale bar beneath / to the left of a graph. To scroll through the viewing area, use the horizontal/vertical scroll bars provided.</p>
+		<p>
+			<img border="0" src="images/GraphNavAfter.png"/>
+		</p>
+		<p>Specialized controls are available for zooming &amp; scrolling through discrete axis, namely the bars of a Bar Graph or the pies of a Pie Chart.</p>
+		<p>
+			<img border="0" src="images/BarNavBefore.png"/>
+		</p>
+		<p>Zooming is performed with the 
+			<b>Zoom In/Out</b> buttons beneath the graph. To scroll to left or right, click 
+			<b>&lt;</b> or 
+			<b>&gt;</b> respectively. To jump to the beginning or end of the axis, click 
+			<b>&lt;&lt;</b> or 
+			<b>&gt;&gt;</b> respectively.
+		</p>
+		<p>
+			<img border="0" src="images/BarNavAfter.png"/>
 		</p>
 		<p>Use 
 			<a href="SystemTap-IDE.html#Preferences">Preferences</a> to configure other graph settings, such as grid lines and viewable data items.
 		</p>
+		<h4 id="Graph_Coordinate_Tooltips">Graph Coordinate Tooltips</h4>
+		<p>Hover over any data point on a graph to display detailed information about that point's coordinates. This feature is available for all graph types.</p>
+		<p>
+			<img border="0" src="images/LineChartTooltip.png"/>
+		</p>
+		<h2 id="Graphing_Tasks">Graphing Tasks</h2>
+		<h3 id="Importing.2FExporting_Data_Sets">Importing/Exporting Data Sets</h3>
+		<p>A data set is comprised of the contents of a Graph Set's data table. From time to time the user may want to preserve this data for continued work at a later date/time or to share findings with others. The Importing and Exporting options provide an easy way to do this.</p>
+		<p>To save a data set, click the 
+			<b>Export Data Set</b> toolbar button while viewing one of the tabs of the Graph Set data that is to be saved (either the Data Table or one of its graphs). To load &amp; display a previously-exported data set, use the 
+			<b>Import Data Set</b> toolbar button, which is available at all times.
+		</p>
+		<p>
+			<img border="0" src="images/DataSetImportExport.png"/> 
+			<i>The Data Set toolbar buttons that appear while viewing a Graph Set. (Blue/left: Export. Red/Right: Import.)</i>
+		</p>
+		<p>
+			<img border="0" src="images/DataSetImportOnly.png"/> 
+			<i>The Import Data Set button as it appears while a Graph Set is not being viewed.</i>
+		</p>
+		<p>In either case, a file dialog will appear to allow the user to choose the path on the filesystem where the data set should be exported to / imported from.</p>
+		<h3 id="Saving_a_Graph_Image">Saving a Graph Image</h3>
+		<p>It is possible to save graphs as image files. To do so, view the graph that is to be saved and click the 
+			<b>Save Graph</b> button that appears in the toolbar. This opens a dialogue box where the user can navigate to the location they desire to save the image file.
+		</p>
+		<p>
+			<img border="0" src="images/SaveStapGraphButton.png"/>
+		</p>
 		<h2 id="Reference_2">Reference</h2>
-		<p>This section of the Graphing User Guide is intended to provide the following resources should you have any
-			very specific questions regarding the graphing in general or one of the options associated with 
-			it. It also contains example scripts and FAQs.</p>
 		<h3 id="Frequently_Asked_Questions_2">Frequently Asked Questions</h3>
 		<p>This section details frequently asked questions relating to graphing script output.</p>
 		<p>
@@ -304,7 +344,7 @@
 		</p>
 		<p>A: Yes and yes. In the Run Configuration of the script you want to create plots of, you can create multiple graphs at once. Also, after a graph-enabled script is run, you may create several additional graphs by clicking the Graph Wizard button in the Graph Selector View.</p>
 		<p>
-			<b>Can I increase the rate at which SystemTap GUI update the graph?</b>
+			<b>Can I increase the rate at which graphs are updated?</b>
 		</p>
 		<p>A: Yes. By default it is set to once per second, but you can increase this in 
 			<a href="SystemTap-IDE.html#Preferences">Preferences</a>.
@@ -312,11 +352,16 @@
 		<p>
 			<b>Is there any way to save or export the graph images?</b>
 		</p>
-		<p>A: Currently, no. This feature will be restored in a newer version of Systemtap IDE.</p>
+		<p>A: Yes. A 
+			<b>Save Graph</b> button appears in the toolbar whenever you are viewing a graph. Clicking it will allow you to save the graph currently in focus.
+		</p>
 		<p>
 			<b>What if I want to preserve this data for manipulation later?</b>
 		</p>
-		<p>A: This feature will be restored in a newer version of Systemtap IDE.</p><hr/>
+		<p>A: While viewing a Data Table or one of the graphs it provides data to, the 
+			<b>Export Data Set</b> toolbar button is available. Click this button to save the focused Data Table's contents into a .set file. Such files can be loaded back later with the 
+			<b>Import Data Set</b> button on the toolbar (which is always available).
+		</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
 				<td style="width: 20%" align="left">
