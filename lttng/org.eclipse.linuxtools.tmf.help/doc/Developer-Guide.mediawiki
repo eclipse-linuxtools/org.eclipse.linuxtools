@@ -390,7 +390,7 @@ The attribute '''eventsTableType''' allows for configuring the events table clas
 === Statistics Viewer Type ===
 The attribute '''statisticsViewerType''' allows for defining trace type specific statistics. If omitted, only the default statistics will be displayed in the ''Statistics'' view (part of the ''Tracing'' view category). By default this view displays the total number of events and the number of events per event type for the whole trace and for the selected time range. To configure trace type specific statistics, first add the '''statisticsViewerType''' attribute to the trace type in the extension definition. This can be done by selecting the trace type in the plug-in manifest editor. Then click the right mouse button and select '''New -> statisticsViewerType''' in the context sensitive menu. Then select the newly added attribute and click on ''class'' on the right side of the manifest editor. The new class wizard will open. The ''superclass'' field will be already filled with the class ''org.eclipse.linuxtools.tmf.ui.viewers.statistics.TmfStatisticsViewer''. Now overwrite the relevant methods to provide the trace specific statistics. When executing the plug-in extension in Eclipse and opening the ''Statistics'' view the ''Statistics'' view  will show an additional tab beside the global tab that shows the default statistics. The new tab will display the trace specific statistics provided in the ''TmfStatisticsViewer'' sub-class implementation.
 
-= View Tutorial  =
+= View Tutorial =
 
 This tutorial describes how to create a simple view using the TMF framework and the SWTChart library. SWTChart is a library based on SWT that can draw several types of charts including a line chart which we will use in this tutorial. We will create a view containing a line chart that displays time stamps on the X axis and the corresponding event values on the Y axis.
 
@@ -400,6 +400,8 @@ This tutorial will cover concepts like:
 * Signal handling (@TmfSignalHandler)
 * Data requests (TmfEventRequest)
 * SWTChart integration
+
+'''Note''': TMF 3.0.0 provides base implementations for generating SWTChart viewers and views. For more details please refer to chapter [[#TMF Built-in Views and Viewers]].
 
 === Prerequisites ===
 
@@ -731,6 +733,33 @@ The view is now ready but we need a proper trace to test it. For this example, a
 [[Image:images/SampleView.png]]<br>
 
 In summary, we have implemented a simple TMF view using the SWTChart library. We made use of signals and requests to populate the view at the appropriate time and we formated the time stamps nicely. We also made sure that the time stamp format is updated when the preferences change.
+
+== TMF Built-in Views and Viewers ==
+
+TMF provides base implementations for several types of views and viewers for generating custom X-Y-Charts, Time Graphs, or Trees. They are well integrated with various TMF features such as reading traces and time synchronization with other views. They also handle mouse events for navigating the trace and view, zooming or presenting detailed information at mouse position. The code can be found in the TMF UI plug-in ''org.eclipse.linuxtools.tmf.ui''. See below for a list of relevant java packages:
+
+* Generic
+** ''org.eclipse.linuxtools.tmf.ui.views'': Common TMF view base classes
+* X-Y-Chart
+** ''org.eclipse.linuxtools.tmf.ui.viewers.xycharts'': Common base classes for X-Y-Chart viewers based on SWTChart
+** ''org.eclipse.linuxtools.tmf.ui.viewers.xycharts.barcharts'': Base classes for bar charts
+** ''org.eclipse.linuxtools.tmf.ui.viewers.xycharts.linecharts'': Base classes for line charts
+* Time Graph View
+** ''org.eclipse.linuxtools.tmf.ui.widgets.timegraph'': Base classes for time graphs e.g. Gantt-charts
+* Tree Viewer
+** ''org.eclipse.linuxtools.tmf.ui.viewers.tree'': Base classes for TMF specific tree viewers
+
+Several features in TMF and the Eclipse LTTng integration are using this framework and can be used as example for further developments:
+* X-Y- Chart
+** ''org.eclipse.linuxtools.internal.lttng2.ust.ui.views.memusage.MemUsageView.java''
+** ''org.eclipse.linuxtools.internal.lttng2.kernel.ui.views.cpuusage.CpuUsageView.java''
+** ''org.eclipse.linuxtools.tracing.examples.ui.views.histogram.NewHistogramView.java''
+* Time Graph View
+** ''org.eclipse.linuxtools.internal.lttng2.kernel.ui.views.controlflow.ControlFlowView.java''
+** ''org.eclipse.linuxtools.internal.lttng2.kernel.ui.views.resources.ResourcesView.java''
+* Tree Viewer
+** ''org.eclipse.linuxtools.tmf.ui.views.statesystem.TmfStateSystemExplorer.java''
+** ''org.eclipse.linuxtools.internal.lttng2.kernel.ui.views.cpuusage.CpuUsageComposite.java''
 
 = Component Interaction =
 
