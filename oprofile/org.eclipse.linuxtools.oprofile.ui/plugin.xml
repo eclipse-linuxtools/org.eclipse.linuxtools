@@ -4,16 +4,12 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            category="org.eclipse.linuxtools.oprofile.ui.viewgroup"
+            category="org.eclipse.linuxtools.profiling.ui"
             class="org.eclipse.linuxtools.internal.oprofile.ui.view.OprofileView"
             icon="icons/oprofile_view.png"
             id="org.eclipse.linuxtools.oprofile.ui.OProfileView"
             name="%view.name"
             restorable="true">
       </view>
-      <category
-            id="org.eclipse.linuxtools.oprofile.ui.viewgroup"
-            name="%view.groupname">
-      </category>
    </extension>
 </plugin>
