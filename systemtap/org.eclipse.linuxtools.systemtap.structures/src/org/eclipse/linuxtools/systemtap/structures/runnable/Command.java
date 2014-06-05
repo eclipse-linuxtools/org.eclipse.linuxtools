@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+ * Copyright (c) 2006 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
+ *     Red Hat - ongoing maintenance
  *******************************************************************************/
 
 package org.eclipse.linuxtools.systemtap.structures.runnable;
@@ -144,7 +145,7 @@ public class Command implements Runnable {
             errorGobbler = new StreamGobbler(process.getErrorStream());
             inputGobbler = new StreamGobbler(process.getInputStream());
 
-            this.transferListeners();
+            transferListeners();
             return Status.OK_STATUS;
         } catch (IOException e) {
             return new Status(IStatus.ERROR, StructuresPlugin.PLUGIN_ID, e.getMessage(), e);
@@ -169,7 +170,7 @@ public class Command implements Runnable {
     /**
      * This method handles checking the status of the running <code>Process</code>. It
      * is called when the new Thread is created, and thus should never be called by
-     * any implementing program. To run call the <code>start</code> method.
+     * any implementing program. To run call the {@link #start} method.
      */
     @Override
     public void run() {
@@ -295,7 +296,7 @@ public class Command implements Runnable {
     }
 
     /**
-     * Saves the input stream data to a permanent file.  Any new data on the
+     * Saves the input stream data to a permanent file. Any new data on the
      * stream will automatically be saved to the file.
      * @param file The file to save the InputStream to.
      */
@@ -307,7 +308,7 @@ public class Command implements Runnable {
      * Disposes of all internal components of this class. Nothing in the class should be
      * referenced after this is called.
      */
-    public void dispose() {
+    public synchronized void dispose() {
         if (!disposed) {
             stop();
             disposed = true;
