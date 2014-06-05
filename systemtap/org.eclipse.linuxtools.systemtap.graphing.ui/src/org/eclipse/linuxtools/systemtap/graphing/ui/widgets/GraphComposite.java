@@ -28,6 +28,7 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * A Composite type to contain a Graph object.
@@ -35,6 +36,15 @@ import org.eclipse.swt.widgets.Composite;
  * @author Ryan Morse
  */
 public class GraphComposite extends Composite {
+
+    private final Composite xControl;
+    private final Composite yControl;
+
+    private boolean sidebarVisible = false;
+    private AbstractChartBuilder builder;
+    private List<Button> checkOptions;
+    private Composite checkOptionComp;
+
     /**
      * The default constructor: creates an internal composite for the Graph to render on, asks GraphFactory
      * to create the graph from the given GraphData and DataSet, then initializes all buttons and listeners.
@@ -66,7 +76,6 @@ public class GraphComposite extends Composite {
         }
 
         configure(true);
-
         builder.build();
     }
 
@@ -77,7 +86,7 @@ public class GraphComposite extends Composite {
     private void configure(boolean withSidebar) {
         sidebarVisible = withSidebar;
 
-        for(Button b:checkOptions) {
+        for (Button b : checkOptions) {
             b.setVisible(withSidebar);
         }
 
@@ -97,13 +106,20 @@ public class GraphComposite extends Composite {
         layout(true, true);
     }
 
-    public void addCheckOption(String title, SelectionListener listener) {
-        Button b = new Button(checkOptionComp, SWT.CHECK);
-        b.setText(title);
-        b.addSelectionListener(listener);
-        checkOptions.add(b);
-        b.setSelection(true);
-        configure(sidebarVisible);
+    public void addCheckOption(final String title, final SelectionListener listener) {
+        Display.getDefault().syncExec(new Runnable() {
+            @Override
+            public void run() {
+                Button b = new Button(checkOptionComp, SWT.CHECK);
+                b.setText(title);
+                b.addSelectionListener(listener);
+                checkOptions.add(b);
+                b.setSelection(true);
+                if (sidebarVisible) {
+                    configure(true);
+                }
+            }
+        });
     }
 
     /**
@@ -114,6 +130,9 @@ public class GraphComposite extends Composite {
     }
 
     /**
+     * Set the visibility of the graph's legend.
+     * @param visible Set this to <code>true</code> to show the legend,
+     * or <code>false</code> to hide it.
      * @since 3.0
      */
     public void setLegendVisible(boolean visible) {
@@ -121,11 +140,14 @@ public class GraphComposite extends Composite {
         builder.handleUpdateEvent();
     }
 
-    private final Composite xControl;
-    private final Composite yControl;
-
-    private boolean sidebarVisible = false;
-    private AbstractChartBuilder builder;
-    private List<Button> checkOptions;
-    private Composite checkOptionComp;
+    /**
+     * Set the visibility of the graph's title.
+     * @param visible Set this to <code>true</code> to show the title,
+     * or <code>false</code> to hide it.
+     * @since 3.1
+     */
+    public void setTitleVisible(boolean visible) {
+        builder.getChart().getTitle().setVisible(visible);
+        builder.handleUpdateEvent();
+    }
 }
