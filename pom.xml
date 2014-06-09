@@ -124,7 +124,7 @@
       </activation>
       <properties>
         <mirror-repo-name>update-3.0</mirror-repo-name>
-        <eclipse-site>http://download.eclipse.org/releases/luna</eclipse-site>
+        <eclipse-site>http://download.eclipse.org/releases/staging</eclipse-site>
         <platform-version>[4.3,)</platform-version>
         <sdk-version>4.3</sdk-version>
       </properties>
