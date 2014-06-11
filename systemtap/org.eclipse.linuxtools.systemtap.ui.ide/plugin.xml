@@ -44,16 +44,31 @@
       <menuContribution
             locationURI="toolbar:org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView">
          <command commandId="org.eclipse.ui.navigate.collapseAll"/>
+         <command
+               commandId="org.eclipse.linuxtools.systemtap.ui.ide.refreshView"
+               icon="icons/actions/refresh_tab.gif"
+               label="%command.refreshView.name"
+               tooltip="%command.refreshView.name"/>
       </menuContribution>
 
       <menuContribution
             locationURI="toolbar:org.eclipse.linuxtools.internal.systemtap.ui.ide.views.KernelBrowserView">
          <command commandId="org.eclipse.ui.navigate.collapseAll"/>
+         <command
+               commandId="org.eclipse.linuxtools.systemtap.ui.ide.refreshView"
+               icon="icons/actions/refresh_tab.gif"
+               label="%command.refreshView.name"
+               tooltip="%command.refreshView.name"/>
       </menuContribution>
 
       <menuContribution
             locationURI="toolbar:org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView">
          <command commandId="org.eclipse.ui.navigate.collapseAll"/>
+         <command
+               commandId="org.eclipse.linuxtools.systemtap.ui.ide.refreshView"
+               icon="icons/actions/refresh_tab.gif"
+               label="%command.refreshView.name"
+               tooltip="%command.refreshView.name"/>
       </menuContribution>
 
       <menuContribution
@@ -311,6 +326,13 @@
           description="%command.viewDefinition.desc"
           categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.tapset"
           id="org.eclipse.linuxtools.systemtap.ui.ide.definitionMenu">
+      </command>
+      <command
+          name="%command.refreshView.name"
+          description="%command.refreshView.desc"
+          categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.tapset"
+          id="org.eclipse.linuxtools.systemtap.ui.ide.refreshView"
+          defaultHandler="org.eclipse.linuxtools.internal.systemtap.ui.ide.views.RefreshHandler">
       </command>
 
       <category

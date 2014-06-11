@@ -11,6 +11,8 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 
 /**
@@ -24,9 +26,24 @@ public abstract class TreeTapsetParser extends TapsetParser {
     }
 
     /**
+     * Prepares the parser for a run. Clients must override this method to perform
+     * actions during the run; a call to super.run() is necessary.
+     */
+    @Override
+    protected IStatus run(IProgressMonitor monitor) {
+        resetTree();
+        return null;
+    }
+
+    /**
      * @return The tree that this parser constructs.
      */
     abstract TreeNode getTree();
+
+    /**
+     * Clears & resets the tree that this parser constructs.
+     */
+    abstract protected void resetTree();
 
     /**
      * Clean up everything from the last parse run.

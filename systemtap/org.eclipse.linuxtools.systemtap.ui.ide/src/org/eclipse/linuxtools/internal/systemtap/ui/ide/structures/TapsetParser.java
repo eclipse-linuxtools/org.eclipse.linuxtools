@@ -14,11 +14,8 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -26,7 +23,6 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.StringOutputStream;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.EnvironmentVariablesPreferencePage;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
-import org.eclipse.linuxtools.systemtap.structures.listeners.IUpdateListener;
 import org.eclipse.linuxtools.systemtap.structures.process.SystemtapProcessFactory;
 import org.eclipse.linuxtools.systemtap.structures.runnable.StringStreamGobbler;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
@@ -59,71 +55,13 @@ public abstract class TapsetParser extends Job {
     private static AtomicBoolean displayingError = new AtomicBoolean(false);
     private static AtomicBoolean displayingCredentialDialog = new AtomicBoolean(false);
 
-    private ArrayList<IUpdateListener> listeners = new ArrayList<>();
-    private boolean cancelRequested = false;
-    public boolean isCancelRequested() {
-        return cancelRequested;
-    }
-
     protected TapsetParser(String jobTitle) {
         super(jobTitle);
-        addJobChangeListener(new IJobChangeListener() {
-            @Override
-            public void sleeping(IJobChangeEvent event) {
-            }
-            @Override
-            public void scheduled(IJobChangeEvent event) {
-            }
-            @Override
-            public void running(IJobChangeEvent event) {
-            }
-            @Override
-            public void done(IJobChangeEvent event) {
-                cancelRequested = false;
-            }
-            @Override
-            public void awake(IJobChangeEvent event) {
-            }
-            @Override
-            public void aboutToRun(IJobChangeEvent event) {
-            }
-        });
     }
 
     @Override
     protected void canceling() {
-        cancelRequested = true;
         getThread().interrupt();
-    }
-
-    /**
-     * Register a new listener with this parser.
-     * @param listener The listener that will receive an update event when this
-     * parser has completed its operation.
-     */
-    public void addListener(IUpdateListener listener) {
-        if (listener != null) {
-            listeners.add(listener);
-        }
-    }
-
-    /**
-     * Unregister the listener with this parser.
-     * @param listener The listener that no longer wants to recieve update events.
-     */
-    public void removeListener(IUpdateListener listener) {
-        if (listener != null) {
-            listeners.remove(listener);
-        }
-    }
-
-    /**
-     * This method will fire an updateEvent to all listeners.
-     */
-    protected void fireUpdateEvent() {
-        for (IUpdateListener listener : listeners) {
-            listener.handleUpdateEvent();
-        }
     }
 
     /**

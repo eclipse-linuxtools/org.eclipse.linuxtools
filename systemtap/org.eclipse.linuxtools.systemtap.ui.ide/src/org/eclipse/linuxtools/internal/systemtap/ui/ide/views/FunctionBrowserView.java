@@ -18,7 +18,6 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.ISingleTypedNode;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Composite;
 
 
 
@@ -28,18 +27,11 @@ import org.eclipse.swt.widgets.Composite;
  * @author Ryan Morse
  * @author Henry Hughes
  */
-public class FunctionBrowserView extends BrowserView {
+public class FunctionBrowserView extends TapsetBrowserView {
     public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView"; //$NON-NLS-1$
 
-    /**
-     * Creates the UI on the given <code>Composite</code>
-     */
-    @Override
-    public void createPartControl(Composite parent) {
-        super.createPartControl(parent);
-        FunctionParser.getInstance().addListener(viewUpdater);
-        refresh();
-        makeActions();
+    public FunctionBrowserView() {
+        super(FunctionParser.getInstance());
     }
 
     @Override
@@ -59,30 +51,17 @@ public class FunctionBrowserView extends BrowserView {
         }
     }
 
-    /**
-     * Refreshes the list of functions in the viewer.
-     */
     @Override
-    public void refresh() {
-        tree = TapsetLibrary.getFunctions();
-        if (tree != null) {
-            viewer.setInput(tree);
-        }
+    protected void displayContents() {
+        setViewerInput(TapsetLibrary.getFunctions());
+        setRefreshable(true);
     }
 
-    /**
-     * Wires up all of the actions for this browser, such as double and right click handlers.
-     */
-    private void makeActions() {
+    @Override
+    protected void makeActions() {
         doubleClickAction = new FunctionBrowserAction(getSite().getWorkbenchWindow(), this);
         viewer.addDoubleClickListener(doubleClickAction);
         registerContextMenu("functionPopup"); //$NON-NLS-1$
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        FunctionParser.getInstance().removeListener(viewUpdater);
     }
 
 }

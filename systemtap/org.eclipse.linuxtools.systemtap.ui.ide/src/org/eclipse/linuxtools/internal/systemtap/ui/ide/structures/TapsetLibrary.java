@@ -13,7 +13,9 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 
 import java.io.File;
 
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -23,7 +25,6 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
-import org.eclipse.linuxtools.systemtap.structures.listeners.IUpdateListener;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
@@ -43,9 +44,6 @@ public final class TapsetLibrary {
 
     private static FunctionParser functionParser = FunctionParser.getInstance();
     private static ProbeParser probeParser = ProbeParser.getInstance();
-
-    private static final IUpdateListener functionCompletionListener = new ParseCompletionListener(functionParser);
-    private static final IUpdateListener probeCompletionListener = new ParseCompletionListener(probeParser);
 
     private static boolean initialized = false;
 
@@ -80,8 +78,8 @@ public final class TapsetLibrary {
             preferenceStore.addPropertyChangeListener(propertyChangeListener);
             ConsoleLogPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(credentialChangeListener);
 
-            functionParser.addListener(functionCompletionListener);
-            probeParser.addListener(probeCompletionListener);
+            functionParser.addJobChangeListener(parseCompletionListener);
+            probeParser.addJobChangeListener(parseCompletionListener);
 
             if (preferenceStore.getBoolean(IDEPreferenceConstants.P_STORED_TREE)
                     && isTreeFileCurrent()) {
@@ -120,37 +118,35 @@ public final class TapsetLibrary {
         }
     };
 
-    private static class ParseCompletionListener implements IUpdateListener {
-        TreeTapsetParser parser;
-        public ParseCompletionListener(TreeTapsetParser parser) {
-            this.parser = parser;
-        }
-
+    private static JobChangeAdapter parseCompletionListener = new JobChangeAdapter() {
         @Override
-        public void handleUpdateEvent() {
-            if (!parser.isCancelRequested()) {
-                if (parser.equals(functionParser)) {
-                    functionTree = parser.getTree();
-                } else {
-                    probeTree = parser.getTree();
-                }
+        public void done(IJobChangeEvent event) {
+            super.done(event);
+            if (!event.getResult().isOK()) {
+                return;
+            }
+            TreeTapsetParser parser = (TreeTapsetParser) event.getJob();
+            if (parser.equals(functionParser)) {
+                functionTree = parser.getTree();
+            } else {
+                probeTree = parser.getTree();
+            }
 
-                if (IDEPlugin.getDefault().getPreferenceStore().getBoolean(IDEPreferenceConstants.P_STORED_TREE)) {
-                    TreeSettings.setTrees(functionTree, probeTree);
-                }
+            if (IDEPlugin.getDefault().getPreferenceStore().getBoolean(IDEPreferenceConstants.P_STORED_TREE)) {
+                TreeSettings.setTrees(functionTree, probeTree);
             }
             synchronized (parser) {
                 parser.notifyAll();
             }
         }
-    }
+    };
 
     /**
      * This method will trigger the appropriate parsing jobs
      * to get the information directly from the files.
      * If the jobs are already in progess, they will be restarted.
      */
-    private static void runStapParser() {
+    public static void runStapParser() {
         stop();
         clearTrees();
         SharedParser.getInstance().clearTapsetContents();
