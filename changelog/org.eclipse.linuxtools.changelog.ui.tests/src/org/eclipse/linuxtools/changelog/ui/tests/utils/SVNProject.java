@@ -17,8 +17,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.changelog.ui.tests.swtbot.PrepareChangelogSWTBotTest;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
+import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 
@@ -114,19 +114,16 @@ public class SVNProject {
         long oldTimeout = SWTBotPreferences.TIMEOUT;
         SWTBotPreferences.TIMEOUT = 3 * 5000;
 
-        bot.waitUntil(Conditions.shellIsActive("Progress Information"));
-        shell = bot.shell("Progress Information");
+        shell = bot.shell("Progress Information").activate();
         bot.waitUntil(Conditions.shellCloses(shell));
-        bot.waitUntil(Conditions.shellIsActive("Checkout from SVN"));
-        shell = bot.shell("Checkout from SVN");
+        shell = bot.shell("Checkout from SVN").activate();
         bot.waitUntil(new TreeItemAppearsCondition(repoURL, projectName));
         SWTBotTreeItem projectTree = bot.tree().expandNode(repoURL);
         projectTree.expandNode(projectName).select();
         bot.button("Finish").click();
         // Wait for import operation to finish
         bot.waitUntil(Conditions.shellCloses(shell));
-        bot.waitUntil(Conditions.shellIsActive("SVN Checkout"));
-        SWTBotShell svnCheckoutPopup = bot.shell("SVN Checkout");
+        SWTBotShell svnCheckoutPopup = bot.shell("SVN Checkout").activate();
         bot.waitUntil(Conditions.shellCloses(svnCheckoutPopup));
         // need a little delay
         bot.waitUntil(new SVNProjectCreatedCondition(projectName));

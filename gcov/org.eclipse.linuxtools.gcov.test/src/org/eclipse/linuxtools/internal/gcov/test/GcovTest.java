@@ -140,7 +140,6 @@ public abstract class GcovTest {
         for (SWTBotShell sh : bot.shells()) {
             if (sh.getText().startsWith("C/C++")) {
                 sh.activate();
-                bot.waitUntil(Conditions.shellIsActive(sh.getText()));
                 mainShell = sh;
                 break;
             }
@@ -336,9 +335,7 @@ public abstract class GcovTest {
     private static void openResource(SWTWorkbenchBot bot, String fileName) {
         mainShell.activate();
         bot.menu("Navigate").menu("Open Resource...").click();
-        bot.waitUntil(Conditions.shellIsActive("Open Resource"));
-        SWTBotShell shell = bot.shell("Open Resource");
-        shell.activate();
+        SWTBotShell shell = bot.shell("Open Resource").activate();
         bot.text().setText(fileName);
         bot.button("Open").click();
         bot.waitUntil(Conditions.shellCloses(shell));

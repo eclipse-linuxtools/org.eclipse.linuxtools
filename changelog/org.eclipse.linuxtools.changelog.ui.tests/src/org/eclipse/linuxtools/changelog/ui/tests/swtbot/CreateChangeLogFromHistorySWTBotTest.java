@@ -133,8 +133,7 @@ public class CreateChangeLogFromHistorySWTBotTest {
 
         // right-click => Generate Changelog...
         clickOnGenerateChangeLog(historyTable);
-        bot.waitUntil(Conditions.shellIsActive("Generate ChangeLog"));
-        SWTBotShell shell = bot.shell("Generate ChangeLog");
+        SWTBotShell shell = bot.shell("Generate ChangeLog").activate();
 
         SWTBot generateChangelogBot = shell.bot();
         generateChangelogBot.radio("Clipboard").click();

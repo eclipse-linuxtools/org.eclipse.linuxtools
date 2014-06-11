@@ -590,8 +590,7 @@ public class TestCreateSystemtapScript {
 
         table.select(3);
         editButton.click();
-        bot.waitUntil(Conditions.shellIsActive("Edit Graph"));
-        SWTBotShell graphShell = bot.activeShell();
+        SWTBotShell graphShell = bot.shell("Edit Graph").activate();
         SWTBotButton finishButton = bot.button("Finish");
         assertTrue(!finishButton.isEnabled());
         bot.comboBox("<Deleted>").setSelection("NA");
@@ -623,8 +622,7 @@ public class TestCreateSystemtapScript {
 
         table.select(table.rowCount() - 1);
         editButton.click();
-        bot.waitUntil(Conditions.shellIsActive("Edit Graph"));
-        graphShell = bot.activeShell();
+        graphShell = bot.shell("Edit Graph").activate();
         finishButton = bot.button("Finish");
         assertFalse(finishButton.isEnabled());
         bot.radio(0).click();
@@ -672,8 +670,7 @@ public class TestCreateSystemtapScript {
         // Confirm that a blank regex is not removed when other data is not empty.
         combo.setText("(a)");
         bot.button(Messages.SystemTapScriptGraphOptionsTab_AddGraphButton).click();
-        bot.waitUntil(Conditions.shellIsActive("Create Graph"));
-        SWTBotShell graphShell = bot.activeShell();
+        SWTBotShell graphShell = bot.shell("Create Graph").activate();
         graphShell.setFocus();
         bot.textWithLabel("Title:").setText("Test");
         bot.button("Finish").click();
