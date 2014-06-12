@@ -52,10 +52,7 @@
     <mirror-repo-name>updates-nightly</mirror-repo-name>
     <tycho-version>0.20.0</tycho-version>
     <tycho-extras-version>0.20.0</tycho-extras-version>
-    <platform-version-name>luna</platform-version-name>
-    <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
-    <swtbot-site>http://download.eclipse.org/technology/swtbot/snapshots</swtbot-site>
-    <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20140114142710/repository</orbit-site>
+    <target-platform>linuxtools-e4.4</target-platform>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../../target/jacoco.exec</sonar.jacoco.reportPath>
@@ -72,69 +69,8 @@
       <url>https://repo.eclipse.org/content/repositories/tycho-snapshots/</url>
     </pluginRepository>
   </pluginRepositories>
-  <repositories>
-    <repository>
-      <id>swtbot</id>
-      <layout>p2</layout>
-      <url>${swtbot-site}</url>
-    </repository>
-    <repository>
-      <id>orbit</id>
-      <layout>p2</layout>
-      <url>${orbit-site}</url>
-    </repository>
-    <repository>
-      <id>license-feature</id>
-      <url>http://download.eclipse.org/cbi/updates/license/</url>
-      <layout>p2</layout>
-    </repository>
-  </repositories>
 
   <profiles>
-    <profile>
-      <id>platform-kepler</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-        <property>
-          <name>platform-version-name</name>
-          <value>kepler</value>
-        </property>
-      </activation>
-      <properties>
-        <eclipse-site>http://download.eclipse.org/releases/kepler</eclipse-site>
-        <platform-version>[4.3,)</platform-version>
-        <sdk-version>4.3</sdk-version>
-      </properties>
-      <repositories>
-        <repository>
-          <id>kepler</id>
-          <layout>p2</layout>
-          <url>${eclipse-site}</url>
-        </repository>
-      </repositories>
-    </profile>
-    <profile>
-      <id>platform-luna</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-        <property>
-          <name>platform-version-name</name>
-          <value>luna</value>
-        </property>
-      </activation>
-      <properties>
-        <eclipse-site>http://download.eclipse.org/releases/luna</eclipse-site>
-        <platform-version>[4.3,)</platform-version>
-        <sdk-version>4.3</sdk-version>
-      </properties>
-      <repositories>
-        <repository>
-          <id>luna</id>
-          <layout>p2</layout>
-          <url>${eclipse-site}</url>
-        </repository>
-      </repositories>
-    </profile>
     <profile>
       <id>build-server</id>
       <build>
@@ -273,6 +209,14 @@
               <arch>x86_64</arch>
             </environment>
           </environments>
+          <target>
+            <artifact>
+              <groupId>org.eclipse.linuxtools</groupId>
+              <artifactId>org.eclipse.linuxtools.target</artifactId>
+              <classifier>${target-platform}</classifier>
+              <version>1.0.0</version>
+            </artifact>
+          </target>
         </configuration>
       </plugin>
       <plugin>
