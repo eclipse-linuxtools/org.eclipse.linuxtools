@@ -16,11 +16,11 @@ import java.io.IOException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
-import org.eclipse.linuxtools.systemtap.structures.process.SystemtapProcessFactory;
 import org.eclipse.linuxtools.systemtap.structures.runnable.Command;
 import org.eclipse.linuxtools.systemtap.structures.runnable.StreamGobbler;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.RemoteScriptOptions;
+import org.eclipse.linuxtools.tools.launch.core.factory.LinuxtoolsProcessFactory;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.JSchException;
@@ -43,7 +43,7 @@ public class ScpExec extends Command {
     @Override
     protected IStatus init() {
         try {
-            channel = SystemtapProcessFactory.execRemote(
+            channel = LinuxtoolsProcessFactory.execRemote(
                     cmd, System.out, System.err,
                     remoteOptions.userName, remoteOptions.hostName, remoteOptions.password, remoteOptions.port,
                     envVars);

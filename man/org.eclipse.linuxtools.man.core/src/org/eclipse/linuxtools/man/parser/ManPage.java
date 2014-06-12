@@ -32,6 +32,25 @@ public class ManPage {
         parse(new ManParser().getRawManPage(manPage));
     }
 
+    /**
+     * Creates the man page for an executable on the remote machine with the
+     * specified credentials.
+     *
+     * @param manPage
+     *            The man page.
+     * @param user
+     *            The name of the user to access the man page as.
+     * @param host
+     *            The name of host where the man page is to be fetched from.
+     * @param password
+     *            The user's login password.
+     * @since 1.2
+     */
+    public ManPage(String manPage, String user, String host, String password) {
+        parse(new ManParser()
+                .getRemoteRawManPage(manPage, user, host, password));
+    }
+
     // TODO make bold and underline be ranges instead of separate symbols.
     private void parse(StringBuilder rawManPage) {
         StringBuilder sb = new StringBuilder();

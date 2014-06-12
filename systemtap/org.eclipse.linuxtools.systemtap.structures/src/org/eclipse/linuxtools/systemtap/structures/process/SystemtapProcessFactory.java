@@ -13,21 +13,16 @@ package org.eclipse.linuxtools.systemtap.structures.process;
 
 import java.io.OutputStream;
 
+import org.eclipse.linuxtools.tools.launch.core.factory.LinuxtoolsProcessFactory;
+
 import com.jcraft.jsch.Channel;
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
 
 /**
- * The {@link SystemtapProcessFactory} is responsible for creating process
- * objects.
- * When executing systemtap operations you must always use this factory so that
- * mock objects can be provided during testing.
+ * @deprecated Use {@link LinuxtoolsProcessFactory} instead.
  */
+@Deprecated
 public class SystemtapProcessFactory {
-
-    private static final int DEFAULT_PORT = 22;
 
     /**
      * Runs stap with the given arguments on the given host using the given
@@ -42,7 +37,7 @@ public class SystemtapProcessFactory {
     public static Channel execRemote(String[] args,
             OutputStream out, OutputStream err, String user, String host,
             String password) throws JSchException {
-        return execRemote(args, out, err, user, host, password, DEFAULT_PORT, null);
+        return LinuxtoolsProcessFactory.execRemote(args, out, err, user, host, password);
     }
 
     /**
@@ -61,32 +56,7 @@ public class SystemtapProcessFactory {
     public static Channel execRemote(String[] args, OutputStream out,
             OutputStream err, String user, String host, String password, int port, String[] envp)
                     throws JSchException {
-        JSch jsch = new JSch();
-        Session session = jsch.getSession(user, host, port);
-        session.setPassword(password);
-        java.util.Properties config = new java.util.Properties();
-        config.put("StrictHostKeyChecking", "no"); //$NON-NLS-1$//$NON-NLS-2$
-        session.setConfig(config);
-        session.connect();
-
-        StringBuilder command = new StringBuilder();
-        if (envp != null) {
-            for (String var : envp) {
-                command.append(String.format("export %s; ", var)); //$NON-NLS-1$
-            }
-        }
-        for (int i = 0; i < args.length; i++) {
-            command.append(args[i] + ' ');
-        }
-
-        ChannelExec channel = (ChannelExec) session.openChannel("exec"); //$NON-NLS-1$
-        channel.setCommand(command.toString());
-        channel.setInputStream(null, true);
-        channel.setOutputStream(out, true);
-        channel.setExtOutputStream(err, true);
-        channel.connect();
-
-        return channel;
+        return LinuxtoolsProcessFactory.execRemote(args, out, err, user, host, password, port, envp);
     }
 
     /**
@@ -102,7 +72,7 @@ public class SystemtapProcessFactory {
     public static Channel execRemoteAndWait(String[] args,
             OutputStream out, OutputStream err, String user, String host,
             String password) throws JSchException {
-        return execRemote(args, out, err, user, host, password, DEFAULT_PORT, null);
+        return LinuxtoolsProcessFactory.execRemoteAndWait(args, out, err, user, host, password);
     }
 
     /**
@@ -121,17 +91,6 @@ public class SystemtapProcessFactory {
     public static Channel execRemoteAndWait(String[] args, OutputStream out,
             OutputStream err, String user, String host, String password, int port, String[] envp)
                     throws JSchException {
-        Channel channel = execRemote(args, out, err, user, host, password, port, envp);
-
-        while (!channel.isClosed()) {
-            try {
-                Thread.sleep(250);
-            } catch (InterruptedException e) {
-                // Thread was interrupted just return.
-                return channel;
-            }
-        }
-
-        return channel;
+        return LinuxtoolsProcessFactory.execRemoteAndWait(args, out, err, user, host, password, port, envp);
     }
 }

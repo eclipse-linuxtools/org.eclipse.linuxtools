@@ -23,10 +23,10 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.StringOutputStream;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.EnvironmentVariablesPreferencePage;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
-import org.eclipse.linuxtools.systemtap.structures.process.SystemtapProcessFactory;
 import org.eclipse.linuxtools.systemtap.structures.runnable.StringStreamGobbler;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
+import org.eclipse.linuxtools.tools.launch.core.factory.LinuxtoolsProcessFactory;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -173,7 +173,7 @@ public abstract class TapsetParser extends Job {
         String password = p.getString(ConsoleLogPreferenceConstants.SCP_PASSWORD);
         int port = p.getInt(ConsoleLogPreferenceConstants.PORT_NUMBER);
 
-        Channel channel = SystemtapProcessFactory.execRemoteAndWait(args, str, strErr, user, host, password,
+        Channel channel = LinuxtoolsProcessFactory.execRemoteAndWait(args, str, strErr, user, host, password,
                 port, EnvironmentVariablesPreferencePage.getEnvironmentVariables());
         if (channel == null) {
             displayError(Messages.TapsetParser_CannotRunStapTitle, Messages.TapsetParser_CannotRunStapMessage);

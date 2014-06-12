@@ -13,15 +13,24 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 
 import java.util.HashMap;
 
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.man.parser.ManPage;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
 
 public class ManpageCacher {
     private static final String SPLITTER = "::"; //$NON-NLS-1$
-    private static final String NO_MAN_ENTRY = "No manual entry for"; //$NON-NLS-1$
+    private static final String NO_MAN_ENTRY = "No manual entry for "; //$NON-NLS-1$
     private static HashMap<String, String> pages = new HashMap<>();
 
     public static boolean isEmptyDocumentation(String documentation) {
-        return documentation != null && documentation.startsWith(ManpageCacher.NO_MAN_ENTRY);
+        return documentation != null && documentation.startsWith(NO_MAN_ENTRY);
+    }
+
+    private static String makeEmptyDocumentation(String element) {
+        return NO_MAN_ENTRY + element;
     }
 
     public static synchronized void clear() {
@@ -41,14 +50,25 @@ public class ManpageCacher {
                 getDocumentation(TapsetItemType.PROBE, elements[0]);
                 documentation = pages.get(fullElement);
                 if (documentation == null) {
-                    documentation = ManpageCacher.NO_MAN_ENTRY + " " + fullElement; //$NON-NLS-1$
+                    documentation = makeEmptyDocumentation(fullElement);
                     pages.put(fullElement, documentation);
                 }
                 return documentation;
             }
 
             // Otherwise, get the documentation for the requested element.
-            documentation = (new ManPage(fullElement)).getStrippedTextPage().toString();
+            IPreferenceStore p = IDEPlugin.getDefault().getPreferenceStore();
+            ManPage manpage = null;
+            if (!p.getBoolean(IDEPreferenceConstants.P_REMOTE_PROBES)) {
+                manpage = new ManPage(fullElement);
+            } else {
+                p = ConsoleLogPlugin.getDefault().getPreferenceStore();
+                String user = p.getString(ConsoleLogPreferenceConstants.SCP_USER);
+                String host = p.getString(ConsoleLogPreferenceConstants.HOST_NAME);
+                String password = p.getString(ConsoleLogPreferenceConstants.SCP_PASSWORD);
+                manpage = new ManPage(fullElement, user, host, password);
+            }
+            documentation = manpage.getStrippedTextPage().toString();
             pages.put(fullElement, documentation);
 
             // If the requested element is a probe and a documentation page was
