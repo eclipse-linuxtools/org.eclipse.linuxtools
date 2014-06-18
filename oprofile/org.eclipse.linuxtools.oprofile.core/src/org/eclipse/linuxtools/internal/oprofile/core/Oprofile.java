@@ -66,9 +66,10 @@ public class Oprofile {
             initializeOprofile();
         }
 
-        if (isKernelModuleLoaded()) {
-            initializeOprofileCore();
-        }
+		if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY)
+				|| isKernelModuleLoaded()) {
+			initializeOprofileCore();
+		}
     }
 
     // This requires more inside knowledge about Oprofile than one would like,
@@ -144,7 +145,6 @@ public class Oprofile {
         } catch (IOException e) {
             return 0;
         }
-
         return info.getNrCounters();
     }
 
