@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.perf.ui;
 import java.util.Map;
 
 import org.eclipse.cdt.core.model.ICProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.text.BadLocationException;
@@ -68,7 +69,7 @@ public class PerfDoubleClickAction extends Action {
                     bFound = true;
                 }
                 if (!bFound) {
-                    ProfileUIUtils.openEditorAndSelect(file.getPath(), 1);
+                	ProfileUIUtils.openEditorAndSelect(file.getPath(), 1, ResourcesPlugin.getWorkspace().getRoot().getProject(dso.getName()));
                 }
             }
         // if we encounter an exception, act as though no corresponding source exists
