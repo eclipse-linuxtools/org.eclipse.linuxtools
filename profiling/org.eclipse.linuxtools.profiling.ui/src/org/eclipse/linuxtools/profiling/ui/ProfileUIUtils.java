@@ -33,6 +33,7 @@ import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -46,6 +47,8 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.linuxtools.internal.profiling.ui.ProfileUIPlugin;
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -85,6 +88,39 @@ public class ProfileUIUtils {
             }
         }
     }
+
+	/**
+	 * Open a file in the Editor at the specified offset, highlighting the given length
+	 *
+	 * @param path : Absolute path pointing to the file which will be opened.
+	 * @param line - line number to select, 0 to not select a line
+	 * @param project - current project object
+	 * @throws BadLocationException - Line number not valid in file
+	 * @throws PartInitException if the editor could not be initialized
+	 * @throws CoreException if the proxy cannot be initialized
+	 * @since 3.1
+	 */
+	public static void openEditorAndSelect(String path, int line, IProject project) throws PartInitException, BadLocationException, CoreException {
+		IWorkbenchPage activePage = ProfileUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		IRemoteFileProxy proxy = null;
+		proxy = RemoteProxyManager.getInstance().getFileProxy(project);
+		IFileStore file = proxy.getResource(path);
+		if (file.fetchInfo().exists()) {
+			IEditorPart editor = IDE.openEditorOnFileStore(activePage, file);
+			if (editor instanceof ITextEditor) {
+				ITextEditor textEditor = (ITextEditor) editor;
+
+				if (line > 0) {
+					IDocumentProvider provider = textEditor.getDocumentProvider();
+					IDocument document = provider.getDocument(textEditor.getEditorInput());
+
+					int start = document.getLineOffset(line - 1); //zero-indexed
+					textEditor.selectAndReveal(start, 0);
+				}
+			}
+		}
+	}
+
 
     /**
      * Opens an editor on the given file and selects the line.

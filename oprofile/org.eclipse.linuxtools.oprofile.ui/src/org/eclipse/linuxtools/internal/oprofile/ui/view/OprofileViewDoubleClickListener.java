@@ -10,11 +10,14 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.ui.view;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.oprofile.ui.model.IUiModelElement;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelEvent;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelImage;
@@ -65,13 +68,23 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 
                 // get file name from the parent sample
                 final String fileName = sample.getFile();
-                ProfileUIUtils.openEditorAndSelect(fileName, line);
+                ProfileUIUtils.openEditorAndSelect(fileName, line, getProject());
             }
         } catch (BadLocationException e1) {
             e1.printStackTrace();
         } catch (PartInitException e2) {
             e2.printStackTrace();
-        }
+        } catch (CoreException e) {
+			e.printStackTrace();
+		}
     }
+
+    /**
+     *  return the project
+     *  @since 2.0
+     */
+    protected IProject getProject() {
+    	return Oprofile.OprofileProject.getProject();
+	}
 
 }
