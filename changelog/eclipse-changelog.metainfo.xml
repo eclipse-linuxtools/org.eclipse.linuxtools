@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2014 Red Hat Inc. -->
+<component type="addon">
+ <id>eclipse-changelog</id>
+ <metadata_license>GFDL-1.3</metadata_license>
+ <project_license>EPL-1.0</project_license>
+ <extends>eclipse.desktop</extends>
+ <name>ChangeLog</name>
+ <summary>Linux Tools Eclipse plug-ins for supporting ChangeLogs</summary>
+ <url type="homepage">http://www.eclipse.org/linuxtools/projectPages/changelog/</url>
+ <updatecontact>jjohnstn@redhat.com</updatecontact>
+</component>
