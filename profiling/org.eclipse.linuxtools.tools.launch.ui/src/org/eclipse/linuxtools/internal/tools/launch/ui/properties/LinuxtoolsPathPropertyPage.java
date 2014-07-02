@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011,2013 IBM Corporation
+ * Copyright (c) 2011, 2014 IBM Corporation
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,6 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.linuxtools.internal.tools.launch.ui.Messages;
 import org.eclipse.linuxtools.tools.launch.core.LaunchCoreConstants;
 import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathProperty;
 import org.eclipse.swt.SWT;
@@ -236,5 +235,4 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
         }
         return element;
     }
-
 }
