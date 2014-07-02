@@ -6,7 +6,11 @@ Bundle-Version: 3.1.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.internal.profiling.ui.ProfileUIPlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.ui.workbench,
+ org.eclipse.cdt.managedbuilder.core,
+ org.eclipse.cdt.autotools.core,
+ org.eclipse.cdt.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
