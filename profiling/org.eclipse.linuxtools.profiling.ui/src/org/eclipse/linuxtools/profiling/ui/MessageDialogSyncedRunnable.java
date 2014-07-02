@@ -30,7 +30,7 @@ import org.eclipse.ui.PlatformUI;
  * </p>
  *
  * <p> Note, methods in this subclass have a postfix of 'SyncedRunnable'.
- *  @since 3.1.0
+ *  @since 3.1
  */
 public class MessageDialogSyncedRunnable extends MessageDialog {
 

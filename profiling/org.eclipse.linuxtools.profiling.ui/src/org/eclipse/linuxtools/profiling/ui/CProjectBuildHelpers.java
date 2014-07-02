@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    lufimtse :  Leo Ufimtsev lufimtse@redhat.com
+ *    Red Hat Inc.
  *******************************************************************************/
 
 package org.eclipse.linuxtools.profiling.ui;
@@ -60,7 +60,7 @@ import org.eclipse.swt.widgets.Display;
  *      <li> Continue with launch. </li>
  * </ol>
  * For an example, see <code> org.eclipse.linuxtools.internal.gprof.launch.GprofLaunchConfigurationDelegate  </code>.
- * @since 3.1.0
+ * @since 3.1
  */
 public class CProjectBuildHelpers {
 
