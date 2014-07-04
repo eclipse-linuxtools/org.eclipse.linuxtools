@@ -187,9 +187,6 @@ public class Oprofile {
      * @return true if oprofile is in timer mode, false otherwise
      */
     public static boolean getTimerMode() {
-        if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY)){
-            return false;
-        }
         return info.getTimerMode();
     }
 
