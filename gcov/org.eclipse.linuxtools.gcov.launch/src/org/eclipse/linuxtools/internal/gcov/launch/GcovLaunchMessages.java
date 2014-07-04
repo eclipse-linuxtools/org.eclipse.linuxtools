@@ -17,6 +17,13 @@ public class GcovLaunchMessages extends NLS {
     public static String GcovCompilerOptions_msg;
     public static String GcovCompileAgain_msg;
 
+    public static String
+    GcovMissingFlag_Title,
+    GcovMissingFlag_MainMsg,
+    GcovMissingFlag_CDTInfo,
+    GcovMissingFlag_AutotoolsInfo,
+    GcovMissingFlag_PostQuestion;
+
     static {
         NLS.initializeMessages(GcovLaunchMessages.class.getName(), GcovLaunchMessages.class);
     }
