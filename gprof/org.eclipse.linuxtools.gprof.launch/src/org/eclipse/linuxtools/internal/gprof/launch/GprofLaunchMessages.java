@@ -14,15 +14,28 @@ import org.eclipse.osgi.util.NLS;
 
 public class GprofLaunchMessages extends NLS {
 
-    public static String GprofCompilerOptions_msg;
-    public static String GprofCompileAgain_msg;
+    // Messages related to when the user is asked if he would like the '-pg' flag to be added to the active configuration.
+    public static String
+    GprofMissingFlag_Title,
+    GprofMissingFlag_Body_shared,
+    GprofMissingFlag_Body_Autotools,
+    GprofMissingFlag_Body_Managed,
+    GprofMissingFlag_BodyPost_autoAddFlagQuestion;
+
+    //Messages for when gmon.out is not found.
+    public static String
+    GprofNoGmonOut_title,
+    GprofNoGmonOut_body,
+    GprofNoGmonOut_BrowseWorkSpace,
+    GprofNoGmonOut_BrowseFileSystem,
+    GprofNoGmonOut_CancleLaunch;
+
+    //for when gmon.out is too old.
     public static String GprofGmonStale_msg;
     public static String GprofGmonStaleExplanation_msg;
 
-    public static String GprofNoGmonDialog_Browse;
-    public static String GprofNoGmonDialog_Cancel;
+    //Browsing workspace/filesystem
     public static String GprofNoGmonDialog_OpenGmon;
-    public static String GprofNoGmonDialog_Workspace;
 
     static {
         NLS.initializeMessages(GprofLaunchMessages.class.getName(), GprofLaunchMessages.class);
