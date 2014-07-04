@@ -10,7 +10,14 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gprof;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -55,6 +62,32 @@ public class Activator extends AbstractUIPlugin {
      */
     public static ImageDescriptor getImageDescriptor(String path) {
         return imageDescriptorFromPlugin(PLUGIN_ID, path);
+    }
+
+    /**
+     * Error messages for when you throw/catch exceptions.
+     *
+     * <p> It shows information about which plugin threw the exception and shows a stack trace </p>
+     *
+     * @param ex      the exception that will be viewable as a stacktrace in the dialogue
+     * @param title   title of the message dialogue
+     */
+    public void openError(Exception ex, final String title) {
+        StringWriter writer = new StringWriter();
+        ex.printStackTrace(new PrintWriter(writer));
+
+        final String message = ex.getMessage();
+        final String formattedMessage = PLUGIN_ID + " : " + message; //$NON-NLS-1$
+        final Status status = new Status(IStatus.ERROR, PLUGIN_ID, formattedMessage, new Throwable(writer.toString()));
+
+        getLog().log(status);
+        Display.getDefault().asyncExec(new Runnable() {
+            @Override
+            public void run() {
+                ErrorDialog.openError(Display.getDefault().getActiveShell(),
+                        title, message, status);
+            }
+        });
     }
 
 }

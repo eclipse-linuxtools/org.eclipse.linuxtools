@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2012 Red Hat, Inc.
+* Copyright (c) 2012, 2014 Red Hat, Inc.
 * All rights reserved. This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v1.0
 * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import org.eclipse.linuxtools.internal.gprof.launch.GprofLaunchConfigurationDele
 import org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderProfileConstants;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchShortcut;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
+import org.eclipse.linuxtools.profiling.ui.CProjectBuildHelpers;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.junit.After;
 import org.junit.Before;
@@ -73,10 +74,24 @@ public class GprofLaunchTest extends AbstractTest {
             }
         }
         config = createConfiguration(proj.getProject());
+        
+        enableGprofSupport();   //(otherwise test hangs on 'enable GGprof support' dialogue. )
+                
+        //---- Continue with launch. 
         launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
          wc = config.getWorkingCopy();
     }
-
+    
+	private void enableGprofSupport() {
+        String optionId = null;
+        if (CProjectBuildHelpers.isCppType(proj.getProject())) {
+            optionId = "gnu.cpp.compiler.option.debugging.gprof"; //$NON-NLS-1$
+        } else if (CProjectBuildHelpers.isCType(proj.getProject())) {
+            optionId = "gnu.c.compiler.option.debugging.gprof"; //$NON-NLS-1$
+        }
+        CProjectBuildHelpers.setOptionInCDT(proj.getProject(), optionId, true);
+	}
+   
     @After
     public void tearDown() throws Exception {
         deleteProject(proj);
