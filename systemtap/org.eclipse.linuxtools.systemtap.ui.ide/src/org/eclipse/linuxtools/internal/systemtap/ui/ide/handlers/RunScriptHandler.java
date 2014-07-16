@@ -432,9 +432,4 @@ public class RunScriptHandler extends AbstractHandler {
         return dotIndex != -1 ? fileName.substring(0, dotIndex) : fileName;
     }
 
-    /*@Override
-    public boolean isEnabled() {
-        return (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor() instanceof STPEditor);
-    }*/
-
 }

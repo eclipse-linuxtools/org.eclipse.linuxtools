@@ -28,6 +28,7 @@ import com.jcraft.jsch.JSchException;
 public class ScpExec extends Command {
 
     public static final int INPUT_STREAM = 1;
+    private static final int WAIT_DELAY = 1000;
 
     private Channel channel;
     private RemoteScriptOptions remoteOptions;
@@ -51,7 +52,7 @@ public class ScpExec extends Command {
             errorGobbler = new StreamGobbler(channel.getExtInputStream());
             inputGobbler = new StreamGobbler(channel.getInputStream());
 
-            this.transferListeners();
+            transferListeners();
             return Status.OK_STATUS;
         } catch (final JSchException|IOException e) {
             final IStatus status = new Status(IStatus.ERROR, ConsoleLogPlugin.PLUGIN_ID, Messages.ScpExec_FileTransferFailed, e);
@@ -67,35 +68,35 @@ public class ScpExec extends Command {
             errorGobbler.start();
             inputGobbler.start();
 
-            while (!stopped) {
-                if (channel.isClosed() || (channel.getExitStatus() != -1)) {
-                    stop();
-                    break;
+            synchronized (this) {
+                while (!channel.isClosed()) {
+                    wait(WAIT_DELAY);
                 }
+                cleanUpAfterStop();
             }
-
         } catch (JSchException e) {
-            ExceptionErrorDialog.openError(Messages.ScpExec_errorConnectingToServer, e);
+            ExceptionErrorDialog.openError(Messages.ScpExec_Error,
+                    Messages.ScpExec_errorConnectingToServer, e);
+        } catch (InterruptedException e) {
+            // This thread was interrupted while waiting for
+            // the process to exit. Destroy the process just
+            // to make sure it exits.
+            stop();
         }
     }
 
-    /* Stops the process from running and stops the <code>StreamGobblers</code> from monitoring
-     * the dead process.
-     */
     @Override
     public synchronized void stop() {
         if (!stopped) {
-            if(null != errorGobbler) {
-                errorGobbler.stop();
+            try {
+                if (channel != null) {
+                    channel.getSession().disconnect();
+                }
+                cleanUpAfterStop();
+            } catch (JSchException e) {
+                ExceptionErrorDialog.openError(Messages.ScpExec_Error,
+                        e.getMessage(), e);
             }
-            if(null != inputGobbler) {
-                inputGobbler.stop();
-            }
-            if (channel != null) {
-                channel.disconnect();
-            }
-            stopped = true;
-            notifyAll();
         }
     }
 }
