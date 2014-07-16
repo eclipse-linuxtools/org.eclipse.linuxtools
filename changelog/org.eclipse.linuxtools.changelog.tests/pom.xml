@@ -39,23 +39,36 @@
              <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
           <product>org.eclipse.platform.ide</product>
-          <dependencies>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.eclipse.platform.feature.group</artifactId>
-              <version>${sdk-version}</version>
-            </dependency>
-            <dependency>
-              <artifactId>org.eclipse.linuxtools.changelog.parsers.java</artifactId>
-              <version>0.0.0</version>
-              <type>p2-installable-unit</type>
-            </dependency>
-            <dependency>
-              <artifactId>org.eclipse.linuxtools.changelog.cparser</artifactId>
-              <version>0.0.0</version>
-              <type>p2-installable-unit</type>
-            </dependency>
-          </dependencies>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <configuration>
+          <dependency-resolution>
+            <extraRequirements>
+              <requirement>
+                <type>eclipse-feature</type>
+                <id>org.eclipse.platform</id>
+                <versionRange>0.0.0</versionRange>
+              </requirement>
+              <requirement>
+                <type>eclipse-feature</type>
+                <id>org.eclipse.linuxtools.changelog</id>
+                <versionRange>0.0.0</versionRange>
+              </requirement>
+              <requirement>
+                <type>eclipse-feature</type>
+                <id>org.eclipse.linuxtools.changelog.java</id>
+                <versionRange>0.0.0</versionRange>
+              </requirement>
+              <requirement>
+                <type>eclipse-feature</type>
+                <id>org.eclipse.linuxtools.changelog.c</id>
+                <versionRange>0.0.0</versionRange>
+              </requirement>
+            </extraRequirements>
+          </dependency-resolution>
         </configuration>
       </plugin>
     </plugins>
