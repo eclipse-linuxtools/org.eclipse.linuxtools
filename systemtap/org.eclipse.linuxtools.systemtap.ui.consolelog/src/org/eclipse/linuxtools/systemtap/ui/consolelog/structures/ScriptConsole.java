@@ -99,7 +99,7 @@ public class ScriptConsole extends IOConsole {
             for (IConsole consoleIterator : ic) {
                 if (consoleIterator instanceof ScriptConsole) {
                     ScriptConsole activeConsole = (ScriptConsole) consoleIterator;
-                    if (activeConsole.getName().endsWith(name) && activeConsole.isRunning()) {
+                    if (activeConsole.nameMatchesString(name) && activeConsole.isRunning()) {
                         return true;
                     }
                 }
@@ -127,7 +127,7 @@ public class ScriptConsole extends IOConsole {
                 for (IConsole consoleIterator : ic) {
                     if (consoleIterator instanceof ScriptConsole) {
                         activeConsole = (ScriptConsole) consoleIterator;
-                        if (activeConsole.getName().endsWith(name)) {
+                        if (activeConsole.nameMatchesString(name)) {
                             //Stop any script currently running.
                             if (activeConsole.onCmdStopThread != null && activeConsole.onCmdStopThread.isAlive()) {
                                 activeConsole.onCmdStopThread.interrupt();
@@ -158,6 +158,11 @@ public class ScriptConsole extends IOConsole {
             console = null;
         }
         return console;
+    }
+
+    private boolean nameMatchesString(String name) {
+        return getName().replace(Localization.getString(
+                "ScriptConsole.Terminated"), "").equals(name); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**

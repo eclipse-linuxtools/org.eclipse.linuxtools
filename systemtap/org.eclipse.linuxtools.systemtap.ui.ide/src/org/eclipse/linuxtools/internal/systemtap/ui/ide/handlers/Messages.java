@@ -20,6 +20,7 @@ public class Messages extends NLS {
     public static String RunScriptHandler_InvalidScriptMessage;
     public static String RunScriptHandler_AlreadyRunningDialogTitle;
     public static String RunScriptHandler_AlreadyRunningDialogMessage;
+    public static String RunScriptHandler_NonLocalTitle;
     public static String RunScriptChartHandler_couldNotSwitchToGraphicPerspective;
     public static String DataSetFileExtension;
     public static String ExportDataSetAction_DialogTitle;

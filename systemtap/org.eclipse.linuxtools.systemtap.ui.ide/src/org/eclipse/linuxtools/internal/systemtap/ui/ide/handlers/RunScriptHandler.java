@@ -18,7 +18,6 @@ import java.net.URI;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -80,7 +79,6 @@ public class RunScriptHandler extends AbstractHandler {
     private IEditorPart targetEditor = null;
     private String fileName = null;
     private String tmpfileName = null;
-    private String serverfileName = null;
     private IPath path = null;
     private IProject project = null;
     private SystemTapScriptLaunch launch = null;
@@ -170,7 +168,7 @@ public class RunScriptHandler extends AbstractHandler {
         Display.getDefault().asyncExec(new Runnable() {
             @Override
             public void run() {
-                String name = !local ? serverfileName : fileName;
+                String name = getConsoleName();
                 if (ScriptConsole.instanceIsRunning(name)) {
                     MessageDialog dialog = new MessageDialog(
                             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
@@ -195,6 +193,12 @@ public class RunScriptHandler extends AbstractHandler {
                 }
             }
         });
+    }
+
+    private String getConsoleName() {
+        return getRunLocal() ? fileName :
+            MessageFormat.format(Messages.RunScriptHandler_NonLocalTitle,
+                    fileName, remoteOptions.userName, remoteOptions.hostName);
     }
 
     /**
@@ -291,8 +295,7 @@ public class RunScriptHandler extends AbstractHandler {
     private void prepareNonLocalScript() throws ExecutionException {
         try {
             ScpClient scpclient = new ScpClient(remoteOptions);
-            serverfileName = getFileName(fileName);
-            tmpfileName = new Path("/tmp").append(serverfileName).toOSString(); //$NON-NLS-1$
+            tmpfileName = new Path("/tmp").append(getFileName(fileName)).toOSString(); //$NON-NLS-1$
             scpclient.transfer(fileName, tmpfileName);
         } catch (final JSchException | IOException e) {
             String message = e instanceof JSchException
@@ -393,37 +396,20 @@ public class RunScriptHandler extends AbstractHandler {
      * @since 2.0
      */
     private String[] finalizeScript() throws ExecutionException {
-        boolean local = getRunLocal();
-        String modname;
-        if (!local) {
-            modname = getFileNameWithoutExtension(serverfileName);
-        }
-        /* We need to remove the directory prefix here because in the case of
-         * running the script remotely, this is already done.  Not doing so
-         * causes a modname error.
-         */
-        else {
-            modname = getFileNameWithoutExtension(getFileName(fileName));
-        }
-
         // Make sure script name only contains underscores and/or alphanumeric characters.
-        Pattern validModName = Pattern.compile("^[a-z0-9_A-Z]+$"); //$NON-NLS-1$
-        Matcher modNameMatch = validModName.matcher(modname);
-        if (!modNameMatch.matches()) {
+        if (!Pattern.matches("^[a-z0-9_A-Z]+$", //$NON-NLS-1$
+                getFileNameWithoutExtension(getFileName(fileName)))) {
             continueRun = false;
             throw new ExecutionException(Messages.RunScriptHandler_InvalidScriptMessage);
         }
 
-        String[] script = new String[cmdList.size() + 4];
+        String[] script = new String[cmdList.size() + 2];
         script[0] = "stap"; //$NON-NLS-1$
-        script[script.length - 1] = !local ? tmpfileName : fileName;
+        script[script.length - 1] = !getRunLocal() ? tmpfileName : fileName;
 
         for (int i = 0; i < cmdList.size(); i++) {
             script[i + 1] = cmdList.get(i);
         }
-        script[script.length - 3] = "-m"; //$NON-NLS-1$
-
-        script[script.length - 2] = modname;
         return script;
     }
 
