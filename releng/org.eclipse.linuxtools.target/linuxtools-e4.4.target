@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="linuxtools-e4.4" sequenceNumber="25">
+<?pde version="3.8"?><target name="linuxtools-e4.4" sequenceNumber="26">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.antlr.runtime" version="3.2.0.v201101311130"/>
 <unit id="org.antlr.runtime.source" version="3.2.0.v201101311130"/>
 <unit id="org.swtchart" version="0.0.0"/>
-<unit id="com.google.guava" version="12.0.0.v201212092141"/>
+<unit id="com.google.guava" version="15.0.0.v201403281430"/>
 <unit id="org.cyberneko.html" version="0.0.0"/>
 <unit id="org.apache.xerces" version="2.9.0.v201101211617"/>
 <unit id="org.apache.derby" version="0.0.0"/>
