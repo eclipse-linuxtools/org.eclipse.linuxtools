@@ -13,8 +13,6 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 
 /**
@@ -23,8 +21,20 @@ import org.eclipse.linuxtools.systemtap.structures.TreeNode;
  */
 public abstract class TreeTapsetParser extends TapsetParser {
 
+    private class TapsetChanges {
+        private String[] additions;
+        private String[] deletions;
+        private TapsetChanges(String[] additions, String[] deletions) {
+            this.additions = new String[additions.length];
+            this.deletions = new String[deletions.length];
+            System.arraycopy(additions, 0, this.additions, 0, additions.length);
+            System.arraycopy(deletions, 0, this.deletions, 0, deletions.length);
+        }
+    }
+
     protected TreeNode tree = null;
     private TreeNode forcedTree = null;
+    private TapsetChanges tapsetChanges = null;
 
     protected TreeTapsetParser(String jobTitle) {
         super(jobTitle);
@@ -37,19 +47,78 @@ public abstract class TreeTapsetParser extends TapsetParser {
     @Override
     protected final synchronized IStatus run(IProgressMonitor monitor) {
         if (forcedTree != null) {
+            tapsetChanges = null;
             tree = forcedTree;
             forcedTree = null;
-            return new Status(IStatus.OK, IDEPlugin.PLUGIN_ID, ""); //$NON-NLS-1$
-        } else {
-            tree = new TreeNode(null, false);
-            return runAction(monitor);
+            return createStatus(IStatus.OK);
         }
+        if (tapsetChanges != null) {
+            return performUpdate(monitor);
+        }
+        tree = new TreeNode(null, false);
+        return createStatus(runAction(monitor));
     }
 
-    protected IStatus runAction(IProgressMonitor monitor) {
-        return new Status(!monitor.isCanceled() ? IStatus.OK : IStatus.CANCEL,
-                IDEPlugin.PLUGIN_ID, ""); //$NON-NLS-1$
+    /**
+     * Loads the tapset contents and saves them.
+     * @param monitor The progress monitor for the operation.
+     * @return An {@link IStatus} severity level for the result of the operation.
+     */
+    protected abstract int runAction(IProgressMonitor monitor);
+
+    /**
+     * After adding / removing tapsets, scheduled the job that
+     * loads in / discards the tapsets that were added / removed.
+     * @param additions The list of added tapset directories.
+     * @param deletions The list of removed tapset directories.
+     */
+    public synchronized void runUpdate(String[] additions, String[] deletions) {
+        tapsetChanges = new TapsetChanges(additions, deletions);
+        schedule();
     }
+
+    /**
+     * Performs both stages of a tapset update operation, ensuring that the new
+     * tapset contents will be available when they are necessary.
+     * @param monitor The operation's progress monitor.
+     * @return The status of the operation's outcome.
+     */
+    private IStatus performUpdate(IProgressMonitor monitor) {
+        int result = IStatus.OK;
+        if (tapsetChanges.deletions.length > 0) {
+            result = delTapsets(tapsetChanges.deletions, monitor);
+        }
+        if (result == IStatus.OK && tapsetChanges.additions.length > 0) {
+            if (monitor.isCanceled()) {
+                result = IStatus.CANCEL;
+            } else {
+                String tapsetContents = SharedParser.getInstance().getTapsetContents();
+                result = verifyRunResult(tapsetContents);
+                if (result == IStatus.OK) {
+                    result = addTapsets(tapsetChanges.additions, monitor);
+                }
+            }
+        }
+        tapsetChanges = null;
+        return createStatus(result);
+    }
+
+    /**
+     * After changing the list of imported tapsets, discards the tapsets that were removed.
+     * @param deletions A non-empty list of removed tapset directories.
+     * @param monitor The progress monitor for the operation.
+     * @return An {@link IStatus} severity level for the result of the operation.
+     */
+    protected abstract int delTapsets(String[] deletions, IProgressMonitor monitor);
+
+    /**
+     * After changing the list of imported tapsets, loads in the tapsets that were added.
+     * Tapset contents are guaranteed to be loaded at the time this method is called.
+     * @param additions A non-empty list of added tapset directories.
+     * @param monitor The progress monitor for the operation.
+     * @return An {@link IStatus} severity level for the result of the operation.
+     */
+    protected abstract int addTapsets(String[] additions, IProgressMonitor monitor);
 
     /**
      * @return The tree that this parser constructs.
@@ -76,7 +145,7 @@ public abstract class TreeTapsetParser extends TapsetParser {
     /**
      * Check if the provided tree a valid tree for this parser.
      * Called internally by {@link #setTree(TreeNode)}.
-     * @param tree The tree to check for validity. 
+     * @param tree The tree to check for validity.
      * @return <code>null</code> if the tree is valid; otherwise,
      * an error message signifying why the tree is invalid.
      */
