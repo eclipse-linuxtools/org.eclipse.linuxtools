@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.swtchart.IBarSeries;
 import org.swtchart.ISeries;
+import org.swtchart.ITitle;
 import org.swtchart.Range;
 
 public class PieChartPaintListener implements PaintListener {
@@ -39,6 +40,8 @@ public class PieChartPaintListener implements PaintListener {
     private Point[] pieCenters;
     private int[][] pieSliceAngles;
     private int pieWidth;
+
+    private String origTitleText;
 
     /**
      * Handles drawing and updating of a PieChart, with titles given to its legend and
@@ -70,32 +73,67 @@ public class PieChartPaintListener implements PaintListener {
             return;
         }
         bounds = plotArea.getBounds();
-        setTitleBounds(bounds);
+        // Adjust the title so it centers in the plot area
+        if (origTitleText == null) {
+        	origTitleText = chart.getTitle().getText();
+        }
+
+        // We want to center the title in the plot area rather than the entire view which includes
+        // the legend.  To force this, we have two algorithms depending on what level of the
+        // underlying SWT Chart software we are using.  If the title is an SWT Control, we simply
+        // set the title's location manually.  If the title is just a PaintListener, we center it
+        // by adding a number of trailing spaces which we calculate.
+        if (chart.getTitle() instanceof Control) {
+        	setTitleBounds(bounds);
+        } else {
+        	adjustTitle(e);
+        }
         int width = bounds.width / seriesValues.length;
         int x = bounds.x;
 
         if (chart.getLegend().isVisible()) {
-            Rectangle legendBounds = ((Control) chart.getLegend()).getBounds();
-            Font font = new Font(Display.getDefault(), FONT, 10, SWT.BOLD);
-            gc.setForeground(BLACK);
-            gc.setFont(font);
-            String text = chart.getAxisSet().getXAxis(0).getTitle().getText();
-            Point textSize = e.gc.textExtent(text);
-            gc.drawText(text, legendBounds.x + (legendBounds.width - textSize.x) / 2, legendBounds.y - textSize.y);
-            font.dispose();
+        	Rectangle legendBounds = ((Control) chart.getLegend()).getBounds();
+        	Font font = new Font(Display.getDefault(), FONT, 10, SWT.BOLD);
+        	gc.setForeground(BLACK);
+        	gc.setFont(font);
+        	String text = chart.getAxisSet().getXAxis(0).getTitle().getText();
+        	Point textSize = e.gc.textExtent(text);
+        	gc.drawText(text, legendBounds.x + (legendBounds.width - textSize.x) / 2, legendBounds.y - textSize.y);
+        	font.dispose();
         }
 
         pieWidth = Math.min(width - X_GAP, bounds.height);
         for (int i = 0; i < seriesValues.length; i++) {
-            drawPieChart(e, i, new Rectangle(x, bounds.y, width, bounds.height));
-            x += width;
+        	drawPieChart(e, i, new Rectangle(x, bounds.y, width, bounds.height));
+        	x += width;
         }
     }
 
+    // For a title which is a Control, position it appropriately to center in the plot area.
     private void setTitleBounds(Rectangle bounds) {
-        Control title = (Control) chart.getTitle();
-        Rectangle titleBounds = title.getBounds();
-        title.setLocation(new Point(bounds.x + (bounds.width - titleBounds.width) / 2, title.getLocation().y));
+    	Control title = (Control) chart.getTitle();
+    	Rectangle titleBounds = title.getBounds();
+    	title.setLocation(new Point(bounds.x + (bounds.width - titleBounds.width) / 2, title.getLocation().y));
+    }
+
+    // Adjust the title with trailing blanks so it centers in the plot area
+    // rather than for the entire chart view which looks odd when not
+    // centered above the pie-charts themselves.
+    private void adjustTitle(PaintEvent pe) {
+    	ITitle title = chart.getTitle();
+    	Font font = title.getFont();
+    	Font oldFont = pe.gc.getFont();
+    	pe.gc.setFont(font);
+    	Control legend = (Control)chart.getLegend();
+    	Rectangle legendBounds = legend.getBounds();
+    	int adjustment = legendBounds.width - 15;
+    	Point blankSize = pe.gc.textExtent(" "); //$NON-NLS-1$
+    	int numBlanks = ((adjustment / blankSize.x) >> 1) << 1;
+    	String text = origTitleText;
+    	for (int i = 0; i < numBlanks; ++i)
+    		text += " "; //$NON-NLS-1$
+    	title.setText(text);
+    	pe.gc.setFont(oldFont);
     }
 
     private void drawPieChart(PaintEvent e, int chartnum, Rectangle bounds) {
