@@ -19,7 +19,6 @@ import org.eclipse.linuxtools.internal.rpm.ui.BuildType;
 import org.eclipse.linuxtools.internal.rpm.ui.Messages;
 import org.eclipse.linuxtools.internal.rpm.ui.RpmConsole;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
-import org.eclipse.ui.console.IOConsole;
 import org.eclipse.ui.console.IOConsoleOutputStream;
 import org.osgi.framework.FrameworkUtil;
 
@@ -50,10 +49,10 @@ public class RPMExportOperation extends Job {
     @Override
     public IStatus run(IProgressMonitor monitor) {
         IStatus result = null;
-        IOConsole myConsole = RpmConsole.findConsole(rpmProject.getSpecFile().getProject().getName());
-        IOConsoleOutputStream out = myConsole.newOutputStream();
-        myConsole.clearConsole();
-        myConsole.activate();
+        IOConsoleOutputStream out = RpmConsole.findConsole(rpmProject).linkJob(this);
+        if (out == null) {
+            return Status.CANCEL_STATUS;
+        }
         switch (exportType) {
         case ALL:
             try {
@@ -89,5 +88,30 @@ public class RPMExportOperation extends Job {
             break;
         }
         return result;
+    }
+
+    /**
+     * Cancel the operation by repeatedly interrupting the working thread
+     * until it terminates.
+     */
+    @Override
+    protected void canceling() {
+        Thread pollThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (getResult() == null) {
+                    Thread thread = getThread();
+                    if (thread != null) {
+                        thread.interrupt();
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        break;
+                    }
+                }
+            }
+        });
+        pollThread.start();
     }
 }

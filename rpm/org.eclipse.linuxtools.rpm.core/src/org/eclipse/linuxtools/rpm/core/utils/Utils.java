@@ -21,10 +21,8 @@ import java.io.SequenceInputStream;
 import java.nio.channels.FileChannel;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.FrameworkUtil;
@@ -66,7 +64,9 @@ public class Utils {
     }
 
     /**
-     * Runs the given command and parameters.
+     * Runs the given command and parameters. Note that the command's process can
+     * be terminated by interrupting the thread this method runs in, but only after
+     * the process' execution has begun.
      *
      * @param outStream
      *            The stream to write the output to.
@@ -74,22 +74,34 @@ public class Utils {
      *               The project which is executing this command.
      * @param command
      *            The command with all parameters.
-     * @return int The return value of the command.
+     * @return An IStatus indicating the result of the command.
      * @throws IOException If an IOException occurs.
      * @since 1.1
      */
     public static IStatus runCommand(final OutputStream outStream, IProject project,
             String... command) throws IOException {
-        Process child = RuntimeProcessFactory.getFactory().exec(command, project);
+        return watchProcess(outStream, RuntimeProcessFactory.getFactory().exec(command, project));
+    }
 
+    /**
+     * Watches the streams of the given running process. Note that the process can
+     * be terminated at any time by interrupting the thread this method runs in.
+     *
+     * @param outStream
+     *            The stream to write the output to.
+     * @param child
+     *            The process to watch the output of.
+     * @return An IStatus indicating the result of the command.
+     * @since 2.2
+     */
+    public static IStatus watchProcess(final OutputStream outStream, Process child) {
         final BufferedInputStream in = new BufferedInputStream(
                 new SequenceInputStream(child.getInputStream(),
                         child.getErrorStream()));
 
-        Job readinJob = new Job("") { //$NON-NLS-1$
-
+        Thread readinJob = new Thread(new Runnable() {
             @Override
-            protected IStatus run(IProgressMonitor monitor) {
+            public void run() {
                 try {
                     int i;
                     while ((i = in.read()) != -1) {
@@ -98,33 +110,42 @@ public class Utils {
                     outStream.flush();
                     outStream.close();
                     in.close();
-                } catch (IOException e) {
-                    return Status.CANCEL_STATUS;
-                }
-                return Status.OK_STATUS;
+                } catch (IOException e) {}
+                return;
             }
 
-        };
-        readinJob.schedule();
+        });
+        readinJob.start();
 
+        boolean canceled = false;
         try {
+            // Catch interrupt attempts made before the wait
+            if (Thread.currentThread().isInterrupted()) {
+                throw new InterruptedException();
+            }
             child.waitFor();
-            readinJob.join();
         } catch (InterruptedException e) {
             child.destroy();
-            readinJob.cancel();
+            canceled = true;
         }
-        IStatus result;
-        if (child.exitValue() != 0){
-            result = new Status(
+
+        while (readinJob.isAlive()) {
+            try {
+                readinJob.join();
+            } catch (InterruptedException e) {}
+        }
+
+        if (canceled) {
+            return Status.CANCEL_STATUS;
+        }
+        if (child.exitValue() != 0) {
+            return new Status(
                     IStatus.ERROR,
                     FrameworkUtil.getBundle(Utils.class).getSymbolicName(),
                     NLS.bind(
                             Messages.Utils_NON_ZERO_RETURN_CODE, child.exitValue()), null);
-        } else{
-            result = Status.OK_STATUS;
         }
-        return result;
+        return Status.OK_STATUS;
     }
 
     /**

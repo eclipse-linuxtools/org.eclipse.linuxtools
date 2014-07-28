@@ -104,15 +104,15 @@ public class SRPMImportOperation implements IRunnableWithProgress {
      * @return The result of the operation.
      */
     public MultiStatus getStatus() {
-    IStatus[] errors = new IStatus[rpmErrorTable.size()];
-    int iCount = 0;
-    for (CoreException ex : rpmErrorTable) {
-        errors[iCount] = ex.getStatus();
-        iCount++;
-    }
+        IStatus[] errors = new IStatus[rpmErrorTable.size()];
+        int iCount = 0;
+        for (CoreException ex : rpmErrorTable) {
+            errors[iCount] = ex.getStatus();
+            iCount++;
+        }
 
-    return new MultiStatus(PlatformUI.PLUGIN_ID, IStatus.OK, errors, Messages.getString("SRPMImportOperation.3"), //$NON-NLS-1$
-    null);
-}
+        return new MultiStatus(PlatformUI.PLUGIN_ID, IStatus.OK, errors, Messages.getString("SRPMImportOperation.3"), //$NON-NLS-1$
+        null);
+    }
 
 }
