@@ -225,7 +225,9 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
             int state = p.waitFor();
 
             if (state != IRemoteCommandLauncher.OK) {
-                abort("valgrind launcher exited with status " + state + ". See IRemoteCommandLauncher for details.\n",
+                abort(Messages.getString("ValgrindLaunchConfigurationDelegate.Launch_exited_status") + " " //$NON-NLS-1$ //$NON-NLS-2$
+                        + state + ". " + NLS.bind(Messages.getString("ValgrindRemoteProxyLaunchDelegate.see_reference"), "IRemoteCommandLauncher") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        + "\n",  //$NON-NLS-1$
                         null, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
             }
 
@@ -245,8 +247,8 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
                     valgrindErrSB.append(line);
                 }
 
-                abort("Standard ouput: " + valgrindOutSB.toString() +
-                        "\nStandard error: " + valgrindErrSB.toString(),
+                abort(NLS.bind("ValgrindRemoteProxyLaunchDelegate.Stdout", valgrindOutSB.toString()) + //$NON-NLS-1$
+                        "\n" + NLS.bind("ValgrindRemoteProxyLaunchDelegate.Stderr", valgrindErrSB.toString()), //$NON-NLS-1$ //$NON-NLS-2$
                         null, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
             }
 
