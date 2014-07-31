@@ -41,6 +41,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.cdt.libhover.FunctionInfo;
 import org.eclipse.linuxtools.cdt.libhover.LibHoverInfo;
+import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences.FuncFoundSaxException;
 import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences.LibHoverMessages;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -164,6 +165,7 @@ public class ParseDevHelp {
                         descStart = false;
                         parmStart = false;
                         protoStart = false;
+                        throw new FuncFoundSaxException(); // indicate we are done and stop parser
                     }
                 }
                 if (descStart) {
@@ -381,33 +383,40 @@ public class ParseDevHelp {
         }
 
         private void parseLink(Node link, Node name, IPath path, LibHoverInfo libhover) {
-            String linkValue = link.getNodeValue();
-            String[] linkParts = linkValue.split("#"); //$NON-NLS-1$
-            if (linkParts.length == 2) {
-                try {
-                    String nameString = name.getNodeValue();
-                    nameString = nameString.replaceAll("\\(.*\\);+", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                    if (nameString.contains("::") || nameString.startsWith("enum ") //$NON-NLS-1$ //$NON-NLS-2$
-                            || nameString.contains("\"")) { //$NON-NLS-1$
-                        return;
-                    }
-                    InputStream reader = new FileInputStream(path.removeLastSegments(1).toOSString()
-                            + "/" + linkParts[0]); //$NON-NLS-1$
-                    HTMLSaxParser parser = new HTMLSaxParser(linkParts[1], nameString);
-                    parser.parse(new InputSource(reader));
-                    FunctionInfo finfo = parser.getFunctionInfo();
-                    if (finfo != null) {
-                        if (debug) {
-                            System.out.println(parser.toString());
-                        }
-                        libhover.functions.put(parser.getFuncName(), parser.getFunctionInfo());
-                    }
-                } catch (IOException e) {
-                    // ignore
-                } catch (SAXException e) {
-                    e.printStackTrace();
-                }
-            }
+        	String linkValue = link.getNodeValue();
+        	String[] linkParts = linkValue.split("#"); //$NON-NLS-1$
+        	InputStream reader = null;
+        	HTMLSaxParser parser = null;
+        	if (linkParts.length == 2) {
+        		try {
+        			String nameString = name.getNodeValue();
+        			nameString = nameString.replaceAll("\\(.*\\);+", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+        			if (nameString.contains("::") || nameString.startsWith("enum ") //$NON-NLS-1$ //$NON-NLS-2$
+        					|| nameString.contains("\"")) { //$NON-NLS-1$
+        				return;
+        			}
+        			reader = new FileInputStream(path.removeLastSegments(1).toOSString()
+        					+ "/" + linkParts[0]); //$NON-NLS-1$
+        			parser = new HTMLSaxParser(linkParts[1], nameString);
+        			try {
+        				parser.parse(new InputSource(reader));
+        			} catch (FuncFoundSaxException e) {
+        				// ignore because this is just how we shorten parse time
+        			}
+        			reader.close();
+        			FunctionInfo finfo = parser.getFunctionInfo();
+        			if (finfo != null) {
+        				if (debug) {
+        					System.out.println(parser.toString());
+        				}
+        				libhover.functions.put(parser.getFuncName(), parser.getFunctionInfo());
+        			}
+        		} catch (IOException e) {
+        			// ignore
+        		} catch (SAXException e) {
+        			e.printStackTrace();
+        		}
+        	}
         }
 
         private void parse(String fileName, IProgressMonitor monitor) {
