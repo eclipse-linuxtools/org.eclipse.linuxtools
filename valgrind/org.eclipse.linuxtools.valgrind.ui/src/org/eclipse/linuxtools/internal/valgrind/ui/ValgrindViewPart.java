@@ -31,6 +31,9 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
 
+/**
+ * The view which display information and messages of an execution.
+ */
 public class ValgrindViewPart extends ViewPart {
     private static final String TOOLBAR_LOC_GROUP_ID = "toolbarLocal"; //$NON-NLS-1$
     private PageBook pageBook;
@@ -74,6 +77,14 @@ public class ValgrindViewPart extends ViewPart {
         ValgrindUIPlugin.getDefault().setView(this);
     }
 
+    /**
+     * Returns a refreshable view specific of a Valgrind tool.
+     *
+     * @param description     the content description
+     * @param toolID          the Valgrind tool identifier
+     * @return                the Valgrind tool view
+     * @throws CoreException  the toolbar is disposed
+     */
     public IValgrindToolView createDynamicContent(String description, String toolID) throws CoreException {
         setContentDescription(description);
 
@@ -143,10 +154,20 @@ public class ValgrindViewPart extends ViewPart {
         return dynamicView;
     }
 
+    /**
+     * Set the messages that will appear in the view.
+     *
+     * @param messages  the array of messages
+     */
     public void setMessages(IValgrindMessage[] messages) {
         this.messages = messages;
     }
 
+    /**
+     * Returns the messages displayed in the view.
+     *
+     * @return the array of messages
+     */
     public IValgrindMessage[] getMessages() {
         return messages;
     }
@@ -158,6 +179,9 @@ public class ValgrindViewPart extends ViewPart {
         }
     }
 
+    /**
+     * Refresh the view.
+     */
     public void refreshView() {
         if (messages != null && messages.length > 0) {
             messagesViewer.getTreeViewer().setInput(messages);
@@ -190,10 +214,20 @@ public class ValgrindViewPart extends ViewPart {
         super.dispose();
     }
 
+    /**
+     * Returns the refreshable view or null if not already created.
+     *
+     * @return the valgrind tool view
+     */
     public IValgrindToolView getDynamicView() {
         return dynamicView;
     }
 
+    /**
+     * Returns the core messages viewer for this view part.
+     *
+     * @return the inner core messages viewer
+     */
     public CoreMessagesViewer getMessagesViewer() {
         return messagesViewer;
     }

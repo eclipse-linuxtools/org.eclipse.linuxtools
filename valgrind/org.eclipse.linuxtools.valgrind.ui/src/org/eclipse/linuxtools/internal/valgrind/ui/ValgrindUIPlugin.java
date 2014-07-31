@@ -26,6 +26,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+
+/**
+ * Base class for Valgrind UI plug-in.
+ */
 public class ValgrindUIPlugin extends AbstractUIPlugin {
 
     /**
@@ -77,6 +81,12 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
         return plugin;
     }
 
+    /**
+     * Creates the Valgrind view specialized of the valgrind tool.
+     *
+     * @param contentDescription  the content description
+     * @param toolID              the valgrind tool identifier
+     */
     public void createView(final String contentDescription, final String toolID) {
         Display.getDefault().syncExec(new Runnable() {
             @Override
@@ -178,6 +188,13 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
         return toolMap;
     }
 
+    /**
+     * Returns the view specialized of a tool.
+     *
+     * @param id The valgrind view identifier
+     * @return IValgrindToolView The valgrind view
+     * @throws CoreException The view cannot be retrieved
+     */
     public IValgrindToolView getToolView(String id) throws CoreException {
         IValgrindToolView view = null;
         IConfigurationElement config = getToolMap().get(id);

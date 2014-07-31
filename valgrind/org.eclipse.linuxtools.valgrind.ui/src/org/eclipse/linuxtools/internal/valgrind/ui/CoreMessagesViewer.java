@@ -51,6 +51,10 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+/**
+ * The inner tree view that holds the output messages to be displayed. Also hold
+ * double click listeners.
+ */
 public class CoreMessagesViewer {
 
     static ImageRegistry imageRegistry = new ImageRegistry();
@@ -70,6 +74,10 @@ public class CoreMessagesViewer {
 
     private TreeViewer viewer;
 
+    /**
+     * @param parent  the parent control
+     * @param style   an SWT style
+     */
     public CoreMessagesViewer(Composite parent, int style) {
         viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | style);
         viewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -222,10 +230,16 @@ public class CoreMessagesViewer {
         viewer.getControl().setMenu(contextMenu);
     }
 
+    /**
+     * @return the double click listener
+     */
     public IDoubleClickListener getDoubleClickListener() {
         return doubleClickListener;
     }
 
+    /**
+     * @return the tree viewer
+     */
     public TreeViewer getTreeViewer() {
         return viewer;
     }
