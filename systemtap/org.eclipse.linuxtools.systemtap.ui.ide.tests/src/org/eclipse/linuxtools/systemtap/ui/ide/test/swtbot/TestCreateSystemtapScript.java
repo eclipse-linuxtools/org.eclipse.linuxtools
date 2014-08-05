@@ -59,6 +59,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
+import org.eclipse.swtbot.swt.finder.results.BoolResult;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -1282,48 +1283,62 @@ public class TestCreateSystemtapScript {
     private void checkTooltipAtDataPoint(final AbstractChartBuilder cb, final int series,
             final int dataPoint, final String expectedTooltip,
             final boolean shellShouldExist) {
-        if (dataPoint >= 0) {
 
-            bot.sleep(500);
-            UIThreadRunnable.syncExec(new VoidResult() {
+        for (int retries = 5; retries > 0; retries--) {
+
+            if (dataPoint >= 0) {
+                final Event event = new Event();
+                event.type = SWT.MouseMove;
+                // Jitter the mouse before moving to the data point
+                UIThreadRunnable.syncExec(new VoidResult() {
+                    @Override
+                    public void run() {
+                        event.x = 0;
+                        event.y = 0;
+                        bot.getDisplay().post(event);
+                    }
+                });
+                bot.sleep(100);
+                UIThreadRunnable.syncExec(new VoidResult() {
+                    @Override
+                    public void run() {
+                        Point mousePoint = cb.getChart().getPlotArea().toDisplay(
+                                cb.getChart().getSeriesSet().getSeries()[0].getPixelCoordinates(dataPoint));
+                        event.x = mousePoint.x;
+                        event.y = mousePoint.y;
+                        bot.getDisplay().post(event);
+                    }
+                });
+            }
+
+            bot.sleep(500); // Give some time for the tooltip to appear/change
+
+            boolean foundTooltip = UIThreadRunnable.syncExec(new BoolResult() {
                 @Override
-                public void run() {
-                    Event event = new Event();
-                    event.type = SWT.MouseMove;
-                    event.x = 0;
-                    event.y = 0;
-                    bot.getDisplay().post(event);
+                public Boolean run() {
+                    for (SWTBotShell bshell : bot.shells()) {
+                        Control[] children = bshell.widget.getChildren();
+                        if (children.length == 1 && children[0] instanceof Text
+                                && children[0].isVisible()
+                                && expectedTooltip.equals(((Text) children[0]).getText())) {
 
-                    Point mousePoint = cb.getChart().getPlotArea().toDisplay(
-                            cb.getChart().getSeriesSet().getSeries()[0].getPixelCoordinates(dataPoint));
-                    event.x = mousePoint.x;
-                    event.y = mousePoint.y;
-                    bot.getDisplay().post(event);
+                            return true;
+                        }
+                    }
+                    return false;
                 }
             });
+
+            if (foundTooltip == shellShouldExist) {
+                return;
+            }
         }
 
-        bot.sleep(500); // Give some time for the tooltip to appear/change
-
-        UIThreadRunnable.syncExec(new VoidResult() {
-            @Override
-            public void run() {
-                for (SWTBotShell bshell : bot.shells()) {
-                    Control[] children = bshell.widget.getChildren();
-                    if (children.length == 1 && children[0] instanceof Text
-                            && children[0].isVisible()
-                            && expectedTooltip.equals(((Text) children[0]).getText())) {
-                        if (!shellShouldExist) {
-                            throw new AssertionError("Did not expect to find this tooltip, but found it: " + expectedTooltip);
-                        }
-                        return;
-                    }
-                }
-                if (shellShouldExist) {
-                    throw new AssertionError("Didn't find the expected tooltip: " + expectedTooltip);
-                }
-            }
-        });
+        if (shellShouldExist) {
+            throw new AssertionError("Didn't find the expected tooltip: " + expectedTooltip);
+        } else {
+            throw new AssertionError("Did not expect to find this tooltip, but found it: " + expectedTooltip);
+        }
     }
 
     private void openRunConfigurations(String scriptName) {
