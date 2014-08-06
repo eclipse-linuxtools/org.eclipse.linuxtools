@@ -70,7 +70,7 @@ public class Command implements Runnable {
      */
     protected final String[] envVars;
 
-    protected Process process;
+    protected Process process = null;
     /**
      * @since 2.1
      */
@@ -141,19 +141,16 @@ public class Command implements Runnable {
     protected IStatus init() {
         try {
             process = RuntimeProcessFactory.getFactory().exec(cmd, envVars, project);
-
-            if (process == null) {
-                return new Status(IStatus.ERROR, StructuresPlugin.PLUGIN_ID, Messages.Command_failedToRunSystemtap);
-            }
-
-            errorGobbler = new StreamGobbler(process.getErrorStream());
-            inputGobbler = new StreamGobbler(process.getInputStream());
-
-            transferListeners();
-            return Status.OK_STATUS;
         } catch (IOException e) {
             return new Status(IStatus.ERROR, StructuresPlugin.PLUGIN_ID, e.getMessage(), e);
         }
+        if (process == null) {
+            return new Status(IStatus.ERROR, StructuresPlugin.PLUGIN_ID, Messages.Command_failedToRunSystemtap);
+        }
+        errorGobbler = new StreamGobbler(process.getErrorStream());
+        inputGobbler = new StreamGobbler(process.getInputStream());
+        transferListeners();
+        return Status.OK_STATUS;
     }
 
     /**

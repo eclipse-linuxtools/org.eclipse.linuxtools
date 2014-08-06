@@ -183,14 +183,12 @@ public class RunScriptHandler extends AbstractHandler {
                     }
                 }
                 final ScriptConsole console = ScriptConsole.getInstance(name);
-                synchronized (console) {
-                    if (!local) {
-                        console.run(script, envVars, remoteOptions, new StapErrorParser());
-                    } else {
-                        console.runLocally(script, envVars, new StapErrorParser(), getProject());
-                    }
-                    scriptConsoleInitialized(console);
+                if (!local) {
+                    console.run(script, envVars, remoteOptions, new StapErrorParser());
+                } else {
+                    console.runLocally(script, envVars, new StapErrorParser(), getProject());
                 }
+                scriptConsoleInitialized(console);
             }
         });
     }
