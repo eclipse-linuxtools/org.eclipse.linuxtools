@@ -11,8 +11,6 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide;
 
-import java.text.MessageFormat;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.ui.IWorkbench;
@@ -30,12 +28,13 @@ public class IDECloseMonitor implements IWorkbenchListener {
     @Override
     public boolean preShutdown(IWorkbench workbench, boolean forced) {
         boolean close = true;
-        if(!forced) {
+        if (!forced) {
             IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
 
-            if(ScriptConsole.anyRunning()) {
-                String msg = MessageFormat.format(Localization.getString("IDECloseMonitor.StillRunning"),(Object[]) null); //$NON-NLS-1$
-                close = MessageDialog.openQuestion(window.getShell(), "Closing...", msg); //$NON-NLS-1$
+            if (ScriptConsole.anyRunning()) {
+                close = MessageDialog.openQuestion(window.getShell(),
+                        Localization.getString("IDECloseMonitor.StillRunningTitle"), //$NON-NLS-1$
+                        Localization.getString("IDECloseMonitor.StillRunning")); //$NON-NLS-1$
             }
         }
         return close;

@@ -196,7 +196,8 @@ public abstract class LinuxtoolsProcessFactory {
 
     /**
      * Runs a command on the given host using the given
-     * credentials and waits for the process to finish executing.
+     * credentials and waits for the process to finish executing, or until
+     * the executing thread is interrupted.
      *
      * @param args The command to run, followed by a list of optional arguments.
      * @param out A stream for the command's standard output.
@@ -216,7 +217,8 @@ public abstract class LinuxtoolsProcessFactory {
 
     /**
      * Runs a command on the given host using the given
-     * credentials and waits for the process to finish executing.
+     * credentials and waits for the process to finish executing, or until
+     * the executing thread is interrupted.
      *
      * @param args The command to run, followed by a list of optional arguments.
      * @param out A stream for the command's standard output.
