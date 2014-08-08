@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Red Hat Inc. and others.
+ * Copyright (c) 2012-2014 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.Collection;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -116,6 +117,29 @@ public class DevHelpPlugin extends AbstractUIPlugin implements IStartup {
 				return Status.CANCEL_STATUS;
 			IPreferenceStore ps = DevHelpPlugin.getDefault()
 					.getPreferenceStore();
+			String devhelpDir = ps.getString(PreferenceConstants.DEVHELP_DIRECTORY);
+			IPath devhelpPath = new Path(devhelpDir);
+			File devhelp = devhelpPath.toFile();
+			if (!devhelp.exists()) {
+				// No input data to process so quit now
+				monitor.done();
+				return Status.OK_STATUS;
+			}
+			long ltime = devhelp.lastModified();
+			IPath libhoverPath = LibhoverPlugin.getDefault()
+					.getStateLocation().append("C").append("devhelp.libhover"); //$NON-NLS-1$ //$NON-NLS-2$
+			File libhoverDir = new File(libhoverPath.toOSString());
+			if (libhoverDir.exists()) {
+				long ltime2 = libhoverDir.lastModified();
+				// Check the last modified time of the devhelp libhover file compared to the
+				// devhelp directory we use to parse the data
+				if (ltime < ltime2) {
+					// Our devhelp info is up to date and is older than the last modification to
+					// the devhelp input data so stop now
+					monitor.done();
+					return Status.OK_STATUS;
+				}
+			}
 			ParseDevHelp.DevHelpParser p = new ParseDevHelp.DevHelpParser(
 					ps.getString(PreferenceConstants.DEVHELP_DIRECTORY));
 			LibHoverInfo hover = p.parse(monitor);
