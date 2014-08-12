@@ -74,7 +74,6 @@ public class RunScriptHandler extends AbstractHandler {
     /**
      * @since 2.0
      */
-    protected boolean continueRun = true;
     private RemoteScriptOptions remoteOptions = null;
     private IEditorPart targetEditor = null;
     private String fileName = null;
@@ -109,7 +108,7 @@ public class RunScriptHandler extends AbstractHandler {
      * @param option
      */
     public void addComandLineOptions(String option) {
-        this.cmdList.add(option);
+        cmdList.add(option);
     }
 
     /**
@@ -156,6 +155,7 @@ public class RunScriptHandler extends AbstractHandler {
     }
 
     private void executeAction(ExecutionEvent event) throws ExecutionException {
+        cmdList.clear();
         final boolean local = getRunLocal();
         findTargetEditor(event);
         findFilePath();
@@ -239,7 +239,7 @@ public class RunScriptHandler extends AbstractHandler {
     }
 
     private boolean editorMatchesPath(IEditorInput input) {
-        return input instanceof IPathEditorInput && ((IPathEditorInput) (input)).getPath().equals(this.path);
+        return input instanceof IPathEditorInput && ((IPathEditorInput) (input)).getPath().equals(path);
     }
 
     /**
@@ -399,7 +399,6 @@ public class RunScriptHandler extends AbstractHandler {
         // Make sure script name only contains underscores and/or alphanumeric characters.
         if (!Pattern.matches("^[a-z0-9_A-Z]+$", //$NON-NLS-1$
                 getFileNameWithoutExtension(getFileName(fileName)))) {
-            continueRun = false;
             throw new ExecutionException(Messages.RunScriptHandler_InvalidScriptMessage);
         }
 
