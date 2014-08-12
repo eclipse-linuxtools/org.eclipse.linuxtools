@@ -81,7 +81,7 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 
     /**
      *  return the project
-     *  @since 2.0
+     *  @since 2.1
      */
     protected IProject getProject() {
     	return Oprofile.OprofileProject.getProject();
