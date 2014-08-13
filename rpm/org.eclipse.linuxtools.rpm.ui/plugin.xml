@@ -224,6 +224,11 @@
               name="buildType"
               optional="false">
         </commandParameter>
+        <commandParameter
+              id="actOnEditor"
+              name="actOnEditor"
+              optional="true">
+        </commandParameter>
      </command>
   </extension>
   <extension
@@ -265,6 +270,10 @@
                     name="buildType"
                     value="ALL">
               </parameter>
+              <parameter
+                    name="actOnEditor"
+                    value="true">
+              </parameter>
            </command>
         </toolbar>
      </menuContribution>
@@ -280,6 +289,10 @@
                  name="buildType"
                  value="SOURCE">
            </parameter>
+           <parameter
+                 name="actOnEditor"
+                 value="true">
+           </parameter>
         </command>
         <command
               commandId="rpmEditor.build.command"
@@ -291,6 +304,10 @@
                  name="buildType"
                  value="BINARY">
            </parameter>
+           <parameter
+                 name="actOnEditor"
+                 value="true">
+           </parameter>
         </command>
         <command
               commandId="rpmEditor.build.command"
@@ -301,6 +318,10 @@
            <parameter
                  name="buildType"
                  value="ALL">
+           </parameter>
+           <parameter
+                 name="actOnEditor"
+                 value="true">
            </parameter>
         </command>
      </menuContribution>
