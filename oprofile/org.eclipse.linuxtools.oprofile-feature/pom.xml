@@ -18,7 +18,7 @@
   </parent>
 
   <artifactId>org.eclipse.linuxtools.oprofile.feature</artifactId>
-  <version>2.0.0-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
   <name>Linux Tools OProfile Integration Feature</name>
