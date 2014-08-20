@@ -23,7 +23,8 @@ import java.util.Arrays;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
-import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -47,6 +48,7 @@ import org.eclipse.linuxtools.internal.oprofile.launch.configuration.OprofileCou
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.internal.oprofile.ui.view.OprofileView;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.ui.PartInitException;
@@ -145,9 +147,11 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
             eventsString = spec.toString();
 
             ArrayList<String> argArray = new ArrayList<>(Arrays.asList(getProgramArgumentsArray( config )));
-            IFolder dataFolder = Oprofile.OprofileProject.getProject().getFolder(OPROFILE_DATA);
-            if(!dataFolder.exists()) {
-                dataFolder.create(false, true, null);
+            // Use remote file proxy to determine data folder since the project may be either local or remote
+            IRemoteFileProxy proxy = RemoteProxyManager.getInstance().getFileProxy(OprofileProject.getProject());
+            IFileStore dataFolder = proxy.getResource(oprofileWorkingDirURI(config).getPath() + IPath.SEPARATOR + OPROFILE_DATA);
+            if(! dataFolder.fetchInfo().exists()) {
+                dataFolder.mkdir(EFS.SHALLOW, null);
             }
             argArray.add(0, exePath.toOSString());
             if (events.size()>0) {
