@@ -34,6 +34,7 @@ public interface IValgrindLaunchDelegate {
      * @param logDir - directory to store Valgrind log output files
      * @param monitor - to report progress
      * @throws CoreException - if this method fails
+     * @since 3.0
      */
     void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath logDir, IProgressMonitor monitor) throws CoreException;
 
@@ -46,6 +47,7 @@ public interface IValgrindLaunchDelegate {
      * @param contentDescription - String describing the launch that populated the view
      * @param monitor - to report progress
      * @throws CoreException - if this method fails
+     * @since 3.0
      */
     void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor) throws CoreException;
 
@@ -57,6 +59,7 @@ public interface IValgrindLaunchDelegate {
      * @param logDir - directory to store Valgrind log output files
      * @return an array of arguments that can appended to a <code>valgrind</code> command
      * @throws CoreException - retrieving attributes from config failed
+     * @since 3.0
      */
     String[] getCommandArray(ILaunchConfiguration config, Version ver, IPath logDir) throws CoreException;
 
