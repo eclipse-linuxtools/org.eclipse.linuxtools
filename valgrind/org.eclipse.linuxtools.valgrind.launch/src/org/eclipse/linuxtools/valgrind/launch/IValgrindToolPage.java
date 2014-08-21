@@ -26,6 +26,6 @@ public interface IValgrindToolPage extends ILaunchConfigurationTab {
      * checking should not be performed.
      * @param ver - the version of Valgrind, or null
      */
-    void setValgrindVersion(Version ver);
+    public void setValgrindVersion(Version ver);
 
 }
