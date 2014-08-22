@@ -395,11 +395,11 @@ public class CProjectBuildHelpers {
                 //Code copied from private methd: SetAutotoolsStringOptionValue.setOptionValue()
                 //Except I added a line to save the configuration to disk as well.
                 AutotoolsConfigurationManager.getInstance().syncConfigurations(project);
-                ICConfigurationDescription[] cfgds = CoreModel.getDefault()
-                        .getProjectDescription(project).getConfigurations();
-                if (cfgds != null && cfgds.length >= 1) {
+                ICConfigurationDescription cfgds = CoreModel.getDefault()
+                        .getProjectDescription(project).getActiveConfiguration();
+                if (cfgds != null) {
                     IAConfiguration iaConfig = AutotoolsConfigurationManager.getInstance()
-                            .getConfiguration(project, cfgds[0].getId());
+                            .getConfiguration(project, cfgds.getId());
 
                     //Read option value
                     IConfigureOption option = iaConfig.getOption(optionId);
@@ -439,11 +439,12 @@ public class CProjectBuildHelpers {
                 //Code copied from private methd: SetAutotoolsStringOptionValue.setOptionValue()
                 //Except I added a line to save the configuration to disk as well.
                 AutotoolsConfigurationManager.getInstance().syncConfigurations(project);
-                ICConfigurationDescription[] cfgds = CoreModel.getDefault()
-                        .getProjectDescription(project).getConfigurations();
-                if (cfgds != null && cfgds.length >= 1) {
+                ICConfigurationDescription cfgds = CoreModel.getDefault().
+                		getProjectDescription(project).getActiveConfiguration();
+                
+                if (cfgds != null) {
                     IAConfiguration iaConfig = AutotoolsConfigurationManager.getInstance()
-                            .getConfiguration(project, cfgds[0].getId());
+                            .getConfiguration(project, cfgds.getId());
 
                     //Set option value.
                     iaConfig.setOption(optId, optVal);
