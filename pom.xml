@@ -90,7 +90,7 @@
                 </dependency>
               </dependencies>
               <product>org.eclipse.platform.ide</product>
-	      <argLine>-Xms512m -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m -Declipse.valgrind.tests.runValgrind=no -Dorg.eclipse.swt.browser.UseWebKitGTK=true</argLine>
+	      <argLine>${tycho.testArgLine} -Xms512m -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m -Declipse.valgrind.tests.runValgrind=no -Dorg.eclipse.swt.browser.UseWebKitGTK=true</argLine>
 	    </configuration>
 	  </plugin>
           <plugin>
