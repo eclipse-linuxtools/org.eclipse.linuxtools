@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.linuxtools.ctf.core.event.IEventDeclaration;
 import org.eclipse.linuxtools.ctf.core.event.types.IDeclaration;
 import org.eclipse.linuxtools.ctf.core.event.types.StructDeclaration;
@@ -69,13 +70,14 @@ public class CTFStreamTest {
     }
 
     @After
-    public void tearDown() throws IOException{
+    public void tearDown() throws IOException {
         fInput.close();
     }
 
+    @NonNull
     private static File createFile() {
         File path = new File(testTrace.getPath());
-        return path.listFiles(new FilenameFilter() {
+        final File[] listFiles = path.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 if (name.contains("hann")) {
@@ -83,7 +85,11 @@ public class CTFStreamTest {
                 }
                 return false;
             }
-        })[0];
+        });
+        assertNotNull(listFiles);
+        final File returnFile = listFiles[0];
+        assertNotNull(returnFile);
+        return returnFile;
     }
 
     /**
