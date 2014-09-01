@@ -138,16 +138,16 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
                 if (tabNames[i].equals(PerfPlugin.STRINGS_HWBREAKPOINTS)) {
                     bpTabIndex = i;
                     bpText = t;
-                    l.setText("Please enter the hardware breakpoint in the form mem:<addr>[:access].");
+                    l.setText(Messages.PerfEventsTab_HardwareBreakpoint);
                 }
                 if (tabNames[i].equals(PerfPlugin.STRINGS_RAWHWEvents)) {
                     rawTabIndex = i;
                     rawText = t;
-                    l.setText("Please enter the raw register encoding in the form rNNN.");
+                    l.setText(Messages.PerfEventsTab_RawRegisterEncoding);
                 }
 
                 Button b = new Button(right, SWT.PUSH);
-                b.setText("Add");
+                b.setText(Messages.PerfEventsTab_Add);
                 b.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
                 b.addSelectionListener(new SelectionAdapter() {
                     @Override
@@ -164,10 +164,10 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
                 l = new Label(right, SWT.NONE);
                 l.setForeground(new Color(right.getDisplay(), 100,100,100));
                 if (tabNames[i].equals(PerfPlugin.STRINGS_HWBREAKPOINTS)) {
-                    l.setText("For example, .........");
+                    l.setText(Messages.PerfEventsTab_ForExample);
                 }
                 if (tabNames[i].equals(PerfPlugin.STRINGS_RAWHWEvents)) {
-                    l.setText("For example, r1a8");
+                    l.setText(Messages.PerfEventsTab_ForExampleR1A8);
                 }
                 l.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false,2,1));
 
@@ -177,7 +177,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 
                 // for removing
                 b = new Button(right, SWT.PUSH);
-                b.setText("Remove Selected Events");
+                b.setText(Messages.PerfEventsTab_RemoveSelectedEvents);
                 b.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, false,2,1));
                 b.addSelectionListener(new SelectionAdapter() {
                     @Override
@@ -188,7 +188,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
                 });
                 l = new Label(right, SWT.NONE);
                 l.setForeground(new Color(right.getDisplay(), 100,100,100));
-                l.setText("Note: Select by highlighting, not by checking.");
+                l.setText(Messages.PerfEventsTab_Note);
                 l.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, false,2,1));
 
                 eventTabItems[i].setControl(c);
@@ -225,7 +225,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 
     @Override
     public String getName() {
-        return "Perf Events";
+        return Messages.PerfEventsTab_Events;
     }
 
     @Override
