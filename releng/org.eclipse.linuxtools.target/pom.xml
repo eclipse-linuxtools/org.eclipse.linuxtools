@@ -35,6 +35,11 @@
                     <type>target</type>
                     <classifier>linuxtools-e4.4</classifier>
                   </artifact>
+                  <artifact>
+                    <file>linuxtools-staging.target</file>
+                    <type>target</type>
+                    <classifier>linuxtools-staging</classifier>
+                  </artifact>
                   <!-- More targets could be added here -->
                 </artifacts>
               </configuration>

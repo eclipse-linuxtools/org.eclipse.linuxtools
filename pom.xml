@@ -49,10 +49,10 @@
   </distributionManagement>
 
   <properties>
-    <mirror-repo-name>updates-nightly</mirror-repo-name>
+    <mirror-repo-name>update-3.1</mirror-repo-name>
     <tycho-version>0.21.0</tycho-version>
     <tycho-extras-version>0.21.0</tycho-extras-version>
-    <target-platform>linuxtools-e4.4</target-platform>
+    <target-platform>linuxtools-staging</target-platform>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../../target/jacoco.exec</sonar.jacoco.reportPath>
