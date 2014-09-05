@@ -60,7 +60,7 @@ public class STPToggleCommentTest {
             this.setupDocument(document);
         }
 
-        private IDocument createDocument(Object element) {
+        private IDocument createDocument() {
             return document;
         }
     }
@@ -97,7 +97,7 @@ public class STPToggleCommentTest {
     @Test
     public void isBlockCommentedTest() {
         MockSTPDocumentProvider provider = new MockSTPDocumentProvider(new Document(stpScript));
-        IDocument document = provider.createDocument(null);
+        IDocument document = provider.createDocument();
 
         int i = 0;
         for( String scriptLine : PARTITIONED_SCRIPT){
@@ -135,7 +135,7 @@ public class STPToggleCommentTest {
             int offset = stpScript.indexOf(scriptLine, curPos);
             ITextSelection selection = new MockTextSelection(offset, lineLength, i, i, scriptLine);
             MockSTPDocumentProvider provider = new MockSTPDocumentProvider(new Document(stpScript));
-            IDocument document = provider.createDocument(null);
+            IDocument document = provider.createDocument();
 
             // for the purposes of this test, commented blocks start with "//"
             assertEquals(scriptLine.startsWith("//"), cmdHandler.isSelectionCommented(selection, document));
