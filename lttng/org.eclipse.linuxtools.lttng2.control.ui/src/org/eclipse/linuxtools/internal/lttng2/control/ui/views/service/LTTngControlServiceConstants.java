@@ -288,7 +288,7 @@ public interface LTTngControlServiceConstants {
      * Pattern to match session path for network tracing (lttng list <session>)
      * Note: file for protocol is not considered as network trace since local consumer will be used.
      */
-    static final Pattern TRACE_NETWORK_PATH_PATTERN = Pattern.compile("\\s*Trace\\s+path\\:\\s+(net|net4|net6|tcp|tcp6)\\:\\/\\/(.*)(\\:(\\d*)\\/(.*)\\[data\\:\\s+(\\d*)\\]){0,1}"); //$NON-NLS-1$
+    static final Pattern TRACE_NETWORK_PATH_PATTERN = Pattern.compile("\\s*Trace\\s+path\\:\\s+(net|net4|net6|tcp|tcp4|tcp6)\\:\\/\\/(.*)(\\:(\\d*)\\/(.*)\\[data\\:\\s+(\\d*)\\]){0,1}"); //$NON-NLS-1$
     /**
      * Sub-pattern to pattern TRACE_NETWORK_PATH_PATTERN to match file protocol
      */
@@ -421,6 +421,6 @@ public interface LTTngControlServiceConstants {
      * Pattern to match snapshot path for network tracing (lttng list <session>)
      * Note: file for protocol is not considered as network trace since local consumer will be used.
      */
-    static final Pattern SNAPSHOT_NETWORK_PATH_PATTERN = Pattern.compile("(net|net4|net6|tcp|tcp6)\\:\\/\\/(.*)(\\:(\\d*)\\/(.*)\\[data\\:\\s+(\\d*)\\]){0,1}"); //$NON-NLS-1$
+    static final Pattern SNAPSHOT_NETWORK_PATH_PATTERN = Pattern.compile("(net|net4|net6|tcp|tcp4|tcp6)\\:\\/\\/(.*)(\\:(\\d*)\\/(.*)\\[data\\:\\s+(\\d*)\\]){0,1}"); //$NON-NLS-1$
 
 }
