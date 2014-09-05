@@ -81,7 +81,7 @@ public class CheckEventAdapter extends AbstractDataAdapter {
             return;
         }
 
-        returnCode = "ok"; //$NON-NLS-1
+        returnCode = "ok"; //$NON-NLS-1$
     }
 
     /**

@@ -37,7 +37,7 @@ import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathPropert
  * A class which encapsulates running opcontrol.
  */
 public class LinuxOpcontrolProvider implements IOpcontrolProvider {
-    private static final String OPCONTROL_EXECUTABLE = "opcontrol";
+    private static final String OPCONTROL_EXECUTABLE = "opcontrol"; //$NON-NLS-1$
 
     private static final int SUDO_TIMEOUT = 2000;
 
@@ -164,9 +164,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
         } catch (FileNotFoundException e) {
             //intentionally blank
             //during a save, the session file will exist
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException|InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -313,7 +311,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
         Process p = null;
         try {
 
-            if (!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
+            if (!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).isEmpty()){
                 p = RuntimeProcessFactory.getFactory().sudoExec(cmdArray, project);
             } else if (isInstalled){
                 p = Runtime.getRuntime().exec(cmdArray);
@@ -386,7 +384,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
         StringBuffer buf = new StringBuffer();
         for (String token: cmdArray) {
             buf.append(token);
-            buf.append(" ");
+            buf.append(" "); //$NON-NLS-1$
         }
         System.out.println(OprofileCorePlugin.DEBUG_PRINT_PREFIX + buf.toString());
     }
@@ -398,7 +396,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
      */
     private String findOpcontrolExecutable() {
         IProject project = Oprofile.OprofileProject.getProject();
-        if (!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).equals("")){
+        if (!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project).isEmpty()){
             return OPCONTROL_EXECUTABLE;
         }
 
@@ -496,21 +494,21 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 
         try {
             String opcontrolPath = null;
-            if(linuxtoolsPath.equals("")){
+            if(linuxtoolsPath.isEmpty()){
                 if(!isInstalled()){
                     throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolProvider", null));
                 } else{
                     return true;
                 }
 
-            } else if(linuxtoolsPath.endsWith("/")){
-                opcontrolPath = linuxtoolsPath + "opcontrol";
+            } else if(linuxtoolsPath.endsWith("/")){ //$NON-NLS-1$
+                opcontrolPath = linuxtoolsPath + "opcontrol"; //$NON-NLS-1$
             } else {
-                opcontrolPath = linuxtoolsPath + "/opcontrol";
+                opcontrolPath = linuxtoolsPath + "/opcontrol"; //$NON-NLS-1$
             }
 
             // Check if user has sudo permissions without password by running sudo -l.
-            final Process p = RuntimeProcessFactory.getFactory().exec("sudo -l", project);
+            final Process p = RuntimeProcessFactory.getFactory().exec("sudo -l", project); //$NON-NLS-1$
             final StringBuffer buffer = new StringBuffer();
 
             if(p == null){
@@ -540,9 +538,9 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
              t.start();
              t.join(SUDO_TIMEOUT);
 
-             String[] sudoLines = buffer.toString().split("\n");
+             String[] sudoLines = buffer.toString().split("\n"); //$NON-NLS-1$
              for (String s : sudoLines) {
-                 if(s.contains(opcontrolPath) && s.contains("NOPASSWD")){
+                 if(s.contains(opcontrolPath) && s.contains("NOPASSWD")){ //$NON-NLS-1$
                         return true;
                  }
             }

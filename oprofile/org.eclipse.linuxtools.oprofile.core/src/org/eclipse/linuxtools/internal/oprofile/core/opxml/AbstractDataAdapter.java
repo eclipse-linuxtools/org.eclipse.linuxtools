@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.internal.oprofile.core.opxml;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -50,10 +50,10 @@ public abstract class AbstractDataAdapter {
         Transformer xformer;
         try {
             xformer = factory.newTransformer();
-            xformer.setOutputProperty("indent", "yes");
+            xformer.setOutputProperty("indent", "yes"); //$NON-NLS-1$ //$NON-NLS-2$
             xformer.transform(source, result);
-            inp = new ByteArrayInputStream(stw.toString().getBytes("UTF-8"));
-        } catch (TransformerException|UnsupportedEncodingException e) {
+            inp = new ByteArrayInputStream(stw.toString().getBytes(StandardCharsets.UTF_8));
+        } catch (TransformerException e) {
             e.printStackTrace();
         }
         return inp;
@@ -69,7 +69,7 @@ public abstract class AbstractDataAdapter {
         Transformer xformer;
         try {
             xformer = factory.newTransformer();
-            xformer.setOutputProperty("indent", "yes");
+            xformer.setOutputProperty("indent", "yes"); //$NON-NLS-1$ //$NON-NLS-2$
             xformer.transform(source, result);
             ret = stw.toString();
         } catch (TransformerException e) {

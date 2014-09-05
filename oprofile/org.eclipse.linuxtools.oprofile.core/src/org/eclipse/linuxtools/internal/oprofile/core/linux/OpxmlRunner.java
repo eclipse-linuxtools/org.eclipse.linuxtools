@@ -20,7 +20,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -120,7 +120,7 @@ public class OpxmlRunner {
                     FileReader fr = new FileReader(file);
                     reader.parse(new InputSource(fr));
                 }else{
-                    throw new RuntimeException("Unrecognized argument encountered");
+                    throw new RuntimeException("Unrecognized argument encountered"); //$NON-NLS-1$
                 }
             }else{
                 // always regenerate the 'current' session file
@@ -147,9 +147,9 @@ public class OpxmlRunner {
     }
 
     private File saveOpxmlToFile(BufferedReader bi, String [] args) {
-        String fileName = "";
-        for (int i = 0; i < args.length; i++){
-            fileName += args[i];
+        String fileName = ""; //$NON-NLS-1$
+        for (String arg: args){
+            fileName += arg;
         }
         File file = new File(SessionManager.OPXML_PREFIX + fileName);
         String line;
@@ -157,7 +157,7 @@ public class OpxmlRunner {
             file.createNewFile();
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             while ((line = bi.readLine()) != null){
-                bw.write(line + "\n");
+                bw.write(line + "\n"); //$NON-NLS-1$
             }
             bi.close();
             bw.close();
@@ -168,7 +168,7 @@ public class OpxmlRunner {
     }
 
     private File constructFile(String [] args){
-        String fileName = "";
+        String fileName = ""; //$NON-NLS-1$
         for (int i = 0; i < args.length; i++){
             fileName += args[i];
         }
@@ -215,7 +215,7 @@ public class OpxmlRunner {
     private String[] getEventNames (){
         String [] ret = null;
         try {
-            String cmd[] = {"-X", "-d"};
+            String cmd[] = {"-X", "-d"}; //$NON-NLS-1$ //$NON-NLS-2$
             InputStream is = runOpReport(cmd);
 
             if (is != null){
@@ -327,12 +327,7 @@ public class OpxmlRunner {
 
             if (p.waitFor() == 0) {
                 // convert the string to inputstream to pass to builder.parse
-                try {
-                    return new ByteArrayInputStream(output.toString().getBytes(
-                            "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+                return new ByteArrayInputStream(output.toString().getBytes(StandardCharsets.UTF_8));
             }
         } catch (IOException e1) {
             e1.printStackTrace();

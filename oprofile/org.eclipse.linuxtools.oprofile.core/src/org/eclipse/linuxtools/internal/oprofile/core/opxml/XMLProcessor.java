@@ -40,7 +40,7 @@ public class XMLProcessor {
      * @param callData call data for the processor (usually the result is stored here)
      */
     public void startElement(String name, Attributes attrs, Object callData) {
-        characters = "";
+        characters = ""; //$NON-NLS-1$
     }
 
     /**

@@ -52,8 +52,8 @@ public final class OpControlErrorHandler {
      * @param stderr Standard error text collected from opcontrol
      */
     public OpcontrolException handleError (String stdout, String stderr) {
-        String type = "";
-        String fullErr = "";
+        String type = ""; //$NON-NLS-1$
+        String fullErr = ""; //$NON-NLS-1$
         IRemoteFileProxy proxy = null;
 
         // Figure out which stream has the error
@@ -77,7 +77,7 @@ public final class OpControlErrorHandler {
             IFileStore fileStore = proxy.getResource(errorFilePath);
             InputStream is = fileStore.openInputStream(EFS.NONE, new NullProgressMonitor());
 
-            String line = "";
+            String line = ""; //$NON-NLS-1$
             BufferedReader buff = new BufferedReader(new InputStreamReader(is));
 
             // Populate the mapping

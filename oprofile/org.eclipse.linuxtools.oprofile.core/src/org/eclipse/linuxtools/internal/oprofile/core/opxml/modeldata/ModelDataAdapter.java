@@ -217,7 +217,7 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 
                     // The sample has a line number but no file
                     // This means that the file is the same as the symbol (parent)
-                    if (sampleFile.equals("") && !sampleLine.equals("")){ //$NON-NLS-1$ $NON-NLS-2$
+                    if (sampleFile.equals("") && !sampleLine.isEmpty()){ //$NON-NLS-1$ $NON-NLS-2$
                         sampleFile = symbolData.get(FILE);
                     }else{
                         if (sampleFile.equals("")){ //$NON-NLS-1$

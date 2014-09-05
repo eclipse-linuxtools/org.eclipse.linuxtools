@@ -97,10 +97,10 @@ public class OprofileCorePlugin extends Plugin {
                 IConfigurationElement[] configElements = extension.getConfigurationElements();
                 if (configElements.length != 0) {
                     try {
-                        String scheme = configElements[0].getAttribute("scheme");
+                        String scheme = configElements[0].getAttribute("scheme"); //$NON-NLS-1$
 
                         // If no project associated, get the local opcontrol provider
-                        if (Oprofile.OprofileProject.getProject() == null && scheme.equals("file")) {
+                        if (Oprofile.OprofileProject.getProject() == null && scheme.equals("file")) { //$NON-NLS-1$
                             opcontrolProvider = (IOpcontrolProvider) configElements[0].createExecutableExtension("class");//$NON-NLS-1$
                             break;
                         }
@@ -116,7 +116,7 @@ public class OprofileCorePlugin extends Plugin {
         }
         // If there was a problem finding opcontrol, throw an exception
         if(opcontrolProvider == null) {
-            throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolProvider", null));
+            throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolProvider", null)); //$NON-NLS-1$
         }
 
         return opcontrolProvider;
