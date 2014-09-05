@@ -526,7 +526,7 @@ public class CProjectBuildHelpers {
      * <p> The parent tool is later read to aquire the option template, which is used to set an option. </p>
      * 
      * @param parentToolName a string represeting the parent of the option.  (like 'GCC C++ Compiler').
-     * @param the current active configuration of the project, from which we should be able to find the ITool name.
+     * @param activeConf The current active configuration of the project, from which we should be able to find the ITool name.
      * @return the parent 'ITool' instance. 
      */
     private static ITool helperGetGccCompilerTool(String parentToolName, IConfiguration activeConf) {
