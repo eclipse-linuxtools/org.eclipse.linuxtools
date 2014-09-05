@@ -44,7 +44,6 @@ import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.internal.WorkbenchPartReference;
 
@@ -189,7 +188,7 @@ public class BaseUITestCase extends BaseTestCase {
 		}
 	}
 
-	protected void restoreAllParts() throws WorkbenchException {
+	protected void restoreAllParts() {
 		IWorkbenchPage page= PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		page.zoomOut();
 		runEventQueue(0);
@@ -219,7 +218,7 @@ public class BaseUITestCase extends BaseTestCase {
 	}
 
 	private Control[] findControls(Control w, Class<?> clazz) {
-		ArrayList<Control> result= new ArrayList<Control>();
+		ArrayList<Control> result= new ArrayList<>();
 		findControls(w, clazz, result);
 		return result.toArray(new Control[result.size()]);
 	}

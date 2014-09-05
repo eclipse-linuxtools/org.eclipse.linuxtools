@@ -81,7 +81,7 @@ public class ContentAssistTests extends BaseUITestCase {
         super(name);
     }
     
-    private void disableContributions (){
+    private static void disableContributions (){
         //disable the help books so we don't get proposals we weren't expecting
         CHelpBookDescriptor helpBooks[];
 		helpBooks = CHelpProviderManager.getDefault().getCHelpBookDescriptors(new ICHelpInvocationContext(){
@@ -103,7 +103,7 @@ public class ContentAssistTests extends BaseUITestCase {
 	    return suite;
     }
     
-    public void cleanupProject() throws Exception {
+    public void cleanupProject() {
         closeAllEditors();
         try{
 	        project.delete( true, false, monitor );

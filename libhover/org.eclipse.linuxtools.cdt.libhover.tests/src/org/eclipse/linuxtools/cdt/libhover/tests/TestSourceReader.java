@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,10 +49,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.osgi.framework.Bundle;
 
 /**
@@ -147,10 +146,9 @@ public class TestSourceReader {
 				continue;
 			}
 
-		    BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		    try {
+		    try (BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
 		    	// Read the java file collecting comments until we encounter the test method.
-			    List<StringBuilder> contents = new ArrayList<StringBuilder>();
+			    List<StringBuilder> contents = new ArrayList<>();
 			    StringBuilder content = new StringBuilder();
 			    for (String line = br.readLine(); line != null; line = br.readLine()) {
 			    	line = line.replaceFirst("^\\s*", ""); // Replace leading whitespace, preserve trailing
@@ -174,8 +172,6 @@ public class TestSourceReader {
 			    		}
 			    	}
 			    }
-		    } finally {
-		    	br.close();
 		    }
 
 			if (superclass == null || !superclass.getPackage().equals(clazz.getPackage())) {
@@ -302,12 +298,7 @@ public class TestSourceReader {
 				// Obtain file handle
 				IFile file = container.getFile(filePath);
 
-				InputStream stream;
-				try {
-					stream = new ByteArrayInputStream(contents.toString().getBytes("UTF-8"));
-				} catch (UnsupportedEncodingException e) {
-					throw new CoreException(new Status(IStatus.ERROR, CProjectHelper.PLUGIN_ID, null, e));
-				}
+				InputStream stream = new ByteArrayInputStream(contents.toString().getBytes(StandardCharsets.UTF_8));
 				// Create file input stream
 				if (file.exists()) {
 					long timestamp= file.getLocalTimeStamp();

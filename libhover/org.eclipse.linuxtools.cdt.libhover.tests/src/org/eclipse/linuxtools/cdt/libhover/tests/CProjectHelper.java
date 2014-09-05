@@ -13,12 +13,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.libhover.tests;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.zip.ZipFile;
-
-import static org.junit.Assert.*;
 
 import org.eclipse.cdt.core.CCProjectNature;
 import org.eclipse.cdt.core.CCorePlugin;
@@ -262,7 +262,7 @@ public class CProjectHelper {
 	public static ICContainer addCContainer(ICProject cproject, String containerName) throws CoreException {
 		IProject project = cproject.getProject();
 		ICContainer container = null;
-		if (containerName == null || containerName.length() == 0) {
+		if (containerName == null || containerName.isEmpty()) {
 			ICContainer[] conts = cproject.getSourceRoots();
 			if (conts.length > 0) {
 				container = conts[0];
@@ -433,10 +433,9 @@ public class CProjectHelper {
 	/**
 	 * @return the location of a newly created directory in temporary area.
 	 *    Note that cleanup should be done with {@link ResourceHelper#cleanUp()}.
-	 * @throws IOException
 	 * @throws CoreException 
 	 */
-	public static File freshDir() throws IOException, CoreException {
+	public static File freshDir() throws CoreException {
 		IPath folderPath = ResourceHelper.createTemporaryFolder();
 		File folder = new File(folderPath.toOSString());
 		assertTrue(folder.exists());
