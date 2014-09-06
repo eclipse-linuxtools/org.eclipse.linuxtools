@@ -273,6 +273,16 @@
               <append>true</append>
             </configuration>
           </execution>
+          <execution>
+            <id>post-test</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <dataFile>${sonar.jacoco.reportPath}</dataFile>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
