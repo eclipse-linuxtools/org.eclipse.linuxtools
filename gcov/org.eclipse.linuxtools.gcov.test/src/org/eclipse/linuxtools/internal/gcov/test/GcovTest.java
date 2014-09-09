@@ -17,6 +17,8 @@ import java.util.TreeSet;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -39,8 +41,6 @@ import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
-import org.eclipse.swtbot.swt.finder.waits.ICondition;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -61,65 +61,6 @@ public abstract class GcovTest {
     private static SWTWorkbenchBot bot;
     private static String testProjectName;
     private static String testProjectType;
-
-    private static final class UnCheckTest implements ICondition {
-        SWTBotCheckBox checkBox;
-
-        public UnCheckTest(SWTBotCheckBox bot) {
-            checkBox = bot;
-        }
-
-        @Override
-        public boolean test() {
-            return !checkBox.isChecked();
-        }
-
-        @Override
-        public void init(SWTBot bot) {
-        }
-
-        @Override
-        public String getFailureMessage() {
-            return null;
-        }
-    }
-
-    private static class NodeAvailableAndSelect extends DefaultCondition {
-
-        private SWTBotTree tree;
-        private String parent;
-        private String node;
-
-        /**
-         * Wait for a tree node (with a known parent) to become visible, and select it
-         * when it does. Note that this wait condition should only be used after having
-         * made an attempt to reveal the node.
-         * @param tree The SWTBotTree that contains the node to select.
-         * @param parent The text of the parent node that contains the node to select.
-         * @param node The text of the node to select.
-         */
-        NodeAvailableAndSelect(SWTBotTree tree, String parent, String node){
-            this.tree = tree;
-            this.node = node;
-            this.parent = parent;
-        }
-
-        @Override
-        public boolean test() {
-            try {
-                SWTBotTreeItem parentNode = tree.getTreeItem(parent);
-                parentNode.getNode(node).select();
-                return true;
-            } catch (WidgetNotFoundException e) {
-                return false;
-            }
-        }
-
-        @Override
-        public String getFailureMessage() {
-            return "Timed out waiting for " + node; //$NON-NLS-1$
-        }
-    }
 
     public static SWTWorkbenchBot init(String projectName, String projectType)
             throws Exception {
@@ -147,20 +88,13 @@ public abstract class GcovTest {
 
         bot.captureScreenshot(projectName + ".beforeClass.2.jpg");
         // Turn off automatic building by default
-        SWTBotMenu windowsMenu = bot.menu("Window");
-        windowsMenu.menu("Preferences").click();
-        SWTBotShell shell = bot.shell("Preferences");
-        shell.activate();
-        bot.text().setText("Workspace");
-        bot.waitUntil(new NodeAvailableAndSelect(bot.tree(), "General", "Workspace"));
-        SWTBotCheckBox buildAuto = bot.checkBox("Build automatically");
-        if (buildAuto != null && buildAuto.isChecked()) {
-            buildAuto.click();
+        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+        IWorkspaceDescription desc = workspace.getDescription();
+        boolean isAutoBuilding = desc.isAutoBuilding();
+        if (isAutoBuilding) {
+            desc.setAutoBuilding(false);
+            workspace.setDescription(desc);
         }
-        bot.waitUntil(new UnCheckTest(buildAuto));
-        bot.button("Apply").click();
-        bot.button("OK").click();
-        bot.waitUntil(Conditions.shellCloses(shell));
 
 
         // define & repopulate project explorer
