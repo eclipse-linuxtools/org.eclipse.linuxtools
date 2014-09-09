@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.swtbot.tests;
 
-import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.waitForWidget;
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.widgetIsEnabled;
 
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceDescription;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.DebugUITools;
@@ -33,13 +35,9 @@ import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
-import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.PlatformUI;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -55,43 +53,6 @@ import org.osgi.framework.FrameworkUtil;
 public abstract class AbstractSWTBotTest extends AbstractTest {
     private static final String PROJ_NAME = "fibTest";
     private static SWTBotView projectExplorer;
-
-    private static class NodeAvailableAndSelect extends DefaultCondition {
-
-        private SWTBotTree tree;
-        private String parent;
-        private String node;
-
-        /**
-         * Wait for a tree node (with a known parent) to become visible, and select it
-         * when it does. Note that this wait condition should only be used after having
-         * made an attempt to reveal the node.
-         * @param tree The SWTBotTree that contains the node to select.
-         * @param parent The text of the parent node that contains the node to select.
-         * @param node The text of the node to select.
-         */
-        NodeAvailableAndSelect(SWTBotTree tree, String parent, String node){
-            this.tree = tree;
-            this.node = node;
-            this.parent = parent;
-        }
-
-        @Override
-        public boolean test() {
-            try {
-                SWTBotTreeItem parentNode = tree.getTreeItem(parent);
-                parentNode.getNode(node).select();
-                return true;
-            } catch (WidgetNotFoundException e) {
-                return false;
-            }
-        }
-
-        @Override
-        public String getFailureMessage() {
-            return "Timed out waiting for " + node; //$NON-NLS-1$
-        }
-    }
 
     @BeforeClass
     public static void setUpWorkbench() throws Exception {
@@ -117,20 +78,13 @@ public abstract class AbstractSWTBotTest extends AbstractTest {
         }
 
         // Turn off automatic building by default to avoid timing issues
-        SWTBotMenu windowsMenu = bot.menu("Window");
-        windowsMenu.menu("Preferences").click();
-        SWTBotShell shell = bot.shell("Preferences");
-        shell.activate();
-        bot.text().setText("Workspace");
-        bot.waitUntil(new NodeAvailableAndSelect(bot.tree(), "General", "Workspace"));
-        SWTBotCheckBox buildAuto = bot.checkBox("Build automatically");
-        if (buildAuto != null && buildAuto.isChecked()) {
-            buildAuto.click();
+        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+        IWorkspaceDescription desc = workspace.getDescription();
+        boolean isAutoBuilding = desc.isAutoBuilding();
+        if (isAutoBuilding) {
+            desc.setAutoBuilding(false);
+            workspace.setDescription(desc);
         }
-        bot.sleep(1000);
-        bot.button("Apply").click();
-        bot.button("OK").click();
-        bot.waitUntil(shellCloses(shell));
 
         projectExplorer = bot.viewByTitle("Project Explorer");
     }
