@@ -23,7 +23,7 @@ import org.junit.Test;
 /**
  * Tests for preferences if they are being initialized correctly.
  */
-public class CreaterepoPreferenceInitializationTest {
+public class CreaterepoPreferenceInitializerTest {
 
     /**
      * Test for the initial preferences to be set for the plugin. Test

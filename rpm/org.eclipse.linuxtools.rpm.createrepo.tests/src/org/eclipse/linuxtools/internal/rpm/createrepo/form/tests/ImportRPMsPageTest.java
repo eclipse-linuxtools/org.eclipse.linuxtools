@@ -53,7 +53,7 @@ import org.osgi.framework.FrameworkUtil;
  * SWTBot not supporting native dialogs (File dialogs).
  */
 @RunWith(SWTBotJunit4ClassRunner.class)
-public class CreaterepoImportRPMsPageTest {
+public class ImportRPMsPageTest {
 
     private static final String TEST_RPM_LOC1 = ICreaterepoTestConstants.RPM_RESOURCE_LOC
             .concat(ICreaterepoTestConstants.RPM1);

@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
  * close/delete it, and test if the activator is also closed.
  */
 @RunWith(SWTBotJunit4ClassRunner.class)
-public class CreaterepoResourceListenerTest {
+public class CreaterepoResourceChangeListenerTest {
 
     private static SWTWorkbenchBot bot;
     private static NullProgressMonitor monitor;
