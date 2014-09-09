@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.internal.perf;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
@@ -20,8 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.cdt.utils.pty.PTY;
+import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
@@ -149,12 +150,13 @@ public abstract class AbstractDataManipulator extends BaseDataManipulator
 
             StringBuffer data = new StringBuffer();
             try (BufferedReader buffData = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(file)))) {
+                    new InputStreamReader(
+                            exeRC.getRmtFileProxy().getResource(file).openInputStream(EFS.NONE, null)))) {
                 readStream(buffData, data);
                 joinAll();
             }
             text = data.toString();
-        } catch (IOException e) {
+        } catch (IOException|CoreException e) {
             text = ""; //$NON-NLS-1$
         } catch (InterruptedException e){
             text = ""; //$NON-NLS-1$
