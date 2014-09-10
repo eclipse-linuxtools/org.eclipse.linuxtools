@@ -221,7 +221,7 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
     @Override
     public Process execute(IPath commandPath, String[] args, String[] env,
             IPath changeToDirectory, IProgressMonitor monitor) {
-        return execute(commandPath, args, env, changeToDirectory, monitor, null);
+        return execute(commandPath, args, env, changeToDirectory, monitor);
     }
 
 }

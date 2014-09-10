@@ -25,14 +25,15 @@ public interface IRemoteCommandLauncher {
 
     Process execute(IPath commandPath, String[] args, String[] env, IPath changeToDirectory, IProgressMonitor monitor) throws CoreException;
     /**
-     * @param commandPath
-     * @param args
-     * @param env
-     * @param changeToDirectory
-     * @param monitor
-     * @param pty
-     * @return  The executed process
-     * @throws CoreException
+     * Executes command in an environment defined by the parameters.
+     * @param commandPath The command to execute.
+     * @param args The arguments to pass to the command.
+     * @param env The environment variables for the execution.
+     * @param changeToDirectory The directory to start into.
+     * @param monitor Monitor to display progress.
+     * @param pty PTY for console.
+     * @return The executed process
+     * @throws CoreException If a problem occurred during execution.
      * @since 3.0
      */
     Process execute(IPath commandPath, String[] args, String[] env, IPath changeToDirectory, IProgressMonitor monitor, PTY pty) throws CoreException;

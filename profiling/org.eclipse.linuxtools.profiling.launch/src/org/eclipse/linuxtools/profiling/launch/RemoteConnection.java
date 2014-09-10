@@ -50,10 +50,10 @@ public class RemoteConnection {
      * Copy a data from a path (can be a file or directory) from the remote host
      * to the local host.
      *
-     * @param remotePath
-     * @param localPath
-     * @param monitor
-     * @throws CoreException
+     * @param remotePath The path to copy from.
+     * @param localPath The path to copy to.
+     * @param monitor The progress monitor.
+     * @throws CoreException If a problem during copy occurred.
      */
     private void copyFileFromRemoteHost(String remotePath, String localPath,
             IProgressMonitor monitor)
@@ -85,7 +85,7 @@ public class RemoteConnection {
      *            - the remote path
      * @param monitor
      *            - progress monitor
-     * @throws RemoteConnectionException
+     * @throws RemoteConnectionException If a problem during copy occurred.
      */
     public void upload(IPath localPath, IPath remotePath,
             IProgressMonitor monitor) throws RemoteConnectionException {
@@ -102,10 +102,10 @@ public class RemoteConnection {
      * thrown if any failure occurs.
      *
      * @param remoteFolderPath
-     *            - path of the remote folder to create
+     *            Path of the remote folder to create
      * @param monitor
-     *            - progress monitor
-     * @throws RemoteConnectionException
+     *            Progress monitor
+     * @throws RemoteConnectionException If a problem during creating directory occurred.
      */
     public void createFolder(IPath remoteFolderPath, IProgressMonitor monitor)
             throws RemoteConnectionException {
@@ -123,7 +123,7 @@ public class RemoteConnection {
      * @param buffer typically from ConsoleOutputStream object's readBuffer() method
      * @return array of lines as Strings with no line terminators
      */
-    public static String[] getLines(String buffer) /* throws RemoteConnectionException */ {
+    public static String[] getLines(String buffer) {
         // Count the number of newlines in the buffer.
         int numLines = 0;
 
@@ -155,7 +155,7 @@ public class RemoteConnection {
      *            - the remote path of the file or folder to be deleted
      * @param monitor
      *            - progress monitor
-     * @throws RemoteConnectionException
+     * @throws RemoteConnectionException If a problem while deleting occured.
      */
     public void delete(IPath remotePath, IProgressMonitor monitor)
             throws RemoteConnectionException {
@@ -176,12 +176,12 @@ public class RemoteConnection {
      * is UTF-8. A RemoteConnectionException is thrown if any failure occurs.
      *
      * @param remotePath
-     *            - path to remote file or folder
+     *            Path to remote file or folder
      * @param localPath
-     *            - local directory target
+     *            Local directory target
      * @param monitor
-     *            - progress monitor
-     * @throws RemoteConnectionException
+     *            Progress monitor
+     * @throws RemoteConnectionException If a problem while downloading file occured.
      */
     public void download(IPath remotePath, IPath localPath,
             IProgressMonitor monitor) throws RemoteConnectionException {

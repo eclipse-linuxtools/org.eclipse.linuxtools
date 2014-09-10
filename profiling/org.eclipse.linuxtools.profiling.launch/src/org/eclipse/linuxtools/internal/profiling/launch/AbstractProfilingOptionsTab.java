@@ -327,7 +327,7 @@ public abstract class AbstractProfilingOptionsTab extends AbstractLaunchConfigur
     /**
      * Get index of specific id in the provider combo items list
      *
-     * @param id
+     * @param id Combo item id.
      * @return index of given id in provider combo items list, -1 if it not found.
      */
     private int getComboItemIndexFromId(String id) {
@@ -381,7 +381,7 @@ public abstract class AbstractProfilingOptionsTab extends AbstractLaunchConfigur
     /**
      * Set the name for this tab.
      *
-     * @param name
+     * @param name New tab name.
      */
     protected void setName(String name) {
         this.name = name;
@@ -395,7 +395,7 @@ public abstract class AbstractProfilingOptionsTab extends AbstractLaunchConfigur
     /**
      * Set the id for this tab.
      *
-     * @param id
+     * @param id New id of the tab.
      */
     protected void setId(String id) {
         this.id = id;
@@ -413,7 +413,7 @@ public abstract class AbstractProfilingOptionsTab extends AbstractLaunchConfigur
     /**
      * Set profiling type of configuration.
      *
-     * @param type
+     * @param type New profiling type.
      */
     protected void setProfilingType(String type) {
         this.type = type;
@@ -427,7 +427,7 @@ public abstract class AbstractProfilingOptionsTab extends AbstractLaunchConfigur
     /**
      * Set the image for this tab.
      *
-     * @param img
+     * @param img New image.
      */
     public void setImage(Image img) {
         this.img = img;

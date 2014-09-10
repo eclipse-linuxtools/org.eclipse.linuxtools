@@ -218,8 +218,8 @@ public class ProviderFramework {
     /**
      * Get launch providers for a given type and order them with regards to highest priority first.
      *
-     * @param type
-     * @return array of launch provider configuration elements in prioritized order
+     * @param type Type of launch providers requested.
+     * @return Array of launch provider configuration elements in prioritized order
      * @since 1.2
      */
     public static ArrayList<IConfigurationElement> getOrderedConfigElements(String type) {
@@ -289,7 +289,7 @@ public class ProviderFramework {
      * extensions of the
      * <code>org.eclipse.linuxtools.profiling.launch.launchProvider</code>
      * extensions point.
-     * @param id
+     * @param id The id attribute requested.
      * @return The name of the tool if found.
      *
      * @since 2.0
@@ -312,7 +312,7 @@ public class ProviderFramework {
      * with id <code>toolId</code>.
      *
      * @param toolId String unique id of the tool.
-     * @param attribute
+     * @param attribute The attribute requested.
      * @return String description of tool.
      * @since 2.0
      */
@@ -459,9 +459,9 @@ public class ProviderFramework {
      * it will look for the provider with the highest priority for the specified type.
      * If this fails, it will look for the default provider.
      *
-     * @param wc
-     * @param type a profiling type
-     * @return a provider id that contributes to the specified type
+     * @param wc The launch configuration.
+     * @param type A profiling type
+     * @return A provider id that contributes to the specified type
      * @since 2.0
      */
 

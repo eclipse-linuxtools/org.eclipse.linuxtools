@@ -33,11 +33,9 @@ import org.eclipse.swt.widgets.Label;
 
 /**
  * FileSystemSelectionArea is the area used to select the file system.
- *
- */
-
-/**
+ * 
  * @since 2.0
+ *
  */
 public class FileSystemSelectionArea {
 
@@ -92,7 +90,7 @@ public class FileSystemSelectionArea {
 
     /**
      * Create the contents of the receiver in composite.
-     * @param composite
+     * @param composite Parent composite for created components.
      */
     public void createContents(Composite composite) {
 
@@ -104,11 +102,6 @@ public class FileSystemSelectionArea {
         fileSystems.getControl().setFont(composite.getFont());
 
         fileSystems.setLabelProvider(new LabelProvider() {
-            /*
-             * (non-Javadoc)
-             *
-             * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
-             */
             @Override
             public String getText(Object element) {
                 return ((FileSystemElement)element).getSchemeLabel();
@@ -117,32 +110,16 @@ public class FileSystemSelectionArea {
 
         fileSystems.setContentProvider(new IStructuredContentProvider() {
 
-            /*
-             * (non-Javadoc)
-             *
-             * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-             */
             @Override
             public void dispose() {
                 // Nothing to do
             }
 
-            /*
-             * (non-Javadoc)
-             *
-             * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-             */
             @Override
             public Object[] getElements(Object inputElement) {
                 return getSchemes();
             }
 
-            /*
-             * (non-Javadoc)
-             *
-             * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
-             *      java.lang.Object, java.lang.Object)
-             */
             @Override
             public void inputChanged(org.eclipse.jface.viewers.Viewer viewer,
                     Object oldInput, Object newInput) {
@@ -210,7 +187,7 @@ public class FileSystemSelectionArea {
 
     /**
      * Set the enablement state of the widget.
-     * @param enabled
+     * @param enabled The new state to be set.
      */
     public void setEnabled(boolean enabled) {
         fileSystemTitle.setEnabled(enabled);
