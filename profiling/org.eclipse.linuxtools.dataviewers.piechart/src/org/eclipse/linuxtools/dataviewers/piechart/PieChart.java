@@ -65,6 +65,8 @@ public class PieChart extends Chart {
     }
 
     /**
+     * Sets the custom colors to use.
+     * @param customColors The custom colors to use.
      * @since 2.0
      */
     public void setCustomColors(Color[] customColors) {
@@ -77,6 +79,7 @@ public class PieChart extends Chart {
      * charts. For the first one, 'a' will be 1 and 'b' will be 4. For the second chart 'a' will be 2 and 'b' will be 5.
      * For the third 'a' will be 3 and 'b' will be 6.
      * @param labels The titles of each series. (These are not the same as titles given to pies.)
+     * @param val New values.
      */
     public void addPieChartSeries(String labels[], double val[][]) {
         setSeriesNames(val[0].length);

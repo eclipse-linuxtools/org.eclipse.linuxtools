@@ -229,6 +229,7 @@ public class PieChartPaintListener implements PaintListener {
 	/**
 	 * Given a set of 2D pixel coordinates (typically those of a mouse cursor), return the
 	 * index of the given pie's slice that those coordinates reside in.
+	 * @param chartnum The id of the chart.
 	 * @param x The x-coordinate to test.
 	 * @param y The y-coordinate to test.
 	 * @return The slice that contains the point with coordinates (x,y).
