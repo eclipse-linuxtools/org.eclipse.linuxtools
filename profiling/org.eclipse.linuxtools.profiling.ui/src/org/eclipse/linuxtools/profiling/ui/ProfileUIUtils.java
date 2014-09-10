@@ -233,7 +233,7 @@ public class ProfileUIUtils {
      *
      * @param absPath An absolute path (usually to some file/folder in a project)
      * @return an ICProject corresponding to the project that contains the absolute path
-     * @throws CoreException
+     * @throws CoreException can be thrown if visiting (accepting) a project walking the ICElement tree fails.
      */
     public static ICProject findCProjectWithAbsolutePath(final String absPath) throws CoreException{
         final String workspaceLoc = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
@@ -319,13 +319,14 @@ public class ProfileUIUtils {
 
     /**
      * Helper function for findFunctionsInProject
-     * @param project
-     * @param functionName
-     * @param numArgs
-     * @param fileHint
-     * @param needResult True if the function should relax constraints in order
-     * to return some value. False if a failure to find the function(s) is acceptable.
-     * @return The functions found.
+     * @param project   C Project Type
+     * @param functionName  Name of a function
+     * @param numArgs  The number of arguments this function is expected to have
+     * A value of -1 will ignore the number of arguments when searching
+     * @param fileHint  The name of the file where we expect to find functionName
+     * It is null if we do not want to use this option
+     * @param needResult true if result is needed
+     * @return Absolute paths of files and the function's corresponding node-offset and length
      * @since 3.0
      */
     public static Map<String,int[]> findFunctionsInProject(ICProject project, String functionName,

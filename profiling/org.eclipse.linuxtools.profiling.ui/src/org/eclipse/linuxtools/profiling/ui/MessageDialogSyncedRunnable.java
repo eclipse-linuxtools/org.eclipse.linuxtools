@@ -18,15 +18,15 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * <h1>UI sycned Message Dialogue </h1>
- * <p> 
- * This class is for launching common messages <b>from background threads</b> and <b>getting a return value.
+ * <p>
+ * This class is for launching common messages <b>from background threads</b> and <b>getting a return value</b>.
  * </p>
- * <p> 
+ * <p>
  * When you're not in a U.I thread, getting the 'shell' causes a runtime exception. <br>
  * Never the less, sometimes you need user feedback when executing a background job. <br>
  * (e.g missing flags when launching a profiling tools, ask the user if he wants the flag to be added). <br>
  * This class aims to implement wrappers for the standard openTYPE message dialogues so that <br>
- * they could be launched from any background thread. 
+ * they could be launched from any background thread.
  * </p>
  *
  * <p> Note, methods in this subclass have a postfix of 'SyncedRunnable'.
@@ -39,6 +39,34 @@ public class MessageDialogSyncedRunnable extends MessageDialog {
      * <p> Neccessary to supress compiler warnings. Use static methods in this class instead </p>
      * <p> For details and paramater description, please see: <br> </p>
      * {@link org.eclipse.jface.dialogs.MessageDialog#MessageDialog(Shell, String, Image, String, int, String[], int) }
+     *
+     *
+     * @param parentShell
+     *            the parent shell
+     * @param dialogTitle
+     *            the dialog title, or <code>null</code> if none
+     * @param dialogTitleImage
+     *            the dialog title image, or <code>null</code> if none
+     * @param dialogMessage
+     *            the dialog message
+     * @param dialogImageType
+     *            one of the following values:
+     *            <ul>
+     *            <li><code>MessageDialog.NONE</code> for a dialog with no
+     *            image</li>
+     *            <li><code>MessageDialog.ERROR</code> for a dialog with an
+     *            error image</li>
+     *            <li><code>MessageDialog.INFORMATION</code> for a dialog
+     *            with an information image</li>
+     *            <li><code>MessageDialog.QUESTION </code> for a dialog with a
+     *            question image</li>
+     *            <li><code>MessageDialog.WARNING</code> for a dialog with a
+     *            warning image</li>
+     *            </ul>
+     * @param dialogButtonLabels
+     *            an array of labels for the buttons in the button bar
+     * @param defaultIndex
+     *            the index in the button label array of the default button
      */
     protected MessageDialogSyncedRunnable(Shell parentShell, String dialogTitle,
             Image dialogTitleImage, String dialogMessage, int dialogImageType,
@@ -49,12 +77,12 @@ public class MessageDialogSyncedRunnable extends MessageDialog {
 
     /**
      * <h1>Open Question Dialogue.</h1>
-     * <p> 
+     * <p>
      * Identical to parent implementation {@link MessageDialog#openQuestion(Shell, String, String) openQuestion} <br>
-     *  except that you do not need to provide a shell. 
+     *  except that you do not need to provide a shell.
      * </p>
-     * <p> 
-     * Convenience method to open a simple Yes/No question dialog. 
+     * <p>
+     * Convenience method to open a simple Yes/No question  dialog.
      * </p>
      *
      * @param title      the dialog's title, or <code>null</code> if none
@@ -68,7 +96,7 @@ public class MessageDialogSyncedRunnable extends MessageDialog {
 
     /**
      * <h1>Open Confirmation Dialogue. </h1>
-     * <p> 
+     * <p>
      * Identical to parent implementation {@link MessageDialog#openConfirm(Shell, String, String) openConfirm}<br>
      * except that you do not need to provide a shell.
      * </p>
@@ -90,7 +118,7 @@ public class MessageDialogSyncedRunnable extends MessageDialog {
      * Identical to parent implementation {@link MessageDialog#openInformation(Shell, String, String) openInformation} <br>
      * except that you do not need to provide a shell.
      * </p>
-     * <p> 
+     * <p>
      * Convenience method to open a simple confirm (OK/Cancel) dialog.
      * </p>
      *
@@ -108,7 +136,7 @@ public class MessageDialogSyncedRunnable extends MessageDialog {
      * Identical to parent implementation  {@link MessageDialog#openError(Shell, String, String) openError}<br>
      * except that you do not need to provide a shell:
      * </p>
-     *<p> 
+     *<p>
      *Convenience method to open a standard error dialog.
      *</p>
      *

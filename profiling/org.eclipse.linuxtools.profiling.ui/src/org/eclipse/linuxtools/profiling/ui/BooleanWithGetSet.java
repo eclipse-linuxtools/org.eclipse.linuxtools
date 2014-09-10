@@ -27,7 +27,7 @@ public class BooleanWithGetSet {
     /**
      * <h1> Boolean Constructor. </h1>
      * Pass in a boolean to construct this class.
-     * 
+     *
      * @param val  true/false boolean
      */
     public BooleanWithGetSet(boolean val) {
@@ -37,7 +37,7 @@ public class BooleanWithGetSet {
     /**
      * <h1> Get Value. </h1>
      * Retrieve the boolean value of this instance.
-     * 
+     *
      * @return     boolean value of this instance
      */
     public boolean getVal() {
@@ -47,7 +47,7 @@ public class BooleanWithGetSet {
     /**
      * <h1> Set value </h1>
      * Set the content of the boolean class.
-     * 
+     *
      * @param val  true/false
      */
     public void setVal(boolean val) {

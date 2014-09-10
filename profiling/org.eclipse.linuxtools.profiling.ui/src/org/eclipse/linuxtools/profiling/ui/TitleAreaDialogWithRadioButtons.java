@@ -28,19 +28,19 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * <h1> Dialogue with radio options. </h1>
  *
- * <p> 
+ * <p>
  * This is useful if you need to ask the user to choose one of 'multiple options' instead of a 'yes/no'. <br>
- * It also looks cleaner than having multiple buttons at the bottom of the screen. 
+ * It also looks cleaner than having multiple buttons at the bottom of the screen.
  * </p>
  *
  * <p>
- * Please see the  <a href="https://wiki.eclipse.org/File:TitleAreaDialogWithRadioButtonsExample.png">Screen shot</a>
- * to see what it looks like. </p>
+ * Please see the  the following for a screenshot: <br>
+ * <code> https://wiki.eclipse.org/File:TitleAreaDialogWithRadioButtonsExample.png</code> <br></p>
  *
- * <p> 
- * Please see <a href="https://wiki.eclipse.org/Eclipse_Plug-in_Development_FAQ/TitleAreaDialogWithRadioButtons""> wiki page </a>
- * for additional details & example usage code
- * </p>
+ * <p>
+ * Please see the following wiki page: <br>
+ * <code> https://wiki.eclipse.org/Eclipse_Plug-in_Development_FAQ/TitleAreaDialogWithRadioButtons</code>
+ * for additional details and example usage code</p>
  *  @since 3.1
  */
 public class TitleAreaDialogWithRadioButtons extends TitleAreaDialog {
@@ -54,17 +54,17 @@ public class TitleAreaDialogWithRadioButtons extends TitleAreaDialog {
     /**
      * <h1> Construct dialogue. </h1>
      * <p>
-     * Specify paramaters, then use open. 
+     * Specify paramaters, then use open.
      * </p>
-     * <p> 
-     * Please see <a href="https://wiki.eclipse.org/Eclipse_Plug-in_Development_FAQ/TitleAreaDialogWithRadioButtons""> wiki page </a>
-     * for additional details & example.
-     * </p>
+     * <p>
+     * Please see the following wiki page: <br>
+     * <code> https://wiki.eclipse.org/Eclipse_Plug-in_Development_FAQ/TitleAreaDialogWithRadioButtons</code>
+     * for additional details and example usage code</p>
      *
      * @param parentShell    Parent Shell
      * @param title          Title of the dialogue
      * @param bodyMsg        Body message of the dialogue
-     * @param userButtonList A list of SimpleEntry<String,String> mapping ButtonIDs and their visable text.
+     * @param userButtonList A list of SimpleEntry(String,String) mapping ButtonIDs and their visable text.
      * (see <a href="https://wiki.eclipse.org/Eclipse_Plug-in_Development_FAQ/TitleAreaDialogWithRadioButtons#Example_usage"> wiki example </a> for details)
      * @param msgType        'IMessageProvider.INFORMATION '  Can be one of: NONE ERROR INFORMATION WARNING
      */
@@ -110,7 +110,7 @@ public class TitleAreaDialogWithRadioButtons extends TitleAreaDialog {
 
     /**
      * <h1> Get selected button.</h1>
-     * <p> 
+     * <p>
      * Return the buttonID of the button that the user selected if he pressed ok. <br>
      * This is the first element of the  (id | label) tuple.
      * </p>
@@ -163,9 +163,9 @@ public class TitleAreaDialogWithRadioButtons extends TitleAreaDialog {
     }
 
     /**
-     *  <p> 
+     *  <p>
      *  Called when the ok button is pressed. <br>
-     *  Saves the state of the radio buttons prior to deconstruction. 
+     *  Saves the state of the radio buttons prior to deconstruction.
      *  </p>
      */
     @Override
