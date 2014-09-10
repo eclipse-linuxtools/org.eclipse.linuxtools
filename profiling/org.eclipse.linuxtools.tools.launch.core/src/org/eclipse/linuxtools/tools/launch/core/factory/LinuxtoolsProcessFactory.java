@@ -61,6 +61,7 @@ public abstract class LinuxtoolsProcessFactory {
      * @param envp The list of new environment variables to use.
      * @param project If not <code>null</code>, only the environment of this project
      * will be updated.
+     * @return The new environment.
      */
     protected String[] updateEnvironment(String[] envp, IProject project) {
         String ltPath = LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project);

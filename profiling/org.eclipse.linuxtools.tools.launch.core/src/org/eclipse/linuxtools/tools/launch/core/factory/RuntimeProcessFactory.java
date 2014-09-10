@@ -72,6 +72,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
      * used to look for the command.
      * @return The full command path if command was found or the command if
      * command was not found.
+     * @throws IOException If problem executing the command occured.
      *
      * @since 1.1
      */
@@ -144,6 +145,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
      * @param project The current project. If null, only system path will be
      * used to look for the command.
      * @return The process started by exec.
+     * @throws IOException If problem executing the command occured.
      */
     public Process exec(String cmd, IProject project) throws IOException {
         return exec(cmd, null, (IFileStore)null, project);
@@ -156,6 +158,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
      * @param project The current project. If null, only system path will be
      * used to look for the command.
      * @return The process started by exec.
+     * @throws IOException If problem executing the command occured.
      */
     public Process exec(String[] cmdarray, IProject project) throws IOException {
         return exec(cmdarray, null, project);
@@ -170,6 +173,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
      * @param project The current project. If null, only system path will be
      * used to look for the command.
      * @return The process started by exec.
+     * @throws IOException If problem executing the command occured.
      */
     public Process exec(String[] cmdarray, String[] envp, IProject project) throws IOException {
         return exec(cmdarray, envp, (IFileStore)null, project);
@@ -184,6 +188,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
      * @param project The current project. If null, only system path will be
      * used to look for the command.
      * @return The process started by exec.
+     * @throws IOException If problem executing the command occured.
      */
     public Process exec(String cmd, String[] envp, IProject project) throws IOException {
         return exec(cmd, envp, (IFileStore)null, project);
@@ -217,6 +222,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
      * @param project The current project. If null, only system path will be
      * used to look for the command.
      * @return The process started by exec.
+     * @throws IOException If problem executing the command occured.
      *
      * @since 1.1
      */
@@ -236,6 +242,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
      * used to look for the command.
      * @param pty PTY for use with Eclipse Console.
      * @return The process started by exec.
+     * @throws IOException If problem executing the command occured.
      *
      * @since 3.0
      */
@@ -294,23 +301,10 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
      * @param project The current project. If null, only system path will be
      * used to look for the command.
      * @return The process started by sudoExec
+     * @throws IOException If problem executing the command occured.
      */
     public Process sudoExec(String[] cmdarray, IProject project) throws IOException {
-        return sudoExec(cmdarray, null, project);
-    }
-
-    /**
-     * Execute one command, as root, using the path selected in 'Linux Tools Path'
-     * preference page in the informed project.
-     * @param cmdarray An array with the command to be executed and its params.
-     * @param envp An array with extra enviroment variables to be used when running
-     * the command
-     * @param project The current project. If null, only system path will be
-     * used to look for the command.
-     * @return The process started by sudoExec
-     */
-    private Process sudoExec(String[] cmdarray, String[] envp, IProject project) throws IOException {
-        return sudoExec(cmdarray, envp, (IFileStore)null, project);
+        return sudoExec(cmdarray, null, null, project);
     }
 
     /**
