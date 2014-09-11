@@ -18,6 +18,9 @@ import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Logger;
+import org.apache.log4j.SimpleLayout;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -63,6 +66,8 @@ public class PreferencesTest extends AbstractTest{
     private static final String[][] PROFILING_PREFS_INFO = {
             { "Coverage", "coverage" }, { "Memory", "memory" },{ "Timing", "timing" } };  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
+    private static final Logger fLogger = Logger.getRootLogger();
+
     private static class NodeAvailableAndSelect extends DefaultCondition {
 
         private SWTBotTree tree;
@@ -105,6 +110,7 @@ public class PreferencesTest extends AbstractTest{
     public static void setUpWorkbench() throws Exception {
         // Set up is based from from GcovTest{c,CPP}.
 
+        fLogger.addAppender(new ConsoleAppender(new SimpleLayout(), ConsoleAppender.SYSTEM_OUT));
         SWTWorkbenchBot bot = new SWTWorkbenchBot();
         try {
             bot.viewByTitle("Welcome").close(); //$NON-NLS-1$

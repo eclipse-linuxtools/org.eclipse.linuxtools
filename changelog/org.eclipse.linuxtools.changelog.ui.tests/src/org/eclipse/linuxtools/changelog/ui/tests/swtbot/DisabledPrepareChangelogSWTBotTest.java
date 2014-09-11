@@ -17,50 +17,22 @@ import java.io.ByteArrayInputStream;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.ChangeLogTestProject;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorer;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
 
 /**
  *
  * UI test for "Prepare ChangeLog" when project not shared.
  *
  */
-@RunWith(SWTBotJunit4ClassRunner.class)
-public class DisabledPrepareChangelogSWTBotTest {
+public class DisabledPrepareChangelogSWTBotTest extends AbstractSWTBotTest {
 
-    private static SWTWorkbenchBot bot;
-    private static SWTBotTree projectExplorerViewTree;
     private final String projectName = "not-shared";
     private ChangeLogTestProject project;
-
-    @BeforeClass
-    public static void beforeClass() throws Exception {
-        // delay click speed
-        //System.setProperty("org.eclipse.swtbot.playback.delay", "200");
-        bot = new SWTWorkbenchBot();
-        try {
-            bot.viewByTitle("Welcome").close();
-            // hide Subclipse Usage stats popup if present/installed
-            bot.shell("Subclipse Usage").activate();
-            bot.button("Cancel").click();
-        } catch (WidgetNotFoundException e) {
-            // ignore
-        }
-        // Make sure project explorer is open and tree available
-        ProjectExplorer.openView();
-        projectExplorerViewTree = ProjectExplorer.getTree();
-    }
 
     @Before
     public void setUp() throws Exception {

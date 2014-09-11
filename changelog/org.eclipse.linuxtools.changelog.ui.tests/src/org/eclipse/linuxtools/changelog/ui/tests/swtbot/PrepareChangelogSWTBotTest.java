@@ -24,24 +24,19 @@ import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorer;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorerTreeItemAppearsCondition;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.SVNProject;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.SVNProjectCreatedCondition;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  *
@@ -49,11 +44,8 @@ import org.junit.runner.RunWith;
  * (CTRL+ALT+V).
  *
  */
-@RunWith(SWTBotJunit4ClassRunner.class)
-public class PrepareChangelogSWTBotTest {
+public class PrepareChangelogSWTBotTest extends AbstractSWTBotTest {
 
-    private static SWTWorkbenchBot bot;
-    private static SWTBotTree projectExplorerViewTree;
     private SVNProject subversionProject;
     private IProject  project;
     // The name of the test project, we create
@@ -61,24 +53,6 @@ public class PrepareChangelogSWTBotTest {
     // An available SVN repo
     private final String SVN_PROJECT_URL = "svn://dev.eclipse.org/svnroot/technology/" +
         "org.eclipse.linuxtools/changelog/trunk";
-
-    @BeforeClass
-    public static void beforeClass() throws Exception {
-        // delay click speed
-        //System.setProperty("org.eclipse.swtbot.playback.delay", "200");
-        bot = new SWTWorkbenchBot();
-        try {
-            bot.viewByTitle("Welcome").close();
-            // hide Subclipse Usage stats popup if present/installed
-            bot.shell("Subclipse Usage").activate();
-            bot.button("Cancel").click();
-        } catch (WidgetNotFoundException e) {
-            // ignore
-        }
-        // Make sure project explorer is open and tree available
-        ProjectExplorer.openView();
-        projectExplorerViewTree = ProjectExplorer.getTree();
-    }
 
     @Before
     public void setUp() throws Exception {
