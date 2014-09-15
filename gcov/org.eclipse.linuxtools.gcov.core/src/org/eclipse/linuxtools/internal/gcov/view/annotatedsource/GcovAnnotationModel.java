@@ -179,14 +179,14 @@ public final class GcovAnnotationModel implements IAnnotationModel {
         for (SourceFile sf : sources) {
             IPath sfPath = new Path(sf.getName());
             IFile file = STLink2SourceSupport.getFileForPath(sfPath, cProject.getProject());
-            if (file != null && element.getLocationURI().getPath().equals(file.getLocation().toOSString())) {
+            if (file != null && element.getResource().getLocation().equals(file.getLocation())) {
                 return sf;
             }
         }
 
         IPath binFolder = target.removeLastSegments(1);
         for (SourceFile sf : sources) {
-            String sfPath = Paths.get(binFolder.toOSString(), sf.getName()).normalize().toString();
+            String sfPath = Paths.get(binFolder.toOSString()).resolve(sf.getName()).normalize().toString();
             if (sfPath.equals(element.getLocationURI().getPath())) {
                 return sf;
             }
