@@ -8,7 +8,6 @@
  * Contributors:
  *     Red Hat - initial implementation (pulled from other SWTBot tests in package)
  *******************************************************************************/
-
 package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
 import org.apache.log4j.ConsoleAppender;
