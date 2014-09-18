@@ -78,4 +78,15 @@ public abstract class AbstractChartMouseMoveListener implements MouseMoveListene
     public void mouseMove(MouseEvent e) {
         lastMouseEvent = e;
     }
+
+    /**
+     * Returns a message with details on the mouse's current position on the chart.
+     * This method is primarily used for testing purposes.
+     * @return A default String message. Clients should override this message to describe the
+     * data point the mouse is hovering over, or whatever other kind of information is appropriate.
+     * @since 3.2
+     */
+    public String getMouseMessage() {
+        return ""; //$NON-NLS-1$
+    }
 }

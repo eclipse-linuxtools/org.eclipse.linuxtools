@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.listeners;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.RunnableFuture;
+
 import org.eclipse.linuxtools.systemtap.graphing.ui.charts.listeners.AbstractChartMouseMoveListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -50,6 +55,26 @@ public class ToolTipChartMouseMoveListener extends AbstractChartMouseMoveListene
         }
         if (!tipShell.isVisible()) {
             tipShell.setVisible(true);
+        }
+    }
+
+    /**
+     * @return The contents of the mouse tooltip provided by this listener, if it is visible;
+     * a default message otherwise.
+     */
+    @Override
+    public String getMouseMessage() {
+        RunnableFuture<String> f = new FutureTask<>(new Callable<String>() {
+            @Override
+            public String call() {
+                return tipText.isVisible() ? tipText.getText() : ""; //$NON-NLS-1$
+            }
+        });
+        tipText.getDisplay().syncExec(f);
+        try {
+            return f.get();
+        } catch (InterruptedException | ExecutionException e) {
+            return null;
         }
     }
 }

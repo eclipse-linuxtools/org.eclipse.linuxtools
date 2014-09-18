@@ -50,10 +50,8 @@ import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
@@ -63,7 +61,6 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
-import org.eclipse.swtbot.swt.finder.results.BoolResult;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
@@ -1332,24 +1329,7 @@ public class TestCreateSystemtapScript {
             }
 
             bot.sleep(500); // Give some time for the tooltip to appear/change
-
-            boolean foundTooltip = UIThreadRunnable.syncExec(new BoolResult() {
-                @Override
-                public Boolean run() {
-                    for (SWTBotShell bshell : bot.shells()) {
-                        Control[] children = bshell.widget.getChildren();
-                        if (children.length == 1 && children[0] instanceof Text
-                                && children[0].isVisible()
-                                && expectedTooltip.equals(((Text) children[0]).getText())) {
-
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-            });
-
-            if (foundTooltip == shellShouldExist) {
+            if (expectedTooltip.equals(cb.getMouseMessage()) == shellShouldExist) {
                 return;
             }
         }

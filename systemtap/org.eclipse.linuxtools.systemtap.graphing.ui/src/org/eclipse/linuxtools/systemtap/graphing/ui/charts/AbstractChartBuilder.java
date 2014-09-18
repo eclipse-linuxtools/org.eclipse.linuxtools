@@ -38,7 +38,7 @@ import org.swtchart.ITitle;
  *
  * @author Qi Liang
  */
-public abstract class AbstractChartBuilder extends Composite implements IUpdateListener{
+public abstract class AbstractChartBuilder extends Composite implements IUpdateListener {
 
     /**
      * Font name for all titles, labels, and values.
@@ -100,10 +100,21 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
     protected AbstractChartMouseMoveListener chartMouseMoveListener = null;
 
     /**
+     * If a mouse listener is registered, returns a message with details on the mouse's
+     * current position on the chart. This method is primarily used for testing purposes.
+     * @return A String message if a mouse listener is registered; null otherwise.
+     * @since 3.2
+     */
+    public String getMouseMessage() {
+        return chartMouseMoveListener != null ? chartMouseMoveListener.getMouseMessage() : null;
+    }
+
+    /**
      * A reference to the SystemTap Graphing preference store.
      * @since 3.0
      */
     protected IPreferenceStore store;
+
     /**
      * Updates the chart with properties read from user-set preferences. It is called automatically
      * whenever a change is made to SystemTap Graphing preferences.
