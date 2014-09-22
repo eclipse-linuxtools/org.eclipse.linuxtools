@@ -28,17 +28,13 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
 import org.eclipse.cdt.core.CCorePlugin;
-import org.eclipse.cdt.core.model.CoreModel;
-import org.eclipse.cdt.core.model.ElementChangedEvent;
 import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.cdt.core.model.IElementChangedListener;
 import org.eclipse.cdt.internal.core.CCoreInternals;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTNameBase;
 import org.eclipse.cdt.internal.core.pdom.CModelListener;
 import org.eclipse.cdt.internal.core.pdom.PDOMManager;
 import org.eclipse.core.resources.IResourceStatus;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
@@ -241,65 +237,6 @@ public class BaseTestCase extends TestCase {
     	fExpectFailure= true;
     	fBugNumber= bugNumber;
     }
-
-    /**
-     * The last value passed to this method in the body of a testXXX method
-     * will be used to determine whether or not the presence of non-OK status objects
-     * in the log should fail the test. If the logged number of non-OK status objects
-     * differs from the last value passed, the test is failed. If this method is not called
-     * at all, the expected number defaults to zero.
-     * @param count the expected number of logged error and warning messages
-     */
-    public void setExpectedNumberOfLoggedNonOKStatusObjects(int count) {
-    	fExpectedLoggedNonOK= count;
-    }
-
-    /**
-     * Some test steps need synchronizing against a CModel event. This class
-     * is a very basic means of doing that.
-     */
-    static protected class ModelJoiner implements IElementChangedListener {
-		private final boolean[] changed= new boolean[1];
-
-		public ModelJoiner() {
-			CoreModel.getDefault().addElementChangedListener(this);
-		}
-
-		public void clear() {
-			synchronized (changed) {
-				changed[0]= false;
-				changed.notifyAll();
-			}
-		}
-
-		public void join() throws CoreException {
-			try {
-				synchronized(changed) {
-					while (!changed[0]) {
-						changed.wait();
-					}
-				}
-			} catch (InterruptedException e) {
-				throw new CoreException(CCorePlugin.createStatus("Interrupted", e));
-			}
-		}
-
-		public void dispose() {
-			CoreModel.getDefault().removeElementChangedListener(this);
-		}
-
-		@Override
-		public void elementChanged(ElementChangedEvent event) {
-			// Only respond to post change events
-			if (event.getType() != ElementChangedEvent.POST_CHANGE)
-				return;
-
-			synchronized (changed) {
-				changed[0]= true;
-				changed.notifyAll();
-			}
-		}
-	}
 
     public static void waitForIndexer(ICProject project) throws InterruptedException {
 		Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_REFRESH, null);

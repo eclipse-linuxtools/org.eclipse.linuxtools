@@ -32,9 +32,8 @@ public class TestScannerInfo extends ExtendedScannerInfo {
 	}
 
 	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Map getDefinedSymbols() {
-		return fDefinedSymbols == null ? Collections.emptyMap() : fDefinedSymbols;
+	public Map<String, String> getDefinedSymbols() {
+		return fDefinedSymbols == null ? Collections.<String, String>emptyMap() : fDefinedSymbols;
 	}
 
 	@Override
