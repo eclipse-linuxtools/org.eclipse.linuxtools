@@ -10,25 +10,41 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.libhover.tests;
 
+import static org.junit.Assert.assertTrue;
+
+import org.eclipse.cdt.core.model.ICProject;
+import org.eclipse.cdt.internal.core.CCoreInternals;
+import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTNameBase;
+import org.eclipse.cdt.internal.core.pdom.CModelListener;
+import org.eclipse.cdt.internal.core.pdom.PDOMManager;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.junit.After;
+import org.junit.Before;
 
-public class BaseUITestCase extends BaseTestCase {
+@SuppressWarnings("restriction")
+public class BaseUITestCase {
+    
+    private static final String DEFAULT_INDEXER_TIMEOUT_SEC = "10";
+    private static final String INDEXER_TIMEOUT_PROPERTY = "indexer.timeout";
+    /**
+     * Indexer timeout used by tests. To avoid this timeout expiring during debugging add
+     * -Dindexer.timeout=some_large_number to VM arguments of the test launch configuration. 
+     */
+    protected static final int INDEXER_TIMEOUT_SEC =
+            Integer.parseInt(System.getProperty(INDEXER_TIMEOUT_PROPERTY, DEFAULT_INDEXER_TIMEOUT_SEC));
 
-	public BaseUITestCase() {
-		super();
-	}
-
-	public BaseUITestCase(String name) {
-		super(name);
-	}
-
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setUp() {
+	    CPPASTNameBase.sAllowRecursionBindings= false;
+        CPPASTNameBase.sAllowNameComputation= false;
+        CModelListener.sSuppressUpdateOfLastRecentlyUsed= true;
 		final IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		IViewPart view= activePage.findView("org.eclipse.cdt.ui.tests.DOMAST.DOMAST");
 		if (view != null) {
@@ -36,10 +52,11 @@ public class BaseUITestCase extends BaseTestCase {
 		}
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		runEventQueue(0);
-		super.tearDown();
+		ResourceHelper.cleanUp();
+        TestScannerProvider.clear();
 	}
 
 	protected void runEventQueue(int time) {
@@ -69,6 +86,20 @@ public class BaseUITestCase extends BaseTestCase {
 			}
 		}
 	}
+	
+	 public static void waitForIndexer(ICProject project) throws InterruptedException {
+	        Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_REFRESH, null);
+
+	        final PDOMManager indexManager = CCoreInternals.getPDOMManager();
+	        assertTrue(indexManager.joinIndexer(INDEXER_TIMEOUT_SEC * 1000, new NullProgressMonitor()));
+	        long waitms= 1;
+	        while (waitms < 2000 && !indexManager.isProjectRegistered(project)) {
+	            Thread.sleep(waitms);
+	            waitms *= 2;
+	        }
+	        assertTrue(indexManager.isProjectRegistered(project));
+	        assertTrue(indexManager.joinIndexer(INDEXER_TIMEOUT_SEC * 1000, new NullProgressMonitor()));
+	    }
 
 }
 

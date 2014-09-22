@@ -12,19 +12,17 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.libhover.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.eclipse.cdt.core.dom.IPDOMManager;
-import org.eclipse.cdt.core.model.CModelException;
-import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.model.ITranslationUnit;
-import org.eclipse.cdt.core.model.IWorkingCopy;
 import org.eclipse.cdt.internal.ui.CHelpProviderManager;
 import org.eclipse.cdt.internal.ui.editor.CEditor;
 import org.eclipse.cdt.internal.ui.text.CHelpBookDescriptor;
@@ -42,6 +40,9 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author aniefer
@@ -51,11 +52,9 @@ public class ContentAssistTests extends BaseUITestCase {
     private final NullProgressMonitor		monitor= new NullProgressMonitor();
     static IProject 				project;
     static ICProject				cproject;
-    static boolean 					disabledHelpContributions = false;
     
-    @Override
-	public void setUp() throws InterruptedException {
-		//(CCorePlugin.getDefault().getCoreModel().getIndexManager()).reset();
+    @Before
+	public void setUpD() throws InterruptedException {
     	
     	if (project == null) {
     		try {
@@ -69,17 +68,6 @@ public class ContentAssistTests extends BaseUITestCase {
     			fail("Unable to create project"); //$NON-NLS-1$
     	}
 	}
-    public ContentAssistTests()
-    {
-        super();
-    }
-    /**
-     * @param name
-     */
-    public ContentAssistTests(String name)
-    {
-        super(name);
-    }
     
     private static void disableContributions (){
         //disable the help books so we don't get proposals we weren't expecting
@@ -97,12 +85,6 @@ public class ContentAssistTests extends BaseUITestCase {
 		}
     }
     
-    public static Test suite() {
-        TestSuite suite= suite(ContentAssistTests.class, "_");
-        suite.addTest( new ContentAssistTests("cleanupProject") );    //$NON-NLS-1$
-	    return suite;
-    }
-    
     public void cleanupProject() {
         closeAllEditors();
         try{
@@ -113,8 +95,8 @@ public class ContentAssistTests extends BaseUITestCase {
 	    }
     }
     
-    @Override
-	protected void tearDown() throws Exception {
+    @After
+	public void tearDownD() throws Exception {
         if( project == null || !project.exists() )
             return;
         
@@ -135,6 +117,7 @@ public class ContentAssistTests extends BaseUITestCase {
                 /*boo*/
             }
         }
+        cleanupProject();
 
 	}
     
@@ -154,17 +137,6 @@ public class ContentAssistTests extends BaseUITestCase {
     
     protected ICompletionProposal[] getResults( IFile file, int offset ) throws Exception {
     	disableContributions();
-	    ITranslationUnit tu = (ITranslationUnit)CoreModel.getDefault().create( file );
-		@SuppressWarnings("unused")
-		String buffer = tu.getBuffer().getContents();
-		@SuppressWarnings("unused")
-		IWorkingCopy wc = null;
-		try{
-			wc = tu.getWorkingCopy();
-		}catch (CModelException e){
-			fail("Failed to get working copy"); //$NON-NLS-1$
-		}
-	
 		// call the ContentAssistProcessor
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		FileEditorInput editorInput = new FileEditorInput(file);
@@ -179,6 +151,7 @@ public class ContentAssistTests extends BaseUITestCase {
 		return processor.computeCompletionProposals(editor.getViewer(), offset);
     }
     
+    @Test
     public void testBug69334a() throws Exception {
         importFile( "test.h", "class Test{ public : Test( int ); }; \n" );  //$NON-NLS-1$//$NON-NLS-2$
         StringWriter writer = new StringWriter();
@@ -197,6 +170,7 @@ public class ContentAssistTests extends BaseUITestCase {
         assertEquals( "veryLongName : int", results[0].getDisplayString() ); //$NON-NLS-1$
     }
 
+    @Test
     public void testBug69334b() throws Exception {
         importFile( "test.h", "class Test{ public : Test( int ); }; \n" );  //$NON-NLS-1$//$NON-NLS-2$
         StringWriter writer = new StringWriter();
@@ -216,6 +190,7 @@ public class ContentAssistTests extends BaseUITestCase {
         assertEquals( "veryLongName : int", results[0].getDisplayString() ); //$NON-NLS-1$
     }
 
+    @Test
     public void testBug428037() throws Exception {
         StringWriter writer = new StringWriter();
         writer.write( "class Strategy {                             \n"); //$NON-NLS-1$
@@ -262,7 +237,7 @@ public class ContentAssistTests extends BaseUITestCase {
         assertEquals( "Strategy(enum _Ability a)", results[0].getDisplayString()  ); //$NON-NLS-1$
         assertEquals( "_Ability", results[2].getDisplayString()  ); //$NON-NLS-1$
 }
-    
+    @Test
     public void testBug72559() throws Exception {
         StringWriter writer = new StringWriter();
         writer.write("void foo(){               \n"); //$NON-NLS-1$
@@ -290,6 +265,7 @@ public class ContentAssistTests extends BaseUITestCase {
         assertEquals( results[results.length - 1].getDisplayString(), "volatile" ); //$NON-NLS-1$
     }
     
+    @Test
     public void testCfunc() throws Exception {
         StringWriter writer = new StringWriter();
         writer.write("void foo(){               \n"); //$NON-NLS-1$
