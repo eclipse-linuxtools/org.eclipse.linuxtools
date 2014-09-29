@@ -32,8 +32,6 @@ import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.Provider
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -292,27 +290,6 @@ public class PreferencesTest extends AbstractTest{
 
                 Button b = (Button) bot.widget(matcher); // the current selection
                 b.setSelection(false);
-            }
-        });
-    }
-
-    /**
-     * Click specfied menu item.
-     *
-     * @param menuItem
-     *            menu item to click
-     */
-    public static void click(final MenuItem menuItem) {
-        final Event event = new Event();
-        event.time = (int) System.currentTimeMillis();
-        event.widget = menuItem;
-        event.display = menuItem.getDisplay();
-        event.type = SWT.Selection;
-
-        UIThreadRunnable.asyncExec(menuItem.getDisplay(), new VoidResult() {
-            @Override
-            public void run() {
-                menuItem.notifyListeners(SWT.Selection, event);
             }
         });
     }
