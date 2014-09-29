@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Createrepo;
 import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoProject;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Messages;
+import org.eclipse.linuxtools.internal.rpm.createrepo.tests.CreaterepoProjectTest;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;

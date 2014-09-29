@@ -8,7 +8,7 @@
  * Contributors:
  *     Neil Guzman - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.rpm.createrepo.form.tests;
+package org.eclipse.linuxtools.internal.rpm.createrepo.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -36,6 +36,7 @@ import org.eclipse.linuxtools.internal.rpm.createrepo.Createrepo;
 import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoProject;
 import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoProjectCreator;
 import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoUtils;
+import org.eclipse.linuxtools.internal.rpm.createrepo.form.tests.ICreaterepoTestConstants;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
@@ -47,7 +48,6 @@ import org.osgi.framework.FrameworkUtil;
 /**
  * Tests for CreaterepoProject.
  */
-@Ignore
 public class CreaterepoProjectTest {
 
     private static final String TEST_RPM_LOC1 = ICreaterepoTestConstants.RPM_RESOURCE_LOC
@@ -63,7 +63,7 @@ public class CreaterepoProjectTest {
      * Initialize workspace root and progress monitor.
      */
     @BeforeClass
-    public static void setUpBeforeClass() {
+    public static void beforeClass() {
         root = ResourcesPlugin.getWorkspace().getRoot();
         monitor = new NullProgressMonitor();
     }
@@ -199,14 +199,13 @@ public class CreaterepoProjectTest {
      *
      * @throws CoreException
      */
-    @Test
+    @Test @Ignore
     public void testSimpleExecute() throws CoreException {
+        // assume that there is creatrepo version of >= 0.9.8
+        Assume.assumeTrue(Createrepo.isCorrectVersion().isOK());
         CreaterepoProject createrepoProject = new CreaterepoProject(project);
         // make sure that content folder doesn't exist
         assertFalse(createrepoProject.getContentFolder().exists());
-        // assume that there is creatrepo version of >= 0.9.8
-        IStatus validVersion = Createrepo.isCorrectVersion();
-        Assume.assumeTrue(validVersion.isOK());
 
         IStatus status = createrepoProject.createrepo(CreaterepoUtils.findConsole("test").newMessageStream()); //$NON-NLS-1$
         // check if  executing has an OK status and that content folder is created with the repodata contents

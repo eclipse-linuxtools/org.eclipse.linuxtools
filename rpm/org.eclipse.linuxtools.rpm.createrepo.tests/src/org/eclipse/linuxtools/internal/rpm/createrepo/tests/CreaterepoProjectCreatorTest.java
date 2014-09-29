@@ -8,7 +8,7 @@
  * Contributors:
  *     Neil Guzman - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.rpm.createrepo.form.tests;
+package org.eclipse.linuxtools.internal.rpm.createrepo.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoProjectCreator;
 import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoProjectNature;
+import org.eclipse.linuxtools.internal.rpm.createrepo.form.tests.ICreaterepoTestConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;

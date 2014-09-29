@@ -16,7 +16,10 @@ import org.eclipse.linuxtools.internal.rpm.createrepo.preference.tests.Createrep
 import org.eclipse.linuxtools.internal.rpm.createrepo.preference.tests.CreaterepoPreferenceInitializerTest;
 import org.eclipse.linuxtools.internal.rpm.createrepo.preference.tests.CreaterepoPreferencePageTest;
 import org.eclipse.linuxtools.internal.rpm.createrepo.tests.CreaterepoCommandCreatorTest;
+import org.eclipse.linuxtools.internal.rpm.createrepo.tests.CreaterepoProjectCreatorTest;
+import org.eclipse.linuxtools.internal.rpm.createrepo.tests.CreaterepoProjectTest;
 import org.eclipse.linuxtools.internal.rpm.createrepo.tests.CreaterepoTest;
+import org.eclipse.linuxtools.internal.rpm.createrepo.tests.CreaterepoUtilsTest;
 import org.eclipse.linuxtools.internal.rpm.createrepo.tree.tests.CreaterepoTreeCategoryTest;
 import org.eclipse.linuxtools.internal.rpm.createrepo.tree.tests.CreaterepoTreeTest;
 import org.eclipse.linuxtools.internal.rpm.createrepo.wizard.tests.CreaterepoWizardTest;
