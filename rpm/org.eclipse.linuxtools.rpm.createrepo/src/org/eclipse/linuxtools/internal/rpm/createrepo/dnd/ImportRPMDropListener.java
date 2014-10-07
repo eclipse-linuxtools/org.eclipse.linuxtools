@@ -43,10 +43,6 @@ public class ImportRPMDropListener extends ViewerDropAdapter {
         this.project = project;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ViewerDropAdapter#dragEnter(org.eclipse.swt.dnd.DropTargetEvent)
-     */
     @Override
     public void dragEnter(DropTargetEvent event) {
         // only support file transfer types
@@ -56,10 +52,6 @@ public class ImportRPMDropListener extends ViewerDropAdapter {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ViewerDropAdapter#validateDrop(java.lang.Object, int, org.eclipse.swt.dnd.TransferData)
-     */
     @Override
     public boolean validateDrop(Object target, int operation,
             TransferData transferType) {
@@ -70,10 +62,6 @@ public class ImportRPMDropListener extends ViewerDropAdapter {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ViewerDropAdapter#performDrop(java.lang.Object)
-     */
     @Override
     public boolean performDrop(Object data) {
         // data should be an array of paths to the file being transferred

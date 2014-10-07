@@ -28,9 +28,9 @@ import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.ide.ResourceUtil;
 
 /**
- * The repo file form editor will allow the user to edit the .repo
- * file, import/remove RPMs, and customize the execution and/or
- * the repo metadata that is generated.
+ * The repo file form editor will allow the user to edit the .repo file,
+ * import/remove RPMs, and customize the execution and/or the repo metadata that
+ * is generated.
  */
 public class RepoFormEditor extends FormEditor {
 
@@ -40,111 +40,88 @@ public class RepoFormEditor extends FormEditor {
     private TextEditor editor;
     private IResourceChangeListener resourceChangeListener;
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormEditor#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
-     */
     @Override
-    public void init(IEditorSite site, IEditorInput input) throws PartInitException {
+    public void init(IEditorSite site, IEditorInput input)
+            throws PartInitException {
         super.init(site, input);
         IFile file = ResourceUtil.getFile(input);
         setPartName(file.getName());
         try {
             project = new CreaterepoProject(file.getProject(), file);
         } catch (CoreException e) {
-            Activator.logError(Messages.RepoFormEditor_errorInitializingProject, e);
+            Activator.logError(
+                    Messages.RepoFormEditor_errorInitializingProject, e);
         }
         resourceChangeListener = new CreaterepoResourceChangeListener(project);
-        ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(
+                resourceChangeListener);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormEditor#dispose()
-     */
     @Override
     public void dispose() {
-        ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
+        ResourcesPlugin.getWorkspace().removeResourceChangeListener(
+                resourceChangeListener);
         super.dispose();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     public void doSave(IProgressMonitor monitor) {
         editor.doSave(monitor);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.part.EditorPart#doSaveAs()
-     */
     @Override
     public void doSaveAs() {
         editor.doSaveAs();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.part.EditorPart#isSaveAsAllowed()
-     */
     @Override
     public boolean isSaveAsAllowed() {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormEditor#addPages()
-     */
     @Override
     protected void addPages() {
-        createPage0();
-        createPage1();
-        createPage2();
-    }
-
-    /**
-     * Page 0 allows the user to import RPMs from the workspace or
-     * the file system.
-     */
-    void createPage0() {
         try {
-            FormPage composite = new ImportRPMsPage(this, project);
-            addPage(composite);
+            createImportsPage();
+            createMetadataPage();
+            createEditorPage();
         } catch (PartInitException e) {
-            Activator.logError(Messages.RepoFormEditor_errorInitializingForm, e);
+            Activator
+                    .logError(Messages.RepoFormEditor_errorInitializingForm, e);
         }
     }
 
     /**
-     * Page 1 allows the user to modify some of the data in the
-     * repomd.xml as well as some options when customizing the
-     * execution of the createrepo command. The default execution
-     * would satisfy most users.
+     * Creates page for importing RPMs from the workspace or the file system.
+     * 
+     * @throws PartInitException
      */
-    void createPage1() {
-        try {
-            FormPage composite = new MetadataPage(this, project);
-            addPage(composite);
-        } catch (PartInitException e) {
-            Activator.logError(Messages.RepoFormEditor_errorInitializingForm, e);
-        }
+    private void createImportsPage() throws PartInitException {
+        FormPage composite = new ImportRPMsPage(this, project);
+        addPage(composite);
     }
 
     /**
-     * Page 2 allows the user to view the current .repo file.
+     * Creates page allowing the user to modify some of the data in the
+     * repomd.xml as well as some options when customizing the execution of the
+     * createrepo command. The default execution would satisfy most users.
+     * 
+     * @throws PartInitException
      */
-    void createPage2() {
-        try {
-            editor = new TextEditor();
-            int index = addPage(editor, getEditorInput());
-            setPageText(index, editor.getTitle());
-        } catch (PartInitException e) {
-            Activator.logError(Messages.RepoFormEditor_errorInitializingForm, e);
-        }
+    private void createMetadataPage() throws PartInitException {
+        FormPage composite = new MetadataPage(this, project);
+        addPage(composite);
+    }
+
+    /**
+     * Creates editor for the current .repo file.
+     * 
+     * @throws PartInitException
+     */
+    private void createEditorPage() throws PartInitException {
+        editor = new TextEditor();
+        int index = addPage(editor, getEditorInput());
+        setPageText(index, editor.getTitle());
     }
 
 }

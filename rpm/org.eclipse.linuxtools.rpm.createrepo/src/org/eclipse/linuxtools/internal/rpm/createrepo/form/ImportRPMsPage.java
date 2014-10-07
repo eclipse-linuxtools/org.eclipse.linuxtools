@@ -244,7 +244,7 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
     /**
      * Handle the import button execution on the Import RPMs page.
      */
-    public class ImportButtonListener extends SelectionAdapter {
+    private class ImportButtonListener extends SelectionAdapter {
         private final String[] EXTENSION_FILTERS = {"*." + ICreaterepoConstants.RPM_FILE_EXTENSION}; //$NON-NLS-1$
 
         @Override
@@ -274,7 +274,7 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
     /**
      * Handle the remove button execution on the Import RPMs page.
      */
-    public class RemoveButtonListener extends SelectionAdapter {
+    private class RemoveButtonListener extends SelectionAdapter {
         @Override
         public void widgetSelected(SelectionEvent e) {
             TreeItem[] selection = tree.getSelection();
@@ -310,7 +310,7 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
     /**
      * Handle the createrepo button execution on the Import RPMs page.
      */
-    public class CreaterepoButtonListener extends SelectionAdapter {
+    private class CreaterepoButtonListener extends SelectionAdapter {
         @Override
         public void widgetSelected(SelectionEvent e) {
             Job executeCreaterepo = new Job(Messages.Createrepo_jobName) {
@@ -358,7 +358,7 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
     /**
      * Class to control what to do if something happens in the workspace.
      */
-    class CreaterepoDeltaVisitor implements IResourceDeltaVisitor {
+    private class CreaterepoDeltaVisitor implements IResourceDeltaVisitor {
         @Override
         public boolean visit(IResourceDelta delta) {
             // exit if the project is being removed or closed

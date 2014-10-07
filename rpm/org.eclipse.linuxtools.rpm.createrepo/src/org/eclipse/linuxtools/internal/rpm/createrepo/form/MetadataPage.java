@@ -77,10 +77,6 @@ public class MetadataPage extends FormPage {
         eclipsePreferences = project.getEclipsePreferences();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
-     */
     @Override
     protected void createFormContent(IManagedForm managedForm) {
         // setting up the form page
@@ -127,10 +123,6 @@ public class MetadataPage extends FormPage {
             revisionTxt.setText(prefRevisionTxt);
         }
         revisionTxt.addSelectionListener(new SelectionAdapter() {
-            /*
-             * (non-Javadoc)
-             * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
-             */
             @Override
             public void widgetDefaultSelected(SelectionEvent e) {
                 String revisionText = revisionTxt.getText().trim();
@@ -156,16 +148,7 @@ public class MetadataPage extends FormPage {
         sectionClientTags.setLayout(layout);
 
         tagTxt = createTextFieldWithLabel(sectionClientTags, Messages.MetadataPage_labelTags);
-        tagTxt.addSelectionListener(new SelectionAdapter() {
-            /*
-             * (non-Javadoc)
-             * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
-             */
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
-                addTag();
-            }
-        });
+        tagTxt.addSelectionListener(new AddTagButtonListener());
 
         tagsTreeViewer = new TreeViewer(sectionClientTags, SWT.BORDER | SWT.SINGLE | SWT.HORIZONTAL
                 | SWT.VERTICAL | SWT.LEFT_TO_RIGHT | SWT.SMOOTH);
@@ -244,7 +227,7 @@ public class MetadataPage extends FormPage {
      *
      * @return The created GridData.
      */
-    protected static GridData expandComposite() {
+    private static GridData expandComposite() {
         GridData data = new GridData();
         data.verticalAlignment = GridData.FILL;
         data.horizontalAlignment = GridData.FILL;
@@ -261,7 +244,7 @@ public class MetadataPage extends FormPage {
      * @param toolkit The form toolkit used in creating a button.
      * @return The button created.
      */
-    protected Button createPushButton(Composite parent, String buttonText, FormToolkit toolkit) {
+    private static Button createPushButton(Composite parent, String buttonText, FormToolkit toolkit) {
         Button button = toolkit.createButton(parent, buttonText, SWT.PUSH | SWT.FLAT
                 | SWT.CENTER | SWT.LEFT_TO_RIGHT);
         button.setFont(parent.getFont());
@@ -277,7 +260,7 @@ public class MetadataPage extends FormPage {
      * @param labelName The name on the label.
      * @return The newly created text field.
      */
-    protected Text createTextFieldWithLabel(Composite parent, String labelName) {
+    private Text createTextFieldWithLabel(Composite parent, String labelName) {
         // set up the area in which the label and text will reside
         Composite areaLabelText = new Composite(parent, SWT.NONE);
         GridData layoutData = new GridData();
@@ -316,7 +299,7 @@ public class MetadataPage extends FormPage {
      * @param key The preferences key.
      * @param val The value to save.
      */
-    protected void savePreferences(String key, String val) {
+    private void savePreferences(String key, String val) {
         eclipsePreferences.put(key, val);
         try {
             eclipsePreferences.flush();
@@ -350,7 +333,7 @@ public class MetadataPage extends FormPage {
      * Used by the "Add" button and the default operation when ENTER is pressed while
      * in the tag text field.
      */
-    protected void addTag() {
+    private void addTag() {
         IStructuredSelection selection = (IStructuredSelection) tagsTreeViewer.getSelection();
         if (selection.getFirstElement() instanceof CreaterepoTreeCategory) {
             CreaterepoTreeCategory category = (CreaterepoTreeCategory) selection.getFirstElement();
@@ -369,13 +352,14 @@ public class MetadataPage extends FormPage {
     /**
      * Handle the add button execution on the Metadata page.
      */
-    public class AddTagButtonListener extends SelectionAdapter {
-        /*
-         * (non-Javadoc)
-         * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-         */
+    private class AddTagButtonListener extends SelectionAdapter {
         @Override
         public void widgetSelected(SelectionEvent e) {
+            addTag();
+        }
+        
+        @Override
+        public void widgetDefaultSelected(SelectionEvent e) {
             addTag();
         }
     }
@@ -383,11 +367,7 @@ public class MetadataPage extends FormPage {
     /**
      * Handle the edit button execution on the Metadata page.
      */
-    public class EditTagButtonListener extends SelectionAdapter {
-        /*
-         * (non-Javadoc)
-         * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-         */
+    private class EditTagButtonListener extends SelectionAdapter {
         @Override
         public void widgetSelected(SelectionEvent e) {
             if (tagsTree.getSelectionCount() == 1) {
@@ -412,11 +392,7 @@ public class MetadataPage extends FormPage {
     /**
      * Handle the remove button execution on the Metadata page.
      */
-    public class RemoveTagButtonListener extends SelectionAdapter {
-        /*
-         * (non-Javadoc)
-         * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-         */
+    private class RemoveTagButtonListener extends SelectionAdapter {
         @Override
         public void widgetSelected(SelectionEvent e) {
             if (tagsTree.getSelectionCount() == 1) {

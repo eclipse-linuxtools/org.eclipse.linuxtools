@@ -52,10 +52,6 @@ public abstract class CreaterepoPropertyPage extends PropertyPage implements IPr
         setDescription(description);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createContents(Composite parent) {
         if (getElement() instanceof IResource) {
@@ -72,10 +68,6 @@ public abstract class CreaterepoPropertyPage extends PropertyPage implements IPr
         return addContents(parent);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
-     */
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         if (event.getProperty().equals(FieldEditor.VALUE)) {

@@ -51,10 +51,6 @@ public class CreaterepoNewWizardPageTwo extends WizardPage {
         setPageComplete(false);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     public void createControl(Composite parent) {
         Composite container = new Composite(parent, SWT.NONE);

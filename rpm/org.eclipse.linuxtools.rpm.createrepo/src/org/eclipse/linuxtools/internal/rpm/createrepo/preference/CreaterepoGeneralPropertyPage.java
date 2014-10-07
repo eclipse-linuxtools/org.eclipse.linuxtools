@@ -72,10 +72,6 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
         super(Messages.CreaterepoPreferencePage_description);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.linuxtools.internal.rpm.createrepo.preference.CreaterepoPropertyPage#addContents(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Composite addContents(Composite parent) {
         Composite composite = new Composite(parent, SWT.NONE);
@@ -101,10 +97,6 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
         btnProjectSettings.setSelection(Activator.getDefault().getPreferenceStore()
                 .getBoolean(CreaterepoPreferenceConstants.PREF_GENERAL_ENABLED));
         btnProjectSettings.addSelectionListener(new SelectionAdapter() {
-            /*
-             * (non-Javadoc)
-             * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-             */
             @Override
             public void widgetSelected(SelectionEvent e) {
                 checkState();
@@ -118,10 +110,6 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
         lnWorkspaceSettings.setText(NLS.bind(linkTags, Messages.CreaterepoGeneralPropertyPage_workspaceSettings));
         lnWorkspaceSettings.setFont(parent.getFont());
         lnWorkspaceSettings.addListener(SWT.Selection, new Listener() {
-            /*
-             * (non-Javadoc)
-             * @see org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets.Event)
-             */
             @Override
             public void handleEvent(Event event) {
                 PreferenceDialog preferenceDialog = PreferencesUtil.createPreferenceDialogOn(getShell(),
@@ -254,10 +242,6 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
         return composite;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
-     */
     @Override
     public void performDefaults() {
         // load the defaults UI
@@ -289,10 +273,6 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
         toggleEnabled();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.preference.PreferencePage#performOk()
-     */
     @Override
     public boolean performOk() {
         // only save when using project specific settings
@@ -350,10 +330,6 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
         return defaultValue;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.linuxtools.internal.rpm.createrepo.preference.CreaterepoPropertyPage#checkState()
-     */
     @Override
     protected void checkState() {
         // if enable project specific settings is false, then allow performOk

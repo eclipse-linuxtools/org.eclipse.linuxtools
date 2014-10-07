@@ -38,10 +38,6 @@ public class CreaterepoResourceChangeListener implements
         this.project = project;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.eclipse.core.resources.IResourceChangeEvent)
-     */
     @Override
     public void resourceChanged(IResourceChangeEvent event) {
         switch (event.getType()) {

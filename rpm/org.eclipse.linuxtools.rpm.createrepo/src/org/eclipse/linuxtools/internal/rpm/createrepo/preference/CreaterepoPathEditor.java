@@ -32,10 +32,6 @@ public class CreaterepoPathEditor extends PathEditor {
         super(name, labelText, dirChooserLabelText, parent);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.preference.PathEditor#createList(java.lang.String[])
-     */
     @Override
     protected String createList(String[] items) {
         String preferenceValue = ICreaterepoConstants.EMPTY_STRING;
@@ -49,10 +45,6 @@ public class CreaterepoPathEditor extends PathEditor {
         return preferenceValue;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.preference.PathEditor#parseString(java.lang.String)
-     */
     @Override
     protected String[] parseString(String stringList) {
         if (!stringList.isEmpty()) {

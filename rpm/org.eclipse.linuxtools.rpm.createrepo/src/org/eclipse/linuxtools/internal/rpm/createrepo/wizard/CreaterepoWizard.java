@@ -43,19 +43,11 @@ public class CreaterepoWizard extends Wizard implements INewWizard {
     private CreaterepoNewWizardPageOne pageOne;
     private CreaterepoNewWizardPageTwo pageTwo;
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
-     */
     @Override
     public void init(IWorkbench workbench, IStructuredSelection selection) {
         setNeedsProgressMonitor(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#addPages()
-     */
     @Override
     public void addPages() {
         super.addPages();
@@ -67,19 +59,11 @@ public class CreaterepoWizard extends Wizard implements INewWizard {
         addPage(pageTwo);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#canFinish()
-     */
     @Override
     public boolean canFinish() {
         return getContainer().getCurrentPage() == pageTwo && pageTwo.isPageComplete();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
-     */
     @Override
     public boolean performFinish() {
         WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
@@ -90,9 +74,7 @@ public class CreaterepoWizard extends Wizard implements INewWizard {
         };
         try {
             getContainer().run(false, true, op);
-        } catch (InvocationTargetException e) {
-            Activator.logError(Messages.CreaterepoWizard_errorCreatingProject, e);
-        } catch (InterruptedException e) {
+        } catch (InvocationTargetException|InterruptedException e) {
             Activator.logError(Messages.CreaterepoWizard_errorCreatingProject, e);
         }
         return true;
@@ -104,7 +86,7 @@ public class CreaterepoWizard extends Wizard implements INewWizard {
      *
      * @param monitor The progress monitor.
      */
-    protected void createProject(IProgressMonitor monitor) {
+    private void createProject(IProgressMonitor monitor) {
         try {
             String fileName = pageTwo.getRepositoryID().concat("."+ICreaterepoConstants. //$NON-NLS-1$
                     REPO_FILE_EXTENSION);
