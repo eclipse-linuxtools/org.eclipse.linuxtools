@@ -118,7 +118,7 @@ public class GprofNoGmonDialog {
     */
    private String browseFileSystemHandler(Shell shell, IProject project) {
 
-        FileDialog dialog = new FileDialog(shell, SWT.OPEN);
+        FileDialog dialog = new FileDialog((shell != null) ? shell : new Shell(), SWT.OPEN);
         dialog.setText(GprofLaunchMessages.GprofNoGmonDialog_OpenGmon);
 
         // Open Project path.
