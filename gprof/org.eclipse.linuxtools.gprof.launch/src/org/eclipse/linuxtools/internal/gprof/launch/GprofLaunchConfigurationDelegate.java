@@ -248,13 +248,10 @@ public class GprofLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
                         public void run() {
                             try {
                                 String s = exePath.toOSString();
-                                URI workingDirURI = getProject().getLocationURI();
                                 RemoteProxyManager rpmgr = RemoteProxyManager.getInstance();
                                 IRemoteFileProxy proxy = rpmgr.getFileProxy(getProject());
-                                String workingDirPath = proxy.toPath(workingDirURI);
-                                // Because we set the working directory on execution to the top-level
-                                // project directory, the gmon.out file should be found there
-                                String gmonExpected = workingDirPath + "/gmon.out"; //$NON-NLS-1$
+                                // gmon.out file should be in working directory used for the launch.
+                                String gmonExpected = getWorkingDirectory(config).getAbsolutePath() + "/gmon.out"; //$NON-NLS-1$
                                 IFileStore gmonFileStore = proxy.getResource(gmonExpected);
                                 if (!gmonFileStore.fetchInfo().exists()) {
                                     Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
