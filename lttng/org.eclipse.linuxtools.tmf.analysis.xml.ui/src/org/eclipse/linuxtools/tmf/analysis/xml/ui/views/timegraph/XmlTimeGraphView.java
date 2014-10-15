@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -264,27 +265,31 @@ public class XmlTimeGraphView extends AbstractTimeGraphView {
             }
 
             for (ITmfAnalysisModuleWithStateSystems module : stateSystemModules) {
-                module.schedule();
-                if (module instanceof TmfStateSystemAnalysisModule) {
-                    ((TmfStateSystemAnalysisModule) module).waitForInitialization();
-                }
-                for (ITmfStateSystem ssq : module.getStateSystems()) {
-                    if (ssq == null) {
-                        return;
+                IStatus status = module.schedule();
+                if (status.isOK()) {
+                    if (module instanceof TmfStateSystemAnalysisModule) {
+                        ((TmfStateSystemAnalysisModule) module).waitForInitialization();
                     }
-                    ssq.waitUntilBuilt();
+                    for (ITmfStateSystem ssq : module.getStateSystems()) {
+                        if (ssq == null) {
+                            return;
+                        }
+                        ssq.waitUntilBuilt();
 
-                    long startTime = ssq.getStartTime();
-                    long endTime = ssq.getCurrentEndTime();
-                    XmlEntry groupEntry = new XmlEntry(-1, aTrace, aTrace.getName(), ssq);
-                    entryList.add(groupEntry);
-                    setStartTime(Math.min(getStartTime(), startTime));
-                    setEndTime(Math.max(getEndTime(), endTime));
+                        long startTime = ssq.getStartTime();
+                        long endTime = ssq.getCurrentEndTime();
+                        XmlEntry groupEntry = new XmlEntry(-1, aTrace, aTrace.getName(), ssq);
+                        entryList.add(groupEntry);
+                        setStartTime(Math.min(getStartTime(), startTime));
+                        setEndTime(Math.max(getEndTime(), endTime));
 
-                    /* Add children entry of this entry for each line */
-                    for (Element entry : entries) {
-                        buildEntry(entry, groupEntry, -1);
+                        /* Add children entry of this entry for each line */
+                        for (Element entry : entries) {
+                            buildEntry(entry, groupEntry, -1);
+                        }
                     }
+                } else {
+                    return;
                 }
             }
         }
