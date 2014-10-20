@@ -36,6 +36,7 @@ public class GcdaRecordsParser {
     private final ArrayList<GcnoFunction> fnctns;
     private long objSmryNbrPgmRuns = 0;
     private long pgmSmryChksm = 0;
+    private long pgmSmryNbrPgmRuns = 0;
     private long objSmryChksm = 0;
     private long objSmryArcCnts = 0;
     private long objSmrytotalCnts = 0;
@@ -212,7 +213,9 @@ public class GcdaRecordsParser {
                 case GCOV_TAG_PROGRAM_SUMMARY: {
                     // long[] pgmSmryskips = new long[(int) length];
                     pgmSmryChksm = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
-                    for (int i = 0; i < length - 1; i++) {
+                    stream.readInt();
+                    pgmSmryNbrPgmRuns = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
+                    for (int i = 0; i < length - 3; i++) {
                         // pgmSmryskips[i] = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
                         stream.readInt();
                     }
@@ -269,14 +272,22 @@ public class GcdaRecordsParser {
      * @return the objSmrySumMax
      */
     public long getObjSmrySumMax() {
-        return objSmrySumMax;
+    	return objSmrySumMax;
     }
 
     /**
      * @return the pgmSmryChksm
      */
     public long getPgmSmryChksm() {
-        return pgmSmryChksm;
+    	return pgmSmryChksm;
     }
+
+    /**
+     * @return the prgSmryNbrPgmRuns
+     */
+    public long getPgmSmryNbrPgmRuns() {
+    	return pgmSmryNbrPgmRuns;
+    }
+
 
 }
