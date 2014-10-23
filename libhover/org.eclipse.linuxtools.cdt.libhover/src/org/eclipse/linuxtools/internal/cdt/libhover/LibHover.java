@@ -746,12 +746,15 @@ public class LibHover implements ICHelpProvider {
 
     @Override
     public ICHelpResourceDescriptor[] getHelpResources(ICHelpInvocationContext context, ICHelpBook[] helpBooks, String name) {
-        for (int i = 0; i < helpBooks.length; ++i) {
-            IFunctionSummary fs = getFunctionInfo(context, new ICHelpBook[]{helpBooks[i]}, name);
-            if (fs != null) {
-                return new HelpResourceDescriptor[]{new HelpResourceDescriptor(helpBooks[i])};
-            }
-        }
+    	for (int i = 0; i < helpBooks.length; ++i) {
+    		IFunctionSummary fs = getFunctionInfo(context, new ICHelpBook[]{helpBooks[i]}, name);
+    		if (fs != null) {
+    			LibHoverLibrary l = libraries.get(helpBooks[i]);
+    			if (l != null && l.getDocs() != null) {
+    				return new HelpResourceDescriptor[]{new HelpResourceDescriptor(helpBooks[i])};
+    			}
+    		}
+    	}
         return null;
     }
 }
