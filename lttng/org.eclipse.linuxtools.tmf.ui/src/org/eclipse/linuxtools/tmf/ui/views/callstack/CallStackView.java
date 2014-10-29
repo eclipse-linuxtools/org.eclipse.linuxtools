@@ -829,6 +829,7 @@ public class CallStackView extends TmfView {
             if (fEntryList == null) {
                 fStartTime = Long.MAX_VALUE;
                 fEndTime = Long.MIN_VALUE;
+                refresh();
                 synchronized (fBuildThreadMap) {
                     ITmfTrace[] traces = TmfTraceManager.getTraceSet(fTrace);
                     for (ITmfTrace trace : traces) {
