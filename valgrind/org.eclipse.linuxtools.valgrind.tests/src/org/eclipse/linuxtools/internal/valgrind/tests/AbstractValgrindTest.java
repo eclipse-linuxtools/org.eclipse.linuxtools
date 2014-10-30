@@ -192,6 +192,7 @@ public abstract class AbstractValgrindTest extends AbstractTest {
         tab = ValgrindLaunchPlugin.getDefault().getToolPage(getToolID());
         tab.setDefaults(wc);
         wc.setAttribute(LaunchConfigurationConstants.ATTR_TOOL, getToolID());
+        wc.setAttribute(LaunchConfigurationConstants.ATTR_FULLPATH_AFTER, false);
     }
 
     protected ICProject createProjectAndBuild(String projname) throws Exception {

@@ -20,6 +20,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.linuxtools.internal.valgrind.launch.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.valgrind.tests.ValgrindTestLaunchShortcut;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -83,6 +84,7 @@ public class ShortcutTest extends AbstractMemcheckTest {
         ILaunchConfiguration defaults = createConfiguration(proj.getProject());
         ILaunchConfigurationWorkingCopy wc = defaults.getWorkingCopy();
         wc.removeAttribute(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND);
+        wc.setAttribute(LaunchConfigurationConstants.ATTR_FULLPATH_AFTER, true);
         wc.doSave();
 
         // Compare launch config with defaults

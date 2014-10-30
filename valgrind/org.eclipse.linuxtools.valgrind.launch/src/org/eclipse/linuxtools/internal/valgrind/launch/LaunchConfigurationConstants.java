@@ -38,6 +38,7 @@ public final class LaunchConfigurationConstants {
 
     // 3.6.0 specific
     public static final String ATTR_GENERAL_DSYMUTIL = PLUGIN_ID + ".GENERAL_DSYMUTIL"; //$NON-NLS-1$
+    public static final String ATTR_FULLPATH_AFTER = PLUGIN_ID + ".FULLPATH_AFTER"; //$NON-NLS-1$
 
     public static final String DEFAULT_TOOL = PLUGIN_ID + ".memcheck"; //$NON-NLS-1$
 
@@ -57,4 +58,5 @@ public final class LaunchConfigurationConstants {
 
     // 3.6.0 specific
     public static final boolean DEFAULT_GENERAL_DSYMUTIL = true; // necessary for OS X, Bug #333640
+    public static final boolean DEFAULT_FULLPATH_AFTER = true;
 }

@@ -609,6 +609,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
         // 3.6.0 specific
         if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_6_0) >= 0) {
             configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DSYMUTIL, dSymUtilButton.getSelection());
+            configuration.setAttribute(LaunchConfigurationConstants.ATTR_FULLPATH_AFTER, LaunchConfigurationConstants.DEFAULT_FULLPATH_AFTER);
         }
 
         if (dynamicTab != null) {
@@ -643,6 +644,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
         // 3.6.0 specific
         if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_6_0) >= 0) {
             configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DSYMUTIL, LaunchConfigurationConstants.DEFAULT_GENERAL_DSYMUTIL);
+            configuration.setAttribute(LaunchConfigurationConstants.ATTR_FULLPATH_AFTER, LaunchConfigurationConstants.DEFAULT_FULLPATH_AFTER);
         }
 
         if (dynamicTab != null) {
