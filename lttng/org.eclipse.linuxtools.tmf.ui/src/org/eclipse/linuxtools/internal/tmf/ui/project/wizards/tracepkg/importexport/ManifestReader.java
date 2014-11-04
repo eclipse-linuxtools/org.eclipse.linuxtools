@@ -162,7 +162,6 @@ public class ManifestReader {
                 }
 
                 if (!suppFiles.isEmpty()) {
-                    supplFilesElement.setChildren(suppFiles.toArray(EMPTY_ARRAY));
                     children.add(supplFilesElement);
                 }
 
@@ -192,7 +191,6 @@ public class ManifestReader {
                     children.add(new TracePackageBookmarkElement(element, bookmarkAttribs));
                 }
 
-                element.setChildren(children.toArray(EMPTY_ARRAY));
                 packageElements.add(element);
             }
         }
