@@ -9,6 +9,7 @@
  * Contributors:
  *   Bernd Hufmann - Initial API and implementation
  *   Jonathan Rajotte - Support for LTTng 2.6
+ *   Markus Schorn - Bug 448058: Use org.eclipse.remote in favor of RSE
  **********************************************************************/
 
 package org.eclipse.linuxtools.lttng2.control.ui.tests.model.component;
@@ -32,10 +33,9 @@ import org.eclipse.linuxtools.internal.lttng2.control.ui.views.model.ITraceContr
 import org.eclipse.linuxtools.internal.lttng2.control.ui.views.model.impl.TargetNodeComponent;
 import org.eclipse.linuxtools.internal.lttng2.control.ui.views.model.impl.TraceSessionComponent;
 import org.eclipse.linuxtools.internal.lttng2.control.ui.views.service.ILttngControlService;
-import org.eclipse.rse.core.RSECorePlugin;
-import org.eclipse.rse.core.model.IHost;
-import org.eclipse.rse.core.model.ISystemProfile;
-import org.eclipse.rse.core.model.ISystemRegistry;
+import org.eclipse.remote.core.IRemoteConnection;
+import org.eclipse.remote.core.IRemoteConnectionManager;
+import org.eclipse.remote.core.RemoteServices;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -116,9 +116,8 @@ public class TraceControlCreateSessionTests {
 
         ITraceControlComponent root = TraceControlTestFacility.getInstance().getControlView().getTraceControlRoot();
 
-        ISystemRegistry registry = RSECorePlugin.getTheSystemRegistry();
-        ISystemProfile profile = registry.createSystemProfile("myProfile", true);
-        IHost host = registry.createLocalHost(profile, "myProfile", "user");
+        IRemoteConnectionManager cm = RemoteServices.getLocalServices().getConnectionManager();
+        IRemoteConnection host = cm.getConnection(IRemoteConnectionManager.LOCAL_CONNECTION_NAME);
 
         TargetNodeComponent node = new TargetNodeComponent("myNode", root, host, fProxy);
 

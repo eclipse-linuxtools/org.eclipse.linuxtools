@@ -9,6 +9,7 @@
  * Contributors:
  *   Bernd Hufmann - Initial API and implementation
  *   Alexandre Montplaisir - Port to JUnit4
+ *   Markus Schorn - Bug 448058: Use org.eclipse.remote in favor of RSE
  **********************************************************************/
 
 package org.eclipse.linuxtools.lttng2.control.ui.tests.model.component;
@@ -26,13 +27,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.linuxtools.internal.lttng2.control.stubs.dialogs.AddContextDialogStub;
-import org.eclipse.linuxtools.internal.lttng2.control.stubs.dialogs.CreateSessionDialogStub;
-import org.eclipse.linuxtools.internal.lttng2.control.stubs.dialogs.DestroyConfirmDialogStub;
-import org.eclipse.linuxtools.internal.lttng2.control.stubs.dialogs.EnableChannelDialogStub;
-import org.eclipse.linuxtools.internal.lttng2.control.stubs.dialogs.EnableEventsDialogStub;
-import org.eclipse.linuxtools.internal.lttng2.control.stubs.dialogs.GetEventInfoDialogStub;
-import org.eclipse.linuxtools.internal.lttng2.control.stubs.service.TestRemoteSystemProxy;
 import org.eclipse.linuxtools.internal.lttng2.control.core.model.TargetNodeState;
 import org.eclipse.linuxtools.internal.lttng2.control.core.model.TraceChannelOutputType;
 import org.eclipse.linuxtools.internal.lttng2.control.core.model.TraceEnablement;
@@ -40,6 +34,13 @@ import org.eclipse.linuxtools.internal.lttng2.control.core.model.TraceEventType;
 import org.eclipse.linuxtools.internal.lttng2.control.core.model.TraceLogLevel;
 import org.eclipse.linuxtools.internal.lttng2.control.core.model.TraceSessionState;
 import org.eclipse.linuxtools.internal.lttng2.control.core.model.impl.ChannelInfo;
+import org.eclipse.linuxtools.internal.lttng2.control.stubs.dialogs.AddContextDialogStub;
+import org.eclipse.linuxtools.internal.lttng2.control.stubs.dialogs.CreateSessionDialogStub;
+import org.eclipse.linuxtools.internal.lttng2.control.stubs.dialogs.DestroyConfirmDialogStub;
+import org.eclipse.linuxtools.internal.lttng2.control.stubs.dialogs.EnableChannelDialogStub;
+import org.eclipse.linuxtools.internal.lttng2.control.stubs.dialogs.EnableEventsDialogStub;
+import org.eclipse.linuxtools.internal.lttng2.control.stubs.dialogs.GetEventInfoDialogStub;
+import org.eclipse.linuxtools.internal.lttng2.control.stubs.service.TestRemoteSystemProxy;
 import org.eclipse.linuxtools.internal.lttng2.control.ui.views.dialogs.TraceControlDialogFactory;
 import org.eclipse.linuxtools.internal.lttng2.control.ui.views.model.ITraceControlComponent;
 import org.eclipse.linuxtools.internal.lttng2.control.ui.views.model.impl.TargetNodeComponent;
@@ -47,10 +48,9 @@ import org.eclipse.linuxtools.internal.lttng2.control.ui.views.model.impl.TraceC
 import org.eclipse.linuxtools.internal.lttng2.control.ui.views.model.impl.TraceEventComponent;
 import org.eclipse.linuxtools.internal.lttng2.control.ui.views.model.impl.TraceProbeEventComponent;
 import org.eclipse.linuxtools.internal.lttng2.control.ui.views.model.impl.TraceSessionComponent;
-import org.eclipse.rse.core.RSECorePlugin;
-import org.eclipse.rse.core.model.IHost;
-import org.eclipse.rse.core.model.ISystemProfile;
-import org.eclipse.rse.core.model.ISystemRegistry;
+import org.eclipse.remote.core.IRemoteConnection;
+import org.eclipse.remote.core.IRemoteConnectionManager;
+import org.eclipse.remote.core.RemoteServices;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -120,9 +120,8 @@ public class TraceControlKernelSessionTests {
 
         ITraceControlComponent root = fFacility.getControlView().getTraceControlRoot();
 
-        ISystemRegistry registry = RSECorePlugin.getTheSystemRegistry();
-        ISystemProfile profile =  registry.createSystemProfile("myProfile", true);
-        IHost host = registry.createLocalHost(profile, "myProfile", "user");
+        IRemoteConnectionManager cm = RemoteServices.getLocalServices().getConnectionManager();
+        IRemoteConnection host = cm.getConnection(IRemoteConnectionManager.LOCAL_CONNECTION_NAME);
 
         TargetNodeComponent node = new TargetNodeComponent("myNode", root, host, fProxy);
 
