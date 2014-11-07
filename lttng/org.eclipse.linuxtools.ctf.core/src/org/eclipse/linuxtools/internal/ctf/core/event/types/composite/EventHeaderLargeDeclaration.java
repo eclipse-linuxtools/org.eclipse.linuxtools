@@ -83,6 +83,8 @@ public class EventHeaderLargeDeclaration extends Declaration implements IEventHe
     private static final int VARIANT_SIZE = 2;
     private static final int COMPACT_SIZE = 1;
     private static final int EXTENDED_FIELD_SIZE = 2;
+    private static final long COMPACT_ALIGN = 1;
+    private static final long COMPACT_TS_ALIGN = 8;
 
     private final ByteOrder fByteOrder;
 
@@ -139,7 +141,11 @@ public class EventHeaderLargeDeclaration extends Declaration implements IEventHe
             return false;
         }
         EnumDeclaration eId = (EnumDeclaration) iDeclaration;
-        if (eId.getContainerType().getLength() != COMPACT_ID) {
+        final IntegerDeclaration containerType = eId.getContainerType();
+        if (containerType.getLength() != COMPACT_ID) {
+            return false;
+        }
+        if (containerType.getAlignment() != COMPACT_ALIGN) {
             return false;
         }
         iDeclaration = declaration.getFields().get(V);
@@ -170,7 +176,7 @@ public class EventHeaderLargeDeclaration extends Declaration implements IEventHe
             return false;
         }
         IntegerDeclaration tsDec = (IntegerDeclaration) iDeclaration;
-        if (tsDec.getLength() != COMPACT_TS || tsDec.isSigned()) {
+        if (tsDec.getLength() != COMPACT_TS || tsDec.isSigned() || tsDec.getAlignment() != COMPACT_TS_ALIGN) {
             return false;
         }
         iDeclaration = vDec.getFields().get(EXTENDED);
@@ -178,6 +184,9 @@ public class EventHeaderLargeDeclaration extends Declaration implements IEventHe
             return false;
         }
         StructDeclaration extendedDec = (StructDeclaration) iDeclaration;
+        if (extendedDec.getAlignment() != ALIGN) {
+            return false;
+        }
         if (!extendedDec.hasField(TIMESTAMP)) {
             return false;
         }
