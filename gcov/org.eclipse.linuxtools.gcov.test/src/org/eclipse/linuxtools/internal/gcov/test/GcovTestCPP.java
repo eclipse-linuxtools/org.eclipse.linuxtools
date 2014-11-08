@@ -10,43 +10,21 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gcov.test;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+public class GcovTestCPP extends GcovTest {
 
-@RunWith(SWTBotJunit4ClassRunner.class)
-public class GcovTestCPP {
-
-    private static SWTWorkbenchBot bot;
-
-    private static final String PROJECT_NAME = "Gcov_CPP_test";
-    private static final String PROJECT_TYPE = "C++ Project";
-
-    @BeforeClass
-    public static void beforeClass() throws Exception {
-        bot = GcovTest.init(PROJECT_NAME, PROJECT_TYPE);
+    @Override
+    protected String getTestProjectName() {
+        return "Gcov_CPP_test";
     }
 
-    @AfterClass
-    public static void afterClass() {
-        GcovTest.cleanup(bot);
+    @Override
+    protected String getBinName() {
+        return "a.out";
     }
 
-    @Test
-    public void openGcovFileDetails() throws Exception {
-        GcovTest.openGcovFileDetails(bot, PROJECT_NAME);
+    @Override
+    protected boolean getTestProducedReference() {
+        return false;
     }
 
-    @Test
-    public void openGcovSummary() throws Exception {
-        GcovTest.openGcovSummary(bot, PROJECT_NAME, false);
-    }
-
-    @Test
-    public void testGcovSummaryByLaunch() {
-        GcovTest.openGcovSummaryByLaunch(bot, PROJECT_NAME);
-    }
 }

@@ -8,4 +8,4 @@ all: a.out
 	LD_LIBRARY_PATH=. ./$< 1 2 3 4 5 6
 	
 clean:
-	rm -f *.o a.out *.gcno *.gcda
+	rm -f *.o a.out *.gcno *.gcda *.so

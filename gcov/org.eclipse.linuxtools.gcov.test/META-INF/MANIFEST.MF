@@ -4,15 +4,12 @@ Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.gcov.test
 Bundle-Version: 4.1.1.qualifier
 Bundle-Vendor: %bundleProvider
-Require-Bundle: 
- org.eclipse.swtbot.eclipse.finder,
- org.eclipse.swtbot.junit4_x,
- org.eclipse.swtbot.forms.finder,
- org.eclipse.swtbot.eclipse.core,
- org.apache.log4j,
- org.eclipse.swtbot.go,
+Require-Bundle: org.junit;bundle-version="4.10.0",
  org.eclipse.linuxtools.gcov.launch;bundle-version="1.0.0",
- org.eclipse.cdt.managedbuilder.gnu.ui;bundle-version="8.0.0"
+ org.eclipse.cdt.managedbuilder.gnu.ui;bundle-version="8.0.0",
+ org.eclipse.linuxtools.profiling.tests,
+ org.eclipse.ui.navigator.resources,
+ org.eclipse.ui.navigator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Localization: plugin

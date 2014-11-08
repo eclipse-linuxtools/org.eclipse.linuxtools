@@ -38,6 +38,29 @@ import org.eclipse.ui.PlatformUI;
  */
 public class OpenGCAction implements IEditorLauncher {
 
+    /**
+     * Helper method to programmatically open a gcda/gcno file.
+     * @param file The path of the file to open.
+     * @param isCompleteCoverageResultWanted Whether or not to return complete coverage.
+     */
+    public void autoOpen(IPath file, boolean isCompleteCoverageResultWanted) {
+        String extension = file.getFileExtension();
+        File gcda;
+        if ("gcno".equals(extension)) { //$NON-NLS-1$
+            gcda = file.removeFileExtension().addFileExtension("gcda").toFile(); //$NON-NLS-1$
+        } else if ("gcda".equals(extension)) { //$NON-NLS-1$
+            gcda = file.toFile();
+        } else {
+            // should never occur
+            return;
+        }
+        if (isCompleteCoverageResultWanted) {
+            CovView.displayCovResults(getDefaultBinary(file), gcda.getAbsolutePath());
+        } else {
+            CovView.displayCovDetailedResult(getDefaultBinary(file), gcda.getAbsolutePath());
+        }
+    }
+
     @Override
     public void open(IPath file) {
         Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
@@ -53,7 +76,7 @@ public class OpenGCAction implements IEditorLauncher {
             gcda = file.toFile();
             gcno = file2.toFile();
         } else {
-            // should never occurs
+            // should never occur
             return;
         }
 
@@ -68,8 +91,7 @@ public class OpenGCAction implements IEditorLauncher {
             return;
         }
 
-        String s = getDefaultBinary(file);
-        OpenGCDialog d = new OpenGCDialog(shell, s, file);
+        OpenGCDialog d = new OpenGCDialog(shell, getDefaultBinary(file), file);
         if (d.open() != Window.OK) {
             return;
         }
