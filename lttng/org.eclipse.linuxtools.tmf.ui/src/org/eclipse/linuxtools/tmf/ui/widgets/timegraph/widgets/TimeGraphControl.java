@@ -79,7 +79,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.ScrollBar;
 
 /**
  * Time graph control implementation
@@ -94,6 +93,7 @@ public class TimeGraphControl extends TimeGraphBaseControl
         MenuDetectListener, ITmfTimeGraphDrawingHelper, ITimeGraphColorListener, Listener {
 
     /** Max scrollbar size */
+    @Deprecated
     public static final int H_SCROLLBAR_MAX = Integer.MAX_VALUE - 1;
 
     /** Constant indicating that all levels of the time graph should be expanded
@@ -208,7 +208,7 @@ public class TimeGraphControl extends TimeGraphBaseControl
      */
     public TimeGraphControl(Composite parent, TimeGraphColorScheme colors) {
 
-        super(parent, colors, SWT.NO_BACKGROUND | SWT.H_SCROLL | SWT.DOUBLE_BUFFERED);
+        super(parent, colors, SWT.NO_BACKGROUND | SWT.DOUBLE_BUFFERED);
 
         fItemData = new ItemData();
 
@@ -222,11 +222,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
         addControlListener(this);
         addMenuDetectListener(this);
         addListener(SWT.MouseWheel, this);
-        ScrollBar scrollHor = getHorizontalBar();
-
-        if (scrollHor != null) {
-            scrollHor.addSelectionListener(this);
-        }
     }
 
     @Override
@@ -474,35 +469,8 @@ public class TimeGraphControl extends TimeGraphBaseControl
     /**
      * Adjust the scoll bars
      */
+    @Deprecated
     public void adjustScrolls() {
-        if (null == fTimeProvider) {
-            getHorizontalBar().setValues(0, 1, 1, 1, 1, 1);
-            return;
-        }
-
-        // HORIZONTAL BAR
-        // Visible window
-        long time0 = fTimeProvider.getTime0();
-        long time1 = fTimeProvider.getTime1();
-        // Time boundaries
-        long timeMin = fTimeProvider.getMinTime();
-        long timeMax = fTimeProvider.getMaxTime();
-
-        long delta = timeMax - timeMin;
-
-        int timePos = 0;
-        int thumb = H_SCROLLBAR_MAX;
-
-        if (delta != 0) {
-            // Thumb size (page size)
-            thumb = Math.max(1, (int) (H_SCROLLBAR_MAX * ((double) (time1 - time0) / delta)));
-            // At the beginning of visible window
-            timePos = (int) (H_SCROLLBAR_MAX * ((double) (time0 - timeMin) / delta));
-        }
-
-        // position, minimum, maximum, thumb size, increment (half page)t, page
-        // increment size (full page)
-        getHorizontalBar().setValues(timePos, 0, H_SCROLLBAR_MAX, thumb, Math.max(1, thumb / 2), Math.max(2, thumb));
     }
 
     boolean ensureVisibleItem(int idx, boolean redraw) {
@@ -899,6 +867,34 @@ public class TimeGraphControl extends TimeGraphBaseControl
     }
 
     /**
+     * Scroll left or right by one half window size
+     *
+     * @param left
+     *            true to scroll left, false to scroll right
+     *
+     * @since 3.2
+     */
+    public void horizontalScroll(boolean left) {
+        long time0 = fTimeProvider.getTime0();
+        long time1 = fTimeProvider.getTime1();
+        long timeMin = fTimeProvider.getMinTime();
+        long timeMax = fTimeProvider.getMaxTime();
+        long range = time1 - time0;
+        if (range <= 0) {
+            return;
+        }
+        long increment = Math.max(1, range / 2);
+        if (left) {
+            time0 = Math.max(time0 - increment, timeMin);
+            time1 = time0 + range;
+        } else {
+            time1 = Math.min(time1 + increment, timeMax);
+            time0 = time1 - range;
+        }
+        fTimeProvider.setStartFinishTimeNotify(time0, time1);
+    }
+
+    /**
      * Zoom based on mouse cursor location with mouse scrolling
      *
      * @param zoomIn true to zoom in, false to zoom out
@@ -1190,7 +1186,7 @@ public class TimeGraphControl extends TimeGraphBaseControl
         }
         long time0 = fTimeProvider.getTime0();
         long time1 = fTimeProvider.getTime1();
-        int width = getCtrlSize().x;
+        int width = getSize().x;
         int nameSpace = fTimeProvider.getNameSpace();
         double pixelsPerNanoSec = (width - nameSpace <= RIGHT_MARGIN) ? 0 : (double) (width - nameSpace - RIGHT_MARGIN) / (time1 - time0);
         int x = getBounds().x + nameSpace + (int) ((time - time0) * pixelsPerNanoSec);
@@ -1206,7 +1202,7 @@ public class TimeGraphControl extends TimeGraphBaseControl
             return -1;
         }
         long hitTime = -1;
-        Point size = getCtrlSize();
+        Point size = getSize();
         long time0 = fTimeProvider.getTime0();
         long time1 = fTimeProvider.getTime1();
         int nameWidth = fTimeProvider.getNameSpace();
@@ -1266,7 +1262,7 @@ public class TimeGraphControl extends TimeGraphBaseControl
      * @return The count
      */
     public int countPerPage() {
-        int height = getCtrlSize().y;
+        int height = getSize().y;
         int count = 0;
         int ySum = 0;
         for (int idx = fTopIndex; idx < fItemData.fExpandedItems.length; idx++) {
@@ -1315,14 +1311,6 @@ public class TimeGraphControl extends TimeGraphBaseControl
             elements.add(item.fEntry);
         }
         return elements.toArray(new ITimeGraphEntry[0]);
-    }
-
-    Point getCtrlSize() {
-        Point size = getSize();
-        if (getHorizontalBar().isVisible()) {
-            size.y -= getHorizontalBar().getSize().y;
-        }
-        return size;
     }
 
     Rectangle getNameRect(Rectangle bound, int idx, int nameWidth) {
@@ -2095,7 +2083,7 @@ public class TimeGraphControl extends TimeGraphBaseControl
         if (null == fTimeProvider) {
             return;
         }
-        Point size = getCtrlSize();
+        Point size = getSize();
         if (DRAG_TRACE_ITEM == fDragState) {
             int nameWidth = fTimeProvider.getNameSpace();
             if (e.x > nameWidth && size.x > nameWidth && fDragX != e.x) {
@@ -2164,7 +2152,7 @@ public class TimeGraphControl extends TimeGraphBaseControl
     public void mouseDown(MouseEvent e) {
         if (fDragState != DRAG_NONE || null == fTimeProvider ||
                 fTimeProvider.getTime0() == fTimeProvider.getTime1() ||
-                getCtrlSize().x - fTimeProvider.getNameSpace() <= 0) {
+                getSize().x - fTimeProvider.getNameSpace() <= 0) {
             return;
         }
         int idx;
@@ -2249,7 +2237,7 @@ public class TimeGraphControl extends TimeGraphBaseControl
             }
         } else if (3 == e.button) {
             setCapture(true);
-            fDragX = Math.min(Math.max(e.x, fTimeProvider.getNameSpace()), getCtrlSize().x - RIGHT_MARGIN);
+            fDragX = Math.min(Math.max(e.x, fTimeProvider.getNameSpace()), getSize().x - RIGHT_MARGIN);
             fDragX0 = fDragX;
             fDragTime0 = getTimeAtX(fDragX0);
             fDragState = DRAG_ZOOM;
@@ -2335,16 +2323,24 @@ public class TimeGraphControl extends TimeGraphBaseControl
             return;
         }
         boolean zoomScroll = false;
+        boolean horizontalScroll = false;
         Point p = getParent().toControl(getDisplay().getCursorLocation());
         Point parentSize = getParent().getSize();
         if (p.x >= 0 && p.x < parentSize.x && p.y >= 0 && p.y < parentSize.y) {
             // over the parent control
-            if (e.x > getCtrlSize().x) {
+            if (e.x > getSize().x) {
                 // over the vertical scroll bar
                 zoomScroll = false;
-            } else if (e.y < 0 || e.y >= getCtrlSize().y) {
-                // over the time scale or horizontal scroll bar
+            } else if (e.y < 0) {
+                // over the time scale
                 zoomScroll = true;
+            } else if (e.y >= getSize().y) {
+                // over the horizontal scroll bar
+                if ((e.stateMask & SWT.MODIFIER_MASK) == SWT.CTRL) {
+                    zoomScroll = true;
+                } else {
+                    horizontalScroll = true;
+                }
             } else {
                 if (e.x < fTimeProvider.getNameSpace()) {
                     // over the name space
@@ -2367,6 +2363,8 @@ public class TimeGraphControl extends TimeGraphBaseControl
             } else if (e.count < 0) {
                 zoom(false);
             }
+        } else if (horizontalScroll) {
+            horizontalScroll(e.count > 0);
         } else {
             setTopIndex(getTopIndex() - e.count);
         }
@@ -2393,35 +2391,14 @@ public class TimeGraphControl extends TimeGraphBaseControl
         adjustScrolls();
     }
 
+    @Deprecated
     @Override
     public void widgetDefaultSelected(SelectionEvent e) {
     }
 
+    @Deprecated
     @Override
     public void widgetSelected(SelectionEvent e) {
-        if (e.widget == getVerticalBar()) {
-            setTopIndex(getVerticalBar().getSelection());
-        } else if (e.widget == getHorizontalBar() && null != fTimeProvider) {
-            int start = getHorizontalBar().getSelection();
-            long time0 = fTimeProvider.getTime0();
-            long time1 = fTimeProvider.getTime1();
-            long timeMin = fTimeProvider.getMinTime();
-            long timeMax = fTimeProvider.getMaxTime();
-            long delta = timeMax - timeMin;
-
-            long range = time1 - time0;
-            time0 = timeMin + Math.round(delta * ((double) start / H_SCROLLBAR_MAX));
-            time1 = time0 + range;
-
-            // TODO: Follow-up with Bug 310310
-            // In Linux SWT.DRAG is the only value received
-            // https://bugs.eclipse.org/bugs/show_bug.cgi?id=310310
-            if (e.detail == SWT.DRAG) {
-                fTimeProvider.setStartFinishTime(time0, time1);
-            } else {
-                fTimeProvider.setStartFinishTimeNotify(time0, time1);
-            }
-        }
     }
 
     @Override
