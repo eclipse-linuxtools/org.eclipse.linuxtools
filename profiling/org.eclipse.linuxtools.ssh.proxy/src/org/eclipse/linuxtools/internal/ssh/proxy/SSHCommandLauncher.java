@@ -99,6 +99,6 @@ public class SSHCommandLauncher extends SSHBase implements IRemoteCommandLaunche
     @Override
     public Process execute(IPath commandPath, String[] args, String[] env,
             IPath changeToDirectory, IProgressMonitor monitor) throws CoreException {
-        return execute(commandPath, args, env, changeToDirectory, monitor);
+        return execute(commandPath, args, env, changeToDirectory, monitor, null);
     }
 }
