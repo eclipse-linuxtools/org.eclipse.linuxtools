@@ -21,12 +21,14 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.linuxtools.tmf.ui.editors.TmfEventsEditor;
 import org.eclipse.linuxtools.tmf.ui.project.model.TmfOpenTraceHelper;
 import org.eclipse.linuxtools.tmf.ui.project.model.TmfProjectRegistry;
 import org.eclipse.linuxtools.tmf.ui.project.model.TmfTraceFolder;
+import org.eclipse.linuxtools.tmf.ui.project.model.TmfTracesFolder;
 import org.eclipse.linuxtools.tmf.ui.swtbot.tests.conditions.ConditionHelpers;
 import org.eclipse.linuxtools.tmf.ui.views.TracingPerspectiveFactory;
 import org.eclipse.swt.widgets.Display;
@@ -246,7 +248,7 @@ public abstract class SWTBotUtil {
     }
 
     /**
-     * Opens an editor and sets focus to the editor
+     * Finds an editor and sets focus to the editor
      *
      * @param bot
      *            the workbench bot
@@ -254,7 +256,7 @@ public abstract class SWTBotUtil {
      *            the editor name
      * @return the corresponding SWTBotEditor
      */
-    public static SWTBotEditor openEditor(SWTWorkbenchBot bot, String editorName) {
+    public static SWTBotEditor activateEditor(SWTWorkbenchBot bot, String editorName) {
         Matcher<IEditorReference> matcher = WidgetMatcherFactory.withPartName(editorName);
         final SWTBotEditor editorBot = bot.editor(matcher);
         IEditorPart iep = editorBot.getReference().getEditor(true);
@@ -271,5 +273,73 @@ public abstract class SWTBotUtil {
         SWTBotUtil.delay(1000);
         assertNotNull(tmfEd);
         return editorBot;
+    }
+
+    /**
+     * Opens a trace in an editor and get the TmfEventsEditor
+     *
+     * @param bot
+     *            the workbench bot
+     * @param projectName
+     *            the name of the project that contains the trace
+     * @param elementPath
+     *            the trace element path (relative to Traces folder)
+     * @return TmfEventsEditor the opened editor
+     */
+    public static TmfEventsEditor openEditor(SWTWorkbenchBot bot, String projectName, IPath elementPath) {
+        final SWTBotView projectExplorerBot = bot.viewById(IPageLayout.ID_PROJECT_EXPLORER);
+        projectExplorerBot.setFocus();
+
+        final SWTBotTree tree = bot.tree();
+        final SWTBotTreeItem treeItem = tree.getTreeItem(projectName);
+        treeItem.expand();
+
+        String nodeName = getFullNodeName(treeItem, TmfTracesFolder.TRACES_FOLDER_NAME);
+        bot.waitUntil(ConditionHelpers.IsTreeChildNodeAvailable(nodeName, treeItem));
+        SWTBotTreeItem tracesNode = treeItem.getNode(nodeName);
+        tracesNode.expand();
+
+        SWTBotTreeItem currentNode = tracesNode;
+        for (String segment : elementPath.segments()) {
+            String fullNodeName = getFullNodeName(currentNode, segment);
+            bot.waitUntil(ConditionHelpers.IsTreeChildNodeAvailable(fullNodeName, currentNode));
+            SWTBotTreeItem newNode = currentNode.getNode(fullNodeName);
+            newNode.select();
+            newNode.doubleClick();
+            currentNode = newNode;
+        }
+
+        SWTBotUtil.delay(1000);
+        SWTBotUtil.waitForJobs();
+        final String expectedTitle = elementPath.toString();
+
+        final IEditorPart iep[] = new IEditorPart[1];
+        UIThreadRunnable.syncExec(new VoidResult() {
+            @Override
+            public void run() {
+                IEditorReference[] ieds = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getEditorReferences();
+                assertNotNull(ieds);
+                iep[0] = null;
+                for (IEditorReference ied : ieds) {
+                    if (ied.getTitle().equals(expectedTitle)) {
+                        iep[0] = ied.getEditor(true);
+                        break;
+                    }
+                }
+            }
+        });
+        assertNotNull(iep[0]);
+        return (TmfEventsEditor) iep[0];
+    }
+
+    private static String getFullNodeName(final SWTBotTreeItem treeItem, String prefix) {
+        List<String> nodes = treeItem.getNodes();
+        String nodeName = "";
+        for (String node : nodes) {
+            if (node.startsWith(prefix)) {
+                nodeName = node;
+            }
+        }
+        return nodeName;
     }
 }
