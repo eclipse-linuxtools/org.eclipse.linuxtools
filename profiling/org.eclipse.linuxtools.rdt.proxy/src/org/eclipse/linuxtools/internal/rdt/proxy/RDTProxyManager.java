@@ -12,7 +12,10 @@ package org.eclipse.linuxtools.internal.rdt.proxy;
 
 import java.net.URI;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -81,7 +84,28 @@ public class RDTProxyManager implements IRemoteEnvProxyManager {
                 return Collections.emptyMap();
             }
         }
-        return connection.getEnv();
+        /*
+         * It is common to export functions declaration in the environment so
+         * this pattern filters out them because they get truncated and might
+         * end up on failure. When a function is exported it makes a mess in ENV
+         * and none of LT plugins working remotely because they are not find on
+         * path.
+         *
+         * ie: BASH_FUNC_module()=() { eval `/usr/bin/modulecmd bash $*`, }
+         */
+        Pattern functionPattern = Pattern.compile("(.+)\\(\\)=([\\(\\)\\s{].+[\n]*.+)");  //$NON-NLS-1$
+        Matcher m;
+        Map<String, String> envMap = new HashMap<>();
+        Map<String, String> envTemp = connection.getEnv();
+        for (String key : envTemp.keySet()) {
+			String value = envTemp.get(key);
+			String env = key + "=" + value; //$NON-NLS-1$
+			m = functionPattern.matcher(env);
+			if (!m.matches()) {
+				envMap.put(key, value);
+			}
+        }
+        return envMap;
     }
 
     @Override
