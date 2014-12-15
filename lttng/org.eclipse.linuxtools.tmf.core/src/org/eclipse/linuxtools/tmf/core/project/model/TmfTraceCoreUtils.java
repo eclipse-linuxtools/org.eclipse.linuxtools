@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.tmf.core.project.model;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
 
 /**
  * Utility class for common tmf.core functionalities
@@ -22,9 +23,14 @@ import org.eclipse.core.resources.ResourcesPlugin;
  */
 public class TmfTraceCoreUtils {
 
+    // ------------------------------------------------------------------------
+    // Constants
+    // ------------------------------------------------------------------------
     private static final boolean IS_WINDOWS = System.getProperty("os.name").contains("Windows") ? true : false; //$NON-NLS-1$ //$NON-NLS-2$
     private static final String INVALID_RESOURCE_CHARACTERS_WIN = "[\\\\/:*?\\\"<>]|\\.$"; //$NON-NLS-1$
     private static final String INVALID_RESOURCE_CHARACTERS_OTHER = "[/\0]"; //$NON-NLS-1$
+    private static final char BACKSLASH_PUA = 0xF000 + '\\';
+    private static final char COLON_PUA = 0xF000 + ':';
 
     /**
      * Validates whether the given input file or folder string is a valid
@@ -50,4 +56,29 @@ public class TmfTraceCoreUtils {
         }
         return output;
     }
+
+    /**
+     * Creates a new safe path, replacing any invalid Windows file name
+     * characters '\' and ':' with characters in the Unicode Private Use Area.
+     *
+     * @param path
+     *            a string path
+     * @return a safe path
+     */
+    public static Path newSafePath(String path) {
+        return new Path(path.replace('\\', BACKSLASH_PUA).replace(':', COLON_PUA));
+    }
+
+    /**
+     * Returns the string representation of a safe path, replacing characters
+     * in the Unicode Private Use Area back to their original value.
+     *
+     * @param path
+     *            a safe path string
+     * @return a string representation of this path
+     */
+    public static String safePathToString(String path) {
+        return path.replace(BACKSLASH_PUA, '\\').replace(COLON_PUA, ':');
+    }
+
 }
