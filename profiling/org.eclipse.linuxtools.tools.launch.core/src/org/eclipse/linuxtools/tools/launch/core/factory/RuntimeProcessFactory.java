@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
@@ -41,6 +42,7 @@ import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
     private static RuntimeProcessFactory instance = null;
     private static final String WHICH_CMD = "which"; //$NON-NLS-1$
+    private static final String WHERE_CMD = "where"; //$NON-NLS-1$
 
     private String[] tokenizeCommand(String command) {
         StringTokenizer tokenizer = new StringTokenizer(command);
@@ -62,7 +64,8 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
         return cmdarray;
     }
 
-    /**
+     
+   /**
      * Used to get the full command path. It will look for the command in the
      * system path and in the path selected in 'Linux Tools Path' preference page
      * in the informed project.
@@ -81,7 +84,13 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
             String[] envp = updateEnvironment(null, project);
             try {
                 IRemoteFileProxy proxy = RemoteProxyManager.getInstance().getFileProxy(project);
-                URI whichUri = URI.create(WHICH_CMD);
+                String platform = RemoteProxyManager.getInstance().getOS(project);
+                URI whichUri = null;
+                // For Windows, we use the where command, otherwise, we use the Unix which command
+                if (platform.equals(Platform.OS_WIN32))
+                	whichUri = URI.create(WHERE_CMD);
+                else
+                	whichUri = URI.create(WHICH_CMD);
                 IPath whichPath = new Path(proxy.toPath(whichUri));
                 IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(project);
                 Process pProxy = launcher.execute(whichPath, new String[]{command}, envp, null, new NullProgressMonitor());
