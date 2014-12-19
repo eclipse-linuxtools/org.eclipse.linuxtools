@@ -24,13 +24,6 @@
    </url>
 
    <plugin
-         id="org.eclipse.linuxtools.btf.core.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.linuxtools.ctf.core.tests"
          download-size="0"
          install-size="0"

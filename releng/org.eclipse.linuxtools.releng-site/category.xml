@@ -101,6 +101,9 @@
    <feature url="features/org.eclipse.linuxtools.tracing.rcp.branding.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.tracing.rcp.branding.feature" version="0.0.0">
       <category name="Linux Tools LTTng RCP"/>
    </feature>
+   <feature url="features/org.eclipse.linuxtools.lttng.testing_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng.testing" version="0.0.0">
+      <category name="Linux Tools LTTng RCP"/>
+   </feature>
    <feature url="features/org.eclipse.linuxtools.cdt.libhover.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.feature.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
@@ -183,6 +186,9 @@
       <category name="Linux Tools Sources"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.tracing.rcp.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.tracing.rcp.source" version="0.0.0">
+      <category name="Linux Tools Sources"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.lttng.testing.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng.testing.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
    <category-def name="Linux Tools" label="Linux Tools">
