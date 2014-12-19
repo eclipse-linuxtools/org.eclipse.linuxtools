@@ -64,75 +64,71 @@ public interface LTTngControlServiceConstants {
     /**
      * The lttng tools machine interface command.
      */
-    static final String CONTROL_COMMAND_MI = CONTROL_COMMAND + " --mi"; //$NON-NLS-1$
+    static final String CONTROL_COMMAND_MI_OPTION = "--mi"; //$NON-NLS-1$
     /**
      * The lttng tools XML machine interface command.
      */
-    static final String CONTROL_COMMAND_MI_XML = CONTROL_COMMAND_MI + " xml"; //$NON-NLS-1$
+    static final String CONTROL_COMMAND_MI_XML = "xml"; //$NON-NLS-1$
     /**
      * Command: lttng version.
      */
-    static final String COMMAND_VERSION = " version "; //$NON-NLS-1$
+    static final String COMMAND_VERSION = "version"; //$NON-NLS-1$
     /**
      * Command: lttng list.
      */
-    static final String COMMAND_LIST = " list "; //$NON-NLS-1$
-    /**
-     * Command to list kernel tracer information.
-     */
-    static final String COMMAND_LIST_KERNEL = COMMAND_LIST + "-k"; //$NON-NLS-1$
-    /**
-     * Command to list user space trace information.
-     */
-    static final String COMMAND_LIST_UST = COMMAND_LIST + "-u";  //$NON-NLS-1$
+    static final String COMMAND_LIST = "list"; //$NON-NLS-1$
     /**
      * Command to create a session.
      */
-    static final String COMMAND_CREATE_SESSION = " create "; //$NON-NLS-1$
+    static final String COMMAND_CREATE_SESSION = "create"; //$NON-NLS-1$
     /**
      * Command to destroy a session.
      */
-    static final String COMMAND_DESTROY_SESSION = " destroy "; //$NON-NLS-1$
+    static final String COMMAND_DESTROY_SESSION = "destroy"; //$NON-NLS-1$
     /**
      * Command to destroy a session.
      */
-    static final String COMMAND_START_SESSION = " start "; //$NON-NLS-1$
+    static final String COMMAND_START_SESSION = "start"; //$NON-NLS-1$
     /**
      * Command to destroy a session.
      */
-    static final String COMMAND_STOP_SESSION = " stop "; //$NON-NLS-1$
+    static final String COMMAND_STOP_SESSION = "stop"; //$NON-NLS-1$
     /**
      * Command to enable a channel.
      */
-    static final String COMMAND_ENABLE_CHANNEL = " enable-channel "; //$NON-NLS-1$
+    static final String COMMAND_ENABLE_CHANNEL = "enable-channel"; //$NON-NLS-1$
     /**
      * Command to disable a channel.
      */
-    static final String COMMAND_DISABLE_CHANNEL = " disable-channel "; //$NON-NLS-1$
+    static final String COMMAND_DISABLE_CHANNEL = "disable-channel"; //$NON-NLS-1$
     /**
      * Command to enable a event.
      */
-    static final String COMMAND_ENABLE_EVENT = " enable-event "; //$NON-NLS-1$
+    static final String COMMAND_ENABLE_EVENT = "enable-event"; //$NON-NLS-1$
     /**
      * Command to disable a event.
      */
-    static final String COMMAND_DISABLE_EVENT = " disable-event "; //$NON-NLS-1$
+    static final String COMMAND_DISABLE_EVENT = "disable-event"; //$NON-NLS-1$
     /**
      * Command to add a context to channels and/or events
      */
-    static final String COMMAND_ADD_CONTEXT = " add-context "; //$NON-NLS-1$
+    static final String COMMAND_ADD_CONTEXT = "add-context"; //$NON-NLS-1$
     /**
      * Command to execute calibrate command to quantify LTTng overhead
      */
-    static final String COMMAND_CALIBRATE = " calibrate "; //$NON-NLS-1$
+    static final String COMMAND_CALIBRATE = "calibrate"; //$NON-NLS-1$
     /**
      * Command to execute calibrate command to quantify LTTng overhead
      */
-    static final String COMMAND_LIST_SNAPSHOT_OUTPUT = " snapshot list-output "; //$NON-NLS-1$
+    static final String COMMAND_SNAPSHOT = "snapshot"; //$NON-NLS-1$
     /**
      * Command to execute calibrate command to quantify LTTng overhead
      */
-    static final String COMMAND_RECORD_SNAPSHOT = " snapshot record "; //$NON-NLS-1$
+    static final String COMMAND_LIST_SNAPSHOT_OUTPUT = "list-output"; //$NON-NLS-1$
+    /**
+     * Command to execute calibrate command to quantify LTTng overhead
+     */
+    static final String COMMAND_RECORD_SNAPSHOT = "record"; //$NON-NLS-1$
 
     // ------------------------------------------------------------------------
     // Command line options constants
@@ -140,143 +136,143 @@ public interface LTTngControlServiceConstants {
     /**
      * Command line option to add tracing group of user.
      */
-    static final String OPTION_TRACING_GROUP = " -g ";  //$NON-NLS-1$
+    static final String OPTION_TRACING_GROUP = "-g";  //$NON-NLS-1$
     /**
      * Command line option for verbose output.
      */
-    static final String OPTION_VERBOSE = " -v ";  //$NON-NLS-1$
+    static final String OPTION_VERBOSE = "-v";  //$NON-NLS-1$
     /**
      * Command line option for verbose output.
      */
-    static final String OPTION_VERY_VERBOSE = " -vv ";  //$NON-NLS-1$
+    static final String OPTION_VERY_VERBOSE = "-vv";  //$NON-NLS-1$
     /**
      * Command line option for verbose output.
      */
-    static final String OPTION_VERY_VERY_VERBOSE = " -vvv ";  //$NON-NLS-1$
+    static final String OPTION_VERY_VERY_VERBOSE = "-vvv";  //$NON-NLS-1$
     /**
      * Command line option for output path.
      */
-    static final String OPTION_OUTPUT_PATH = " -o "; //$NON-NLS-1$
+    static final String OPTION_OUTPUT_PATH = "-o"; //$NON-NLS-1$
     /**
      * Command line option for output path.
      */
-    static final String OPTION_SNAPSHOT = " --snapshot "; //$NON-NLS-1$
+    static final String OPTION_SNAPSHOT = "--snapshot"; //$NON-NLS-1$
     /**
      * Command line option for live
      */
-    static final String OPTION_LIVE = " --live "; //$NON-NLS-1$
+    static final String OPTION_LIVE = "--live"; //$NON-NLS-1$
     /**
      * Command line option for kernel tracer.
      */
-    static final String OPTION_KERNEL = " -k "; //$NON-NLS-1$
+    static final String OPTION_KERNEL = "-k"; //$NON-NLS-1$
     /**
      * Command line option for UST tracer.
      */
-    static final String OPTION_UST = " -u "; //$NON-NLS-1$
+    static final String OPTION_UST = "-u"; //$NON-NLS-1$
     /**
      * Command line option for specifying a session.
      */
-    static final String OPTION_SESSION = " -s ";  //$NON-NLS-1$
+    static final String OPTION_SESSION = "-s";  //$NON-NLS-1$
     /**
      * Command line option for specifying a channel.
      */
-    static final String OPTION_CHANNEL = " -c ";  //$NON-NLS-1$
+    static final String OPTION_CHANNEL = "-c";  //$NON-NLS-1$
     /**
      * Command line option for specifying a event.
      */
-    static final String OPTION_EVENT = " -e ";  //$NON-NLS-1$
+    static final String OPTION_EVENT = "-e";  //$NON-NLS-1$
     /**
      * Command line option for specifying all events.
      */
-    static final String OPTION_ALL = " -a ";  //$NON-NLS-1$
+    static final String OPTION_ALL = "-a";  //$NON-NLS-1$
     /**
      * Command line option for specifying a context.
      */
-    static final String OPTION_CONTEXT_TYPE = " -t ";  //$NON-NLS-1$
+    static final String OPTION_CONTEXT_TYPE = "-t";  //$NON-NLS-1$
     /**
      * Command line option for specifying tracepoint events.
      */
-    static final String OPTION_TRACEPOINT = " --tracepoint ";  //$NON-NLS-1$
+    static final String OPTION_TRACEPOINT = "--tracepoint";  //$NON-NLS-1$
     /**
      * Command line option for specifying syscall events.
      */
-    static final String OPTION_SYSCALL = " --syscall ";  //$NON-NLS-1$
+    static final String OPTION_SYSCALL = "--syscall";  //$NON-NLS-1$
     /**
      * Command line option for specifying a dynamic probe.
      */
-    static final String OPTION_PROBE = " --probe ";  //$NON-NLS-1$
+    static final String OPTION_PROBE = "--probe";  //$NON-NLS-1$
     /**
      * Command line option for specifying a dynamic function entry/return probe.
      */
-    static final String OPTION_FUNCTION_PROBE = " --function ";  //$NON-NLS-1$
+    static final String OPTION_FUNCTION_PROBE = "--function";  //$NON-NLS-1$
     /**
      * Command line option for specifying a log level range.
      */
-    static final String OPTION_LOGLEVEL = " --loglevel ";  //$NON-NLS-1$
+    static final String OPTION_LOGLEVEL = "--loglevel";  //$NON-NLS-1$
     /**
      * Command line option for specifying a specific log level.
      */
-    static final String OPTION_LOGLEVEL_ONLY = " --loglevel-only ";  //$NON-NLS-1$
+    static final String OPTION_LOGLEVEL_ONLY = "--loglevel-only";  //$NON-NLS-1$
     /**
      * Optional command line option for configuring a channel's overwrite mode.
      */
-    static final String OPTION_OVERWRITE = " --overwrite ";  //$NON-NLS-1$
+    static final String OPTION_OVERWRITE = "--overwrite";  //$NON-NLS-1$
     /**
      * Optional command line option for configuring a channel's number of sub buffers.
      */
-    static final String OPTION_NUM_SUB_BUFFERS = " --num-subbuf ";  //$NON-NLS-1$
+    static final String OPTION_NUM_SUB_BUFFERS = "--num-subbuf";  //$NON-NLS-1$
     /**
      * Optional command line option for configuring a channel's sub buffer size.
      */
-    static final String OPTION_SUB_BUFFER_SIZE = " --subbuf-size ";  //$NON-NLS-1$
+    static final String OPTION_SUB_BUFFER_SIZE = "--subbuf-size";  //$NON-NLS-1$
     /**
      * Optional command line option for configuring a channel's switch timer interval.
      */
-    static final String OPTION_SWITCH_TIMER = " --switch-timer ";  //$NON-NLS-1$
+    static final String OPTION_SWITCH_TIMER = "--switch-timer";  //$NON-NLS-1$
     /**
      * Optional command line option for configuring a channel's read timer interval.
      */
-    static final String OPTION_READ_TIMER = " --read-timer ";  //$NON-NLS-1$
+    static final String OPTION_READ_TIMER = "--read-timer";  //$NON-NLS-1$
     /**
      * Command line option for printing the help of a specif command
      */
-    static final String OPTION_HELP = " -h ";  //$NON-NLS-1$
+    static final String OPTION_HELP = "-h";  //$NON-NLS-1$
     /**
      * Command line option for listing the fields of UST tracepoints
      */
-    static final String OPTION_FIELDS = " -f "; //$NON-NLS-1$
+    static final String OPTION_FIELDS = "-f"; //$NON-NLS-1$
     /**
      * Command line option for configuring event's filter
      */
-    static final String OPTION_FILTER = " --filter "; //$NON-NLS-1$
+    static final String OPTION_FILTER = "--filter"; //$NON-NLS-1$
     /**
      * Command line option for configuring the streaming network URL (common for control and data channel).
      */
-    static final String OPTION_NETWORK_URL = " -U "; //$NON-NLS-1$
+    static final String OPTION_NETWORK_URL = "-U"; //$NON-NLS-1$
     /**
      * Command line option for configuring the streaming control URL.
      */
-    static final String OPTION_CONTROL_URL = " -C "; //$NON-NLS-1$
+    static final String OPTION_CONTROL_URL = "-C"; //$NON-NLS-1$
     /**
      * Command line option for configuring the streaming data URL.
      */
-    static final String OPTION_DATA_URL = " -D "; //$NON-NLS-1$
+    static final String OPTION_DATA_URL = "-D"; //$NON-NLS-1$
     /**
      * Command line option for per UID buffers
      */
-    static final String OPTION_PER_UID_BUFFERS = " --buffers-uid "; //$NON-NLS-1$
+    static final String OPTION_PER_UID_BUFFERS = "--buffers-uid"; //$NON-NLS-1$
     /**
      * Command line option for per PID buffers
      */
-    static final String OPTION_PER_PID_BUFFERS = " --buffers-pid "; //$NON-NLS-1$
+    static final String OPTION_PER_PID_BUFFERS = "--buffers-pid"; //$NON-NLS-1$
     /**
      * Command line option for maximum size of trace files
      */
-    static final String OPTION_MAX_SIZE_TRACE_FILES = " -C "; //$NON-NLS-1$
+    static final String OPTION_MAX_SIZE_TRACE_FILES = "-C"; //$NON-NLS-1$
     /**
      * Command line option for maximum trace files
      */
-    static final String OPTION_MAX_TRACE_FILES = " -W "; //$NON-NLS-1$
+    static final String OPTION_MAX_TRACE_FILES = "-W"; //$NON-NLS-1$
 
     // ------------------------------------------------------------------------
     // Parsing constants
