@@ -39,7 +39,8 @@ public final class ProbeParser extends TreeTapsetParser {
 
     public static final String PROBE_REGEX = "(?s)(?<!\\w)probe\\s+{0}\\s*\\+?="; //$NON-NLS-1$
     private static final String TAPSET_PROBE_REGEX = "probe {0} \\+?="; //$NON-NLS-1$
-    private static final Pattern PROBE_GROUP_PATTERN = Pattern.compile("[^\\.\\( ]+"); //$NON-NLS-1$
+    private static final String PROBE_FORM_CHECK_REGEX = "\\w+((\\(\\w+\\))?(\\.\\w+)?)*( \\$?\\w+:\\w+)*"; //$NON-NLS-1$
+    private static final Pattern PROBE_GROUP_PATTERN = Pattern.compile("[^\\.\\(]+"); //$NON-NLS-1$
 
     private static ProbeParser parser = null;
     public static ProbeParser getInstance(){
@@ -95,6 +96,9 @@ public final class ProbeParser extends TreeTapsetParser {
         if (result != IStatus.OK) {
             return result;
         }
+        if (!doQuickErrorCheck(probeDump)) {
+            return IStatus.ERROR;
+        }
 
         boolean canceled = false;
         try (Scanner st = new Scanner(probeDump)) {
@@ -105,9 +109,8 @@ public final class ProbeParser extends TreeTapsetParser {
                     break;
                 }
                 String tokenString = st.nextLine();
-                String probeName = (new StringTokenizer(tokenString)).nextToken();
-                groupNode = addOrFindProbeGroup(extractProbeGroupName(probeName), groupNode, statics);
-                groupNode.add(makeStaticProbeNode(probeName));
+                groupNode = addOrFindProbeGroup(extractProbeGroupName(tokenString), groupNode, statics);
+                groupNode.add(makeStaticProbeNode(tokenString));
             }
         }
         statics.sortTree();
@@ -135,6 +138,9 @@ public final class ProbeParser extends TreeTapsetParser {
         if (result != IStatus.OK) {
             return result;
         }
+        if (!doQuickErrorCheck(probeDump)) {
+            return IStatus.ERROR;
+        }
 
         boolean canceled = false;
         try (Scanner st = new Scanner(probeDump)) {
@@ -160,6 +166,23 @@ public final class ProbeParser extends TreeTapsetParser {
         }
         aliases.sortTree();
         return !canceled ? IStatus.OK : IStatus.CANCEL;
+    }
+
+    /**
+     * Performs a quick check of validity in a probe dump.
+     * @param probeDump The output of a call to stap that prints a probe list.
+     * @return <code>false</code> if the output of the dump is invalid.
+     */
+    private boolean doQuickErrorCheck(String probeDump) {
+        if (probeDump == null) {
+            return false;
+        }
+        // Check just the first probe printed
+        int end = probeDump.indexOf('\n');
+        if (end != -1) {
+            probeDump = probeDump.substring(0, end);
+        }
+        return Pattern.matches(PROBE_FORM_CHECK_REGEX, probeDump);
     }
 
     /**
@@ -318,8 +341,7 @@ public final class ProbeParser extends TreeTapsetParser {
     }
 
     @Override
-    protected int addTapsets(String[] additions, IProgressMonitor monitor) {
-        String tapsetContents = SharedParser.getInstance().getTapsetContents();
+    protected int addTapsets(String tapsetContents, String[] additions, IProgressMonitor monitor) {
         boolean canceled = false;
         TreeNode aliases = tree.getChildByName(Messages.ProbeParser_aliasProbes);
         Map<String, ArrayList<String>> fileToItemMap = new HashMap<>();
