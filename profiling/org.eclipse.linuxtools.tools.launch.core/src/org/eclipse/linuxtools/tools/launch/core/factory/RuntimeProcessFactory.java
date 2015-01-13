@@ -64,7 +64,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
         return cmdarray;
     }
 
-     
+
    /**
      * Used to get the full command path. It will look for the command in the
      * system path and in the path selected in 'Linux Tools Path' preference page
@@ -80,59 +80,58 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
      * @since 1.1
      */
     public String whichCommand(String command, IProject project) throws IOException {
-        if (project != null) {
-            String[] envp = updateEnvironment(null, project);
-            try {
-                IRemoteFileProxy proxy = RemoteProxyManager.getInstance().getFileProxy(project);
-                String platform = RemoteProxyManager.getInstance().getOS(project);
-                URI whichUri = null;
-                // For Windows, we use the where command, otherwise, we use the Unix which command
-                if (platform.equals(Platform.OS_WIN32))
-                	whichUri = URI.create(WHERE_CMD);
-                else
-                	whichUri = URI.create(WHICH_CMD);
-                IPath whichPath = new Path(proxy.toPath(whichUri));
-                IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(project);
-                Process pProxy = launcher.execute(whichPath, new String[]{command}, envp, null, new NullProgressMonitor());
-                if (pProxy != null) {
+        String[] envp = updateEnvironment(null, project);
+        try {
+            IRemoteFileProxy proxy = RemoteProxyManager.getInstance().getFileProxy(project);
+            URI whichUri;
+            // For Windows, we use the where command, otherwise, we use the Unix which command
+            if ((project != null && Platform.OS_WIN32.equals(RemoteProxyManager.getInstance().getOS(project)))
+                    || Platform.OS_WIN32.equals(Platform.getOS())) {
+                whichUri = URI.create(WHERE_CMD);
+            } else {
+                whichUri = URI.create(WHICH_CMD);
+            }
+            IPath whichPath = new Path(proxy.toPath(whichUri));
+            IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(project);
+            Process pProxy = launcher.execute(whichPath, new String[]{command}, envp, null, new NullProgressMonitor());
+            if (pProxy != null) {
 
-                    String errorLine;
-                    try (BufferedReader error = new BufferedReader(
-                            new InputStreamReader(pProxy.getErrorStream()))) {
-                        if ((errorLine = error.readLine()) != null) {
-                            throw new IOException(errorLine);
-                        }
-                    }
-                    ArrayList<String> lines = new ArrayList<>();
-                    try (BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(pProxy.getInputStream()))) {
-                        String readLine = reader.readLine();
-                        while (readLine != null) {
-                            lines.add(readLine);
-                            readLine = reader.readLine();
-                        }
-                    }
-                    if (!lines.isEmpty()) {
-                        if (project.getLocationURI() != null) {
-                            if (project.getLocationURI().toString()
-                                    .startsWith("rse:")) { //$NON-NLS-1$
-                                // RSE output
-                                if (lines.size() > 1) {
-                                    command = lines.get(lines.size() - 2);
-                                }
-                            } else {
-                                // Remotetools output
-                                command = lines.get(0);
-                            }
-                        } else {
-                            // Local output
-                            command = lines.get(0);
-                        }
+                String errorLine;
+                try (BufferedReader error = new BufferedReader(
+                        new InputStreamReader(pProxy.getErrorStream()))) {
+                    if ((errorLine = error.readLine()) != null) {
+                        throw new IOException(errorLine);
                     }
                 }
-            } catch (CoreException e) {
-                // Failed to call 'which', do nothing
+                ArrayList<String> lines = new ArrayList<>();
+                try (BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(pProxy.getInputStream()))) {
+                    String readLine = reader.readLine();
+                    while (readLine != null) {
+                        lines.add(readLine);
+                        readLine = reader.readLine();
+                    }
+                }
+                if (!lines.isEmpty()) {
+                    if (project != null && project.getLocationURI() != null) {
+                        if (project.getLocationURI().toString()
+                                .startsWith("rse:")) { //$NON-NLS-1$
+                            // RSE output
+                            if (lines.size() > 1) {
+                                command = lines.get(lines.size() - 2);
+                            }
+                        } else {
+                            // Remotetools output
+                            command = lines.get(0);
+                        }
+                    } else {
+                        // Local output
+                        command = lines.get(0);
+                    }
+                }
             }
+        } catch (CoreException e) {
+            // Failed to call 'which', do nothing
         }
         return command;
     }

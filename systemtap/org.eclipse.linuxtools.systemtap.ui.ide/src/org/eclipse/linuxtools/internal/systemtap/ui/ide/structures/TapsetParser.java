@@ -14,12 +14,12 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.text.MessageFormat;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.StringOutputStream;
@@ -31,10 +31,8 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPref
 import org.eclipse.linuxtools.tools.launch.core.factory.LinuxtoolsProcessFactory;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
@@ -54,7 +52,6 @@ import com.jcraft.jsch.JSchException;
  */
 public abstract class TapsetParser extends Job {
 
-    private static AtomicBoolean displayingError = new AtomicBoolean(false);
     private static AtomicBoolean displayingCredentialDialog = new AtomicBoolean(false);
 
     protected TapsetParser(String jobTitle) {
@@ -73,7 +70,23 @@ public abstract class TapsetParser extends Job {
      * Generates a {@link Status} with the provided severity.
      */
     protected IStatus createStatus(int severity) {
-        return new Status(severity, IDEPlugin.PLUGIN_ID, ""); //$NON-NLS-1$
+        String message;
+        switch (severity) {
+        case IStatus.ERROR:
+            if (IDEPlugin.getDefault().getPreferenceStore().getBoolean(IDEPreferenceConstants.P_REMOTE_PROBES)) {
+                IPreferenceStore p = ConsoleLogPlugin.getDefault().getPreferenceStore();
+                message = MessageFormat.format(
+                        Messages.TapsetParser_CannotRunRemoteStapMessage,
+                        p.getString(ConsoleLogPreferenceConstants.SCP_USER),
+                        p.getString(ConsoleLogPreferenceConstants.HOST_NAME));
+            } else {
+                message = Messages.TapsetParser_CannotRunStapMessage;
+            }
+            break;
+        default:
+            message = ""; //$NON-NLS-1$
+        }
+        return new Status(severity, IDEPlugin.PLUGIN_ID, message);
     }
 
     /**
@@ -123,19 +136,17 @@ public abstract class TapsetParser extends Job {
             }
         }
 
-        try {
-            if (!remote) {
+        if (!remote) {
+            try {
                 return runLocalStap(args, getErrors);
-            } else {
-                return runRemoteStapAttempt(args, getErrors);
+            } catch (InterruptedException e) {
+                return ""; //$NON-NLS-1$
+            } catch (IOException e) {
+                return null;
             }
-        } catch (IOException e) {
-            displayError(Messages.TapsetParser_ErrorRunningSystemtap, e.getMessage());
-        } catch (InterruptedException e) {
-            return ""; //$NON-NLS-1$
+        } else {
+            return runRemoteStap(args, getErrors);
         }
-
-        return null;
     }
 
     /**
@@ -155,8 +166,9 @@ public abstract class TapsetParser extends Job {
     private String runLocalStap(String[] args, boolean getErrors) throws IOException, InterruptedException {
         Process process = RuntimeProcessFactory.getFactory().exec(
                 args, EnvironmentVariablesPreferencePage.getEnvironmentVariables(), null);
+        // An IOException should be thrown if there's a problem with exec, but to cover possible error
+        // cases where an exception is not thrown (process is null), return null to signify an error.
         if (process == null) {
-            displayError(Messages.TapsetParser_CannotRunStapTitle, Messages.TapsetParser_CannotRunStapMessage);
             return null;
         }
 
@@ -177,21 +189,26 @@ public abstract class TapsetParser extends Job {
         }
     }
 
-    private String runRemoteStapAttempt(String[] args, boolean getErrors) {
+    private String runRemoteStap(String[] args, boolean getErrors) {
         int attemptsLeft = 3;
         while (true) {
             try {
-                return runRemoteStap(args, getErrors);
+                if (Thread.currentThread().isInterrupted()) {
+                    return ""; //$NON-NLS-1$
+                }
+                return runRemoteStapAttempt(args, getErrors);
             } catch (JSchException e) {
                 if (!(e.getCause() instanceof ConnectException) || --attemptsLeft == 0) {
                     askIfEditCredentials();
-                    return null;
+                    // Return empty string instead of null to act as "cancel" signal, to
+                    // avoid showing another error dialog on top of the credential edit dialog.
+                    return ""; //$NON-NLS-1$
                 }
             }
         }
     }
 
-    private String runRemoteStap(String[] args, boolean getErrors) throws JSchException {
+    private String runRemoteStapAttempt(String[] args, boolean getErrors) throws JSchException {
         StringOutputStream str = new StringOutputStream();
         StringOutputStream strErr = new StringOutputStream();
 
@@ -204,11 +221,9 @@ public abstract class TapsetParser extends Job {
         Channel channel = LinuxtoolsProcessFactory.execRemoteAndWait(args, str, strErr, user, host, password,
                 port, EnvironmentVariablesPreferencePage.getEnvironmentVariables());
         if (channel == null) {
-            displayError(Messages.TapsetParser_CannotRunStapTitle, Messages.TapsetParser_CannotRunStapMessage);
-        } else {
-            channel.getSession().disconnect();
+            return null;
         }
-
+        channel.getSession().disconnect();
         return (!getErrors ? str : strErr).toString();
     }
 
@@ -226,19 +241,6 @@ public abstract class TapsetParser extends Job {
                         PreferencesUtil.createPreferenceDialogOn(shell, pageID, new String[]{pageID}, null).open();
                     }
                     displayingCredentialDialog.set(false);
-                }
-            });
-        }
-    }
-
-    private void displayError(final String title, final String error) {
-        if (displayingError.compareAndSet(false, true)) {
-            Display.getDefault().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-                    MessageDialog.openWarning(window.getShell(), title, error);
-                    displayingError.set(false);
                 }
             });
         }

@@ -92,32 +92,32 @@ public final class SharedParser extends TapsetParser {
      * run a dummy stap script to obtain the tapset contents, which will be cached into
      * memory. Subsequent calls will simply read the saved contents.
      * @return The string contents of tapsets, or <code>null</code> if there was an
-     * error in obtaining this information.
+     * error in obtaining this information, or an empty string if the operation was cancelled.
      */
     synchronized String getTapsetContents() {
-        if (tapsetContents == null) {
-            run(null);
-        }
-        return tapsetContents;
+        return tapsetContents != null ? tapsetContents : runAction();
     }
 
     @Override
     protected IStatus run(IProgressMonitor monitor) {
+        return createStatus(verifyRunResult(runAction()));
+    }
+    
+    private String runAction() {
         String contents = runStap(STAP_OPTIONS, STAP_DUMMYPROBE, false);
-        int result = verifyRunResult(contents);
-        if (result != IStatus.OK) {
-            return createStatus(result);
-        }
-        // Exclude the dump of the test script by excluding everything before the second pathname
-        // (which is the first actual tapset file, not the input script).
-        int firstTagIndex = contents.indexOf(TAG_FILE);
-        if (firstTagIndex != -1) {
-            int beginIndex = contents.indexOf(TAG_FILE, firstTagIndex + 1);
-            if (beginIndex != -1) {
-                tapsetContents = contents.substring(beginIndex);
+        if (verifyRunResult(contents) == IStatus.OK) {
+            // Exclude the dump of the test script by excluding everything before the second pathname
+            // (which is the first actual tapset file, not the input script).
+            int firstTagIndex = contents.indexOf(TAG_FILE);
+            if (firstTagIndex != -1) {
+                int beginIndex = contents.indexOf(TAG_FILE, firstTagIndex + 1);
+                if (beginIndex != -1) {
+                    tapsetContents = contents.substring(beginIndex);
+                }
             }
+            return tapsetContents;
         }
-        return createStatus(IStatus.OK);
+        return contents;
     }
 
 }
