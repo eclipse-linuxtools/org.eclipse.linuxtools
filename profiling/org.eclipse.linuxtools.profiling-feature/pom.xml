@@ -18,7 +18,7 @@
   </parent>
 
   <artifactId>org.eclipse.linuxtools.profiling</artifactId>
-  <version>2.0.0-SNAPSHOT</version>
+  <version>3.2.0-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
   <name>Linux Tools Profiling Framework Feature</name>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Red Hat, Inc.
+ * Copyright (c) 2008, 2013, 2015 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ public class Messages extends NLS {
     public static String ProfilingTab_no_profilers_installed;
     public static String ProfilingTab_specified_providerid_not_installed;
     public static String ProfilingTab_specified_profiler_not_installed;
+    public static String ProfilingTab_no_category_profilers_installed;
     public static String ProfilingTab_providerid_not_found;
     public static String ProfileLaunchShortcut_Binaries;
     public static String ProfileLaunchShortcut_Binary_not_found;

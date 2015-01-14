@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Red Hat, Inc.
+ * Copyright (c) 2013, 2015 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * Shared class for displaying profiling options in a single tab.
@@ -67,18 +68,25 @@ public abstract class AbstractProfilingOptionsTab extends AbstractLaunchConfigur
 
     @Override
     public void createControl(Composite parent) {
-        top = new Composite(parent, SWT.NONE);
-        setControl(top);
-        top.setLayout(new GridLayout(1, true));
+    	top = new Composite(parent, SWT.NONE);
+    	setControl(top);
+    	top.setLayout(new GridLayout(1, true));
 
-        providerCombo = new Combo(top, SWT.READ_ONLY);
-        comboItems = getProviders();
-        Set<String> providerNames = comboItems.keySet();
-        providerCombo.setItems(providerNames.toArray(new String[0]));
+    	comboItems = getProviders();
+    	Set<String> providerNames = comboItems.keySet();
 
-        tabgroup = new CTabFolder(top, SWT.NONE);
+    	providerCombo = new Combo(top, SWT.READ_ONLY);
+    	providerCombo.setItems(providerNames.toArray(new String[0]));
+    	if (providerNames.size() == 0) {
+    		providerCombo.setVisible(false);
+    		providerCombo.setEnabled(false);
+    		Label label = new Label(top, SWT.NULL);
+    		label.setText(Messages.ProfilingTab_no_category_profilers_installed);
+    	}
+
+    	tabgroup = new CTabFolder(top, SWT.NONE);
         tabgroup.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true,
-                true));
+        		true));
 
         providerCombo.addSelectionListener(new SelectionAdapter() {
             @Override

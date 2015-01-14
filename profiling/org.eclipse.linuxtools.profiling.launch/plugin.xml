@@ -41,39 +41,45 @@
             </class>
             <contextualLaunch>
             <enablement>
-               <with
+               <and>
+               	 <test
+                       args="timing"
+                       property="org.eclipse.linuxtools.profiling.launch.categoryEnabled">
+               	 </test>
+                 <with
                      variable="selection">
-                  <count
+                    <count
                         value="1">
-                  </count>
-                  <iterate>
-                     <or>
-                        <instanceof
+                    </count>
+                    <iterate>
+                       <or>
+                          <instanceof
                               value="org.eclipse.cdt.core.model.IBinary">
-                        </instanceof>
-                        <instanceof
+                          </instanceof>
+                          <instanceof
                               value="org.eclipse.cdt.core.model.ICProject">
-                        </instanceof>
-                        <test
+                          </instanceof>
+                          <test
                               property="org.eclipse.cdt.launch.isExecutable">
-                        </test>
-                        <test
+                          </test>
+                          <test
                               property="org.eclipse.cdt.launch.isCProject">
-                        </test>
-                        <and>
-                           <instanceof
+                          </test>
+                          <and>
+                             <instanceof
                                  value="org.eclipse.ui.IFileEditorInput">
-                           </instanceof>
-                           <adapt
+                             </instanceof>
+                             <adapt
                                  type="org.eclipse.core.resources.IResource">
-                              <adapt
-                                    type="org.eclipse.cdt.core.model.ICElement">
-                              </adapt>
-                           </adapt>
-                        </and>
-                     </or>
-                  </iterate>
-               </with>
+                                <adapt
+                                      type="org.eclipse.cdt.core.model.ICElement">
+                                </adapt>
+                             </adapt>
+                          </and>
+                       </or>
+                    </iterate>
+                 </with>
+               </and>
             </enablement>
          </contextualLaunch>
       </shortcut>
@@ -138,39 +144,45 @@
             </class>
             <contextualLaunch>
             <enablement>
-               <with
+               <and>
+                 <test
+                     args="memory"
+                     property="org.eclipse.linuxtools.profiling.launch.categoryEnabled">
+               	 </test>
+                 <with
                      variable="selection">
-                  <count
+                    <count
                         value="1">
-                  </count>
-                  <iterate>
-                     <or>
-                        <instanceof
+                    </count>
+                    <iterate>
+                       <or>
+                          <instanceof
                               value="org.eclipse.cdt.core.model.IBinary">
-                        </instanceof>
-                        <instanceof
+                          </instanceof>
+                          <instanceof
                               value="org.eclipse.cdt.core.model.ICProject">
-                        </instanceof>
-                        <test
+                          </instanceof>
+                          <test
                               property="org.eclipse.cdt.launch.isExecutable">
-                        </test>
-                        <test
+                          </test>
+                          <test
                               property="org.eclipse.cdt.launch.isCProject">
-                        </test>
-                        <and>
-                           <instanceof
+                          </test>
+                          <and>
+                             <instanceof
                                  value="org.eclipse.ui.IFileEditorInput">
-                           </instanceof>
-                           <adapt
+                             </instanceof>
+                             <adapt
                                  type="org.eclipse.core.resources.IResource">
-                              <adapt
-                                    type="org.eclipse.cdt.core.model.ICElement">
-                              </adapt>
-                           </adapt>
-                        </and>
-                     </or>
-                  </iterate>
-               </with>
+                                <adapt
+                                      type="org.eclipse.cdt.core.model.ICElement">
+                                </adapt>
+                             </adapt>
+                          </and>
+                       </or>
+                    </iterate>
+                 </with>
+               </and>
             </enablement>
          </contextualLaunch>
       </shortcut>
@@ -235,39 +247,45 @@
             </class>
             <contextualLaunch>
             <enablement>
-               <with
+               <and>
+               	 <test
+                       args="coverage"
+                       property="org.eclipse.linuxtools.profiling.launch.categoryEnabled">
+               	 </test>
+                 <with
                      variable="selection">
-                  <count
+                    <count
                         value="1">
-                  </count>
-                  <iterate>
-                     <or>
-                        <instanceof
+                    </count>
+                    <iterate>
+                       <or>
+                          <instanceof
                               value="org.eclipse.cdt.core.model.IBinary">
-                        </instanceof>
-                        <instanceof
+                          </instanceof>
+                          <instanceof
                               value="org.eclipse.cdt.core.model.ICProject">
-                        </instanceof>
-                        <test
+                          </instanceof>
+                          <test
                               property="org.eclipse.cdt.launch.isExecutable">
-                        </test>
-                        <test
+                          </test>
+                          <test
                               property="org.eclipse.cdt.launch.isCProject">
-                        </test>
-                        <and>
-                           <instanceof
+                          </test>
+                          <and>
+                             <instanceof
                                  value="org.eclipse.ui.IFileEditorInput">
-                           </instanceof>
-                           <adapt
+                             </instanceof>
+                             <adapt
                                  type="org.eclipse.core.resources.IResource">
-                              <adapt
-                                    type="org.eclipse.cdt.core.model.ICElement">
-                              </adapt>
-                           </adapt>
-                        </and>
-                     </or>
-                  </iterate>
-               </with>
+                                <adapt
+                                      type="org.eclipse.cdt.core.model.ICElement">
+                                </adapt>
+                             </adapt>
+                          </and>
+                       </or>
+                    </iterate>
+                 </with>
+               </and>
             </enablement>
          </contextualLaunch>
       </shortcut>
@@ -524,4 +542,14 @@
          </configurationType>
     </shortcut>
    </extension>
+         <extension
+               point="org.eclipse.core.expressions.propertyTesters">
+            <propertyTester
+                  class="org.eclipse.linuxtools.profiling.launch.ProfileCategoryEnablementTester"
+                  id="org.eclipse.linuxtools.profiling.launch.CodeCoverageEnablementTester"
+                  namespace="org.eclipse.linuxtools.profiling.launch"
+                  properties="categoryEnabled"
+                  type="java.lang.Object">
+            </propertyTester>
+         </extension>
 </plugin>
