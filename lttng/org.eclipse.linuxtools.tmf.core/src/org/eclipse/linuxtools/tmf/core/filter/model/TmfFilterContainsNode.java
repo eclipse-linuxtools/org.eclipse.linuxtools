@@ -129,7 +129,7 @@ public class TmfFilterContainsNode extends TmfFilterTreeNode {
 
     @Override
     public String toString() {
-        return fField + (fNot ? " not" : "") + " contains \"" + fValue + "\""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        return fField + (fNot ? " not contains " : " contains ") + (fIgnoreCase ? "ignorecase \"" : "\"") + fValue + '\"'; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 
     @Override

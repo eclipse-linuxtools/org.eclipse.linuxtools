@@ -89,6 +89,8 @@ public class TmfFilterNode extends TmfFilterTreeNode {
     @Override
     public String toString() {
         StringBuffer buf = new StringBuffer();
+        buf.append(fFilterName);
+        buf.append(": "); //$NON-NLS-1$
         if (getChildrenCount() > 1) {
             buf.append("( "); //$NON-NLS-1$
         }
