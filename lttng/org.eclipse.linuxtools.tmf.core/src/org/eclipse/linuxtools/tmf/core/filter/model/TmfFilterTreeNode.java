@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Ericsson
+ * Copyright (c) 2010, 2015 Ericsson
  *
  * All rights reserved. This program and the accompanying materials are
  * made available under the terms of the Eclipse Public License v1.0 which
@@ -230,35 +230,5 @@ public abstract class TmfFilterTreeNode implements ITmfFilterTreeNode, Cloneable
         } catch (CloneNotSupportedException e) {
             return null;
         }
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((children == null) ? 0 : children.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        TmfFilterTreeNode other = (TmfFilterTreeNode) obj;
-        if (children == null) {
-            if (other.children != null) {
-                return false;
-            }
-        } else if (!children.equals(other.children)) {
-            return false;
-        }
-        return true;
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Ericsson
+ * Copyright (c) 2010, 2015 Ericsson
  *
  * All rights reserved. This program and the accompanying materials are
  * made available under the terms of the Eclipse Public License v1.0 which
@@ -138,51 +138,5 @@ public class TmfFilterContainsNode extends TmfFilterTreeNode {
         clone.fField = fField;
         clone.setValue(fValue);
         return clone;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((fField == null) ? 0 : fField.hashCode());
-        result = prime * result + (fIgnoreCase ? 1231 : 1237);
-        result = prime * result + (fNot ? 1231 : 1237);
-        result = prime * result + ((fValue == null) ? 0 : fValue.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        TmfFilterContainsNode other = (TmfFilterContainsNode) obj;
-        if (fField == null) {
-            if (other.fField != null) {
-                return false;
-            }
-        } else if (!fField.equals(other.fField)) {
-            return false;
-        }
-        if (fIgnoreCase != other.fIgnoreCase) {
-            return false;
-        }
-        if (fNot != other.fNot) {
-            return false;
-        }
-        if (fValue == null) {
-            if (other.fValue != null) {
-                return false;
-            }
-        } else if (!fValue.equals(other.fValue)) {
-            return false;
-        }
-        return true;
     }
 }
