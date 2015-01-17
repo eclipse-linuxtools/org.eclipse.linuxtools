@@ -21,9 +21,7 @@ import org.eclipse.cdt.ui.CUIPlugin;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -79,7 +77,6 @@ public abstract class GcovTest extends AbstractTest {
             @Override
             public void run() {
                 try {
-                    ResourcesPlugin.getWorkspace().getRoot();
                     window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
                     IWorkbenchPart part = window.getActivePage().getActivePart();
                     if (part.getTitle().equals("Welcome")) {
@@ -131,11 +128,12 @@ public abstract class GcovTest extends AbstractTest {
     @AfterClass
     public static void finalCleanUp() {
         try {
-            project.delete(true, new NullProgressMonitor());
+            project.delete(true, null);
         } catch (CoreException e) {
             Assert.fail("Project deletion failed");
+        } finally {
+            project = null;
         }
-        project = null;
     }
 
     @Test
