@@ -12,21 +12,16 @@
 
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -34,9 +29,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.CommentRemover;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSetParser;
@@ -67,13 +60,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.ResourceUtil;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.ui.texteditor.IDocumentProvider;
-import org.eclipse.ui.texteditor.ITextEditor;
 
 public class SystemTapScriptGraphOptionsTab extends
             AbstractLaunchConfigurationTab {
@@ -163,7 +152,7 @@ public class SystemTapScriptGraphOptionsTab extends
     /**
      * A two-dimensional list that holds references to the names given to each regular expression's captured groups.
      */
-    private List<ArrayList<String>> columnNamesList = new ArrayList<>();
+    private List<List<String>> columnNamesList = new ArrayList<>();
 
     /**
      * A list holding the data of every graph for the selected regular expression.
@@ -252,216 +241,48 @@ public class SystemTapScriptGraphOptionsTab extends
                 return;
             }
 
-            textListenersEnabled = false;
-            // If editor of this file is open, take current file contents.
-            String contents = null;
-            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-            IEditorPart editor = ResourceUtil.findEditor(workbench.getActiveWorkbenchWindow().getActivePage(), root.getFile(scriptPath.makeRelativeTo(root.getLocation())));
-            if (editor != null) {
-                ITextEditor tEditor = (ITextEditor) editor.getAdapter(ITextEditor.class);
-                if (tEditor != null) {
-                    IDocumentProvider provider = tEditor.getDocumentProvider();
-                    IDocument document = provider.getDocument(tEditor.getEditorInput());
-                    contents = document.get();
-                }
-            }
+            List<Entry<String, Integer>> regexs = SystemTapRegexGenerator.generateFromPrintf(scriptPath, MAX_NUMBER_OF_REGEXS);
 
-            // If chosen file is not being edited or is outside of the workspace, use the saved contents of the file itself.
-            if (contents == null) {
-                File scriptFile = scriptPath.toFile();
-                try (FileInputStream f = new FileInputStream(scriptFile)) {
-                    byte[] data = new byte[(int)scriptFile.length()];
-                    f.read(data);
-                    f.close();
-                    contents = new String(data, Charset.defaultCharset());
-                } catch (IOException e1) {
-                    dialog = new MessageDialog(workbench
-                            .getActiveWorkbenchWindow().getShell(), Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsErrorTitle, null,
-                            Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsError,
-                            MessageDialog.ERROR, new String[]{"OK"}, 0); //$NON-NLS-1$
-                    dialog.open();
-                    return;
-                }
-            }
-
-            // Delete comments from the file contents. Ignore comment markers between quotes.
-            contents = CommentRemover.exec(contents);
-
-            // Now actually search the contents for "printf(...)" statements. (^|[\s({;])printf\("(.+?)",.+\)
-            Pattern pattern = Pattern.compile("(?<=[^\\w])printf\\(\"(.+?)\",.+?\\)"); //$NON-NLS-1$
-            Matcher matcher = pattern.matcher(contents);
-            boolean firstfound = false;
-            while (matcher.find() && (!firstfound || getNumberOfRegexs() < MAX_NUMBER_OF_REGEXS)) {
-                String regex = null;
-
-                // Note: allow optional "long" modifier 'l'. Not captured because it doesn't impact output format.
-                // Also, don't support variable width/precision modifiers (*).
-                // TODO: Consider %m & %M support.
-                Pattern format = Pattern.compile("%([-\\+ \\#0])?(\\d+)?(\\.\\d*)?l?([bcdiopsuxX%])"); //$NON-NLS-1$
-
-                // Only capture until newlines to preserve the "column" format.
-                // Don't try gluing together output from multiple printfs
-                // since asynchronous prints would make things messy.
-                String[] printls = matcher.group(1).split("\\\\n"); //$NON-NLS-1$
-                for (int i = 0; i < printls.length; i++) {
-                    String printl = printls[i];
-                    // Ignore newlines if they are escaped ("\\n").
-                    if (printl.endsWith("\\")) { //$NON-NLS-1$
-                        printls[i+1] = printl.concat("\\n" + printls[i+1]); //$NON-NLS-1$
-                        continue;
-                    }
-
-                    Matcher fmatch = format.matcher(printl);
-                    int lastend = 0;
-                    ArrayList<String> columnNames = new ArrayList<>();
-                    int r = 0;
-
-                    while (fmatch.find()) {
-                        char chr = fmatch.group(4) == null ? '\0' : fmatch.group(4).charAt(0);
-                        if (chr == '\0') {
-                            // Skip this statement if an invalid regex is found.
-                            regex = null;
-                            break;
-                        }
-                        char flag = fmatch.group(1) == null ? '\0' : fmatch.group(1).charAt(0);
-                        int width = fmatch.group(2) == null ? 0 : Integer.parseInt(fmatch.group(2));
-                        String precision = fmatch.group(3) == null ? null : fmatch.group(3).substring(1);
-
-                        // First, add any non-capturing characters.
-                        String pre = addRegexEscapes(printl.substring(lastend, fmatch.start()));
-                        regex = lastend > 0 ? regex.concat(pre) : pre;
-                        lastend = fmatch.end();
-
-                        // Now add what will be captured.
-                        String target = "("; //$NON-NLS-1$
-                        if (chr == 'u' || (flag != '#' && chr == 'o')) {
-                            target = target.concat("\\d+"); //$NON-NLS-1$
-                        }
-                        else if (chr == 'd' || chr == 'i') {
-                            if (flag == '+') {
-                                target = target.concat("\\+|"); //$NON-NLS-1$
-                            } else if (flag == ' ') {
-                                target = target.concat(" |"); //$NON-NLS-1$
-                            }
-                            target = target.concat("-?\\d+"); //$NON-NLS-1$
-                        }
-                        else if (flag == '#' && chr == 'o') {
-                            target = target.concat("0\\d+"); //$NON-NLS-1$
-                        }
-                        else if (chr == 'p') {
-                            target = target.concat("0x[a-f0-9]+"); //$NON-NLS-1$
-                        }
-                        else if (chr == 'x') {
-                            if (flag == '#') {
-                                target = target.concat("0x"); //$NON-NLS-1$
-                            }
-                            target = target.concat("[a-f0-9]+"); //$NON-NLS-1$
-                        }
-                        else if (chr == 'X') {
-                            if (flag == '#') {
-                                target = target.concat("0X"); //$NON-NLS-1$
-                            }
-                            target = target.concat("[A-F0-9]+"); //$NON-NLS-1$
-                        }
-                        else if (chr == 'b') {
-                            target = target.concat("."); //$NON-NLS-1$
-                        }
-                        else if (chr == 'c') {
-                            if (flag != '#') {
-                                target = target.concat("."); //$NON-NLS-1$
-                            } else {
-                                target = target.concat("\\([a-z]|[0-9]{3})|.|\\\\"); //$NON-NLS-1$
-                            }
-                        }
-                        else if (chr == 's') {
-                            if (precision != null) {
-                                target = target.concat(".{" + precision + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                            } else {
-                                target = target.concat(".+"); //$NON-NLS-1$
-                            }
-                        }
-                        else {
-                            // Invalid or unhandled format specifier. Skip this regex.
-                            regex = null;
-                            break;
-                        }
-
-                        target = target.concat(")"); //$NON-NLS-1$
-
-                        // Handle the optional width specifier.
-                        // Ignore it for %b, which uses the width value in a different way.
-                        if (chr != 'b' && --width > 0) {
-                            if (flag == '-') {
-                                target = target.concat(" {0," + width + "}"); //$NON-NLS-1$ //$NON-NLS-2$
-                            } else if (flag != '0' || chr == 's' || chr == 'c') {
-                                target = " {0," + width + "}".concat(target); //$NON-NLS-1$ //$NON-NLS-2$
-                            }
-                        }
-
-                        regex = regex.concat(target);
-                        columnNames.add(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_defaultColumnTitleBase, ++r));
-                    }
-                    if (regex != null) {
-                        if (!firstfound) {
-                            // Since script output has been found, reset the configuration's regexs.
-                            // Only reset once/if something is found, and do it only one time.
-                            regularExpressionCombo.removeAll();
-                            outputList.clear();
-                            regexErrorMessages.clear();
-                            columnNamesList.clear();
-                            cachedNamesList.clear();
-                            graphsTable.removeAll();
-                            graphsDataList.clear();
-                            badGraphs.clear();
-                            firstfound = true;
-                        }
-                        // Finally, add the uncaptured remainder of the print statement to the regex.
-                        regex = regex.concat(addRegexEscapes(printl.substring(lastend)));
-
-                        regularExpressionCombo.add(regex);
-                        outputList.add(""); //$NON-NLS-1$ //For empty "sample output" entry.
-                        regexErrorMessages.add(null);
-                        columnNamesList.add(columnNames);
-                        cachedNamesList.add(new Stack<String>());
-                        graphsDataList.add(new LinkedList<GraphData>());
-                    }
-                }
-            }
-            textListenersEnabled = true;
-
-            if (!firstfound) {
+            if (regexs.size() == 0) {
                 dialog = new MessageDialog(workbench
                         .getActiveWorkbenchWindow().getShell(), Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsErrorTitle, null,
                         Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsEmpty,
                         MessageDialog.ERROR, new String[]{"OK"}, 0); //$NON-NLS-1$
                 dialog.open();
-                return;
-            }
+            } else {
+                // Since script output has been found, reset the configuration's regexs.
+                textListenersEnabled = false;
+                regularExpressionCombo.removeAll();
+                outputList.clear();
+                regexErrorMessages.clear();
+                columnNamesList.clear();
+                cachedNamesList.clear();
+                graphsTable.removeAll();
+                graphsDataList.clear();
+                badGraphs.clear();
+                for (int i = 0, n = regexs.size(); i < n; i++) {
+                    List<String> columnNames = new ArrayList<>();
+                    for (int c = 0, numColumns = regexs.get(i).getValue(); c < numColumns; c++) {
+                        columnNames.add(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_defaultColumnTitleBase, c+1));
+                    }
+                    regularExpressionCombo.add(regexs.get(i).getKey());
+                    outputList.add(""); //$NON-NLS-1$ //For empty "sample output" entry.
+                    regexErrorMessages.add(null);
+                    columnNamesList.add(columnNames);
+                    cachedNamesList.add(new Stack<String>());
+                    graphsDataList.add(new LinkedList<GraphData>());
+                }
+                if (getNumberOfRegexs() < MAX_NUMBER_OF_REGEXS) {
+                    regularExpressionCombo.add(Messages.SystemTapScriptGraphOptionsTab_regexAddNew);
+                }
+                textListenersEnabled = true;
 
-            if (getNumberOfRegexs() < MAX_NUMBER_OF_REGEXS) {
-                regularExpressionCombo.add(Messages.SystemTapScriptGraphOptionsTab_regexAddNew);
+                removeRegexButton.setEnabled(getNumberOfRegexs() > 1);
+                regularExpressionCombo.select(0);
+                updateRegexSelection(0, true);
+                checkAllOtherErrors(); // Check for errors in case there was a problem with regex generation
+                updateLaunchConfigurationDialog();
             }
-
-            removeRegexButton.setEnabled(getNumberOfRegexs() > 1);
-            regularExpressionCombo.select(0);
-            updateRegexSelection(0, true);
-            checkAllOtherErrors(); // Check for errors in case there was a problem with regex generation
-            updateLaunchConfigurationDialog();
-        }
-
-        /**
-         * This escapes all special regex characters in a string. Escapes must be added
-         * to the generated regexs to capture printf output that doesn't
-         * come from format specifiers (aka literal strings).
-         * @param s The string to add escapes to.
-         * @return The same string, after it has been modified with escapes.
-         */
-        private String addRegexEscapes(String s) {
-            String schars = "[^$.|?*+(){}"; //$NON-NLS-1$
-            for (int i = 0; i < schars.length(); i++) {
-                s = s.replaceAll("(\\" + schars.substring(i,i+1) + ")", "\\\\$1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
-            return s;
         }
     };
 
@@ -983,7 +804,7 @@ public class SystemTapScriptGraphOptionsTab extends
 
         // Update the number of columns and their titles here, and not in refreshRegexRows,
         // using the list of saved active names instead of a cachedNames stack.
-        ArrayList<String> columnNames = columnNamesList.get(selectedRegex);
+        List<String> columnNames = columnNamesList.get(selectedRegex);
         int desiredNumberOfColumns = columnNames.size();
         // Remove all columns to easily update them all immediately afterwards.
         while (numberOfVisibleColumns > 0) {
@@ -1384,7 +1205,7 @@ public class SystemTapScriptGraphOptionsTab extends
             configuration.setAttribute(REGULAR_EXPRESSION + r, regularExpressionCombo.getItem(r));
             configuration.setAttribute(SAMPLE_OUTPUT + r, outputList.get(r));
 
-            ArrayList<String> columnNames = columnNamesList.get(r);
+            List<String> columnNames = columnNamesList.get(r);
             int numberOfColumns = columnNames.size();
             for (int i = 0; i < numberOfColumns; i++) {
                 configuration.setAttribute(get2DConfigData(REGEX_BOX, r, i), columnNames.get(i));
