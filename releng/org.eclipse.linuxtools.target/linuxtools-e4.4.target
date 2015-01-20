@@ -10,28 +10,27 @@
 <unit id="org.apache.xerces" version="2.9.0.v201101211617"/>
 <unit id="org.apache.derby" version="0.0.0"/>
 <unit id="org.json" version="0.0.0"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository/"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/M20150114164045/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.cdt.sdk.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.cdt.autotools.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/tools/cdt/releases/8.5"/>
+<repository location="http://download.eclipse.org/tools/cdt/builds/luna/milestones"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.platform.ide" version="0.0.0"/>
 <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.pde.runtime" version="0.0.0"/>
-<unit id="org.eclipse.test.feature.group" version="0.0.0"/>
 <!-- Not including the whole JDT on purpose to avoid jdt.annotation 2.0.0 that requires Java 8 -->
 <unit id="org.eclipse.jdt.annotation" version="1.1.0.v20140129-1625"/>
 <unit id="org.eclipse.jdt.core" version="0.0.0"/>
 <unit id="org.eclipse.jdt.debug.ui" version="0.0.0"/>
 <unit id="org.eclipse.jdt.ui" version="0.0.0"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
+<repository location="http://download.eclipse.org/releases/maintenance"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.rse.sdk.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/tm/updates/3.6"/>
+<unit id="org.eclipse.test.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.ptp.rdt.feature.group" version="0.0.0"/>
