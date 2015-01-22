@@ -13,17 +13,15 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.views;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.runtime.Assert;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.handlers.HandlerUtil;
 
+/**
+ * A handler for refreshing the contents of {@link BrowserView}s.
+ */
 public class RefreshHandler extends AbstractHandler {
     public static final String COMMAND_ID = "org.eclipse.linuxtools.systemtap.ui.ide.refreshView"; //$NON-NLS-1$
-    private BrowserView view;
     private boolean active = true;
-
-    public RefreshHandler(final BrowserView view) {
-        Assert.isNotNull(view);
-        this.view = view;
-    }
 
     /**
      * Use this method to enable/disable the handler. Simpler than working with
@@ -37,20 +35,17 @@ public class RefreshHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) {
         if (active) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    view.refresh();
-                }
-            }).start();
+            final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
+            if (activePart instanceof BrowserView) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((BrowserView) activePart).refresh();
+                    }
+                }).start();
+            }
         }
         return null;
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        view = null;
     }
 
 }
