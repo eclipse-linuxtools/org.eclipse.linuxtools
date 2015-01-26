@@ -152,9 +152,11 @@ class OprofiledLogDialog extends MessageDialog {
         area.setLayoutData(gd);
 
         Text txt = new Text(area, SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL | SWT.BORDER);
-        txt.setText(textContent);
+        //Check if the textContent isn't null
+        if (textContent != null){
+            txt.setText(textContent);
+        }
         txt.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
         return area;
     }
 }
