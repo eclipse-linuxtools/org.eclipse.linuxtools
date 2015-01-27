@@ -49,7 +49,7 @@ public class FilterDialog extends Dialog {
         getShell().setMinimumSize(getShell().computeSize(500, 200));
         Composite composite = (Composite) super.createDialogArea(parent);
 
-        fViewer = new FilterViewer(composite, SWT.BORDER);
+        fViewer = new FilterViewer(composite, SWT.BORDER, true);
         fViewer.setInput(fRoot);
         return composite;
     }
