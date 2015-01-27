@@ -38,8 +38,8 @@ public class CopyHandler extends AbstractHandler {
         }
         IWorkbenchPage page = window.getActivePage();
         FilterView part = (FilterView) page.getActivePart();
-        ISelection selection = getSelection(part);
 
+        ISelection selection = getSelection(part);
         LocalSelectionTransfer.getTransfer().setSelection(selection);
         LocalSelectionTransfer.getTransfer().setSelectionSetTime(System.currentTimeMillis());
         return null;
@@ -70,7 +70,8 @@ public class CopyHandler extends AbstractHandler {
         if (part instanceof FilterView) {
             FilterView tcv = (FilterView) part;
             ISelection selection = tcv.getSite().getSelectionProvider().getSelection();
-            if (!selection.isEmpty()) {
+            // only enable if tree is in focus
+            if (!selection.isEmpty() && tcv.isTreeInFocus()) {
                 return true;
             }
         }
