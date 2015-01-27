@@ -13,9 +13,9 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.views;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.FunctionBrowserAction;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.FunctionParser;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.ISingleTypedNode;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.tparsers.FunctionParser;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.swt.graphics.Image;
 

@@ -124,7 +124,6 @@ public class STPCompletionProcessorTest {
         int offset = TEST_STP_SCRIPT.indexOf("//marker1");
 
         STPCompletionProcessor completionProcessor = new STPCompletionProcessor();
-        completionProcessor.waitForInitialization();
         ICompletionProposal[] proposals = completionProcessor
                 .computeCompletionProposals(testDocument,
                         offset);
@@ -188,7 +187,6 @@ public class STPCompletionProcessorTest {
         offset += prefix.length() - 1;
 
         STPCompletionProcessor completionProcessor = new STPCompletionProcessor();
-        completionProcessor.waitForInitialization();
         ICompletionProposal[] proposals = completionProcessor
                 .computeCompletionProposals(testDocument,
                         offset);
@@ -245,7 +243,6 @@ public class STPCompletionProcessorTest {
         offset += prefix.length();
 
         STPCompletionProcessor completionProcessor = new STPCompletionProcessor();
-        completionProcessor.waitForInitialization();
 
         ICompletionProposal[] proposals = completionProcessor
                 .computeCompletionProposals(testDocument,
@@ -265,7 +262,6 @@ public class STPCompletionProcessorTest {
         offset += prefix.length() - 1;
 
         STPCompletionProcessor completionProcessor = new STPCompletionProcessor();
-        completionProcessor.waitForInitialization();
 
         ICompletionProposal[] proposals = completionProcessor
                 .computeCompletionProposals(testDocument,

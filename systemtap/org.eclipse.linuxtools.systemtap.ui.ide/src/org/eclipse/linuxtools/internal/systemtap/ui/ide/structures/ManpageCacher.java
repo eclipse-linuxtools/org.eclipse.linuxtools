@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
@@ -34,7 +35,19 @@ public class ManpageCacher {
     }
 
     public static synchronized void clear() {
-        pages.clear();
+        clear(TapsetItemType.values());
+    }
+
+    public static synchronized void clear(TapsetItemType ...types) {
+        Iterator<String> keys = pages.keySet().iterator();
+        while (keys.hasNext()) {
+            for (TapsetItemType type : types) {
+                if (keys.next().startsWith(type.toString())) {
+                    keys.remove();
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -108,10 +121,11 @@ public class ManpageCacher {
     }
 
     private static String createFullElement(TapsetItemType prefix, String ...elements) {
-        String fullElement = prefix.toString();
+        StringBuilder fullElement = new StringBuilder();
+        fullElement.append(prefix.toString());
         for (String element : elements) {
-            fullElement += SPLITTER + element;
+            fullElement.append(SPLITTER + element);
         }
-        return fullElement;
+        return fullElement.toString();
     }
 }

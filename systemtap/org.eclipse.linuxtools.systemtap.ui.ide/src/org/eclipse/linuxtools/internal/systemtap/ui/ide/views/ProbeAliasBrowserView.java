@@ -15,10 +15,10 @@ import java.util.List;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.ProbeAliasAction;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.ProbeParser;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.ProbeNodeData;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.ProbevarNodeData;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.tparsers.ProbeParser;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;

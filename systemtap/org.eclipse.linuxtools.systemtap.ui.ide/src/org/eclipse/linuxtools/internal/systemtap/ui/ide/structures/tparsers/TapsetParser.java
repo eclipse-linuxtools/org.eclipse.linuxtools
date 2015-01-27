@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.tparsers;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +25,7 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.StringOutputStream;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.EnvironmentVariablesPreferencePage;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.Messages;
 import org.eclipse.linuxtools.systemtap.structures.runnable.StringStreamGobbler;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
@@ -67,25 +68,34 @@ public abstract class TapsetParser extends Job {
     }
 
     /**
-     * Generates a {@link Status} with the provided severity.
+     * Generates a {@link Status} with the provided severity,
+     * and given an appropriate error message.
      */
     protected IStatus createStatus(int severity) {
         String message;
+        IPreferenceStore ps = IDEPlugin.getDefault().getPreferenceStore();
         switch (severity) {
         case IStatus.ERROR:
-            if (IDEPlugin.getDefault().getPreferenceStore().getBoolean(IDEPreferenceConstants.P_REMOTE_PROBES)) {
+            if (ps.getBoolean(IDEPreferenceConstants.P_REMOTE_PROBES)) {
                 IPreferenceStore p = ConsoleLogPlugin.getDefault().getPreferenceStore();
                 message = MessageFormat.format(
-                        Messages.TapsetParser_CannotRunRemoteStapMessage,
+                        Messages.TapsetParser_ErrorCannotRunRemoteStap,
                         p.getString(ConsoleLogPreferenceConstants.SCP_USER),
                         p.getString(ConsoleLogPreferenceConstants.HOST_NAME));
             } else {
-                message = Messages.TapsetParser_CannotRunStapMessage;
+                message = Messages.TapsetParser_ErrorCannotRunStap;
             }
             break;
         default:
             message = ""; //$NON-NLS-1$
         }
+        return createStatus(severity, message);
+    }
+
+    /**
+     * Generates a {@link Status} with the provided severity and message.
+     */
+    protected IStatus createStatus(int severity, String message) {
         return new Status(severity, IDEPlugin.PLUGIN_ID, message);
     }
 

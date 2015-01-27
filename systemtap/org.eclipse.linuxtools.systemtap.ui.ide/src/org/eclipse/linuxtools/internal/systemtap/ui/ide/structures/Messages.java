@@ -23,10 +23,9 @@ public class Messages extends NLS {
     public static String ProbeParser_errorInitializingStaticProbes;
     public static String ProbeParser_staticProbes;
     public static String ProbeParser_aliasProbes;
-    public static String ProbeParser_illegalArgMessage;
-    public static String TapsetParser_CannotRunStapMessage;
-    public static String TapsetParser_CannotRunRemoteStapMessage;
-    public static String TapsetParser_ErrorRunningSystemtap;
+    public static String TapsetParser_ErrorCannotRunStap;
+    public static String TapsetParser_ErrorCannotRunRemoteStap;
+    public static String TapsetParser_ErrorInvalidTapsetTree;
     public static String TapsetParser_RemoteCredentialErrorTitle;
     public static String TapsetParser_RemoteCredentialErrorMessage;
     static {

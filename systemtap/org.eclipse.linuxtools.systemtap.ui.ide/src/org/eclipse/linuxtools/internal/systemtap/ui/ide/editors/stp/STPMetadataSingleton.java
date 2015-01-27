@@ -44,10 +44,6 @@ public final class STPMetadataSingleton {
         return instance;
     }
 
-    public void waitForInitialization() {
-        TapsetLibrary.waitForInitialization();
-    }
-
     public TreeNode[] getFunctionCompletions(String prefix) {
         TreeNode node = TapsetLibrary.getFunctions();
         return getMatchingChildren(node, prefix);
@@ -58,10 +54,6 @@ public final class STPMetadataSingleton {
         String groupName = extractProbeGroupName(prefix);
 
         for (TreeNode node : TapsetLibrary.getProbeCategoryNodes()) {
-            if (node == null) {
-                continue;
-            }
-
             TreeNode groupNode = node.getChildByName(groupName);
             if (groupNode != null) {
                 node = groupNode;

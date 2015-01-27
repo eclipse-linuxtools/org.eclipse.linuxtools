@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata;
 
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.FunctionParser;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.tparsers.FunctionParser;
 
 
 /**

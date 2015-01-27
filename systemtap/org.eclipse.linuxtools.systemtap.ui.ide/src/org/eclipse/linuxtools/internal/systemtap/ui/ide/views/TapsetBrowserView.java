@@ -15,8 +15,10 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
-import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetParser;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.tparsers.TapsetParser;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.tparsers.TreeTapsetParser;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -28,20 +30,21 @@ public abstract class TapsetBrowserView extends BrowserView {
     /**
      * The parser that the contents of this view rely on.
      */
-    private final TapsetParser parser;
+    private final TreeTapsetParser parser;
+    private final Object lock = new Object();
 
     protected JobChangeAdapter viewUpdater = new JobChangeAdapter() {
 
         @Override
         public void aboutToRun(IJobChangeEvent event) {
-            synchronized (TapsetBrowserView.this) {
+            synchronized (lock) {
                 displayLoadingMessage();
             }
         }
 
         @Override
         public void done(IJobChangeEvent event) {
-            synchronized (TapsetBrowserView.this) {
+            synchronized (lock) {
                 if (event.getResult().isOK()) {
                     displayContents();
                 } else {
@@ -54,10 +57,10 @@ public abstract class TapsetBrowserView extends BrowserView {
 
     /**
      * Creates a new {@link BrowserView} for displaying tapset contents, which will
-     * be provided by an externally-run {@link TapsetParser}.
+     * be provided by an externally-run {@link TreeTapsetParser}.
      * @param job The parser used to obtain the tapset contents this view will display.
      */
-    public TapsetBrowserView(TapsetParser parser) {
+    public TapsetBrowserView(TreeTapsetParser parser) {
         Assert.isNotNull(parser);
         this.parser = parser;
     }
@@ -65,25 +68,20 @@ public abstract class TapsetBrowserView extends BrowserView {
     @Override
     public void createPartControl(Composite parent) {
         super.createPartControl(parent);
-        parser.addJobChangeListener(viewUpdater);
-        updateContents();
         makeActions();
-    }
 
-    /**
-     * Updates the contents of this view without using the job listener.
-     * Use this when the result of the parser may be missed by the listener.
-     */
-    private synchronized void updateContents() {
-        IStatus result = parser.getResult();
-        if (result != null) {
-            if (result.isOK()) {
-                displayContents();
+        // Add listener and display initial contents based on the state of the last parser job.
+        synchronized (lock) {
+            IStatus result = parser.safelyAddJobChangeListener(viewUpdater);
+            if (result != null) {
+                if (result.isOK()) {
+                    displayContents();
+                } else {
+                    displayCancelContents();
+                }
             } else {
-                displayCancelContents();
+                displayLoadingMessage();
             }
-        } else {
-            displayLoadingMessage();
         }
     }
 
@@ -108,7 +106,7 @@ public abstract class TapsetBrowserView extends BrowserView {
      * Automatically called whenever a parse job fails; should not be called by clients.
      */
     protected void displayCancelContents() {
-        setViewerInput(null);
+        displayMessage(Localization.getString("BrowserView.TryRefresh")); //$NON-NLS-1$
         setRefreshable(true);
     }
 

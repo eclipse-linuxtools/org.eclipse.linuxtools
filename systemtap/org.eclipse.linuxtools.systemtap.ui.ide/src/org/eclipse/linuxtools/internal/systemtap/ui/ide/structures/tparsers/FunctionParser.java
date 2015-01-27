@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.tparsers;
 
 import java.text.MessageFormat;
 import java.util.Scanner;
@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.CommentRemover;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.Messages;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.FuncparamNodeData;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.FunctionNodeData;
 import org.eclipse.linuxtools.systemtap.structures.TreeDefinitionNode;

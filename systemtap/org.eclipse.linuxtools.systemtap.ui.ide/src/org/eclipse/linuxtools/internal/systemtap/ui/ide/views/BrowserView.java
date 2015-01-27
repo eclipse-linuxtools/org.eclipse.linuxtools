@@ -106,7 +106,8 @@ public abstract class BrowserView extends ViewPart {
         @Override
         public Image getImage(Object obj) {
             TreeNode treeObj = (TreeNode) obj;
-            if (treeObj.toString().equals(Localization.getString("BrowserView.Loading"))) { //$NON-NLS-1$
+            if (treeObj.toString().equals(Localization.getString("BrowserView.Loading")) //$NON-NLS-1$
+             || treeObj.toString().equals(Localization.getString("BrowserView.TryRefresh"))) { //$NON-NLS-1$
                 return null;
             }
             return getEntryImage(treeObj);

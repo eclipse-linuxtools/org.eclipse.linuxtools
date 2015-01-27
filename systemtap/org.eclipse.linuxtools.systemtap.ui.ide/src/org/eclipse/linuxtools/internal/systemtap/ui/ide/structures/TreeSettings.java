@@ -86,7 +86,9 @@ public final class TreeSettings {
      * @return <code>true</code> if the caching is successful.
      */
     public static synchronized boolean setTrees(TreeNode functions, TreeNode probes) {
-        if (functions == null || probes == null || !isTreeFileAvailable()) {
+        if (functions == null || probes == null
+                || functions == cachedFunctions || probes == cachedProbes
+                || !isTreeFileAvailable()) {
             return false;
         }
 
@@ -134,14 +136,8 @@ public final class TreeSettings {
     }
 
     private static void clearCachedTrees() {
-        if (cachedFunctions != null) {
-            cachedFunctions.dispose();
-            cachedFunctions = null;
-        }
-        if (cachedProbes != null) {
-            cachedProbes.dispose();
-            cachedProbes = null;
-        }
+        cachedFunctions = null;
+        cachedProbes = null;
     }
 
     /**

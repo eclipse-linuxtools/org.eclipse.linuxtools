@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures;
+package org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.tparsers;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.Messages;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.ProbeNodeData;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.ProbevarNodeData;
 import org.eclipse.linuxtools.systemtap.structures.TreeDefinitionNode;
@@ -60,10 +61,10 @@ public final class ProbeParser extends TreeTapsetParser {
      * be two nodes respectively named "Static Probes" and "Probe Alias".
      */
     @Override
-    protected String isValidTree(TreeNode tree) {
-        return tree.getChildByName(Messages.ProbeParser_staticProbes) != null
-                && tree.getChildByName(Messages.ProbeParser_aliasProbes) != null
-                ? null : Messages.ProbeParser_illegalArgMessage;
+    protected boolean isValidTree(TreeNode tree) {
+        return super.isValidTree(tree) &&
+                tree.getChildByName(Messages.ProbeParser_staticProbes) != null
+                && tree.getChildByName(Messages.ProbeParser_aliasProbes) != null;
     }
 
     /**
