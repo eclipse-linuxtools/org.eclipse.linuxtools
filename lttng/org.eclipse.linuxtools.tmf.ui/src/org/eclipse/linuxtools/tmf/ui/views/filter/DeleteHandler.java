@@ -39,6 +39,7 @@ public class DeleteHandler extends AbstractHandler {
         }
         IWorkbenchPage page = window.getActivePage();
         FilterView part = (FilterView) page.getActivePart();
+
         ISelection sel = part.getViewSite().getSelectionProvider().getSelection();
         if (sel instanceof IStructuredSelection) {
             IStructuredSelection selection = (IStructuredSelection) sel;
@@ -66,7 +67,8 @@ public class DeleteHandler extends AbstractHandler {
         if (part instanceof FilterView) {
             FilterView tcv = (FilterView) part;
             ISelection selection = tcv.getSite().getSelectionProvider().getSelection();
-            if (!selection.isEmpty()) {
+            // only enable if tree is in focus
+            if (!selection.isEmpty() && tcv.isTreeInFocus()) {
                 return true;
             }
         }
