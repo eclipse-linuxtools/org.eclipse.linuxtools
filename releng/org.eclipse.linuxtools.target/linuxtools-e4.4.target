@@ -21,6 +21,9 @@
 <unit id="org.eclipse.platform.ide" version="0.0.0"/>
 <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.pde.runtime" version="0.0.0"/>
+<repository location="http://download.eclipse.org/releases/maintenance"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <!-- Not including the whole JDT on purpose to avoid jdt.annotation 2.0.0 that requires Java 8 -->
 <unit id="org.eclipse.jdt.annotation" version="1.1.0.v20140129-1625"/>
 <unit id="org.eclipse.jdt.core" version="0.0.0"/>
