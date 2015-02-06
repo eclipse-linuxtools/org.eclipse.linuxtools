@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.internal.gcov.parser;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.File;
@@ -33,6 +34,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.internal.gcov.Activator;
@@ -55,6 +57,9 @@ public class CovManager implements Serializable {
      *
      */
     private static final long serialVersionUID = 5582066617970911413L;
+    
+    private static String winOSType = ""; //$NON-NLS-1$
+    
     // input
     private final String binaryPath;
     // results
@@ -250,58 +255,99 @@ public class CovManager implements Serializable {
         }
     }
 
+    // Get the Windows OS Type.  We might have to change a path over to Windows format
+    // and this is different on Cygwin vs MingW.
+    private String getWinOSType() {
+    	if (winOSType.equals("")) { //$NON-NLS-1$
+    		try {
+    			Process process = Runtime.getRuntime().exec(new String[] {"sh", "-c", "echo $OSTYPE"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    			@SuppressWarnings("resource")
+				BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
+    			String firstLine = null;
+    			try {
+    				firstLine = stdout.readLine();
+    			} finally {
+    				stdout.close();
+    			}
+    			if (firstLine != null)
+    				winOSType = firstLine.trim();
+    		} catch (IOException e) {
+    			// ignore
+    		}
+    	}
+    	return winOSType;
+    }
+
+    // Get the OS path string.  For Cygwin, translate We add a Win check to handle MingW.
+    // For MingW, we would rather represent C:\a\b as /C/a/b which
+    // doesn't cause Makefile to choke. For Cygwin we use /cygdrive/C/a/b
+    private String getTransformedPathString(IPath path) {
+    	String s = path.toOSString();
+    	if (Platform.getOS().equals(Platform.OS_WIN32)) {
+    		if (getWinOSType().equals("cygwin")) { //$NON-NLS-1$
+    			s = s.replaceAll("^\\\\cygdrive\\\\([a-zA-Z])", "$1:"); //$NON-NLS-1$ //$NON-NLS-2$            		
+    		} else {
+    			s = s.replaceAll("^\\\\([a-zA-Z])", "$1:"); //$NON-NLS-1$ //$NON-NLS-2$            		
+    		}
+    	}
+    	return s;
+    }
+
     // transform String path to stream
     private DataInput openTraceFileStream(String filePath, String extension, Map<File, File> sourcePath)
-            throws FileNotFoundException {
-        File f = new File(filePath).getAbsoluteFile();
-        String filename = f.getName();
-        if (f.isFile() && f.canRead()) {
-            FileInputStream fis = new FileInputStream(f);
-            InputStream inputStream = new BufferedInputStream(fis);
-            return new DataInputStream(inputStream);
-        } else {
-            String postfix = ""; //$NON-NLS-1$
-            File dir = null;
-            do {
-                if (postfix.isEmpty()) {
-                    postfix = f.getName();
-                } else {
-                    postfix = f.getName() + File.separator + postfix;
-                }
-                f = f.getParentFile();
-                if (f != null) {
-                    dir = sourcePath.get(f);
-                } else {
-                    break;
-                }
-            } while (dir == null);
+    		throws FileNotFoundException {
+    	Path p = new Path(filePath);
+    	// get the file path transformed to work on local OS (e.g. Windows)
+    	filePath = getTransformedPathString(p);
+    	File f = new File(filePath).getAbsoluteFile();
+    	String filename = f.getName();
+    	if (f.isFile() && f.canRead()) {
+    		FileInputStream fis = new FileInputStream(f);
+    		InputStream inputStream = new BufferedInputStream(fis);
+    		return new DataInputStream(inputStream);
+    	} else {
+    		String postfix = ""; //$NON-NLS-1$
+    		File dir = null;
+    		do {
+    			if (postfix.isEmpty()) {
+    				postfix = f.getName();
+    			} else {
+    				postfix = f.getName() + File.separator + postfix;
+    			}
+    			f = f.getParentFile();
+    			if (f != null) {
+    				dir = sourcePath.get(f);
+    			} else {
+    				break;
+    			}
+    		} while (dir == null);
 
-            if (dir != null) {
-                f = new File(dir, postfix);
-                if (f.isFile() && f.canRead()) {
-                    return openTraceFileStream(f.getAbsolutePath(), extension, sourcePath);
-                }
-            }
+    		if (dir != null) {
+    			f = new File(dir, postfix);
+    			if (f.isFile() && f.canRead()) {
+    				return openTraceFileStream(f.getAbsolutePath(), extension, sourcePath);
+    			}
+    		}
 
-            Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-            FileDialog fg = new FileDialog(shell, SWT.OPEN);
-            fg.setFilterExtensions(new String[] { "*" + extension, "*.*", "*" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            fg.setFileName(filename);
-            fg.setText(NLS.bind(Messages.CovManager_No_FilePath_Error, new Object[] { filePath, filename }));
-            String s = fg.open();
-            if (s == null) {
-                return null;
-            } else {
-                f = new File(s).getAbsoluteFile();
-                addSourceLookup(sourcePath, f, new File(filePath).getAbsoluteFile());
-                if (f.isFile() && f.canRead()) {
-                    FileInputStream fis = new FileInputStream(f);
-                    InputStream inputStream = new BufferedInputStream(fis);
-                    return new DataInputStream(inputStream);
-                }
-            }
-        }
-        return null;
+    		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+    		FileDialog fg = new FileDialog(shell, SWT.OPEN);
+    		fg.setFilterExtensions(new String[] { "*" + extension, "*.*", "*" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    		fg.setFileName(filename);
+    		fg.setText(NLS.bind(Messages.CovManager_No_FilePath_Error, new Object[] { filePath, filename }));
+    		String s = fg.open();
+    		if (s == null) {
+    			return null;
+    		} else {
+    			f = new File(s).getAbsoluteFile();
+    			addSourceLookup(sourcePath, f, new File(filePath).getAbsoluteFile());
+    			if (f.isFile() && f.canRead()) {
+    				FileInputStream fis = new FileInputStream(f);
+    				InputStream inputStream = new BufferedInputStream(fis);
+    				return new DataInputStream(inputStream);
+    			}
+    		}
+    	}
+    	return null;
     }
 
     public ArrayList<SourceFile> getAllSrcs() {
