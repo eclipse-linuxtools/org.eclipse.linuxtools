@@ -25,9 +25,9 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
-import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.core.utils.BufferedProcessInputStream;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
@@ -72,14 +72,17 @@ public final class RpmPackageBuildProposalsJob extends Job {
         }
     }
 
-    protected static final IEclipsePreferences.IPreferenceChangeListener PROPERTY_LISTENER = new IEclipsePreferences.IPreferenceChangeListener() {
-        @Override
-        public void preferenceChange(PreferenceChangeEvent event) {
-            if (event.getKey().equals(PreferenceConstants.P_CURRENT_RPMTOOLS)) {
+    protected static final IPropertyChangeListener PROPERTY_LISTENER = new IPropertyChangeListener() {
+
+		@Override
+		public void propertyChange(PropertyChangeEvent event) {
+			if (event.getProperty().equals(PreferenceConstants.P_CURRENT_RPMTOOLS)) {
                 update();
             }
-        }
+		}
     };
+
+    protected static final IPreferenceStore STORE = Activator.getDefault().getPreferenceStore();
 
     /*
      * (non-Javadoc)
@@ -109,17 +112,13 @@ public final class RpmPackageBuildProposalsJob extends Job {
         boolean runJob = false;
         // Today's date
         Date today = new Date();
-        IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
-        if (preferences
-                .getBoolean(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD, PreferenceConstants.DP_RPM_LIST_BACKGROUND_BUILD)) {
-            int period = preferences
-                    .getInt(PreferenceConstants.P_RPM_LIST_BUILD_PERIOD, PreferenceConstants.DP_RPM_LIST_BUILD_PERIOD);
+        if (STORE.getBoolean(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD)) {
+            int period = STORE.getInt(PreferenceConstants.P_RPM_LIST_BUILD_PERIOD);
             // each time that the plugin is loaded.
             if (period == 1) {
                 runJob = true;
             } else {
-                long lastBuildTime = preferences
-                        .getLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD, PreferenceConstants.DP_RPM_LIST_LAST_BUILD);
+                long lastBuildTime = STORE.getLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD);
                 if (lastBuildTime == 0) {
                     runJob = true;
                 } else {
@@ -138,14 +137,11 @@ public final class RpmPackageBuildProposalsJob extends Job {
                 if (job == null) {
                     job = new RpmPackageBuildProposalsJob(Messages.RpmPackageBuildProposalsJob_0);
                     job.lockAndSchedule();
-                    preferences.putLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD, today
-                            .getTime());
+                    STORE.setValue(PreferenceConstants.P_RPM_LIST_LAST_BUILD, today.getTime());
                 } else {
                     job.cancel();
                     job.lockAndSchedule();
-                    preferences.putLong(
-                            PreferenceConstants.P_RPM_LIST_LAST_BUILD, today
-                                    .getTime());
+                    STORE.setValue(PreferenceConstants.P_RPM_LIST_LAST_BUILD, today.getTime());
                 }
             }
         } else {
@@ -177,10 +173,8 @@ public final class RpmPackageBuildProposalsJob extends Job {
      * @return a <code>IStatus</code>
      */
     private IStatus retrievePackageList(IProgressMonitor monitor) {
-        String rpmListCmd = Activator.getDefault().getPreferenceStore()
-                .getString(PreferenceConstants.P_CURRENT_RPMTOOLS);
-        String rpmListFilepath = Activator.getDefault().getPreferenceStore()
-                .getString(PreferenceConstants.P_RPM_LIST_FILEPATH);
+        String rpmListCmd = STORE.getString(PreferenceConstants.P_CURRENT_RPMTOOLS);
+        String rpmListFilepath = STORE.getString(PreferenceConstants.P_RPM_LIST_FILEPATH);
         File bkupFile = new File(rpmListFilepath + ".bkup"); //$NON-NLS-1$
         try {
             monitor.beginTask(Messages.RpmPackageBuildProposalsJob_1,
@@ -252,11 +246,10 @@ public final class RpmPackageBuildProposalsJob extends Job {
      * @param activated Flag indicating whether the listener to be enabled or disabled.
      */
     public static void setPropertyChangeListener(boolean activated) {
-        IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
         if (activated) {
-            preferences.addPreferenceChangeListener(PROPERTY_LISTENER);
+        	STORE.addPropertyChangeListener(PROPERTY_LISTENER);
         } else {
-            preferences.removePreferenceChangeListener(PROPERTY_LISTENER);
+        	STORE.removePropertyChangeListener(PROPERTY_LISTENER);
         }
     }
 
