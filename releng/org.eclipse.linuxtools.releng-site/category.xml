@@ -13,9 +13,6 @@
    <feature url="features/org.eclipse.linuxtools.cdt.libhover.devhelp.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.devhelp.feature" version="0.0.0">
       <category name="Linux Tools Additional Library API Hoverhelp"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.ctf_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.ctf" version="0.0.0">
-      <category name="Linux Tools"/>
-   </feature>
    <feature url="features/org.eclipse.linuxtools.changelog_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.changelog" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
@@ -55,18 +52,6 @@
    <feature url="features/org.eclipse.linuxtools.gcov_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.gcov" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.lttng2.control_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng2.control" version="0.0.0">
-      <category name="Linux Tools"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.lttng2.kernel_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng2.kernel" version="0.0.0">
-      <category name="Linux Tools"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.lttng2.ust_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng2.ust" version="0.0.0">
-      <category name="Linux Tools"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.tmf.pcap_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.tmf.pcap" version="0.0.0">
-      <category name="Linux Tools"/>
-   </feature>
    <feature url="features/org.eclipse.linuxtools.perf_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.perf.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
@@ -82,9 +67,6 @@
    <feature url="features/org.eclipse.linuxtools.perf.remote_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.perf.remote.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.gdbtrace_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.gdbtrace" version="0.0.0">
-      <category name="Linux Tools"/>
-   </feature>
    <!-- Orbit Dependencies -->
    <iu id="org.swtchart" version="0.0.0">
       <category name="Linux Tools"/>
@@ -95,15 +77,6 @@
    <iu id="org.apache.xerces" version="0.0.0">
       <category name="Linux Tools"/>
    </iu>
-   <feature url="features/org.eclipse.linuxtools.tracing.rcp_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.tracing.rcp" version="0.0.0">
-      <category name="Linux Tools LTTng RCP"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.tracing.rcp.branding.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.tracing.rcp.branding.feature" version="0.0.0">
-      <category name="Linux Tools LTTng RCP"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.lttng.testing_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng.testing" version="0.0.0">
-      <category name="Linux Tools LTTng RCP"/>
-   </feature>
    <feature url="features/org.eclipse.linuxtools.cdt.libhover.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.feature.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
@@ -120,9 +93,6 @@
       <category name="Linux Tools Sources"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.changelog.java.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.changelog.java.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.ctf.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.ctf.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.dataviewers.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.dataviewers.feature.source" version="0.0.0">
@@ -152,18 +122,6 @@
    <feature url="features/org.eclipse.linuxtools.valgrind.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.valgrind.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.lttng2.control.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng2.control.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.lttng2.kernel.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng2.kernel.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.lttng2.ust.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng2.ust.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.tmf.pcap.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.tmf.pcap.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
    <feature url="features/org.eclipse.linuxtools.gcov.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.gcov.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
@@ -182,15 +140,6 @@
    <feature url="features/org.eclipse.linuxtools.perf.remote.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.perf.remote.feature.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.gdbtrace.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.gdbtrace.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.tracing.rcp.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.tracing.rcp.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.lttng.testing.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng.testing.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
    <category-def name="Linux Tools" label="Linux Tools">
       <description>
          Eclipse Linux Tools
@@ -204,11 +153,6 @@
    <category-def name="Linux Tools Sources" label="Linux Tools Sources">
       <description>
          Eclipse Linux Tools source features and bundles
-      </description>
-   </category-def>
-   <category-def name="Linux Tools LTTng RCP" label="Linux Tools LTTng RCP">
-      <description>
-         Optional LTTng features
       </description>
    </category-def>
 </site>
