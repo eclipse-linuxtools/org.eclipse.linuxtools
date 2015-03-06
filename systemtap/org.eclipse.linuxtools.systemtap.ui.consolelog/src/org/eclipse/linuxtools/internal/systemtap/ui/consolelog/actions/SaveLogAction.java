@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
+ * Copyright (c) 2006, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,22 +27,23 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * This class is used to allow the user to save the log generated from an active console
- * @author Ryan Morse
  */
 public class SaveLogAction extends ConsoleAction implements ScriptConsoleObserver {
 
     private String logFileName = null;
 
     /**
+     * Creates the action for the given script console.
+     * @param consoleParam The console which log is to be saved.
      * @since 2.0
      */
-    public SaveLogAction(ScriptConsole fConsole) {
-        super(fConsole,
+    public SaveLogAction(ScriptConsole consoleParam) {
+        super(consoleParam,
                 ConsoleLogPlugin.getDefault().getBundle().getEntry("icons/actions/save_log.gif"), //$NON-NLS-1$
                 Localization.getString("action.saveLog.name"), //$NON-NLS-1$
                 Localization.getString("action.saveLog.desc"), //$NON-NLS-1$
                 IAction.AS_CHECK_BOX);
-        console.addScriptConsoleObserver(this);
+        consoleParam.addScriptConsoleObserver(this);
     }
 
     /**

@@ -45,6 +45,7 @@ public class ConsoleLogPlugin extends AbstractUIPlugin {
 
     /**
      * Returns the shared instance.
+     * @return The bundle activator.
      */
     public static ConsoleLogPlugin getDefault() {
         return plugin;

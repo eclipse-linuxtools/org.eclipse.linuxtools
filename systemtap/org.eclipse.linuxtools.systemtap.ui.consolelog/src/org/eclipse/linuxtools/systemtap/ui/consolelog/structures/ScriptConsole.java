@@ -77,6 +77,9 @@ public class ScriptConsole extends IOConsole {
      */
     public interface ScriptConsoleObserver {
         /**
+         * Notifying observer of state change.
+         * @param started If the action is started or not.
+         * @param stopped If the action is stopped or not.
          * @since 3.0
          */
         void runningStateChanged(boolean started, boolean stopped);
@@ -112,7 +115,7 @@ public class ScriptConsole extends IOConsole {
      * is already a console that has the same name as that provided it will be stopped,
      * cleared and returned to the caller to use.  If there is no console matching the
      * provided name then a new <code>ScriptConsole</code> will be created for use.
-     * @param name The name of the console that should be created & returned.
+     * @param name The name of the console that should be created &amp; returned.
      * @return A console of the specified name.
      */
     public synchronized static ScriptConsole getInstance(String name) {
@@ -428,6 +431,9 @@ public class ScriptConsole extends IOConsole {
     }
 
     /**
+     * Add observer to the script console.
+     * 
+     * @param observer The observer to be added.
      * @since 2.0
      */
     public synchronized void addScriptConsoleObserver(ScriptConsoleObserver observer) {
@@ -436,6 +442,8 @@ public class ScriptConsole extends IOConsole {
     }
 
     /**
+     * Removes observer from the script console.
+     * @param observer The observer to be removed.
      * @since 3.0
      */
     public synchronized void removeScriptConsoleObserver(ScriptConsoleObserver observer) {

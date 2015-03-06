@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+ * Copyright (c) 2006, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
+ *     Red Hat Inc. - ongoing maintenance
  *******************************************************************************/
 
 package org.eclipse.linuxtools.systemtap.ui.consolelog.structures;
@@ -15,7 +16,7 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView;
 
 /**
- * A class push data to both the </code>ScriptConsole</code> and the ErrorView
+ * A class push data to both the <code>ScriptConsole</code> and the ErrorView
  * @author Ryan Morse
  */
 public class ErrorStreamDaemon extends ConsoleStreamDaemon {

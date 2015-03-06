@@ -30,6 +30,9 @@ public class ScpClient {
     private Session session;
 
     /**
+     * Creates ScpClient with given options.
+     * @param remoteOptions Connection properties.
+     * @throws JSchException If connection problem occurred.
      * @since 3.0
      */
     public ScpClient(RemoteScriptOptions remoteOptions) throws JSchException {
