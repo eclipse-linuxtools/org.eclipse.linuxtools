@@ -52,7 +52,7 @@
     <mirror-repo-name>updates-nightly</mirror-repo-name>
     <tycho-version>0.22.0</tycho-version>
     <tycho-extras-version>0.22.0</tycho-extras-version>
-    <target-platform>linuxtools-e4.4</target-platform>
+    <target-platform>linuxtools-e4.5</target-platform>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../../target/jacoco.exec</sonar.jacoco.reportPath>
