@@ -122,7 +122,7 @@ public abstract class BrowserView extends ViewPart {
         viewer.setContentProvider(new ViewContentProvider());
         viewer.setLabelProvider(new ViewLabelProvider());
 
-        IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
+        IHandlerService handlerService = getSite().getService(IHandlerService.class);
         collapseHandler = new CollapseAllHandler(getViewer());
         handlerService.activateHandler(CollapseAllHandler.COMMAND_ID, collapseHandler);
         refreshHandler = new RefreshHandler();

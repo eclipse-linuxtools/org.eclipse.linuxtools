@@ -114,7 +114,7 @@ public class ImportRPMsPage extends FormPage implements IResourceChangeListener 
         toolkit.decorateFormHeading(form.getForm());
 
         // add the menuContribution from MANIFEST.MF to the form
-        IMenuService menuService = (IMenuService) getSite().getService(IMenuService.class);
+        IMenuService menuService = getSite().getService(IMenuService.class);
         menuService.populateContributionManager(toolbarManager, MENU_URI);
         toolbarManager.update(true);
 

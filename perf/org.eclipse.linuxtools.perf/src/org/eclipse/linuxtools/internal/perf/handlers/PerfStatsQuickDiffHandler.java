@@ -52,7 +52,7 @@ public class PerfStatsQuickDiffHandler implements IHandler {
         ctx.addVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME,
                 new StructuredSelection(new IResource [] {prevStatFile, curStatFile}));
 
-        ICommandService cmdService = (ICommandService) PlatformUI.getWorkbench().getService(ICommandService.class);
+        ICommandService cmdService = PlatformUI.getWorkbench().getService(ICommandService.class);
         Command cmd = cmdService.getCommand("org.eclipse.linuxtools.perf.CompareAction"); //$NON-NLS-1$
         try {
             cmd.executeWithChecks(event);
