@@ -14,11 +14,10 @@
   <parent>
     <artifactId>linuxtools-rpm-parent</artifactId>
     <groupId>org.eclipse.linuxtools.rpm</groupId>
-    <version>3.2.0-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.rpm</artifactId>
-  <version>2.0.0-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
   <name>Linux Tools RPM Tools Feature</name>

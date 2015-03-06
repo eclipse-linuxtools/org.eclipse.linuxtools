@@ -19,13 +19,12 @@
   <parent>
     <groupId>org.eclipse.linuxtools.man</groupId>
     <artifactId>linuxtools-man-parent</artifactId>
-    <version>3.2.0-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.man</artifactId>
   <packaging>eclipse-feature</packaging>
-  <version>1.0.0-SNAPSHOT</version>
-
+  
   <name>Linux Tools Man Feature (Incubation)</name>
 
   <build>
