@@ -39,9 +39,4 @@
             producer="org.eclipse.linuxtools.internal.cdt.libhover.devhelp.DevHelpContentProducer">
       </contentProducer>
    </extension>
-   <extension
-         point="org.eclipse.ui.startup">
-      <startup></startup>
-   </extension>
-
 </plugin>
