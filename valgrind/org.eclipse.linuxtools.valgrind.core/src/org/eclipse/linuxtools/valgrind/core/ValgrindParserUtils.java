@@ -29,7 +29,7 @@ public final class ValgrindParserUtils {
      * @param line - the line to parse
      * @param delim - the DELIMITER to separate on
      * @return Long value of ARGUMENT
-     * @throws IOException
+     * @throws IOException If parsing failed.
      */
     public static Long parseLongValue(String line, String delim)
     throws IOException {
@@ -49,7 +49,7 @@ public final class ValgrindParserUtils {
      * @param line - the line to parse
      * @param delim - the DELIMITER to separate fields
      * @return String value of ARGUMENT
-     * @throws IOException
+     * @throws IOException If parsing failed. 
      */
     public static String parseStrValue(String line, String delim)
     throws IOException {
@@ -68,7 +68,7 @@ public final class ValgrindParserUtils {
      * @param filename - the file name to parse
      * @param prefix - the prefix of the filename up to the PID
      * @return - the PID portion of the filename as an Integer
-     * @throws IOException
+     * @throws IOException If PID can not be parsed.
      */
     public static Integer parsePID(String filename, String prefix) throws IOException {
         String pidstr = filename.substring(prefix.length(), filename.lastIndexOf(DOT));
@@ -82,7 +82,7 @@ public final class ValgrindParserUtils {
     /**
      * Throws an IOException indicating parsing failed on a given line
      * @param line - line that parsing failed
-     * @throws IOException
+     * @throws IOException If parsing failed.
      */
     public static void fail(String line) throws IOException {
         throw new IOException(NLS.bind(Messages.getString("AbstractValgrindTextParser.Parsing_output_failed"), line)); //$NON-NLS-1$
