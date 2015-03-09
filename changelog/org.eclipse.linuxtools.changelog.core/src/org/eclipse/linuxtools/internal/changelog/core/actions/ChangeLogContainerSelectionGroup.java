@@ -83,6 +83,7 @@ public class ChangeLogContainerSelectionGroup extends Composite {
      *            The text to present to the user.
      * @param showClosedProjects
      *            Whether or not to show closed projects.
+     * @param initialSelection The selection to be traversed for changelog.
      */
     public ChangeLogContainerSelectionGroup(Composite parent, boolean allowNewContainerName, String message,
             boolean showClosedProjects, IContainer initialSelection) {
@@ -107,6 +108,7 @@ public class ChangeLogContainerSelectionGroup extends Composite {
      *            height hint for the drill down composite
      * @param widthHint
      *            width hint for the drill down composite
+     * @param initialSelection The selection to be traversed for changelog.
      */
     public ChangeLogContainerSelectionGroup(Composite parent,
             boolean allowNewContainerName, String message,

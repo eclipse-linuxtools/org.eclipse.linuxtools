@@ -30,6 +30,7 @@ public interface IEditorChangeLogContrib {
 
     /**
      * Set default content type. GNU Changelog only has one type.
+     * @param sourceViewer  The source viewer to retrieve configured content type for.
      *
      * @return default content type.
      */
@@ -37,6 +38,7 @@ public interface IEditorChangeLogContrib {
 
     /**
      * Detects hyperlinks in GNU formatted changelogs.
+     * @param sourceViewer The source viewer to retrieve hyperlinks for.
      *
      * @return link detector for GNU format.
      */
@@ -44,6 +46,7 @@ public interface IEditorChangeLogContrib {
 
     /**
      * Hyperlink presenter (decorator).
+     * @param sourceViewer The source viewer to operate on.
      *
      * @return default presenter.
      */
@@ -51,6 +54,7 @@ public interface IEditorChangeLogContrib {
 
     /**
      * Highlights GNU format changelog syntaxes.
+     * @param sourceViewer The source viewer to get presentation reconciler for.
      *
      * @return reconciler for GNU format changelog.
      */

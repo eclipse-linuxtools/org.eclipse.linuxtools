@@ -115,6 +115,9 @@ public final class ChangeLogExtensionManager {
     /**
      * Fetches formatterName formatter from extension, but if there exists a inline
      * formatter for entryFileName, then it uses that inline formatter.
+     * @param entryFilePath The full file name.
+     * @param formatterName The formatter name.
+     * @return The changelog formatter.
      */
     public IFormatterChangeLogContrib getFormatterContributor(String entryFilePath, String formatterName) {
 

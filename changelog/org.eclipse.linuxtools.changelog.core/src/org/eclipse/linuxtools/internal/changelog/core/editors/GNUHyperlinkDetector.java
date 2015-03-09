@@ -57,6 +57,7 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
      * /some/project/abc/file.java and /some/project/ghi/file2.java
      *
      * @param textViewer The text viewer in which to detect the hyperlink.
+     * @param editor The editor to fetch document location from.
      */
     public GNUHyperlinkDetector(ITextViewer textViewer, TextEditor editor) {
         Assert.isNotNull(textViewer);

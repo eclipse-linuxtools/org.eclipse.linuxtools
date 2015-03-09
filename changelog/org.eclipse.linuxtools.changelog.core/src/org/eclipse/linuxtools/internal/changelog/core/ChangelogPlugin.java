@@ -38,6 +38,7 @@ public class ChangelogPlugin extends AbstractUIPlugin {
 
     /**
      * Returns the shared instance.
+     * @return The plugin activator.
      */
     public static ChangelogPlugin getDefault() {
         return plugin;
