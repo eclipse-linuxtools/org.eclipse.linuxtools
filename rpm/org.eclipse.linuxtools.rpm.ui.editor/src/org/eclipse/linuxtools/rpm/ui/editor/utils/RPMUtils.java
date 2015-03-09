@@ -94,6 +94,8 @@ public class RPMUtils {
      * It will first check the root of the project and then the sources. If the
      * file cannot be found in either, return false.
      * An empty file name would immediately return false.
+     * @param original A file in the project.
+     * @param fileName The file name being searched.
      *
      * @return True if the file exists.
      */
