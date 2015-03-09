@@ -18,7 +18,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.views.Messages;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IFilteredDataSet;
 import org.eclipse.linuxtools.systemtap.graphing.ui.GraphDisplaySet;
-import org.eclipse.linuxtools.systemtap.structures.listeners.ITabListener;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -27,8 +26,6 @@ import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -51,13 +48,11 @@ public class GraphSelectorEditor extends EditorPart {
 
     private CTabFolder scriptFolder;
     private List<GraphDisplaySet> displaySets;
-    private List<ITabListener> tabListeners;
     public static final String ID = "org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditor"; //$NON-NLS-1$
 
     public GraphSelectorEditor() {
         super();
         displaySets = new ArrayList<>();
-        tabListeners = new ArrayList<>();
     }
 
     /**
@@ -88,7 +83,6 @@ public class GraphSelectorEditor extends EditorPart {
         }
 
         scriptFolder.setSelection(item); // Choose the last created item.
-        fireTabOpenEvent();
         this.setPartName(NLS.bind(Messages.GraphSelectorEditor_graphsEditorTitle, scriptName.substring(scriptName.lastIndexOf('/')+1)));
     }
 
@@ -117,19 +111,11 @@ public class GraphSelectorEditor extends EditorPart {
         data.right = new FormAttachment(100, 0);
         data.bottom = new FormAttachment(100, 0);
         scriptFolder.setLayoutData(data);
-        scriptFolder.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                fireTabChangedEvent();
-            }
-        });
-
 
         scriptFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
             @Override
             public void close(CTabFolderEvent e) {
                 displaySets.remove(scriptFolder.indexOf((CTabItem)e.item));
-                fireTabCloseEvent();
             }
         });
 
@@ -173,38 +159,6 @@ public class GraphSelectorEditor extends EditorPart {
     }
 
     /**
-     * @since 2.0
-     */
-    public void addTabListener(ITabListener listener) {
-        tabListeners.add(listener);
-    }
-
-    /**
-     * @since 2.0
-     */
-    public void removeTabListener(ITabListener listener) {
-        tabListeners.remove(listener);
-    }
-
-    private void fireTabCloseEvent() {
-        for(ITabListener tabListener:tabListeners) {
-            tabListener.tabClosed();
-        }
-    }
-
-    private void fireTabOpenEvent() {
-        for(ITabListener tabListener:tabListeners) {
-            tabListener.tabOpened();
-        }
-    }
-
-    private void fireTabChangedEvent() {
-        for(ITabListener tabListener:tabListeners) {
-            tabListener.tabChanged();
-        }
-    }
-
-    /**
      * Removes all internal references in this class.  Nothing should make any references
      * to anything in this class after calling the dispose method.
      */
@@ -216,10 +170,6 @@ public class GraphSelectorEditor extends EditorPart {
             scriptFolder.dispose();
         }
         scriptFolder = null;
-        if(null != tabListeners) {
-            tabListeners.clear();
-        }
-        tabListeners = null;
     }
 
     @Override

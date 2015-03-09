@@ -28,6 +28,8 @@ public class GraphSelectorEditorInput implements IEditorInput {
     }
 
     /**
+     * Creates the editor input with the given title.
+     * @param scriptTitle The title.
      * @since 2.2
      */
     public GraphSelectorEditorInput(String scriptTitle) {

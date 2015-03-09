@@ -40,6 +40,10 @@ public final class DataSetFactory {
     }
 
     /**
+     * Returns DataGrid instance containing the given data set as a sibling of the composite.
+     * @param composite The parent composite.
+     * @param set The data set.
+     * @return The DataGrid instance created.
      * @since 3.0 set must be a IFilteredDataSet.
      */
     public static DataGrid getDataGrid(Composite composite, IFilteredDataSet set) {

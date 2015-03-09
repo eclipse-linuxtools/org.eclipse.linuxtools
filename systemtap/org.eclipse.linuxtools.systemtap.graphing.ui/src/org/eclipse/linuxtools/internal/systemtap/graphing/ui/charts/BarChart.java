@@ -54,7 +54,7 @@ public class BarChart extends Chart {
      * cut off if there isn't enough room to display them fully. Use this
      * instead of accessing the chart's x-axis and setting its category
      * series directly.
-     * @param series
+     * @param series The category series.
      */
     public void setCategorySeries(String[] series) {
         xAxis.setCategorySeries(series);

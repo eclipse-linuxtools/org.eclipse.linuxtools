@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+ * Copyright (c) 2006, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
+ *     Red Hat Inc. - ongoing maintenance
  *******************************************************************************/
 
 package org.eclipse.linuxtools.systemtap.graphing.ui;
@@ -33,7 +34,6 @@ import org.eclipse.linuxtools.systemtap.graphing.ui.wizards.dataset.DataSetFacto
 import org.eclipse.linuxtools.systemtap.graphing.ui.wizards.graph.GraphFactory;
 import org.eclipse.linuxtools.systemtap.graphing.ui.wizards.graph.SelectGraphAndSeriesWizard;
 import org.eclipse.linuxtools.systemtap.structures.UpdateManager;
-import org.eclipse.linuxtools.systemtap.structures.listeners.ITabListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
@@ -57,7 +57,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * This class is used to contain all of the graphing components that can
  * be displayed as individual tabs in a single location.
- * @author Ryan Morse
  * @since 3.0 Migrated from .ui.graphing package.
  */
 public class GraphDisplaySet {
@@ -66,6 +65,9 @@ public class GraphDisplaySet {
     private IPreferenceStore p;
 
     /**
+     * Creates the display set.
+     * @param parent Parent composite.
+     * @param data The data set.
      * @since 3.0 set must be a IFilteredDataSet.
      */
     public GraphDisplaySet(Composite parent, IFilteredDataSet data) {
@@ -87,7 +89,6 @@ public class GraphDisplaySet {
         p.addPropertyChangeListener(propertyChangeListener);
 
         builders = new ArrayList<>();
-        tabListeners = new ArrayList<>();
     }
 
     /**
@@ -134,7 +135,6 @@ public class GraphDisplaySet {
                     updater.removeUpdateListener(builders.get(selected));
                 }
                 builders.remove(selected);
-                fireTabCloseEvent();
             }
         });
 
@@ -230,32 +230,8 @@ public class GraphDisplaySet {
                     addGraph(gd);
                 }
                 wizard.dispose();
-                fireTabOpenEvent();
             }
             lastSelectedTab = folder.getSelectionIndex();
-            fireTabChangedEvent();
-        }
-    }
-
-    public void addTabListener(ITabListener listener) {
-        tabListeners.add(listener);
-    }
-
-    private void fireTabCloseEvent() {
-        for(int i=0; i<tabListeners.size(); i++) {
-            (tabListeners.get(i)).tabClosed();
-        }
-    }
-
-    private void fireTabOpenEvent() {
-        for(int i=0; i<tabListeners.size(); i++) {
-            (tabListeners.get(i)).tabOpened();
-        }
-    }
-
-    private void fireTabChangedEvent() {
-        for(int i=0; i<tabListeners.size(); i++) {
-            (tabListeners.get(i)).tabChanged();
         }
     }
 
@@ -295,7 +271,6 @@ public class GraphDisplaySet {
     private CTabFolder folder;
     private ButtonClickListener listener;
     private UpdateManager updater;
-    private List<ITabListener> tabListeners;
 
     private List<AbstractChartBuilder> builders;
 }
