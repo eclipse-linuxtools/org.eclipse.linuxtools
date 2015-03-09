@@ -77,10 +77,10 @@ public class ChartDialog extends Dialog {
     private List<Button> columnButtons;
 
     /**
-     * The constructor
+     * The constructor.
      *
-     * @param shell
-     * @param stViewer
+     * @param shell Parent shell.
+     * @param stViewer The viewer this dialog fetch data from.
      */
     public ChartDialog(Shell shell, AbstractSTViewer stViewer) {
         super(shell);

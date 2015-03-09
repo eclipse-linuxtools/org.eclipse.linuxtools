@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 STMicroelectronics.
+ * Copyright (c) 2009, 2015 STMicroelectronics.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Marzia Maugeri <marzia.maugeri@st.com> - initial API and implementation
+ *    Red Hat Inc. - ongoing maintenance
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.dataviewers.charts.view;
 
@@ -53,7 +54,7 @@ public class ChartView extends ViewPart {
      * thread execution is synchronized on internal Integer SEC_ID which is the secondary id of the chart view. Each new
      * chart view has a secondary id equal to SEC_ID++.
      *
-     * @param chart
+     * @param chart The chart to create view for.
      */
     public static void createChartView(final Chart chart) {
         PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {

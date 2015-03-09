@@ -45,6 +45,7 @@ public final class ChartFactory {
      *            the field used to get the labels of the objects (colored parts in the pie).
      * @param valFields
      *            the field providing the values for the pie parts.
+     * @param title Title of the chart.
      * @return a new pie chart
      */
     public static Chart producePieChart(Object[] objects, ISTDataViewersField nameField,
@@ -106,6 +107,7 @@ public final class ChartFactory {
      *            the field used to get the labels of the objects (the labels of the series groups).
      * @param valFields
      *            the fields providing the values for the different bars in a series group.
+     * @param title Title of the chart.
      * @param horizontal
      *            if true the bars are displayed horizontally, else vertically.
      * @return a new 2D bar chart
