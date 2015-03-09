@@ -235,47 +235,6 @@ public class CProjectBuildHelpers {
 	 * (e.g you need to check something that's not supported in the implementation above.
 	 * @param project         the IProject project which will be read to check if it is c or cpp
 	 * @param optionIDString  for example <code> gnu.cpp.compiler.option.debugging.codecov </code>
-	 * @param parentToolName  name of the parent tool.
-	 * @return                true if the option is set
-	 */
-	@Deprecated
-	public static boolean isOptionCheckedInCDT(IProject project, String optionIDString, String parentToolName) {
-
-		IConfiguration activeConf = helperGetActiveConfiguration(project);
-
-		//Get Compiler tool.
-		ITool gccCompileriTool = helperGetGccCompilerTool(parentToolName, activeConf);
-
-		//(Get immutable option: This is like a 'templete' that we will use to get the actual option)
-		IOption optionTemplate = gccCompileriTool.getOptionById(optionIDString);
-
-		//Check that we got a good option.
-		if (optionTemplate == null) {
-			MessageDialogSyncedRunnable.openErrorSyncedRunnable(ProfilingMessages.errorTitle, ProfilingMessages.errorGetOptionTemplate);
-			return false;
-		}
-
-		// Get Actual Option
-		// (Now we acquire the actual option from which we can read the value)
-		try {
-			IOption mutableOptionToSet = gccCompileriTool.getOptionToSet(optionTemplate, false);
-			return (boolean) mutableOptionToSet.getValue();
-		} catch (BuildException e) {
-			//This is reached if the template that was provided was bad.
-			MessageDialogSyncedRunnable.openErrorSyncedRunnable(ProfilingMessages.errorTitle, ProfilingMessages.errorGetOptionForWriting);
-		}
-		return false;
-
-	}
-
-	/**
-	 * <h1>Check if an option is set</h1>
-	 * Same as {@link #isOptionCheckedInCDT(IProject project, String optionIDString) isOptionChecked_inCDT },
-	 * except you specify tool name manually. <br>
-	 *
-	 * (e.g you need to check something that's not supported in the implementation above.
-	 * @param project         the IProject project which will be read to check if it is c or cpp
-	 * @param optionIDString  for example <code> gnu.cpp.compiler.option.debugging.codecov </code>
 	 * @param toolSuperClassId  superclass id of the parent tool. see {@link #helperGetToolSuperClassId helper_GetToolSuperClassId}
 	 * @return                true if the option is set
 	 */
@@ -335,67 +294,6 @@ public class CProjectBuildHelpers {
 			return false;
 		}
 		return setOptionInCDTTool(project, optionIDString, value, toolSuperClassId);
-	}
-
-	/**
-	 * <h1>Set Option in CDT</h1>
-	 * Same as {@link #setOptionInCDT(IProject project, String optionIDString, boolean value) setOption_in } <br>
-	 * except you can specify the parent tool manually (in case current implementation does not support what yon need.
-	 *
-	 * @param project         an IProject
-	 * @param optionIDString  ID of option as defined in plugin.xml. e.g gnu.cpp.compiler.option.debugging.gprof
-	 * @param value           true/false
-	 * @param parentToolName
-	 *                   Name of the tool where the option resides. E.g 'GCC C Compiler' or 'GCC C++ Compiler'. <br>
-	 *                   To find out, check/uncheck an option, inspect the .cproject file, look for the option,<br>
-	 *                   then see what tool it's under. See the name property
-	 * @return                true if all went well, false otherwise
-	 */
-	@Deprecated
-	public static boolean setOptionInCDT(IProject project, String optionIDString, boolean value, String parentToolName) {
-
-		// Get configuration
-		IConfiguration activeConf = helperGetActiveConfiguration(project);
-
-		// Get the ITool the option.
-		ITool gccCompileriTool = helperGetGccCompilerTool(parentToolName, activeConf);
-
-		// Get Template Opiton.   
-		//Get Option ~Immutable. This is like a 'templete' that we will base the actual option on.
-		IOption optionTemplate = gccCompileriTool.getOptionById(optionIDString);
-
-		//Check that we got a good option template.
-		if (optionTemplate == null) {
-			//This could fail if the specified option doesn't exist or is miss-spelled.
-			MessageDialogSyncedRunnable.openErrorSyncedRunnable(ProfilingMessages.errorTitle, ProfilingMessages.errorGetOptionTemplate);
-			return false;
-		}
-
-		// Get Actual Option
-		//
-		// Now we acquire an option that can be 'set' to something.
-		// In contrast to the immutable option above, if the user never checked/unchecked the option by hand,
-		// then the first time 'set' of this option will work correctly. Whereas
-		// the immutable option would only work if the user checked/unchecked the option by hand before.
-		IOption mutableOptionToSet = null;
-		try {
-			mutableOptionToSet = gccCompileriTool.getOptionToSet(optionTemplate, false);
-			mutableOptionToSet.setValue(value);
-		} catch (BuildException e) {
-			//This is reached if the template that was provided was bad.
-			MessageDialogSyncedRunnable.openErrorSyncedRunnable(ProfilingMessages.errorTitle, ProfilingMessages.errorGetOptionForWriting);
-		}
-
-		// get resource info. (where things are saved to).
-		IResourceInfo resourceInfo = activeConf.getResourceInfos()[0];
-
-		// Mark the option as enabled in the build manager.
-		ManagedBuildManager.setOption(resourceInfo, gccCompileriTool, mutableOptionToSet,
-				true);
-
-		// Save this business to disk.
-		ManagedBuildManager.saveBuildInfo(project, true);
-		return true;
 	}
 
 	/**
@@ -580,31 +478,6 @@ public class CProjectBuildHelpers {
 	private static IConfiguration helperGetActiveConfiguration(IProject project) {
 		IManagedBuildInfo buildInfo = ManagedBuildManager.getBuildInfo(project);
 		return buildInfo.getDefaultConfiguration();
-	}
-
-	/**
-	 * <h1>Get the tool that holds the option 'template'.</h1>
-	 *
-	 * <p> Each option has a parent tool. this acquires the 'ITool' <br>
-	 * based on it's name from the active configuration. </p>
-	 *
-	 * <p> The parent tool is later read to acquire the option template, which is used to set an option. </p>
-	 *
-	 * @param parentToolName a string representing the parent of the option.  (like 'GCC C++ Compiler').
-	 * @param activeConf The current active configuration of the project, from which we should be able to find the ITool name.
-	 * @return the parent 'ITool' instance.
-	 */
-	@Deprecated
-	private static ITool helperGetGccCompilerTool(String parentToolName, IConfiguration activeConf) {
-		ITool[] tools = activeConf.getTools();
-		ITool gccCompileriTool = null;
-		for (ITool iTool : tools) {
-			if (iTool.getName().equals(parentToolName)) {
-				gccCompileriTool = iTool;
-				break;
-			}
-		}
-		return gccCompileriTool;
 	}
 
 	/**
