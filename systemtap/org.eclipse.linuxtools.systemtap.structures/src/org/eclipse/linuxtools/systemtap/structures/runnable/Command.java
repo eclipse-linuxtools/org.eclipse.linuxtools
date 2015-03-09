@@ -115,7 +115,7 @@ public class Command implements Runnable {
      * Starts the <code>Thread</code> that the new <code>Process</code> will run in.
      * This must be called in order to get the process to start running.
      * Note that this method only takes effect the first time it is called.
-     * @throws CoreException
+     * @throws CoreException If initializing failed.
      */
     public void start() throws CoreException {
         if (started || stopped) {
@@ -283,7 +283,7 @@ public class Command implements Runnable {
 
     /**
      * Removes the provided listener from those monitoring the InputStream.
-     * @param listener An </code>IGobblerListener</code> that is monitoring the stream.
+     * @param listener An <code>IGobblerListener</code> that is monitoring the stream.
      */
     public void removeInputStreamListener(IGobblerListener listener) {
         if (inputGobbler != null) {
@@ -295,7 +295,7 @@ public class Command implements Runnable {
 
     /**
      * Removes the provided listener from those monitoring the ErrorStream.
-     * @param listener An </code>IGobblerListener</code> that is monitoring the stream.
+     * @param listener An <code>IGobblerListener</code> that is monitoring the stream.
      */
     public void removeErrorStreamListener(IGobblerListener listener) {
         if (errorGobbler != null) {
@@ -309,6 +309,7 @@ public class Command implements Runnable {
      * Saves the input stream data to a permanent file. Any new data on the
      * stream will automatically be saved to the file.
      * @param file The file to save the InputStream to.
+     * @return True if the save was successful, false otherwise.
      */
     public boolean saveLog(File file) {
         return logger.saveLog(file);

@@ -29,6 +29,8 @@ public class UpdateManager {
     }
 
     /**
+     * Restart with the given delay.
+     * @param delay The milliseconds to delay execution.
      * @since 3.0
      */
     public void restart(int delay) {

@@ -131,6 +131,9 @@ public class TreeNode {
     }
 
     /**
+     * Return the child nod with given name if found.
+     * @param name The name of the looked up child.
+     * @return The found TreeNode or null if not found.
      * @since 2.0
      */
     public TreeNode getChildByName(String name) {
