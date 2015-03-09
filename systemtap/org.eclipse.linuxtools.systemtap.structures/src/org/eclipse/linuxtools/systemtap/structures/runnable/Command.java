@@ -136,6 +136,7 @@ public class Command implements Runnable {
     /**
      * Starts up the process that will execute the provided command and registers
      * the <code>StreamGobblers</code> with their respective streams.
+     * @return The status from the initializing process
      * @since 2.0
      */
     protected IStatus init() {

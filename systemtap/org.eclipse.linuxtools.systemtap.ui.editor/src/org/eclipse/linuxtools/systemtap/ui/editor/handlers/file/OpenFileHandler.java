@@ -46,6 +46,7 @@ public class OpenFileHandler extends AbstractHandler {
 
     /**
      * Opens the provided file's editor input, if it is a valid Systemtap file.
+     * @param file The file to open.
      */
     public void executeOnFile(File file) {
         if (window == null) {
