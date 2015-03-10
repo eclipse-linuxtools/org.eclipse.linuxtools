@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat Inc. and others.
+ * Copyright (c) 2009, 2015 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -60,7 +60,7 @@ public class ManParser {
             }
         } catch (IOException | InterruptedException e1) {
             Status status = new Status(IStatus.ERROR, e1.getMessage(),
-                    Activator.PLUGIN_ID);
+                    Activator.getDefault().getPluginId());
             Activator.getDefault().getLog().log(status);
         }
         return sb;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat Inc. and others.
+ * Copyright (c) 2009, 2015 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,40 +18,27 @@ import org.osgi.framework.BundleContext;
  */
 public class Activator extends AbstractUIPlugin {
 
-    /** The plug-in ID */
-    public static final String PLUGIN_ID = "org.eclipse.linuxtools.man"; //$NON-NLS-1$
-
     // The shared instance
     private static Activator plugin;
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
-     * )
-     */
+    private BundleContext context;
+
     @Override
     public void start(BundleContext context) throws Exception {
         super.start(context);
+        this.context = context;
         plugin = this;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
-     * )
-     */
     @Override
     public void stop(BundleContext context) throws Exception {
         plugin = null;
+        this.context = null;
         super.stop(context);
     }
 
     /**
-     * Returns the shared instance
+     * Returns the shared instance of the bundle activator.
      *
      * @return the shared instance
      */
@@ -59,4 +46,12 @@ public class Activator extends AbstractUIPlugin {
         return plugin;
     }
 
+    /**
+     * Returns the bundle symbolic name of the plug-in.
+     * 
+     * @return an ID unique to this plug-in
+     */
+    public String getPluginId() {
+        return context.getBundle().getSymbolicName();
+    }
 }
