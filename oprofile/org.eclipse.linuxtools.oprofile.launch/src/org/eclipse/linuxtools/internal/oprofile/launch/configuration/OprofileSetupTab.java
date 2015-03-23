@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.internal.oprofile.launch.configuration;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -161,7 +162,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
         l2.setLayoutData(data);
 
         controlCombo = new CCombo(p, SWT.DROP_DOWN|SWT.READ_ONLY|SWT.BORDER);
-        List<String> tools = Arrays.asList(OprofileProject.OPERF_BINARY);
+        List<String> tools = new ArrayList<>(Arrays.asList(OprofileProject.OPERF_BINARY));
 		try {
 			Process proc = RuntimeProcessFactory.getFactory().exec(
 					new String [] {"which", OprofileProject.OPCONTROL_BINARY }, //$NON-NLS-1$
