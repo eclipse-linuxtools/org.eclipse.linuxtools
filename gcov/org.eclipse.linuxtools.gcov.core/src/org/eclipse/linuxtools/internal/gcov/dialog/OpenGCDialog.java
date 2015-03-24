@@ -26,6 +26,7 @@ import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.internal.gcov.Activator;
@@ -285,4 +286,16 @@ public class OpenGCDialog extends Dialog {
         if (s != null)
             text.setText(s);
     }
+
+    @Override
+    protected void okPressed() {
+        IDialogSettings ds = Activator.getDefault().getDialogSettings();
+        IDialogSettings defaultMapping = ds.getSection(OpenGCDialog.class.getName());
+        if (defaultMapping == null) {
+            defaultMapping = ds.addNewSection(OpenGCDialog.class.getName());
+        }
+        defaultMapping.put(gcFile.toOSString(), binValue);
+        super.okPressed();
+    }
+
 }
