@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Red Hat Inc. and others.
+ * Copyright (c) 2006, 2015 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,11 +20,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.IPath;
 
-/**
- *
- * @author klee
- *
- */
 public class PatchFile {
 
     private static class EmptyStorage implements IStorage {
@@ -43,7 +38,7 @@ public class PatchFile {
         }
 
         @Override
-        public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
+        public <T> T getAdapter(Class<T> adapter) {
             return null;
         }
 

@@ -36,8 +36,7 @@ public class ScriptConsolePageParticipant implements IConsolePageParticipant, ID
     private ScriptConsole fConsole;
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public Object getAdapter(Class adapter) {
+    public <T> T getAdapter(Class<T> adapter) {
         return null;
     }
 

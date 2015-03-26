@@ -63,8 +63,7 @@ public class ValgrindStubProcess implements IProcess {
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public Object getAdapter(Class adapter) {
+    public <T> T getAdapter(Class<T> adapter) {
         return null;
     }
 
