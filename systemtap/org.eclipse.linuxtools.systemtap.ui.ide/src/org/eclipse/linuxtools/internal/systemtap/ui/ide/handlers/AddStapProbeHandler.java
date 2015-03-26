@@ -46,7 +46,7 @@ public class AddStapProbeHandler extends AbstractHandler {
                     Messages.AddStapProbe_editorError, e);
             throw new ExecutionException(Messages.AddStapProbe_editorError, e);
         }
-        IVerticalRulerInfo rulerInfo = (IVerticalRulerInfo) editor.getAdapter(IVerticalRulerInfo.class);
+        IVerticalRulerInfo rulerInfo = editor.getAdapter(IVerticalRulerInfo.class);
 
         Shell shell = editor.getSite().getShell();
         shell.setCursor(shell.getDisplay().getSystemCursor(

@@ -74,7 +74,7 @@ public class RPMHandlerUtils {
                 return (IResource) element;
             } else if (element instanceof IAdaptable) {
                 IAdaptable adaptable = (IAdaptable) element;
-                return (IResource) adaptable.getAdapter(IResource.class);
+                return adaptable.getAdapter(IResource.class);
             } else {
                 return null;
             }

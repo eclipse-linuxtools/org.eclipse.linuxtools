@@ -46,7 +46,7 @@ public class ErrorLineMatcher implements IPatternMatchListenerDelegate {
             int lineNumber = Integer.parseInt(line.substring(12,
                     line.indexOf(':', line.indexOf(LINE))).trim());
             FileLink fileLink = new FileLink(
-                    (IFile) console.getSpecfile().getAdapter(IFile.class),
+                    console.getSpecfile().getAdapter(IFile.class),
                     "org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor", -1, -1, lineNumber); //$NON-NLS-1$
             console.addHyperlink(fileLink, 7,
                     line.indexOf(':', line.indexOf(LINE)) - 7);

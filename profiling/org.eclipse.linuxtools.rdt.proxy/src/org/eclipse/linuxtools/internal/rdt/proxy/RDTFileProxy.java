@@ -55,7 +55,7 @@ public class RDTFileProxy implements IRemoteFileProxy {
         IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
         IResource resource = workspaceRoot.findMember(project.getName());
         if (resource != null) {
-            remoteRes = (IRemoteResource)resource.getAdapter(IRemoteResource.class);
+            remoteRes = resource.getAdapter(IRemoteResource.class);
             if (project.hasNature(RDTProxyManager.SYNC_NATURE)) {
                 uri = remoteRes.getActiveLocationURI();
             }

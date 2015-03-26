@@ -63,7 +63,7 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
         usercomp.setLayout(new GridLayout(2, true));
 
         // Get the property provider (project, file, folder) and fine the project.
-        IResource resource = (IResource)page.getElement().getAdapter(IResource.class);
+        IResource resource = page.getElement().getAdapter(IResource.class);
         IProject project = resource.getProject();
 
         // Create the preference store to use

@@ -39,7 +39,7 @@ public abstract class StubifyHandler extends AbstractHandler {
                 if (element instanceof IFile) {
                     featureFile = (IFile) element;
                 } else if (element instanceof IAdaptable) {
-                    featureFile = (IFile) ((IAdaptable) element)
+                    featureFile = ((IAdaptable) element)
                             .getAdapter(IFile.class);
                 }
                 if (featureFile != null) {

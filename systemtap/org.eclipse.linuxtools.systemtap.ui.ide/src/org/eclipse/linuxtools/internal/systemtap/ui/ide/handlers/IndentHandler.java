@@ -119,7 +119,7 @@ public class IndentHandler extends AbstractHandler {
             Runnable runnable = new STPRunnable(editor) {
                 @Override
                 public void run() {
-                    IRewriteTarget target = (IRewriteTarget) getTextEditor()
+                    IRewriteTarget target = getTextEditor()
                             .getAdapter(IRewriteTarget.class);
                     if (target != null) {
                         target.beginCompoundChange();

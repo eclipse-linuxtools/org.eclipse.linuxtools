@@ -49,7 +49,7 @@ public class PrepareChangelogKeyHandler extends AbstractHandler {
                 // that belongs to a project in the workspace
                 IEditorPart editorPart = (IEditorPart)part;
                 IEditorInput input = editorPart.getEditorInput();
-                IResource r = (IResource)input.getAdapter(IResource.class);
+                IResource r = input.getAdapter(IResource.class);
                 if (r != null) {
                     // We have an IResource to work with, so create a selection we can use
                     // in PrepareChangeLogAction
@@ -66,7 +66,7 @@ public class PrepareChangelogKeyHandler extends AbstractHandler {
                     if (o instanceof ISynchronizeModelElement) {
                         r = ((ISynchronizeModelElement)o).getResource();
                     } else if (o instanceof IAdaptable) {
-                        r = (IResource)((IAdaptable)o).getAdapter(IResource.class);
+                        r = ((IAdaptable)o).getAdapter(IResource.class);
                     }
                     if (r != null)
                         tempResult = iss;
@@ -91,7 +91,7 @@ public class PrepareChangelogKeyHandler extends AbstractHandler {
                             if (element instanceof ISynchronizeModelElement) {
                                 r = ((ISynchronizeModelElement)element).getResource();
                             } else if (element instanceof IAdaptable) {
-                                r = (IResource)((IAdaptable)element).getAdapter(IResource.class);
+                                r = ((IAdaptable)element).getAdapter(IResource.class);
                             }
 
                             if (r != null) {

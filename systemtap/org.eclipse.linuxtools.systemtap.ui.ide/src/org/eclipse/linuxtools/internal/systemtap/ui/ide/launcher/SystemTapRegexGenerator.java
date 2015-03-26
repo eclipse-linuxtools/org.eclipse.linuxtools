@@ -58,7 +58,7 @@ public class SystemTapRegexGenerator {
                 root.getFile(scriptPath.makeRelativeTo(root.getLocation())));
         if (editor != null) {
             // If editor of this file is open, take current file contents.
-            ITextEditor tEditor = (ITextEditor) editor.getAdapter(ITextEditor.class);
+            ITextEditor tEditor = editor.getAdapter(ITextEditor.class);
             IDocument document = tEditor.getDocumentProvider().
                     getDocument(tEditor.getEditorInput());
             contents = CommentRemover.exec(document.get());

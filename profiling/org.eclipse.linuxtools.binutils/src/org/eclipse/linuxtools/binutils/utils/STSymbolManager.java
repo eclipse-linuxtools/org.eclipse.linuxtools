@@ -467,7 +467,7 @@ public class STSymbolManager {
                     for (IBinary binary : b) {
                         IResource r = binary.getResource();
                         if (r.equals(c)) {
-                            IBinaryObject binaryObject = (IBinaryObject) binary.getAdapter(IBinaryObject.class);
+                            IBinaryObject binaryObject = binary.getAdapter(IBinaryObject.class);
                             return validateBinary(binaryObject);
                         }
                     }
