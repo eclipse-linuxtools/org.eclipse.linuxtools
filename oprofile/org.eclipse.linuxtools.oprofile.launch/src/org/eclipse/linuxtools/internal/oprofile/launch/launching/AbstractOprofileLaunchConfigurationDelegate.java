@@ -165,9 +165,15 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
             argArray.add(0, SESSION_DIR + oprofileWorkingDirURI(config).getPath() + IPath.SEPARATOR + OPROFILE_DATA);
             argArray.add(0, OprofileProject.OPERF_BINARY);
 
+            boolean appended = false;
             for(int i = 0; i < options.getExecutionsNumber(); i++){
-                if (i!=0) {
-                    argArray.add(APPEND);
+                /*
+                 * If profiling multiple times,
+                 * 	append oprofile results from 2nd execution on.
+                 */
+                if (!appended && i!=0) {
+                    argArray.add(1, APPEND);
+                    appended = true;
                 }
                 String[] arguments = new String[argArray.size()];
                 arguments = argArray.toArray(arguments);
