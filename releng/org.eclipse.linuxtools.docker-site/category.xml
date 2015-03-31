@@ -8,7 +8,6 @@
       <category name="Linux Tools"/>
    </feature>
    <!-- Orbit Dependencies -->
-   <!--
    <iu id="com.spotify.docker.client" version="0.0.0">
         <category name="Linux Tools"/>
    </iu>
@@ -60,10 +59,10 @@
    <iu id="jnr.x86asm" version="0.0.0">
         <category name="Linux Tools"/>
    </iu>
-   <iu id="org.bouncycastle" version="0.0.0">
+   <iu id="bcprov" version="0.0.0">
         <category name="Linux Tools"/>
    </iu>
-   <iu id="org.bouncycastle.pkix" version="0.0.0">
+   <iu id="bcpkix" version="0.0.0">
         <category name="Linux Tools"/>
    </iu>
    <iu id="org.glassfish.hk2.api" version="0.0.0">
@@ -99,7 +98,7 @@
    <iu id="com.google.guava" version="0.0.0">
         <category name="Linux Tools"/>
    </iu>
-   <iu id="slf4j.api" version="0.0.0">
+   <iu id="org.slf4j.api" version="0.0.0">
         <category name="Linux Tools"/>
    </iu>
    <iu id="org.aopalliance" version="0.0.0">
@@ -111,7 +110,6 @@
    <iu id="org.apache.commons.compress" version="0.0.0">
         <category name="Linux Tools"/>
    </iu>
-   -->
    <category-def name="Linux Tools" label="Linux Tools">
       <description>
          Eclipse Linux Tools Docker
