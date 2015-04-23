@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright (C) 2011, Red Hat, Inc. and others
+
+   All rights reserved. This program and the accompanying materials
+   are made available under the terms of the Eclipse Public License v1.0
+   which accompanies this distribution, and is available at
+   http://www.eclipse.org/legal/epl-v10.html
+
+   Contributors:
+       Red Hat Incorporated - initial implementation
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.eclipse.linuxtools.releng</groupId>
+    <artifactId>linuxtools-releng-parent</artifactId>
+    <version>4.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>org.eclipse.linuxtools.docker-site</artifactId>
+  <packaging>eclipse-repository</packaging>
+
+  <profiles>
+     <profile>
+     <id>build-server</id>
+     <build>
+        <plugins>
+           <plugin>
+             <artifactId>maven-antrun-plugin</artifactId>
+             <executions>
+               <execution>
+                 <id>deploy</id>
+                 <phase>verify</phase>
+                 <goals>
+                   <goal>run</goal>
+                 </goals>
+                 <configuration>
+                   <target>
+                    <delete includeemptydirs="false">
+                       <fileset
+                         dir="/home/data/httpd/download.eclipse.org/linuxtools/updates-docker-nightly">
+                         <include name="**" />
+                       </fileset>
+                     </delete>
+                     <copy includeemptydirs="false"
+                       todir="/home/data/httpd/download.eclipse.org/linuxtools/updates-docker-nightly">
+                       <fileset dir="target/repository">
+                         <include name="**" />
+                       </fileset>
+                     </copy>
+                   </target>
+                 </configuration>
+               </execution>
+             </executions>
+           </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-publisher-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <publishArtifacts>true</publishArtifacts>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-repository-plugin</artifactId>
+        <version>${tycho-version}</version>
+	<executions>
+          <execution>
+            <id>default-archive-repository</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>archive-repository</goal>
+            </goals>
+            <configuration>
+              <finalName>${project.artifactId}</finalName>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>prepare-promotion</id>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <!-- copy scripts to build directory and execute -->
+                <copy file="p2.xsl" todir="${project.build.directory}"/>
+                <copy file="promoter.xml" todir="${project.build.directory}"/>
+                <ant antfile="${project.build.directory}/promoter.xml"/>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <name>Linux Tools Docker p2 Repository</name>
+  <!-- see http://issues.sonatype.org/browse/TYCHO-313 -->
+  <version>3.2.0-SNAPSHOT</version>
+
+</project>

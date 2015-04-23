@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+       Copyright (c) 2011 Obeo.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License v1.0
+  which accompanies this distribution, and is available at
+  http://www.eclipse.org/legal/epl-v10.html
+
+  Contributors:
+      Obeo - initial API and implementation
+
+ $Id: promoter.xml,v 1.36 2012/03/21 08:40:06 sbouchet Exp $
+-->
+<project name="Promoter" default="main">
+	<!--
+        This promotion script helps to automatically promote the last sucessful build of tycho based build to correct location.
+
+	Be sure to use at least ant 1.8.2 to launch this script.
+
+	Ant 1.8.2 is located here : /shared/common/apache-ant-1.8.2/
+	on build.eclipse.org, do a
+	$> export ANT_HOME=/shared/common/apache-ant-1.8.2/
+	-->
+
+	<property name="downloads.project.root" value="/linuxtools" />
+	<property name="repo.name" value="${mirror-docker-repo-name}" />
+	<property name="build.root" value="${project.build.directory}" />
+	<antversion property="antversion" />
+
+	<target name="main">
+
+		<!-- publish p2 repository -->
+		<antcall target="-publish.build.repository" inheritall="true" />
+	</target>
+
+	<target name="-publish.build.repository">
+		<property name="mirror.repository.path" value="${downloads.project.root}/${repo.name}" />
+
+		<!-- adding p2.mirrorsURL and p2.statsURI to the repository -->
+		<unzip dest="${build.root}/repository">
+			<fileset file="${build.root}/repository/artifacts.jar" />
+		</unzip>
+                <!-- Delete the archive, it will be re-generated -->
+                <delete file="${build.root}/repository/artifacts.jar" />
+		<move file="${build.root}/repository/artifacts.xml" tofile="${build.root}/repository/artifacts.original.xml" />
+		<xslt style="p2.xsl" in="${build.root}/repository/artifacts.original.xml" out="${build.root}/repository/artifacts.xml">
+			<param name="mirrorsURL" expression="http://www.eclipse.org/downloads/download.php?file=${mirror.repository.path}&amp;format=xml" />
+		</xslt>
+		<zip destfile="${build.root}/repository/artifacts.jar" basedir="${build.root}/repository" includes="artifacts.xml" />
+               <delete file="${build.root}/repository/artifacts.xml" />
+               <delete file="${build.root}/repository/artifacts.original.xml" />
+
+		<!-- adding p2.index -->
+		<echo file="${build.root}/repository/p2.index" message="version = 1${line.separator}metadata.repository.factory.order = content.xml,\!${line.separator}artifact.repository.factory.order = artifacts.xml,\!" />
+
+	</target>
+
+</project>
