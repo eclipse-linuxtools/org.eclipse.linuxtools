@@ -76,6 +76,7 @@ public class BarChart extends Chart {
      * Returns a list of the full (non-trimmed) label names of each bar.
      * Use this instead of accessing the x-axis' category series, which
      * may contain trimmed label names.
+     * @return An array containing the names of each bar in the chart.
      */
     public String[] getCategorySeries() {
         String[] copiedCategorySeries = null;

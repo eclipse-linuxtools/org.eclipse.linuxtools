@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2014 IBM Corporation.
+ * Copyright (c) 2010-2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +7,7 @@
  *
  * Contributors:
  *    IBM Corporation - initial API and implementation
- *    Red Hat Inc - modified to handle SWTChart 0.9.0 vs 0.8.0
+ *    Red Hat Inc. - modified to handle SWTChart 0.9.0 vs 0.8.0; ongoing maintenance
  *******************************************************************************/
 
 package org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts;
@@ -31,8 +31,7 @@ import org.swtchart.LineStyle;
 import org.swtchart.Range;
 
 /**
- * Builds the chart with axis.
- *
+ * A {@link AbstractChartBuilder} for building a chart with axes.
  * @author Qi Liang
  */
 public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder {
@@ -40,24 +39,28 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
     private PaintListener titleBoundsPaintListener;
     private double defaultMargin = 0.04;
     /**
+     * @return The size of the chart's left margin.
      * @since 3.0
      */
     protected double getChartMarginXL() {
         return defaultMargin;
     }
     /**
+     * @return The size of the chart's right margin.
      * @since 3.0
      */
     protected double getChartMarginXU() {
         return defaultMargin;
     }
     /**
+     * @return The size of the chart's top margin.
      * @since 3.0
      */
     protected double getChartMarginYL() {
         return defaultMargin;
     }
     /**
+     * @return The size of the chart's bottom margin.
      * @since 3.0
      */
     protected double getChartMarginYU() {
@@ -71,7 +74,9 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
     protected int xSeriesTicks, ySeriesTicks;
 
     /**
-     * Create a chart series for that chart.
+     * Creates a chart series for this chart.
+     * @param i The index of the series to create.
+     * @return The newly created series.
      */
     protected abstract ISeries createChartISeries(int i);
 
@@ -95,8 +100,12 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
     }
 
     /**
-     * Constructor.
-    */
+     * Constructs a builder for a chart with axes and associates it to one data set.
+     * @param adapter An {@link IAdapter} for reading from the chart's data set.
+     * @param parent The parent {@link Composite} that will contain this chart builder.
+     * @param style The style of the chart to construct.
+     * @param title The title of the chart to construct.
+     */
     public AbstractChartWithAxisBuilder(IAdapter adapter, Composite parent, int style, String title) {
         super(adapter, parent, style, title);
         xLineGrid = store.getBoolean(GraphingPreferenceConstants.P_SHOW_X_GRID_LINES);
@@ -299,7 +308,9 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
     }
 
     /**
-     * This updates the visible range of the chart's x-axis.
+     * Updates the visible range of the chart's x-axis.
+     * @param min The smallest x-value that should be in range.
+     * @param max The largest x-value that should be in range.
      */
     private void applyRangeX(double min, double max) {
         IAxis axis = chart.getAxisSet().getXAxis(0);
@@ -313,7 +324,9 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
     }
 
     /**
-     * This updates the visible range of the chart's y-axis.
+     * Updates the visible range of the chart's y-axis.
+     * @param min The smallest y-value that should be in range.
+     * @param max The largest y-value that should be in range.
      * @since 3.0
      */
     protected void applyRangeY(double min, double max) {
