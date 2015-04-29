@@ -71,7 +71,7 @@ import org.osgi.framework.Version;
 
 public class PerfLaunchConfigDelegate extends AbstractCLaunchDelegate {
 
-	private static final String OUTPUT_STR = "--output="; //$NON-NLS-1$
+    private static final String OUTPUT_STR = "--output="; //$NON-NLS-1$
     private static final String EMPTY_STRING = ""; //$NON-NLS-1$
     private IPath binPath;
     private IPath workingDirPath;
@@ -85,7 +85,7 @@ public class PerfLaunchConfigDelegate extends AbstractCLaunchDelegate {
     @Override
     public void launch(ILaunchConfiguration config, String mode,
             ILaunch launch, IProgressMonitor monitor) throws CoreException {
-    	try {
+        try {
             ConfigUtils configUtils = new ConfigUtils(config);
             project = configUtils.getProject();
             // check if Perf exists in $PATH
@@ -97,12 +97,12 @@ public class PerfLaunchConfigDelegate extends AbstractCLaunchDelegate {
             URI binURI = new URI(configUtils.getExecutablePath());
             binPath=Path.fromPortableString(binURI.getPath().toString());
             if(binPath==null) {
-            	CDebugUtils.verifyProgramPath( config );
+                CDebugUtils.verifyProgramPath( config );
             }
             if (binPath.removeLastSegments(2).toPortableString().equals(EMPTY_STRING)) {
-            	workingDirPath=Path.fromPortableString(getWorkingDirectory(config).toURI().getPath());
+                workingDirPath=Path.fromPortableString(getWorkingDirectory(config).toURI().getPath());
             } else {
-            	workingDirPath=Path.fromPortableString((binPath.removeLastSegments(2).toPortableString()) + IPath.SEPARATOR);
+                workingDirPath=Path.fromPortableString((binPath.removeLastSegments(2).toPortableString()) + IPath.SEPARATOR);
             }
 
             PerfPlugin.getDefault().setWorkingDir(workingDirPath);

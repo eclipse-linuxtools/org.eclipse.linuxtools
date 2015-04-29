@@ -49,68 +49,69 @@ import org.junit.Test;
  */
 @SuppressWarnings("restriction")
 public class ContentAssistTests extends BaseUITestCase {
-    private final NullProgressMonitor		monitor= new NullProgressMonitor();
-    static IProject 				project;
-    static ICProject				cproject;
-    
+    private final NullProgressMonitor monitor= new NullProgressMonitor();
+    static IProject project;
+    static ICProject cproject;
+
     @Before
-	public void setUpD() throws InterruptedException {
-    	
-    	if (project == null) {
-    		try {
-    			cproject = CProjectHelper.createCCProject("ContentAssistTestProject", "bin", IPDOMManager.ID_FAST_INDEXER); //$NON-NLS-1$ //$NON-NLS-2$
-    			project = cproject.getProject();
-        		waitForIndexer(cproject);
-    		} catch ( CoreException e ) {
-    			/*boo*/
-    		}
-    		if (project == null)
-    			fail("Unable to create project"); //$NON-NLS-1$
-    	}
-	}
-    
+    public void setUpD() throws InterruptedException {
+
+        if (project == null) {
+            try {
+                cproject = CProjectHelper.createCCProject("ContentAssistTestProject", "bin", IPDOMManager.ID_FAST_INDEXER); //$NON-NLS-1$ //$NON-NLS-2$
+                project = cproject.getProject();
+                waitForIndexer(cproject);
+            } catch ( CoreException e ) {
+                /*boo*/
+            }
+            if (project == null)
+                fail("Unable to create project"); //$NON-NLS-1$
+        }
+    }
+
     private static void disableContributions (){
         //disable the help books so we don't get proposals we weren't expecting
         CHelpBookDescriptor helpBooks[];
-		helpBooks = CHelpProviderManager.getDefault().getCHelpBookDescriptors(new ICHelpInvocationContext(){
-			@Override
-			public IProject getProject(){return project;}
-			@Override
-			public ITranslationUnit getTranslationUnit(){return null;}
-			}
-		);
-		for (CHelpBookDescriptor helpBook : helpBooks) {
-		    if( helpBook != null && !helpBook.getCHelpBook().getTitle().contains("glibc") ) //$NON-NLS-1$
-		        helpBook.enable( false );
-		}
+        helpBooks = CHelpProviderManager.getDefault().getCHelpBookDescriptors(new ICHelpInvocationContext(){
+            @Override
+            public IProject getProject(){return project;}
+            @Override
+            public ITranslationUnit getTranslationUnit(){return null;}
+            }
+        );
+        for (CHelpBookDescriptor helpBook : helpBooks) {
+            if( helpBook != null && !helpBook.getCHelpBook().getTitle().contains("glibc") ) //$NON-NLS-1$
+                helpBook.enable( false );
+        }
     }
-    
+
     public void cleanupProject() {
         closeAllEditors();
         try{
-	        project.delete( true, false, monitor );
-	        project = null;
-	    } catch( Throwable e ){
-	        /*boo*/
-	    }
+            project.delete( true, false, monitor );
+            project = null;
+        } catch( Throwable e ){
+            /*boo*/
+        }
     }
-    
+
     @After
-	public void tearDownD() throws Exception {
-        if( project == null || !project.exists() )
+    public void tearDownD() throws Exception {
+        if (project == null || !project.exists()) {
             return;
-        
+        }
+
         closeAllEditors();
 
         // wait for indexer before deleting project to avoid errors in the log
         waitForIndexer(cproject);
-		
+
         IResource [] members = project.members();
         for (IResource member : members) {
             if( member.getName().equals( ".project" ) || member.getName().equals( ".cproject" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 continue;
             if (member.getName().equals(".settings"))
-            	continue;
+                continue;
             try{
                 member.delete( false, monitor );
             } catch( Throwable e ){
@@ -119,38 +120,38 @@ public class ContentAssistTests extends BaseUITestCase {
         }
         cleanupProject();
 
-	}
-    
-    protected IFile importFile(String fileName, String contents ) throws Exception{
-		//Obtain file handle
-		IFile file = project.getProject().getFile(fileName);
-		
-		InputStream stream = new ByteArrayInputStream( contents.getBytes() );
-		//Create file input stream
-		if( file.exists() )
-		    file.setContents( stream, false, false, monitor );
-		else
-			file.create( stream, false, monitor );
-		
-		return file;
-	}
-    
-    protected ICompletionProposal[] getResults( IFile file, int offset ) throws Exception {
-    	disableContributions();
-		// call the ContentAssistProcessor
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		FileEditorInput editorInput = new FileEditorInput(file);
-		IEditorPart editorPart = page.openEditor(editorInput, "org.eclipse.cdt.ui.editor.CEditor");
-		CEditor editor = (CEditor) editorPart ;
-		@SuppressWarnings("unused")
-		IAction completionAction = editor.getAction("ContentAssistProposal");
-
-		String contentType = editor.getViewer().getDocument().getContentType(offset);
-		ContentAssistant assistant = new ContentAssistant();
-		CContentAssistProcessor processor = new CContentAssistProcessor(editor, assistant, contentType);
-		return processor.computeCompletionProposals(editor.getViewer(), offset);
     }
-    
+
+    protected IFile importFile(String fileName, String contents ) throws Exception{
+        //Obtain file handle
+        IFile file = project.getProject().getFile(fileName);
+
+        InputStream stream = new ByteArrayInputStream( contents.getBytes() );
+        //Create file input stream
+        if( file.exists() )
+            file.setContents( stream, false, false, monitor );
+        else
+            file.create( stream, false, monitor );
+
+        return file;
+    }
+
+    protected ICompletionProposal[] getResults( IFile file, int offset ) throws Exception {
+        disableContributions();
+        // call the ContentAssistProcessor
+        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        FileEditorInput editorInput = new FileEditorInput(file);
+        IEditorPart editorPart = page.openEditor(editorInput, "org.eclipse.cdt.ui.editor.CEditor");
+        CEditor editor = (CEditor) editorPart ;
+        @SuppressWarnings("unused")
+        IAction completionAction = editor.getAction("ContentAssistProposal");
+
+        String contentType = editor.getViewer().getDocument().getContentType(offset);
+        ContentAssistant assistant = new ContentAssistant();
+        CContentAssistProcessor processor = new CContentAssistProcessor(editor, assistant, contentType);
+        return processor.computeCompletionProposals(editor.getViewer(), offset);
+    }
+
     @Test
     public void testBug69334a() throws Exception {
         importFile( "test.h", "class Test{ public : Test( int ); }; \n" );  //$NON-NLS-1$//$NON-NLS-2$
@@ -160,12 +161,12 @@ public class ContentAssistTests extends BaseUITestCase {
         writer.write( "int main() {                       \n"); //$NON-NLS-1$
         writer.write( "   int veryLongName = 1;           \n"); //$NON-NLS-1$
         writer.write( "   Test * ptest = new Test( very   \n"); //$NON-NLS-1$
-        
+
         String code = writer.toString();
         IFile cu = importFile( "test.cpp", code ); //$NON-NLS-1$
-        
+
         ICompletionProposal [] results = getResults( cu, code.indexOf( "very " ) + 4 ); //$NON-NLS-1$
-        
+
         assertEquals( 1, results.length );
         assertEquals( "veryLongName : int", results[0].getDisplayString() ); //$NON-NLS-1$
     }
@@ -179,12 +180,12 @@ public class ContentAssistTests extends BaseUITestCase {
         writer.write( "int main() {                       \n"); //$NON-NLS-1$
         writer.write( "   int veryLongName = 1;           \n"); //$NON-NLS-1$
         writer.write( "   Test test( very   \n"); //$NON-NLS-1$
-        
+
         String code = writer.toString();
         IFile cu = importFile( "test.cpp", code ); //$NON-NLS-1$
-        
+
         ICompletionProposal [] results = getResults( cu, code.indexOf( "very " ) + 4 ); //$NON-NLS-1$
-        
+
         assertEquals( 1, results.length );
         // We should not match anything in glibc and only see something from the source code
         assertEquals( "veryLongName : int", results[0].getDisplayString() ); //$NON-NLS-1$
@@ -200,37 +201,37 @@ public class ContentAssistTests extends BaseUITestCase {
         writer.write( "   _Ability getAbility();                    \n"); //$NON-NLS-1$
         writer.write( "};                                           \n"); //$NON-NLS-1$
         writer.write( "int main(){                                  \n"); //$NON-NLS-1$
-        
+
         String code = writer.toString();
         String c2 = code + "   Strategy *p[3] = { new Strategy( Str \n"; //$NON-NLS-1$
-        
+
         IFile cu = importFile( "strategy.cpp", c2 ); //$NON-NLS-1$
-        
+
         ICompletionProposal [] results = getResults( cu, c2.indexOf( "Str " ) + 3 ); //$NON-NLS-1$
         assertEquals( 1, results.length );
         assertEquals( "Strategy", results[0].getDisplayString() ); //$NON-NLS-1$
-        
+
         c2 = code + "   Strategy *p[3] = { new Strategy( Strategy:: \n"; //$NON-NLS-1$
 
         cu = importFile( "strategy.cpp", c2 ); //$NON-NLS-1$
-        
+
         results = getResults( cu, c2.indexOf( "::" ) + 2 ); //$NON-NLS-1$
-        
+
         // Verify we only get back completions from the source code and not glibc function completions
         assertEquals( 4, results.length );
         assertEquals( "CHEAT", results[0].getDisplayString()  ); //$NON-NLS-1$
         assertEquals( "IDIOT", results[1].getDisplayString()  ); //$NON-NLS-1$
         assertEquals( "NORMAL", results[2].getDisplayString()  ); //$NON-NLS-1$
-        // "_Ability" is here due to fix for bug 199598 
+        // "_Ability" is here due to fix for bug 199598
         // Difficult to differentiate between declaration and expression context
         assertEquals( "_Ability", results[3].getDisplayString()  ); //$NON-NLS-1$
 
         // in a method definition context, constructors and methods should be proposed
-        
+
         c2 = code + "return 0;}\nStrategy::\n"; //$NON-NLS-1$
 
         cu = importFile( "strategy.cpp", c2 ); //$NON-NLS-1$
-        
+
         results = getResults( cu, c2.indexOf( "::" ) + 2 ); //$NON-NLS-1$
         assertEquals( 3, results.length );
         assertEquals( "getAbility(void) : enum _Ability", results[1].getDisplayString()  ); //$NON-NLS-1$
@@ -251,20 +252,19 @@ public class ContentAssistTests extends BaseUITestCase {
         String code = writer.toString();
         IFile cu = importFile( "t.cpp", code ); //$NON-NLS-1$
         ICompletionProposal [] results = getResults( cu, code.indexOf( "v " ) + 1 ); //$NON-NLS-1$
-        
+
         assertTrue( results.length >= 5 );
-        
+
         // Verify first 2 suggestions come from glibc
         assertEquals( results[0].getDisplayString(), "valloc (size_t size) void *" ); //$NON-NLS-1$
         assertEquals( results[1].getDisplayString(), "vasprintf (char **ptr, const char *template, va_list ap) int" ); //$NON-NLS-1$
-      
-        
+
         // Verify end of list contains completions from indexer
         assertEquals( results[results.length - 3].getDisplayString(), "var : float" ); //$NON-NLS-1$
         assertEquals( results[results.length - 2].getDisplayString(), "virtual" ); //$NON-NLS-1$
         assertEquals( results[results.length - 1].getDisplayString(), "volatile" ); //$NON-NLS-1$
     }
-    
+
     @Test
     public void testCfunc() throws Exception {
         StringWriter writer = new StringWriter();
@@ -276,13 +276,13 @@ public class ContentAssistTests extends BaseUITestCase {
         String code = writer.toString();
         IFile cu = importFile( "t.c", code ); //$NON-NLS-1$
         ICompletionProposal [] results = getResults( cu, code.indexOf( "strle " ) + 5 ); //$NON-NLS-1$
-        
+
         assertTrue( results.length >= 1 );
-        
+
         // Verify we find the glibc strlen function
         assertEquals( results[0].getDisplayString(), "strlen (const char *s) size_t" ); //$NON-NLS-1$
-        
+
         if (results.length > 1) // if newlib book also enabled, verify it is correct too
-        	assertEquals( results[1].getDisplayString(), "strlen (const char *str) size_t " ); //$NON-NLS-1$
+            assertEquals( results[1].getDisplayString(), "strlen (const char *str) size_t " ); //$NON-NLS-1$
     }
 }

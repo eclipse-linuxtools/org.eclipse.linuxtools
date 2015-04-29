@@ -98,12 +98,12 @@ public class RDTProxyManager implements IRemoteEnvProxyManager {
         Map<String, String> envMap = new HashMap<>();
         Map<String, String> envTemp = connection.getEnv();
         for (String key : envTemp.keySet()) {
-			String value = envTemp.get(key);
-			String env = key + "=" + value; //$NON-NLS-1$
-			m = functionPattern.matcher(env);
-			if (!m.matches()) {
-				envMap.put(key, value);
-			}
+            String value = envTemp.get(key);
+            String env = key + "=" + value; //$NON-NLS-1$
+            m = functionPattern.matcher(env);
+            if (!m.matches()) {
+                envMap.put(key, value);
+            }
         }
         return envMap;
     }

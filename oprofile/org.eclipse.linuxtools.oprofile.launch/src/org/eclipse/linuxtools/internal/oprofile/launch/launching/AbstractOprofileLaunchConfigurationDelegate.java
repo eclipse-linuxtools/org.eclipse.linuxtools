@@ -169,7 +169,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
             for(int i = 0; i < options.getExecutionsNumber(); i++){
                 /*
                  * If profiling multiple times,
-                 * 	append oprofile results from 2nd execution on.
+                 * append oprofile results from 2nd execution on.
                  */
                 if (!appended && i!=0) {
                     argArray.add(1, APPEND);

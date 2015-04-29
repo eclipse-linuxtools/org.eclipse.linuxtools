@@ -272,21 +272,21 @@ public class GcdaRecordsParser {
      * @return the objSmrySumMax
      */
     public long getObjSmrySumMax() {
-    	return objSmrySumMax;
+        return objSmrySumMax;
     }
 
     /**
      * @return the pgmSmryChksm
      */
     public long getPgmSmryChksm() {
-    	return pgmSmryChksm;
+        return pgmSmryChksm;
     }
 
     /**
      * @return the prgSmryNbrPgmRuns
      */
     public long getPgmSmryNbrPgmRuns() {
-    	return pgmSmryNbrPgmRuns;
+        return pgmSmryNbrPgmRuns;
     }
 
 

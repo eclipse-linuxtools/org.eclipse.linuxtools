@@ -93,7 +93,7 @@ public class RepoFormEditor extends FormEditor {
 
     /**
      * Creates page for importing RPMs from the workspace or the file system.
-     * 
+     *
      * @throws PartInitException
      */
     private void createImportsPage() throws PartInitException {
@@ -105,7 +105,7 @@ public class RepoFormEditor extends FormEditor {
      * Creates page allowing the user to modify some of the data in the
      * repomd.xml as well as some options when customizing the execution of the
      * createrepo command. The default execution would satisfy most users.
-     * 
+     *
      * @throws PartInitException
      */
     private void createMetadataPage() throws PartInitException {
@@ -115,7 +115,7 @@ public class RepoFormEditor extends FormEditor {
 
     /**
      * Creates editor for the current .repo file.
-     * 
+     *
      * @throws PartInitException
      */
     private void createEditorPage() throws PartInitException {

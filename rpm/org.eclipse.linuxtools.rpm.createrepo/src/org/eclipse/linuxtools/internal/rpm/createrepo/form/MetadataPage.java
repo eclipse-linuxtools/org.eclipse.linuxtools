@@ -357,7 +357,7 @@ public class MetadataPage extends FormPage {
         public void widgetSelected(SelectionEvent e) {
             addTag();
         }
-        
+
         @Override
         public void widgetDefaultSelected(SelectionEvent e) {
             addTag();

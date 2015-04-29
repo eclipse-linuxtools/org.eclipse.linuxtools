@@ -432,7 +432,7 @@ public class ScriptConsole extends IOConsole {
 
     /**
      * Add observer to the script console.
-     * 
+     *
      * @param observer The observer to be added.
      * @since 2.0
      */

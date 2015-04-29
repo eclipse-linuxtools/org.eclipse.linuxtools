@@ -68,25 +68,25 @@ public abstract class AbstractProfilingOptionsTab extends AbstractLaunchConfigur
 
     @Override
     public void createControl(Composite parent) {
-    	top = new Composite(parent, SWT.NONE);
-    	setControl(top);
-    	top.setLayout(new GridLayout(1, true));
+        top = new Composite(parent, SWT.NONE);
+        setControl(top);
+        top.setLayout(new GridLayout(1, true));
 
-    	comboItems = getProviders();
-    	Set<String> providerNames = comboItems.keySet();
+        comboItems = getProviders();
+        Set<String> providerNames = comboItems.keySet();
 
-    	providerCombo = new Combo(top, SWT.READ_ONLY);
-    	providerCombo.setItems(providerNames.toArray(new String[0]));
-    	if (providerNames.size() == 0) {
-    		providerCombo.setVisible(false);
-    		providerCombo.setEnabled(false);
-    		Label label = new Label(top, SWT.NULL);
-    		label.setText(Messages.ProfilingTab_no_category_profilers_installed);
-    	}
+        providerCombo = new Combo(top, SWT.READ_ONLY);
+        providerCombo.setItems(providerNames.toArray(new String[0]));
+        if (providerNames.size() == 0) {
+            providerCombo.setVisible(false);
+            providerCombo.setEnabled(false);
+            Label label = new Label(top, SWT.NULL);
+            label.setText(Messages.ProfilingTab_no_category_profilers_installed);
+        }
 
-    	tabgroup = new CTabFolder(top, SWT.NONE);
+        tabgroup = new CTabFolder(top, SWT.NONE);
         tabgroup.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true,
-        		true));
+                true));
 
         providerCombo.addSelectionListener(new SelectionAdapter() {
             @Override

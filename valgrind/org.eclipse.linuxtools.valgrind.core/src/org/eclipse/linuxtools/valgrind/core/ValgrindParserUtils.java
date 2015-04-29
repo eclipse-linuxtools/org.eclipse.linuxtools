@@ -49,7 +49,7 @@ public final class ValgrindParserUtils {
      * @param line - the line to parse
      * @param delim - the DELIMITER to separate fields
      * @return String value of ARGUMENT
-     * @throws IOException If parsing failed. 
+     * @throws IOException If parsing failed.
      */
     public static String parseStrValue(String line, String delim)
     throws IOException {

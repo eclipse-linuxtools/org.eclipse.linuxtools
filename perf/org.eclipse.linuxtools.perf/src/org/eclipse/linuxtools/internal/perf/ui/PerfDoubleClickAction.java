@@ -69,7 +69,7 @@ public class PerfDoubleClickAction extends Action {
                     bFound = true;
                 }
                 if (!bFound) {
-                	ProfileUIUtils.openEditorAndSelect(file.getPath(), 1, ResourcesPlugin.getWorkspace().getRoot().getProject(dso.getName()));
+                    ProfileUIUtils.openEditorAndSelect(file.getPath(), 1, ResourcesPlugin.getWorkspace().getRoot().getProject(dso.getName()));
                 }
             }
         // if we encounter an exception, act as though no corresponding source exists

@@ -46,8 +46,8 @@ public class STExportToCSVAction extends Action {
      */
     public STExportToCSVAction(AbstractSTViewer stViewer) {
         super(STDataViewersMessages.exportToCSVAction_title,
-        		AbstractUIPlugin.imageDescriptorFromPlugin(STDataViewersActivator.PLUGIN_ID,
-        				"icons/export.gif")); //$NON-NLS-1$
+                AbstractUIPlugin.imageDescriptorFromPlugin(STDataViewersActivator.PLUGIN_ID,
+                        "icons/export.gif")); //$NON-NLS-1$
 
         this.stViewer = stViewer;
         this.exporter = new STDataViewersCSVExporter(stViewer);

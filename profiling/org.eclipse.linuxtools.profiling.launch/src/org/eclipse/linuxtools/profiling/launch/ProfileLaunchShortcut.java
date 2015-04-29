@@ -189,7 +189,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 
     /**
      * Search and launch binary.
-     * 
+     *
      * @param elements Binaries to search.
      * @param mode Launch mode.
      */

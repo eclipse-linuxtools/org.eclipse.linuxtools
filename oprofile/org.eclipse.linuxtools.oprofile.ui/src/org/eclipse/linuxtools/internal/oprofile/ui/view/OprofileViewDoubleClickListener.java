@@ -75,8 +75,8 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
         } catch (PartInitException e2) {
             e2.printStackTrace();
         } catch (CoreException e) {
-			e.printStackTrace();
-		}
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -84,7 +84,7 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
      *  @since 2.1
      */
     protected IProject getProject() {
-    	return Oprofile.OprofileProject.getProject();
-	}
+        return Oprofile.OprofileProject.getProject();
+    }
 
 }

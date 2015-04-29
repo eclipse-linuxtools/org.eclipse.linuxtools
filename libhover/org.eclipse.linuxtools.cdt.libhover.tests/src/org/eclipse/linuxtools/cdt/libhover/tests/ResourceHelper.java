@@ -35,62 +35,62 @@ import org.eclipse.core.runtime.NullProgressMonitor;
  * @since 6.0
  */
 public class ResourceHelper {
-	private final static IProgressMonitor NULL_MONITOR = new NullProgressMonitor();
+    private final static IProgressMonitor NULL_MONITOR = new NullProgressMonitor();
 
-	private final static Set<String> externalFilesCreated = new HashSet<>();
-	private final static Set<IResource> resourcesCreated = new HashSet<>();
+    private final static Set<String> externalFilesCreated = new HashSet<>();
+    private final static Set<IResource> resourcesCreated = new HashSet<>();
 
-	/**
-	 * Clean-up any files created as part of a unit test.
-	 * This method removes *all* Workspace IResources and any external
-	 * files / folders created with the #createWorkspaceFile #createWorkspaceFolder
-	 * methods in this class
-	 */
-	public static void cleanUp() throws CoreException {
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		root.refreshLocal(IResource.DEPTH_INFINITE, NULL_MONITOR);
+    /**
+     * Clean-up any files created as part of a unit test.
+     * This method removes *all* Workspace IResources and any external
+     * files / folders created with the #createWorkspaceFile #createWorkspaceFolder
+     * methods in this class
+     */
+    public static void cleanUp() throws CoreException {
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        root.refreshLocal(IResource.DEPTH_INFINITE, NULL_MONITOR);
 
-		// Delete all external files & folders created using ResourceHelper
-		for (String loc : externalFilesCreated) {
-			File f = new File(loc);
-			if (f.exists())
-				deleteRecursive(f);
-		}
-		externalFilesCreated.clear();
+        // Delete all external files & folders created using ResourceHelper
+        for (String loc : externalFilesCreated) {
+            File f = new File(loc);
+            if (f.exists())
+                deleteRecursive(f);
+        }
+        externalFilesCreated.clear();
 
-		// Remove IResources created by this helper
-		for (IResource r : resourcesCreated) {
-			if (r.exists()) {
-				try {
-					r.delete(true, NULL_MONITOR);
-				} catch (CoreException e) {
-					// Ignore
-				}
-			}
-		}
-		resourcesCreated.clear();
-	}
+        // Remove IResources created by this helper
+        for (IResource r : resourcesCreated) {
+            if (r.exists()) {
+                try {
+                    r.delete(true, NULL_MONITOR);
+                } catch (CoreException e) {
+                    // Ignore
+                }
+            }
+        }
+        resourcesCreated.clear();
+    }
 
-	/**
-	 * Recursively delete a directory / file
-	 *
-	 * For safety this method only deletes files created under the workspace
-	 *
-	 * @param file
-	 */
-	private static final void deleteRecursive(File f) throws IllegalArgumentException {
-		// Ensure that the file being deleted is a child of the workspace
-		// root to prevent anything nasty happening
-		if (!f.getAbsolutePath().startsWith(
-				ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile().getAbsolutePath())) {
-			throw new IllegalArgumentException("File must exist within the workspace!");
-		}
+    /**
+     * Recursively delete a directory / file
+     *
+     * For safety this method only deletes files created under the workspace
+     *
+     * @param file
+     */
+    private static final void deleteRecursive(File f) throws IllegalArgumentException {
+        // Ensure that the file being deleted is a child of the workspace
+        // root to prevent anything nasty happening
+        if (!f.getAbsolutePath().startsWith(
+                ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile().getAbsolutePath())) {
+            throw new IllegalArgumentException("File must exist within the workspace!");
+        }
 
-		if (f.isDirectory()) {
-			for (File f1 : f.listFiles()) {
-				deleteRecursive(f1);
-			}
-		}
-		f.delete();
-	}
+        if (f.isDirectory()) {
+            for (File f1 : f.listFiles()) {
+                deleteRecursive(f1);
+            }
+        }
+        f.delete();
+    }
 }

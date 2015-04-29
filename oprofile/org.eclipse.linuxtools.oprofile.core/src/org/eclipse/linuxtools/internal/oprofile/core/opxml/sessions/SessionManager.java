@@ -37,16 +37,16 @@ import org.xml.sax.SAXException;
  * This class manipulates the XML data output from the command 'opxml sessions'
  */
 public class SessionManager {
-	public final static String PLUGIN_LOC = OprofileCorePlugin.getDefault()
+    public final static String PLUGIN_LOC = OprofileCorePlugin.getDefault()
             .getStateLocation().toOSString();
-	public final static String SESSIONS = "sessions"; //$NON-NLS-1$
-	public final static String EVENT = "event"; //$NON-NLS-1$
-	public final static String SESSION = "session"; //$NON-NLS-1$
-	public final static String NAME = "name"; //$NON-NLS-1$
-	public final static String CURRENT = "current"; //$NON-NLS-1$
-	public final static String OPXML_PREFIX = PLUGIN_LOC + "/opxml_"; //$NON-NLS-1$
-	public final static String SESSION_LOCATION = OPXML_PREFIX + SESSIONS;
-	public final static String MODEL_DATA = "model-data"; //$NON-NLS-1$
+    public final static String SESSIONS = "sessions"; //$NON-NLS-1$
+    public final static String EVENT = "event"; //$NON-NLS-1$
+    public final static String SESSION = "session"; //$NON-NLS-1$
+    public final static String NAME = "name"; //$NON-NLS-1$
+    public final static String CURRENT = "current"; //$NON-NLS-1$
+    public final static String OPXML_PREFIX = PLUGIN_LOC + "/opxml_"; //$NON-NLS-1$
+    public final static String SESSION_LOCATION = OPXML_PREFIX + SESSIONS;
+    public final static String MODEL_DATA = "model-data"; //$NON-NLS-1$
 
     public Document doc;
     public Element root;

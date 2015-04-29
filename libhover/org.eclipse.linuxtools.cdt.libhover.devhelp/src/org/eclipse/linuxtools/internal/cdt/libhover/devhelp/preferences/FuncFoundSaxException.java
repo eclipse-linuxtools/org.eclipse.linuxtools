@@ -14,9 +14,9 @@ package org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences;
 // This class is just to allow us to end parsing devhelp docs once
 // we have found the function we are interested in
 public class FuncFoundSaxException extends RuntimeException {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
 }

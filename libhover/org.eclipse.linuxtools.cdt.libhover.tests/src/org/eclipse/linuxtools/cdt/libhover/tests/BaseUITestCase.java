@@ -30,75 +30,75 @@ import org.junit.Before;
 
 @SuppressWarnings("restriction")
 public class BaseUITestCase {
-    
+
     private static final String DEFAULT_INDEXER_TIMEOUT_SEC = "10";
     private static final String INDEXER_TIMEOUT_PROPERTY = "indexer.timeout";
     /**
      * Indexer timeout used by tests. To avoid this timeout expiring during debugging add
-     * -Dindexer.timeout=some_large_number to VM arguments of the test launch configuration. 
+     * -Dindexer.timeout=some_large_number to VM arguments of the test launch configuration.
      */
     protected static final int INDEXER_TIMEOUT_SEC =
             Integer.parseInt(System.getProperty(INDEXER_TIMEOUT_PROPERTY, DEFAULT_INDEXER_TIMEOUT_SEC));
 
-	@Before
-	public void setUp() {
-	    CPPASTNameBase.sAllowRecursionBindings= false;
+    @Before
+    public void setUp() {
+        CPPASTNameBase.sAllowRecursionBindings= false;
         CPPASTNameBase.sAllowNameComputation= false;
         CModelListener.sSuppressUpdateOfLastRecentlyUsed= true;
-		final IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		IViewPart view= activePage.findView("org.eclipse.cdt.ui.tests.DOMAST.DOMAST");
-		if (view != null) {
-			activePage.hideView(view);
-		}
-	}
+        final IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        IViewPart view= activePage.findView("org.eclipse.cdt.ui.tests.DOMAST.DOMAST");
+        if (view != null) {
+            activePage.hideView(view);
+        }
+    }
 
-	@After
-	public void tearDown() throws Exception {
-		runEventQueue(0);
-		ResourceHelper.cleanUp();
-	}
+    @After
+    public void tearDown() throws Exception {
+        runEventQueue(0);
+        ResourceHelper.cleanUp();
+    }
 
-	protected void runEventQueue(int time) {
-		final long endTime= System.currentTimeMillis() + time;
-		while (true) {
-			while (Display.getCurrent().readAndDispatch()) {
-			    //
-			}
-			long diff= endTime - System.currentTimeMillis();
-			if (diff <= 0) {
-				break;
-			}
-			try {
-				Thread.sleep(Math.min(20, diff));
-			} catch (InterruptedException e) {
-				return;
-			}
-		}
-	}
+    protected void runEventQueue(int time) {
+        final long endTime= System.currentTimeMillis() + time;
+        while (true) {
+            while (Display.getCurrent().readAndDispatch()) {
+                //
+            }
+            long diff= endTime - System.currentTimeMillis();
+            if (diff <= 0) {
+                break;
+            }
+            try {
+                Thread.sleep(Math.min(20, diff));
+            } catch (InterruptedException e) {
+                return;
+            }
+        }
+    }
 
-	protected void closeAllEditors() {
-		IWorkbenchWindow[] windows= PlatformUI.getWorkbench().getWorkbenchWindows();
-		for (IWorkbenchWindow window : windows) {
-			IWorkbenchPage[] pages= window.getPages();
-			for (IWorkbenchPage page : pages) {
-				page.closeAllEditors(false);
-			}
-		}
-	}
-	
-	 public static void waitForIndexer(ICProject project) throws InterruptedException {
-	        Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_REFRESH, null);
+    protected void closeAllEditors() {
+        IWorkbenchWindow[] windows= PlatformUI.getWorkbench().getWorkbenchWindows();
+        for (IWorkbenchWindow window : windows) {
+            IWorkbenchPage[] pages= window.getPages();
+            for (IWorkbenchPage page : pages) {
+                page.closeAllEditors(false);
+            }
+        }
+    }
 
-	        final PDOMManager indexManager = CCoreInternals.getPDOMManager();
-	        assertTrue(indexManager.joinIndexer(INDEXER_TIMEOUT_SEC * 1000, new NullProgressMonitor()));
-	        long waitms= 1;
-	        while (waitms < 2000 && !indexManager.isProjectRegistered(project)) {
-	            Thread.sleep(waitms);
-	            waitms *= 2;
-	        }
-	        assertTrue(indexManager.isProjectRegistered(project));
-	        assertTrue(indexManager.joinIndexer(INDEXER_TIMEOUT_SEC * 1000, new NullProgressMonitor()));
-	    }
+    public static void waitForIndexer(ICProject project) throws InterruptedException {
+        Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_REFRESH, null);
+
+        final PDOMManager indexManager = CCoreInternals.getPDOMManager();
+        assertTrue(indexManager.joinIndexer(INDEXER_TIMEOUT_SEC * 1000, new NullProgressMonitor()));
+        long waitms= 1;
+        while (waitms < 2000 && !indexManager.isProjectRegistered(project)) {
+            Thread.sleep(waitms);
+            waitms *= 2;
+        }
+        assertTrue(indexManager.isProjectRegistered(project));
+        assertTrue(indexManager.joinIndexer(INDEXER_TIMEOUT_SEC * 1000, new NullProgressMonitor()));
+    }
 
 }
 

@@ -34,15 +34,15 @@ public class RubyGemParser {
     private Map<String, ArrayList<String>> mSetupDependencies;
 
     private static final String SETUP_START = "^gem[:\\.]{1,2}specification[:\\.]{1,2}new(\\s+)?do(\\s+)?\\|(\\s+)?(\\w+)(\\s+)?\\|";
-    private static final String STRING = "(?:\\\"([^\\\"]+)\\\"|'([^']+)'|(?:%q|%Q)(?:([^\\w])([^/3].+)[^\\w]))";		// (%q|%Q) "value" | 'value' | {value}
-    private static final String LIST =  	"(?!%q|%Q)(?:%w|%W)?(?:([\\W])(.+)[\\W])"; 									// (%w|%W) [value, value2] | {"value", "value2"}
-    private static final String STRING_LIST = "(?:\\\"([^\\\"]+)\\\"|'([^']+)')(?:[, ])??";								// "test", "test2" | 'test' 'test2'
-    private static final String GENERIC_LIST = "(?:\\S+)(?:\\s+)??"; 													// test, test2 | test test2
+    private static final String STRING = "(?:\\\"([^\\\"]+)\\\"|'([^']+)'|(?:%q|%Q)(?:([^\\w])([^/3].+)[^\\w]))"; // (%q|%Q) "value" | 'value' | {value}
+    private static final String LIST = "(?!%q|%Q)(?:%w|%W)?(?:([\\W])(.+)[\\W])";                                 // (%w|%W) [value, value2] | {"value", "value2"}
+    private static final String STRING_LIST = "(?:\\\"([^\\\"]+)\\\"|'([^']+)')(?:[, ])??";                       // "test", "test2" | 'test' 'test2'
+    private static final String GENERIC_LIST = "(?:\\S+)(?:\\s+)??";                                              // test, test2 | test test2
 
     private static final String REPLACE_ME = "(%REPLACE_ME)";
-    private String simpleDefineRx = "(\\s+)?(?!#)(?:\\b(%REPLACE_ME)\\b\\.(\\w+))(\\s+)?=(?!=)(\\s+)?(.*)"; 		// gem.variable = ...
-    private String genericDefineRx = "(\\s+)?(?!#)(?:\\b(%REPLACE_ME)\\b\\.(\\w+))(\\s+)?(.*)"; 					// gem.variable...
-    private String simpleFunctionRx = "(\\s+)?(?!#)(?:\\b(%REPLACE_ME)\\b\\.(\\w+))(\\s+)?(?:\\((.*)\\))(.*)?"; 	// gem.variable(...)
+    private String simpleDefineRx = "(\\s+)?(?!#)(?:\\b(%REPLACE_ME)\\b\\.(\\w+))(\\s+)?=(?!=)(\\s+)?(.*)";         // gem.variable = ...
+    private String genericDefineRx = "(\\s+)?(?!#)(?:\\b(%REPLACE_ME)\\b\\.(\\w+))(\\s+)?(.*)";                     // gem.variable...
+    private String simpleFunctionRx = "(\\s+)?(?!#)(?:\\b(%REPLACE_ME)\\b\\.(\\w+))(\\s+)?(?:\\((.*)\\))(.*)?";     // gem.variable(...)
 
     /**
      * Initialize

@@ -132,20 +132,20 @@ public final class GcovAnnotationModel implements IAnnotationModel {
     }
 
     private void updateAnnotations(boolean force) {
-    	// We used to not annotate any editor displaying content of an element whose project was not tracked.
-    	// This logic fails when we have a linked-in file which won't point back to a project that has
-    	// been registered so it has been removed.
+        // We used to not annotate any editor displaying content of an element whose project was not tracked.
+        // This logic fails when we have a linked-in file which won't point back to a project that has
+        // been registered so it has been removed.
 
-    	SourceFile coverage = findSourceCoverageForEditor();
-    	if (coverage != null) {
-    		if (!annotated || force) {
-    			createAnnotations(coverage);
-    		}
-    	} else {
-    		if (annotated) {
-    			clear();
-    		}
-    	}
+        SourceFile coverage = findSourceCoverageForEditor();
+        if (coverage != null) {
+            if (!annotated || force) {
+                createAnnotations(coverage);
+            }
+        } else {
+            if (annotated) {
+                clear();
+            }
+        }
     }
 
     private SourceFile findSourceCoverageForEditor() {
@@ -170,87 +170,87 @@ public final class GcovAnnotationModel implements IAnnotationModel {
     // is part of the fix for bug: 447554
     private class FindLinkedResourceVisitor implements IResourceProxyVisitor {
 
-    	final private ICElement element;
-    	private boolean keepSearching = true;
-    	private boolean found;
+        final private ICElement element;
+        private boolean keepSearching = true;
+        private boolean found;
 
-    	public FindLinkedResourceVisitor(ICElement element) {
-    		this.element = element;
-    	}
+        public FindLinkedResourceVisitor(ICElement element) {
+            this.element = element;
+        }
 
-    	public boolean foundElement() {
-    		return found;
-    	}
+        public boolean foundElement() {
+            return found;
+        }
 
-    	@Override
-    	public boolean visit(IResourceProxy proxy) {
-    		if (proxy.isLinked() && proxy.requestResource().getLocationURI().equals(element.getLocationURI())) {
-    			found = true;
-    			keepSearching = false;
-    		}
-    		return keepSearching;
-    	}
+        @Override
+        public boolean visit(IResourceProxy proxy) {
+            if (proxy.isLinked() && proxy.requestResource().getLocationURI().equals(element.getLocationURI())) {
+                found = true;
+                keepSearching = false;
+            }
+            return keepSearching;
+        }
 
     }
 
     private SourceFile findSourceCoverageForElement(ICElement element) {
-    	List<SourceFile> sources = new ArrayList<> ();
-    	ICProject cProject = element.getCProject();
-    	IPath target = GcovAnnotationModelTracker.getInstance().getBinaryPath(cProject.getProject());
-    	if (target == null) {
-    		// We cannot find a target for this element, using it's project.
-    		// This can be caused by linking in a file to the project which may
-    		// not have a project or may point to another unseen project if the file originated
-    		// there.
-    		IProject[] trackedProjects = GcovAnnotationModelTracker.getInstance().getTrackedProjects();
-    		for (IProject proj : trackedProjects) {
-    			// Look at all projects that are registered for gcov viewing and see if the
-    			// element is linked in.
-    			try {
-    				FindLinkedResourceVisitor visitor = new FindLinkedResourceVisitor(element);
-    				proj.accept(visitor, IResource.DEPTH_INFINITE);
-    				// If we find a match, make note of the target and the real C project.
-    				if (visitor.foundElement()) {
-    					target = GcovAnnotationModelTracker.getInstance().getBinaryPath(proj);
-    					cProject = CoreModel.getDefault().getCModel().getCProject(proj.getName());
-    					break;
-    				}
-    			} catch (CoreException e) {
-    			}
-    		}
-    		if (target == null)
-    			return null;
-    	}
+        List<SourceFile> sources = new ArrayList<> ();
+        ICProject cProject = element.getCProject();
+        IPath target = GcovAnnotationModelTracker.getInstance().getBinaryPath(cProject.getProject());
+        if (target == null) {
+            // We cannot find a target for this element, using it's project.
+            // This can be caused by linking in a file to the project which may
+            // not have a project or may point to another unseen project if the file originated
+            // there.
+            IProject[] trackedProjects = GcovAnnotationModelTracker.getInstance().getTrackedProjects();
+            for (IProject proj : trackedProjects) {
+                // Look at all projects that are registered for gcov viewing and see if the
+                // element is linked in.
+                try {
+                    FindLinkedResourceVisitor visitor = new FindLinkedResourceVisitor(element);
+                    proj.accept(visitor, IResource.DEPTH_INFINITE);
+                    // If we find a match, make note of the target and the real C project.
+                    if (visitor.foundElement()) {
+                        target = GcovAnnotationModelTracker.getInstance().getBinaryPath(proj);
+                        cProject = CoreModel.getDefault().getCModel().getCProject(proj.getName());
+                        break;
+                    }
+                } catch (CoreException e) {
+                }
+            }
+            if (target == null)
+                return null;
+        }
 
-    	try {
-    		IBinary[] binaries = cProject.getBinaryContainer().getBinaries();
-    		for (IBinary b : binaries) {
-    			if (b.getResource().getLocation().equals(target)) {
-    				CovManager covManager = new CovManager(b.getResource().getLocation().toOSString());
-    				covManager.processCovFiles(covManager.getGCDALocations(), null);
-    				sources.addAll(covManager.getAllSrcs());
-    			}
-    		}
-    	} catch (IOException|CoreException|InterruptedException e) {
-    	}
+        try {
+            IBinary[] binaries = cProject.getBinaryContainer().getBinaries();
+            for (IBinary b : binaries) {
+                if (b.getResource().getLocation().equals(target)) {
+                    CovManager covManager = new CovManager(b.getResource().getLocation().toOSString());
+                    covManager.processCovFiles(covManager.getGCDALocations(), null);
+                    sources.addAll(covManager.getAllSrcs());
+                }
+            }
+        } catch (IOException|CoreException|InterruptedException e) {
+        }
 
-    	for (SourceFile sf : sources) {
-    		IPath sfPath = new Path(sf.getName());
-    		IFile file = STLink2SourceSupport.getFileForPath(sfPath, cProject.getProject());
-    		if (file != null && element.getResource().getLocation().equals(file.getLocation())) {
-    			return sf;
-    		}
-    	}
+        for (SourceFile sf : sources) {
+            IPath sfPath = new Path(sf.getName());
+            IFile file = STLink2SourceSupport.getFileForPath(sfPath, cProject.getProject());
+            if (file != null && element.getResource().getLocation().equals(file.getLocation())) {
+                return sf;
+            }
+        }
 
-    	IPath binFolder = target.removeLastSegments(1);
-    	for (SourceFile sf : sources) {
-    		String sfPath = Paths.get(binFolder.toOSString()).resolve(sf.getName()).normalize().toString();
-    		if (sfPath.equals(element.getLocationURI().getPath())) {
-    			return sf;
-    		}
-    	}
+        IPath binFolder = target.removeLastSegments(1);
+        for (SourceFile sf : sources) {
+            String sfPath = Paths.get(binFolder.toOSString()).resolve(sf.getName()).normalize().toString();
+            if (sfPath.equals(element.getLocationURI().getPath())) {
+                return sf;
+            }
+        }
 
-    	return null;
+        return null;
     }
 
     private void createAnnotations(SourceFile sourceFile) {

@@ -66,10 +66,10 @@ public class Oprofile {
             initializeOprofile();
         }
 
-		if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY)
-				|| isKernelModuleLoaded()) {
-			initializeOprofileCore();
-		}
+        if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY)
+                || isKernelModuleLoaded()) {
+            initializeOprofileCore();
+        }
     }
 
     // This requires more inside knowledge about Oprofile than one would like,

@@ -48,7 +48,7 @@ public class Activator extends AbstractUIPlugin {
 
     /**
      * Returns the bundle symbolic name of the plug-in.
-     * 
+     *
      * @return an ID unique to this plug-in
      */
     public String getPluginId() {

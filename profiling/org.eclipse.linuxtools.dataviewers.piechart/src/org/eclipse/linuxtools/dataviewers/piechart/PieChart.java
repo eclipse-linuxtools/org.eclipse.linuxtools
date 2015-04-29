@@ -46,11 +46,11 @@ public class PieChart extends Chart {
         // with blanks in the PieChartPaintListener and have the title paint after it
         // once the title has been altered.
         if (title instanceof Control) {
-        	addPaintListener(pieChartPaintListener = new PieChartPaintListener(this));
+            addPaintListener(pieChartPaintListener = new PieChartPaintListener(this));
         } else {
-        	removePaintListener((PaintListener)title);
-        	addPaintListener(pieChartPaintListener = new PieChartPaintListener(this));
-        	addPaintListener((PaintListener)title);
+            removePaintListener((PaintListener)title);
+            addPaintListener(pieChartPaintListener = new PieChartPaintListener(this));
+            addPaintListener((PaintListener)title);
         }
         IAxis xAxis = getAxisSet().getXAxis(0);
         xAxis.enableCategory(true);

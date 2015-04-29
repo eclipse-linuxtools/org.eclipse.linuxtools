@@ -47,20 +47,20 @@ public class ProxyLaunchMessages extends NLS {
     public static String connection_of_working_directory_and_program_do_not_match;
 
     /**
-	 * @since 3.1
-	 */
+     * @since 3.1
+     */
     public static String copy_cpp_executable;
     /**
-	 * @since 3.1
-	 */
+     * @since 3.1
+     */
     public static String executable_origin;
     /**
-	 * @since 3.1
-	 */
+     * @since 3.1
+     */
     public static String to;
     /**
-	 * @since 3.1
-	 */
+     * @since 3.1
+     */
     public static String uri_syntax_error;
 
     static {

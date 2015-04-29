@@ -37,12 +37,12 @@ public class Messages extends NLS {
     public static String GraphDiscreteXControl_Last;
 
     /**
-	 * @since 3.1
-	 */
+     * @since 3.1
+     */
     public static String GraphCompositeTitle;
     /**
-	 * @since 3.1
-	 */
+     * @since 3.1
+     */
     public static String GraphCompositeLegend;
 
     static {

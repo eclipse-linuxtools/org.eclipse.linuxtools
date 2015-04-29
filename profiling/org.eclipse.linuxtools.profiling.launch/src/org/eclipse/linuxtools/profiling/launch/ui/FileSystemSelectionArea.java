@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Label;
 
 /**
  * FileSystemSelectionArea is the area used to select the file system.
- * 
+ *
  * @since 2.0
  *
  */

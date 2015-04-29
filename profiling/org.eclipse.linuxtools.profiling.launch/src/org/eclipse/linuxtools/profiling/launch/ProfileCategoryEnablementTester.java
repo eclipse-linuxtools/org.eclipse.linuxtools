@@ -19,23 +19,23 @@ import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.Provider
  */
 public class ProfileCategoryEnablementTester extends PropertyTester {
 
-	public ProfileCategoryEnablementTester() {
-	}
+    public ProfileCategoryEnablementTester() {
+    }
 
-	@Override
-	public boolean test(Object receiver, String property, Object[] args,
-			Object expectedValue) {
-		ProfileLaunchShortcut x = null;
+    @Override
+    public boolean test(Object receiver, String property, Object[] args,
+            Object expectedValue) {
+        ProfileLaunchShortcut x = null;
 
-		if (args.length == 0)
-			return true;
+        if (args.length == 0)
+            return true;
 
-		// See if there is a profile provider for the given category
-		x = ProviderFramework.getProfilingProvider((String)args[0]);
+        // See if there is a profile provider for the given category
+        x = ProviderFramework.getProfilingProvider((String)args[0]);
 
-		if (x == null)
-			return false;
-		return true;
-	}
+        if (x == null)
+            return false;
+        return true;
+    }
 
 }

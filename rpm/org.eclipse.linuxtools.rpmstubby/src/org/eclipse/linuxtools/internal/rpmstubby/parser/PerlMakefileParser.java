@@ -37,14 +37,14 @@ public class PerlMakefileParser {
      *
      */
     private static final String WHITE_SPACE = "(?:\\s+)";
-    private static final String COMMENT = "#.+"; 							// # comment
-    private static final String LINE_WITH_COMMENT = "(?:(.*)#.+)";		 	// line # comment
+    private static final String COMMENT = "#.+";                            // # comment
+    private static final String LINE_WITH_COMMENT = "(?:(.*)#.+)";          // line # comment
     private static final String VARIABLE_PARAMS = "(?:my|local|our)";
 
-    private static final String WORD = "(\\b\\w+\\b)"; 						// variable
+    private static final String WORD = "(\\b\\w+\\b)";                      // variable
     private static final String NON_WHITE_SPACE = "(\\S+)";
     private static final String VARIABLE = "(?:" + VARIABLE_PARAMS
-            + WHITE_SPACE + ")?(?:\\$|@|%)" + WORD + WHITE_SPACE + "?"; 	// %variable | my $variable | our @variable
+            + WHITE_SPACE + ")?(?:\\$|@|%)" + WORD + WHITE_SPACE + "?";     // %variable | my $variable | our @variable
     private static final String ASSOCIATIVE_KEY = WHITE_SPACE + "?"
             + NON_WHITE_SPACE + WHITE_SPACE + "?";
 
@@ -54,16 +54,16 @@ public class PerlMakefileParser {
     private static final String ASSOCIATIVE_OPERATOR = "=>";
     private static final String SIMPLE_ASSIGNMENT = NON_CONDITIONAL
             + WHITE_SPACE + "?" + VARIABLE + "(?:" + ASSIGNMENT_OPERATOR + ")"
-            + EXCLUDE_SPECIALS + "(?:(.+))"; 								// %var = value || [1] = [2]
+            + EXCLUDE_SPECIALS + "(?:(.+))";                                // %var = value || [1] = [2]
     private static final String ASSOCIATIVE_ASSIGNMENT = ASSOCIATIVE_KEY
-            + ASSOCIATIVE_OPERATOR + "(?:(.+))"; 							// 'key' => 'value' || [1] => [2]
+            + ASSOCIATIVE_OPERATOR + "(?:(.+))";                            // 'key' => 'value' || [1] => [2]
 
     private static final String FUNCTION = "\\s*" + WORD
-            + "*\\s*?\\((.*)\\)\\s*"; 										// foo(bar) | foo(foo(bar)) | foo() || [1]([2])
-    private static final String BEGIN_END = "(?:[^#]*<<END)"; 				// [CS] test<<END | <<END
-    private static final String END_END = "^END$"; 							// [CS]
-    private static final String BEGIN_BC = "^=(?!cut)[a-z]\\S+(\\s)?\\S+"; 	// [CS] =test | =test test
-    private static final String END_BC = "^=cut$"; 							// [CS]
+            + "*\\s*?\\((.*)\\)\\s*";                                       // foo(bar) | foo(foo(bar)) | foo() || [1]([2])
+    private static final String BEGIN_END = "(?:[^#]*<<END)";               // [CS] test<<END | <<END
+    private static final String END_END = "^END$";                          // [CS]
+    private static final String BEGIN_BC = "^=(?!cut)[a-z]\\S+(\\s)?\\S+";  // [CS] =test | =test test
+    private static final String END_BC = "^=cut$";                          // [CS]
 
     private static final String MAKEFILE_FUNCTION_NAME = "WriteMakefile";
     private static final String MAKEFILE_FUNCTION = "^.*"

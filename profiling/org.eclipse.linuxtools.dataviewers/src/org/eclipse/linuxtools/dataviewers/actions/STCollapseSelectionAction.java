@@ -36,8 +36,8 @@ public class STCollapseSelectionAction extends Action {
      */
     public STCollapseSelectionAction(AbstractSTTreeViewer stViewer) {
         super(STDataViewersMessages.collapseSelectionAction_title,
-        		AbstractUIPlugin.imageDescriptorFromPlugin(STDataViewersActivator.PLUGIN_ID,
-        				"icons/collapse_all.gif")); //$NON-NLS-1$
+                AbstractUIPlugin.imageDescriptorFromPlugin(STDataViewersActivator.PLUGIN_ID,
+                        "icons/collapse_all.gif")); //$NON-NLS-1$
         this.stViewer = stViewer;
     }
 

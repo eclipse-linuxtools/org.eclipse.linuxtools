@@ -35,8 +35,8 @@ public class STDataViewersSortAction extends Action {
      */
     public STDataViewersSortAction(AbstractSTViewer stViewer) {
         super(STDataViewersMessages.sortAction_title,
-        		AbstractUIPlugin.imageDescriptorFromPlugin(STDataViewersActivator.PLUGIN_ID,
-        				"icons/sort.gif")); //$NON-NLS-1$
+                AbstractUIPlugin.imageDescriptorFromPlugin(STDataViewersActivator.PLUGIN_ID,
+                        "icons/sort.gif")); //$NON-NLS-1$
         super.setToolTipText(STDataViewersMessages.sortAction_tooltip);
         this.stViewer = stViewer;
 

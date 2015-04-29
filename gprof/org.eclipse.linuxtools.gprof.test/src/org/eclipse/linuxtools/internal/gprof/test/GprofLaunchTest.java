@@ -74,15 +74,15 @@ public class GprofLaunchTest extends AbstractTest {
             }
         }
         config = createConfiguration(proj.getProject());
-        
+
         enableGprofSupport();   //(otherwise test hangs on 'enable GGprof support' dialogue. )
-                
-        //---- Continue with launch. 
+
+        //---- Continue with launch.
         launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
          wc = config.getWorkingCopy();
     }
-    
-	private void enableGprofSupport() {
+
+    private void enableGprofSupport() {
         String optionId = null;
         if (CProjectBuildHelpers.isCppType(proj.getProject())) {
             optionId = "gnu.cpp.compiler.option.debugging.gprof"; //$NON-NLS-1$
@@ -90,8 +90,8 @@ public class GprofLaunchTest extends AbstractTest {
             optionId = "gnu.c.compiler.option.debugging.gprof"; //$NON-NLS-1$
         }
         CProjectBuildHelpers.setOptionInCDT(proj.getProject(), optionId, true);
-	}
-   
+    }
+
     @After
     public void tearDown() throws Exception {
         deleteProject(proj);

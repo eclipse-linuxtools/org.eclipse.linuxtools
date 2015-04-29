@@ -74,12 +74,12 @@ public final class RpmPackageBuildProposalsJob extends Job {
 
     protected static final IPropertyChangeListener PROPERTY_LISTENER = new IPropertyChangeListener() {
 
-		@Override
-		public void propertyChange(PropertyChangeEvent event) {
-			if (event.getProperty().equals(PreferenceConstants.P_CURRENT_RPMTOOLS)) {
+        @Override
+        public void propertyChange(PropertyChangeEvent event) {
+            if (event.getProperty().equals(PreferenceConstants.P_CURRENT_RPMTOOLS)) {
                 update();
             }
-		}
+        }
     };
 
     protected static final IPreferenceStore STORE = Activator.getDefault().getPreferenceStore();
@@ -247,9 +247,9 @@ public final class RpmPackageBuildProposalsJob extends Job {
      */
     public static void setPropertyChangeListener(boolean activated) {
         if (activated) {
-        	STORE.addPropertyChangeListener(PROPERTY_LISTENER);
+            STORE.addPropertyChangeListener(PROPERTY_LISTENER);
         } else {
-        	STORE.removePropertyChangeListener(PROPERTY_LISTENER);
+            STORE.removePropertyChangeListener(PROPERTY_LISTENER);
         }
     }
 

@@ -32,8 +32,8 @@ public class STHideShowColAction extends Action {
      */
     public STHideShowColAction(AbstractSTViewer stViewer) {
         super(STDataViewersMessages.hideshowAction_title,
-        		AbstractUIPlugin.imageDescriptorFromPlugin(STDataViewersActivator.PLUGIN_ID,
-        				"icons/prop_edt.gif")); //$NON-NLS-1$
+                AbstractUIPlugin.imageDescriptorFromPlugin(STDataViewersActivator.PLUGIN_ID,
+                        "icons/prop_edt.gif")); //$NON-NLS-1$
         this.stViewer = stViewer;
         setEnabled(true);
     }
