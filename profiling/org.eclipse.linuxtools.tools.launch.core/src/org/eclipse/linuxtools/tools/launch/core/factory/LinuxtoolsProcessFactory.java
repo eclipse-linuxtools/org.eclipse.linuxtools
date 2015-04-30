@@ -186,6 +186,7 @@ public abstract class LinuxtoolsProcessFactory {
         }
 
         ChannelExec channel = (ChannelExec) session.openChannel("exec"); //$NON-NLS-1$
+        channel.setPty(true);
         channel.setCommand(command.toString());
         channel.setInputStream(null, true);
         channel.setOutputStream(out, true);
@@ -249,5 +250,25 @@ public abstract class LinuxtoolsProcessFactory {
         }
 
         return channel;
+    }
+
+    /**
+     * Convenience method: asks the channel to attempt termination of the
+     * currently-running process on the channel's session.
+     * @param channel The channel whose session process should be terminated.
+     * @return <code>true</code> on a successul attempt of terminating the process,
+     * <code>false</code> otherwise.
+     * @since 3.2
+     */
+    public static boolean terminateProcess(Channel channel) {
+        try {
+            OutputStream out = channel.getOutputStream();
+            out.write(3);
+            out.flush();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

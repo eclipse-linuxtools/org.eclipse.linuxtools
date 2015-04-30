@@ -149,8 +149,6 @@ public abstract class TapsetParser extends Job {
         if (!remote) {
             try {
                 return runLocalStap(args, getErrors);
-            } catch (InterruptedException e) {
-                return ""; //$NON-NLS-1$
             } catch (IOException e) {
                 return null;
             }
@@ -173,7 +171,7 @@ public abstract class TapsetParser extends Job {
         return IStatus.OK;
     }
 
-    private String runLocalStap(String[] args, boolean getErrors) throws IOException, InterruptedException {
+    private String runLocalStap(String[] args, boolean getErrors) throws IOException {
         Process process = RuntimeProcessFactory.getFactory().exec(
                 args, EnvironmentVariablesPreferencePage.getEnvironmentVariables(), null);
         // An IOException should be thrown if there's a problem with exec, but to cover possible error
@@ -189,7 +187,11 @@ public abstract class TapsetParser extends Job {
             egobbler = new StringStreamGobbler(process.getErrorStream());
             egobbler.start();
         }
-        process.waitFor();
+        try {
+            process.waitFor();
+        } catch (InterruptedException e) {
+            process.destroy();
+        }
         gobbler.stop();
         if (egobbler == null) {
             return gobbler.getOutput().toString();
@@ -234,6 +236,7 @@ public abstract class TapsetParser extends Job {
             return null;
         }
         channel.getSession().disconnect();
+        channel.disconnect();
         return (!getErrors ? str : strErr).toString();
     }
 
