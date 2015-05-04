@@ -56,13 +56,12 @@ public class LoggingStreamDaemon implements IGobblerListener {
         try {
             // Recreate the log if it was deleted
             if (!outputFile.exists()) {
-                saveLog(new File(outputFile.toString()));
-                output.insert(0, Localization.getString("LoggingStreamDaemon.ResumedLog") + '\n'); //$NON-NLS-1$
+                startRestoredLog();
             }
             writer.write(output.toString());
             output.setLength(0);
             writer.flush();
-        } catch(IOException ioe) {}
+        } catch (IOException ioe) {}
     }
 
     /**
@@ -109,8 +108,16 @@ public class LoggingStreamDaemon implements IGobblerListener {
         if (!isReady()) {
             return false;
         }
-        // If saving to the same file that's already being saved to, do nothing.
+        // If saving to the same file that's already being saved to,
+        // either do nothing if it exists, or restore it if it doesn't.
         if (file.equals(outputFile)) {
+            if (!outputFile.exists()) {
+                try {
+                    startRestoredLog();
+                } catch (IOException e) {
+                    return false;
+                }
+            }
             return true;
         }
         // If saving to a file used by another active log,
@@ -145,6 +152,13 @@ public class LoggingStreamDaemon implements IGobblerListener {
         saveLog = true;
         allLogs.add(this);
         return true;
+    }
+
+    private void startRestoredLog() throws IOException {
+        outputFile.createNewFile();
+        output.insert(0, Localization.getString("LoggingStreamDaemon.ResumedLog") + '\n'); //$NON-NLS-1$
+        writer.close();
+        writer = new FileWriter(outputFile, false);
     }
 
     public void dispose() {
