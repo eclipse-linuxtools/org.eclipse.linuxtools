@@ -1,0 +1,923 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="%PreferencesPage.name"
+            class="org.eclipse.linuxtools.internal.docker.ui.preferences.DockerPreferencePage"
+            id="org.eclipse.linuxtools.docker.ui.preferences.DockerPreferencePage">
+      </page>
+      <page
+            category="org.eclipse.linuxtools.docker.ui.preferences.DockerPreferencePage"
+            class="org.eclipse.linuxtools.internal.docker.ui.preferences.LoggingPreferencePage"
+            id="org.eclipse.linuxtools.docker.ui.preferences.LoggingPage"
+            name="%LoggingPreferencesPage.name">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="%DockerCategory.name"
+            id="org.eclipse.linuxtools.docker.ui">
+      </category>
+       <view
+             category="org.eclipse.linuxtools.docker.ui"
+             class="org.eclipse.linuxtools.internal.docker.ui.views.DockerContainersView"
+             icon="icons/mock-repository.gif"
+             id="org.eclipse.linuxtools.docker.ui.dockerContainersView"
+             name="%DockerContainersView.name"
+             restorable="true">
+       </view>
+       <view
+             category="org.eclipse.linuxtools.docker.ui"
+             class="org.eclipse.linuxtools.internal.docker.ui.views.DockerImagesView"
+             icon="icons/dbgroup_obj.gif"
+             id="org.eclipse.linuxtools.docker.ui.dockerImagesView"
+             name="%DockerImagesView.name"
+             restorable="true">
+       </view>
+       <view
+             category="org.eclipse.linuxtools.docker.ui"
+             class="org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView"
+             icon="icons/repositories-blue.gif"
+             id="org.eclipse.linuxtools.docker.ui.dockerExplorerView"
+             name="%DockerExplorerView.name"
+             restorable="true">
+       </view>
+       
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewer
+            viewerId="org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+            <options>
+				<property
+					name="org.eclipse.ui.navigator.hideLinkWithEditorAction"
+					value="true">
+				</property>
+			</options>
+      </viewer>
+      <viewerContentBinding
+            viewerId="org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+         <includes>
+            <contentExtension
+                  isRoot="true"
+                  pattern="org.eclipse.linuxtools.docker.ui.dockerExplorerViewContent">
+            </contentExtension>
+            <contentExtension
+                  pattern="org.eclipse.linuxtools.docker.ui.topLevelImagesFilter">
+            </contentExtension>
+            <contentExtension
+                  pattern="org.eclipse.linuxtools.docker.ui.intermediateImagesFilter">
+            </contentExtension>
+            <contentExtension
+                  pattern="org.eclipse.linuxtools.docker.ui.danglingImagesFilter">
+            </contentExtension>
+            <contentExtension
+                  pattern="org.eclipse.linuxtools.docker.ui.stoppedContainersViewerFilter">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <navigatorContent
+            contentProvider="org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider"
+            id="org.eclipse.linuxtools.docker.ui.dockerExplorerViewContent"
+            labelProvider="org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerLabelProvider"
+            name="%DockerExplorerContent.name"
+            priority="highest">
+         <triggerPoints></triggerPoints>
+      </navigatorContent>
+      <commonFilter
+            activeByDefault="false"
+            class="org.eclipse.linuxtools.internal.docker.ui.views.TopLevelImagesViewerFilter"
+            id="org.eclipse.linuxtools.docker.ui.topLevelImagesFilter"
+            name="%TopLevelImagesViewFilter.name">
+      </commonFilter>
+      <commonFilter
+            activeByDefault="true"
+            class="org.eclipse.linuxtools.internal.docker.ui.views.IntermediateImagesViewerFilter"
+            id="org.eclipse.linuxtools.docker.ui.intermediateImagesFilter"
+            name="%IntermediateImagesViewFilter.name">
+      </commonFilter>
+      <commonFilter
+            activeByDefault="true"
+            class="org.eclipse.linuxtools.internal.docker.ui.views.DanglingImagesViewerFilter"
+            id="org.eclipse.linuxtools.docker.ui.danglingImagesFilter"
+            name="%DanglingImagesViewFilter.name">
+      </commonFilter>
+      <commonFilter
+            activeByDefault="true"
+            class="org.eclipse.linuxtools.internal.docker.ui.views.HideStoppedContainersViewerFilter"
+            id="org.eclipse.linuxtools.docker.ui.stoppedContainersViewerFilter"
+            name="%StoppedContainerViewFilter.name">
+      </commonFilter>
+   </extension>
+
+   <!-- Refresh View -->
+	<extension
+		point="org.eclipse.ui.commands">
+		<command
+              id="org.eclipse.linuxtools.docker.ui.commands.refreshExplorerView"
+              name="%command.refreshexplorer.label">
+        </command>
+		<command
+              id="org.eclipse.linuxtools.docker.ui.commands.addConnection"
+              name="%command.addconnection.label">
+        </command>
+		<command
+              id="org.eclipse.linuxtools.docker.ui.commands.removeConnection"
+              name="%command.removeconnection.label">
+        </command>
+		<command
+	        description="%command.startcontainers.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.startContainers"
+	        name="%command.startcontainers.name">
+        </command>
+		<command 
+	        description="%command.pausecontainers.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.pauseContainers"
+	        name="%command.pausecontainers.name">
+        </command>
+		<command
+	        description="%command.unpausecontainers.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.unpauseContainers"
+	        name="%command.unpausecontainers.name">
+        </command>
+		<command
+	        description="%command.stopcontainers.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.stopContainers"
+	        name="%command.stopcontainers.name">
+        </command>
+		<command
+	        description="%command.killcontainers.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.killContainers"
+	        name="%command.killcontainers.name">
+        </command>
+		<command
+	        description="%command.removecontainers.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.removeContainers"
+	        name="%command.removecontainers.name">
+        </command>
+		<command
+	        description="%command.refreshcontainers.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.refreshContainers"
+	        name="%command.refreshcontainers.name">
+        </command>
+		<command
+	        description="%command.commitcontainer.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.commitContainer"
+	        name="%command.commitcontainer.name">
+        </command>
+		<command
+	        description="%command.displaycontainerlog.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.displayContainerLog"
+	        name="%command.displaycontainerlog.name">
+        </command>
+		<command
+	        description="%command.removecontainerlog.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.removeContainerLog"
+	        name="%command.removecontainerlog.name">
+        </command>
+		<command
+	        description="%command.showallcontainers.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.showAllContainers"
+	        name="%command.showallcontainers.name">
+	        <state
+		         class="org.eclipse.ui.handlers.RegistryToggleState:true"
+		         id="org.eclipse.ui.commands.toggleState">
+		   </state>
+        </command>
+		<command
+	        description="%command.pullimage.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.pullImage"
+	        name="%command.pullimage.name">
+        </command>
+		<command
+	        description="%command.pushimage.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.pushImage"
+	        name="%command.pushimage.name">
+        </command>
+		<command
+	        description="%command.createcontainer.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.createContainer"
+	        name="%command.createcontainer.name">
+        </command>
+		<command
+	        description="%command.tagimage.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.tagImage"
+	        name="%command.tagimage.name">
+        </command>
+		<command
+	        description="%command.removetagimage.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.removeTag"
+	        name="%command.removetagimage.name">
+        </command>
+		<command
+	        description="%command.buildimage.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.buildImage"
+	        name="%command.buildimage.name">
+        </command>
+		<command
+	        description="%command.removeimages.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.removeImages"
+	        name="%command.removeimages.name">
+        </command>
+		<command
+	        description="%command.refreshimages.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.refreshImages"
+	        name="%command.refreshimages.name">
+        </command>
+		<command
+	        description="%command.showallimages.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.showAllImages"
+	        name="%command.showallimages.name">
+	        <state
+		         class="org.eclipse.ui.handlers.RegistryToggleState:true"
+		         id="org.eclipse.ui.commands.toggleState">
+		   </state>
+        </command>
+	</extension>
+    <extension
+		point="org.eclipse.ui.handlers">
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.refreshExplorerView"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.RefreshConnectionsCommandHandler">
+     	</handler>
+     	<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.addConnection"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.AddConnectionCommandHandler">
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.removeConnection"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.RemoveConnectionCommandHandler">
+     		<enabledWhen>
+	     		<with
+	                variable="selection">
+	            <iterate ifEmpty="false">
+	               <instanceof
+	                     value="org.eclipse.linuxtools.docker.core.IDockerConnection">
+	               </instanceof>
+	            </iterate>
+	          </with>
+     		</enabledWhen>
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.startContainers"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.StartContainersCommandHandler">
+     		<enabledWhen>
+	     		<with variable="selection">
+	              <iterate ifEmpty="false">
+				    <and>
+	                  <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
+	                  <test
+			       	    forcePluginActivation="true"
+			       		property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="true"/>
+	                </and>
+	            </iterate>
+	          </with>
+     		</enabledWhen>
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.pauseContainers"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.PauseContainersCommandHandler">
+     		<enabledWhen>
+	     		<with variable="selection">
+	              <iterate ifEmpty="false">
+				    <and>
+	                  <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
+	                  <test
+			       	    forcePluginActivation="true"
+			       		property="org.eclipse.linuxtools.docker.propertytesters.container.isRunning" value="true"/>
+	                </and>
+	            </iterate>
+	          </with>
+     		</enabledWhen>
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.unpauseContainers"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.UnpauseContainersCommandHandler">
+     		<enabledWhen>
+	     		<with variable="selection">
+	              <iterate ifEmpty="false">
+				    <and>
+	                  <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
+	                  <test
+			       	    forcePluginActivation="true"
+			       		property="org.eclipse.linuxtools.docker.propertytesters.container.isPaused" value="true"/>
+	                </and>
+	            </iterate>
+	          </with>
+     		</enabledWhen>
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.stopContainers"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.StopContainersCommandHandler">
+     		<enabledWhen>
+	     		<with variable="selection">
+	              <iterate ifEmpty="false">
+				    <and>
+	                  <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
+	                  <test
+			       	    forcePluginActivation="true"
+			       		property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="false"/>
+	                </and>
+	            </iterate>
+	          </with>
+     		</enabledWhen>
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.killContainers"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.KillContainersCommandHandler">
+     		<enabledWhen>
+	     		<with variable="selection">
+	              <iterate ifEmpty="false">
+				    <and>
+	                  <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
+	                  <test
+			       	    forcePluginActivation="true"
+			       		property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="false"/>
+	                </and>
+	            </iterate>
+	          </with>
+     		</enabledWhen>
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.removeContainers"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.RemoveContainersCommandHandler">
+     		<enabledWhen>
+	     		<with variable="selection">
+	              <iterate ifEmpty="false">
+				    <and>
+	                  <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
+	                  <test
+			       	    forcePluginActivation="true"
+			       		property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="true"/>
+	                </and>
+	            </iterate>
+	          </with>
+     		</enabledWhen>
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.commitContainer"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.CommitContainerCommandHandler">
+     		<enabledWhen>
+	     		<with variable="selection">
+	     		   <count value="1"/>
+	                  <iterate ifEmpty="false">
+	                     <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
+	                  </iterate>
+	            </with>
+     		</enabledWhen>
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.displayContainerLog"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.DisplayContainerLogCommandHandler">
+     		<enabledWhen>
+	     		<with variable="selection">
+	     		   <count value="1"/>
+	                  <iterate ifEmpty="false">
+	                     <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
+	                  </iterate>
+	            </with>
+     		</enabledWhen>
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.removeContainerLog"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.RemoveContainerLogCommandHandler">
+     		<enabledWhen>
+	     		<with variable="selection">
+	     		   <count value="1"/>
+	                  <iterate ifEmpty="false">
+	                     <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
+	                  </iterate>
+	            </with>
+     		</enabledWhen>
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.refreshContainers"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.RefreshContainersCommandHandler">
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.showAllContainers"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.ShowAllContainersCommandHandler">
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.pullImage"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.PullImageCommandHandler">
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.pushImage"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.PushImageCommandHandler">
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.tagImage"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.TagImageCommandHandler">
+     		<enabledWhen>
+	     		<with variable="selection">
+	     		   <count value="1"/>
+	                  <iterate ifEmpty="false">
+	                     <and>
+	                        <instanceof value="org.eclipse.linuxtools.docker.core.IDockerImage"></instanceof>
+	                  	    <test
+			       	           forcePluginActivation="true"
+			       		       property="org.eclipse.linuxtools.docker.propertytesters.image.canBeTagged" value="true"/>
+	                     </and>
+	                  </iterate>
+	            </with>
+     		</enabledWhen>
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.removeTag"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.RemoveTagCommandHandler">
+     		<enabledWhen>
+	     		<with variable="selection">
+	     		   <count value="1"/>
+	                  <iterate ifEmpty="false">
+	                     <and>
+	                        <instanceof value="org.eclipse.linuxtools.docker.core.IDockerImage"></instanceof>
+	                  	    <test
+			       	           forcePluginActivation="true"
+			       		       property="org.eclipse.linuxtools.docker.propertytesters.image.hasMultipleTags" value="true"/>
+	                     </and>
+	                  </iterate>
+	            </with>
+     		</enabledWhen>
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.createContainer"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.CreateContainerCommandHandler">
+     		<enabledWhen>
+	     		<with variable="selection">
+	     		   <count value="1"/>
+	                  <iterate ifEmpty="false">
+	                     <instanceof value="org.eclipse.linuxtools.docker.core.IDockerImage"></instanceof>
+	                  </iterate>
+	            </with>
+     		</enabledWhen>
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.buildImage"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.BuildImageCommandHandler">
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.removeImages"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.RemoveImagesCommandHandler">
+      		<enabledWhen>
+	     		<with variable="selection">
+	              <iterate ifEmpty="false">
+	                <instanceof value="org.eclipse.linuxtools.docker.core.IDockerImage"></instanceof>
+	            </iterate>
+	          </with>
+     		</enabledWhen>
+      	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.refreshImages"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.RefreshImagesCommandHandler">
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.showAllImages"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.ShowAllImagesCommandHandler">
+     	</handler>
+	</extension>
+	<!-- property testers -->
+	<extension
+		point="org.eclipse.core.expressions.propertyTesters">
+		<propertyTester
+			class="org.eclipse.linuxtools.internal.docker.ui.propertytesters.ContainerPropertyTester"
+			id="org.eclipse.linuxtools.docker.containerPropertyTester"
+			namespace="org.eclipse.linuxtools.docker.propertytesters.container"
+			properties="isRunning,isStopped,isPaused"
+			type="org.eclipse.linuxtools.docker.core.IDockerContainer">
+		</propertyTester>
+  <propertyTester
+        class="org.eclipse.linuxtools.internal.docker.ui.propertytesters.ImagePropertyTester"
+        id="org.eclipse.linuxtools.docker.ui.imagePropertyTester"
+        namespace="org.eclipse.linuxtools.docker.propertytesters.image"
+        properties="canBeTagged,hasMultipleTags"
+        type="org.eclipse.linuxtools.docker.core.IDockerImage">
+  </propertyTester>
+	</extension>
+		
+    <extension
+        point="org.eclipse.ui.menus">
+		<!-- explorer view toolbar: refresh view -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+				<command
+					commandId="org.eclipse.linuxtools.docker.ui.commands.refreshExplorerView"
+					icon="icons/refresh_tab.gif"
+					id="org.eclipse.linuxtools.docker.ui.commands.refreshExplorerView"
+					style="push"
+					mnemonic="R">
+				</command>
+		</menuContribution>
+		<!-- explorer view toolbar: add connection -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.addConnection"
+		          icon="icons/repository-new.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.addConnection"
+		          mnemonic="A"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- explorer view toolbar: remove connection -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.removeConnection"
+		          disabledIcon="icons/delete_d.gif"
+		          icon="icons/delete.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.removeConnection"
+		          mnemonic="D"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- containers view toolbar: start containers -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.startContainers"
+		          disabledIcon="icons/runningd.gif"
+		          icon="icons/running.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.startContainers"
+		          mnemonic="R"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- containers view toolbar: pause containers -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.pauseContainers"
+		          disabledIcon="icons/suspendd.gif"
+		          icon="icons/suspend.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.pauseContainers"
+		          mnemonic="P"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- containers view toolbar: unpause containers -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.unpauseContainers"
+		          disabledIcon="icons/resumed.gif"
+		          icon="icons/resume.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.unpauseContainers"
+		          mnemonic="U"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- containers view toolbar: stop containers -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.stopContainers"
+		          disabledIcon="icons/stoppedd.gif"
+		          icon="icons/stopped.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.stopContainers"
+		          mnemonic="S"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- containers view toolbar: kill containers -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.killContainers"
+		          disabledIcon="icons/killd.gif"
+		          icon="icons/kill.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.killContainers"
+		          mnemonic="S"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- containers view toolbar: remove containers -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.removeContainers"
+		          disabledIcon="icons/delete_d.gif"
+		          icon="icons/delete.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.removeContainers"
+		          mnemonic="S"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- containers view context menu: commit container -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.commitContainer"
+		          id="org.eclipse.linuxtools.docker.ui.commands.commitContainer"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- containers view context menu: display container log -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.displayContainerLog"
+		          id="org.eclipse.linuxtools.docker.ui.commands.displayContainerLog"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- containers view context menu: remove container log -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.removeContainerLog"
+		          id="org.eclipse.linuxtools.docker.ui.commands.removeContainerLog"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- containers view toolbar: refresh view -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+				<command
+					commandId="org.eclipse.linuxtools.docker.ui.commands.refreshContainers"
+					icon="icons/refresh_tab.gif"
+					id="org.eclipse.linuxtools.docker.ui.commands.refreshContainers"
+					style="push"
+					mnemonic="R">
+				</command>
+		</menuContribution>
+		<!-- containers view menu: show/hide stopped containers filter -->
+		<menuContribution
+			locationURI="menu:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+				<command
+					commandId="org.eclipse.linuxtools.docker.ui.commands.showAllContainers"
+					icon="icons/filter_ps.gif"
+					id="org.eclipse.linuxtools.docker.ui.commands.showAllContainers"
+					style="toggle"
+					mnemonic="A">
+				</command>
+		</menuContribution>
+		<!-- images view toolbar: pull image -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerImagesView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.pullImage"
+		          icon="icons/pull.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.pullImage"
+		          mnemonic="P"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- images view toolbar: push image -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerImagesView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.pushImage"
+		          icon="icons/push.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.pushImage"
+		          mnemonic="U"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- images view toolbar: create container -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerImagesView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.createContainer"
+		          icon="icons/createcontainer.gif"
+		          disabledIcon="icons/createcontainer_d.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.createContainer"
+		          mnemonic="C"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- images view toolbar: build image -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerImagesView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.buildImage"
+		          icon="icons/build_exec.png"
+		          id="org.eclipse.linuxtools.docker.ui.commands.buildImage"
+		          mnemonic="B"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- images view toolbar: tag image -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerImagesView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.tagImage"
+		          disabledIcon="icons/tag_d.gif"
+		          icon="icons/tag.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.tagImage"
+		          mnemonic="T"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- images view context menu: add tag -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImagesView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.tagImage"
+		          id="org.eclipse.linuxtools.docker.ui.commands.tagImage2"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- images view context menu: remove tag -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImagesView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.removeTag"
+		          id="org.eclipse.linuxtools.docker.ui.commands.removeTag"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- images view toolbar: remove images -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerImagesView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.removeImages"
+		          disabledIcon="icons/delete_d.gif"
+		          icon="icons/delete.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.removeImages"
+		          mnemonic="R"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- images view toolbar: refresh view -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerImagesView">
+				<command
+					commandId="org.eclipse.linuxtools.docker.ui.commands.refreshImages"
+					icon="icons/refresh_tab.gif"
+					id="org.eclipse.linuxtools.docker.ui.commands.refreshImages"
+					style="push"
+					mnemonic="F">
+				</command>
+		</menuContribution>
+		<!-- images view menu: show/hide untagged images filter -->
+		<menuContribution
+			locationURI="menu:org.eclipse.linuxtools.docker.ui.dockerImagesView">
+				<command
+					commandId="org.eclipse.linuxtools.docker.ui.commands.showAllImages"
+					icon="icons/filter_ps.gif"
+					id="org.eclipse.linuxtools.docker.ui.commands.showAllImages"
+					style="toggle"
+					mnemonic="A">
+				</command>
+		</menuContribution>
+		
+		
+	</extension>
+	
+    <extension point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
+		<propertyContributor
+        contributorId="org.eclipse.linuxtools.docker.ui.dockerExplorerView"
+        labelProvider="org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerLabelProvider">
+			<propertyCategory category="org.eclipse.linuxtools.docker.ui.properties.connection"/>
+			<propertyCategory category="org.eclipse.linuxtools.docker.ui.properties.container"/>
+   <propertyCategory
+         category="org.eclipse.linuxtools.docker.ui.properties.image">
+   </propertyCategory>
+		</propertyContributor>
+	</extension>
+	
+	
+	<extension point="org.eclipse.ui.views.properties.tabbed.propertySections">
+		<propertySections contributorId="org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+			<propertySection
+         class="org.eclipse.linuxtools.internal.docker.ui.views.ConnectionInfoPropertySection"
+         enablesFor="1"
+         id="org.eclipse.linuxtools.docker.ui.properties.connection.info.section"
+         tab="org.eclipse.linuxtools.docker.ui.properties.connection.info">
+					<input type="org.eclipse.linuxtools.docker.core.IDockerConnection"/>
+			</propertySection>
+			<propertySection
+         class="org.eclipse.linuxtools.internal.docker.ui.views.ContainerInspectPropertySection"
+         enablesFor="1"
+         id="org.eclipse.linuxtools.docker.ui.properties.container.inspect.section"
+         tab="org.eclipse.linuxtools.docker.ui.properties.container.inspect">
+					<input type="org.eclipse.linuxtools.docker.core.IDockerContainer"/>
+			</propertySection>
+			<propertySection
+         class="org.eclipse.linuxtools.internal.docker.ui.views.ContainerInfoPropertySection"
+         enablesFor="1"
+         id="org.eclipse.linuxtools.docker.ui.properties.container.info.section"
+         tab="org.eclipse.linuxtools.docker.ui.properties.container.info">
+					<input type="org.eclipse.linuxtools.docker.core.IDockerContainer"/>
+			</propertySection>
+			<propertySection
+         class="org.eclipse.linuxtools.internal.docker.ui.views.ImageInspectPropertySection"
+         enablesFor="1"
+         id="org.eclipse.linuxtools.docker.ui.properties.image.inspect.section"
+         tab="org.eclipse.linuxtools.docker.ui.properties.image.inspect">
+					<input type="org.eclipse.linuxtools.docker.core.IDockerImage"/>
+			</propertySection>
+			<propertySection
+         class="org.eclipse.linuxtools.internal.docker.ui.views.ImageInfoPropertySection"
+         enablesFor="1"
+         id="org.eclipse.linuxtools.docker.ui.properties.image.info.section"
+         tab="org.eclipse.linuxtools.docker.ui.properties.image.info">
+					<input type="org.eclipse.linuxtools.docker.core.IDockerImage"/>
+			</propertySection>
+		</propertySections>
+	</extension>
+ <extension
+       point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
+    <propertyTabs
+          contributorId="org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+       <propertyTab
+             category="org.eclipse.linuxtools.docker.ui.properties.connection"
+             id="org.eclipse.linuxtools.docker.ui.properties.connection.info"
+             label="%Info.label">
+       </propertyTab>
+       <propertyTab
+             category="org.eclipse.linuxtools.docker.ui.properties.container"
+             id="org.eclipse.linuxtools.docker.ui.properties.container.info"
+             label="%Info.label">
+       </propertyTab>
+       <propertyTab
+             afterTab="org.eclipse.linuxtools.docker.ui.properties.container.info"
+             category="org.eclipse.linuxtools.docker.ui.properties.container"
+             id="org.eclipse.linuxtools.docker.ui.properties.container.inspect"
+             label="%Inspect.label">
+       </propertyTab>
+       <propertyTab
+             category="org.eclipse.linuxtools.docker.ui.properties.image"
+             id="org.eclipse.linuxtools.docker.ui.properties.image.info"
+             label="%Info.label">
+       </propertyTab>
+       <propertyTab
+             afterTab="org.eclipse.linuxtools.docker.ui.properties.image.info"
+             category="org.eclipse.linuxtools.docker.ui.properties.image"
+             id="org.eclipse.linuxtools.docker.ui.properties.image.inspect"
+             label="%Inspect.label">
+       </propertyTab>
+    </propertyTabs>
+ </extension>
+ <extension
+       point="org.eclipse.ui.perspectives">
+    <perspective
+          class="org.eclipse.linuxtools.internal.docker.ui.DockerPerspective"
+          icon="icons/banner-repository.gif"
+          id="org.eclipse.linuxtools.docker.ui.perspective"
+          name="%DockerPerspective.name">
+    </perspective>
+ </extension>
+ <extension
+       point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension
+          targetID="org.eclipse.linuxtools.docker.ui.perspective">
+       <view
+             id="org.eclipse.linuxtools.docker.ui.dockerImagesView"
+             minimized="false"
+             ratio="0.5"
+             relationship="stack"
+             relative="org.eclipse.ui.editorss">
+       </view>
+       <view
+             id="org.eclipse.linuxtools.docker.ui.dockerContainersView"
+             minimized="false"
+             ratio="0.5"
+             relationship="stack"
+             relative="org.eclipse.ui.editorss">
+       </view>
+       <view
+             id="org.eclipse.ui.console.ConsoleView"
+             minimized="false"
+             ratio="0.60"
+             relationship="bottom"
+             relative="org.eclipse.ui.editorss">
+       </view>
+       <view
+             id="org.eclipse.ui.views.PropertySheet"
+             minimized="false"
+             ratio="0.60"
+             relationship="stack"
+             relative="org.eclipse.ui.console.ConsoleView">
+       </view>
+       <view
+             id="org.eclipse.linuxtools.docker.ui.dockerExplorerView"
+             minimized="false"
+             ratio="0.25"
+             relationship="left"
+             relative="org.eclipse.ui.editorss">
+       </view>
+    </perspectiveExtension>
+ </extension>
+
+</plugin>
