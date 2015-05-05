@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2009 STMicroelectronics.
+ * Copyright (c) 2009-2015 STMicroelectronics and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *   Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
+ *    Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
+ *    Red Hat Inc. - ongoing maintenance
  *******************************************************************************/
 package org.eclipse.linuxtools.binutils.utils;
 
@@ -214,8 +215,9 @@ public class STSymbolManager {
      */
     public synchronized int getLineNumber(IBinaryObject program, IAddress address, IProject project) {
         Addr2line addr2line = getAddr2line(program, project);
-        if (addr2line == null)
+        if (addr2line == null) {
             return -1;
+        }
         try {
             return addr2line.getLineNumber(address);
         } catch (IOException e) {
@@ -245,8 +247,9 @@ public class STSymbolManager {
      */
     public synchronized String getFileName(IBinaryObject program, IAddress address, IProject project) {
         Addr2line addr2line = getAddr2line(program, project);
-        if (addr2line == null)
+        if (addr2line == null) {
             return null;
+        }
         try {
             return addr2line.getFileName(address);
         } catch (IOException e) {
@@ -364,8 +367,9 @@ public class STSymbolManager {
         List<IBinaryParser> parsers;
         if (c != null) {
             IBinaryObject object = getAlreadyExistingBinaryObject(c);
-            if (object != null)
+            if (object != null) {
                 return object;
+            }
             parsers = getBinaryParser(c.getProject());
         } else {
             parsers = new LinkedList<>();
@@ -487,8 +491,9 @@ public class STSymbolManager {
         List<IBinaryParser> parsers = new LinkedList<>();
 
         ICProjectDescription projDesc = CCorePlugin.getDefault().getProjectDescription(project);
-        if (projDesc == null)
+        if (projDesc == null) {
             return parsers;
+        }
         ICConfigurationDescription[] cfgs = projDesc.getConfigurations();
         String[] binaryParserIds = CoreModelUtil.getBinaryParserIds(cfgs);
 

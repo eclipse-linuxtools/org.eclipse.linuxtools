@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 STMicroelectronics.
+ * Copyright (c) 2011-2015 STMicroelectronics and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
+ *    Red Hat Inc. - ongoing maintenance
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gcov.test;
 
@@ -25,6 +26,11 @@ public class GcovTestCPP extends GcovTest {
     @Override
     protected boolean getTestProducedReference() {
         return false;
+    }
+
+    @Override
+    protected boolean useDefaultBin() {
+        return true;
     }
 
 }

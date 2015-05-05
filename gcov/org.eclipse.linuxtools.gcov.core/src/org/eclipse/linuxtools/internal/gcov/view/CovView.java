@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 STMicroelectronics.
+ * Copyright (c) 2009-2015 STMicroelectronics and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
+ *    Red Hat Inc. - ongoing maintenance
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gcov.view;
 
@@ -144,7 +145,7 @@ public class CovView extends AbstractSTDataView {
         view.label.getParent().layout(true);
     }
 
-    public static void displayCovDetailedResult(String binaryPath, String gcdaFile) {
+    public static void displayCovDetailedResult(String binaryPath, String gcda) {
         try {
             IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
             IFile binary = root.getFileForLocation(new Path(binaryPath));
@@ -156,8 +157,8 @@ public class CovView extends AbstractSTDataView {
             // parse and process coverage data
             CovManager cvrgeMnger = new CovManager(binaryPath, project);
             List<String> gcdaPaths = new LinkedList<>();
-            gcdaPaths.add(gcdaFile);
-            cvrgeMnger.processCovFiles(gcdaPaths, gcdaFile);
+            gcdaPaths.add(gcda);
+            cvrgeMnger.processCovFiles(gcdaPaths, gcda);
             // generate model for view
             cvrgeMnger.fillGcovView();
 
@@ -174,8 +175,9 @@ public class CovView extends AbstractSTDataView {
             IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
             IFile binary = root.getFileForLocation(new Path(binaryPath));
             IProject project = null;
-            if (binary != null)
+            if (binary != null) {
                 project = binary.getProject();
+            }
 
             // parse and process coverage data
             CovManager cvrgeMnger = new CovManager(binaryPath, project);
@@ -217,6 +219,7 @@ public class CovView extends AbstractSTDataView {
     /**
      * Used by Test engine and OpenSerAction
      * @param cvrgeMnger
+     * @throws PartInitException
      */
     private static CovView displayCovResults(CovManager cvrgeMnger, String timestamp) throws PartInitException {
         // load an Eclipse view

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 STMicroelectronics.
+ * Copyright (c) 2009-2015 STMicroelectronics and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
+ *    Red Hat Inc. - ongoing maintenance
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gcov.action;
 
@@ -24,6 +25,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
+import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.internal.gcov.dialog.OpenGCDialog;
 import org.eclipse.linuxtools.internal.gcov.view.CovView;
 import org.eclipse.linuxtools.internal.gcov.view.annotatedsource.GcovAnnotationModelTracker;
@@ -38,55 +40,61 @@ import org.eclipse.ui.PlatformUI;
  */
 public class OpenGCAction implements IEditorLauncher {
 
+    private class GCFilePair {
+        final File gcda, gcno;
+
+        private GCFilePair(IPath file) {
+            String extension = file.getFileExtension();
+            if ("gcno".equals(extension)) { //$NON-NLS-1$
+                gcda = file.removeFileExtension().addFileExtension("gcda").toFile(); //$NON-NLS-1$
+                gcno = file.toFile();
+            } else if ("gcda".equals(extension)) { //$NON-NLS-1$
+                gcda = file.toFile();
+                gcno = file.removeFileExtension().addFileExtension("gcno").toFile(); //$NON-NLS-1$
+            } else {
+                gcda = null;
+                gcno = null;
+            }
+        }
+    }
+
     /**
-     * Helper method to programmatically open a gcda/gcno file.
-     * @param file The path of the file to open.
+     * Helper method to programmatically show coverage for a given file.
+     * @param file The path of the file to view coverage of.
+     * @param binaryPath The absolute path of the binary that produced coverage. If invalid,
+     * a default binary will be used.
      * @param isCompleteCoverageResultWanted Whether or not to return complete coverage.
      */
-    public void autoOpen(IPath file, boolean isCompleteCoverageResultWanted) {
-        String extension = file.getFileExtension();
-        File gcda;
-        if ("gcno".equals(extension)) { //$NON-NLS-1$
-            gcda = file.removeFileExtension().addFileExtension("gcda").toFile(); //$NON-NLS-1$
-        } else if ("gcda".equals(extension)) { //$NON-NLS-1$
-            gcda = file.toFile();
-        } else {
-            // should never occur
-            return;
-        }
-        if (isCompleteCoverageResultWanted) {
-            CovView.displayCovResults(getDefaultBinary(file), gcda.getAbsolutePath());
-        } else {
-            CovView.displayCovDetailedResult(getDefaultBinary(file), gcda.getAbsolutePath());
+    public void autoOpen(final IPath file, final String binaryPath, final boolean isCompleteCoverageResultWanted) {
+        final GCFilePair pair = new GCFilePair(file);
+        if (isFileValid(pair.gcda) && isFileValid(pair.gcno)) {
+            final String safeBinaryPath;
+            if (STSymbolManager.sharedInstance.getBinaryObject(binaryPath) == null) {
+                safeBinaryPath = getDefaultBinary(file);
+            } else {
+                safeBinaryPath = binaryPath;
+            }
+
+            PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                @Override
+                public void run() {
+                    displayCoverage(file, safeBinaryPath, pair.gcda, isCompleteCoverageResultWanted);
+                }
+            });
         }
     }
 
     @Override
     public void open(IPath file) {
+        final GCFilePair pair = new GCFilePair(file);
         Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-        String extension = file.getFileExtension();
-        File gcno;
-        File gcda;
-        if ("gcno".equals(extension)) { //$NON-NLS-1$
-            IPath file2 = file.removeFileExtension().addFileExtension("gcda"); //$NON-NLS-1$
-            gcno = file.toFile();
-            gcda = file2.toFile();
-        } else if ("gcda".equals(extension)) { //$NON-NLS-1$
-            IPath file2 = file.removeFileExtension().addFileExtension("gcno"); //$NON-NLS-1$
-            gcda = file.toFile();
-            gcno = file2.toFile();
-        } else {
-            // should never occur
-            return;
-        }
-
-        if (gcda == null || !gcda.isFile()) {
-            String msg = NLS.bind(Messages.OpenGCAction_file_dne_run, gcda);
+        if (!isFileValid(pair.gcda)) {
+            String msg = NLS.bind(Messages.OpenGCAction_file_dne_run, pair.gcda);
             MessageDialog.openError(shell, Messages.OpenGCAction_gcov_error, msg);
             return;
         }
-        if (gcno == null || !gcno.isFile()) {
-            String msg = NLS.bind(Messages.OpenGCAction_file_dne_compile, gcno);
+        if (!isFileValid(pair.gcno)) {
+            String msg = NLS.bind(Messages.OpenGCAction_file_dne_compile, pair.gcno);
             MessageDialog.openError(shell, Messages.OpenGCAction_gcov_error, msg);
             return;
         }
@@ -95,13 +103,15 @@ public class OpenGCAction implements IEditorLauncher {
         if (d.open() != Window.OK) {
             return;
         }
-        String binaryPath = d.getBinaryFile();
+        displayCoverage(file, d.getBinaryFile(), pair.gcda, d.isCompleteCoverageResultWanted());
+    }
 
+    private void displayCoverage(IPath file, String binaryPath, File gcda, boolean isCompleteCoverageResultWanted) {
         IProject project = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(file).getProject();
         GcovAnnotationModelTracker.getInstance().addProject(project, new Path(binaryPath));
         GcovAnnotationModelTracker.getInstance().annotateAllCEditors();
 
-        if (d.isCompleteCoverageResultWanted()) {
+        if (isCompleteCoverageResultWanted) {
             CovView.displayCovResults(binaryPath, gcda.getAbsolutePath());
         } else {
             CovView.displayCovDetailedResult(binaryPath, gcda.getAbsolutePath());
@@ -109,10 +119,9 @@ public class OpenGCAction implements IEditorLauncher {
     }
 
     private String getDefaultBinary(IPath file) {
-        IProject project = null;
         IFile c = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(file);
         if (c != null) {
-            project = c.getProject();
+            IProject project = c.getProject();
             if (project != null && project.exists()) {
                 ICProject cproject = CoreModel.getDefault().create(project);
                 if (cproject != null) {
@@ -128,5 +137,9 @@ public class OpenGCAction implements IEditorLauncher {
             }
         }
         return ""; //$NON-NLS-1$
+    }
+
+    private boolean isFileValid(File file) {
+        return file != null && file.isFile() && file.exists();
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Red Hat, Inc.
+ * Copyright (c) 2008-2015 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -213,8 +213,7 @@ public abstract class AbstractTest {
             @Override
             protected IStatus run(IProgressMonitor monitor) {
                 try {
-                    curProject
-                            .build(IncrementalProjectBuilder.FULL_BUILD, null);
+                    curProject.build(IncrementalProjectBuilder.FULL_BUILD, null);
                 } catch (CoreException e) {
                     fail(e.getStatus().getMessage());
                 } catch (OperationCanceledException e) {

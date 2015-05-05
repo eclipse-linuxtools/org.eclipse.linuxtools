@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2009 STMicroelectronics.
+ * Copyright (c) 2009-2015 STMicroelectronics and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *   Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
+ *    Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
+ *    Red Hat Inc. - ongoing maintenance
  *******************************************************************************/
 package org.eclipse.linuxtools.binutils.link2source;
 
@@ -180,7 +181,7 @@ public final class STLink2SourceSupport {
     /**
      * @param path The path of the file.
      * @param project The project to look into.
-     * @return The file if found of null otherwise.
+     * @return The file if found, null otherwise.
      * @since 5.0
      */
     public static IFile getFileForPath(IPath path, IProject project) {
