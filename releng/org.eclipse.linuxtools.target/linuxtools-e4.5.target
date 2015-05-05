@@ -6,6 +6,7 @@
 <unit id="org.cyberneko.html" version="0.0.0"/>
 <unit id="org.apache.xerces" version="2.9.0.v201101211617"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository/"/>
+<unit id="com.google.guava" version="0.0.0"/>
 <!--
 <unit id="com.spotify.docker.client" version="0.0.0"/>
 -->
