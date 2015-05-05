@@ -33,8 +33,12 @@ public class LabelUtils {
 	public static final String FINISHED_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.sssz";
 	
 	/**
-	 * @return each {@link Entry} element of the given {@link Map} has only one item, an empty {@link String} if the given list is empty, otherwise the given list itself.  
-	 * @param list the {@link Map} to analyze
+	 * @param elements
+	 *            the {@link List} to reduce
+	 * @return each {@link Entry} element of the given {@link Map} has only one
+	 *         item, an empty {@link String} if the given list is empty,
+	 *         otherwise the given list itself.
+	 * 
 	 */
 	public static <K,V> Object reduce(final Map<K, List<V>> elements) {
 		if(elements == null || elements.isEmpty()) {

@@ -10,15 +10,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.docker.core;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerRefreshManager;
-
-import com.spotify.docker.client.DockerCertificateException;
 
 public interface IDockerConnection {
 
@@ -30,8 +27,8 @@ public interface IDockerConnection {
 	 * Get the list of {@link IDockerContainer} of the remote Docker daemon.
 	 * 
 	 * @return an unmodifiable list of {@link IDockerContainer} or
-	 *         {@link Collections#emptyList()} if no container exists yet.
-	 * @see {@link IDockerConnection#getContainers(boolean)} 
+	 *         {@link Collections#emptyList()} if no container exists yet. see
+	 *         {@link IDockerConnection#getContainers(boolean)}
 	 */
 	public List<IDockerContainer> getContainers();
 
@@ -121,18 +118,24 @@ public interface IDockerConnection {
 
 	/**
 	 * Opens the connection to the Docker daemon.
-	 * @param registerContainerRefreshManager {@code true} if the {@link DockerContainerRefreshManager} should be qssociated with the Docker client to auto-refresh the list of containers, {@code false} otherwise (eg: wheh the connection should just be tested with a call to {@link IDockerConnection#ping()}
-	 * @throws DockerCertificateException
+	 * 
+	 * @param registerContainerRefreshManager
+	 *            {@code true} if the {@link DockerContainerRefreshManager}
+	 *            should be associated with the Docker client to auto-refresh
+	 *            the list of containers, {@code false} otherwise (eg: wheh the
+	 *            connection should just be tested with a call to
+	 *            {@link IDockerConnection#ping()}
+	 * @throws DockerException
+	 *             generic exception
 	 */
 	public void open(boolean registerContainerRefreshManager) throws DockerException;
 
 	/**
-	 * Send a ping message to the Docker daemon to check if the connection works.
-	 * @throws InterruptedException
-	 * @throws IOException
+	 * Send a ping message to the Docker daemon to check if the connection
+	 * works.
+	 * 
 	 * @throws DockerException
-	 * @throws DockerCertificateException
-	 * @throws DockerException
+	 *             generic exception
 	 */
 	public void ping() throws DockerException;
 

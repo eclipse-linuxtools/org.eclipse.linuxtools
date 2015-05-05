@@ -34,10 +34,15 @@ public class DockerPortMapping implements IDockerPortMapping {
 
 	/**
 	 * Full constructor
+	 * 
 	 * @param privatePort
+	 *            private port
 	 * @param publicPort
+	 *            public port
 	 * @param type
+	 *            of port
 	 * @param ip
+	 *            of port
 	 */
 	@JsonCreator
 	public DockerPortMapping(@JsonProperty("privatePort") int privatePort, @JsonProperty("publicPort") int publicPort, @JsonProperty("type") String type, @JsonProperty("ip") String ip) {

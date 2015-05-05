@@ -44,8 +44,11 @@ import org.eclipse.ui.IWorkbenchPart;
 public class CommandUtils {
 
 	/**
-	 * Refreshes (async) the {@link TableViewer} or {@link TreeViewer} in the given {@link IWorkbenchPart}.
+	 * Refreshes (async) the {@link TableViewer} or {@link TreeViewer} in the
+	 * given {@link IWorkbenchPart}.
+	 * 
 	 * @param activePart
+	 *            - active Workbench part
 	 */
 	public static void refresh(final IWorkbenchPart activePart) {
 		Display.getDefault().asyncExec(new Runnable() {
@@ -64,6 +67,7 @@ public class CommandUtils {
 	 * @return the current {@link IDockerConnection} associated with the given
 	 *         {@link IWorkbenchPart} or {@code null} if none could be found.
 	 * @param activePart
+	 *            - active Workbench part
 	 */
 	public static IDockerConnection getCurrentConnection(final IWorkbenchPart activePart) {
 		if (activePart instanceof DockerContainersView) {

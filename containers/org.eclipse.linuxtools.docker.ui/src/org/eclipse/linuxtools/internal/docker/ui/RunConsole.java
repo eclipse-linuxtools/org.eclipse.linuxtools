@@ -109,6 +109,7 @@ public class RunConsole extends IOConsole {
 	 * Set the title of the RunConsole
 	 * 
 	 * @param name
+	 *            - new title
 	 */
 	public void setTitle(String name) {
 		setName(name);
