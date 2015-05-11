@@ -20,6 +20,7 @@ import static org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings.UN
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -42,11 +43,9 @@ import java.util.Set;
 import jnr.unixsocket.UnixSocketAddress;
 import jnr.unixsocket.UnixSocketChannel;
 
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -117,6 +116,26 @@ public class DockerConnection implements IDockerConnection {
 		private final Map<EnumDockerConnectionSettings, Object> settings = new HashMap<>();
 
 		public Defaults() throws DockerException {
+			File scriptFile = Activator.getDefault().getBundle()
+					.getDataFile("script.sh"); //$NON-NLS-1$
+			if (!scriptFile.exists()) {
+				InputStream is = DockerConnection.class
+						.getResourceAsStream("/resources/script.sh"); //$NON-NLS-1$
+				FileOutputStream fo;
+				try {
+					byte[] buff = new byte[1024];
+					fo = new FileOutputStream(scriptFile);
+					int n;
+					while ((n = is.read(buff)) > 0) {
+						fo.write(buff, 0, n);
+					}
+					fo.close();
+					is.close();
+					scriptFile.setExecutable(true);
+				} catch (IOException e) {
+					Activator.logErrorMessage(e.getMessage());
+				}
+			}
 			// first, looking for a Unix socket at /var/run/docker.sock
 			if (defaultsWithUnixSocket() || defaultsWithSystemEnv()
 					|| defaultWithShellEnv()) {
@@ -202,11 +221,10 @@ public class DockerConnection implements IDockerConnection {
 		private boolean defaultWithShellEnv() throws DockerException {
 			try {
 				// FIXME need to verify the OS and decide which script to run
-				final URL scriptURL = FileLocator.resolve(FileLocator.find(
-						Activator.getDefault().getBundle(), new Path(
-								"resources/script.sh"), Collections.EMPTY_MAP));
+				File scriptFile = Activator.getDefault().getBundle()
+						.getDataFile("script.sh"); //$NON-NLS-1$
 				final Process process = Runtime.getRuntime().exec(
-						scriptURL.getPath());
+						scriptFile.getAbsolutePath());
 				process.waitFor();
 				if (process.exitValue() == 0) {
 					final InputStream processInputStream = process
