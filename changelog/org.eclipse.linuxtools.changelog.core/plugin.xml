@@ -19,6 +19,15 @@
     <extension-point id="editorContribution" name="%extension-point.name.1" schema="schema/editorContribution.exsd"/>
 
     <extension
+          point="org.eclipse.ui.contexts">
+       <context
+             name="%editor.name"
+             id="org.eclipse.linuxtools.changelog.core.changelogEditorScope"
+             parentId="org.eclipse.ui.textEditorScope">
+       </context>
+    </extension>
+
+    <extension
           point="org.eclipse.ui.commands">
 
         <category
@@ -149,7 +158,7 @@
              sequence="Ctrl+Alt+V"/>
        <key
              commandId="org.eclipse.linuxtools.changelog.core.formatChangeLog"
-             contextId="org.eclipse.ui.textEditorScope"
+             contextId="org.eclipse.linuxtools.changelog.core.changelogEditorScope"
              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
              sequence="ESC Ctrl+F"/>
     </extension>

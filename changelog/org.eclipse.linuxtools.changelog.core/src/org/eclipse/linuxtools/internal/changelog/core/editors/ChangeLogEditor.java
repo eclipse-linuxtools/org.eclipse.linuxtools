@@ -55,6 +55,11 @@ public class ChangeLogEditor extends TextEditor {
 
     }
 
+    @Override
+    protected void initializeKeyBindingScopes() {
+        setKeyBindingScopes(new String[] { "org.eclipse.linuxtools.changelog.core.changelogEditorScope" }); //$NON-NLS-1$
+    }
+
     /**
      * Gets appropriate style editor from user pref.
      *
