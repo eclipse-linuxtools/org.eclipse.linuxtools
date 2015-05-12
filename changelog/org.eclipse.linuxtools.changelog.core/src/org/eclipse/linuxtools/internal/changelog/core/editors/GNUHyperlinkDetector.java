@@ -155,11 +155,12 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
             // Replace any escape characters added to name
             line = line.replaceAll("\\\\(.)", "$1");
 
-            IPath filePath = documentLocation.append(line);
+            IFile fileLoc = ResourcesPlugin.getWorkspace().getRoot()
+                    .getFileForLocation(documentLocation.append(line));
+            if (fileLoc.exists()) {
+                return new IHyperlink[] { new FileHyperlink(pathRegion, fileLoc) };
+            }
 
-            return new IHyperlink[] { new FileHyperlink(pathRegion,
-                    ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
-                            filePath)) };
 
         }
 
