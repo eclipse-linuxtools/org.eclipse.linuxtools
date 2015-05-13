@@ -43,6 +43,7 @@ public class ContainerLauncher {
 	private static final String ERROR_CREATING_CONTAINER = "ContainerCreateError.msg"; //$NON-NLS-1$
 	private static final String ERROR_LAUNCHING_CONTAINER = "ContainerLaunchError.msg"; //$NON-NLS-1$
 	private static final String ERROR_NO_CONNECTIONS = "ContainerNoConnections.msg"; //$NON-NLS-1$
+	private static final String ERROR_NO_CONNECTION_WITH_URI = "ContainerNoConnectionWithURI.msg"; //$NON-NLS-1$
 
 	private static RunConsole console;
 
@@ -53,9 +54,8 @@ public class ContainerLauncher {
 	 *            - id of caller to use to distinguish console owner
 	 * @param listener
 	 *            - optional listener of the run console
-	 * @param connectionName
-	 *            - the connection to try and use or default to first connection
-	 *            otherwise
+	 * @param connectionUri
+	 *            - the specified connection to use
 	 * @param image
 	 *            - the image to use
 	 * @param command
@@ -79,7 +79,7 @@ public class ContainerLauncher {
 	 *            - true if stdin support is required, false otherwise
 	 */
 	public void launch(String id, IContainerLaunchListener listener,
-			String connectionName,
+			final String connectionUri,
 			String image, String command, String commandDir, String workingDir,
 			List<String> additionalDirs, Map<String, String> origEnv,
 			Map<String, String> envMap, List<String> ports, boolean keep,
@@ -190,16 +190,33 @@ public class ContainerLauncher {
 			return;
 		}
 
-		// Try and use the specified connection name that was used before,
-		// otherwise, default to first in list
-		int defaultIndex = 0;
+		// Try and use the specified connection that was used before,
+		// otherwise, open an error
+		int defaultIndex = -1;
 		String[] connectionNames = new String[connections.length];
 		for (int i = 0; i < connections.length; ++i) {
 			connectionNames[i] = connections[i].getName();
-			if (connectionNames[i].equals(connectionName))
+			if (connections[i].getUri().equals(connectionUri))
 				defaultIndex = i;
 		}
 
+		if (defaultIndex == -1) {
+			Display.getDefault().syncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					MessageDialog.openError(
+							Display.getCurrent().getActiveShell(),
+							DVMessages.getString(ERROR_LAUNCHING_CONTAINER),
+							DVMessages.getFormattedString(
+									ERROR_NO_CONNECTION_WITH_URI,
+									connectionUri));
+				}
+
+			});
+			return;
+
+		}
 		final IDockerConnection connection = connections[defaultIndex];
 		final String imageName = image;
 		final boolean keepContainer = keep;
@@ -318,6 +335,39 @@ public class ContainerLauncher {
 
 		});
 		t.start();
+	}
+
+	/**
+	 * Clean up the container used for launching
+	 * 
+	 * @param connectionUri
+	 *            the URI of the connection used
+	 * @param info
+	 *            the container info
+	 */
+	public void cleanup(String connectionUri, IDockerContainerInfo info) {
+		final IDockerConnection[] connections = DockerConnectionManager
+				.getInstance().getConnections();
+		if (connections.length == 0) {
+			return;
+		}
+
+		// Try and find the specified connection
+		IDockerConnection connection = null;
+		for (int i = 0; i < connections.length; ++i) {
+			if (connections[i].getUri().equals(connectionUri))
+				connection = connections[i];
+		}
+
+		if (connection == null) {
+			return;
+		}
+
+		try {
+			connection.killContainer(info.id());
+		} catch (DockerException | InterruptedException e) {
+			// do nothing
+		}
 	}
 
 	/**
