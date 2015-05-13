@@ -18,18 +18,16 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.compare.rangedifferencer.RangeDifference;
 import org.eclipse.compare.rangedifferencer.RangeDifferencer;
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.IHandler;
+import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
-import org.eclipse.core.resources.mapping.ResourceMapping;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -40,6 +38,7 @@ import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.team.core.RepositoryProvider;
+import org.eclipse.team.core.TeamException;
 import org.eclipse.team.core.diff.IDiff;
 import org.eclipse.team.core.diff.IThreeWayDiff;
 import org.eclipse.team.core.history.IFileRevision;
@@ -47,14 +46,10 @@ import org.eclipse.team.core.mapping.IResourceDiff;
 import org.eclipse.team.core.subscribers.Subscriber;
 import org.eclipse.team.core.synchronize.SyncInfo;
 import org.eclipse.team.core.synchronize.SyncInfoSet;
-import org.eclipse.ui.IContributorResourceAdapter;
-import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IContributorResourceAdapter2;
 
-public class PrepareCommitHandler extends AbstractHandler {
+public class PrepareCommitHandler extends ChangeLogAction implements IHandler {
 
     @Override
     public Object execute(ExecutionEvent event) {
@@ -91,32 +86,6 @@ public class PrepareCommitHandler extends AbstractHandler {
         return null;
     }
 
-    private ResourceMapping getResourceMapping(Object o) {
-        if (o instanceof ResourceMapping) {
-            return (ResourceMapping) o;
-        }
-        if (o instanceof IAdaptable) {
-            IAdaptable adaptable = (IAdaptable) o;
-            Object adapted = adaptable.getAdapter(ResourceMapping.class);
-            if (adapted instanceof ResourceMapping) {
-                return (ResourceMapping) adapted;
-            }
-            adapted = adaptable.getAdapter(IContributorResourceAdapter.class);
-            if (adapted instanceof IContributorResourceAdapter2) {
-                IContributorResourceAdapter2 cra = (IContributorResourceAdapter2) adapted;
-                return cra.getAdaptedResourceMapping(adaptable);
-            }
-        } else {
-            Object adapted = Platform.getAdapterManager().getAdapter(o,
-                    ResourceMapping.class);
-            if (adapted instanceof ResourceMapping) {
-                return (ResourceMapping) adapted;
-            }
-        }
-
-        return null;
-    }
-
     private void loadClipboard(IProgressMonitor monitor) {
 
         IEditorPart currentEditor;
@@ -127,30 +96,22 @@ public class PrepareCommitHandler extends AbstractHandler {
                     .getActiveEditor();
         } catch (Exception e) {
             // no editor is active now so do nothing
-
             return;
         }
 
-        if (currentEditor == null)
+        if (currentEditor == null) {
             return;
+        }
 
-        // System.out.println(currentEditor.getTitle());
+        IFile changelog = getChangelogFile(getDocumentLocation(currentEditor, false));
+        if (changelog == null) {
+            return;
+        }
+
         String diffResult = "";
-        IEditorInput input = currentEditor.getEditorInput();
-        ResourceMapping mapping = getResourceMapping(input);
         IProject project = null;
-        IResource[] resources = new IResource[1];
-
-        if (mapping != null) {
-            project = mapping.getProjects()[0];
-            resources[0] = (IResource) mapping.getModelObject();
-        } else if (input instanceof IFileEditorInput) {
-            IFileEditorInput f = (IFileEditorInput) input;
-            project = f.getFile().getProject();
-            resources[0] = f.getFile();
-        } else {
-            return; // can't get what we need
-        }
+        IResource[] resources = new IResource[] { changelog };
+        project = changelog.getProject();
 
         RepositoryProvider r = RepositoryProvider.getProvider(project);
         if (r == null) {
@@ -159,6 +120,11 @@ public class PrepareCommitHandler extends AbstractHandler {
         }
         SyncInfoSet set = new SyncInfoSet();
         Subscriber s = r.getSubscriber();
+        try {
+            s.refresh(resources, IResource.DEPTH_ZERO, monitor);
+        } catch (TeamException e1) {
+            // Ignore, continue anyways
+        }
         s.collectOutOfSync(resources, IResource.DEPTH_ZERO, set, monitor);
         SyncInfo[] infos = set.getSyncInfos();
 
@@ -277,6 +243,21 @@ public class PrepareCommitHandler extends AbstractHandler {
         clipboard.setContents(new String[] { input },
                 new Transfer[] { plainTextTransfer });
         clipboard.dispose();
+    }
+
+    @Override
+    public void addHandlerListener(IHandlerListener handlerListener) {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
+
+    @Override
+    public void removeHandlerListener(IHandlerListener handlerListener) {
+
     }
 
 }

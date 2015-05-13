@@ -48,6 +48,7 @@ import org.eclipse.linuxtools.internal.changelog.core.LineComparator;
 import org.eclipse.linuxtools.internal.changelog.core.Messages;
 import org.eclipse.linuxtools.internal.changelog.core.editors.ChangeLogEditor;
 import org.eclipse.team.core.RepositoryProvider;
+import org.eclipse.team.core.TeamException;
 import org.eclipse.team.core.diff.IDiff;
 import org.eclipse.team.core.diff.IThreeWayDiff;
 import org.eclipse.team.core.history.IFileRevision;
@@ -301,7 +302,13 @@ public class PrepareChangeLogAction extends ChangeLogAction {
         }
         else {
             // We can then get a list of all out-of-sync resources.
-            s.collectOutOfSync(new IResource[] {project}, IResource.DEPTH_INFINITE, set, monitor);
+            IResource[] resources = new IResource[] { project };
+            try {
+                s.refresh(resources, IResource.DEPTH_INFINITE, monitor);
+            } catch (TeamException e) {
+                // Ignore, continue anyways
+            }
+            s.collectOutOfSync(resources, IResource.DEPTH_INFINITE, set, monitor);
             SyncInfo[] infos = set.getSyncInfos();
             totalChanges = infos.length;
             // Iterate through the list of changed resources and categorize them into
