@@ -367,7 +367,7 @@
 	                  <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
 	                  <test
 			       	    forcePluginActivation="true"
-			       		property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="true"/>
+			       		property="org.eclipse.linuxtools.docker.propertytesters.container.isRemovable" value="true"/>
 	                </and>
 	            </iterate>
 	          </with>
@@ -502,7 +502,7 @@
 			class="org.eclipse.linuxtools.internal.docker.ui.propertytesters.ContainerPropertyTester"
 			id="org.eclipse.linuxtools.docker.containerPropertyTester"
 			namespace="org.eclipse.linuxtools.docker.propertytesters.container"
-			properties="isRunning,isStopped,isPaused"
+			properties="isRunning,isStopped,isPaused,isRemovable"
 			type="org.eclipse.linuxtools.docker.core.IDockerContainer">
 		</propertyTester>
   <propertyTester

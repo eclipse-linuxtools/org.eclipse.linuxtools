@@ -21,7 +21,6 @@ import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Command handler to kill all the selected {@link IDockerContainer}
@@ -109,7 +108,7 @@ public class RemoveImagesCommandHandler extends BaseImagesCommandHandler {
 			@Override
 			public void run() {
 				boolean result = MessageDialog.openConfirm(
-						new Shell(),
+						Display.getDefault().getActiveShell(),
 						DVMessages.getString(IMAGE_DELETE_CONFIRM),
 						DVMessages.getFormattedString(IMAGE_DELETE_LIST,
 								names.toString()));
