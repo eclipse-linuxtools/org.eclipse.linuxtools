@@ -621,18 +621,21 @@ public class SpecfileParser {
                 toReturn = null;
             }
         }
-        if ((toReturn != null) && (toReturn.getStringValue() != null)) {
-            try {
-                int intValue = Integer.parseInt(toReturn.getStringValue());
-                toReturn.setValue(intValue);
-            } catch (NumberFormatException e) {
-                if (toReturn.getName().equalsIgnoreCase(RpmTags.EPOCH)) {
-                    errorHandler
-                            .handleError(new SpecfileParseException(
-                                    Messages.getString("SpecfileParser.16"), lineNumber, //$NON-NLS-1$
-                                    0, lineText.length(),
-                                    IMarker.SEVERITY_ERROR));
-                    toReturn = null;
+        if ((toReturn != null)) {
+            String returnStringValue = toReturn.getStringValue();
+            if (returnStringValue != null) {
+                try {
+                    int intValue = Integer.parseInt(returnStringValue);
+                    toReturn.setValue(intValue);
+                } catch (NumberFormatException e) {
+                    if (toReturn.getName().equalsIgnoreCase(RpmTags.EPOCH)) {
+                        errorHandler
+                                .handleError(new SpecfileParseException(
+                                        Messages.getString("SpecfileParser.16"), lineNumber, //$NON-NLS-1$
+                                        0, lineText.length(),
+                                        IMarker.SEVERITY_ERROR));
+                        toReturn = null;
+                    }
                 }
             }
         }

@@ -56,6 +56,10 @@ public class SpecfileTag extends SpecfileElement {
         return resolve(stringValue);
     }
 
+    public String getUnresolvedStringValue() {
+        return stringValue;
+    }
+
     public void setValue(String value) {
         this.tagType = TagType.STRING;
         this.stringValue = value;

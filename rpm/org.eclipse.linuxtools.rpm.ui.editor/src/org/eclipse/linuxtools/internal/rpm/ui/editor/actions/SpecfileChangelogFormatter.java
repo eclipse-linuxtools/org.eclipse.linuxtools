@@ -31,7 +31,6 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConst
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePartitionScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 
@@ -45,8 +44,6 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
     public String formatDateLine(String authorName, String authorEmail) {
         String dateLine;
         Specfile specfile = getParsedSpecfile();
-        SpecfileElement resolveElement = new SpecfileElement();
-        resolveElement.setSpecfile(specfile);
         String epoch = specfile.getEpoch() == -1 ? EMPTY_STRING : (specfile.getEpoch() + ":"); //$NON-NLS-1$
         String version = specfile.getVersion();
         String release = specfile.getRelease();

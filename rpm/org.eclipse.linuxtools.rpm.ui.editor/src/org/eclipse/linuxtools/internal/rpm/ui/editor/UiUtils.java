@@ -12,6 +12,8 @@ package org.eclipse.linuxtools.internal.rpm.ui.editor;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,35 +52,34 @@ public class UiUtils {
         }
     }
 
-
-
     /**
-     * Resolve defines for a give string, if a define is not found or if
-     * there is some other error, the original string is returned.
+     * Resolve defines for a given string. Defines in the string that are not found
+     * or have some other error will remain unchanged in the returned string.
      *
+     * @param specfile The specfile containing the string to resolve.
      * @param stringToResolve The string to resolve.
-     * @return resolved string
+     * @return The resolved string.
      */
     public static String resolveDefines(Specfile specfile, String stringToResolve) {
-        String originalString = stringToResolve;
+        String workingString = stringToResolve;
         SpecfileDefine define;
         try {
             Pattern variablePattern = Pattern.compile("%\\{(\\S+?)\\}"); //$NON-NLS-1$
             Matcher variableMatcher = variablePattern.matcher(stringToResolve);
+            Set<String> variablesFound = new HashSet<>();
             while (variableMatcher.find()) {
-                define = specfile.getDefine(variableMatcher.group(1));
-                if (define != null) {
-                    stringToResolve = stringToResolve.replaceAll("\\b"+variableMatcher.group(1)+"\\b", define.getStringValue()); //$NON-NLS-1$ //$NON-NLS-2$
-                } else {
-                    return originalString;
+                String variable = variableMatcher.group(1);
+                if (variablesFound.contains(variable)) {
+                    continue;
+                }
+                define = specfile.getDefine(variable);
+                if (define != null && !stringToResolve.equals(define.getUnresolvedStringValue())) {
+                    workingString = workingString.replaceAll("\\%\\{"+variable+"\\}", define.getStringValue()); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
-            if (!stringToResolve.equals(originalString)) {
-                stringToResolve = stringToResolve.replaceAll("\\%\\{|\\}", ""); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-            return stringToResolve;
+            return workingString;
         } catch (Exception e) {
-            return originalString;
+            return stringToResolve;
         }
     }
 
