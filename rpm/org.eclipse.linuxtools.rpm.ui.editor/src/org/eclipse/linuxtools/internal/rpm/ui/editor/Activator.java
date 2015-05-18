@@ -45,13 +45,13 @@ public class Activator extends AbstractUIPlugin {
     private ContributionContextTypeRegistry fContextTypeRegistry;
 
     // RPM macros list
-    private RpmMacroProposalsList macrosList ;
+    private RpmMacroProposalsList macrosList;
 
     // RPM Groups
-    private List<String> rpmGroups = new ArrayList<>() ;
+    private List<String> rpmGroups = new ArrayList<>();
 
     // RPM package list
-    public static RpmPackageProposalsList packagesList ;
+    public static RpmPackageProposalsList packagesList;
 
     /**
      * The constructor
@@ -69,7 +69,7 @@ public class Activator extends AbstractUIPlugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         RpmPackageBuildProposalsJob.setPropertyChangeListener(true);
-        RpmPackageBuildProposalsJob.update();
+        RpmPackageBuildProposalsJob.updateSync();
         // Do some sanity checks.
         UiUtils.pluginSanityCheck();
     }
@@ -96,7 +96,7 @@ public class Activator extends AbstractUIPlugin {
 
     public TemplateStore getTemplateStore() {
         if (fTemplateStore == null) {
-            fTemplateStore= new ContributionTemplateStore(getContextTypeRegistry(), getPreferenceStore(), "templates"); //$NON-NLS-1$
+            fTemplateStore = new ContributionTemplateStore(getContextTypeRegistry(), getPreferenceStore(), "templates"); //$NON-NLS-1$
             try {
                 fTemplateStore.load();
             } catch (IOException e) {
@@ -114,9 +114,7 @@ public class Activator extends AbstractUIPlugin {
 
 
     public RpmPackageProposalsList getRpmPackageList() {
-        if (packagesList == null){
-            packagesList = new RpmPackageProposalsList();
-        } else if (packagesList.getProposals("").size() == 0) { //$NON-NLS-1$
+        if (packagesList == null || packagesList.getProposals("").size() == 0) { //$NON-NLS-1$
             packagesList = new RpmPackageProposalsList();
         }
         return packagesList;

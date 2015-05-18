@@ -68,7 +68,7 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
         List<String[]> rpmPackages = Activator.getDefault().getRpmPackageList()
                 .getProposals(""); //$NON-NLS-1$
         char[] startWith = {' ', '\t', ',', ':'};
-        for (String[] item: rpmPackages){
+        for (String[] item : rpmPackages) {
             // FIXME Perhaps, that can slow down the scanning?
             for (char startChar : startWith) {
                 wordRule.addWord(startChar + item[0], packageToken);
