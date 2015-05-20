@@ -16,18 +16,20 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.outline.SpecfileQuickOutlineDialog;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.swt.SWT;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class SpecfileEditorShowOutlineActionDelegate extends AbstractHandler {
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        SpecfileEditor editor = (SpecfileEditor) HandlerUtil
-                .getActiveEditor(event);
-        SpecfileQuickOutlineDialog quickOutlinePopupDialog = new SpecfileQuickOutlineDialog(
-                editor.getSite().getShell(), SWT.NONE, editor);
-        quickOutlinePopupDialog.setSize(400, 200);
-        quickOutlinePopupDialog.setVisible(true);
+        IEditorPart editor = HandlerUtil.getActiveEditor(event);
+        if (editor instanceof SpecfileEditor) {
+            SpecfileQuickOutlineDialog quickOutlinePopupDialog = new SpecfileQuickOutlineDialog(
+                    editor.getSite().getShell(), SWT.NONE, (SpecfileEditor) editor);
+            quickOutlinePopupDialog.setSize(400, 200);
+            quickOutlinePopupDialog.setVisible(true);
+        }
         return null;
     }
 

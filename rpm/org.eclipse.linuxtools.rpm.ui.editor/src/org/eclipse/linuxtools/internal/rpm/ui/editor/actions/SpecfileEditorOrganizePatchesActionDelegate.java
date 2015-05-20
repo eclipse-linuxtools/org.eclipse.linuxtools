@@ -16,6 +16,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class SpecfileEditorOrganizePatchesActionDelegate extends AbstractHandler {
@@ -27,9 +28,12 @@ public class SpecfileEditorOrganizePatchesActionDelegate extends AbstractHandler
      */
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        Specfile specfile = ((SpecfileEditor)HandlerUtil.getActiveEditor(event)).getSpecfile();
-        if (specfile != null) {
-            specfile.organizePatches();
+        IEditorPart editor = HandlerUtil.getActiveEditor(event);
+        if (editor instanceof SpecfileEditor) {
+            Specfile specfile = ((SpecfileEditor) editor).getSpecfile();
+            if (specfile != null) {
+                specfile.organizePatches();
+            }
         }
         return null;
     }

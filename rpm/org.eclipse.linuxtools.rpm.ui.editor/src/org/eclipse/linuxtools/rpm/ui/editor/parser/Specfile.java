@@ -189,7 +189,7 @@ public class Specfile {
         int newPatchNumber = 0;
         int oldPatchNumber = -1;
         Map<Integer, SpecfileSource> newPatches = new HashMap<>();
-        for (SpecfileSource thisPatch: patches) {
+        for (SpecfileSource thisPatch : patches) {
             if (thisPatch.getSpecfile() == null) {
                 thisPatch.setSpecfile(this);
             }

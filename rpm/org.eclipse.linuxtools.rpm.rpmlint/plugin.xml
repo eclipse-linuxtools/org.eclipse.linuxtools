@@ -55,41 +55,19 @@
                label="%addremovewarnings.name" >
             <visibleWhen
                   checkEnabled="false">
-               <or>
-                  <with
-                        variable="activeMenuSelection">
-                     <reference
-                           definitionId="org.eclipse.linuxtools.rpm.core.rpmfile">
-                     </reference>
-                  </with>
-                  <with
-                        variable="activeMenuEditorInput">
-                     <reference
-                           definitionId="org.eclipse.linuxtools.rpm.core.rpmfile">
-                     </reference>
-                  </with>
-               </or>
+               <reference
+                     definitionId="org.eclipse.linuxtools.rpm.core.rpmselection">
+               </reference>
             </visibleWhen>
-               </command>
+         </command>
          <command
                commandId="rpmlint.runRpmlint.command"
                label="%runrpmlintcommand.label">
             <visibleWhen
                   checkEnabled="false">
-               <or>
-                  <with
-                        variable="activeMenuSelection">
-                     <reference
-                           definitionId="org.eclipse.linuxtools.rpm.core.rpmfile">
-                     </reference>
-                  </with>
-                  <with
-                        variable="activeMenuEditorInput">
-                     <reference
-                           definitionId="org.eclipse.linuxtools.rpm.core.rpmfile">
-                     </reference>
-                  </with>
-               </or>
+               <reference
+                     definitionId="org.eclipse.linuxtools.rpm.core.rpmselection">
+               </reference>
             </visibleWhen>
          </command>
       </menuContribution>
