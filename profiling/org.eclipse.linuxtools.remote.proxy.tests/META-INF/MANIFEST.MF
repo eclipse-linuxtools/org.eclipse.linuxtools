@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Remote proxy tests
+Bundle-SymbolicName: org.eclipse.linuxtools.remote.proxy.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Eclipse Eclipse Linux Tools
+Fragment-Host: org.eclipse.linuxtools.rdt.proxy
+Require-Bundle: org.eclipse.core.runtime,
+ org.junit;bundle-version="4.12.0",
+ org.eclipse.linuxtools.profiling.launch;bundle-version="3.2.0",
+ org.eclipse.linuxtools.ssh.proxy;bundle-version="1.1.0",
+ org.eclipse.linuxtools.profiling.launch.ui.rdt.proxy;bundle-version="1.1.0",
+ org.eclipse.remote.core;bundle-version="2.0.0",
+ org.eclipse.core.resources,
+ org.eclipse.linuxtools.profiling.tests;bundle-version="1.1.0",
+ org.eclipse.debug.core,
+ org.eclipse.cdt.core,
+ org.eclipse.core.filesystem,
+ org.eclipse.ptp.rdt.sync.core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy

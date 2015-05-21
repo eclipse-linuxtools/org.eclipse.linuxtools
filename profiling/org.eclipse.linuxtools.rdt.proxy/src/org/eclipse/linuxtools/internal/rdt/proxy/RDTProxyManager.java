@@ -25,8 +25,9 @@ import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteEnvProxyManager;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.remote.core.IRemoteConnection;
-import org.eclipse.remote.core.IRemoteServices;
-import org.eclipse.remote.core.RemoteServices;
+import org.eclipse.remote.core.IRemoteConnectionType;
+import org.eclipse.remote.core.IRemoteProcessService;
+import org.eclipse.remote.core.IRemoteServicesManager;
 import org.eclipse.remote.core.exception.RemoteConnectionException;
 
 public class RDTProxyManager implements IRemoteEnvProxyManager {
@@ -55,8 +56,7 @@ public class RDTProxyManager implements IRemoteEnvProxyManager {
 
     @Override
     public String getOS(URI uri) {
-        IRemoteServices services = RemoteServices.getRemoteServices(uri);
-        IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
+        IRemoteConnection connection = getConnection(uri);
         String os = connection.getProperty(IRemoteConnection.OS_NAME_PROPERTY);
         if (os == null || os.isEmpty()) {
             //FIXME: need better way to get this property
@@ -73,8 +73,7 @@ public class RDTProxyManager implements IRemoteEnvProxyManager {
 
     @Override
     public Map<String, String> getEnv(URI uri) {
-        IRemoteServices services = RemoteServices.getRemoteServices(uri);
-        IRemoteConnection connection = services.getConnectionManager().getConnection(uri);
+        IRemoteConnection connection = getConnection(uri);
         if(!connection.isOpen()) {
             try {
                 connection.open(null);
@@ -96,7 +95,8 @@ public class RDTProxyManager implements IRemoteEnvProxyManager {
         Pattern functionPattern = Pattern.compile("(.+)\\(\\)=([\\(\\)\\s{].+[\n]*.+)");  //$NON-NLS-1$
         Matcher m;
         Map<String, String> envMap = new HashMap<>();
-        Map<String, String> envTemp = connection.getEnv();
+        IRemoteProcessService ps = connection.getService(IRemoteProcessService.class);
+        Map<String, String> envTemp = ps.getEnv();
         for (String key : envTemp.keySet()) {
             String value = envTemp.get(key);
             String env = key + "=" + value; //$NON-NLS-1$
@@ -114,4 +114,17 @@ public class RDTProxyManager implements IRemoteEnvProxyManager {
         return getEnv(uri);
     }
 
+    /**
+     * Get the remote connection
+     *
+     * @param uri any valid URI to remote
+     * @return a remote connection
+     *
+     * @since 1.2
+     */
+    public static IRemoteConnection getConnection(URI uri) {
+        IRemoteServicesManager sm = Activator.getService(IRemoteServicesManager.class);
+        IRemoteConnectionType ct = sm.getConnectionType(uri);
+        return ct.getConnection(uri);
+    }
 }

@@ -13,8 +13,8 @@
          point="org.eclipse.linuxtools.profiling.launch.RemoteResourceSelectorProxy">
       <resourceSelectorProxy
             class="org.eclipse.linuxtools.internal.profiling.launch.ui.rdt.proxy.RDTResourceSelectorProxy"
-            scheme="remotetools"
-            schemeLabel="Remote Tools">
+            scheme="ssh"
+            schemeLabel="SSH">
       </resourceSelectorProxy>
    </extension>
    <extension

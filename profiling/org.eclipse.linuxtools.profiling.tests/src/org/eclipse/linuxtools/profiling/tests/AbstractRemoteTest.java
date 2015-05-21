@@ -12,69 +12,36 @@ package org.eclipse.linuxtools.profiling.tests;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeTrue;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.eclipse.cdt.build.core.scannerconfig.ScannerConfigNature;
-import org.eclipse.cdt.core.CCorePlugin;
-import org.eclipse.cdt.core.index.IIndexManager;
-import org.eclipse.cdt.core.model.CoreModel;
-import org.eclipse.cdt.managedbuilder.core.IBuilder;
-import org.eclipse.cdt.managedbuilder.core.IConfiguration;
-import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
-import org.eclipse.cdt.managedbuilder.core.IProjectType;
-import org.eclipse.cdt.managedbuilder.core.IToolChain;
-import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
-import org.eclipse.cdt.managedbuilder.core.ManagedCProjectNature;
-import org.eclipse.cdt.managedbuilder.internal.core.Configuration;
-import org.eclipse.cdt.managedbuilder.internal.core.ManagedBuildInfo;
-import org.eclipse.cdt.managedbuilder.internal.core.ManagedProject;
-import org.eclipse.cdt.managedbuilder.internal.core.ToolChain;
-import org.eclipse.cdt.utils.EFSExtensionManager;
-import org.eclipse.cdt.core.settings.model.ICProjectDescription;
-import org.eclipse.cdt.core.settings.model.ICProjectDescriptionManager;
-import org.eclipse.cdt.core.settings.model.extension.CConfigurationData;
-import org.eclipse.cdt.core.CProjectNature;
-import org.eclipse.cdt.core.CCProjectNature;
 import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.filesystem.IFileSystem;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceDescription;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.ptp.rdt.core.remotemake.RemoteMakeBuilder;
-import org.eclipse.ptp.rdt.core.resources.RemoteMakeNature;
-import org.eclipse.ptp.rdt.ui.serviceproviders.IRemoteToolsIndexServiceProvider;
-import org.eclipse.ptp.rdt.ui.serviceproviders.RemoteBuildServiceProvider;
-import org.eclipse.remote.core.IRemoteConnectionWorkingCopy;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.ptp.rdt.sync.core.SyncConfig;
+import org.eclipse.ptp.rdt.sync.core.SyncConfigManager;
+import org.eclipse.ptp.rdt.sync.core.SyncFlag;
+import org.eclipse.ptp.rdt.sync.core.SyncManager;
 import org.eclipse.remote.core.IRemoteConnection;
-import org.eclipse.remote.core.IRemoteConnectionManager;
-import org.eclipse.remote.core.IRemoteFileManager;
-import org.eclipse.remote.core.IRemoteServices;
-import org.eclipse.remote.core.RemoteServices;
+import org.eclipse.remote.core.IRemoteConnectionType;
+import org.eclipse.remote.core.IRemoteConnectionWorkingCopy;
+import org.eclipse.remote.core.IRemoteFileService;
+import org.eclipse.remote.core.IRemoteServicesManager;
 import org.eclipse.remote.core.exception.RemoteConnectionException;
-import org.eclipse.ptp.services.core.IService;
-import org.eclipse.ptp.services.core.IServiceConfiguration;
-import org.eclipse.ptp.services.core.IServiceProviderDescriptor;
-import org.eclipse.ptp.services.core.ServiceModelManager;
+import org.eclipse.remote.internal.jsch.core.JSchConnection;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
 @SuppressWarnings("restriction")
 public abstract class AbstractRemoteTest extends AbstractTest {
+	private static final String PLUGIN_ID="org.eclipse.linuxtools.profiling.tests";
     public static final String REMOTE_NATURE_ID = "org.eclipse.ptp.rdt.core.remoteNature"; //$NON-NLS-1$
     public static final String REMOTE_SERVICES = "org.eclipse.ptp.remote.RemoteTools"; //$NON-NLS-1$
     public static final String REMOTE_MAKE_NATURE = "org.eclipse.ptp.rdt.core.remoteMakeNature"; //$NON-NLS-1$
@@ -85,17 +52,44 @@ public abstract class AbstractRemoteTest extends AbstractTest {
     public static final String TOOLCHAIN_ID = "org.eclipse.ptp.rdt.managedbuild.toolchain.gnu.base"; //$NON-NLS-1$
     public static final String PTP_EXE = "org.eclipse.ptp.rdt.managedbuild.target.gnu.exe"; //$NON-NLS-1$
     public static final String DEBUG = "Debug"; //$NON-NLS-1$
-    public static final String USERNAME = ""; //$NON-NLS-1$
-    private static final String PASSWORD = ""; //$NON-NLS-1$
+    public static String USERNAME = ""; //$NON-NLS-1$
+    private static String PASSWORD = ""; //$NON-NLS-1$
+    public static final String CONNECTION_TYPE_JSCH = "org.eclipse.remote.JSch";
+    public static final String SYNC_SERVICE_GIT = "org.eclipse.ptp.rdt.sync.git.core.synchronizeService";
+
     // Sets localhost as default connection if no remote host is given
-    private static String HOST = "localhost"; //$NON-NLS-1$
+    private static String HOST = ""; //$NON-NLS-1$
     public static String CONNECTION_NAME = "localhost"; //$NON-NLS-1$
     public static final String RESOURCES_DIR = "resources/"; //$NON-NLS-1$
 
-    private IRemoteServices fRemoteServices;
     private IRemoteConnectionWorkingCopy fRemoteConnection;
 
+
+    // Skip tests if there is not suitable connection details
+    public static void checkConnectionInfo() {
+        String host = System.getenv("TEST_HOST");
+        if (host != null) {
+            HOST = host;
+        }
+        assumeTrue("Skip remote tests due lack of host information", !HOST.isEmpty());
+
+        String username = System.getenv("TEST_USERNAME");
+        if (username != null) {
+            USERNAME = username;
+        }
+        assumeTrue("Skip remote tests due lack of an username for connection", !USERNAME.isEmpty());
+
+        String password = System.getenv("TEST_PASSWORD");
+        if (password != null) {
+            PASSWORD = password;
+        }
+        assumeTrue("Skip remote tests due lack of an password for connection", !PASSWORD.isEmpty());
+    }
+
     /**
+     * @deprecated As of 1.1, this should not be used because PTP no more provides
+     *  rdt managed projects.
+     *
      * Create a CDT project outside the default workspace.
      *
      * @param bundle            The plug-in bundle.
@@ -109,155 +103,16 @@ public abstract class AbstractRemoteTest extends AbstractTest {
      * @throws InvocationTargetException
      * @throws InterruptedException
      */
-    protected IProject createRemoteExternalProject(Bundle bundle,
+    @Deprecated protected IProject createRemoteExternalProject(Bundle bundle,
             final String projname, final String absProjectPath,
             final String sourceFile) throws CoreException, URISyntaxException, IOException {
-
-        IProject externalProject;
-        // Turn off auto-building
-        IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        IWorkspaceDescription wspDesc = workspace.getDescription();
-        wspDesc.setAutoBuilding(false);
-        workspace.setDescription(wspDesc);
-
-        // Create external project
-        IWorkspaceRoot root = workspace.getRoot();
-        externalProject = root.getProject(projname);
-        IProjectDescription description = workspace.newProjectDescription(projname);
-
-        // Get services responsible for handling the remote connection
-        fRemoteServices = RemoteServices.getRemoteServices(REMOTE_SERVICES);
-        assertNotNull(fRemoteServices);
-
-        // Create connection manager
-        IRemoteConnectionManager connMgr = fRemoteServices.getConnectionManager();
-        assertNotNull(connMgr);
-
-        try {
-            // Creates a localhost connection or a remote one if one is
-            // specified by createRemoteExternalProjectAndBuild
-            fRemoteConnection = connMgr.newConnection(CONNECTION_NAME);
-        } catch (RemoteConnectionException e) {
-            fail(e.getLocalizedMessage());
-        }
-        assertNotNull(fRemoteConnection);
-        // Sets the connection arguments
-        fRemoteConnection.setAddress(HOST);
-        fRemoteConnection.setUsername(USERNAME);
-        fRemoteConnection.setPassword(PASSWORD);
-
-        try {
-            fRemoteConnection.open(new NullProgressMonitor());
-        } catch (RemoteConnectionException e) {
-            fail(e.getLocalizedMessage());
-        }
-        assertTrue(fRemoteConnection.isOpen());
-
-        // Sets the location of the remote project
-        // RDT format is as follows: remotetools://connectionName/directory
-        URI fileProjectURL = new URI(absProjectPath);
-        description.setLocationURI(fileProjectURL);
-        // Creates CDT project
-        externalProject = CCorePlugin.getDefault().createCDTProject(
-                description, externalProject, new NullProgressMonitor());
-        String pathString = EFSExtensionManager.getDefault().getPathFromURI(externalProject.getLocationURI());
-        IPath buildPath = Path.fromPortableString(pathString);
-        assertNotNull(externalProject);
-        assertTrue(externalProject.isOpen());
-
-        // Add the necessary natures to the remote project
-        CProjectNature.addCNature(externalProject, new NullProgressMonitor());
-        CCProjectNature.addCCNature(externalProject, new NullProgressMonitor());
-        CProjectNature.addNature(externalProject, AbstractRemoteTest.REMOTE_NATURE_ID, new NullProgressMonitor());
-        ManagedCProjectNature.addManagedNature(externalProject, null);
-        ScannerConfigNature.addScannerConfigNature(externalProject);
-        // Since it is a remote makefile project, add the make nature
-        CProjectNature.addNature(externalProject, REMOTE_MAKE_NATURE, new NullProgressMonitor());
-        // Creates a service model required by RDT projects
-        ServiceModelManager.getInstance().addConfiguration(externalProject, ServiceModelManager.getInstance().newServiceConfiguration(externalProject.getName()));
-        ServiceModelManager smm = ServiceModelManager.getInstance();
-        // Creates a Service Configuration for this CDT project
-        // RDT needs it in order to build the project later
-        IServiceConfiguration config = ServiceModelManager.getInstance().newServiceConfiguration(externalProject.getName());
-        IService buildService = smm.getService(BUILD_SERVICE);
-        IServiceProviderDescriptor descriptor = buildService.getProviderDescriptor(RemoteBuildServiceProvider.ID);
-        RemoteBuildServiceProvider rbsp = (RemoteBuildServiceProvider) smm.getServiceProvider(descriptor);
-        if (rbsp != null) {
-            rbsp.setRemoteToolsConnection(fRemoteConnection);
-            config.setServiceProvider(buildService, rbsp);
-        }
-        IService indexingService = smm.getService(CINDEX_SERVICE);
-        descriptor = indexingService.getProviderDescriptor(RDT_CINDEX_SERVICE);
-        IRemoteToolsIndexServiceProvider provider = (IRemoteToolsIndexServiceProvider) smm
-                .getServiceProvider(descriptor);
-        if (provider != null) {
-            provider.setConnection(fRemoteConnection);
-            config.setServiceProvider(indexingService, provider);
-        }
-        // Adds the service configuration with the properties defined to the CDT project
-        smm.addConfiguration(externalProject, config);
-        smm.setActiveConfiguration(externalProject, config);
-        smm.saveModelConfiguration();
-
-        // Adds a description and a configuration the the CDT project
-        ICProjectDescriptionManager mngr =
-                CoreModel.getDefault().getProjectDescriptionManager();
-        ICProjectDescription des = mngr.createProjectDescription(externalProject, false);
-        ManagedBuildInfo info = ManagedBuildManager.createBuildInfo(externalProject);
-        IProjectType type = ManagedBuildManager.getProjectType(PTP_EXE);
-        IToolChain tc = ManagedBuildManager.getExtensionToolChain(TOOLCHAIN_ID); // or get toolChain from UI
-        ManagedProject mProj = new ManagedProject(des);
-        info.setManagedProject(mProj);
-        IConfiguration cfgs[] = type.getConfigurations();
-        assertNotNull(cfgs);
-        assertTrue(cfgs.length>0);
-
-        for (IConfiguration configuration : cfgs) {
-            String id = ManagedBuildManager.calculateChildId(configuration.getToolChain().getId(), null);
-            Configuration cfg = new Configuration(mProj, (ToolChain) tc, id, DEBUG);
-            IBuilder bld = cfg.getEditableBuilder();
-            bld = cfg.getEditableBuilder();
-            bld.setBuildPath(pathString);
-            CConfigurationData configurationData = cfg.getConfigurationData();
-            assertNotNull(configurationData);
-            des.createConfiguration(ManagedBuildManager.CFG_DATA_PROVIDER_ID, configurationData);
-        }
-        mngr.setProjectDescription(externalProject, des);
-
-        // The source file in the plug-in test package is copied to the specified directory
-        final IRemoteFileManager fileManager = fRemoteConnection.getFileManager();
-        final IFileStore dstFileStore = fileManager.getResource(pathString);
-        IFileSystem fileSystem = EFS.getLocalFileSystem();
-        IFileStore srcFileStore = fileSystem.getStore(URI.create(RESOURCES_DIR + projname));
-        srcFileStore.copy(dstFileStore, EFS.OVERWRITE , null);
-        externalProject.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-        IFileInfo dstInfo = dstFileStore.fetchInfo();
-        assertTrue(dstInfo.exists());
-
-
-        RemoteMakeNature.updateProjectDescription(externalProject, RemoteMakeBuilder.REMOTE_MAKE_BUILDER_ID, new NullProgressMonitor());
-
-        IManagedBuildInfo mbsInfo = ManagedBuildManager.getBuildInfo(externalProject);
-        mbsInfo.getDefaultConfiguration().getBuildData().setBuilderCWD(buildPath);
-        mbsInfo.setDirty(true);
-        ManagedBuildManager.saveBuildInfo(externalProject, true);
-
-        try {
-            // CDT opens the Project with BACKGROUND_REFRESH enabled which causes the
-            // refresh manager to refresh the project 200ms later. This Job interferes
-            // with the resource change handler firing see: bug 271264
-            Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_REFRESH, null);
-        } catch (Exception e) {
-            // Ignore
-        }
-        assertTrue(externalProject.isOpen());
-
-        // Index the project
-        IIndexManager indexMgr = CCorePlugin.getIndexManager();
-        indexMgr.joinIndexer(IIndexManager.FOREVER, new NullProgressMonitor());
-        return externalProject;
+        return null;
     }
-    protected IProject createRemoteExternalProjectAndBuild(Bundle bundle,
+    /**
+     * @deprecated As of 1.1, this should not be used because PTP no more provides
+     *  rdt managed projects.
+     */
+    @Deprecated protected IProject createRemoteExternalProjectAndBuild(Bundle bundle,
             String projname, String absProjectPath, String sourceFile, String host,
             String connectionName) throws CoreException, URISyntaxException, IOException {
         HOST = host;
@@ -267,7 +122,11 @@ public abstract class AbstractRemoteTest extends AbstractTest {
         return proj;
     }
 
-    protected IProject createRemoteExternalProjectAndBuild(Bundle bundle,
+    /**
+     * @deprecated As of 1.1, this should not be used because PTP no more provides
+     *  rdt managed projects.
+     */
+    @Deprecated protected IProject createRemoteExternalProjectAndBuild(Bundle bundle,
             String projname, String absProjectPath, String sourceFile) throws CoreException, URISyntaxException, IOException {
         IProject proj = createRemoteExternalProject(bundle, projname, absProjectPath, sourceFile);
         buildProject(proj);
@@ -275,21 +134,82 @@ public abstract class AbstractRemoteTest extends AbstractTest {
     }
 
         protected void deleteResource (String directory) {
-                IRemoteServices fRemoteServices;
-                IRemoteConnection fRemoteConnection;
-                fRemoteServices = RemoteServices.getRemoteServices(REMOTE_SERVICES);
-                assertNotNull(fRemoteServices);
-
-                IRemoteConnectionManager connMgr = fRemoteServices.getConnectionManager();
-                assertNotNull(connMgr);
-                fRemoteConnection = connMgr.getConnection(CONNECTION_NAME);
-                final IRemoteFileManager fileManager = fRemoteConnection.getFileManager();
+                IRemoteServicesManager sm = getServicesManager();
+                IRemoteConnection conn = sm.getConnectionType("ssh").getConnection(CONNECTION_NAME);
+                assertNotNull(conn);
+                IRemoteFileService fileManager = conn.getService(IRemoteFileService.class);
+                assertNotNull(fileManager);
                 final IFileStore dstFileStore = fileManager.getResource(directory);
                 try {
                     dstFileStore.delete(EFS.NONE, null);
                 } catch (CoreException e) {
                 }
             }
+    /**
+     * Create a new connection. Save the connection working copy before return.
+     *
+     * @param connName Connection Name
+     * @param connTypeId The connection type identifier
+     * @return The created remote connection
+     * @throws RemoteConnectionException
+     */
+    protected static IRemoteConnection createJSchConnection(String connName, String connTypeId) throws RemoteConnectionException {
+        checkConnectionInfo();
+        IRemoteServicesManager manager = getServicesManager();
+        IRemoteConnectionType ct = manager.getConnectionType(connTypeId);
+        assertNotNull(ct);
+        IRemoteConnectionWorkingCopy wc = ct.newConnection(connName);
+        wc.setAttribute(JSchConnection.ADDRESS_ATTR, HOST);
+        wc.setAttribute(JSchConnection.USERNAME_ATTR, USERNAME);
+        wc.setSecureAttribute(JSchConnection.PASSWORD_ATTR, PASSWORD);
+        IRemoteConnection conn = wc.save();
+        assertNotNull(conn);
+        conn.open(new NullProgressMonitor());
+        assertTrue(conn.isOpen());
+        return conn;
+    }
 
+    /**
+     * Delete connection
+     *
+     * @param conn The connection
+     * @throws RemoteConnectionException
+     */
+    protected static void deleteConnection(IRemoteConnection conn) throws RemoteConnectionException {
+        IRemoteConnectionType ct = conn.getConnectionType();
+        ct.removeConnection(conn);
+    }
+
+    /**
+     * Prepare a sync project from an already available local project
+     *
+     * @param project any local project
+     * @param conn remote connection
+     * @param location sync'ed folder path in remote machine
+     * @throws CoreException
+     */
+    protected static void convertToSyncProject(IProject project, IRemoteConnection conn, String location) throws CoreException {
+        // Convert to sync project without file filters
+        SyncManager.makeSyncProject(project, conn.getName() + "_sync", SYNC_SERVICE_GIT, conn, location, null);
+        // Synchronize project from local to remote
+        SyncManager.sync(null, project, SyncFlag.LR_ONLY, null);
+    }
+
+    /**
+     * Get the *active* synchronize configuration associated with the project
+     *
+     * @param project A sync project
+     * @return the active synchronize configuration
+     */
+    protected static SyncConfig getSyncConfig(IProject project) {
+        return SyncConfigManager.getActive(project);
+    }
+
+    private static IRemoteServicesManager getServicesManager() {
+		BundleContext context = Platform.getBundle(PLUGIN_ID).getBundleContext();
+		ServiceReference<IRemoteServicesManager> ref = context.getServiceReference(IRemoteServicesManager.class);
+		assertNotNull(ref);
+		return context.getService(ref);
+    }
 
 }
