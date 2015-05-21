@@ -74,8 +74,6 @@ public class RemoveTagCommandHandler extends AbstractHandler implements
 			protected IStatus run(final IProgressMonitor monitor) {
 				final String tag = wizard.getTag();
 				monitor.beginTask(DVMessages.getString(REMOVE_TAG_MSG), 2);
-				// tag the image and let the progress
-				// handler refresh the images when done
 				try {
 					((DockerConnection) connection).removeTag(tag);
 					monitor.worked(1);

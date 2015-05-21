@@ -34,7 +34,7 @@ public class DisplayContainerLogCommandHandler extends AbstractHandler implement
  IHandler {
 
 	private static final String CONTAINER_LOG_TITLE = "ContainerLog.title"; //$NON-NLS-1$
-	private static final String ERROR_LOGGING_CONTAINER = "ContainerLoggingError.msg"; //$NON-NLS-1$
+	private static final String ERROR_LOGGING_CONTAINER = "ContainerLogError.msg"; //$NON-NLS-1$
 
 	private IDockerConnection connection;
 	private IDockerContainer container;

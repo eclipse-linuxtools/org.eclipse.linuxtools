@@ -28,9 +28,9 @@ import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
  */
 public class UnpauseContainersCommandHandler extends BaseContainersCommandHandler {
 
-	private static final String CONTAINERS_UNPAUSE_MSG = "ContainersPause.msg"; //$NON-NLS-1$
-	private static final String CONTAINER_UNPAUSE_MSG = "ContainerPause.msg"; //$NON-NLS-1$
-	private static final String CONTAINER_UNPAUSE_ERROR_MSG = "ContainerPauseError.msg"; //$NON-NLS-1$
+	private static final String CONTAINERS_UNPAUSE_MSG = "ContainersUnpause.msg"; //$NON-NLS-1$
+	private static final String CONTAINER_UNPAUSE_MSG = "ContainerUnpause.msg"; //$NON-NLS-1$
+	private static final String CONTAINER_UNPAUSE_ERROR_MSG = "ContainerUnpauseError.msg"; //$NON-NLS-1$
 
 	@Override
 	void executeInJob(final IDockerContainer container, final IDockerConnection connection) {

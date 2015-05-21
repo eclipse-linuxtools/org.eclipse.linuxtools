@@ -73,7 +73,8 @@ public class TagImageCommandHandler extends AbstractHandler implements
 			@Override
 			protected IStatus run(final IProgressMonitor monitor) {
 				final String tag = wizard.getTag();
-				monitor.beginTask(DVMessages.getString(TAG_IMAGE_MSG), 2);
+				monitor.beginTask(
+						DVMessages.getFormattedString(TAG_IMAGE_MSG, tag), 2);
 				// tag the image and let the progress
 				// handler refresh the images when done
 				try {
