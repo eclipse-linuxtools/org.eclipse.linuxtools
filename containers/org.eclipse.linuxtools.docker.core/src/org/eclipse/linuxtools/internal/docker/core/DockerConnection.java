@@ -347,7 +347,7 @@ public class DockerConnection implements IDockerConnection {
 		}
 
 		public Builder unixSocket(String unixSocketPath) {
-			if (unixSocketPath != null && !unixSocketPath.startsWith("unix://")) { //$NON-NLS-1$
+			if (unixSocketPath != null && !unixSocketPath.matches("\\w+://.*")) { //$NON-NLS-1$
 				unixSocketPath = "unix://" + unixSocketPath; //$NON-NLS-1$
 			}
 			this.unixSocketPath = unixSocketPath;
@@ -356,7 +356,7 @@ public class DockerConnection implements IDockerConnection {
 
 		public Builder tcpHost(String tcpHost) {
 			if (tcpHost != null) {
-				if (!tcpHost.startsWith("tcp://")) { //$NON-NLS-1$
+				if (!tcpHost.matches("\\w+://.*")) { //$NON-NLS-1$
 					tcpHost = "tcp://" + tcpHost; //$NON-NLS-1$
 				}
 				this.tcpHost = tcpHost.replace("tcp://", "http://"); //$NON-NLS-1$ //$NON-NLS-2$
