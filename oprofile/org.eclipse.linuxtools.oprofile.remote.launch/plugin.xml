@@ -36,7 +36,7 @@
          point="org.eclipse.linuxtools.oprofile.core.OpcontrolProvider">
       <opcontrolProvider
             class="org.eclipse.linuxtools.internal.oprofile.remote.core.linux.RemoteLinuxOpcontrolProvider"
-            scheme="remotetools">
+            scheme="ssh">
       </opcontrolProvider>
    </extension>
    <extension

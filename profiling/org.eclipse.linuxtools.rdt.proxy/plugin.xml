@@ -12,22 +12,14 @@
          point="org.eclipse.linuxtools.profiling.launch.RemoteProxyManager">
       <manager
             class="org.eclipse.linuxtools.internal.rdt.proxy.RDTProxyManager"
-            scheme="remotetools">
+            scheme="ssh">
       </manager>
    </extension>
    <extension
          point="org.eclipse.linuxtools.profiling.launch.RemoteProxyNatureMapping">
       <mapping
             nature="org.eclipse.ptp.rdt.sync.core.remoteSyncNature"
-            schema="remotetools">
+            schema="ssh">
       </mapping>
    </extension>
-   <extension
-         point="org.eclipse.linuxtools.profiling.launch.RemoteProxyNatureMapping">
-      <mapping
-            nature="org.eclipse.ptp.rdt.core.remoteNature"
-            schema="remotetools">
-      </mapping>
-   </extension>
-
 </plugin>
