@@ -90,9 +90,15 @@ public class RDTProxyManager implements IRemoteEnvProxyManager {
          * and none of LT plugins working remotely because they are not find on
          * path.
          *
-         * ie: BASH_FUNC_module()=() { eval `/usr/bin/modulecmd bash $*`, }
+         * Patterns added in the env list:
+         * var=value
+         * i.e: SHELL=/bin/bash
+         *
+         * Patterns not added in the env list:
+         * var=() { foo
+         * i.e: BASH_FUNC_module()=() { eval `/usr/bin/modulecmd bash $*`, }
          */
-        Pattern functionPattern = Pattern.compile("(.+)\\(\\)=([\\(\\)\\s{].+[\n]*.+)");  //$NON-NLS-1$
+        Pattern variablePattern = Pattern.compile("^(.+)=([^\\(\\)\\s{].*|)$"); //$NON-NLS-1$
         Matcher m;
         Map<String, String> envMap = new HashMap<>();
         IRemoteProcessService ps = connection.getService(IRemoteProcessService.class);
@@ -100,8 +106,8 @@ public class RDTProxyManager implements IRemoteEnvProxyManager {
         for (String key : envTemp.keySet()) {
             String value = envTemp.get(key);
             String env = key + "=" + value; //$NON-NLS-1$
-            m = functionPattern.matcher(env);
-            if (!m.matches()) {
+            m = variablePattern.matcher(env);
+            if (m.matches()) {
                 envMap.put(key, value);
             }
         }
