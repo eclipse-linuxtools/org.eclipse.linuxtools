@@ -135,7 +135,7 @@ public class ContainerCreatePage extends WizardPage {
 	}
 
 	private List<String> getCmdList(String s) {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		int length = s.length();
 		boolean insideQuote1 = false; // single-quote
 		boolean insideQuote2 = false; // double-quote
@@ -196,7 +196,7 @@ public class ContainerCreatePage extends WizardPage {
 	}
 
 	private List<String> getEnvList(String str) {
-		ArrayList<String> envVars = new ArrayList<String>();
+		ArrayList<String> envVars = new ArrayList<>();
 
 		Pattern p1 = Pattern.compile("(\\w+[=]\\\".*?\\\"\\s*).*"); //$NON-NLS-1$
 		Pattern p2 = Pattern.compile("(\\w+[=]'.*?'\\s*).*"); //$NON-NLS-1$
@@ -347,7 +347,7 @@ public class ContainerCreatePage extends WizardPage {
 		String s = volumesText.getText().trim();
 		if (s.length() == 0)
 			return null;
-		Set<String> volumeSet = new HashSet<String>();
+		Set<String> volumeSet = new HashSet<>();
 		String[] volumes = s.split("\\s+");
 		for (String volume : volumes) {
 			volume = volume.trim();
@@ -361,7 +361,7 @@ public class ContainerCreatePage extends WizardPage {
 		String s = volumesText.getText().trim();
 		if (s.length() == 0)
 			return null;
-		List<String> hostVolumes = new ArrayList<String>();
+		List<String> hostVolumes = new ArrayList<>();
 		String[] volumes = s.split("\\s+");
 		for (String volume : volumes) {
 			volume = volume.trim();
@@ -375,7 +375,7 @@ public class ContainerCreatePage extends WizardPage {
 		String s = portSpecsText.getText().trim();
 		if (s.length() == 0)
 			return null;
-		List<String> specList = new ArrayList<String>();
+		List<String> specList = new ArrayList<>();
 		String[] specs = s.split("\\s+");
 		for (String spec : specs) {
 			spec = spec.trim();
@@ -389,7 +389,7 @@ public class ContainerCreatePage extends WizardPage {
 		String s = exposedPortsText.getText().trim();
 		if (s.length() == 0)
 			return null;
-		Set<String> exposedPortsSet = new HashSet<String>();
+		Set<String> exposedPortsSet = new HashSet<>();
 		String[] exposedPorts = s.split("\\s+");
 		for (String exposedPort : exposedPorts) {
 			exposedPort = exposedPort.trim();
@@ -413,7 +413,7 @@ public class ContainerCreatePage extends WizardPage {
 		String s = exposedPortsText.getText().trim();
 		if (s.length() == 0)
 			return null;
-		Map<String, List<IDockerPortBinding>> portBindingsMap = new HashMap<String, List<IDockerPortBinding>>();
+		Map<String, List<IDockerPortBinding>> portBindingsMap = new HashMap<>();
 		String[] exposedPorts = s.split("\\s+");
 		for (String exposedPort : exposedPorts) {
 			exposedPort = exposedPort.trim();
@@ -451,7 +451,7 @@ public class ContainerCreatePage extends WizardPage {
 		String s = onBuildText.getText().trim();
 		if (s.length() == 0)
 			return null;
-		List<String> onBuildList = new ArrayList<String>();
+		List<String> onBuildList = new ArrayList<>();
 		String[] onBuildStrings = s.split("\\s+");
 		for (String onBuildString : onBuildStrings) {
 			onBuildString = onBuildString.trim();
@@ -465,7 +465,7 @@ public class ContainerCreatePage extends WizardPage {
 		String s = entryPointText.getText().trim();
 		if (s.length() == 0)
 			return null;
-		List<String> entryPointList = new ArrayList<String>();
+		List<String> entryPointList = new ArrayList<>();
 		String[] entryPoints = s.split("\\s+");
 		for (String entryPoint : entryPoints) {
 			entryPoint = entryPoint.trim();

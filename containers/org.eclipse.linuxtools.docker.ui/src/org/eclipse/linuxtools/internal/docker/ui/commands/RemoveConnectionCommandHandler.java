@@ -13,8 +13,6 @@ package org.eclipse.linuxtools.internal.docker.ui.commands;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
@@ -28,13 +26,10 @@ import org.eclipse.ui.navigator.CommonViewer;
  * @author xcoulon
  *
  */
-public class RemoveConnectionCommandHandler extends AbstractHandler implements IHandler {
+public class RemoveConnectionCommandHandler extends AbstractHandler {
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent)
-	 */
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(ExecutionEvent event) {
 		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		if(activePart instanceof CommonNavigator) {
 			final CommonViewer viewer = ((CommonNavigator)activePart).getCommonViewer();

@@ -14,8 +14,6 @@ import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -32,8 +30,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class TagImageCommandHandler extends AbstractHandler implements
-		IHandler {
+public class TagImageCommandHandler extends AbstractHandler {
 
 	private final static String TAG_IMAGE_JOB_TITLE = "ImageTagTitle.msg"; //$NON-NLS-1$
 	private final static String TAG_IMAGE_MSG = "ImageTag.msg"; //$NON-NLS-1$
@@ -43,7 +40,7 @@ public class TagImageCommandHandler extends AbstractHandler implements
 	private IDockerImage image;
 
 	@Override
-	public Object execute(final ExecutionEvent event) throws ExecutionException {
+	public Object execute(final ExecutionEvent event) {
 		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		List<IDockerImage> selectedImages = CommandUtils
 				.getSelectedImages(activePart);

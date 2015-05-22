@@ -18,8 +18,6 @@ import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -37,10 +35,10 @@ import org.eclipse.ui.handlers.HandlerUtil;
  * @author xcoulon
  *
  */
-public abstract class BaseContainersCommandHandler extends AbstractHandler implements IHandler {
+public abstract class BaseContainersCommandHandler extends AbstractHandler {
 
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(ExecutionEvent event) {
 		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		final List<IDockerContainer> selectedContainers = getSelectedContainers(activePart);
 		final IDockerConnection connection = getCurrentConnection(activePart);

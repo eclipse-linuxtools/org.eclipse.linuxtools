@@ -91,10 +91,11 @@ public class DockerContainersView extends ViewPart implements
 		return "org.eclipse.linuxtools.docker.ui.dockerExplorerView"; //$NON-NLS-1$
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
+	public <T> T getAdapter(final Class<T> adapter) {
 		if (adapter == IPropertySheetPage.class) {
-			return new TabbedPropertySheetPage(this, true);
+			return (T) new TabbedPropertySheetPage(this, true);
 		}
 		return super.getAdapter(adapter);
 	}

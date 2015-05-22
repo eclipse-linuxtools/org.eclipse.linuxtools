@@ -39,7 +39,7 @@ public class ImageViewLabelAndContentProvider extends BaseLabelProvider
 
 		private int column;
 		private int weight;
-		private static final Map<Integer, Column> lookup = new HashMap<Integer, Column>();
+		private static final Map<Integer, Column> lookup = new HashMap<>();
 
 		static {
 			for (Column c : EnumSet.allOf(Column.class))
@@ -67,7 +67,7 @@ public class ImageViewLabelAndContentProvider extends BaseLabelProvider
 			return lookup.size();
 		}
 
-	};
+	}
 
 	public void setTableViewer(TableViewer viewer) {
 	}

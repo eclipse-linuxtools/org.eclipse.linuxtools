@@ -12,8 +12,6 @@ package org.eclipse.linuxtools.internal.docker.ui.commands;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -30,8 +28,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class PullImageCommandHandler extends AbstractHandler implements
-		IHandler {
+public class PullImageCommandHandler extends AbstractHandler {
 
 	private final static String PULL_IMAGE_JOB_TITLE = "ImagePull.msg"; //$NON-NLS-1$
 	private static final String ERROR_PULLING_IMAGE = "ImagePullError.msg"; //$NON-NLS-1$
@@ -39,7 +36,7 @@ public class PullImageCommandHandler extends AbstractHandler implements
 	private IDockerConnection connection;
 
 	@Override
-	public Object execute(final ExecutionEvent event) throws ExecutionException {
+	public Object execute(final ExecutionEvent event) {
 		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		final ImagePull wizard = new ImagePull();
 		final boolean pullImage = CommandUtils.openWizard(wizard,

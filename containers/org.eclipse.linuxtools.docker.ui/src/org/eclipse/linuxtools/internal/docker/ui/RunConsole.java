@@ -256,7 +256,7 @@ public class RunConsole extends IOConsole {
 		private boolean isCtrlOn;
 
 		private final int CTRL_CODE = 262144;
-		private final int C_CODE = (int) 'c';
+		private final int C_CODE = 'c';
 		private final int TAB_CODE = 9;
 
 		public TTYKeyListener() {

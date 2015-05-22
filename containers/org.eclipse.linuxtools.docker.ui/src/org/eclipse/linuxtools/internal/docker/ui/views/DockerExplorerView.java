@@ -195,6 +195,7 @@ public class DockerExplorerView extends CommonNavigator implements
 	private SelectionAdapter onExplanationClicked(
 			final Control connectionsPane, final Control explanationPane) {
 		return new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				final NewDockerConnection wizard = new NewDockerConnection();
 				final WizardDialog dialog = new WizardDialog(PlatformUI

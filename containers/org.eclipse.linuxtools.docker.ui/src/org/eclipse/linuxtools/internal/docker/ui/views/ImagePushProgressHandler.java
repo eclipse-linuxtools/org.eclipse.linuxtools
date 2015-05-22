@@ -34,7 +34,7 @@ public class ImagePushProgressHandler implements IDockerProgressHandler {
 	private String image;
 	private DockerConnection connection;
 
-	private Map<String, ProgressJob> progressJobs = new HashMap<String, ProgressJob>();
+	private Map<String, ProgressJob> progressJobs = new HashMap<>();
 
 	public ImagePushProgressHandler(IDockerConnection connection, String image) {
 		this.image = image;

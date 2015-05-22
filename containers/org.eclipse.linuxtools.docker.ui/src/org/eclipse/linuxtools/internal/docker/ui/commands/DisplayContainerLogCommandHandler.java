@@ -15,8 +15,6 @@ import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.EnumDockerLoggingStatus;
@@ -30,8 +28,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class DisplayContainerLogCommandHandler extends AbstractHandler implements
- IHandler {
+public class DisplayContainerLogCommandHandler extends AbstractHandler {
 
 	private static final String CONTAINER_LOG_TITLE = "ContainerLog.title"; //$NON-NLS-1$
 	private static final String ERROR_LOGGING_CONTAINER = "ContainerLogError.msg"; //$NON-NLS-1$
@@ -40,7 +37,7 @@ public class DisplayContainerLogCommandHandler extends AbstractHandler implement
 	private IDockerContainer container;
 
 	@Override
-	public Object execute(final ExecutionEvent event) throws ExecutionException {
+	public Object execute(final ExecutionEvent event) {
 		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		List<IDockerContainer> selectedContainers = CommandUtils
 				.getSelectedContainers(activePart);
