@@ -84,7 +84,7 @@ public class HttpHijackWorkaround {
 	 * access to the underlying InputStream but better wait and see what
 	 * happens with the HTTP Hijacking situation.
 	 */
-	public static InputStream getInputStream(LogStream stream) throws Exception {
+	public static InputStream getInputStream(LogStream stream) {
 		final String[] fields = new String[] { "reader", "stream" };
 		final String[] declared = new String[] { LogStream.class.getName(), LogReader.class.getName()};
 
