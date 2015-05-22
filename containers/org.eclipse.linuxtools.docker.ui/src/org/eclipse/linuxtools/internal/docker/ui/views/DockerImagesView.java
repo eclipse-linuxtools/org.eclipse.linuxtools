@@ -103,10 +103,11 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 		return DockerExplorerView.VIEW_ID;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
+	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter == IPropertySheetPage.class) {
-			return new TabbedPropertySheetPage(this, true);
+			return (T) new TabbedPropertySheetPage(this, true);
 		}
 		return super.getAdapter(adapter);
 	}

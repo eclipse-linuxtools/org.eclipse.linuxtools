@@ -90,7 +90,7 @@ public class RemoveImagesCommandHandler extends BaseImagesCommandHandler {
 	@Override
 	boolean confirmed(List<IDockerImage> selectedImages) {
 		// ask for confirmation before deleting images
-		List<String> imagesToRemove = new ArrayList<String>();
+		List<String> imagesToRemove = new ArrayList<>();
 		for (IDockerImage image : selectedImages) {
 			// use repo tags if present, otherwise truncate ids
 			// to 8 characters so they show up

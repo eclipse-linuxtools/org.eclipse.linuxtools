@@ -14,8 +14,6 @@ import static org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils.ge
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -25,13 +23,12 @@ import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class RefreshContainersCommandHandler extends AbstractHandler implements
-		IHandler {
+public class RefreshContainersCommandHandler extends AbstractHandler {
 
 	public final static String CONTAINERS_REFRESH_MSG = "ContainersRefresh.msg"; //$NON-NLS-1$
 
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(ExecutionEvent event) {
 		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		final IDockerConnection connection = getCurrentConnection(activePart);
 		if (connection == null) {
