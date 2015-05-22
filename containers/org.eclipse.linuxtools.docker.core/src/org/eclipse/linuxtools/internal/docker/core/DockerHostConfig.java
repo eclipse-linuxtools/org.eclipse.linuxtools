@@ -49,7 +49,7 @@ public class DockerHostConfig implements IDockerHostConfig {
 			}
 		}
 		this.privileged = hostConfig.privileged();
-		this.portBindings = new HashMap<String, List<IDockerPortBinding>>();
+		this.portBindings = new HashMap<>();
 		if(hostConfig != null && hostConfig.portBindings() != null) {
 			for(Entry<String, List<PortBinding>> entry : hostConfig.portBindings().entrySet()) {
 				final List<IDockerPortBinding> portBindings = new ArrayList<>();
@@ -156,7 +156,7 @@ public class DockerHostConfig implements IDockerHostConfig {
 
 
 		public Builder binds(final List<String> binds) {
-			this.binds = new ArrayList<String>(binds);
+			this.binds = new ArrayList<>(binds);
 			return this;
 		}
 
@@ -179,7 +179,7 @@ public class DockerHostConfig implements IDockerHostConfig {
 		}
 
 		public Builder lxcConf(final List<IDockerConfParameter> lxcConf) {
-			this.lxcConf = new ArrayList<IDockerConfParameter>(lxcConf);
+			this.lxcConf = new ArrayList<>(lxcConf);
 			return this;
 		}
 
@@ -212,7 +212,7 @@ public class DockerHostConfig implements IDockerHostConfig {
 		}
 
 		public Builder links(final List<String> links) {
-			this.links = new ArrayList<String>(links);
+			this.links = new ArrayList<>(links);
 			return this;
 		}
 
@@ -235,7 +235,7 @@ public class DockerHostConfig implements IDockerHostConfig {
 		}
 
 		public Builder dns(final List<String> dns) {
-			this.dns = new ArrayList<String>(dns);
+			this.dns = new ArrayList<>(dns);
 			return this;
 		}
 
@@ -249,7 +249,7 @@ public class DockerHostConfig implements IDockerHostConfig {
 		}
 
 		public Builder dnsSearch(final List<String> dnsSearch) {
-			this.dnsSearch = new ArrayList<String>(dnsSearch);
+			this.dnsSearch = new ArrayList<>(dnsSearch);
 			return this;
 		}
 
@@ -263,7 +263,7 @@ public class DockerHostConfig implements IDockerHostConfig {
 		}
 
 		public Builder volumesFrom(final List<String> volumesFrom) {
-			this.volumesFrom = new ArrayList<String>(volumesFrom);
+			this.volumesFrom = new ArrayList<>(volumesFrom);
 			return this;
 		}
 
