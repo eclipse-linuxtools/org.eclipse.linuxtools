@@ -13,6 +13,9 @@
    <feature url="features/org.eclipse.linuxtools.cdt.libhover.devhelp.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.devhelp.feature" version="0.0.0">
       <category name="Linux Tools Additional Library API Hoverhelp"/>
    </feature>
+   <feature url="features/org.eclipse.linuxtools.javadocs.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.javadocs.feature" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
    <feature url="features/org.eclipse.linuxtools.changelog_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.changelog" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
@@ -138,6 +141,9 @@
       <category name="Linux Tools Sources"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.perf.remote.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.perf.remote.feature.source" version="0.0.0">
+      <category name="Linux Tools Sources"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.javadocs.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.javadocs.feature.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
    <category-def name="Linux Tools" label="Linux Tools">

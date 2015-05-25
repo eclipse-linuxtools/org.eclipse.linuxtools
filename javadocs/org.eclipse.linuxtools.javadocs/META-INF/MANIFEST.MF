@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Javadocs Plug-in
+Bundle-SymbolicName: org.eclipse.linuxtools.javadocs;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.linuxtools.internal.javadocs.ui.JavaDocPlugin
+Bundle-Vendor: Eclipse Linux Tools
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.help;bundle-version="3.6.0",
+ org.eclipse.core.filesystem;bundle-version="1.4.100"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
