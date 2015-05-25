@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.help.toc">
+      <tocProvider
+            class="org.eclipse.linuxtools.internal.javadocs.ui.JavaDocTocProvider">
+      </tocProvider>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.linuxtools.javadocs.preferences1"
+            class="org.eclipse.linuxtools.internal.javadocs.ui.preferences.JavaDocPreferencePage"
+            id="org.eclipse.linuxtools.internal.javadocs.ui.page1"
+            name="Javadoc Preferences">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.eclipse.linuxtools.internal.javadocs.ui.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.help.contentProducer">
+      <contentProducer
+            producer="org.eclipse.linuxtools.internal.javadocs.ui.JavaDocContentProducer">
+      </contentProducer>
+   </extension>
+
+</plugin>
