@@ -14,6 +14,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -82,71 +83,71 @@ public class GNUFormat implements IFormatterChangeLogContrib {
             //a new entry by changing the offset_start and change the corresponding field
             //of the editor back to false to prevent subsequent function change log being
             //written to a new entry again.
-            if (forceNewEntry)
+            if (forceNewEntry) {
                 offset_start = -1;
+            }
 
             if (offset_start != -1) {
                 int nextChangeEntry = findChangeLogPattern(changelog_doc,
                         offset_start + dateLine.length());
                 int functLogEntry = offset_start + dateLine.length();
+                final int numLines = changelog_doc.getNumberOfLines();
 
                 while (functLogEntry < nextChangeEntry) {
-                    int line_length = 0;
+                    int lineNum = 0;
                     String entry = ""; // $NON-NLS-1$
                     try {
-                        line_length = changelog_doc
-                        .getLineOfOffset(functLogEntry);
-                        entry = changelog_doc.get(functLogEntry, changelog_doc
-                                .getLineLength(line_length));
+                        lineNum = changelog_doc.getLineOfOffset(functLogEntry);
+                        entry = changelog_doc.get(functLogEntry,
+                                changelog_doc.getLineLength(lineNum));
                     } catch (BadLocationException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        // Should never get here
                     }
                     // Look to see if entry already exists for file (will be preceded by "*")
-                    if (entry.lastIndexOf("* " + fileDetail) > 0) {
+                    final int entryStart = entry.indexOf("* " + fileDetail);
+                    if (entryStart >= 0) {
+                        foundFunction = true;
+                    } else if (foundFunction && isFileLine(entry)) {
+                        functLogEntry--;
+                        break;
+                    }
+
+                    if (foundFunction) {
                         foundFunction = true;
                         // Check for the case where the default content (e.g. new or removed file)
                         // is being caught again because user has prepared the ChangeLog more than once.
                         // In such a case, just return.  We don't need to repeat ourselves.
                         if (defaultContent.length() > 0 && entry.lastIndexOf(defaultContent) > 0) {
-                                return ""; // $NON-NLS-1$
+                            return ""; // $NON-NLS-1$
                         }
-                        int nextFunctLoc = functLogEntry + fileDetail.length() + 2;
+                        final int nextFunctLoc;
+                        if (entryStart > 0) {
+                            nextFunctLoc = functLogEntry + entryStart + fileDetail.length() + 2;
+                        } else {
+                            nextFunctLoc = functLogEntry;
+                        }
                         String nextFunc = ""; // $NON-NLS-1$
                         try {
-                            nextFunc = changelog_doc.get(nextFunctLoc,
-                                    nextChangeEntry - nextFunctLoc);
-                        } catch (BadLocationException e1) {
-                            // TODO Auto-generated catch block
-                            e1.printStackTrace();
-                        }
-                        int foundFunc = nextFunc.indexOf("* "); // $NON-NLS-1$
-                        if (foundFunc > 0) {
-                            foundFunc--;
-                            try {
-                                while (changelog_doc.get(
-                                        nextFunctLoc + foundFunc, 1).equals(
-                                        "\t") // $NON-NLS-1$
-                                        || changelog_doc.get(
-                                                nextFunctLoc + foundFunc, 1)
-                                                .equals("\n")) { // $NON-NLS-1$
-                                    foundFunc--;
-                                }
-                            } catch (BadLocationException e2) {
-                                // TODO Auto-generated catch block
-                                e2.printStackTrace();
+                            final int lineEnd;
+                            if (lineNum < numLines - 1) {
+                                lineEnd = changelog_doc.getLineOffset(lineNum+1)-1;
+                            } else {
+                                lineEnd = changelog_doc.getLength();
                             }
-                            functLogEntry = nextFunctLoc + foundFunc + 1;
-                            break;
+                            nextFunc = changelog_doc.get(nextFunctLoc,
+                                    lineEnd - nextFunctLoc);
+                        } catch (BadLocationException e1) {
+                            // Should never get here
                         }
-
+                        if (nextFunc.trim().startsWith(function)) {
+                            return ""; // $NON-NLS-1$
+                        }
                     }
+
                     try {
-                        functLogEntry += changelog_doc
-                        .getLineLength(line_length);
+                        functLogEntry += changelog_doc.getLineLength(lineNum);
                     } catch (BadLocationException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
+                        // Should never get here
                     }
                 }
                 if (functLogEntry >= nextChangeEntry) {
@@ -206,8 +207,9 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 
         if (!multipleEntrySuccess) {
             try {
-                if (changelog_doc.getLength() > 0)
+                if (changelog_doc.getLength() > 0) {
                     changelog_doc.replace(0, 0, "\n\n"); //$NON-NLS-1$
+                }
                 changelog_doc.replace(0, 0, dateLine + TAB + "* " + fileDetail // $NON-NLS-1$
                         + functionSpacer+function+functionSpacer+defaultContent);
 
@@ -223,6 +225,10 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 
         return ""; // $NON-NLS-1$
 
+    }
+
+    private boolean isFileLine(String entry) {
+        return Pattern.matches("\\s*\\* \\S+:.*", entry.trim());
     }
 
     /**
@@ -302,14 +308,16 @@ public class GNUFormat implements IFormatterChangeLogContrib {
         String reversePathb = ""; // $NON-NLS-1$
 
         while (reversePath.getParentFile() != null) {
-            if (reversePath.compareTo(changelogLocation.getParentFile()) == 0)
+            if (reversePath.compareTo(changelogLocation.getParentFile()) == 0) {
                 break;
+            }
             reversePath = reversePath.getParentFile();
         }
-        if (reversePath != null)
+        if (reversePath != null) {
             reversePathb = fileLocation.toString().substring(
                     reversePath.toString().length() + 1,
                     fileLocation.toString().length());
+        }
         return reversePathb;
     }
 
@@ -317,21 +325,21 @@ public class GNUFormat implements IFormatterChangeLogContrib {
         // find the "pattern" of a changelog entry. Not a specific one,
         // but one that "looks" like an entry
         int nextEntry = startOffset;
-        int line_length = 0;
+        int lineNum = 0;
         String entry = ""; // $NON-NLS-1$
         while (nextEntry < changelogDoc.getLength()) {
             try {
                 // Get the line of interest in the changelog document
-                line_length = changelogDoc.getLineOfOffset(nextEntry);
+                lineNum = changelogDoc.getLineOfOffset(nextEntry);
                 entry = changelogDoc.get(nextEntry, changelogDoc
-                        .getLineLength(line_length));
+                        .getLineLength(lineNum));
                 // Attempt to find date pattern on line
                 if (matchDatePattern(entry)) {
                     //nextDate -= entry.length()+1;
                     break;
                 }
                 // If no date matches, move to the next line
-                nextEntry += changelogDoc.getLineLength(line_length);
+                nextEntry += changelogDoc.getLineLength(lineNum);
             } catch (BadLocationException e) {
                 ChangelogPlugin.getDefault().getLog().log(
                         new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e
@@ -353,8 +361,9 @@ public class GNUFormat implements IFormatterChangeLogContrib {
         // First start with an ISO date
         try {
             Date ad = isoDate.parse(text);
-            if (ad != null)
+            if (ad != null) {
                 return true;
+            }
         } catch (ParseException e) {
             // We don't really care on exception; it just means it could not parse a date on that line
         }
@@ -388,11 +397,11 @@ public class GNUFormat implements IFormatterChangeLogContrib {
     private String formatFunction(String function) {
 
         // If Function Guess is true, and Function Guess has found something
-        if (function.length() > 0)
+        if (function.length() > 0) {
             return "(" + function + "):"; // $NON-NLS-1$ // $NON-NLS-2$
-        else
+        } else {
             return ": "; //$NON-NLS-1$
-
+        }
     }
 
     public IDocument getDocument(IEditorPart currentEditor) {
