@@ -33,7 +33,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 public class PullImageCommandHandler extends AbstractHandler implements
 		IHandler {
 
-	private final static String PULL_IMAGE_JOB_TITLE = "ImagePull.msg"; //$NON-NLS-1$
+	private final static String PULL_IMAGE_JOB_TITLE = "ImagePull.title"; //$NON-NLS-1$
+	private final static String PULL_IMAGE_JOB_TASK = "ImagePull.msg"; //$NON-NLS-1$
 	private static final String ERROR_PULLING_IMAGE = "ImagePullError.msg"; //$NON-NLS-1$
 	
 	private IDockerConnection connection;
@@ -55,19 +56,19 @@ public class PullImageCommandHandler extends AbstractHandler implements
 	}
 	
 	private void performPullImage(final ImagePull wizard) {
-		final Job pullImageJob = new Job(
-				DVMessages.getString(PULL_IMAGE_JOB_TITLE)) {
+		final Job pullImageJob = new Job(DVMessages.getFormattedString(
+				PULL_IMAGE_JOB_TITLE, wizard.getImageId())) {
 
 			@Override
 			protected IStatus run(final IProgressMonitor monitor) {
 				final String id = wizard.getImageId();
-				monitor.beginTask(DVMessages.getString(PULL_IMAGE_JOB_TITLE), 1);
+				monitor.beginTask(DVMessages.getString(PULL_IMAGE_JOB_TASK),
+						IProgressMonitor.UNKNOWN);
 				// pull the image and let the progress
 				// handler refresh the images when done
 				try {
 					((DockerConnection) connection).pullImage(id,
 							new ImagePullProgressHandler(connection, id));
-					monitor.worked(1);
 				} catch (final DockerException e) {
 					Display.getDefault().syncExec(new Runnable() {
 

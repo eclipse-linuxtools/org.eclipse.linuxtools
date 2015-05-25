@@ -39,4 +39,24 @@ public class DockerProgressDetail implements IDockerProgressDetail {
 		return total;
 	}
 
+	@Override
+	public String toString() {
+		return "Progress Detail: current=" + Long.toString(current) + "\n"
+				+ "  start=" + Long.toString(start) + "\n" + "  total="
+				+ Long.toString(total) + "\n";
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DockerProgressDetail other = (DockerProgressDetail) obj;
+		return this.current == other.current && this.start == other.start
+				&& this.total == other.total;
+	}
+
 }

@@ -29,6 +29,8 @@ public class ImagePullProgressHandler implements IDockerProgressHandler {
 	private final static String IMAGE_DOWNLOADING_JOBNAME = "ImageDownloadingJobName.msg"; //$NON-NLS-1$
 	private final static String IMAGE_DOWNLOADING_IMAGE = "ImageDownloadingImage.msg"; //$NON-NLS-1$
 	private final static String IMAGE_DOWNLOADING = "ImageDownloading.msg"; //$NON-NLS-1$
+	private final static String IMAGE_PULLING = "ImagePulling.msg"; //$NON-NLS-1$
+	private final static String IMAGE_PULL_COMPLETE = "ImagePullComplete.msg"; //$NON-NLS-1$
 	private final static String IMAGE_DOWNLOADING_ALREADY_EXISTS = "ImageDownloadingAlreadyExists.msg"; //$NON-NLS-1$
 	private final static String IMAGE_DOWNLOADING_VERIFIED = "ImageDownloadingVerified.msg"; //$NON-NLS-1$
 
@@ -54,14 +56,21 @@ public class ImagePullProgressHandler implements IDockerProgressHandler {
 			ProgressJob p = progressJobs.get(id);
 			if (p == null) {
 				String status = message.status();
-				if (status
+				if (status.contains(DVMessages.getString(IMAGE_PULLING))) {
+					// do nothing
+				} else if (status
 						.equals(DVMessages.getString(IMAGE_DOWNLOAD_COMPLETE))
-						|| status.equals(DVMessages
+						|| status.contains(DVMessages
 								.getString(IMAGE_DOWNLOADING_ALREADY_EXISTS))
-						|| status.equals(DVMessages
-								.getString(IMAGE_DOWNLOADING_VERIFIED))) {
+						|| status.contains(DVMessages
+								.getString(IMAGE_DOWNLOADING_VERIFIED))
+						|| status.equals(
+								DVMessages.getString(IMAGE_PULL_COMPLETE))) {
+					// an image is fully loaded, update the image list
 					connection.getImages(true);
-				} else {
+				} else if (status
+						.startsWith(DVMessages.getString(IMAGE_DOWNLOADING))) {
+					// we have a new download in progress, track it
 					ProgressJob newJob = new ProgressJob(
 							DVMessages.getFormattedString(
 									IMAGE_DOWNLOADING_JOBNAME, image),
@@ -75,16 +84,15 @@ public class ImagePullProgressHandler implements IDockerProgressHandler {
 
 			} else {
 				String status = message.status();
-				if (status
-						.equals(DVMessages.getString(IMAGE_DOWNLOAD_COMPLETE))
-						|| status.equals(DVMessages
+				if (status.equals(DVMessages.getString(IMAGE_DOWNLOAD_COMPLETE))
+						|| status.contains(DVMessages
 								.getString(IMAGE_DOWNLOADING_ALREADY_EXISTS))
-						|| status.equals(DVMessages
+						|| status.contains(DVMessages
 								.getString(IMAGE_DOWNLOADING_VERIFIED))) {
 					p.setPercentageDone(100);
 					connection.getImages(true);
-				} else if (status.startsWith(DVMessages
-						.getString(IMAGE_DOWNLOADING))) {
+				} else if (status
+						.startsWith(DVMessages.getString(IMAGE_DOWNLOADING))) {
 					IDockerProgressDetail detail = message.progressDetail();
 					if (detail != null) {
 						if (detail.current() > 0) {
