@@ -36,6 +36,11 @@ public class ContainerPropertyTester extends PropertyTester {
 	 */
 	public static final String IS_REMOVABLE = "isRemovable";
 
+	/**
+	 * Property name to check if a given {@link IDockerContainer} is unknown.
+	 */
+	public static final String IS_UNKNOWN = "isUnknwon";
+
 	@Override
 	public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {
 		if (receiver instanceof IDockerContainer) {
@@ -44,7 +49,11 @@ public class ContainerPropertyTester extends PropertyTester {
 			case IS_RUNNING:
 				return checkIfStateMatchesExpectation(container, EnumDockerStatus.RUNNING, expectedValue);
 			case IS_STOPPED:
-				return checkIfStateMatchesExpectation(container, EnumDockerStatus.STOPPED, expectedValue);
+				return checkIfStateMatchesExpectation(container,
+						EnumDockerStatus.STOPPED, expectedValue);
+			case IS_UNKNOWN:
+				return checkIfStateMatchesExpectation(container,
+						EnumDockerStatus.UNKNOWN, expectedValue);
 			case IS_PAUSED:
 				return checkIfStateMatchesExpectation(container, EnumDockerStatus.PAUSED, expectedValue);
 			case IS_REMOVABLE:

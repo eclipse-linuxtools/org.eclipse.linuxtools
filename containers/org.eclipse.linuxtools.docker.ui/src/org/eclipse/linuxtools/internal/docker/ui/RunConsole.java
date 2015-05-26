@@ -19,6 +19,7 @@ import java.nio.channels.WritableByteChannel;
 
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
+import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.swt.custom.StyledText;
@@ -42,10 +43,8 @@ public class RunConsole extends IOConsole {
 	/** Id of this console. */
 	public static final String ID = "containerLog"; //$NON-NLS-1$
 	public static final String CONTAINER_LOG_TITLE = "ContainerLog.title"; //$NON-NLS-1$
-	public static final String DEFAULT_ID = "__DEFAULT_ID__"; //$NON-NLS-1$
 
 	private String containerId;
-	private String id;
 	private OutputStream outputStream;
 	private boolean attached = false;
 	private final WritableByteChannel[] ptyOutRef = new WritableByteChannel[1];
@@ -54,13 +53,17 @@ public class RunConsole extends IOConsole {
 	 * Returns a reference to the console that is for the given container id. If
 	 * such a console does not yet exist, it will be created.
 	 *
-	 * @param containerId
-	 *            The container this console will be for. Must not be
+	 * @param container
+	 *            The container this console will be for. Should not be
 	 *            <code>null</code>.
-	 * @return A console instance.
+	 * @return A console instance or <code>null</code> if the given container
+	 *         was <code>null</code>.
 	 */
-	public static RunConsole findConsole(String containerId) {
-		return findConsole(containerId, DEFAULT_ID);
+	public static RunConsole findConsole(final IDockerContainer container) {
+		if (container == null) {
+			return null;
+		}
+		return findConsole(container.id(), container.name());
 	}
 
 	/**
@@ -73,31 +76,24 @@ public class RunConsole extends IOConsole {
 	 * @param id
 	 *            The secondary id used to identify consoles belonging to
 	 *            various owners.
+	 * @param name
+	 *            the name of the console to create if it did not already exist
 	 * @return A console instance.
 	 */
-	public static RunConsole findConsole(String containerId, String id) {
-		return findConsole(containerId, id, containerId.substring(0, 8));
-	}
-
-	public static RunConsole findConsole(String containerId, String id,
-			String name) {
-		RunConsole ret = null;
+	public static RunConsole findConsole(final String containerId,
+			final String name) {
 		for (IConsole cons : ConsolePlugin.getDefault().getConsoleManager()
 				.getConsoles()) {
 			if (cons instanceof RunConsole
-					&& ((RunConsole) cons).containerId.equals(containerId)
-					&& ((RunConsole) cons).id.equals(id)) {
-				ret = (RunConsole) cons;
+					&& ((RunConsole) cons).containerId.equals(containerId)) {
+				return (RunConsole) cons;
 			}
 		}
 		// no existing console, create new one
-		if (ret == null) {
-			ret = new RunConsole(containerId, id, name);
-			ConsolePlugin.getDefault().getConsoleManager()
-					.addConsoles(new IConsole[] { ret });
-		}
-
-		return ret;
+		final RunConsole console = new RunConsole(containerId, name);
+		ConsolePlugin.getDefault().getConsoleManager()
+				.addConsoles(new IConsole[] { console });
+		return console;
 	}
 
 	@Override
@@ -221,11 +217,10 @@ public class RunConsole extends IOConsole {
 	 * @param name
 	 *            The name to use for the console.
 	 */
-	private RunConsole(String containerId, String id, String name) {
+	private RunConsole(String containerId, String name) {
 		super(DVMessages.getFormattedString(CONTAINER_LOG_TITLE, name), ID,
 				null, true);
 		this.containerId = containerId;
-		this.id = id;
 	}
 
 	/*

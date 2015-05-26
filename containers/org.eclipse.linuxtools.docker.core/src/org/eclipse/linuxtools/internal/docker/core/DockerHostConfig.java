@@ -30,10 +30,10 @@ public class DockerHostConfig implements IDockerHostConfig {
 	private final List<String> binds;
 	private final String containerIDFile;
 	private final List<IDockerConfParameter> lxcConf;
-	private final Boolean privileged;
+	private final boolean privileged;
 	private final Map<String, List<IDockerPortBinding>> portBindings;
 	private final List<String> links;
-	private final Boolean publishAllPorts;
+	private final boolean publishAllPorts;
 	private final List<String> dns;
 	private final List<String> dnsSearch;
 	private final List<String> volumesFrom;
@@ -48,7 +48,8 @@ public class DockerHostConfig implements IDockerHostConfig {
 				this.lxcConf.add(new DockerConfParameter(lxcConfParameter));
 			}
 		}
-		this.privileged = hostConfig.privileged();
+		this.privileged = hostConfig.privileged() != null
+				? hostConfig.privileged() : false;
 		this.portBindings = new HashMap<>();
 		if(hostConfig != null && hostConfig.portBindings() != null) {
 			for(Entry<String, List<PortBinding>> entry : hostConfig.portBindings().entrySet()) {
@@ -60,7 +61,8 @@ public class DockerHostConfig implements IDockerHostConfig {
 			}
 		}
 		this.links = hostConfig.links();
-		this.publishAllPorts = hostConfig.publishAllPorts();
+		this.publishAllPorts = hostConfig.publishAllPorts() != null
+				? hostConfig.publishAllPorts() : false;
 		this.dns = hostConfig.dns();
 		this.dnsSearch = hostConfig.dnsSearch();
 		this.volumesFrom = hostConfig.volumesFrom();
@@ -71,10 +73,12 @@ public class DockerHostConfig implements IDockerHostConfig {
 		this.binds = builder.binds;
 		this.containerIDFile = builder.containerIDFile;
 		this.lxcConf = builder.lxcConf;
-		this.privileged = builder.privileged;
+		this.privileged = builder.privileged != null ? builder.privileged
+				: false;
 		this.portBindings = builder.portBindings;
 		this.links = builder.links;
-		this.publishAllPorts = builder.publishAllPorts;
+		this.publishAllPorts = builder.publishAllPorts != null
+				? builder.publishAllPorts : false;
 		this.dns = builder.dns;
 		this.dnsSearch = builder.dnsSearch;
 		this.volumesFrom = builder.volumesFrom;
@@ -97,7 +101,7 @@ public class DockerHostConfig implements IDockerHostConfig {
 	}
 
 	@Override
-	public Boolean privileged() {
+	public boolean privileged() {
 		return privileged;
 	}
 
@@ -112,7 +116,7 @@ public class DockerHostConfig implements IDockerHostConfig {
 	}
 
 	@Override
-	public Boolean publishAllPorts() {
+	public boolean publishAllPorts() {
 		return publishAllPorts;
 	}
 

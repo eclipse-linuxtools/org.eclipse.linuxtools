@@ -37,10 +37,10 @@ public class RemoveContainerLogCommandHandler extends AbstractHandler {
 		if (selectedContainers.size() != 1 || connection == null)
 			return null;
 		container = selectedContainers.get(0);
-		final String id = container.id();
-		final RunConsole rc = RunConsole.findConsole(id);
-		if (rc != null)
+		final RunConsole rc = RunConsole.findConsole(container);
+		if (rc != null) {
 			RunConsole.removeConsole(rc);
+		}
 		return null;
 	}
 

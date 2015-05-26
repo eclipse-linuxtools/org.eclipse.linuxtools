@@ -13,12 +13,16 @@ package org.eclipse.linuxtools.internal.docker.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
+import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.docker.core.IDockerPortMapping;
+
+import com.spotify.docker.client.messages.Container;
 
 public class DockerContainer implements IDockerContainer {
 
-	private DockerConnection parent;
+	private IDockerConnection parent;
 	private String id;
 	private List<String> names;
 	private String image;
@@ -29,30 +33,36 @@ public class DockerContainer implements IDockerContainer {
 	private Long sizeRw;
 	private Long sizeRootFs;
 
-	public DockerContainer(DockerConnection parent, String id, String image,
-			String command, Long created, String status, Long sizeRw,
-			Long sizeRootFs, List<IDockerPortMapping> ports, List<String> names) {
-		this.parent = parent;
-		this.id = id;
-		this.image = image;
-		this.command = command;
-		this.created = created;
-		this.status = status;
+	public DockerContainer(final IDockerConnection connection,
+			Container container) {
+		this.parent = connection;
+		this.id = container.id();
+		this.image = container.image();
+		this.command = container.command();
+		this.created = container.created();
+		this.status = container.status();
 		this.names = new ArrayList<>();
-		for(String name : names) {
-			if(name.startsWith("/")) {
+		for (String name : container.names()) {
+			if (name.startsWith("/")) {
 				this.names.add(name.substring(1));
 			} else {
 				this.names.add(name);
 			}
 		}
-		this.sizeRw = sizeRw;
-		this.sizeRootFs = sizeRootFs;
-		this.ports = ports;
+		this.sizeRw = container.sizeRw();
+		this.sizeRootFs = container.sizeRootFs();
+		this.ports = new ArrayList<>();
+		for (Container.PortMapping port : container.ports()) {
+			final DockerPortMapping portMapping = new DockerPortMapping(
+					port.getPrivatePort(), port.getPublicPort(), port.getType(),
+					port.getIp());
+			ports.add(portMapping);
+		}
+		// TODO: include volumes
 	}
 
 	@Override
-	public DockerConnection getConnection() {
+	public IDockerConnection getConnection() {
 		return parent;
 	}
 
@@ -106,6 +116,11 @@ public class DockerContainer implements IDockerContainer {
 		return names;
 	}
 	
+	@Override
+	public IDockerContainerInfo info() {
+		return this.parent.getContainerInfo(id);
+	}
+
 	@Override
 	public String toString() {
 		return "Container: id=" + id() + "\n" + "  image=" + image() + "\n"

@@ -79,7 +79,8 @@ public abstract class BaseImagesCommandHandler extends AbstractHandler {
 	}
 
 	// allow commands to add confirmation dialog
-	boolean confirmed(List<IDockerImage> selectedImages) {
+	boolean confirmed(
+			@SuppressWarnings("unused") List<IDockerImage> selectedImages) {
 		return true;
 	}
 	
