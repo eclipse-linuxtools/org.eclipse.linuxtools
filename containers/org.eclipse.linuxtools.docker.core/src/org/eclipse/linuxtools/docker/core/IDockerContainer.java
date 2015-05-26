@@ -48,5 +48,12 @@ public interface IDockerContainer {
 	 */
 	public IDockerConnection getConnection();
 
+	/**
+	 * @return the {@link IDockerContainerInfo} by calling the Docker daemon
+	 *         using the {@link IDockerConnection} associated with this
+	 *         {@link IDockerContainer}.
+	 */
+	public IDockerContainerInfo info();
+
 
 }

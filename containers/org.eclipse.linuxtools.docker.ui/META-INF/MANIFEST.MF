@@ -16,10 +16,14 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.navigator;bundle-version="3.5.401",
  org.eclipse.jface,
  org.eclipse.core.expressions;bundle-version="3.4.600",
- org.eclipse.ui.views.properties.tabbed;bundle-version="3.6.0"
+ org.eclipse.ui.views.properties.tabbed;bundle-version="3.6.0",
+ org.eclipse.core.databinding;bundle-version="1.4.100",
+ org.eclipse.core.databinding.beans;bundle-version="1.2.200",
+ org.eclipse.core.databinding.property;bundle-version="1.4.200",
+ org.eclipse.jface.databinding;bundle-version="1.7.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.docker.ui,
- org.eclipse.linuxtools.docker.ui.launch
-Import-Package: com.spotify.docker.client
+ org.eclipse.linuxtools.docker.ui.launch,
+ org.eclipse.linuxtools.internal.docker.ui.preferences

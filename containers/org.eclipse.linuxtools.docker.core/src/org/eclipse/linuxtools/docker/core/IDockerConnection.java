@@ -150,8 +150,20 @@ public interface IDockerConnection {
 	 */
 	public IDockerConnectionInfo getInfo() throws DockerException;
 
+	/**
+	 * Retrieves/refreshes the {@link IDockerImage} on the Docker daemon and
+	 * applies 'dangling' and 'intermediate' flags on each of them. Also
+	 * notifies {@link IDockerConnection} listeners with the list of Images.
+	 * 
+	 * @return the {@link List} of existing {@link IDockerImage}
+	 * @throws DockerException
+	 */
+	public List<IDockerImage> listImages() throws DockerException;
+
 	void pullImage(String id, IDockerProgressHandler handler) throws DockerException, InterruptedException;
 
+	public List<IDockerImageSearchResult> searchImages(final String term) throws DockerException;
+	
 	void pushImage(String name, IDockerProgressHandler handler) throws DockerException, InterruptedException;
 
 	void tagImage(String name, String newTag) throws DockerException, InterruptedException;
@@ -159,7 +171,12 @@ public interface IDockerConnection {
 	String buildImage(IPath path, String name, IDockerProgressHandler handler)
 			throws DockerException, InterruptedException;
 
-	String createContainer(IDockerContainerConfig c) throws DockerException, InterruptedException;
+	String createContainer(IDockerContainerConfig c)
+			throws DockerException, InterruptedException;
+
+	public String createContainer(final IDockerContainerConfig config,
+			final String containerName)
+					throws DockerException, InterruptedException;
 
 	void stopContainer(String id) throws DockerException, InterruptedException;
 
@@ -167,26 +184,34 @@ public interface IDockerConnection {
 
 	void pauseContainer(String id) throws DockerException, InterruptedException;
 
-	void unpauseContainer(String id, OutputStream stream) throws DockerException, InterruptedException;
-
-	void removeContainer(String id) throws DockerException, InterruptedException;
-
-	void startContainer(String id, OutputStream stream) throws DockerException, InterruptedException;
-
-	void startContainer(String id, IDockerHostConfig config, OutputStream stream)
+	void unpauseContainer(String id, OutputStream stream)
 			throws DockerException, InterruptedException;
 
-	void startContainer(String id, String loggingId, IDockerHostConfig config, OutputStream stream)
+	void removeContainer(String id)
 			throws DockerException, InterruptedException;
 
-	void commitContainer(String id, String repo, String tag, String comment, String author) throws DockerException;
+	void startContainer(String id, OutputStream stream)
+			throws DockerException, InterruptedException;
+
+	void startContainer(String id, IDockerHostConfig config,
+			OutputStream stream)
+			throws DockerException, InterruptedException;
+
+	void startContainer(String id, String loggingId, IDockerHostConfig config,
+			OutputStream stream)
+			throws DockerException, InterruptedException;
+
+	void commitContainer(String id, String repo, String tag, String comment,
+			String author) throws DockerException;
 
 	void stopLoggingThread(String id);
 
-	void logContainer(String id, OutputStream stream) throws DockerException, InterruptedException;
+	void logContainer(String id, OutputStream stream)
+			throws DockerException, InterruptedException;
 
 	void removeImage(String name) throws DockerException, InterruptedException;
 
 	void removeTag(String tag) throws DockerException, InterruptedException;
+
 
 }

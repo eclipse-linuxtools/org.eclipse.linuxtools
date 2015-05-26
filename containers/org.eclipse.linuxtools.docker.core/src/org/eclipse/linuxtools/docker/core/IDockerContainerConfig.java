@@ -29,21 +29,21 @@ public interface IDockerContainerConfig {
 
 	public String cpuset();
 
-	public Boolean attachStdin();
+	public boolean attachStdin();
 
-	public Boolean attachStdout();
+	public boolean attachStdout();
 
-	public Boolean attachStderr();
+	public boolean attachStderr();
 
 	public List<String> portSpecs();
 
 	public Set<String> exposedPorts();
 
-	public Boolean tty();
+	public boolean tty();
 
-	public Boolean openStdin();
+	public boolean openStdin();
 
-	public Boolean stdinOnce();
+	public boolean stdinOnce();
 
 	public List<String> env();
 
@@ -57,7 +57,7 @@ public interface IDockerContainerConfig {
 
 	public List<String> entrypoint();
 
-	public Boolean networkDisabled();
+	public boolean networkDisabled();
 
 	public List<String> onBuild();
 

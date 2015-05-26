@@ -14,7 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 
@@ -43,13 +45,13 @@ public class DockerImage implements IDockerImage {
 	private final boolean intermediateImage;
 	private final boolean danglingImage;
 
-	public DockerImage(final DockerConnection parent, final List<String> repoTags,
+	public DockerImage(final DockerConnection parent, @Deprecated final List<String> repoTags, final String repo, final List<String> tags, 
 			final String id, final String parentId, final String created, final Long size,
 			final Long virtualSize, final boolean intermediateImage, final boolean danglingImage) {
 		this.parent = parent;
 		this.repoTags = repoTags;
-		this.repo = extractRepo(repoTags);
-		this.tags = extractTags(repoTags);
+		this.repo = repo;
+		this.tags = tags;
 		this.id = id;
 		this.parentId = parentId;
 		this.created = created;
@@ -61,21 +63,24 @@ public class DockerImage implements IDockerImage {
 	}
 
 	/**
-	 * Extracts the org/repo from the list of repo tags, assuming that the given repoTags elements have the following format:
+	 * Extracts the org/repo and all the associated tags from the given {@code repoTags}, assuming that the given repoTags elements have the following format:
 	 * <pre>org/repo:tag</pre> or <pre>repo:tag</pre>.
 	 * @param repoTags the list of repo/tags to analyze
-	 * @return the repo or org/repo name or {@code null} if none was found.
+	 * @return the tags indexed by org/repo
 	 */
-	public static String extractRepo(final List<String> repoTags) {
-		if(repoTags.isEmpty()) {
-			return null;
-		} 
-		final String firstRepoTag = repoTags.get(0);
-		final int indexOfColonChar = firstRepoTag.indexOf(':');
-		if(indexOfColonChar == -1) {
-			return firstRepoTag;
+	public static Map<String, List<String>> extractTagsByRepo(final List<String> repoTags) {
+		final Map<String, List<String>> results = new HashMap<>();
+		for(String entry : repoTags) {
+			final int indexOfColonChar = entry.indexOf(':');
+			final String repo = (indexOfColonChar > -1) ? entry.substring(0, indexOfColonChar) : entry;
+			if(!results.containsKey(repo)) {
+				results.put(repo, new ArrayList<String>());
+			}
+			if(indexOfColonChar > -1) {
+				results.get(repo).add(entry.substring(indexOfColonChar+1));
+			}
 		}
-		return firstRepoTag.substring(0, indexOfColonChar);
+		return results;
 	}
 
 	/**

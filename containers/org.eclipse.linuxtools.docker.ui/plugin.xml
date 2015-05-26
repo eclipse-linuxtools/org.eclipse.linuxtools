@@ -55,15 +55,14 @@
        
    </extension>
    <extension
-         point="org.eclipse.help.contexts">
-      <contexts
-            file="contexts.xml">
-      </contexts>
-   </extension>
-   <extension
          point="org.eclipse.ui.navigator.viewer">
       <viewer
             viewerId="org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+	      <popupMenu
+					allowsPlatformContributions="true"
+					id="org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu">
+			<insertionPoint name="group.run" separator="true"/>
+			</popupMenu>
             <options>
 				<property
 					name="org.eclipse.ui.navigator.hideLinkWithEditorAction"
@@ -214,11 +213,6 @@
 	        name="%command.pushimage.name">
         </command>
 		<command
-	        description="%command.createcontainer.description"
-	        id="org.eclipse.linuxtools.docker.ui.commands.createContainer"
-	        name="%command.createcontainer.name">
-        </command>
-		<command
 	        description="%command.tagimage.description"
 	        id="org.eclipse.linuxtools.docker.ui.commands.tagImage"
 	        name="%command.tagimage.name">
@@ -251,6 +245,13 @@
 		         class="org.eclipse.ui.handlers.RegistryToggleState:true"
 		         id="org.eclipse.ui.commands.toggleState">
 		   </state>
+		</command>
+		<command
+	        description="%command.runimage.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.runImage"
+	        name="%command.runimage.name">
+	        id="org.eclipse.linuxtools.docker.ui.commands.runImage"
+	        name="%command.runimage.name">
         </command>
 	</extension>
     <extension
@@ -333,9 +334,14 @@
 	              <iterate ifEmpty="false">
 				    <and>
 	                  <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
-	                  <test
-			       	    forcePluginActivation="true"
-			       		property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="false"/>
+	                  <or>
+		                  <test
+				       	    forcePluginActivation="true"
+				       		property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="false"/>
+				       	  <test
+				       	    forcePluginActivation="true"
+				       		property="org.eclipse.linuxtools.docker.propertytesters.container.isUnknown" value="true"/>
+				      </or>
 	                </and>
 	            </iterate>
 	          </with>
@@ -349,9 +355,14 @@
 	              <iterate ifEmpty="false">
 				    <and>
 	                  <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
-	                  <test
-			       	    forcePluginActivation="true"
-			       		property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="false"/>
+	                  <or>
+		                  <test
+				       	    forcePluginActivation="true"
+				       		property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="false"/>
+				       	  <test
+				       	    forcePluginActivation="true"
+				       		property="org.eclipse.linuxtools.docker.propertytesters.container.isUnknown" value="true"/>
+				      </or>
 	                </and>
 	            </iterate>
 	          </with>
@@ -460,18 +471,6 @@
      		</enabledWhen>
      	</handler>
 		<handler
-              commandId="org.eclipse.linuxtools.docker.ui.commands.createContainer"
-              class="org.eclipse.linuxtools.internal.docker.ui.commands.CreateContainerCommandHandler">
-     		<enabledWhen>
-	     		<with variable="selection">
-	     		   <count value="1"/>
-	                  <iterate ifEmpty="false">
-	                     <instanceof value="org.eclipse.linuxtools.docker.core.IDockerImage"></instanceof>
-	                  </iterate>
-	            </with>
-     		</enabledWhen>
-     	</handler>
-		<handler
               commandId="org.eclipse.linuxtools.docker.ui.commands.buildImage"
               class="org.eclipse.linuxtools.internal.docker.ui.commands.BuildImageCommandHandler">
      	</handler>
@@ -494,6 +493,19 @@
               commandId="org.eclipse.linuxtools.docker.ui.commands.showAllImages"
               class="org.eclipse.linuxtools.internal.docker.ui.commands.ShowAllImagesCommandHandler">
      	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.runImage"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.RunImageCommandHandler">
+              <enabledWhen>
+	     		<with variable="selection">
+	     		   <count value="1"/>
+	                  <iterate ifEmpty="false">
+	                     <instanceof value="org.eclipse.linuxtools.docker.core.IDockerImage"></instanceof>
+	                  </iterate>
+	            </with>
+     		</enabledWhen>
+     	</handler>
+     	
 	</extension>
 	<!-- property testers -->
 	<extension
@@ -502,7 +514,7 @@
 			class="org.eclipse.linuxtools.internal.docker.ui.propertytesters.ContainerPropertyTester"
 			id="org.eclipse.linuxtools.docker.containerPropertyTester"
 			namespace="org.eclipse.linuxtools.docker.propertytesters.container"
-			properties="isRunning,isStopped,isPaused,isRemovable"
+			properties="isRunning,isStopped,isPaused,isRemovable,isUnknown"
 			type="org.eclipse.linuxtools.docker.core.IDockerContainer">
 		</propertyTester>
   <propertyTester
@@ -697,10 +709,10 @@
 		<menuContribution
 			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerImagesView">
 				<command
-		          commandId="org.eclipse.linuxtools.docker.ui.commands.createContainer"
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.runImage"
 		          icon="icons/createcontainer.gif"
 		          disabledIcon="icons/createcontainer_d.gif"
-		          id="org.eclipse.linuxtools.docker.ui.commands.createContainer"
+		          id="org.eclipse.linuxtools.docker.ui.commands.runImage"
 		          mnemonic="C"
 		          style="push">
 				</command>
@@ -781,7 +793,32 @@
 				</command>
 		</menuContribution>
 		
-		
+		<!-- Docker Explorer View: run image -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu?after=group.run">
+	  		<command
+           commandId="org.eclipse.linuxtools.docker.ui.commands.runImage"
+           icon="icons/createcontainer.gif"
+           label="%command.runimage.label"
+           mnemonic="R"
+           style="push">
+	            <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerImage" />
+	                </iterate>
+	               </with>
+	         </visibleWhen>
+	      </command>
+		</menuContribution>		
 	</extension>
 	
     <extension point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
@@ -795,7 +832,6 @@
    </propertyCategory>
 		</propertyContributor>
 	</extension>
-	
 	
 	<extension point="org.eclipse.ui.views.properties.tabbed.propertySections">
 		<propertySections contributorId="org.eclipse.linuxtools.docker.ui.dockerExplorerView">

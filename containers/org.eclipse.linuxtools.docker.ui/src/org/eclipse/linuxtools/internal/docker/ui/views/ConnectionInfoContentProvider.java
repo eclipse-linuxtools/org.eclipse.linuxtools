@@ -42,6 +42,12 @@ public class ConnectionInfoContentProvider implements ITreeContentProvider {
 					new Object[]{"Execution driver", connectionInfo.getExecutionDriver()}, //$NON-NLS-1$
 					new Object[]{"Kernel version", connectionInfo.getKernelVersion()}, //$NON-NLS-1$
 					new Object[]{"Operating system", connectionInfo.getOs()}, //$NON-NLS-1$
+					new Object[] { "CPU number", //$NON-NLS-1$
+							connectionInfo.getCPUNumber() },
+					new Object[] { "Total memory", //$NON-NLS-1$
+							Long.toString(
+									connectionInfo.getTotalMemory() / 1048576)
+									+ " MB" },
 					new Object[]{"File descriptors", connectionInfo.getFileDescriptors()}, //$NON-NLS-1$
 					new Object[]{"Go routines", connectionInfo.getGoroutines()}, //$NON-NLS-1$
 					new Object[]{"Init path", connectionInfo.getInitPath()}, //$NON-NLS-1$

@@ -12,7 +12,10 @@
 package org.eclipse.linuxtools.internal.docker.ui.views;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -22,7 +25,7 @@ import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
-import org.eclipse.linuxtools.docker.ui.Activator;
+import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainersCategory;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerImagesCategory;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.LoadingStub;
@@ -54,17 +57,17 @@ public class DockerExplorerLabelProvider implements IStyledLabelProvider, ILabel
 	@Override
 	public Image getImage(final Object element) {
 		if(element instanceof IDockerConnection) {
-			return Activator.getImageDescriptor("icons/repository-middle.gif").createImage();
+			return SWTImagesFactory.DESC_REPOSITORY_MIDDLE.createImage();
 		} else if(element instanceof DockerImagesCategory) {
-			return Activator.getImageDescriptor("icons/dbgroup_obj.gif").createImage();
+			return SWTImagesFactory.DESC_DB_GROUP.createImage();
 		} else if(element instanceof DockerContainersCategory) {
-			return Activator.getImageDescriptor("icons/dbgroup_obj.gif").createImage();
+			return SWTImagesFactory.DESC_DB_GROUP.createImage();
 		} else if(element instanceof IDockerImage) {
-			return Activator.getImageDescriptor("icons/image.png").createImage();
+			return SWTImagesFactory.DESC_IMAGE.createImage();
 		} else if(element instanceof IDockerContainer) {
-			return Activator.getImageDescriptor("icons/container.png").createImage();
+			return SWTImagesFactory.DESC_CONTAINER.createImage();
 		} else if(element instanceof LoadingStub) {
-			return Activator.getImageDescriptor("icons/systemprocess.gif").createImage();
+			return SWTImagesFactory.DESC_SYSTEM_PROCESS.createImage();
 		}
 		return null;
 	}
@@ -110,11 +113,15 @@ public class DockerExplorerLabelProvider implements IStyledLabelProvider, ILabel
 				final StringBuilder messageBuilder = new StringBuilder(dockerImage.repo());
 				final int startTags = messageBuilder.length();
 				if(!dockerImage.tags().isEmpty()) {
+					final List<String> tags = new ArrayList<>(
+							dockerImage.tags());
+					Collections.sort(tags);
 					messageBuilder.append(": ");
-					for(Iterator<String> tagIterator = dockerImage.tags().iterator(); tagIterator.hasNext();) {
+					for (Iterator<String> tagIterator = tags
+							.iterator(); tagIterator.hasNext();) {
 						messageBuilder.append(tagIterator.next());
 						if(tagIterator.hasNext()) {
-							messageBuilder.append(", ");
+							messageBuilder.append(" / ");
 						}
 					}
 				}

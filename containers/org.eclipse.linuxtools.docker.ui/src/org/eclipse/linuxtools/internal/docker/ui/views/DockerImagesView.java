@@ -151,7 +151,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 	}
 	
 	private void createTableViewer(final Composite container) {
-		search = new Text(container, SWT.SEARCH);
+		search = new Text(container, SWT.SEARCH | SWT.ICON_SEARCH);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, false).applyTo(search);
 		search.addModifyListener(onSearch());
 		Composite tableArea = new Composite(container, SWT.NONE);

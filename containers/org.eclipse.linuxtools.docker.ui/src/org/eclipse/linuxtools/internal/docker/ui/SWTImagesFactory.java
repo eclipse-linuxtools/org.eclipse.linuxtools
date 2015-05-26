@@ -44,8 +44,11 @@ public class SWTImagesFactory {
 	public static final String IMG_CREATE_CONTAINERD = NAME_PREFIX
 			+ "createcontainer_d.gif"; //$NON-NLS-1$
 	public static final String IMG_FOLDER = NAME_PREFIX + "folder.gif"; //$NON-NLS-1$
+	public static final String IMG_FOLDER_CLOSED = NAME_PREFIX
+			+ "folder_closed.gif"; //$NON-NLS-1$
+	public static final String IMG_FILE = NAME_PREFIX + "file_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_INSTANCE = NAME_PREFIX + "instance.gif"; //$NON-NLS-1$
-	public static final String IMG_IMAGE = NAME_PREFIX + "image.gif"; //$NON-NLS-1$
+	public static final String IMG_IMAGE = NAME_PREFIX + "image.png"; //$NON-NLS-1$
 	public static final String IMG_COLLAPSE_ALL = NAME_PREFIX
 			+ "collapseall.gif"; //$NON-NLS-1$
 	public static final String IMG_DOCKER_LARGE = NAME_PREFIX
@@ -73,12 +76,29 @@ public class SWTImagesFactory {
 	public static final String IMG_REFRESH = NAME_PREFIX + "refresh_tab.gif"; //$NON-NLS-1$
 	public static final String IMG_REBOOT = NAME_PREFIX + "reboot.gif"; //$NON-NLS-1$
 	public static final String IMG_REBOOTD = NAME_PREFIX + "rebootd.gif"; //$NON-NLS-1$
+
+	public static final String IMG_REPOSITORY_MIDDLE = NAME_PREFIX
+			+ "repository-middle.gif"; //$NON-NLS-1$
+	public static final String IMG_DB_GROUP = NAME_PREFIX + "dbgroup_obj.gif"; //$NON-NLS-1$
+	public static final String IMG_CONTAINER = NAME_PREFIX + "container.png"; //$NON-NLS-1$
+	public static final String IMG_SYSTEM_PROCESS = NAME_PREFIX
+			+ "systemprocess.gif"; //$NON-NLS-1$
+	public static final String IMG_CHECKED = NAME_PREFIX + "checked.gif"; //$NON-NLS-1$
+	public static final String IMG_UNCHECKED = NAME_PREFIX + "unchecked.gif"; //$NON-NLS-1$
+	public static final String IMG_BANNER_REPOSITORY = NAME_PREFIX
+			+ "banner-repository.gif"; //$NON-NLS-1$
+	public static final String IMG_WARNING = NAME_PREFIX + "warning_obj.gif"; //$NON-NLS-1$
+	public static final String IMG_ERROR = NAME_PREFIX + "error_obj.gif"; //$NON-NLS-1$
+
 	public static final ImageDescriptor DESC_CONNECTION = createManaged("",
 			IMG_CONNECTION);
 	public static final ImageDescriptor DESC_CREATE_CONTAINER = createManaged(
 			"", IMG_CREATE_CONTAINER);
 	public static final ImageDescriptor DESC_FOLDER = createManaged("",
 			IMG_FOLDER);
+	public static final ImageDescriptor DESC_FOLDER_CLOSED = createManaged("",
+			IMG_FOLDER_CLOSED);
+	public static final ImageDescriptor DESC_FILE = createManaged("", IMG_FILE);
 	public static final ImageDescriptor DESC_INSTANCE = createManaged("",
 			IMG_INSTANCE);
 	public static final ImageDescriptor DESC_IMAGE = createManaged("",
@@ -125,6 +145,24 @@ public class SWTImagesFactory {
 			IMG_REFRESH);
 	public static final ImageDescriptor DESC_REBOOTD = createManaged("",
 			IMG_REBOOTD);
+	public static final ImageDescriptor DESC_REPOSITORY_MIDDLE = createManaged(
+			"", IMG_REPOSITORY_MIDDLE);
+	public static final ImageDescriptor DESC_DB_GROUP = createManaged("",
+			IMG_DB_GROUP);
+	public static final ImageDescriptor DESC_CONTAINER = createManaged("",
+			IMG_CONTAINER);
+	public static final ImageDescriptor DESC_SYSTEM_PROCESS = createManaged("",
+			IMG_SYSTEM_PROCESS);
+	public static final ImageDescriptor DESC_CHECKED = createManaged("",
+			IMG_CHECKED);
+	public static final ImageDescriptor DESC_UNCHECKED = createManaged("",
+			IMG_UNCHECKED);
+	public static final ImageDescriptor DESC_BANNER_REPOSITORY = createManaged(
+			"", IMG_BANNER_REPOSITORY);
+	public static final ImageDescriptor DESC_WARNING = createManaged("",
+			IMG_WARNING);
+	public static final ImageDescriptor DESC_ERROR = createManaged("",
+			IMG_ERROR);
 
 	private static ImageDescriptor createManaged(String prefix, String name) {
 		return createManaged(imageRegistry, prefix, name);
