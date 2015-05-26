@@ -59,10 +59,10 @@
    <iu id="jnr.x86asm" version="0.0.0">
         <category name="Linux Tools"/>
    </iu>
-   <iu id="bcprov" version="0.0.0">
+   <iu id="org.bouncycastle.bcprov" version="0.0.0">
         <category name="Linux Tools"/>
    </iu>
-   <iu id="bcpkix" version="0.0.0">
+   <iu id="org.bouncycastle.bcpkix" version="0.0.0">
         <category name="Linux Tools"/>
    </iu>
    <iu id="org.glassfish.hk2.api" version="0.0.0">
