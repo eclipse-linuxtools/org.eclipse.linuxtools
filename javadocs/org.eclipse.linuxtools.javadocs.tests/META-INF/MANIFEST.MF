@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Javadocs Plug-in Tests
+Bundle-SymbolicName: org.eclipse.linuxtools.javadocs.tests
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: org.eclipse.linuxtools.javadocs
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.junit;bundle-version="4.11.0",
+ org.eclipse.core.resources;bundle-version="3.9.1"
