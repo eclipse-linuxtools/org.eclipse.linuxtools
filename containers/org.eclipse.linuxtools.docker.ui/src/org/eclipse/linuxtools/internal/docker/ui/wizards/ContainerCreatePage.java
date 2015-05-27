@@ -111,7 +111,7 @@ public class ContainerCreatePage extends WizardPage {
 		this.image = image;
 		setDescription(WizardMessages.getString(DESC));
 		setTitle(WizardMessages.getString(TITLE));
-		setImageDescriptor(SWTImagesFactory.DESC_DOCKER_LARGE);
+		setImageDescriptor(SWTImagesFactory.DESC_WIZARD);
 	}
 
 	public String getImageId() {
