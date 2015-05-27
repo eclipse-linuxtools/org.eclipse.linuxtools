@@ -52,6 +52,8 @@ public class SWTImagesFactory {
 			+ "docker_large.png"; //$NON-NLS-1$
 	public static final String IMG_DOCKER_SMALL = NAME_PREFIX
 			+ "docker_small.gif"; //$NON-NLS-1$
+	public static final String IMG_WIZARD = NAME_PREFIX
+			+ "banner-repository.gif"; //$NON-NLS-1$
 	public static final String IMG_FILTER = NAME_PREFIX + "filter_ps.gif"; //$NON-NLS-1$
 	public static final String IMG_KILL = NAME_PREFIX + "kill.gif"; //$NON-NLS-1$
 	public static final String IMG_KILLD = NAME_PREFIX + "killd.gif"; //$NON-NLS-1$
@@ -90,6 +92,8 @@ public class SWTImagesFactory {
 			IMG_DOCKER_LARGE);
 	public static final ImageDescriptor DESC_DOCKER_SMALL = createManaged("",
 			IMG_DOCKER_SMALL);
+	public static final ImageDescriptor DESC_WIZARD = createManaged("",
+			IMG_WIZARD);
 	public static final ImageDescriptor DESC_FILTER = createManaged("",
 			IMG_FILTER);
 	public static final ImageDescriptor DESC_PULL = createManaged("", IMG_PULL);

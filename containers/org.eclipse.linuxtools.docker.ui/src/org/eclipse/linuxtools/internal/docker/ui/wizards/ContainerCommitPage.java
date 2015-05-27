@@ -49,7 +49,7 @@ public class ContainerCommitPage extends WizardPage {
 		setDescription(WizardMessages.getFormattedString(DESC,
 				container.substring(0, 8)));
 		setTitle(WizardMessages.getString(TITLE));
-		setImageDescriptor(SWTImagesFactory.DESC_DOCKER_LARGE);
+		setImageDescriptor(SWTImagesFactory.DESC_WIZARD);
 	}
 
 	public String getRepo() {
