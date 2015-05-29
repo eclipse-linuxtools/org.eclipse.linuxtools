@@ -17,6 +17,7 @@ import java.util.Map.Entry;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.linuxtools.docker.core.IDockerContainerConfig;
 import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.docker.core.IDockerContainerState;
 import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
@@ -51,6 +52,7 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 					new Object[]{"Args", LabelUtils.reduce(info.args())}, //$NON-NLS-1$
 					new Object[]{"Driver", info.driver()}, //$NON-NLS-1$
 					new Object[]{"ExecDriver", info.execDriver()}, //$NON-NLS-1$
+					new Object[] { "Config", info.config() }, //$NON-NLS-1$
 					new Object[]{"HostConfig", info.hostConfig()}, //$NON-NLS-1$
 					new Object[]{"HostnamePath", info.hostnamePath()}, //$NON-NLS-1$
 					new Object[]{"HostsPath", info.hostsPath()}, //$NON-NLS-1$
@@ -92,6 +94,32 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 					new Object[]{"Privileged", hostConfig.privileged()}, //$NON-NLS-1$
 					new Object[]{"PublishAllPorts", hostConfig.publishAllPorts()}, //$NON-NLS-1$
 					new Object[]{"VolumesFrom", LabelUtils.reduce(hostConfig.volumesFrom())}, //$NON-NLS-1$
+			};
+		} else if(propertyValue instanceof IDockerContainerConfig) {
+			final IDockerContainerConfig config = (IDockerContainerConfig) propertyValue;
+			return new Object[] {
+					new Object[]{"AttachStderr", config.attachStderr()}, //$NON-NLS-1$
+					new Object[]{"AttachStdin", config.attachStdin()}, //$NON-NLS-1$
+					new Object[]{"AttachStdout", config.attachStdout()}, //$NON-NLS-1$
+					new Object[]{"Cmd", LabelUtils.reduce(config.cmd())}, //$NON-NLS-1$
+					new Object[]{"CpuSet", config.cpuset()}, //$NON-NLS-1$
+					new Object[]{"CpuShares", config.cpuShares()}, //$NON-NLS-1$
+					new Object[]{"Domainname", config.domainname()}, //$NON-NLS-1$
+					new Object[]{"Entrypoint", LabelUtils.reduce(config.entrypoint())}, //$NON-NLS-1$
+					new Object[]{"Env", LabelUtils.reduce(config.env())}, //$NON-NLS-1$
+					new Object[]{"ExposedPorts", LabelUtils.reduce(config.exposedPorts())}, //$NON-NLS-1$
+					new Object[]{"Hostname", config.hostname()}, //$NON-NLS-1$
+					new Object[]{"Image", config.image()}, //$NON-NLS-1$
+					new Object[]{"Memory", config.memory()}, //$NON-NLS-1$
+					new Object[]{"MemorySwap", config.memorySwap()}, //$NON-NLS-1$
+					new Object[]{"NetworkDisabled", config.networkDisabled()}, //$NON-NLS-1$
+					new Object[]{"OnBuild", config.onBuild()}, //$NON-NLS-1$
+					new Object[]{"OpenStdin", config.openStdin()}, //$NON-NLS-1$
+					new Object[]{"PortSpecs", LabelUtils.reduce(config.portSpecs())}, //$NON-NLS-1$
+					new Object[]{"StdinOnce", config.stdinOnce()}, //$NON-NLS-1$
+					new Object[]{"Tty", config.tty()}, //$NON-NLS-1$
+					new Object[]{"Volumes", config.volumes()}, //$NON-NLS-1$
+					new Object[]{"WorkingDir", config.workingDir()}, //$NON-NLS-1$
 			};
 		} else if(propertyValue instanceof IDockerPortBinding) {
 			final IDockerPortBinding portBinding = (IDockerPortBinding) propertyValue;
@@ -153,7 +181,12 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 	public boolean hasChildren(Object element) {
 		if(element instanceof Object[]) {
 			final Object value = ((Object[])element)[1];
-			return (value instanceof List || value instanceof Map || value instanceof IDockerContainerState || value instanceof IDockerNetworkSettings || value instanceof IDockerHostConfig || value instanceof IDockerPortBinding);
+			return (value instanceof List || value instanceof Map
+					|| value instanceof IDockerContainerState
+					|| value instanceof IDockerNetworkSettings
+					|| value instanceof IDockerHostConfig
+					|| value instanceof IDockerPortBinding
+					|| value instanceof IDockerContainerConfig);
 		}
 		return false;
 	}
