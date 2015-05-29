@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 public class ImageBuildPage extends WizardPage {
@@ -190,7 +189,8 @@ public class ImageBuildPage extends WizardPage {
 				String dir = directoryText.getText();
 				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
 						new Path(dir).append("Dockerfile")); //$NON-NLS-1$
-				DockerfileEditDialog d = new DockerfileEditDialog(new Shell(),
+				DockerfileEditDialog d = new DockerfileEditDialog(
+						container.getShell(),
 						fileStore);
 				d.open();
 				validate();
