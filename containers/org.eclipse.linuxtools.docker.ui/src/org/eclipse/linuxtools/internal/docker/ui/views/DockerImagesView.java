@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.docker.ui.views;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -50,6 +51,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.ViewPart;
@@ -67,7 +69,14 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 
 	public static final String VIEW_ID = "org.eclipse.linuxtools.docker.ui.dockerImagesView";
 
+	private static final String TOGGLE_STATE = "org.eclipse.ui.commands.toggleState"; //$NON-NLS-1$
+
+	private static final String SHOW_ALL_IMAGES_COMMAND_ID = "org.eclipse.linuxtools.docker.ui.commands.showAllImages"; //$NON-NLS-1$
+
 	private final static String DaemonMissing = "ViewerDaemonMissing.msg"; //$NON-NLS-1$
+	private final static String ViewAllTitle = "ImagesViewTitle.all.msg"; //$NON-NLS-1$
+	private final static String ViewFilteredTitle = "ImagesViewTitle.filtered.msg"; //$NON-NLS-1$
+
 	private Form form;
 	private Text search;
 	private TableViewer viewer;
@@ -82,7 +91,8 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 	@Override
 	public void dispose() {
 		// stop tracking selection changes in the Docker Explorer view (only)
-		getSite().getWorkbenchWindow().getSelectionService().removeSelectionListener("org.eclipse.linuxtools.docker.ui.dockerExplorerView", this);
+		getSite().getWorkbenchWindow().getSelectionService()
+				.removeSelectionListener(DockerExplorerView.VIEW_ID, this);
 		DockerConnectionManager.getInstance().removeConnectionManagerListener(
 				this);
 		super.dispose();
@@ -90,7 +100,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 
 	@Override
 	public String getContributorId() {
-		return "org.eclipse.linuxtools.docker.ui.dockerExplorerView"; //$NON-NLS-1$
+		return DockerExplorerView.VIEW_ID;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -103,7 +113,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 	}
 
 	private void hookContextMenu() {
-		MenuManager menuMgr = new MenuManager("#PopupMenu");
+		MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
 		menuMgr.setRemoveAllWhenShown(true);
 		// menuMgr.addMenuListener(new IMenuListener() {
 		// public void menuAboutToShow(IMenuManager manager) {
@@ -125,10 +135,19 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(container);
 		createTableViewer(container);
 		// track selection changes in the Docker Explorer view (only)
-		getSite().getWorkbenchWindow().getSelectionService().addSelectionListener("org.eclipse.linuxtools.docker.ui.dockerExplorerView", this);
+		getSite().getWorkbenchWindow().getSelectionService()
+				.addSelectionListener(DockerExplorerView.VIEW_ID, this);
 		DockerConnectionManager.getInstance()
 				.addConnectionManagerListener(this);
 		hookContextMenu();
+		// by default, hide dangling and intermediate images
+		showAllImages(false);
+		final ICommandService service = getViewSite().getWorkbenchWindow()
+				.getService(ICommandService.class);
+		service.getCommand(SHOW_ALL_IMAGES_COMMAND_ID).getState(TOGGLE_STATE)
+				.setValue(false);
+		service.refreshElements(SHOW_ALL_IMAGES_COMMAND_ID, null);
+
 	}
 	
 	private void createTableViewer(final Composite container) {
@@ -174,7 +193,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 			public String getText(final Object element) {
 				if (element instanceof IDockerImage) {
 					final StringBuilder tags = new StringBuilder();
-					List<String> repoTags = new ArrayList<String>();
+					List<String> repoTags = new ArrayList<>();
 					repoTags.addAll(((IDockerImage) element).repoTags());
 					Collections.sort(repoTags);
 					for (Iterator<String> iterator = repoTags.iterator(); iterator
@@ -344,11 +363,40 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 					// remember the current selection before the viewer is
 					// refreshed
 					final ISelection currentSelection = DockerImagesView.this.viewer.getSelection();
-					CommandUtils.refresh(DockerImagesView.this);
+					CommandUtils.refresh(DockerImagesView.this.getViewer());
 					// restore the selection
 					DockerImagesView.this.viewer.setSelection(currentSelection);
+					refreshViewTitle();
 				}
 			});
+		}
+	}
+	
+	private void refreshViewTitle() {
+		if (this.viewer == null || this.viewer.getControl().isDisposed()
+				|| this.form == null
+				|| this.connection == null) {
+			return;
+		} else if (!this.connection.isImagesLoaded()) {
+			form.setText(connection.getName());
+		} else {
+			final List<ViewerFilter> filters = Arrays
+					.asList(this.viewer.getFilters());
+			if (filters.contains(hideDanglingImagesFilter)
+					|| filters.contains(hideIntermediateImagesFilter)) {
+				this.form.setText(
+						DVMessages.getFormattedString(ViewFilteredTitle,
+								new String[] { connection.getName(),
+										Integer.toString(viewer.getTable()
+												.getItemCount()),
+								Integer.toString(
+										connection.getImages().size()), }));
+			} else {
+				this.form.setText(DVMessages.getFormattedString(ViewAllTitle,
+						new String[] { connection.getName(), Integer
+								.toString(connection.getImages().size()) }));
+
+			}
 		}
 	}
 	
@@ -400,9 +448,21 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 			this.viewer.addFilter(hideDanglingImagesFilter);
 			this.viewer.addFilter(hideIntermediateImagesFilter);
 		} else {
-			this.viewer.removeFilter(hideDanglingImagesFilter);
-			this.viewer.removeFilter(hideIntermediateImagesFilter);
+			final List<ViewerFilter> filters = new ArrayList<>(
+					Arrays.asList(this.viewer.getFilters()));
+			// remove filters and make sure there is no duplicate in the list of
+			// filters
+			for (Iterator<ViewerFilter> iterator = filters.iterator(); iterator
+					.hasNext();) {
+				ViewerFilter viewerFilter = iterator.next();
+				if (viewerFilter.equals(hideDanglingImagesFilter)
+						|| viewerFilter.equals(hideIntermediateImagesFilter)) {
+					iterator.remove();
+				}
+			}
+			this.viewer.setFilters(filters.toArray(new ViewerFilter[0]));
 		}
+		refreshViewTitle();
 	}
 
 	@Override
