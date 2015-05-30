@@ -1,0 +1,524 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Docker Tooling User Guide - Docker Tooling Perspective</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Docker Tooling Perspective</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="User-Guide.html" title="Docker Tooling User Guide">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Docker Tooling User Guide</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Docker_Tooling_Perspective">Docker Tooling Perspective</h1>
+		<p>A new perspective known as the Docker Tooling Perspective is added.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerPerspective.png"/>
+		</p>
+		<p>This perspective brings up three new views added:</p>
+		<ul>
+			<li>Docker Explorer View - 
+				<a href="Docker-Tooling-Perspective.html#Docker_Explorer_View">view for creating/managing connections to Docker daemons</a>
+			</li>
+			<li>Docker Images View - 
+				<a href="Docker-Tooling-Perspective.html#Docker_Images_View">view for managing Docker Images</a>
+			</li>
+			<li>Docker Containers View - 
+				<a href="Docker-Tooling-Perspective.html#Docker_Containers_View">view for managing Docker Containers</a>
+			</li>
+		</ul>
+		<p>In addition, the Docker Tooling Perspective adds the Console View and the Properties View.</p>
+		<p>The Console View is used to display logs of stdout/stderr output from Containers and in some instances, allow input to stdin.
+			The Properties View allows clicking on various elements such as Connections, Images, and Containers and getting detailed
+			info not readily shown in the various views mentioned above.</p>
+		<p>For example, clicking on a connection shows the following:</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerConnectionProperties.png"/>
+		</p>
+		<h2 id="Docker_Explorer_View">Docker Explorer View</h2>
+		<h3 id="Overview">Overview</h3>
+		<p>The first view is a tree view of the various connections to Docker daemons.  A connection to a Docker daemon
+			is needed before any management of Docker Images or Containers can be performed.  On initial start-up, there will be
+			no connections and the Docker Explorer View will display a message regarding this.  Note that the Docker Images View
+			and Docker Containers View are controlled by the connection selected in the Docker Explorer View.  They will also
+			note there are no connections established yet.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerExplorerViewInit.png"/>
+		</p>
+		<p>Clicking on the message will bring up the New Connection Wizard.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsNewConnectionWizard.png"/>
+		</p>
+		<p>The wizard allows the user to select a name for the connection and specify its location.  For Linux users that have
+			a local daemon running, this will be defaulted to the Unix socket: unix:///var/run/docker.sock.  If a custom connection
+			is desired, clicking the "Use custom connection settings" checkbox will allow the user to fill in either a unix
+			socket address or a TCP address.  On Mac or Windows systems, a TCP address will be required.  Authentication may be
+			required in which case the user should click on the "Enable authentication" check-box and fill in a path to the
+			authentication files to use.</p>
+		<p>Once the data is filled, the user can test the connection by clicking on the "Test Connection" button or simply hit
+			the "Finish" button.</p>
+		<p>More than one connection can be specified.  To add more connections, click on the 
+			<img border="0" src="images/LinuxToolsNewConnectionIcon.png"/> icon
+			to bring up the wizard again.  To delete a connection, click on the 
+			<img border="0" src="images/LinuxToolsRemoveConnectionIcon.png"/> icon.  To
+			refresh the tree view, click on the 
+			<img border="0" src="images/LinuxToolsRefreshConnectionIcon.png"/> icon.  Refreshing may be required if the user
+			has performed management outside of Eclipse using the docker command.
+		</p>
+		<p>The Explorer View shows a tree view with the main nodes being the connections.  Each connection opens up to reveal Images and
+			Containers nodes which have children nodes for Images and Containers that the connection knows about.  Filtering is provided.
+			Simply click on the generic Menu options (down arrow) and click on "Customize View...".  This will bring up the following dialog:</p>
+		<p>
+			<img border="0" src="images/LinuxToolsExplorerFilter.png"/>
+		</p>
+		<p>From here one can filter out:</p>
+		<ul>
+			<li>Dangling Images (intermediate images that are no longer referred to)</li>
+			<li>Intermediate Images (images with no repo tags that are parents of named images)</li>
+			<li>Stopped Containers (this includes paused Containers)</li>
+			<li>Top-level Images (only show the first repo tag for an Image with multiple tags)</li>
+		</ul>
+		<h2 id="Docker_Images_View">Docker Images View</h2>
+		<h3 id="Overview_2">Overview</h3>
+		<p>The Docker Images View is used to manage Docker Images.  By default, the View shows only top-level Images that have at least one repo:tag name.  The menu options allows you to see all Images by clicking the "Show all images" check-box.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerImagesView.png"/>
+		</p>
+		<p>The connection used for the Docker Images View is determined by the latest selection
+			in the Docker Explorer View.  Whatever was last selected in the Docker Explorer View
+			is queried for its connection and this is used for the Docker Images View.  If there
+			is only one connection, it is defaulted.</p>
+		<p>There are a number of toolbar actions supported in the Docker Images View:</p>
+		<ul>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerImageViewPull.png"/> - 
+				<a href="Docker-Tooling-Perspective.html#Pull_Image">pull an Image from the Repository</a>
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerImageViewPush.png"/> - 
+				<a href="Docker-Tooling-Perspective.html#Push_Image">push an Image to the Repository</a>
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerContainerCreate.png"/> - 
+				<a href="Docker-Tooling-Perspective.html#Create_Container">create a Container from an Image</a>
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerImageBuild.png"/> - 
+				<a href="Docker-Tooling-Perspective.html#Build_Image">build an Image from a Dockerfile</a>
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerDeleteImage.png"/> - delete one or more Images (requires confirmation)
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerTagImage.png"/> - 
+				<a href="Docker-Tooling-Perspective.html#Tag_Image">tag an Image</a>
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerRefreshImage.png"/> - refresh Images list
+			</li>
+		</ul>
+		<p>There are also context menu actions supported:</p>
+		<ul>
+			<li>Tag Image - 
+				<a href="Docker-Tooling-Perspective.html#Tag_Image">same as the toolbar tag image action</a>
+			</li>
+			<li>Remove Tag - 
+				<a href="Docker-Tooling-Perspective.html#Remove_Tag">remove a tag from an Image with multiple repo tags</a>
+			</li>
+		</ul>
+		<p>The text entry below the Connection name is used to search/filter the contents of the list.
+			Anything typed in the filter text widget is used to match items in the list (any column) and
+			any row without a match is excluded.</p>
+		<h3 id="Pull_Image">Pull Image</h3>
+		<p>Pulling a Docker Image consists of requesting a repo tag or repository specification.
+			Specifying a repository but no tag will pull all Images from that repo (for example: fedora).</p>
+		<p>The pull Wizard is used to specify the repository or repo:tag specification.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerPullWizard.png"/>
+		</p>
+		<p>Once complete, the user hits the "Finish" button or hits "Cancel" to abort.</p>
+		<p>The pull of an Image may take a long time.  This is because an Image may use several intermediate
+			Images each of which may be several bytes.  The Linux Tools Docker Tooling provides status jobs
+			to monitor the download of the various Images and has an overall job created to monitor the status
+			of the pull itself.  When complete, refreshing of the Docker Explorer View and Docker Images View
+			is automatic.</p>
+		<h3 id="Push_Image">Push Image</h3>
+		<p>Pushing a Docker Image consists of specifying an existing repo tag to push.  By default, Images will
+			be pushed to the default Docker registry, but if a tag contains a registry specifier in addition to
+			repo:tag, it will be pushed to the specified registry.  To specify an external or local registry,
+			use the Tag Image function to add a new tag to an existing Image which has the registry specifier and
+			then push that tag.</p>
+		<p>The push Wizard is used to specify the tag to push.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerPushWizard.png"/>
+		</p>
+		<p>Like a pull of an Image, pushing an Image may take a long time.  The Linux Tools Docker Tooling provides
+			status jobs for the various Images being pushed (may include needed intermediate Images) and an overall
+			job is created to monitor the status of the push job.</p>
+		<h3 id="Create_Container">Create Container</h3>
+		<p>Creating a Container takes an Image template and with additional options, starts a Container running
+			a specified command.  The action is only enabled when an Image has been selected in the Docker Images View.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerCreateContainer.png"/>
+		</p>
+		<p>There a number of fields that can be filled in.</p>
+		<ul>
+			<li>Image - the Image name to base the Container on
+				<ul>
+					<li>This will be filled in for you by default, but you have the option of changing it in the dialog.</li>
+				</ul>
+			</li>
+			<li>Command - this is the command to run in the Container
+				<ul>
+					<li>Some Images will have a default command and this field does not have to be filled in. The Image needs to have pre-installed all the requirements of the command.</li>
+				</ul>
+			</li>
+			<li>User - by default commands run as "root" in the Container, but you can specify another user.
+				<ul>
+					<li>Note that the user uid is the one set up in the Image and may overlap with uids in your host environment.</li>
+				</ul>
+			</li>
+			<li>Working Directory - this is the working directory in the Container where the command will run</li>
+			<li>Environment - this is a set of NAME=VALUE pairs to set the environment in the Container (e.g. PATH=/usr/bin)</li>
+			<li>Host Name - desired host name for the Container</li>
+			<li>Domain Name - desired domain name for the Container</li>
+			<li>Memory - memory limit to allocate (bytes)
+				<ul>
+					<li>Specification can use suffixes: k,K,m,M,g,G,t,T (e.g. 10M or 5k) where capital suffixes are binary (e.g. K=1024) and lower-case are decimal (k=1000).</li>
+				</ul>
+			</li>
+			<li>Memory Swap - total memory limit (memory + swap)
+				<ul>
+					<li>This must be used with memory specification and must be larger than memory.  Set -1 to disable swap.</li>
+				</ul>
+			</li>
+			<li>CPU Shares - number of CPU shares (relative weight vs other Containers)</li>
+			<li>CPU Set - string specifying the cgroups Cpuset to use</li>
+			<li>Volumes - volumes to mount in the Container
+				<ul>
+					<li>You can mount any host volume paths to host container paths using HOST_PATH:CONTAINER_PATH.  Specifying just a path is mounting CONTAINER_PATH.</li>
+					<li>This can be used to access host files in the Container, essentially copying them over.</li>
+				</ul>
+			</li>
+			<li>Port Specs - port mappings
+				<ul>
+					<li>Specify HOST_PORT:CONTAINER_PORT or :CONTAINER_PORT if you want the same port mapped over.  A port is specified as port/protocol (e.g. 2345/tcp)</li>
+				</ul>
+			</li>
+			<li>Exposed Ports - ports in Container to expose to the host</li>
+			<li>On Build - no longer used (Deprecated)</li>
+			<li>Entry Point - sets the entry point for the Container</li>
+			<li>Network Mode - allows you to select different network modes
+				<ul>
+					<li>Supported values are "bridge", "host", or container:&lt;name|id&gt;</li>
+				</ul>
+			</li>
+			<li>Attach Stdin - attach stdin to Container</li>
+			<li>Attach Stdout - attach stdout to Container</li>
+			<li>Attach Stderr - attach stderr to Container</li>
+			<li>TTY - attach std streams of Container to a TTY</li>
+			<li>Open Stdin - open stdin on Container start
+				<ul>
+					<li>This is needed if you want to type input via the Console or are using a TTY.</li>
+				</ul>
+			</li>
+			<li>Stdin Once - close stdin after the one attached client disconnects</li>
+			<li>Network Disabled - disable the network for the Container</li>
+			<li>Privileged - run in privileged mode
+				<ul>
+					<li>This should be used carefully as it gives the Container full access to the host.</li>
+				</ul>
+			</li>
+			<li>Publish All Ports - allocate a random host port for all exposed ports</li>
+		</ul>
+		<h3 id="Build_Image">Build Image</h3>
+		<p>Building an Image takes an existing Image and modifies it to create a new Image.  Typically this
+			involves installing new packages.  The specification of the new Docker Image is done via
+			a special file which is always named: "Dockerfile".  Clicking on the Build Image icon starts the
+			Build Image Wizard:</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerBuildImage.png"/>
+		</p>
+		<p>There are two fields that need to be filled in:</p>
+		<ul>
+			<li>Name - this is the name that will be given to the new Image
+				<ul>
+					<li>Note that this name must follow correct repo:tag format.</li>
+				</ul>
+			</li>
+			<li>Directory - this is the directory that contains or will contain the Dockerfile</li>
+		</ul>
+		<p>The directory can be specified using the "Browse" button.  Once a valid existing directory
+			is specified, the "Edit" button will be enabled, allowing creation and modification of the
+			Dockerfile using a 
+			<a href="Docker-Tooling-Perspective.html#Dockerfile_Editor">basic editor dialog</a>.
+		</p>
+		<p>When the Dockerfile is considered complete, hitting the "Finish" button will start the
+			Image build action.  When the build is complete, the Docker Images View will be refreshed
+			automatically.</p>
+		<h4 id="Dockerfile_Editor">Dockerfile Editor</h4>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerfileEditor.png"/>
+		</p>
+		<p>The Dockerfile editor is a rudimentary text editor with clipboard support (copy, cut, and paste).
+			The Dockerfile is used to specify how to build the new Docker Image.  The file contains
+			a set of commands used to build the Image:</p>
+		<ul>
+			<li>FROM xxxxxx - this must be the first line and specifies the Image xxxxxx to base off of (e.g. FROM fedora:20)
+				<ul>
+					<li>The first line of the file must be: FROM: xxxxxx where xxxxxx is the Docker Image name/id to base the Image off of (e.g. FROM: fedora:20).</li>
+				</ul>
+			</li>
+			<li>MAINTAINER name - this sets the Author field of the Image and is optional</li>
+			<li>RUN &lt;cmd | 
+				<a href="&quot;executable&quot;,">"arg0", "arg1" ...</a>&gt; - this is a command that is run to modify the base Image in either the cmd format or the executable format
+				<ul>
+					<li>The cmd form is run in a shell (/bin/sh -c cmd). </li>
+					<li>Typically, this is how you install new packages (e.g. RUN yum install -y gdb).  It can also be used to modify the configuration (e.g. sed operations on a config file).</li>
+					<li>These commands are run in the build stage prior to any Container being run and there can be multiple RUN commands specified.</li>
+				</ul>
+			</li>
+			<li>CMD - this is the default command that the new Image will run if one isn't specified on 
+				<a href="#Container_Create">Container create</a>.
+				<ul>
+					<li>There are three forms:
+						<ul>
+							<li>
+								<a href="&quot;executable&quot;,">"param1", "param2"</a> - executable form
+							</li>
+							<li>
+								<a href="&quot;param1&quot;,">"param2"</a> - default parameters to Entrypoint (see 
+								<a href="Docker-Tooling-Perspective.html#Create_Container">Entrypoint parameter of Create Container</a>
+							</li>
+							<li>command param1 param2 - command form</li>
+						</ul>
+					</li>
+					<li>The CMD is not run in build, but only when the Container is created and started.</li>
+				</ul>
+			</li>
+			<li>ENV - this specifies one of more environment variables
+				<ul>
+					<li>There are two forms:
+						<ul>
+							<li>&lt;NAME&gt; &lt;VALUE&gt;</li>
+							<li>&lt;NAME&gt;=&lt;VALUE&gt; &lt;NAME2&gt;=&lt;VALUE2&gt; ...</li>
+						</ul>
+					</li>
+					<li>The second format allows multiple environment variables at once.  There can be multiple ENV specifiers.</li>
+					<li>Once specified, the environment variable may be referred to later on using the $NAME syntax (e.g. HOME=/home/$USER)</li>
+				</ul>
+			</li>
+			<li>LABEL - adds metadata to the Image</li>
+			<li>ONBUILD - use this to specify commands to add to any Image building from this one
+				<ul>
+					<li>This is useful for configuration stuff that needs to be done repeatedly in each child Image.</li>
+				</ul>
+			</li>
+			<li>ADD - add a file from the host into the Container file system
+				<ul>
+					<li>There are two forms:
+						<ul>
+							<li>ADD &lt;src&gt;... &lt;dest&gt;</li>
+							<li>ADD 
+								<a href="&quot;&lt;src&quot;&quot;...">"&lt;dest&gt;</a>
+							</li>
+						</ul>
+					</li>
+					<li>The second form is used to quote names that have white-space.</li>
+				</ul>
+			</li>
+			<li>COPY - copy a file from host into the Container file system
+				<ul>
+					<li>There are two forms:
+						<ul>
+							<li>COPY &lt;src&gt;... &lt;dest&gt;</li>
+							<li>COPY 
+								<a href="&quot;&lt;src&quot;&quot;...">"&lt;dest&gt;</a>
+							</li>
+						</ul>
+					</li>
+					<li>The second form is used to quote names that have white-space.</li>
+				</ul>
+			</li>
+		</ul>
+		<p>For more details, see 
+			<a href="http://docs.docker.com/reference/builder">the official Dockerfile reference</a>
+		</p>
+		<h3 id="Tag_Image">Tag Image</h3>
+		<p>The Tag Image dialog can be brought up directly from the Docker Images View toolbar or using the
+			context menu by right-clicking on an Image.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerTagImageDialog.png"/>
+		</p>
+		<p>The dialog is simple and asks for a new tag to add to the Image.  The tag should be of one of two forms:</p>
+		<ul>
+			<li>&lt;repository&gt;:&lt;tag&gt; where &lt;repository&gt; may be &lt;username/reponame&gt; or &lt;reponame&gt;</li>
+			<li>&lt;registry&gt;:&lt;repository&gt;:&lt;tag&gt; where &lt;registry&gt; contains a "." or ends with a port specifier (":port")</li>
+		</ul>
+		<p>Adding a tag with a registry is the way to push existing Images to local or external registries.  By default,
+			Docker pushes Images to its default registry.  When pushing to the default registry, a username needs to be
+			specified in the repository specifier because write privileges are prohibited for the base Images (e.g.
+			fedora:20 is the official Docker Image for F20 whereas a user may have a user/fedora:20 copy they have modified).</p>
+		<h3 id="Remove_Tag">Remove Tag</h3>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerRemoveTag.png"/>
+		</p>
+		<p>The Remove Tag dialog allows the user to remove a tag from an existing Image.  This may be done to rename a
+			tag or to keep the number of tags manageable.  The Remove Tag menu item is only enabled after selecting
+			an existing Image in the Docker Images View that has multiple tags.  The dialog presents the list of
+			possible tags to remove in a drop-down list.</p>
+		<h2 id="Docker_Containers_View">Docker Containers View</h2>
+		<h3 id="Overview_3">Overview</h3>
+		<p>The Docker Containers View is used to manage Docker Containers.  By default only running Containers are shown.  To see all Containers, click on the menu options and click the "Show all containers" check-box.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerContainersView.png"/>
+		</p>
+		<p>The connection used for the Docker Containers View is determined by the latest selection
+			in the Docker Explorer View.  Whatever was last selected in the Docker Explorer View
+			is queried for its connection and this is used for the Docker Containers View.  If there
+			is only one connection, it is defaulted.</p>
+		<p>The text entry below the Connection name is used to search/filter the contents of the list.
+			Anything typed in the filter text widget is used to match items in the list (any column) and
+			any row without a match is excluded.</p>
+		<p>There are a number of toolbar actions supported in the Docker Containers View:</p>
+		<ul>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerContainerStartIcon.png"/> - start a stopped Container
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerContainerPauseIcon.png"/> - pause a running Container
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerContainerUnpauseIcon.png"/> - continue running a paused Container
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerContainerStopIcon.png"/> - stop a running Container
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerContainerKillIcon.png"/> - kill a running Container
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerContainerDeleteIcon.png"/> - delete a stopped Container
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerContainerRefreshIcon.png"/> - refresh Containers list
+			</li>
+		</ul>
+		<p>It should be noted that the various actions above are enabled/disabled based on the state of the current selected Container(s) in the View.  Multiple Containers can be selected for an action so long as all Containers meet the enablement requirements.</p>
+		<ul>
+			<li>a Container can only be started if it is stopped with a known status</li>
+			<li>a Container can only be stopped, paused, or killed, if it is known to be running</li>
+			<li>a Container can only be unpaused if the Container is known to be paused</li>
+			<li>a Container with unknown/missing status can only be deleted</li>
+		</ul>
+		<p>The following context menu actions are supported:</p>
+		<ul>
+			<li>Commit Container - 
+				<a href="Docker-Tooling-Perspective.html#Commit_Container">commit all changes of a selected Container into a new Image</a>
+			</li>
+			<li>Display Log - 
+				<a href="Docker-Tooling-Perspective.html#Display_Log">display the stdout/stderr logs of a selected Container in the Console View</a>
+			</li>
+			<li>Remove Log - remove the stdout/stderr logs of a selected Container from the Console View</li>
+		</ul>
+		<h3 id="Commit_Container">Commit Container</h3>
+		<p>The Commit Container dialog is simple.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerCommitContainer.png"/>
+		</p>
+		<p>The user is required to enter:</p>
+		<ul>
+			<li>Name - name of the new Image being created
+				<ul>
+					<li>The name must be a valid repo tag name.</li>
+				</ul>
+			</li>
+			<li>Author - optional name to add as the Author of the Image</li>
+			<li>Comment - optional comment to add for the Image</li>
+		</ul>
+		<h3 id="Display_Log">Display Log</h3>
+		<p>The Display Log action opens a console in the Console View with the
+			stdout/stderr output for the Container.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerDisplayLog.png"/>
+		</p>
+		<p>In the example above, each entry in the log is preceded by a time-stamp.  This can be controlled using Window-&gt;Preferences-&gt;Docker-&gt;Logging.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerLoggingPreferences.png"/>
+		</p>
+		<p>From there, one can control:</p>
+		<ul>
+			<li>logging on start - by default starting a Container will output stdout/stderr to a console in the Console View
+				<ul>
+					<li>Each log is in a separate console that can be removed using the Remove Log context menu-item for the Container</li>
+				</ul>
+			</li>
+			<li>timestamps - by default they are added</li>
+		</ul>
+		<h2 id="Properties_View">Properties View</h2>
+		<p>The Properties View will respond to selections in the three Docker Tooling Views: 
+			<a href="Docker-Tooling-Perspective.html#Docker_Explorer_View">Docker Explorer View</a>, 
+			<a href="Docker-Tooling-Perspective.html#Docker_Images_View">Docker Images View</a>, and the 
+			<a href="Docker-Tooling-Perspective.html#Docker_Containers_View">Docker Containers View</a>.  The data shown will depend on what is being selected:
+		</p>
+		<ul>
+			<li>Docker Connection</li>
+			<li>Docker Image</li>
+			<li>Docker Container</li>
+		</ul>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerConnectionProperties.png"/>
+		</p>
+		<p>For a Docker Image and Docker Container, there are two forms of data:</p>
+		<ul>
+			<li>Info - what is shown from the docker command when listing Images or Containers</li>
+			<li>Inspect - what is shown from the docker command when inspecting an Image or Container (additional data)</li>
+		</ul>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerPropertiesView.png"/>
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="User-Guide.html" title="Docker Tooling User Guide">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="User-Guide.html" title="Docker Tooling User Guide">
+						<img alt="Docker Tooling User Guide" border="0" src="../../../images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Docker Tooling User Guide</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table>
+	</body>
+</html>
