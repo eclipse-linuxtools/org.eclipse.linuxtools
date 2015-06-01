@@ -31,6 +31,7 @@ public class Messages extends NLS {
 	public static String Retrieve_Docker_Certificates_Failure;
 	public static String List_Docker_Containers_Failure;
 	public static String Docker_General_Info_Failure;
+	public static String Docker_No_Settings_Description_Script;
 
 	static {
 		// Initialize resource bundle.
