@@ -873,7 +873,7 @@
        point="org.eclipse.ui.perspectives">
     <perspective
           class="org.eclipse.linuxtools.internal.docker.ui.DockerPerspective"
-          icon="icons/banner-repository.gif"
+          icon="icons/repository-middle.gif"
           id="org.eclipse.linuxtools.docker.ui.perspective"
           name="%DockerPerspective.name">
     </perspective>
