@@ -40,6 +40,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
@@ -84,8 +85,10 @@ public class NewDockerConnectionPage extends WizardPage {
 		GridLayoutFactory.fillDefaults().numColumns(1).applyTo(container);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
 				.applyTo(container);
-		retrieveDefaultConnectionSettings();
 		createConnectionSettingsContainer(container);
+		// attach the Databinding context status to this wizard page.
+		WizardPageSupport.create(this, this.dbc);
+		retrieveDefaultConnectionSettings();
 		setControl(container);
 	}
 
@@ -308,6 +311,8 @@ public class NewDockerConnectionPage extends WizardPage {
 		// validations will be performed when the user changes the value
 		// only, not at the dialog opening
 		dbc.addValidationStatusProvider(
+				new ConnectionNameValidator(connectionNameModelObservable));
+		dbc.addValidationStatusProvider(
 				new UnixSocketValidator(unixSocketBindingModeModelObservable,
 						unixSocketPathModelObservable));
 		dbc.addValidationStatusProvider(
@@ -316,8 +321,7 @@ public class NewDockerConnectionPage extends WizardPage {
 		dbc.addValidationStatusProvider(new TcpCertificatesValidator(
 				tcpConnectionBindingModeModelObservable,
 				tcpTlsVerifyModelObservable, tcpCertPathModelObservable));
-		// attach the Databinding context status to this wizard page.
-		WizardPageSupport.create(this, this.dbc);
+
 		// give focus to connectionName text at first
 		connectionNameText.setFocus();
 		// set widgets initial state
@@ -378,15 +382,15 @@ public class NewDockerConnectionPage extends WizardPage {
 									"NewDockerConnectionPage.retrieveTask"), //$NON-NLS-1$
 									1);
 							final DockerConnection.Defaults defaults = new DockerConnection.Defaults();
+							model.setTcpCertPath(defaults.getTcpCertPath());
+							model.setTcpTLSVerify(defaults.getTcpTlsVerify());
+							model.setTcpHost(defaults.getTcpHost());
+							model.setUnixSocketPath(
+									defaults.getUnixSocketPath());
+							model.setBindingMode(defaults.getBindingMode());
 							model.setCustomSettings(
 									!defaults.isSettingsResolved());
 							model.setConnectionName(defaults.getName());
-							model.setBindingMode(defaults.getBindingMode());
-							model.setUnixSocketPath(
-									defaults.getUnixSocketPath());
-							model.setTcpHost(defaults.getTcpHost());
-							model.setTcpTLSVerify(defaults.getTcpTlsVerify());
-							model.setTcpCertPath(defaults.getTcpCertPath());
 							monitor.done();
 						}
 					});
@@ -479,8 +483,13 @@ public class NewDockerConnectionPage extends WizardPage {
 			control.setEnabled(enabled);
 		}
 		// set the focus on the fist element of the group.
-		if (controls.length > 0 && enabled) {
-			controls[0].setFocus();
+		if (enabled) {
+			for (Control control : controls) {
+				if (control instanceof Text) {
+					control.setFocus();
+					break;
+				}
+			}
 		}
 	}
 
@@ -585,6 +594,38 @@ public class NewDockerConnectionPage extends WizardPage {
 				tcpConnectionBuilder.tcpCertPath(model.getTcpCertPath());
 			}
 			return tcpConnectionBuilder.build();
+		}
+	}
+
+	private static class ConnectionNameValidator extends MultiValidator {
+
+		private final IObservableValue connectionNameModelObservable;
+
+		public ConnectionNameValidator(
+				final IObservableValue connectionNameModelObservable) {
+			this.connectionNameModelObservable = connectionNameModelObservable;
+		}
+
+		@Override
+		public IObservableList getTargets() {
+			WritableList targets = new WritableList();
+			targets.add(connectionNameModelObservable);
+			return targets;
+		}
+
+		@Override
+		protected IStatus validate() {
+			final String connectionName = (String) this.connectionNameModelObservable
+					.getValue();
+			if (connectionName == null || connectionName.isEmpty()) {
+				return ValidationStatus.cancel(WizardMessages.getString(
+						"NewDockerConnectionPage.validation.missingConnectionName.msg")); //$NON-NLS-1$
+			} else if (DockerConnectionManager.getInstance()
+					.findConnection(connectionName) != null) {
+				return ValidationStatus.error(WizardMessages.getString(
+						"NewDockerConnectionPage.validation.duplicateConnectionName.msg")); //$NON-NLS-1$
+			}
+			return ValidationStatus.ok();
 		}
 	}
 
