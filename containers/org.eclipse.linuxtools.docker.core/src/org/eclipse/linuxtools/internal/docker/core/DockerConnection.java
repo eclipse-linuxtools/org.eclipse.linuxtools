@@ -224,7 +224,7 @@ public class DockerConnection implements IDockerConnection {
 				File scriptFile = Activator.getDefault().getBundle()
 						.getDataFile("script.sh"); //$NON-NLS-1$
 				final Process process = Runtime.getRuntime().exec(
-						scriptFile.getAbsolutePath());
+						new String[] { scriptFile.getAbsolutePath() });
 				process.waitFor();
 				if (process.exitValue() == 0) {
 					final InputStream processInputStream = process
