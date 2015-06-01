@@ -19,6 +19,7 @@ import static org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings.UN
 import static org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings.UNIX_SOCKET_PATH;
 
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -39,9 +40,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-
-import jnr.unixsocket.UnixSocketAddress;
-import jnr.unixsocket.UnixSocketChannel;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -102,39 +100,55 @@ import com.spotify.docker.client.messages.Info;
 import com.spotify.docker.client.messages.PortBinding;
 import com.spotify.docker.client.messages.Version;
 
+import jnr.unixsocket.UnixSocketAddress;
+import jnr.unixsocket.UnixSocketChannel;
+
 /**
  * A connection to a Docker daemon. The connection may rely on Unix Socket or TCP connection (using the REST API). 
  * All low-level communication is delegated to a wrapped {@link DockerClient}.
  * 
  *
  */
-public class DockerConnection implements IDockerConnection {
+public class DockerConnection implements IDockerConnection, Closeable {
 
 	public static class Defaults {
 
 		public static final String DEFAULT_UNIX_SOCKET_PATH = "unix:///var/run/docker.sock"; //$NON-NLS-1$
 
-		private String name = Messages.Default_Name;
+		private boolean settingsResolved;
+		private String name = null;
 		private final Map<EnumDockerConnectionSettings, Object> settings = new HashMap<>();
 
-		public Defaults() throws DockerException {
-			// first, looking for a Unix socket at /var/run/docker.sock
-			if (defaultsWithUnixSocket() || defaultsWithSystemEnv()
-					|| defaultWithShellEnv()) {
-				// attempt to connect and retrieve the 'name' from the system
-				// info
-				final DockerConnection connection = new Builder()
-						.unixSocket(getUnixSocketPath()).tcpHost(getTcpHost())
-						.tcpCertPath(getTcpCertPath()).build();
-				connection.open(false);
-				final IDockerConnectionInfo info = connection.getInfo();
-				if (info != null) {
-					this.name = info.getName();
+		public Defaults() {
+			try {
+				// first, looking for a Unix socket at /var/run/docker.sock
+				if (defaultsWithUnixSocket() || defaultsWithSystemEnv()
+						|| defaultWithShellEnv()) {
+					this.settingsResolved = true;
+					// attempt to connect and retrieve the 'name' from the system
+					// info
+					try(final DockerConnection connection = new Builder()
+							.unixSocket(getUnixSocketPath()).tcpHost(getTcpHost())
+							.tcpCertPath(getTcpCertPath()).build()) {
+						connection.open(false);
+						final IDockerConnectionInfo info = connection.getInfo();
+						if (info != null) {
+							this.name = info.getName();
+						}
+					} catch (DockerException e) {
+						// force custom settings in that case
+						this.settingsResolved = false;
+					}
+				} else {
+					this.settingsResolved = false;
+					Activator.log(
+							new Status(IStatus.WARNING, Activator.PLUGIN_ID,
+									Messages.Missing_Default_Settings));
 				}
-				return;
-			}
-			Activator.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-					Messages.Missing_Default_Settings));
+			} catch (DockerException e) {
+				Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+						Messages.Missing_Default_Settings, e));
+			}		
 		}
 
 		/**
@@ -347,6 +361,10 @@ public class DockerConnection implements IDockerConnection {
 			} catch (IOException e) {
 			}
 			return res.length() > 0 ? res.substring(1) : "";
+		}
+
+		public boolean isSettingsResolved() {
+			return settingsResolved;
 		}
 
 		public String getName() {
@@ -575,7 +593,11 @@ public class DockerConnection implements IDockerConnection {
 	@Override
 	public void ping() throws DockerException {
 		try {
-			client.ping();
+			if (client != null) {
+				client.ping();
+			} else {
+				throw new DockerException(Messages.Docker_Daemon_Ping_Failure);
+			}
 		} catch (com.spotify.docker.client.DockerException
 				| InterruptedException e) {
 			throw new DockerException(Messages.Docker_Daemon_Ping_Failure, e);
