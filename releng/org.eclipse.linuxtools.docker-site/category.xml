@@ -104,7 +104,7 @@
    <iu id="org.aopalliance" version="0.0.0">
         <category name="Linux Tools"/>
    </iu>
-   <iu id="org.objectweb.asm" version="0.0.0">
+   <iu id="org.objectweb.asm" version="4.0.0.v201302062210">
         <category name="Linux Tools"/>
    </iu>
    <iu id="org.apache.commons.compress" version="0.0.0">
