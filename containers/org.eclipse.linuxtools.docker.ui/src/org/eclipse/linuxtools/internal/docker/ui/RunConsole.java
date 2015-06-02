@@ -273,7 +273,6 @@ public class RunConsole extends IOConsole {
 						break;
 					}
 				} catch (IOException e1) {
-					e1.printStackTrace();
 				}
 			}
 		}
@@ -301,7 +300,6 @@ public class RunConsole extends IOConsole {
 						break;
 					}
 				} catch (IOException e1) {
-					e1.printStackTrace();
 				}
 			}
 		}

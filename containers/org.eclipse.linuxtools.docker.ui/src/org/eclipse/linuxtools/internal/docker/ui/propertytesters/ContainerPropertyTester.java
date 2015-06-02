@@ -39,7 +39,7 @@ public class ContainerPropertyTester extends PropertyTester {
 	/**
 	 * Property name to check if a given {@link IDockerContainer} is unknown.
 	 */
-	public static final String IS_UNKNOWN = "isUnknwon";
+	public static final String IS_UNKNOWN = "isUnknown";
 
 	@Override
 	public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {
