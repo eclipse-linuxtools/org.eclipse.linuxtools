@@ -207,9 +207,11 @@ public class DockerConnection implements IDockerConnection {
 							Messages.Docker_No_Settings_Description_Script));
 					return false;
 				}
-				final File connectionSettingsDetectionScript = getConnectionSettingsDetectionScript(connectionSettingsDetectionScriptName);
-				final Process process = Runtime.getRuntime().exec(
-						new String[] {connectionSettingsDetectionScript.getAbsolutePath()});
+				final File connectionSettingsDetectionScript = getConnectionSettingsDetectionScript(
+						connectionSettingsDetectionScriptName);
+				final String[] cmdArray = getConnectionSettingsDetectionCommandArray(
+						connectionSettingsDetectionScript);
+				final Process process = Runtime.getRuntime().exec(cmdArray);
 				process.waitFor();
 				if (process.exitValue() == 0) {
 					final InputStream processInputStream = process
@@ -243,10 +245,32 @@ public class DockerConnection implements IDockerConnection {
 					Activator.log(new Status(IStatus.ERROR,
 							Activator.PLUGIN_ID, errorMessage));
 				}
-			} catch (IOException | InterruptedException e) {
+			} catch (IOException | IllegalArgumentException
+					| InterruptedException e) {
 				throw new DockerException(Messages.Retrieve_Default_Settings_Failure, e);
 			}
 			return false;
+		}
+
+		/**
+		 * @param script
+		 *            the script to execute
+		 * @return the OS-specific command to run the connection settings
+		 *         detection script.
+		 */
+		private String[] getConnectionSettingsDetectionCommandArray(
+				final File script) {
+			final String osName = System.getProperty("os.name"); //$NON-NLS-1$
+			if (osName.toLowerCase().startsWith("win")) { //$NON-NLS-1$
+				return new String[] { "cmd.exe", "/C", //$NON-NLS-1$ //$NON-NLS-2$
+						script.getAbsolutePath() };
+			} else if (osName.toLowerCase().startsWith("mac") //$NON-NLS-1$
+					|| osName.toLowerCase().contains("linux") //$NON-NLS-1$
+					|| osName.toLowerCase().contains("nix")) { //$NON-NLS-1$
+				return new String[] { script.getAbsolutePath() };
+			} else {
+				return null;
+			}
 		}
 
 		/**
