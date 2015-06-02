@@ -562,6 +562,330 @@
 		          style="push">
 				</command>
 		</menuContribution>
+		<!-- explorer view context menu: start containers -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+	  		<command
+	          commandId="org.eclipse.linuxtools.docker.ui.commands.startContainers"
+	          icon="icons/running.gif"
+	          id="org.eclipse.linuxtools.docker.ui.commands.startContainers"
+	          style="push">
+	            <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+	      </command>
+		</menuContribution>
+		<!-- explorer view context menu: pause containers -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+	  			<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.pauseContainers"
+		          icon="icons/suspend.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.pauseContainers"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- explorer view context menu: unpause containers -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+	  			<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.unpauseContainers"
+		          icon="icons/resume.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.unpauseContainers"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- explorer view context menu: stop containers -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+	  			<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.stopContainers"
+		          icon="icons/stopped.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.stopContainers"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- explorer view context menu: kill containers -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.killContainers"
+		          icon="icons/kill.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.killContainers"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- explorer view context menu: remove containers -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.removeContainers"
+		          icon="icons/delete.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.removeContainers"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- explorer view context menu: commit container -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.commitContainer"
+		          id="org.eclipse.linuxtools.docker.ui.commands.commitContainer"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- explorer view context menu: display container log -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.displayContainerLog"
+		          id="org.eclipse.linuxtools.docker.ui.commands.displayContainerLog"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- explorer view context menu: remove container log -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.removeContainerLog"
+		          id="org.eclipse.linuxtools.docker.ui.commands.removeContainerLog"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- explorer view context menu: push image -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.pushImage"
+		          icon="icons/push.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.pushImage"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerImage" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- explorer view context menu: tag image -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.tagImage"
+		          icon="icons/tag.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.tagImage"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerImage" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- explorer view context menu: remove tag -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.removeTag"
+		          id="org.eclipse.linuxtools.docker.ui.commands.removeTag"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerImage" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- explorer view context menu: remove images -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.removeImages"
+		          icon="icons/delete.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.removeImages"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerImage" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		
+		
+		
 		<!-- containers view toolbar: start containers -->
 		<menuContribution
 			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerContainersView">
