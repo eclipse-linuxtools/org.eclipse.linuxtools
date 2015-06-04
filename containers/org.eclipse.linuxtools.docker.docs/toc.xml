@@ -5,6 +5,8 @@
 		<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html" label="Docker Tooling Perspective">
 			<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Docker_Explorer_View" label="Docker Explorer View">
 				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Overview" label="Overview"></topic>
+				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Docker_Explorer_Context_Menu" label="Docker Explorer Context Menu"></topic>
+				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Run_Image" label="Run Image"></topic>
 			</topic>
 			<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Docker_Images_View" label="Docker Images View">
 				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Overview_2" label="Overview"></topic>
