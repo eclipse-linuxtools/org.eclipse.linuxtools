@@ -208,7 +208,7 @@ public class ContainerLinkDialog extends Dialog {
 			@Override
 			public IContentProposal[] getProposals(final String contents,
 					final int position) {
-				final List<IContentProposal> proposals = new ArrayList<IContentProposal>();
+				final List<IContentProposal> proposals = new ArrayList<>();
 				for (String containerName : containerSelectionCombo
 						.getItems()) {
 					if (containerName.contains(contents)) {

@@ -268,9 +268,7 @@ public class ImageSearchPage extends WizardPage {
 			ImageSearchPage.this.getContainer().run(true, true,
 					new IRunnableWithProgress() {
 						@Override
-						public void run(IProgressMonitor monitor)
-								throws InvocationTargetException,
-								InterruptedException {
+						public void run(IProgressMonitor monitor) {
 							monitor.beginTask("Searching...", 1);
 							try {
 								final List<IDockerImageSearchResult> searchResults = ImageSearchPage.this.model
