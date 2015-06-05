@@ -23,6 +23,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -62,13 +63,27 @@ public class ContainerEnvironmentVariableDialog extends Dialog {
 		return new Point(400, super.getInitialSize().y);
 	}
 
+	/**
+	 * Disable the 'OK' button by default
+	 */
+	@Override
+	protected Button createButton(Composite parent, int id, String label,
+			boolean defaultButton) {
+		final Button button = super.createButton(parent, id, label,
+				defaultButton);
+		if (id == IDialogConstants.OK_ID) {
+			button.setEnabled(false);
+		}
+		return button;
+	}
+
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		final int COLUMNS = 2;
 		final Composite container = new Composite(parent, SWT.NONE);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
 				.span(COLUMNS, 1).grab(true, true).applyTo(container);
-		GridLayoutFactory.fillDefaults().numColumns(COLUMNS).margins(6, 6)
+		GridLayoutFactory.fillDefaults().numColumns(COLUMNS).margins(10, 10)
 				.applyTo(container);
 		final Label explanationLabel = new Label(container, SWT.NONE);
 		explanationLabel
@@ -83,7 +98,7 @@ public class ContainerEnvironmentVariableDialog extends Dialog {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).applyTo(variableNameText);
 		final Label variableValueLabel = new Label(container, SWT.NONE);
-		variableValueLabel.setText("Host address:"); //$NON-NLS-1$
+		variableValueLabel.setText("Value:"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).applyTo(variableValueLabel);
 		final Text variableValueText = new Text(container, SWT.BORDER);
