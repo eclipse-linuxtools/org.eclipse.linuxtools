@@ -105,14 +105,12 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 
     /**
      * Default constructor
+     * @param editor The editor to create completion processor for.
      */
     public SpecfileCompletionProcessor(SpecfileEditor editor) {
         this.editor = editor;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#computeCompletionProposals(org.eclipse.jface.text.ITextViewer, int)
-     */
     @Override
     public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer,
             int offset) {
@@ -579,42 +577,27 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
         return ret;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#computeContextInformation(org.eclipse.jface.text.ITextViewer, int)
-     */
     @Override
     public IContextInformation[] computeContextInformation(ITextViewer viewer,
             int offset) {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getCompletionProposalAutoActivationCharacters()
-     */
     @Override
     public char[] getCompletionProposalAutoActivationCharacters() {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getContextInformationAutoActivationCharacters()
-     */
     @Override
     public char[] getContextInformationAutoActivationCharacters() {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getErrorMessage()
-     */
     @Override
     public String getErrorMessage() {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getContextInformationValidator()
-     */
     @Override
     public IContextInformationValidator getContextInformationValidator() {
         return null;

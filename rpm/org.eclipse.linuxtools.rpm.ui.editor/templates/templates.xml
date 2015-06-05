@@ -29,6 +29,11 @@
 <template id="requiresPost" name="Requires" description="Requires(post) template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Requires(post): ${package_name}</template>
 <template id="buildRequires" name="BuildRequires:" description="BuildRequires template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">BuildRequires: ${package_name}</template>
 <template id="buildRequires2" name="BR:" description="BuildRequires template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">BuildRequires: ${package_name}</template>
+<template id="recommends" name="Recommends:" description="Recommends template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Recommends: ${package_name}</template>
+<template id="suggests" name="Suggests:" description="Suggests template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Suggests: ${package_name}</template>
+<template id="supplements" name="Supplements:" description="Supplements template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Supplements: ${package_name}</template>
+<template id="enhances" name="Enhances:" description="Enhances template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Enhances: ${package_name}</template>
+<template id="conflicts" name="Conflicts:" description="Conflicts template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Conflicts: ${package_name}</template>
 <template id="source" name="Source:" description="Source template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Source${src_number}: ${source_filename}</template>
 <template id="sourceZero" name="Source0:" description="Source0 template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Source0: %{name}-%{version}.tar.${bz2}</template>
 <template id="patch" name="Patch:" description="Patch template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Patch${patch_number}: ${path_filename}</template>
