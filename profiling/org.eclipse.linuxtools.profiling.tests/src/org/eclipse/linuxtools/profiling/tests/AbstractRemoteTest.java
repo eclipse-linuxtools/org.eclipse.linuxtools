@@ -31,7 +31,6 @@ import org.eclipse.remote.core.IRemoteFileService;
 import org.eclipse.remote.core.IRemoteServicesManager;
 import org.eclipse.remote.core.exception.RemoteConnectionException;
 import org.eclipse.remote.internal.jsch.core.JSchConnection;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
@@ -79,49 +78,7 @@ public abstract class AbstractRemoteTest extends AbstractTest {
         assumeTrue("Skip remote tests due lack of an password for connection", !PASSWORD.isEmpty());
     }
 
-    /**
-     * @deprecated As of 1.1, this should not be used because PTP no more provides
-     *  rdt managed projects.
-     *
-     * Create a CDT project outside the default workspace.
-     *
-     * @param bundle            The plug-in bundle.
-     * @param projname            The name of the project.
-     * @param absProjectPath    Absolute path to the directory to which the project should be mapped
-     *                             outside the workspace.
-     * @return                    A new external CDT project.
-     */
-    @Deprecated protected IProject createRemoteExternalProject(Bundle bundle,
-            final String projname, final String absProjectPath,
-            final String sourceFile) {
-        return null;
-    }
-    /**
-     * @deprecated As of 1.1, this should not be used because PTP no more provides
-     *  rdt managed projects.
-     */
-    @Deprecated protected IProject createRemoteExternalProjectAndBuild(Bundle bundle,
-            String projname, String absProjectPath, String sourceFile, String host,
-            String connectionName) throws CoreException {
-        HOST = host;
-        CONNECTION_NAME = connectionName;
-        IProject proj = createRemoteExternalProject(bundle, projname, absProjectPath, sourceFile);
-        buildProject(proj);
-        return proj;
-    }
-
-    /**
-     * @deprecated As of 1.1, this should not be used because PTP no more provides
-     *  rdt managed projects.
-     */
-    @Deprecated protected IProject createRemoteExternalProjectAndBuild(Bundle bundle,
-            String projname, String absProjectPath, String sourceFile) throws CoreException {
-        IProject proj = createRemoteExternalProject(bundle, projname, absProjectPath, sourceFile);
-        buildProject(proj);
-        return proj;
-    }
-
-        protected void deleteResource (String directory) {
+     protected void deleteResource (String directory) {
                 IRemoteServicesManager sm = getServicesManager();
                 IRemoteConnection conn = sm.getConnectionType("ssh").getConnection(CONNECTION_NAME);
                 assertNotNull(conn);
