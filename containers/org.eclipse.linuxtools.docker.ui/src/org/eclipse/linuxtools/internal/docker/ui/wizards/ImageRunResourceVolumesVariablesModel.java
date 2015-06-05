@@ -115,24 +115,12 @@ public class ImageRunResourceVolumesVariablesModel
 		this.dataVolumes.addAll(dataVolumes);
 	}
 
+	public void removeDataVolume(final DataVolumeModel dataVolume) {
+		this.dataVolumes.remove(dataVolume);
+	}
+
 	public Set<DataVolumeModel> getSelectedDataVolumes() {
 		return selectedDataVolumes;
-	}
-
-	public void addSelectedDataVolume(
-			final DataVolumeModel selectedDataVolume) {
-		// we must use a different collection to fire an event for the change
-		// afterwards
-		final Set<DataVolumeModel> updatedDataVolumesSelection = new HashSet<>(
-				this.selectedDataVolumes);
-		updatedDataVolumesSelection.add(selectedDataVolume);
-		setSelectedDataVolumes(updatedDataVolumesSelection);
-	}
-
-	public void setSelectedDataVolumes(
-			final Set<DataVolumeModel> selectedDataVolumes) {
-		firePropertyChange(SELECTED_DATA_VOLUMES, this.selectedDataVolumes,
-				this.selectedDataVolumes = selectedDataVolumes);
 	}
 
 	public WritableList getEnvironmentVariables() {

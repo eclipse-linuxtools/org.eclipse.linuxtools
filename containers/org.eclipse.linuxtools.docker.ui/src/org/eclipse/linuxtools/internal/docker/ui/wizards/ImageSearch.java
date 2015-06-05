@@ -14,7 +14,7 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
-import org.eclipse.linuxtools.docker.core.IDockerImageSearchResult;;
+import org.eclipse.linuxtools.docker.core.IDockerImageSearchResult;
 
 /**
  * Wizard to search for images.
