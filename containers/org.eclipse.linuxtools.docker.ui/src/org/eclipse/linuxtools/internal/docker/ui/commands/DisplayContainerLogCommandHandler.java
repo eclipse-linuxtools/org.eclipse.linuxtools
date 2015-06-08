@@ -50,7 +50,7 @@ public class DisplayContainerLogCommandHandler extends AbstractHandler {
 		final String id = container.id();
 		final String name = container.name();
 		try {
-			final RunConsole rc = RunConsole.findConsole(id, name);
+			final RunConsole rc = RunConsole.findConsole(id);
 			if (!rc.isAttached()) {
 				rc.attachToConsole(connection);
 			}

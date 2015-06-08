@@ -81,7 +81,7 @@ public class RunConsole extends IOConsole {
 	public static RunConsole findConsole(IDockerContainer container) {
 		if (container == null)
 			return null;
-		return findConsole(container.id(), DEFAULT_ID);
+		return findConsole(container.id(), DEFAULT_ID, container.name());
 	}
 
 	/**
