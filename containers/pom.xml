@@ -19,7 +19,7 @@
 		<platformSystemProperties></platformSystemProperties>
 		<applejdkProperties></applejdkProperties>
 		<maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
-  	<tycho.scmUrl>scm:git:https://github.com/jbdevstudio/linuxtools-docker.git</tycho.scmUrl>
+		<tycho.scmUrl>scm:git://git.eclipse.org/gitroot/linuxtools/org.eclipse.linuxtools.git</tycho.scmUrl>
   </properties>
   
   <modules>
