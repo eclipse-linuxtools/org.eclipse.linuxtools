@@ -42,7 +42,7 @@ public class RemoveContainersCommandHandler extends BaseContainersCommandHandler
 			connection.removeContainer(container.id());
 		} catch (DockerException | InterruptedException e) {
 			final String errorMessage = DVMessages.getFormattedString(
-					CONTAINER_REMOVE_ERROR_MSG, container.id().substring(0, 8));
+					CONTAINER_REMOVE_ERROR_MSG, container.name());
 			openError(errorMessage, e);
 		} finally {
 			// always get images as we sometimes get errors on intermediate
