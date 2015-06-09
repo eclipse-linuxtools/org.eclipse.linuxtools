@@ -61,12 +61,12 @@ public class DockerContainersComparator extends ViewerComparator {
 				|| !(e2 instanceof IDockerContainer)) {
 			return 0;
 		}
-		final int tmp = compareByColumn(viewer, (IDockerContainer) e1,
+		final int tmp = compareByColumn((IDockerContainer) e1,
 				(IDockerContainer) e2);
 		return tmp * sortDirection;
 	}
 
-	private int compareByColumn(final Viewer viewer, final IDockerContainer container1,
+	private int compareByColumn(final IDockerContainer container1,
 			final IDockerContainer container2) {
 		final ColumnLabelProvider sortColumnLabelProvider = (ColumnLabelProvider)this.tableViewer.getLabelProvider(sortColumnIndex);
 		final String container1ColumnValue = sortColumnLabelProvider.getText(container1);

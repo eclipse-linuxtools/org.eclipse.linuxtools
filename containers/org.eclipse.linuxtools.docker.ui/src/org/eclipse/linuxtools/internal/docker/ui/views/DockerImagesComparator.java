@@ -60,12 +60,11 @@ public class DockerImagesComparator extends ViewerComparator {
 		if (!(e1 instanceof IDockerImage) || !(e2 instanceof IDockerImage)) {
 			return 0;
 		}
-		final int tmp = compareByColumn(viewer, (IDockerImage) e1,
-				(IDockerImage) e2);
+		final int tmp = compareByColumn((IDockerImage) e1, (IDockerImage) e2);
 		return tmp * sortDirection;
 	}
 
-	private int compareByColumn(final Viewer viewer, final IDockerImage image1,
+	private int compareByColumn(final IDockerImage image1,
 			final IDockerImage image2) {
 		final ColumnLabelProvider sortColumnLabelProvider = (ColumnLabelProvider)this.tableViewer.getLabelProvider(sortColumnIndex);
 		final String image1ColumnValue;
