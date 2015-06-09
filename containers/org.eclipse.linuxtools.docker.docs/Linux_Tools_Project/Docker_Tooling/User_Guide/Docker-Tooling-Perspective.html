@@ -138,53 +138,6 @@
 			</li>
 			<li>Remove Selected Images - delete selected Images</li>
 		</ul>
-		<h3 id="Run_Image">Run Image</h3>
-		<p>The Run Image menu selection in the Docker Explorer View brings up the Run Image Wizard.  This Wizard is
-			similar in functionality to the 
-			<a href="#Create_Container">Create Container</a> toolbar action that is available from the Docker Images View.  The
-			Run Image Wizard has less settings but is more straight-forward to use than the 
-			<a href="#Create_Container">Create Container</a> Wizard.
-		</p>
-		<p>The first page of the Wizard allows a number of common settings:</p>
-		<p>
-			<img border="0" src="images/LinuxToolsRunImageWizard1.png"/>
-		</p>
-		<ul>
-			<li>Image - this field is filled in based on the user's selection
-				<ul>
-					<li>Other images are available from the pull-down or the user can type in an Image not currently loaded and click on the Pull Image link.</li>
-				</ul>
-			</li>
-			<li>Name - this field must be filled in as this is the name of the new Image</li>
-			<li>EntryPoint - this allows configuring the Container to run as an executable
-				<ul>
-					<li>The entry point is an executable to run plus arguments.  On the command-line, additional arguments can be specified.</li>
-				</ul>
-			</li>
-			<li>Command - this is the command to run in the Container when it starts
-				<ul>
-					<li>This field may be left blank if the Image has a default command to run.</li>
-				</ul>
-			</li>
-			<li>Ports - the user can choose to expose ports from the Container (self-explanatory)</li>
-			<li>Links - the user can choose to link to other Containers</li>
-			<li>Keep Stdin Open - used to allow input from the Console</li>
-			<li>Allocate pseudo-tty - used to allocate a TTY for the Container (needed if running a shell)</li>
-			<li>Automatically remove the Container on exit - this is used to remove the Container when finished</li>
-		</ul>
-		<p>The second page of the Wizard also has a number of needed settings:</p>
-		<p>
-			<img border="0" src="images/LinuxToolsRunImageWizard2.png"/>
-		</p>
-		<ul>
-			<li>Data Volumes - the user can mount Host volumes in the Container or mount other Container volumes
-				<ul>
-					<li>This is useful for copying data from the Host into the Container (e.g. an executable).</li>
-				</ul>
-			</li>
-			<li>Environment Variables - way of specifying Env variables to use in the Container</li>
-			<li>Enable Resource Limits - this is used to restrict memory or CPU priority for the Container</li>
-		</ul>
 		<h2 id="Docker_Images_View">Docker Images View</h2>
 		<h3 id="Overview_2">Overview</h3>
 		<p>The Docker Images View is used to manage Docker Images.  By default, the View shows only top-level Images that have at least one repo:tag name.  The menu options allows you to see all Images by clicking the "Show all images" check-box.</p>
@@ -207,7 +160,7 @@
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerContainerCreate.png"/> - 
-				<a href="#Create_Container">create a Container from an Image</a>
+				<a href="#Run_Image">create a Container from an Image</a>
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerImageBuild.png"/> - 
@@ -262,81 +215,47 @@
 		<p>Like a pull of an Image, pushing an Image may take a long time.  The Linux Tools Docker Tooling provides
 			status jobs for the various Images being pushed (may include needed intermediate Images) and an overall
 			job is created to monitor the status of the push job.</p>
-		<h3 id="Create_Container">Create Container</h3>
-		<p>Creating a Container takes an Image template and with additional options, starts a Container running
-			a specified command.  The action is only enabled when an Image has been selected in the Docker Images View.</p>
+		<h3 id="Run_Image">Run Image</h3>
+		<p>The Run Image Wizard is used to create a Container based on an Image.</p>
+		<p>The first page of the Wizard allows a number of common settings:</p>
 		<p>
-			<img border="0" src="images/LinuxToolsDockerCreateContainer.png"/>
+			<img border="0" src="images/LinuxToolsRunImageWizard1.png"/>
 		</p>
-		<p>There a number of fields that can be filled in.</p>
 		<ul>
-			<li>Image - the Image name to base the Container on
+			<li>Image - this field is filled in based on the user's selection
 				<ul>
-					<li>This will be filled in for you by default, but you have the option of changing it in the dialog.</li>
+					<li>Other images are available from the pull-down or the user can type in an Image not currently loaded and click on the Pull Image link.</li>
 				</ul>
 			</li>
-			<li>Command - this is the command to run in the Container
+			<li>Name - this field must be filled in as this is the name of the new Image</li>
+			<li>EntryPoint - this allows configuring the Container to run as an executable
 				<ul>
-					<li>Some Images will have a default command and this field does not have to be filled in. The Image needs to have pre-installed all the requirements of the command.</li>
+					<li>The entry point is an executable to run plus arguments.  On the command-line, additional arguments can be specified.</li>
 				</ul>
 			</li>
-			<li>User - by default commands run as "root" in the Container, but you can specify another user.
+			<li>Command - this is the command to run in the Container when it starts
 				<ul>
-					<li>Note that the user uid is the one set up in the Image and may overlap with uids in your host environment.</li>
+					<li>This field may be left blank if the Image has a default command to run.</li>
 				</ul>
 			</li>
-			<li>Working Directory - this is the working directory in the Container where the command will run</li>
-			<li>Environment - this is a set of NAME=VALUE pairs to set the environment in the Container (e.g. PATH=/usr/bin)</li>
-			<li>Host Name - desired host name for the Container</li>
-			<li>Domain Name - desired domain name for the Container</li>
-			<li>Memory - memory limit to allocate (bytes)
+			<li>Ports - the user can choose to expose ports from the Container (self-explanatory)</li>
+			<li>Links - the user can choose to link to other Containers</li>
+			<li>Keep Stdin Open - used to allow input from the Console</li>
+			<li>Allocate pseudo-tty - used to allocate a TTY for the Container (needed if running a shell)</li>
+			<li>Automatically remove the Container on exit - this is used to remove the Container when finished</li>
+		</ul>
+		<p>The second page of the Wizard also has a number of needed settings:</p>
+		<p>
+			<img border="0" src="images/LinuxToolsRunImageWizard2.png"/>
+		</p>
+		<ul>
+			<li>Data Volumes - the user can mount Host volumes in the Container or mount other Container volumes
 				<ul>
-					<li>Specification can use suffixes: k,K,m,M,g,G,t,T (e.g. 10M or 5k) where capital suffixes are binary (e.g. K=1024) and lower-case are decimal (k=1000).</li>
+					<li>This is useful for copying data from the Host into the Container (e.g. an executable).</li>
 				</ul>
 			</li>
-			<li>Memory Swap - total memory limit (memory + swap)
-				<ul>
-					<li>This must be used with memory specification and must be larger than memory.  Set -1 to disable swap.</li>
-				</ul>
-			</li>
-			<li>CPU Shares - number of CPU shares (relative weight vs other Containers)</li>
-			<li>CPU Set - string specifying the cgroups Cpuset to use</li>
-			<li>Volumes - volumes to mount in the Container
-				<ul>
-					<li>You can mount any host volume paths to host container paths using HOST_PATH:CONTAINER_PATH.  Specifying just a path is mounting CONTAINER_PATH.</li>
-					<li>This can be used to access host files in the Container, essentially copying them over.</li>
-				</ul>
-			</li>
-			<li>Port Specs - port mappings
-				<ul>
-					<li>Specify HOST_PORT:CONTAINER_PORT or :CONTAINER_PORT if you want the same port mapped over.  A port is specified as port/protocol (e.g. 2345/tcp)</li>
-				</ul>
-			</li>
-			<li>Exposed Ports - ports in Container to expose to the host</li>
-			<li>On Build - no longer used (Deprecated)</li>
-			<li>Entry Point - sets the entry point for the Container</li>
-			<li>Network Mode - allows you to select different network modes
-				<ul>
-					<li>Supported values are "bridge", "host", or container:&lt;name|id&gt;</li>
-				</ul>
-			</li>
-			<li>Attach Stdin - attach stdin to Container</li>
-			<li>Attach Stdout - attach stdout to Container</li>
-			<li>Attach Stderr - attach stderr to Container</li>
-			<li>TTY - attach std streams of Container to a TTY</li>
-			<li>Open Stdin - open stdin on Container start
-				<ul>
-					<li>This is needed if you want to type input via the Console or are using a TTY.</li>
-				</ul>
-			</li>
-			<li>Stdin Once - close stdin after the one attached client disconnects</li>
-			<li>Network Disabled - disable the network for the Container</li>
-			<li>Privileged - run in privileged mode
-				<ul>
-					<li>This should be used carefully as it gives the Container full access to the host.</li>
-				</ul>
-			</li>
-			<li>Publish All Ports - allocate a random host port for all exposed ports</li>
+			<li>Environment Variables - way of specifying Env variables to use in the Container</li>
+			<li>Enable Resource Limits - this is used to restrict memory or CPU priority for the Container</li>
 		</ul>
 		<h3 id="Build_Image">Build Image</h3>
 		<p>Building an Image takes an existing Image and modifies it to create a new Image.  Typically this
