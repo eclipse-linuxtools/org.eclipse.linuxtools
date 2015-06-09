@@ -21,9 +21,9 @@ import org.eclipse.linuxtools.internal.docker.ui.databinding.BaseDatabindingMode
  */
 public class EnvironmentVariableModel extends BaseDatabindingModel {
 
-	public static final String NAME = "name";
+	public static final String NAME = "name"; //$NON-NLS-1$
 
-	public static final String VALUE = "value";
+	public static final String VALUE = "value"; //$NON-NLS-1$
 
 	private String name;
 

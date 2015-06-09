@@ -39,27 +39,27 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 
 	public static final String SELECTED_IMAGE_NEEDS_PULLING = "selectedImageNeedsPulling"; //$NON-NLS-1$
 
-	public static final String IMAGE_NAMES = "imageNames";
+	public static final String IMAGE_NAMES = "imageNames"; //$NON-NLS-1$
 
-	public static final String CONTAINER_NAME = "containerName";
+	public static final String CONTAINER_NAME = "containerName"; //$NON-NLS-1$
 
-	public static final String COMMAND = "command";
+	public static final String COMMAND = "command"; //$NON-NLS-1$
 
-	public static final String ENTRYPOINT = "entrypoint";
+	public static final String ENTRYPOINT = "entrypoint"; //$NON-NLS-1$
 
-	public static final String PUBLISH_ALL_PORTS = "publishAllPorts";
+	public static final String PUBLISH_ALL_PORTS = "publishAllPorts"; //$NON-NLS-1$
 
-	public static final String EXPOSED_PORTS = "exposedPorts";
+	public static final String EXPOSED_PORTS = "exposedPorts"; //$NON-NLS-1$
 
-	public static final String SELECTED_PORTS = "selectedPorts";
+	public static final String SELECTED_PORTS = "selectedPorts"; //$NON-NLS-1$
 
-	public static final String LINKS = "links";
+	public static final String LINKS = "links"; //$NON-NLS-1$
 
-	public static final String INTERACTIVE_MODE = "interactiveMode";
+	public static final String INTERACTIVE_MODE = "interactiveMode"; //$NON-NLS-1$
 
-	public static final String ALLOCATE_PSEUDO_TTY = "allocatePseudoTTY";
+	public static final String ALLOCATE_PSEUDO_TTY = "allocatePseudoTTY"; //$NON-NLS-1$
 
-	public static final String REMOVE_WHEN_EXITS = "removeWhenExits";
+	public static final String REMOVE_WHEN_EXITS = "removeWhenExits"; //$NON-NLS-1$
 
 	private final IDockerConnection selectedConnection;
 
@@ -305,15 +305,15 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 	public static class ExposedPortModel extends BaseDatabindingModel
 			implements Comparable<ExposedPortModel> {
 
-		public static final String SELECTED = "selected";
+		public static final String SELECTED = "selected"; //$NON-NLS-1$
 
-		public static final String CONTAINER_PORT = "containerPort";
+		public static final String CONTAINER_PORT = "containerPort"; //$NON-NLS-1$
 
-		public static final String PORT_TYPE = "portType";
+		public static final String PORT_TYPE = "portType"; //$NON-NLS-1$
 
-		public static final String HOST_ADDRESS = "hostAddress";
+		public static final String HOST_ADDRESS = "hostAddress"; //$NON-NLS-1$
 
-		public static final String HOST_PORT = "hostPort";
+		public static final String HOST_PORT = "hostPort"; //$NON-NLS-1$
 
 		private final String id = UUID.randomUUID().toString();
 
@@ -338,8 +338,8 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 		public ExposedPortModel(final String privatePort, final String type,
 				final String hostAddress, final String hostPort) {
 			Assert.isNotNull(privatePort,
-					"Port Mapping privatePort cannot be null");
-			Assert.isNotNull(type, "Port Mapping portType cannot be null");
+					"Port Mapping privatePort cannot be null"); //$NON-NLS-1$
+			Assert.isNotNull(type, "Port Mapping portType cannot be null"); //$NON-NLS-1$
 			this.containerPort = privatePort;
 			this.hostPort = hostPort;
 			this.portType = type;
@@ -424,9 +424,9 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 
 	public class ContainerLinkModel extends BaseDatabindingModel {
 
-		public static final String CONTAINER_NAME = "containerName";
+		public static final String CONTAINER_NAME = "containerName"; //$NON-NLS-1$
 
-		public static final String CONTAINER_ALIAS = "containerAlias";
+		public static final String CONTAINER_ALIAS = "containerAlias"; //$NON-NLS-1$
 
 		private String containerName;
 

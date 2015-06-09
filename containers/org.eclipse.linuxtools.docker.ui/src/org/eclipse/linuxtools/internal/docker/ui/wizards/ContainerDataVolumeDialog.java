@@ -99,7 +99,8 @@ public class ContainerDataVolumeDialog extends Dialog {
 	protected void configureShell(final Shell shell) {
 		super.configureShell(shell);
 		setShellStyle(getShellStyle() | SWT.RESIZE);
-		shell.setText("Data Volume");
+		shell.setText(
+				WizardMessages.getString("ContainerDataVolumeDialog.title")); //$NON-NLS-1$
 	}
 
 	/**
@@ -132,7 +133,8 @@ public class ContainerDataVolumeDialog extends Dialog {
 
 		// Container path
 		final Label containerPathLabel = new Label(container, SWT.NONE);
-		containerPathLabel.setText("Container path:");
+		containerPathLabel.setText(WizardMessages
+				.getString("ContainerDataVolumeDialog.containerPathLabel")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).applyTo(containerPathLabel);
 		final Text containerPathText = new Text(container, SWT.BORDER);
@@ -146,25 +148,29 @@ public class ContainerDataVolumeDialog extends Dialog {
 				containerPathObservable);
 		// mount type
 		final Label explanationLabel = new Label(container, SWT.NONE);
-		explanationLabel.setText("Specify the type of mount:"); //$NON-NLS-1$
+		explanationLabel.setText(WizardMessages
+				.getString("ContainerDataVolumeDialog.explanationLabel")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.span(COLUMNS, 1).grab(true, false).applyTo(explanationLabel);
 		final int INDENT = 20;
 		// No mount
 		final Button noMountButton = new Button(container, SWT.RADIO);
-		noMountButton.setText("No external mount");
+		noMountButton.setText(WizardMessages
+				.getString("ContainerDataVolumeDialog.noMountButton")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.indent(INDENT, 0).span(COLUMNS, 1).grab(true, false)
 				.applyTo(noMountButton);
 		bindButton(noMountButton, MountType.NONE);
 		// File System mount
 		final Button fileSystemMountButton = new Button(container, SWT.RADIO);
-		fileSystemMountButton.setText("Mount a host directory or host file");
+		fileSystemMountButton.setText(WizardMessages
+				.getString("ContainerDataVolumeDialog.fileSystemMountButton")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.indent(INDENT, 0).span(COLUMNS, 1).grab(true, false)
 				.applyTo(fileSystemMountButton);
 		final Label hostPathLabel = new Label(container, SWT.NONE);
-		hostPathLabel.setText("Path:"); //$NON-NLS-1$
+		hostPathLabel.setText(WizardMessages
+				.getString("ContainerDataVolumeDialog.hostPathLabel")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.indent(2 * INDENT, SWT.DEFAULT).grab(false, false)
 				.applyTo(hostPathLabel);
@@ -178,7 +184,8 @@ public class ContainerDataVolumeDialog extends Dialog {
 				hostPathObservable);
 		// browse for directory
 		final Button hostPathDirectoryButton = new Button(container, SWT.NONE);
-		hostPathDirectoryButton.setText("Directory...");
+		hostPathDirectoryButton.setText(WizardMessages
+				.getString("ContainerDataVolumeDialog.directoryButton")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).applyTo(hostPathDirectoryButton);
 		hostPathDirectoryButton.addSelectionListener(onHostDirectoryPath());
@@ -186,9 +193,10 @@ public class ContainerDataVolumeDialog extends Dialog {
 				.grab(false, false).applyTo(new Label(container, SWT.NONE));
 		// optional read-only access
 		final Button readOnlyButton = new Button(container, SWT.CHECK);
-		readOnlyButton.setText("Read-only access"); //$NON-NLS-1$
-		readOnlyButton.setToolTipText(
-				"Specify if the mounted host directory or path is read-only"); //$NON-NLS-1$
+		readOnlyButton.setText(WizardMessages
+				.getString("ContainerDataVolumeDialog.readOnlyButton")); //$NON-NLS-1$
+		readOnlyButton.setToolTipText(WizardMessages
+				.getString("ContainerDataVolumeDialog.readOnlyButtonTooltip")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.span(COLUMNS - 2, 1).grab(true, false).applyTo(readOnlyButton);
 		final ISWTObservableValue readOnlyButtonObservable = WidgetProperties
@@ -200,7 +208,8 @@ public class ContainerDataVolumeDialog extends Dialog {
 						.observe(model));
 		// browse for file
 		final Button hostPathFileButton = new Button(container, SWT.NONE);
-		hostPathFileButton.setText("File...");
+		hostPathFileButton.setText(WizardMessages
+				.getString("ContainerDataVolumeDialog.fileButton")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).applyTo(hostPathFileButton);
 		hostPathFileButton.addSelectionListener(onHostFilePath());
@@ -210,12 +219,14 @@ public class ContainerDataVolumeDialog extends Dialog {
 
 		// Container mount
 		final Button containerMountButton = new Button(container, SWT.RADIO);
-		containerMountButton.setText("Mount a data volume container");
+		containerMountButton.setText(WizardMessages
+				.getString("ContainerDataVolumeDialog.containerMountButton")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.indent(INDENT, 0).span(COLUMNS, 1).grab(true, false)
 				.applyTo(containerMountButton);
 		final Label containerSelectionLabel = new Label(container, SWT.NONE);
-		containerSelectionLabel.setText("Container:"); //$NON-NLS-1$
+		containerSelectionLabel.setText(WizardMessages.getString(
+				"ContainerDataVolumeDialog.containerSelectionLabel")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.indent(2 * INDENT, SWT.DEFAULT)
 				.applyTo(containerSelectionLabel);
@@ -458,8 +469,9 @@ public class ContainerDataVolumeDialog extends Dialog {
 			if (!selectedContainerInfo.volumes()
 					.containsKey(model.getContainerPath())) {
 				return ValidationStatus
-						.warning("The selected container does not define a "
-								+ model.getContainerPath() + " volume."); //$NON-NLS-1$
+						.warning(WizardMessages.getFormattedString(
+								"ContainerDataVolumeDialog.volumeWarning", //$NON-NLS-1$
+								model.getContainerPath()));
 			}
 		}
 		return ValidationStatus.ok();

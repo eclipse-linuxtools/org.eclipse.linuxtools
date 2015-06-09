@@ -43,17 +43,17 @@ public class ImageRunResourceVolumesVariablesModel
 	/** the 'high' CPU share weight variableValue. */
 	public static final int HIGH = 2048;
 
-	public static final String ENABLE_RESOURCE_LIMITATIONS = "enableResourceLimitations";
+	public static final String ENABLE_RESOURCE_LIMITATIONS = "enableResourceLimitations"; //$NON-NLS-1$
 
-	public static final String CPU_SHARE_WEIGHT = "cpuShareWeight";
+	public static final String CPU_SHARE_WEIGHT = "cpuShareWeight"; //$NON-NLS-1$
 
-	public static final String MEMORY_LIMIT = "memoryLimit";
+	public static final String MEMORY_LIMIT = "memoryLimit"; //$NON-NLS-1$
 
-	public static final String DATA_VOLUMES = "dataVolumes";
+	public static final String DATA_VOLUMES = "dataVolumes"; //$NON-NLS-1$
 
-	public static final String SELECTED_DATA_VOLUMES = "selectedDataVolumes";
+	public static final String SELECTED_DATA_VOLUMES = "selectedDataVolumes"; //$NON-NLS-1$
 
-	public static final String ENVIRONMENT_VARIABLES = "environmentVariables";
+	public static final String ENVIRONMENT_VARIABLES = "environmentVariables"; //$NON-NLS-1$
 
 	private boolean enableResourceLimitations = false;
 

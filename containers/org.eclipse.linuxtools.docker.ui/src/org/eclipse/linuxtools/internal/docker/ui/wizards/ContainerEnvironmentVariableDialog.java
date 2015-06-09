@@ -55,7 +55,8 @@ public class ContainerEnvironmentVariableDialog extends Dialog {
 	protected void configureShell(final Shell shell) {
 		super.configureShell(shell);
 		setShellStyle(getShellStyle() | SWT.RESIZE);
-		shell.setText("Environment Variable");
+		shell.setText(WizardMessages
+				.getString("ContainerEnvironmentVariableDialog.title")); //$NON-NLS-1$
 	}
 
 	@Override
@@ -86,19 +87,21 @@ public class ContainerEnvironmentVariableDialog extends Dialog {
 		GridLayoutFactory.fillDefaults().numColumns(COLUMNS).margins(10, 10)
 				.applyTo(container);
 		final Label explanationLabel = new Label(container, SWT.NONE);
-		explanationLabel
-				.setText("Specify the environment variable name and value:"); //$NON-NLS-1$
+		explanationLabel.setText(WizardMessages.getString(
+				"ContainerEnvironmentVariableDialog.explanationLabel")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.span(COLUMNS, 1).grab(false, false).applyTo(explanationLabel);
 		final Label variableNameLabel = new Label(container, SWT.NONE);
-		variableNameLabel.setText("Name:"); //$NON-NLS-1$
+		variableNameLabel.setText(WizardMessages
+				.getString("ContainerEnvironmentVariableDialog.nameLabel")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).applyTo(variableNameLabel);
 		final Text variableNameText = new Text(container, SWT.BORDER);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).applyTo(variableNameText);
 		final Label variableValueLabel = new Label(container, SWT.NONE);
-		variableValueLabel.setText("Value:"); //$NON-NLS-1$
+		variableValueLabel.setText(WizardMessages
+				.getString("ContainerEnvironmentVariableDialog.valueLabel")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).applyTo(variableValueLabel);
 		final Text variableValueText = new Text(container, SWT.BORDER);
