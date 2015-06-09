@@ -22,17 +22,17 @@ import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunResourceVolumes
 public class DataVolumeModel extends BaseDatabindingModel
 		implements Comparable<DataVolumeModel> {
 
-	public static final String CONTAINER_PATH = "containerPath";
+	public static final String CONTAINER_PATH = "containerPath"; //$NON-NLS-1$
 
-	public static final String MOUNT_TYPE = "mountType";
+	public static final String MOUNT_TYPE = "mountType"; //$NON-NLS-1$
 
-	public static final String MOUNT = "mount";
+	public static final String MOUNT = "mount"; //$NON-NLS-1$
 
-	public static final String HOST_PATH_MOUNT = "hostPathMount";
+	public static final String HOST_PATH_MOUNT = "hostPathMount"; //$NON-NLS-1$
 
-	public static final String READ_ONLY_VOLUME = "readOnly";
+	public static final String READ_ONLY_VOLUME = "readOnly"; //$NON-NLS-1$
 
-	public static final String CONTAINER_MOUNT = "containerMount";
+	public static final String CONTAINER_MOUNT = "containerMount"; //$NON-NLS-1$
 
 	private final String id = UUID.randomUUID().toString();
 

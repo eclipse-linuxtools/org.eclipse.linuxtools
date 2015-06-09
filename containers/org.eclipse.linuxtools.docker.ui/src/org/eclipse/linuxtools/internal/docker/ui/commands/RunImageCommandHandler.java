@@ -57,7 +57,7 @@ public class RunImageCommandHandler extends AbstractHandler {
 		final IDockerImage selectedImage = getSelectedImage(activePart);
 		if (selectedImage == null) {
 			Activator.logErrorMessage(
-					"Unable to retrieve Docker Image from current selection.");
+					DVMessages.getString("RunImageUnableToRetrieveError.msg")); //$NON-NLS-1$
 		} else {
 			try {
 				final ImageRun wizard = new ImageRun(selectedImage);
@@ -93,16 +93,20 @@ public class RunImageCommandHandler extends AbstractHandler {
 		}
 
 		// Create the container in a non-UI thread.
-		final Job runImageJob = new Job("Create Container") {
+		final Job runImageJob = new Job(
+				DVMessages.getString("RunImageCreateContainer.job")) { //$NON-NLS-1$
 
 			@Override
 			protected IStatus run(final IProgressMonitor monitor) {
-				monitor.beginTask("Running image...", 2);
+				monitor.beginTask(
+						DVMessages.getString("RunImageRunningTask.msg"), 2); //$NON-NLS-1$
 				try {
 					final SubProgressMonitor createContainerMonitor = new SubProgressMonitor(
 							monitor, 1);
 					// create the container
-					createContainerMonitor.beginTask("Creating container...",
+					createContainerMonitor.beginTask(
+							DVMessages.getString(
+									"RunImageCreatingContainerTask.msg"), //$NON-NLS-1$
 							1);
 					final String containerId = ((DockerConnection) connection)
 							.createContainer(containerConfig, containerName);
@@ -117,7 +121,8 @@ public class RunImageCommandHandler extends AbstractHandler {
 					// start the container
 					final SubProgressMonitor startContainerMonitor = new SubProgressMonitor(
 							monitor, 1);
-					startContainerMonitor.beginTask("Starting container...", 1);
+					startContainerMonitor.beginTask(DVMessages
+							.getString("RunImageStartingContainerTask.msg"), 1); //$NON-NLS-1$
 					final RunConsole console = getRunConsole(connection,
 							container);
 					if (console != null) {
