@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
+import java.util.UUID;
+
 import org.eclipse.linuxtools.internal.docker.ui.databinding.BaseDatabindingModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunResourceVolumesVariablesModel.MountType;
 
@@ -31,6 +33,8 @@ public class DataVolumeModel extends BaseDatabindingModel
 	public static final String READ_ONLY_VOLUME = "readOnly";
 
 	public static final String CONTAINER_MOUNT = "containerMount";
+
+	private final String id = UUID.randomUUID().toString();
 
 	private String containerPath;
 
@@ -150,12 +154,7 @@ public class DataVolumeModel extends BaseDatabindingModel
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((containerPath == null) ? 0 : containerPath.hashCode());
-		result = prime * result + ((mount == null) ? 0 : mount.hashCode());
-		result = prime * result
-				+ ((mountType == null) ? 0 : mountType.hashCode());
-		result = prime * result + (readOnly ? 1231 : 1237);
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -168,19 +167,10 @@ public class DataVolumeModel extends BaseDatabindingModel
 		if (getClass() != obj.getClass())
 			return false;
 		DataVolumeModel other = (DataVolumeModel) obj;
-		if (containerPath == null) {
-			if (other.containerPath != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!containerPath.equals(other.containerPath))
-			return false;
-		if (mount == null) {
-			if (other.mount != null)
-				return false;
-		} else if (!mount.equals(other.mount))
-			return false;
-		if (mountType != other.mountType)
-			return false;
-		if (readOnly != other.readOnly)
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}

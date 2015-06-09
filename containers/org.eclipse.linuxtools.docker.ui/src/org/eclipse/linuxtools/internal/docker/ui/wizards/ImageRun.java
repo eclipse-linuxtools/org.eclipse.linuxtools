@@ -14,11 +14,9 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -142,6 +140,7 @@ public class ImageRun extends Wizard {
 
 		// data volumes
 		final List<String> volumesFrom = new ArrayList<>();
+		final List<String> binds = new ArrayList<>();
 		for (Iterator<DataVolumeModel> iterator = resourcesModel
 				.getDataVolumes().iterator(); iterator.hasNext();) {
 			final DataVolumeModel dataVolume = iterator.next();
@@ -152,6 +151,15 @@ public class ImageRun extends Wizard {
 			}
 
 			switch (dataVolume.getMountType()) {
+			case HOST_FILE_SYSTEM:
+				if (dataVolume.isReadOnly()) {
+					binds.add(dataVolume.getHostPathMount() + ':'
+							+ dataVolume.getContainerPath() + ':' + "ro");
+				} else {
+					binds.add(dataVolume.getHostPathMount() + ':'
+							+ dataVolume.getContainerPath());
+				}
+				break;
 			case CONTAINER:
 				volumesFrom.add(dataVolume.getContainerMount());
 				break;
@@ -160,6 +168,7 @@ public class ImageRun extends Wizard {
 
 			}
 		}
+		hostConfigBuilder.binds(binds);
 		hostConfigBuilder.volumesFrom(volumesFrom);
 
 		return hostConfigBuilder.build();
@@ -190,40 +199,6 @@ public class ImageRun extends Wizard {
 			environmentVariables.add(var.getName() + "=" + var.getValue());
 		}
 		config.env(environmentVariables);
-
-		// container data volumes
-		final Set<String> volumes = new HashSet<>();
-		for (Iterator<DataVolumeModel> iterator = resourcesModel
-				.getDataVolumes().iterator(); iterator.hasNext();) {
-			final DataVolumeModel dataVolume = iterator.next();
-			// only data volumes selected in the CheckBoxTableViewer are
-			// included.
-			if (!resourcesModel.getSelectedDataVolumes().contains(dataVolume)) {
-				continue;
-			}
-			switch (dataVolume.getMountType()) {
-			case CONTAINER:
-				// different way to configure 'volumes-from'
-				break;
-			case HOST_FILE_SYSTEM:
-				if (dataVolume.isReadOnly()) {
-					volumes.add(dataVolume.getContainerPath() + ':'
-							+ dataVolume.getHostPathMount() + ':' + "ro");
-				} else {
-					volumes.add(dataVolume.getContainerPath() + ':'
-							+ dataVolume.getHostPathMount());
-				}
-				break;
-			case NONE:
-				volumes.add(dataVolume.getContainerPath());
-				break;
-			default:
-				break;
-
-			}
-		}
-		config.volumes(volumes);
-
 		return config.build();
 	}
 

@@ -123,6 +123,12 @@ public class ImageRunResourceVolumesVariablesModel
 		return selectedDataVolumes;
 	}
 
+	public void setSelectedDataVolumes(
+			Set<DataVolumeModel> selectedDataVolumes) {
+		firePropertyChange(SELECTED_DATA_VOLUMES, this.selectedDataVolumes,
+				this.selectedDataVolumes = selectedDataVolumes);
+	}
+
 	public WritableList getEnvironmentVariables() {
 		return environmentVariables;
 	}
