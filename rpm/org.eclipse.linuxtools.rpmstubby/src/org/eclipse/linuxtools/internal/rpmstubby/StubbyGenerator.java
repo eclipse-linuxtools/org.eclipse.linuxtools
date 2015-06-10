@@ -23,7 +23,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.linuxtools.internal.rpmstubby.model.FeatureModel;
-import org.eclipse.linuxtools.rpmstubby.RPMStubbyUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -35,7 +34,6 @@ public class StubbyGenerator extends AbstractGenerator {
 
     private FeatureModel model;
     private IFile featureFile;
-    private boolean pomExists;
 
     /**
      * Creates the specfile and fetch script generator for the given packages.
@@ -48,7 +46,6 @@ public class StubbyGenerator extends AbstractGenerator {
         parse(featureFile);
         specfileName = model.getPackageName().toLowerCase() + ".spec";
         projectName = featureFile.getProject().getName();
-        pomExists = new RPMStubbyUtils().findPom(featureFile.getParent().getLocation());
     }
 
     private void parse(IFile featureFile) {
@@ -84,14 +81,11 @@ public class StubbyGenerator extends AbstractGenerator {
     @Override
     public String generateSpecfile() {
         StringBuilder buffer = new StringBuilder();
-        buffer.append("%global install_loc    %{_datadir}/eclipse/dropins/"
-                + model.getSimplePackageName() + "\n\n");
         buffer.append("Name:           " + model.getPackageName().toLowerCase()
                 + "\n");
         buffer.append("Version:        " + model.getVersion() + "\n");
         buffer.append("Release:        1%{?dist}" + "\n");
         buffer.append("Summary:        " + model.getSummary() + "\n\n");
-        buffer.append("Group:          Development/Tools\n");
         buffer.append("License:        " + model.getLicense() + "\n");
         buffer.append("URL:            " + model.getURL() + "\n");
         buffer.append("Source0:        #FIXME\n");
@@ -108,29 +102,18 @@ public class StubbyGenerator extends AbstractGenerator {
     }
 
     private static void generateRequires(StringBuilder buffer) {
-        buffer.append("Requires:       eclipse-platform >= 3.4.0\n");
         buffer.append("BuildRequires:  maven-local\n");
         buffer.append("\n\n");
     }
 
-    private void generateInstallSection(StringBuilder buffer) {
+    private static void generateInstallSection(StringBuilder buffer) {
         buffer.append("%install\n");
-        if (!pomExists) {
-            generateTempPom(buffer);
-        }
-        buffer.append("mvn-rpmbuild ");
-        if (!pomExists) {
-            buffer.append("-f temp/pom.xml ");
-        }
-        buffer.append("org.fedoraproject:feclipse-maven-plugin:install \\" + "\n");
-        buffer.append("\t" + "-DsourceRepo=#FIXME \\" + "\n");
-        buffer.append("\t" + "-DtargetLocation=%{buildroot}%{install_loc}/eclipse" + "\n");
+        buffer.append("%mvn_install \n");
         buffer.append("\n\n");
     }
 
     private void generateFilesSections(StringBuilder buffer) {
-        buffer.append("%files\n");
-        buffer.append("%{install_loc}\n");
+        buffer.append("%files -f .mfiles\n");
         String docsRoot = featureFile.getLocation().removeLastSegments(1)
                 .lastSegment();
         String[] files = featureFile.getLocation().removeLastSegments(1)
@@ -149,16 +132,9 @@ public class StubbyGenerator extends AbstractGenerator {
         buffer.append("\n\n");
     }
 
-    private void generateBuildSection(StringBuilder buffer) {
+    private static void generateBuildSection(StringBuilder buffer) {
         buffer.append("%build\n");
-        if (!pomExists) {
-            generateTempPom(buffer);
-        }
-        buffer.append("mvn-rpmbuild ");
-        if (!pomExists) {
-            buffer.append("-f temp/pom.xml ");
-        }
-        buffer.append("install\n");
+        buffer.append("%mvn_build -j\n ");
         buffer.append("\n\n");
     }
 
@@ -177,20 +153,5 @@ public class StubbyGenerator extends AbstractGenerator {
             name = packageItems[packageItems.length - 2];
         }
         return "eclipse-" + name;
-    }
-
-    private static void generateTempPom(StringBuilder buffer) {
-        buffer.append("mkdir temp\n");
-        buffer.append("pushd temp\n");
-        buffer.append("cat > pom.xml << EOF\n");
-        buffer.append("<project>\n");
-        buffer.append("    <modelVersion>4.0.0</modelVersion>\n");
-        buffer.append("    <name>Maven Default Project</name>\n");
-        buffer.append("    <groupId>org.fedoraproject</groupId>\n");
-        buffer.append("    <artifactId>dummy</artifactId>\n");
-        buffer.append("    <version>1.0.0</version>\n");
-        buffer.append("</project>\n");
-        buffer.append("EOF\n");
-        buffer.append("popd\n");
     }
 }
