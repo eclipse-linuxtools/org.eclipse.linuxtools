@@ -36,7 +36,7 @@ public class FileProxyTest extends AbstractProxyTest {
 	public void testRemoteFileProxyOnSyncProject() {
 		IRemoteFileProxy fileProxy = null;
 		try {
-			fileProxy =  proxyManager.getFileProxy(syncProject);
+			fileProxy =  proxyManager.getFileProxy(syncProject.getProject());
 			assertTrue("Should have returned a remote launcher", fileProxy instanceof RDTFileProxy);
 		} catch (CoreException e) {
 			fail("Should have returned a launcher: " + e.getCause());
@@ -44,7 +44,7 @@ public class FileProxyTest extends AbstractProxyTest {
 		String ds = fileProxy.getDirectorySeparator();
 		assertNotNull(ds);
 
-		SyncConfig config = getSyncConfig(syncProject);
+		SyncConfig config = getSyncConfig(syncProject.getProject());
 		String projectLocation = config.getLocation();
 		assertNotNull(projectLocation);
 		IRemoteConnection conn = null;
@@ -87,7 +87,7 @@ public class FileProxyTest extends AbstractProxyTest {
 	public void testLocalFileProxy() {
 		IRemoteFileProxy fileProxy = null;
 		try {
-			fileProxy =  proxyManager.getFileProxy(localProject);
+			fileProxy =  proxyManager.getFileProxy(localProject.getProject());
 			assertTrue("Should have returned a remote launcher", fileProxy instanceof LocalFileProxy);
 		} catch (CoreException e) {
 			fail("Should have returned a launcher: " + e.getCause());
@@ -101,7 +101,7 @@ public class FileProxyTest extends AbstractProxyTest {
 		/*
 		 *  Test getResource()
 		 */
-		IFileStore actualFileStore = fileProxy.getResource(localProject.getLocation().toOSString());
+		IFileStore actualFileStore = fileProxy.getResource(localProject.getProject().getLocation().toOSString());
 		assertNotNull(actualFileStore);
 
 		IFileStore expectedFileStore = null;
@@ -123,6 +123,6 @@ public class FileProxyTest extends AbstractProxyTest {
 		/*
 		 * Test toPath()
 		 */
-		assertEquals(localProject.getLocation().toOSString(), fileProxy.toPath(localProject.getLocationURI()));
+		assertEquals(localProject.getProject().getLocation().toOSString(), fileProxy.toPath(localProject.getLocationURI()));
 	}
 }

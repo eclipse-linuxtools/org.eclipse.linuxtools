@@ -58,6 +58,7 @@
     <module>org.eclipse.linuxtools.profiling.ui.capability</module>
     <module>org.eclipse.linuxtools.rdt.proxy</module>
     <module>org.eclipse.linuxtools.ssh.proxy</module>
+    <module>org.eclipse.linuxtools.remote.proxy.tests</module>
   </modules>
 
 </project>

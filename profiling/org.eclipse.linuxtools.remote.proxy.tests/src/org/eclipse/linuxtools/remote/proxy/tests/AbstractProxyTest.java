@@ -15,7 +15,6 @@ import static org.junit.Assert.fail;
 
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.utils.Platform;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -23,9 +22,8 @@ import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.linuxtools.profiling.tests.AbstractRemoteTest;
 import org.eclipse.remote.core.IRemoteConnection;
 import org.eclipse.remote.core.exception.RemoteConnectionException;
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -34,8 +32,8 @@ public abstract class AbstractProxyTest extends AbstractRemoteTest {
 	protected static RemoteProxyManager proxyManager;
 	protected static final String CONNECTION_NAME = "test_connection";
 	protected static IRemoteConnection connection = null;
-	protected IProject localProject = null;
-	protected IProject syncProject = null;
+	protected ICProject localProject = null;
+	protected ICProject syncProject = null;
 	protected final String PLUGIN = "org.eclipse.linuxtools.remote.proxy.tests";
 
 	@Before
@@ -48,10 +46,19 @@ public abstract class AbstractProxyTest extends AbstractRemoteTest {
 		createTestProjects();
 	}
 
-	@AfterClass
-	public static void tearDown() throws RemoteConnectionException {
+	@After
+	public void tearDown() throws CoreException {
+		if(localProject !=  null) {
+			deleteProject(localProject);
+			localProject = null;
+		}
+		if(syncProject !=  null) {
+			deleteProject(syncProject);
+			syncProject = null;
+		}
 		if(connection != null) {
 			deleteConnection(connection);
+			connection = null;
 		}
 	}
 
@@ -67,25 +74,24 @@ public abstract class AbstractProxyTest extends AbstractRemoteTest {
 	}
 
 	protected void createTestProjects() {
-		ICProject project = null;
 		if (localProject == null) {
 			try {
-				project = createProject(Platform.getBundle(PLUGIN), "localTestProject");
+				localProject = createProject(Platform.getBundle(PLUGIN), "localTestProject");
 			} catch (Exception e) {
 				fail("Failed to create local project for the tests: " + e.getMessage());
 			}
-			localProject = project.getProject();
 			assertNotNull(localProject);
 		}
 
 		if (syncProject == null) {
+			ICProject project = null;
 			try {
 				project = createProject(Platform.getBundle(PLUGIN), "syncTestProject");
 				convertToSyncProject(project.getProject(), connection, "/tmp/" + PLUGIN);
 			} catch (Exception e) {
 				fail("Failed to create synchronized project for the tests: " + e.getMessage());
 			}
-			syncProject = project.getProject();
+			syncProject = project;
 			assertNotNull(syncProject);
 		}
 	}

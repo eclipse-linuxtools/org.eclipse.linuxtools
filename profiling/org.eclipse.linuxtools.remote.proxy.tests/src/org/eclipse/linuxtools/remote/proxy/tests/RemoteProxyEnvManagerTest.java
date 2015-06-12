@@ -39,7 +39,7 @@ public class RemoteProxyEnvManagerTest extends AbstractProxyTest {
 		 */
 		expectedEnv= System.getenv();
 		try {
-			actualEnv = proxy.getEnv(localProject);
+			actualEnv = proxy.getEnv(localProject.getProject());
 		} catch (CoreException e) {
 			fail("Failed to get environment variables: " + e.getMessage());
 		}
@@ -51,7 +51,7 @@ public class RemoteProxyEnvManagerTest extends AbstractProxyTest {
 		 * Get remote environment to compare with returned by the proxy
 		 */
 		try {
-			actualEnv = proxy.getEnv(syncProject);
+			actualEnv = proxy.getEnv(syncProject.getProject());
 		} catch (CoreException e) {
 			fail("Failed to get remote environment variables: " + e.getMessage());
 		}

@@ -38,7 +38,7 @@ public class CommandLauncherProxyTest extends AbstractProxyTest {
 		IPath commandPath, changeToDirectory;
 		String[] args, env;
 		try {
-			cl =  proxyManager.getLauncher(syncProject);
+			cl =  proxyManager.getLauncher(syncProject.getProject());
 			assertTrue("Should have returned a remote launcher", cl instanceof RDTCommandLauncher);
 		} catch (CoreException e) {
 			fail("Should have returned a launcher: " + e.getCause());
@@ -50,8 +50,8 @@ public class CommandLauncherProxyTest extends AbstractProxyTest {
 		changeToDirectory = new Path("/tmp");
 		try {
 			p = cl.execute(commandPath, args, env, changeToDirectory, new NullProgressMonitor());
-			p.waitFor();
 			assertNotNull(p);
+			p.waitFor();
 			assertEquals("Process exited with failure", 0, p.exitValue());
 		} catch (Exception e) {
 			fail("Unable to execute " + commandPath + " on remote machine: " + e.getMessage());
@@ -75,7 +75,7 @@ public class CommandLauncherProxyTest extends AbstractProxyTest {
 		IPath commandPath, changeToDirectory;
 		String[] args, env;
 		try {
-			cl =  proxyManager.getLauncher(localProject);
+			cl =  proxyManager.getLauncher(localProject.getProject());
 			assertTrue("Should have returned a local launcher", cl instanceof LocalLauncher);
 		} catch (CoreException e) {
 			fail("Should have returned a launcher: " + e.getCause());
