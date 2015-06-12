@@ -356,7 +356,9 @@ public class ImageRunResourceVolumesVariablesPage extends WizardPage {
 				dialog.create();
 				if (dialog.open() == IDialogConstants.OK_ID) {
 					model.getDataVolumes().add(dialog.getDataVolume());
-					dataVolumesTableViewer.refresh();
+					model.getSelectedDataVolumes().add(dialog.getDataVolume());
+					dataVolumesTableViewer.setChecked(dialog.getDataVolume(),
+							true);
 				}
 			}
 		};
@@ -391,6 +393,8 @@ public class ImageRunResourceVolumesVariablesPage extends WizardPage {
 							dialogDataVolume.getContainerMount());
 					selectedDataVolume
 							.setReadOnly(dialogDataVolume.isReadOnly());
+					model.getSelectedDataVolumes().add(selectedDataVolume);
+					dataVolumesTableViewer.setChecked(selectedDataVolume, true);
 				}
 			}
 		};
@@ -407,7 +411,9 @@ public class ImageRunResourceVolumesVariablesPage extends WizardPage {
 				for (@SuppressWarnings("unchecked")
 				Iterator<DataVolumeModel> iterator = selection
 						.iterator(); iterator.hasNext();) {
-					model.removeDataVolume(iterator.next());
+					final DataVolumeModel volume = iterator.next();
+					model.removeDataVolume(volume);
+					model.getSelectedDataVolumes().remove(volume);
 				}
 
 			}
@@ -534,7 +540,6 @@ public class ImageRunResourceVolumesVariablesPage extends WizardPage {
 				if (dialog.open() == IDialogConstants.OK_ID) {
 					model.getEnvironmentVariables()
 							.add(dialog.getEnvironmentVariable());
-
 				}
 			}
 		};

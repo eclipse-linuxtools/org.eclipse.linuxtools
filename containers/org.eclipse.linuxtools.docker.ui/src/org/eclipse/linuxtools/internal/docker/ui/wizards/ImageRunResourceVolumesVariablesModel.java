@@ -124,7 +124,7 @@ public class ImageRunResourceVolumesVariablesModel
 	}
 
 	public void setSelectedDataVolumes(
-			Set<DataVolumeModel> selectedDataVolumes) {
+			final Set<DataVolumeModel> selectedDataVolumes) {
 		firePropertyChange(SELECTED_DATA_VOLUMES, this.selectedDataVolumes,
 				this.selectedDataVolumes = selectedDataVolumes);
 	}

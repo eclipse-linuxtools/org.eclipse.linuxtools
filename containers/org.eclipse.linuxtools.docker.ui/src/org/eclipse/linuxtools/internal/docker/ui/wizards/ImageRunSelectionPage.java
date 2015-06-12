@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -96,7 +97,6 @@ public class ImageRunSelectionPage extends WizardPage {
 
 	private final DataBindingContext dbc = new DataBindingContext();
 	private final ImageRunSelectionModel model;
-	private CheckboxTableViewer exposedPortsTableViewer;
 
 	private static final int COLUMNS = 3;
 
@@ -153,6 +153,7 @@ public class ImageRunSelectionPage extends WizardPage {
 				.grab(true, false).applyTo(container);
 		GridLayoutFactory.fillDefaults().numColumns(COLUMNS).margins(6, 6)
 				.applyTo(container);
+		setDefaultValues();
 		createImageSettingsSection(container);
 		createSectionSeparator(container, true);
 		createPortSettingsSection(container);
@@ -167,7 +168,6 @@ public class ImageRunSelectionPage extends WizardPage {
 				.observe(model);
 		imageSelectionObservable
 				.addValueChangeListener(onImageSelectionChange());
-		setDefaultValues();
 		// setup validation support
 		WizardPageSupport.create(this, dbc);
 		// set validation
@@ -335,7 +335,8 @@ public class ImageRunSelectionPage extends WizardPage {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).span(COLUMNS, 1).indent(INDENT, 0)
 				.applyTo(portSettingsLabel);
-		exposedPortsTableViewer = createPortSettingsTable(container);
+		final CheckboxTableViewer exposedPortsTableViewer = createPortSettingsTable(
+				container);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP)
 				.grab(true, false).span(COLUMNS - 1, 1).indent(INDENT, 0)
 				.hint(200, 70).applyTo(exposedPortsTableViewer.getTable());
@@ -351,7 +352,7 @@ public class ImageRunSelectionPage extends WizardPage {
 				.grab(true, false).applyTo(addButton);
 		addButton
 				.setText(WizardMessages.getString("ImageRunSelectionPage.add")); //$NON-NLS-1$
-		addButton.addSelectionListener(onAddPort());
+		addButton.addSelectionListener(onAddPort(exposedPortsTableViewer));
 		final Button editButton = new Button(buttonsContainers, SWT.NONE);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP)
 				.grab(true, false).applyTo(editButton);
@@ -384,12 +385,22 @@ public class ImageRunSelectionPage extends WizardPage {
 						exposedPortsTableViewer, ExposedPortModel.class),
 				BeanProperties.set(ImageRunSelectionModel.SELECTED_PORTS)
 						.observe(model));
+		checkAllElements(exposedPortsTableViewer);
+
 		// disable the edit and removeButton if the table is empty
 		exposedPortsTableViewer.addSelectionChangedListener(
 				onSelectionChanged(editButton, removeButton));
 
 		togglePortMappingControls(exposedPortsTableViewer.getTable(), addButton,
 				removeButton);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void checkAllElements(
+			final CheckboxTableViewer exposedPortsTableViewer) {
+		exposedPortsTableViewer.setAllChecked(true);
+		model.setSelectedPorts(
+				new HashSet<ExposedPortModel>(model.getExposedPorts()));
 	}
 
 	private ISelectionChangedListener onSelectionChanged(
@@ -699,7 +710,8 @@ public class ImageRunSelectionPage extends WizardPage {
 		};
 	}
 
-	private SelectionListener onAddPort() {
+	private SelectionListener onAddPort(
+			final CheckboxTableViewer exposedPortsTableViewer) {
 		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
@@ -707,17 +719,21 @@ public class ImageRunSelectionPage extends WizardPage {
 						getShell());
 				dialog.create();
 				if (dialog.open() == IDialogConstants.OK_ID) {
-					model.addAvailablePort(dialog.getPort());
+					final ExposedPortModel port = dialog.getPort();
+					model.addAvailablePort(port);
+					model.getSelectedPorts().add(port);
+					exposedPortsTableViewer.setChecked(port, true);
 				}
 			}
 		};
 	}
 
-	private SelectionListener onEditPort(final TableViewer portsTableViewer) {
+	private SelectionListener onEditPort(
+			final CheckboxTableViewer exposedPortsTableViewer) {
 		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				final IStructuredSelection selection = portsTableViewer
+				final IStructuredSelection selection = exposedPortsTableViewer
 						.getStructuredSelection();
 				final ExposedPortModel selectedContainerPort = (ExposedPortModel) selection
 						.getFirstElement();
@@ -732,7 +748,7 @@ public class ImageRunSelectionPage extends WizardPage {
 							.setHostAddress(configuredPort.getHostAddress());
 					selectedContainerPort
 							.setHostPort(configuredPort.getHostPort());
-					portsTableViewer.refresh();
+					exposedPortsTableViewer.refresh();
 				}
 			}
 		};
@@ -749,7 +765,9 @@ public class ImageRunSelectionPage extends WizardPage {
 				for (@SuppressWarnings("unchecked")
 				Iterator<ExposedPortModel> iterator = selection
 						.iterator(); iterator.hasNext();) {
-					model.removeAvailablePort(iterator.next());
+					final ExposedPortModel port = iterator.next();
+					model.removeAvailablePort(port);
+					model.getSelectedPorts().remove(port);
 				}
 			}
 		};
@@ -770,17 +788,18 @@ public class ImageRunSelectionPage extends WizardPage {
 			getContainer().run(true, true, findImageInfoRunnable);
 			final IDockerImageInfo selectedImageInfo = findImageInfoRunnable
 					.getResult();
-			final Set<String> exposedPorts = selectedImageInfo.config()
+			final Set<String> exposedPortInfos = selectedImageInfo.config()
 					.exposedPorts();
 			final WritableList availablePorts = new WritableList();
-			if (exposedPorts != null) {
-				for (String exposedPort : exposedPorts) {
-					final String privatePort = exposedPort.substring(0,
-							exposedPort.indexOf('/'));
-					final String type = exposedPort
-							.substring(exposedPort.indexOf('/')); // $NON-NLS-1$
-					availablePorts.add(
-							new ExposedPortModel(privatePort, type, "", "")); //$NON-NLS-1$
+			if (exposedPortInfos != null) {
+				for (String exposedPortInfo : exposedPortInfos) {
+					final String privatePort = exposedPortInfo.substring(0,
+							exposedPortInfo.indexOf('/'));
+					final String type = exposedPortInfo
+							.substring(exposedPortInfo.indexOf('/')); // $NON-NLS-1$
+					final ExposedPortModel exposedPort = new ExposedPortModel(
+							privatePort, type, "", privatePort);
+					availablePorts.add(exposedPort); // $NON-NLS-1$
 				}
 			}
 			model.setExposedPorts(availablePorts);
