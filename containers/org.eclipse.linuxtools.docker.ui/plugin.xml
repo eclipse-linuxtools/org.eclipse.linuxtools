@@ -1279,5 +1279,32 @@
        </view>
     </perspectiveExtension>
  </extension>
-
+ <extension
+       point="org.eclipse.debug.core.launchConfigurationTypes">
+    <launchConfigurationType
+          delegate="org.eclipse.linuxtools.internal.docker.ui.launch.BuildDockerImageLaunchConfigurationDelegate"
+          id="org.eclipse.linuxtools.docker.ui.buildDockerImageLaunchConfigurationType"
+          modes="run"
+          name="%BuildDockerImageLaunchConfigType.name">
+    </launchConfigurationType>
+ </extension>
+ <extension
+       point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+    <launchConfigurationTypeImage
+          configTypeID="org.eclipse.linuxtools.docker.ui.buildDockerImageLaunchConfigurationType"
+          icon="icons/image.png"
+          id="org.eclipse.linuxtools.docker.ui.buildDockerImageLaunchConfigurationTypeImage">
+    </launchConfigurationTypeImage>
+ </extension>
+ <extension
+       point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    <launchConfigurationTabGroup
+          class="org.eclipse.linuxtools.internal.docker.ui.launch.BuildDockerImageLaunchConfigurationTabGroup"
+          id="org.eclipse.linuxtools.docker.ui.buildDockerImageLaunchConfigurationTypeTabGroup"
+          type="org.eclipse.linuxtools.docker.ui.buildDockerImageLaunchConfigurationType">
+       <launchMode
+             mode="run">
+       </launchMode>
+    </launchConfigurationTabGroup>
+ </extension>
 </plugin>

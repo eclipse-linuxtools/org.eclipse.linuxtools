@@ -168,6 +168,9 @@ public interface IDockerConnection {
 
 	void tagImage(String name, String newTag) throws DockerException, InterruptedException;
 
+	String buildImage(IPath path, IDockerProgressHandler handler)
+			throws DockerException, InterruptedException;
+
 	String buildImage(IPath path, String name, IDockerProgressHandler handler)
 			throws DockerException, InterruptedException;
 

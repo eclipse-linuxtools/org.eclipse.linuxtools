@@ -1071,9 +1071,26 @@ public class DockerConnection implements IDockerConnection {
 	}
 
 	@Override
+	public String buildImage(final IPath path,
+			final IDockerProgressHandler handler)
+					throws DockerException, InterruptedException {
+		try {
+			final DockerProgressHandler d = new DockerProgressHandler(handler);
+			final java.nio.file.Path p = FileSystems.getDefault()
+					.getPath(path.makeAbsolute().toOSString());
+			return client.build(p, d, BuildParameter.FORCE_RM);
+		} catch (com.spotify.docker.client.DockerRequestException e) {
+			throw new DockerException(e.message());
+		} catch (com.spotify.docker.client.DockerException | IOException e) {
+			DockerException f = new DockerException(e);
+			throw f;
+		}
+	}
+
+	@Override
 	public String buildImage(final IPath path, final String name,
-			final IDockerProgressHandler handler) throws DockerException,
-			InterruptedException {
+			final IDockerProgressHandler handler)
+					throws DockerException, InterruptedException {
 		try {
 			DockerProgressHandler d = new DockerProgressHandler(handler);
 			java.nio.file.Path p = FileSystems.getDefault().getPath(

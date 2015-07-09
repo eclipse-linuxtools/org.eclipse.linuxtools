@@ -35,6 +35,11 @@ public class DockerImageBuildFailedException extends DockerException {
 		this.image = image;
 	}
 
+	public DockerImageBuildFailedException(final String message) {
+		super(Messages.Image_Build_Failed_Header + message);
+		this.image = null;
+	}
+
 	public DockerImageBuildFailedException(final String image,
 			final String message) {
 		super(Messages.Image_Build_Failed_Header + image + ": " + message);
