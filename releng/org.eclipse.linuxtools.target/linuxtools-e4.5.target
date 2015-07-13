@@ -12,7 +12,7 @@
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.cdt.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.cdt.autotools.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/tools/cdt/builds/mars/milestones/"/>
+<repository location="http://download.eclipse.org/tools/cdt/releases/8.7/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.platform.ide" version="0.0.0"/>
@@ -20,7 +20,7 @@
 <unit id="org.eclipse.jdt.core" version="0.0.0"/>
 <unit id="org.eclipse.jdt.debug.ui" version="0.0.0"/>
 <unit id="org.eclipse.jdt.ui" version="0.0.0"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.5milestones"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.5"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.dstore.core" version="0.0.0"/>
@@ -28,11 +28,11 @@
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.ptp.rdt.sync.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/tools/ptp/builds/mars/milestones"/>
+<repository location="http://download.eclipse.org/tools/ptp/updates/mars/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.remote.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/tools/ptp/builds/remote/mars/milestones"/>
+<repository location="http://download.eclipse.org/tools/ptp/updates/remote/mars/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.swtbot.eclipse.feature.group" version="0.0.0"/>
@@ -45,11 +45,8 @@
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.zest.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/tools/gef/updates/releases/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jgit.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/egit/staging/v4.0.0.201505260635-rc2/"/>
+<repository location="http://download.eclipse.org/releases/mars/"/>
 </location>
 </locations>
 <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
