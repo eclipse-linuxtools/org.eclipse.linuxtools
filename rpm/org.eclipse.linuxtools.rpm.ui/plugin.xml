@@ -305,4 +305,11 @@
         </enablement>
      </consolePageParticipant>
   </extension>
+  <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.eclipse.linuxtools.internal.rpm.ui.MainPage"
+            id="org.eclipse.linuxtools.rpm.ui.mainpage"
+            name="%category.name.0"/>
+      </extension>
 </plugin>

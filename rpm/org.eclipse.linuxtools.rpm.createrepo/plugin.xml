@@ -98,6 +98,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
+            category="org.eclipse.linuxtools.rpm.ui.mainpage"
             class="org.eclipse.linuxtools.internal.rpm.createrepo.preference.CreaterepoPreferencePage"
             id="org.eclipse.linuxtools.rpm.createrepo.preferences"
             name="%main.name">

@@ -144,7 +144,8 @@
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
-      <page
+      <page 
+            category="org.eclipse.linuxtools.rpm.ui.mainpage"
             class="org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.MainPreferencePage"
             id="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
             name="%page.name"/>
