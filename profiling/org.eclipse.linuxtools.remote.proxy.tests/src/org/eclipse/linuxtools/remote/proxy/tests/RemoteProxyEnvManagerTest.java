@@ -30,8 +30,8 @@ import org.junit.Test;
 public class RemoteProxyEnvManagerTest extends AbstractProxyTest {
 	@Test
 	public void testGetEnv() {
-		Map<String, String> actualEnv = new HashMap<String, String>();
-		Map<String, String> expectedEnv = new HashMap<String, String>();
+		Map<String, String> actualEnv = new HashMap<>();
+		Map<String, String> expectedEnv = new HashMap<>();
 		IRemoteEnvProxyManager proxy = new RemoteEnvProxyManager();
 
 		/*
