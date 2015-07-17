@@ -11,10 +11,9 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="org.eclipse.linuxtools.javadocs.preferences1"
             class="org.eclipse.linuxtools.internal.javadocs.ui.preferences.JavaDocPreferencePage"
             id="org.eclipse.linuxtools.internal.javadocs.ui.page1"
-            name="Javadoc Preferences">
+            name="%page.name">
       </page>
    </extension>
    <extension
