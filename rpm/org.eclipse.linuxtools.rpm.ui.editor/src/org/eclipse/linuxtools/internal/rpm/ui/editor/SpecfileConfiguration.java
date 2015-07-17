@@ -124,9 +124,6 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getTextHover(org.eclipse.jface.text.source.ISourceViewer, java.lang.String)
-     */
     @Override
     public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
         if (specfileHover == null) {
@@ -135,9 +132,6 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
         return specfileHover;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getPresentationReconciler(org.eclipse.jface.text.source.ISourceViewer)
-     */
     @Override
     public IPresentationReconciler getPresentationReconciler(ISourceViewer sourceViewer) {
         PresentationReconciler reconciler = new PresentationReconciler();
@@ -173,9 +167,6 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
         return reconciler;
     }
 
-    /*
-     * @see SourceViewerConfiguration#getReconciler(ISourceViewer)
-     */
     @Override
     public IReconciler getReconciler(ISourceViewer sourceViewer) {
         if (editor != null && editor.isEditable()) {
@@ -188,9 +179,6 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
         return null;
     }
 
-    /*
-     * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getContentAssistant(org.eclipse.jface.text.source.ISourceViewer)
-     */
     @Override
     public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
         ContentAssistant assistant= new ContentAssistant();
@@ -223,9 +211,6 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
         };
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getHyperlinkDetectors(org.eclipse.jface.text.source.ISourceViewer)
-     */
     @Override
     public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
         if (sourceViewer == null) {
@@ -261,9 +246,6 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getHyperlinkDetectorTargets(org.eclipse.jface.text.source.ISourceViewer)
-     */
     @Override
     protected Map getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
         Map<String, Object> targets= super.getHyperlinkDetectorTargets(sourceViewer);
@@ -282,13 +264,6 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
                 PreferenceConstants.P_SPACES_FOR_TABS);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.eclipse.jface.text.source.SourceViewerConfiguration#getAutoEditStrategies
-     * (org.eclipse.jface.text.source.ISourceViewer, java.lang.String)
-     */
     @Override
     public IAutoEditStrategy[] getAutoEditStrategies(
             ISourceViewer sourceViewer, String contentType) {

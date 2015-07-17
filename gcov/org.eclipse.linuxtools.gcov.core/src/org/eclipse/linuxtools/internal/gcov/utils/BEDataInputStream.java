@@ -30,50 +30,30 @@ public class BEDataInputStream implements DataInput {
     }
 
 
-    /*
-     * (non-Javadoc)
-     * @see java.io.DataInput#readShort()
-     */
     @Override
     public final short readShort() throws IOException
     {
         return in.readShort();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.io.DataInput#readUnsignedShort()
-     */
     @Override
     public final int readUnsignedShort() throws IOException
     {
         return in.readUnsignedShort();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.io.DataInput#readChar()
-     */
     @Override
     public final char readChar() throws IOException
     {
         return in.readChar();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.io.DataInput#readInt()
-     */
     @Override
     public final int readInt() throws IOException
     {
         return in.readInt();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.io.DataInput#readLong()
-     */
     @Override
     public final long readLong() throws IOException
     {
@@ -88,94 +68,54 @@ public class BEDataInputStream implements DataInput {
                 ((buffer[0] & 255) <<  24));
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.io.DataInput#readFloat()
-     */
     @Override
     public final float readFloat() throws IOException
     {
         return Float.intBitsToFloat(readInt());
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.io.DataInput#readDouble()
-     */
     @Override
     public final double readDouble() throws IOException
     {
         return Double.longBitsToDouble(readLong());
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.io.DataInput#readBoolean()
-     */
     @Override
     public boolean readBoolean() throws IOException {
         return in.readBoolean();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.io.DataInput#readByte()
-     */
     @Override
     public byte readByte() throws IOException {
         return in.readByte();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.io.DataInput#readFully(byte[])
-     */
     @Override
     public void readFully(byte[] b) throws IOException {
         in.readFully(b);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.io.DataInput#readFully(byte[], int, int)
-     */
     @Override
     public void readFully(byte[] b, int off, int len) throws IOException {
         in.readFully(b,off,len);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.io.DataInput#readLine()
-     */
     @Override
     @Deprecated
     public String readLine() throws IOException {
         return in.readLine();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.io.DataInput#readUTF()
-     */
     @Override
     public String readUTF() throws IOException {
         return in.readUTF();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.io.DataInput#readUnsignedByte()
-     */
     @Override
     public int readUnsignedByte() throws IOException {
         return in.readUnsignedByte();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.io.DataInput#skipBytes(int)
-     */
     @Override
     public int skipBytes(int n) throws IOException {
         return in.skipBytes(n);
@@ -200,7 +140,4 @@ public class BEDataInputStream implements DataInput {
         )
          & MasksGenerator.UNSIGNED_INT_MASK );
     }
-
-
-
 }

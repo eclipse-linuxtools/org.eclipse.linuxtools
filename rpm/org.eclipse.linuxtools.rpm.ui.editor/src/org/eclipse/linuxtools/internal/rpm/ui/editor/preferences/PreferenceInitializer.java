@@ -20,12 +20,6 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
-    /*
-     * (non-Javadoc)
-     *
-     * @seeorg.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#
-     * initializeDefaultPreferences()
-     */
     @Override
     public void initializeDefaultPreferences() {
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();

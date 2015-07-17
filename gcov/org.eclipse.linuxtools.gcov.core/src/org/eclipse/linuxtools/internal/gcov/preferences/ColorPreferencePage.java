@@ -77,23 +77,12 @@ public class ColorPreferencePage extends FieldEditorPreferencePage implements IW
         fcfeMin.setEnabled(useGradient, this.getFieldEditorParent());
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.preference.FieldEditorPreferencePage#initialize()
-     */
     @Override
     protected void initialize() {
         super.initialize();
         update();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.eclipse.jface.preference.FieldEditorPreferencePage#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
-     */
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         super.propertyChange(event);

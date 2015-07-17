@@ -20,9 +20,6 @@ public class ValgrindOutputDirectoryProvider implements IValgrindOutputDirectory
         outputPath = ValgrindLaunchPlugin.getDefault().getStateLocation();
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.linuxtools.valgrind.launch.IValgrindOutputDirectoryProvider#getOutputPath()
-     */
     @Override
     public IPath getOutputPath() {
         return outputPath;

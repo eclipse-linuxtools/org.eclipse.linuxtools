@@ -20,11 +20,6 @@ import org.eclipse.linuxtools.cdt.libhover.LibhoverPlugin;
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
-     */
     @Override
     public void initializeDefaultPreferences() {
         IPreferenceStore store = LibhoverPlugin.getDefault().getPreferenceStore();

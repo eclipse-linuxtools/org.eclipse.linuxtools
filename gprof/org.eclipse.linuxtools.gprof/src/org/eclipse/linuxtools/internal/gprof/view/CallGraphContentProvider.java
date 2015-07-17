@@ -36,10 +36,6 @@ public class CallGraphContentProvider implements ITreeContentProvider {
     private CallGraphContentProvider() {
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
-     */
     @Override
     public Object[] getChildren(Object parentElement) {
         if (parentElement instanceof HistRoot) {
@@ -80,10 +76,6 @@ public class CallGraphContentProvider implements ITreeContentProvider {
         return ret;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
-     */
     @Override
     public TreeElement getParent(Object element) {
         if (element instanceof TreeElement) {
@@ -96,10 +88,6 @@ public class CallGraphContentProvider implements ITreeContentProvider {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
-     */
     @Override
     public boolean hasChildren(Object parentElement) {
         if (parentElement instanceof HistRoot) {
@@ -120,10 +108,6 @@ public class CallGraphContentProvider implements ITreeContentProvider {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-     */
     @Override
     public Object[] getElements(Object inputElement) {
         if (inputElement instanceof GmonDecoder) {
@@ -134,18 +118,10 @@ public class CallGraphContentProvider implements ITreeContentProvider {
         return new Object[0];
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-     */
     @Override
     public void dispose() {
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
-     */
     @Override
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
     }

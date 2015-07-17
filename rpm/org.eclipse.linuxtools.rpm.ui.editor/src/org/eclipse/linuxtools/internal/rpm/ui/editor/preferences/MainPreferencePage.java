@@ -92,9 +92,6 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
         });
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
-     */
     @Override
     public void createFieldEditors() {
         GridData data = new GridData();
@@ -123,17 +120,11 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
         addField(numEditor);
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-     */
     @Override
     public void init(IWorkbench workbench) {
 
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.preference.FieldEditorPreferencePage#performDefaults()
-     */
     @Override
     protected void performDefaults() {
         super.performDefaults();

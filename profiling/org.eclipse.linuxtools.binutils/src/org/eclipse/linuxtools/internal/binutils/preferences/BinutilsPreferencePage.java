@@ -59,10 +59,6 @@ public class BinutilsPreferencePage extends FieldEditorPreferencePage implements
         this.addField(fnmArgs);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.preference.PreferencePage#performOk()
-     */
     @Override
     public boolean performOk() {
         STSymbolManager.sharedInstance.reset();

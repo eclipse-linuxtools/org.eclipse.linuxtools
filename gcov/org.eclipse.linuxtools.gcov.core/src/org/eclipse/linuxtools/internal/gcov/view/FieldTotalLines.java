@@ -17,11 +17,8 @@ import org.eclipse.linuxtools.internal.gcov.model.TreeElement;
 import org.eclipse.osgi.util.NLS;
 
 public class FieldTotalLines extends AbstractSTDataViewersField {
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getColumnHeaderText()
-     */
-    @Override
+
+	@Override
     public String getColumnHeaderText() {
         return Messages.FieldTotalLines_column_header;
     }
@@ -33,10 +30,6 @@ public class FieldTotalLines extends AbstractSTDataViewersField {
         return -1;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getValue(java.lang.Object)
-     */
     @Override
     public String getValue(Object obj) {
         int v = getTotalLines(obj);
@@ -46,11 +39,6 @@ public class FieldTotalLines extends AbstractSTDataViewersField {
         return NumberFormat.getInstance().format(v);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTDataViewersField#getToolTipText(java.lang.Object)
-     */
     @Override
     public String getToolTipText(Object element) {
         int v = getTotalLines(element);
@@ -67,11 +55,6 @@ public class FieldTotalLines extends AbstractSTDataViewersField {
         return message;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#compare(java.lang.Object,
-     * java.lang.Object)
-     */
     @Override
     public int compare(Object obj1, Object obj2) {
         int i1 = getTotalLines(obj1);

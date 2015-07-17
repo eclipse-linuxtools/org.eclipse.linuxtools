@@ -49,11 +49,6 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
         setPreferenceStore(Activator.getDefault().getPreferenceStore());
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
-     */
     @Override
     public void createFieldEditors() {
         rpmtools = rpmtoolsRadioGroupFieldEditor();
@@ -67,11 +62,6 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
         addField(buildTimeListRateFieldEditor());
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createContents(org.eclipse.swt.widgets.Composite)
-     */
     @Override
     protected Control createContents(final Composite parent) {
         Link link= new Link(parent, SWT.NONE);
@@ -130,19 +120,11 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
         return buildListTimeRateRadioGroupEditor;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-     */
     @Override
     public void init(IWorkbench workbench) {
 
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.preference.FieldEditorPreferencePage#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
-     */
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         super.propertyChange(event);

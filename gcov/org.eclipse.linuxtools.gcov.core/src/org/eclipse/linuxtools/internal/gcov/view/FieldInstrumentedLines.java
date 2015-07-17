@@ -18,30 +18,17 @@ import org.eclipse.linuxtools.internal.gcov.model.TreeElement;
 
 public class FieldInstrumentedLines extends AbstractSTDataViewersField implements IChartField {
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getColumnHeaderText()
-     */
     @Override
     public String getColumnHeaderText() {
         return Messages.FieldInstrumentedLines_column_header;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#getValue(java.lang.Object)
-     */
     @Override
     public String getValue(Object obj) {
         int v = getInstrumentedLines(obj);
         return NumberFormat.getInstance().format(v);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTDataViewersField#getToolTipText(java.lang.Object)
-     */
     @Override
     public String getToolTipText(Object element) {
         int v = getInstrumentedLines(element);
@@ -52,11 +39,6 @@ public class FieldInstrumentedLines extends AbstractSTDataViewersField implement
         return s;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#compare(java.lang.Object,
-     * java.lang.Object)
-     */
     @Override
     public int compare(Object obj1, Object obj2) {
         int i1 = getInstrumentedLines(obj1);
@@ -77,10 +59,6 @@ public class FieldInstrumentedLines extends AbstractSTDataViewersField implement
         return 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.linuxtools.dataviewers.charts.provider.IChartField#getNumber(java.lang.Object)
-     */
     @Override
     public Integer getNumber(Object obj) {
         return getInstrumentedLines(obj);

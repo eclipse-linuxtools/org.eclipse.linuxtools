@@ -94,9 +94,6 @@ public class ChangeLogContainerSelectionDialog extends SelectionDialog {
         setShellStyle(getShellStyle() | SWT.SHEET);
     }
 
-    /* (non-Javadoc)
-     * Method declared in Window.
-     */
     @Override
     protected void configureShell(Shell shell) {
         super.configureShell(shell);
@@ -104,9 +101,6 @@ public class ChangeLogContainerSelectionDialog extends SelectionDialog {
                 .setHelp(shell, CONTAINER_SELECTION_DIALOG);
     }
 
-    /* (non-Javadoc)
-     * Method declared on Dialog.
-     */
     @Override
     protected Control createDialogArea(Composite parent) {
         // create composite

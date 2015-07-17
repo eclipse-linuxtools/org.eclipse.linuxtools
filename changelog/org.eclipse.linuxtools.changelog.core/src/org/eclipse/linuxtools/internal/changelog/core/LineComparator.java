@@ -122,17 +122,11 @@ public class LineComparator implements IRangeComparator {
         fLines = ar.toArray(new String[ar.size()]);
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.compare.rangedifferencer.IRangeComparator#getRangeCount()
-     */
     @Override
     public int getRangeCount() {
         return fLines.length;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.compare.rangedifferencer.IRangeComparator#rangesEqual(int, org.eclipse.compare.rangedifferencer.IRangeComparator, int)
-     */
     @Override
     public boolean rangesEqual(int thisIndex, IRangeComparator other,
             int otherIndex) {
@@ -141,9 +135,6 @@ public class LineComparator implements IRangeComparator {
         return s1.equals(s2);
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.compare.rangedifferencer.IRangeComparator#skipRangeComparison(int, int, org.eclipse.compare.rangedifferencer.IRangeComparator)
-     */
     @Override
     public boolean skipRangeComparison(int length, int maxLength, IRangeComparator other) {
         return false;

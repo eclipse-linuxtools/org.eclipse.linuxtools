@@ -48,10 +48,6 @@ public class FieldCoveragePercentage extends AbstractPercentageDrawerField imple
         return e.getCoveragePercentage();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractPercentageDrawerField#getNumberFormat()
-     */
     @Override
     public NumberFormat getNumberFormat() {
         return nf;
@@ -70,11 +66,6 @@ public class FieldCoveragePercentage extends AbstractPercentageDrawerField imple
         return s;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField#compare(java.lang.Object,
-     * java.lang.Object)
-     */
     @Override
     public int compare(Object obj1, Object obj2) {
         TreeElement e1 = (TreeElement) obj1;
@@ -84,10 +75,6 @@ public class FieldCoveragePercentage extends AbstractPercentageDrawerField imple
         return Float.compare(f1, f2);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.linuxtools.dataviewers.charts.provider.IChartField#getNumber(java.lang.Object)
-     */
     @Override
     public Number getNumber(Object obj) {
         TreeElement e = (TreeElement) obj;

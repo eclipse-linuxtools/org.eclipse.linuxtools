@@ -69,22 +69,12 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
             file.delete();
         }
     }
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getContents()
-     */
+
     @Override
     protected String getContents() {
         return "Requires: test_underscore\n%{name}\n# Requires:\n";
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getScanner()
-     */
     @Override
     protected RuleBasedScanner getScanner() {
         return scanner;

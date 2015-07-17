@@ -238,10 +238,6 @@ public class CovView extends AbstractSTDataView {
         return cvrgeView;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.linuxtools.dataviewers.abstractview.AbstractSTDataView#createExportToCSVAction()
-     */
     @Override
     protected IAction createExportToCSVAction() {
         IAction action = new STExportToCSVAction(this.getSTViewer()) {

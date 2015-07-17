@@ -30,12 +30,6 @@ public class LoggingPreferencePage extends FieldEditorPreferencePage implements
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
 	@Override
 	public void init(IWorkbench workbench) {
 		// TODO Auto-generated method stub

@@ -46,41 +46,26 @@ public class DockerImageSearchResult implements IDockerImageSearchResult {
 		this.starCount = starCount;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.docker.core.IDockerImageSearchResult#getDescription()
-	 */
 	@Override
 	public String getDescription() {
 		return description;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.docker.core.IDockerImageSearchResult#isOfficial()
-	 */
 	@Override
 	public boolean isOfficial() {
 		return official;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.docker.core.IDockerImageSearchResult#isAutomated()
-	 */
 	@Override
 	public boolean isAutomated() {
 		return automated;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.docker.core.IDockerImageSearchResult#getName()
-	 */
 	@Override
 	public String getName() {
 		return name;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.linuxtools.internal.docker.core.IDockerImageSearchResult#getStarCount()
-	 */
 	@Override
 	public int getStarCount() {
 		return starCount;

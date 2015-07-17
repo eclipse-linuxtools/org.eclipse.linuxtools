@@ -59,21 +59,11 @@ public final class RpmPackageBuildProposalsJob extends Job {
 
     protected static final IPreferenceStore STORE = Activator.getDefault().getPreferenceStore();
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     protected IStatus run(IProgressMonitor monitor) {
         return retrievePackageList(monitor);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.core.runtime.jobs.Job#shouldSchedule()
-     */
     @Override
     public boolean shouldSchedule() {
         return equals(job);

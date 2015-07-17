@@ -77,11 +77,6 @@ public class NewDockerConnectionPage extends WizardPage {
 		setMessage(WizardMessages.getString("NewDockerConnectionPage.msg")); //$NON-NLS-1$
 	}
 
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-	 */
 	@Override
 	public void createControl(final Composite parent) {
 		final Composite container = new Composite(parent, SWT.NONE);

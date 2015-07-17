@@ -220,9 +220,6 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 
     }
 
-    /*
-     * (non-Javadoc) Method declared on PreferencePage
-     */
     @Override
     protected void performDefaults() {
         super.performDefaults();
@@ -230,9 +227,6 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 
     }
 
-    /*
-     * (non-Javadoc) Method declared on PreferencePage
-     */
     @SuppressWarnings("deprecation")
     @Override
     public boolean performOk() {

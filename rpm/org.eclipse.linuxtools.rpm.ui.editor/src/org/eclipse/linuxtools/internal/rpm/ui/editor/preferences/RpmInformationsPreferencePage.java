@@ -32,9 +32,6 @@ IWorkbenchPreferencePage{
             setPreferenceStore(Activator.getDefault().getPreferenceStore());
         }
 
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
-         */
         @Override
         public void createFieldEditors() {
             addField(maxProposalsIntegerFieldEditor());
@@ -63,9 +60,6 @@ IWorkbenchPreferencePage{
             return maxProposalsFieldEditor;
         }
 
-        /* (non-Javadoc)
-         * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-         */
         @Override
         public void init(IWorkbench workbench) {
         }

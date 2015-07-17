@@ -84,10 +84,6 @@ public abstract class AbstractTreeElement implements TreeElement {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.linuxtools.internal.gprof.view.histogram.TreeElement#getRoot()
-     */
     @Override
     public TreeElement getRoot() {
         if (parent == null) {

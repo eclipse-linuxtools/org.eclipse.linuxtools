@@ -37,22 +37,11 @@ public class SpecfileChangelogScannerTest extends AScannerTest {
         scanner = new SpecfileChangelogScanner(new ColorManager());
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getContents()
-     */
     @Override
     protected String getContents() {
         return "%changelog <toto@test.com> - 1.1-4";
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getScanner()
-     */
     @Override
     protected RuleBasedScanner getScanner() {
         return scanner;

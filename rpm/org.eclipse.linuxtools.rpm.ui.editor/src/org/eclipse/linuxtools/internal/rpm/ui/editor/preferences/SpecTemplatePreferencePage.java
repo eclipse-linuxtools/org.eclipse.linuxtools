@@ -32,18 +32,12 @@ public class SpecTemplatePreferencePage extends TemplatePreferencePage {
         setContextTypeRegistry(Activator.getDefault().getContextTypeRegistry());
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.texteditor.templates.TemplatePreferencePage#isShowFormatterSetting()
-     */
     @Override
     protected boolean isShowFormatterSetting() {
         return true;
     }
 
 
-    /**
-     * @see org.eclipse.ui.texteditor.templates.TemplatePreferencePage#performOk()
-     */
     @Override
     public boolean performOk() {
         boolean ok= super.performOk();
