@@ -228,6 +228,8 @@ public class PerfCore {
             perfVersion = perfVersion.substring(0, index);
         }
         perfVersion = perfVersion.replace("perf version", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+        if (perfVersion.length() == 0)
+        	return null;
         return new Version(perfVersion);
     }
 
