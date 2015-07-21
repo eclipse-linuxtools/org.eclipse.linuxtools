@@ -474,7 +474,7 @@ public class NewDockerConnectionPage extends WizardPage {
 				}
 				try {
 					final Boolean result = resultQueue.poll(5000, TimeUnit.MILLISECONDS);
-					if(result) {
+					if (result != null && result) {
 						new MessageDialog(Display.getDefault().getActiveShell(),
 								WizardMessages.getString(
 										"NewDockerConnectionPage.success"), //$NON-NLS-1$
