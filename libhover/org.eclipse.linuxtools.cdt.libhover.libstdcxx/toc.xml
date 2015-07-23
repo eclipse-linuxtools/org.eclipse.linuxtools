@@ -2,6 +2,6 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="libstdc++ library" link_to="../org.eclipse.linuxtools.cdt.libhover.library.docs/libraries.xml#moreclibdocs">
-    <topic href="http://gcc.gnu.org/onlinedocs/libstdc++/manual/spine.html" label="libstdc++">
+    <topic href="https://gcc.gnu.org/onlinedocs/libstdc++/manual/index.html" label="libstdc++">
  </topic>
 </toc>

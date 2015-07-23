@@ -6,7 +6,7 @@
          name="Libstdc++ Library"
          point="org.eclipse.linuxtools.cdt.libhover.library">
       <library
-            docs="http://gcc.gnu.org/onlinedocs/libstdc++/manual/spine.html"
+            docs="https://gcc.gnu.org/onlinedocs/libstdc++/manual/index.html"
             location="http://www.sourceware.org/eclipse/libhover/libstdc++-v3.libhover"
             name="libstdc++ library"
             type="C++">
