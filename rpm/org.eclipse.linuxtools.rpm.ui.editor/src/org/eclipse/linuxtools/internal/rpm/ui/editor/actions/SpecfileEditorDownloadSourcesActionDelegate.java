@@ -47,7 +47,7 @@ public class SpecfileEditorDownloadSourcesActionDelegate extends AbstractHandler
         final IResource resource = RPMHandlerUtils.getResource(event);
         final RPMProject rpj = RPMHandlerUtils.getRPMProject(resource);
         final IFile workFile = (IFile) rpj.getSpecFile();
-        final Specfile specfile = specparser.parse(workFile);
+        final Specfile specfile = workFile != null ? specparser.parse(workFile) : null;
 
         // retrieve source(s) from specfile
         final List<SpecfileSource> sourceURLList = specfile != null ? (List<SpecfileSource>) specfile
