@@ -51,9 +51,6 @@ public class SymbolsProcessor extends XMLProcessor {
         symbols = new ArrayList<>();
     }
 
-    /**
-     * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#startElement(String, Attributes)
-     */
     @Override
     public void startElement(String name, Attributes attrs, Object callData) {
         if (name.equals(SYMBOL_TAG)) {
@@ -66,9 +63,6 @@ public class SymbolsProcessor extends XMLProcessor {
         }
     }
 
-    /**
-     * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
-     */
     @Override
     public void endElement(String name, Object callData) {
         if (name.equals(SYMBOL_TAG)) {

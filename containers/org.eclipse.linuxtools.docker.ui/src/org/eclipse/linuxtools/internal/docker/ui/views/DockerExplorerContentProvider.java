@@ -35,26 +35,15 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 	
 	private TreeViewer viewer;
 	
-	/**
-	 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-	 */
 	@Override
 	public void dispose() {
 	}
 
-	/**
-	 * @see
-	 * org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface
-	 * .viewers.Viewer, java.lang.Object, java.lang.Object)
-	 */
 	@Override
 	public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
 		this.viewer = (TreeViewer)viewer;
 	}
 
-	/**
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.Object)
-	 */
 	@Override
 	public Object[] getElements(final Object inputElement) {
 		if (inputElement instanceof DockerConnectionManager) {
@@ -64,9 +53,6 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 		return EMPTY;
 	}
 
-	/**
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
-	 */
 	@Override
 	public Object[] getChildren(final Object parentElement) {
 		if (parentElement instanceof IDockerConnection) {
@@ -141,9 +127,6 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 		loadImagesJob.schedule();
 	}
 	
-	/**
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
-	 */
 	@Override
 	public Object getParent(final Object element) {
 		if (element instanceof DockerImagesCategory) {
@@ -154,9 +137,6 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 		return null;
 	}
 
-	/**
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
-	 */
 	@Override
 	public boolean hasChildren(final Object element) {
 		return (element instanceof IDockerConnection || element instanceof DockerContainersCategory || element instanceof DockerImagesCategory);

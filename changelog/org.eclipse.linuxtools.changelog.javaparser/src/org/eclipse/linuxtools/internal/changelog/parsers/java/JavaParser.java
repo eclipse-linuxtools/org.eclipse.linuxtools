@@ -32,9 +32,6 @@ public class JavaParser implements IParserChangeLogContrib {
 
     public static final String STATIC_INITIALIZER_NAME = "static initializer";
 
-    /**
-     * @see IParserChangeLogContrib#parseCurrentFunction(IEditorPart)
-     */
     @Override
     public String parseCurrentFunction(IEditorInput input, int offset)
             throws CoreException {
@@ -142,9 +139,6 @@ public class JavaParser implements IParserChangeLogContrib {
         return "";
     }
 
-    /**
-     * @see IParserChangeLogContrib#parseCurrentFunction(IEditorInput, int)
-     */
     @Override
     public String parseCurrentFunction(IEditorPart editor) throws CoreException {
 

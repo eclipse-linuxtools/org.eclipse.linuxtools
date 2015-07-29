@@ -196,17 +196,11 @@ public final class STPHeuristicScanner implements STPSymbols {
             Arrays.sort(chars);
         }
 
-        /*
-         * @see org.eclipse.cdt.internal.ui.text.CHeuristicScanner.StopCondition#stop(char, int)
-         */
         @Override
         public boolean stop(char ch, int position, boolean forward) {
             return Arrays.binarySearch(fChars, ch) >= 0 && isDefaultPartition(position);
         }
 
-        /*
-         * @see org.eclipse.cdt.internal.ui.text.CHeuristicScanner.StopCondition#nextPosition(int, boolean)
-         */
         @Override
         public int nextPosition(int position, boolean forward) {
             ITypedRegion partition= getPartition(position);

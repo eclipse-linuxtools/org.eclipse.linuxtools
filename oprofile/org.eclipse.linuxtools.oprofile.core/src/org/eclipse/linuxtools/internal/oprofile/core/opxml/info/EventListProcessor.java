@@ -47,17 +47,11 @@ public class EventListProcessor extends XMLProcessor {
     private static class MaskProcessor extends XMLProcessor {
         private OpUnitMask.MaskInfo info;
 
-        /**
-         * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#reset()
-         */
         @Override
         public void reset(Object callData) {
             info = new OpUnitMask.MaskInfo();
         }
 
-        /**
-         * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
-         */
         @Override
         public void endElement(String name, Object callData) {
             if (name.equals(VALUE_TAG)) {
@@ -107,18 +101,12 @@ public class EventListProcessor extends XMLProcessor {
             masks = new ArrayList<>();
         }
 
-        /**
-         * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#reset()
-         */
         @Override
         public void reset(Object callData) {
             unitMask = new OpUnitMask();
             masks.clear();
         }
 
-        /**
-         * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#startElement(String, Attributes)
-         */
         @Override
         public void startElement(String name, Attributes attrs, Object callData) {
             if (name.equals(MASK_TAG)) {
@@ -129,9 +117,6 @@ public class EventListProcessor extends XMLProcessor {
             }
         }
 
-        /**
-         * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
-         */
         @Override
         public void endElement(String name, Object callData) {
             if (name.equals(MASK_TYPE_TAG)) {
@@ -189,9 +174,6 @@ public class EventListProcessor extends XMLProcessor {
         currentEventList = new ArrayList<>();
     }
 
-    /**
-     * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#startElement(String, Attributes)
-     */
     @Override
     public void startElement(String name, Attributes attrs, Object callData) {
         if (name.equals(EVENT_TAG)) {
@@ -208,9 +190,6 @@ public class EventListProcessor extends XMLProcessor {
         }
     }
 
-    /**
-     * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
-     */
     @Override
     public void endElement(String name, Object callData) {
         if (name.equals(EVENT_TAG)) {

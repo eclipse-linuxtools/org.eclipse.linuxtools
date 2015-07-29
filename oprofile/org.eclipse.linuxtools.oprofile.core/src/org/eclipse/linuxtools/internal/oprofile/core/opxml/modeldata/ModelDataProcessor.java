@@ -52,9 +52,6 @@ public class ModelDataProcessor extends XMLProcessor {
         image = ((CallData) callData).opModelImage;
         imgSeen = 0;
     }
-    /**
-     * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor#startElement()
-     */
     @Override
     public void startElement(String name, Attributes attrs, Object callData) {
         if (name.equals(IMAGE_TAG)) {
@@ -74,9 +71,6 @@ public class ModelDataProcessor extends XMLProcessor {
         }
     }
 
-    /**
-     * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor#endElement()
-     */
     @Override
     public void endElement(String name, Object callData) {
         if (name.equals(IMAGE_TAG)) {

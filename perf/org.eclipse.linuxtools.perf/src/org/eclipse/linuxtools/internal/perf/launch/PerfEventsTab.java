@@ -64,10 +64,6 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
     private Composite top;
     private IProject previousProject = null;
 
-
-    /**
-     * @see org.eclipse.debug.ui.ILaunchConfigurationTab#getImage()
-     */
     @Override
     public Image getImage() {
         return PerfPlugin.getImageDescriptor("icons/event.gif").createImage(); //$NON-NLS-1$

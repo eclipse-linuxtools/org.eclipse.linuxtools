@@ -36,10 +36,6 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 
     private SpecfileEditor editor;
 
-    /*
-     * @see org.eclipse.jface.text.hyperlink.IHyperlinkDetector#detectHyperlinks(org.eclipse.jface.text.ITextViewer,
-     *      org.eclipse.jface.text.IRegion, boolean)
-     */
     @Override
     public IHyperlink[] detectHyperlinks(ITextViewer textViewer, IRegion region, boolean canShowMultipleHyperlinks) {
         if (region == null || textViewer == null) {

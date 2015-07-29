@@ -42,10 +42,6 @@ public class RPMExportOperation extends Job {
         this.exportType = BuildType.valueOf(exportType);
     }
 
-    /**
-     * @see org.eclipse.jface.operation.IRunnableWithProgress#run(IProgressMonitor)
-     *
-     */
     @Override
     public IStatus run(IProgressMonitor monitor) {
         IStatus result = null;

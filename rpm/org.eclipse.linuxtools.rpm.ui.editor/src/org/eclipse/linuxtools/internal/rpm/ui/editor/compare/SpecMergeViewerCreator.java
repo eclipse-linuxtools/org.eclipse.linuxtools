@@ -21,10 +21,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class SpecMergeViewerCreator implements IViewerCreator {
 
-    /**
-     * @see org.eclipse.compare.IViewerCreator#createViewer(org.eclipse.swt.widgets
-     *      .Composite, org.eclipse.compare.CompareConfiguration)
-     */
     @Override
     public Viewer createViewer(Composite parent, CompareConfiguration config) {
         return new SpecMergeViewer(parent, config);

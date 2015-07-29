@@ -49,9 +49,6 @@ public class DependentProcessor extends XMLProcessor {
         image = new OpModelImage();
         imageList = new ArrayList<>();
     }
-    /**
-     * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#startElement(String)
-     */
     @Override
     public void startElement(String name, Attributes attrs, Object callData) {
         if (name.equals(IMAGE_TAG)) {
@@ -61,9 +58,6 @@ public class DependentProcessor extends XMLProcessor {
             OprofileSAXHandler.getInstance(callData).push(_symbolsProcessor);
         }
     }
-    /**
-     * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
-     */
     @Override
     public void endElement(String name, Object callData) {
         if (name.equals(IMAGE_TAG)) {

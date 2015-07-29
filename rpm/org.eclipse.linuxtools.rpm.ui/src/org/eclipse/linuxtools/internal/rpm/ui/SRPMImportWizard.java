@@ -25,18 +25,11 @@ import org.eclipse.ui.IWorkbench;
 public class SRPMImportWizard extends Wizard implements IImportWizard {
     private SRPMImportPage mainPage;
 
-    /**
-     * @see org.eclipse.ui.IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
-     */
     @Override
     public void init(IWorkbench workbench, IStructuredSelection currentSelection) {
         setWindowTitle(Messages.getString("SRPMImportwizard.Import_an_SRPM")); //$NON-NLS-1$
         setNeedsProgressMonitor(true);
     }
-
-    /**
-     * @see org.eclipse.jface.wizard.IWizard#performFinish()
-     */
 
     // We have elected to do the Finish button clickin in the SRPMImportPage. So override
     //the default and point to SRPMImport finish()
@@ -54,10 +47,6 @@ public class SRPMImportWizard extends Wizard implements IImportWizard {
     public boolean canFinish() {
         return mainPage.canFinish();
     }
-
-    /**
-     * @see org.eclipse.jface.wizard.IWizard#addPages()
-     */
 
     // Add the SRPMImportPage as the only page in this wizard.
     @Override

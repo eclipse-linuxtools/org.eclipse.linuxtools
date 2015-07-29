@@ -96,9 +96,6 @@ public class GNUEditorConfiguration extends TextSourceViewerConfiguration implem
         return getRegisteredHyperlinkDetectors(sourceViewer);
     }
 
-    /*
-     * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getConfiguredDocumentPartitioning(org.eclipse.jface.text.source.ISourceViewer)
-     */
     @Override
     public String getConfiguredDocumentPartitioning(ISourceViewer sourceViewer) {
         return CHANGELOG_PARTITIONING;

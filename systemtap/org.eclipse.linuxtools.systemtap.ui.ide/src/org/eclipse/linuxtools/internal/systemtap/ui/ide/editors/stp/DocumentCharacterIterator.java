@@ -85,17 +85,11 @@ public class DocumentCharacterIterator implements CharacterIterator, CharSequenc
         invariant();
     }
 
-    /*
-     * @see java.text.CharacterIterator#first()
-     */
     @Override
     public char first() {
         return setIndex(getBeginIndex());
     }
 
-    /*
-     * @see java.text.CharacterIterator#last()
-     */
     @Override
     public char last() {
         if (fFirst == fLast)
@@ -103,9 +97,6 @@ public class DocumentCharacterIterator implements CharacterIterator, CharSequenc
         return setIndex(getEndIndex() - 1);
     }
 
-    /*
-     * @see java.text.CharacterIterator#current()
-     */
     @Override
     public char current() {
         if (fIndex >= fFirst && fIndex < fLast)
@@ -117,17 +108,11 @@ public class DocumentCharacterIterator implements CharacterIterator, CharSequenc
         return DONE;
     }
 
-    /*
-     * @see java.text.CharacterIterator#next()
-     */
     @Override
     public char next() {
         return setIndex(Math.min(fIndex + 1, getEndIndex()));
     }
 
-    /*
-     * @see java.text.CharacterIterator#previous()
-     */
     @Override
     public char previous() {
         if (fIndex > getBeginIndex()) {
@@ -136,9 +121,6 @@ public class DocumentCharacterIterator implements CharacterIterator, CharSequenc
         return DONE;
     }
 
-    /*
-     * @see java.text.CharacterIterator#setIndex(int)
-     */
     @Override
     public char setIndex(int position) {
         if (position >= getBeginIndex() && position <= getEndIndex())
@@ -150,33 +132,21 @@ public class DocumentCharacterIterator implements CharacterIterator, CharSequenc
         return current();
     }
 
-    /*
-     * @see java.text.CharacterIterator#getBeginIndex()
-     */
     @Override
     public int getBeginIndex() {
         return fFirst;
     }
 
-    /*
-     * @see java.text.CharacterIterator#getEndIndex()
-     */
     @Override
     public int getEndIndex() {
         return fLast;
     }
 
-    /*
-     * @see java.text.CharacterIterator#getIndex()
-     */
     @Override
     public int getIndex() {
         return fIndex;
     }
 
-    /*
-     * @see java.text.CharacterIterator#clone()
-     */
     @Override
     public Object clone() {
         try {
@@ -186,9 +156,6 @@ public class DocumentCharacterIterator implements CharacterIterator, CharSequenc
         }
     }
 
-    /*
-     * @see java.lang.CharSequence#length()
-     */
     @Override
     public int length() {
         return getEndIndex() - getBeginIndex();
@@ -217,9 +184,6 @@ public class DocumentCharacterIterator implements CharacterIterator, CharSequenc
         throw new IndexOutOfBoundsException();
     }
 
-    /*
-     * @see java.lang.CharSequence#subSequence(int, int)
-     */
     @Override
     public CharSequence subSequence(int start, int end) {
         if (start < 0)
@@ -231,9 +195,6 @@ public class DocumentCharacterIterator implements CharacterIterator, CharSequenc
         return new DocumentCharacterIterator(fDocument, getBeginIndex() + start, getBeginIndex() + end);
     }
 
-    /*
-     * @see java.lang.CharSequence#toString()
-     */
     @Override
     public String toString() {
         int length = length();

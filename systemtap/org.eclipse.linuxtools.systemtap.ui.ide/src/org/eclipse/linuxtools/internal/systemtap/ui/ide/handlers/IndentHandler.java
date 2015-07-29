@@ -465,10 +465,6 @@ public class IndentHandler extends AbstractHandler {
         return null;
     }
 
-    /*
-     * @see org.eclipse.ui.texteditor.IUpdate#update()
-     */
-
     /**
      * Returns the document currently displayed in the editor, or
      * <code>null</code> if none can be obtained.

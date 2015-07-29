@@ -25,9 +25,6 @@ public abstract class AbstractRPMPropertyPage extends PropertyPage {
 
     protected abstract void addFields(Composite parent);
 
-    /**
-     * @see PropertyPage#createContents(Composite)
-     */
     @Override
     protected Control createContents(Composite parent) {
         Composite composite = new Composite(parent, SWT.NULL);

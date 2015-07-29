@@ -48,9 +48,6 @@ public class CParser implements IParserChangeLogContrib {
         super();
     }
 
-    /**
-     * @see IParserChangeLogContrib#parseCurrentFunction(IEditorInput, int)
-     */
     @Override
     public String parseCurrentFunction(IEditorInput input, int offset)
             throws CoreException {
@@ -178,7 +175,6 @@ public class CParser implements IParserChangeLogContrib {
                     }
                     node = node.getParent();
                 }
-//                System.out.println(currentElementName);
             } catch (CoreException exc) {
                 currentElementName = "";
                 CUIPlugin.log(exc);
@@ -190,9 +186,6 @@ public class CParser implements IParserChangeLogContrib {
         return "";
     }
 
-    /**
-     * @see IParserChangeLogContrib#parseCurrentFunction(IEditorPart)
-     */
     @Override
     public String parseCurrentFunction(IEditorPart editor) throws CoreException {
 

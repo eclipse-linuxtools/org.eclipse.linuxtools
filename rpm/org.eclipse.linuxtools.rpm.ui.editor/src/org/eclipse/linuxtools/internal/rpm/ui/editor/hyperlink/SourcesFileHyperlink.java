@@ -50,25 +50,16 @@ public class SourcesFileHyperlink implements IHyperlink {
         this.region = region;
     }
 
-    /**
-     * @see org.eclipse.jface.text.hyperlink.IHyperlink#getHyperlinkRegion()
-     */
     @Override
     public IRegion getHyperlinkRegion() {
         return region;
     }
 
-    /**
-     * @see org.eclipse.jface.text.hyperlink.IHyperlink#getHyperlinkText()
-     */
     @Override
     public String getHyperlinkText() {
         return NLS.bind(Messages.SourcesFileHyperlink_0, fileName);
     }
 
-    /**
-     * @see org.eclipse.jface.text.hyperlink.IHyperlink#getTypeLabel()
-     */
     @Override
     public String getTypeLabel() {
         return null;

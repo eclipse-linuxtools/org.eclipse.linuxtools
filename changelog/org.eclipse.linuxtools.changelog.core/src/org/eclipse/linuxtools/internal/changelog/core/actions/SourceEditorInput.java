@@ -24,9 +24,6 @@ public class SourceEditorInput extends StorageEditorInput {
         super(storage);
     }
 
-    /*
-     * @see org.eclipse.ui.IEditorInput#exists()
-     */
     @Override
     public boolean exists() {
         return false;

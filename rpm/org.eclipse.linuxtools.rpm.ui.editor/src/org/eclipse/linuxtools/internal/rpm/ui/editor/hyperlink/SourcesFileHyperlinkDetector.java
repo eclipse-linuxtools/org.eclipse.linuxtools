@@ -37,10 +37,6 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
     private static final String SOURCE_IDENTIFIER = "Source"; //$NON-NLS-1$
     private static final String URL_IDENTIFIER = "URL"; //$NON-NLS-1$
 
-    /**
-     * @see org.eclipse.jface.text.hyperlink.IHyperlinkDetector#detectHyperlinks(org.eclipse.jface.text.ITextViewer,
-     *      org.eclipse.jface.text.IRegion, boolean)
-     */
     @Override
     public IHyperlink[] detectHyperlinks(ITextViewer textViewer,
             IRegion region, boolean canShowMultipleHyperlinks) {

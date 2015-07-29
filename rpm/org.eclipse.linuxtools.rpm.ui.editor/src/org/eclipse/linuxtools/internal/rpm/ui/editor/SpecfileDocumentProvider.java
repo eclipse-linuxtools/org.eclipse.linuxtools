@@ -53,18 +53,13 @@ public class SpecfileDocumentProvider extends TextFileDocumentProvider {
         }
         return document;
     }
-    /*
-     * @see org.eclipse.ui.texteditor.IDocumentProvider#connect(java.lang.Object)
-     */
+
     @Override
     public void connect(Object element) throws CoreException {
         super.connect(element);
         setDocumentLength(element);
     }
 
-    /*
-     * @see org.eclipse.ui.texteditor.IDocumentProvider#canSaveDocument(java.lang.Object)
-     */
     @Override
     public boolean canSaveDocument(Object element) {
         if (element instanceof FileStoreEditorInput) {
@@ -106,26 +101,17 @@ public class SpecfileDocumentProvider extends TextFileDocumentProvider {
         return super.canSaveDocument(element);
     }
 
-    /*
-     * @see org.eclipse.ui.texteditor.IDocumentProvider#createSaveOperation(java.lang.Object, org.eclipse.jface.text.IDocument, boolean)
-     */
-
     @Override
     protected DocumentProviderOperation createSaveOperation(final Object element, final IDocument document, final boolean overwrite) throws CoreException {
         final DocumentProviderOperation saveOperation = super.createSaveOperation(element, document, overwrite);
 
         if (element instanceof IURIEditorInput) {
             return new DocumentProviderOperation() {
-                /*
-                 * @see org.eclipse.ui.editors.text.TextFileDocumentProvider.DocumentProviderOperation#execute(org.eclipse.core.runtime.IProgressMonitor)
-                 */
-                @Override
+
+            	@Override
                 public void execute(IProgressMonitor monitor) throws CoreException {
                 }
 
-                /*
-                 * @see org.eclipse.jface.operation.IRunnableWithProgress#run(org.eclipse.core.runtime.IProgressMonitor)
-                 */
                 @Override
                 public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                     saveOperation.run(monitor);
@@ -133,9 +119,6 @@ public class SpecfileDocumentProvider extends TextFileDocumentProvider {
                     setDocumentLength(element);
                 }
 
-                /*
-                 * @see org.eclipse.ui.editors.text.TextFileDocumentProvider.DocumentProviderOperation#getSchedulingRule()
-                 */
                 @Override
                 public ISchedulingRule getSchedulingRule() {
                     return saveOperation.getSchedulingRule();

@@ -61,9 +61,6 @@ public class StapNewWizardPage extends WizardPage {
         this.selection = selection;
     }
 
-    /**
-     * @see WizardPage#createControl(Composite)
-     */
     @Override
     public void createControl(Composite parent) {
         Composite container = new Composite(parent, SWT.NULL);

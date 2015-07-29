@@ -31,9 +31,6 @@ public class URLHyperlinkWithMacroDetector extends URLHyperlinkDetector {
 
     private Specfile specfile;
 
-    /*
-     * @see org.eclipse.jface.text.hyperlink.IHyperlinkDetector#detectHyperlinks(org.eclipse.jface.text.ITextViewer, org.eclipse.jface.text.IRegion, boolean)
-     */
     @Override
     public IHyperlink[] detectHyperlinks(ITextViewer textViewer, IRegion region, boolean canShowMultipleHyperlinks) {
         if (specfile == null) {

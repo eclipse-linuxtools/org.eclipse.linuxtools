@@ -35,18 +35,12 @@ public class SamplesProcessor extends XMLProcessor {
     //a list of all samples (for this symbol)
     private ArrayList<OpModelSample> sampleList;
 
-    /**
-     * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#reset()
-     */
     @Override
     public void reset(Object callData) {
         sample = new OpModelSample();
         sampleList = new ArrayList<>();
     }
 
-    /**
-     * @see org.eclipse.linuxtools.internal.oprofile.core.XMLProcessor#endElement(String)
-     */
     @Override
     public void endElement(String name, Object callData) {
         if (name.equals(COUNT_TAG)) {

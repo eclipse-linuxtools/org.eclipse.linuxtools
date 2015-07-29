@@ -67,18 +67,11 @@ public class ChangeLogDocumentSetupParticipant implements
         }
     }
 
-    /*
-     * @see IDocumentListener#documentAboutToBeChanged(DocumentEvent)
-     */
-
     @Override
     public void documentAboutToBeChanged(DocumentEvent e) {
         // do nothing
     }
 
-    /*
-     * @see IDocumentListener#documentChanged(DocumentEvent)
-     */
     @Override
     public void documentChanged(DocumentEvent e) {
         // do nothing

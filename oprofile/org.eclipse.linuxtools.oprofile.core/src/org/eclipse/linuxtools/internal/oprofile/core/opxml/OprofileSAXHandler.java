@@ -110,25 +110,16 @@ public class OprofileSAXHandler extends DefaultHandler {
         return processor;
     }
 
-    /**
-     * @see org.xml.sax.ContentHandler#startDocument()
-     */
     @Override
     public void startDocument() {
         // Reset processor
         processor = null;
     }
 
-    /**
-     * @see org.xml.sax.ContentHandler#endDocument()
-     */
     @Override
     public void endDocument() {
     }
 
-    /**
-     * @see org.xml.sax.ContentHandler#startElement(String, String, String, Attributes)
-     */
     @Override
     public void startElement(String uri, String lName, String qName, Attributes attrs) {
         if (processor == null) {
@@ -146,9 +137,6 @@ public class OprofileSAXHandler extends DefaultHandler {
         charactersBuffer = new StringBuffer();
     }
 
-    /**
-     * @see org.xml.sax.ContentHandler#endElement(String, String, String)
-     */
     @Override
     public void endElement(String uri, String name, String qName) {
         // Set the accumulated characters
@@ -156,9 +144,6 @@ public class OprofileSAXHandler extends DefaultHandler {
         processor.endElement(qName, callData);
     }
 
-    /**
-     * @see org.xml.sax.ContentHandler#characters(char[], int, int)
-     */
     @Override
     public void characters(char ch[], int start, int length) {
         // Ignore characters which are only whitespace

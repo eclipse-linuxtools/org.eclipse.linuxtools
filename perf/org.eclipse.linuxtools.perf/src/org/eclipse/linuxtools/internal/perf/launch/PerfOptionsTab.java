@@ -67,9 +67,6 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 
     protected final Version multiplexEventsVersion = new Version (2, 6, 35);
 
-    /**
-     * @see org.eclipse.debug.ui.ILaunchConfigurationTab#getImage()
-     */
     @Override
     public Image getImage() {
         return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);

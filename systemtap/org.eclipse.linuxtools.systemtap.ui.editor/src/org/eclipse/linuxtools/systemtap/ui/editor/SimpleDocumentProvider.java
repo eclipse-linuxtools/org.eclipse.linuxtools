@@ -110,9 +110,6 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
         }
     }
 
-    /*
-     * @see org.eclipse.ui.texteditor.AbstractDocumentProvider#createAnnotationModel(java.lang.Object)
-     */
     @Override
     protected IAnnotationModel createAnnotationModel(Object element) {
         return null;
