@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -120,7 +120,7 @@ public class DataManipulatorTest {
             List<String> ret = new ArrayList<>();
             // return the same command with 'echo' prepended
             ret.add("echo"); //$NON-NLS-1$
-            ret.addAll(Arrays.asList(super.getCommand(workingDir)));
+            Collections.addAll(ret, super.getCommand(workingDir));
             return ret.toArray(new String[ret.size()]);
         }
     }
@@ -140,13 +140,13 @@ public class DataManipulatorTest {
             // return the same command with 'echo' prepended
             List<String> ret = new ArrayList<>();
             ret.add("echo"); //$NON-NLS-1$
-            ret.addAll(Arrays.asList(super.getCommand(command, args, file)));
+            Collections.addAll(ret, super.getCommand(command, args, file));
             return ret.toArray(new String[ret.size()]);
         }
 
         @Override
         public void parse() {
-            String[] cmd = getCommand(getProgram(), getArguments(), output); //$NON-NLS-1$
+            String[] cmd = getCommand(getProgram(), getArguments(), output);
             // echo will print to standard out
             performCommand(cmd, 1);
         }
@@ -166,7 +166,7 @@ public class DataManipulatorTest {
             // return the same command with 'echo' prepended
             List<String> ret = new ArrayList<>();
             ret.add("echo"); //$NON-NLS-1$
-            ret.addAll(Arrays.asList(super.getCommand()));
+            Collections.addAll(ret, super.getCommand());
             return ret.toArray(new String[ret.size()]);
         }
 

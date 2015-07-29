@@ -11,7 +11,7 @@
 package org.eclipse.linuxtools.internal.perf.tests;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
@@ -81,8 +81,7 @@ public class LaunchTest extends AbstractTest {
     public void testClockEventRun() throws CoreException {
         if (PerfCore.checkPerfInPath(null)) {
             ArrayList<String> list = new ArrayList<>();
-            list.addAll(Arrays.asList(new String[] { "cpu-clock", "task-clock",
-                    "cycles" }));
+            Collections.addAll(list, "cpu-clock", "task-clock", "cycles");
             wc.setAttribute(PerfPlugin.ATTR_DefaultEvent, false);
             wc.setAttribute(PerfPlugin.ATTR_SelectedEvents, list);
             delegate.launch(wc, ILaunchManager.PROFILE_MODE, launch, null);
