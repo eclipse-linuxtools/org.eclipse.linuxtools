@@ -7,5 +7,5 @@ Bundle-Vendor: %bundleProvider
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.junit;bundle-version="4.0.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Fragment-Host: org.eclipse.linuxtools.systemtap.ui.consolelog

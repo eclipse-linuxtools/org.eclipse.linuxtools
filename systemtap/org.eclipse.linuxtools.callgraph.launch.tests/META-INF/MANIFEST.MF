@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.eclipse.linuxtools.callgraph.launch.tests
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.junit;bundle-version="4.7.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Fragment-Host: org.eclipse.linuxtools.callgraph.launch
 Import-Package: org.eclipse.linuxtools.profiling.tests,
  org.eclipse.linuxtools.tools.launch.core.factory
