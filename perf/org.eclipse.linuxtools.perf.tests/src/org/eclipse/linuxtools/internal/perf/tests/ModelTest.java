@@ -23,6 +23,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -68,7 +69,7 @@ public class ModelTest extends AbstractTest {
         Class<?>[] klassList = new Class<?>[] { PMSymbol.class, PMFile.class,
                 PMDso.class, PMCommand.class, PMEvent.class };
         stack = new Stack<>();
-        stack.addAll(Arrays.asList(klassList));
+        Collections.addAll(stack, klassList);
     }
 
     @After
@@ -409,7 +410,7 @@ public class ModelTest extends AbstractTest {
                 assertTrue(klass.isAssignableFrom(tp.getClass()));
                 // each sibling needs its own stack
                 Stack<Class<?>> newStack = new Stack<>();
-                newStack.addAll(Arrays.asList(stack.toArray(new Class<?> [] {})));
+                newStack.addAll(stack);
                 checkChildrenStructure(tp, newStack);
             }
         }
