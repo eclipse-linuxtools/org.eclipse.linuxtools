@@ -109,7 +109,7 @@ public class RunImageCommandHandler extends AbstractHandler {
 									"RunImageCreatingContainerTask.msg"), //$NON-NLS-1$
 							1);
 					final String containerId = ((DockerConnection) connection)
-							.createContainer(containerConfig, containerName);
+							.createContainer(containerConfig, hostConfig, containerName);
 					final IDockerContainer container = ((DockerConnection) connection)
 							.getContainer(containerId);
 
@@ -130,7 +130,7 @@ public class RunImageCommandHandler extends AbstractHandler {
 						console.showConsole();
 					}
 					((DockerConnection) connection).startContainer(containerId,
-							hostConfig, console.getOutputStream());
+							console.getOutputStream());
 					startContainerMonitor.done();
 				} catch (final DockerException | InterruptedException e) {
 					Display.getDefault().syncExec(new Runnable() {

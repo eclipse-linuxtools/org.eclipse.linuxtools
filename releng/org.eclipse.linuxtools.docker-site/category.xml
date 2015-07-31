@@ -11,6 +11,10 @@
    <iu id="com.spotify.docker.client" version="0.0.0">
         <category name="Linux Tools"/>
    </iu>
+   <iu id="com.spotify.docker.client.source" version="0.0.0">
+        <category name="Linux Tools"/>
+   </iu>
+
    <iu id="com.fasterxml.jackson.core.jackson-annotations" version="0.0.0">
         <category name="Linux Tools"/>
    </iu>

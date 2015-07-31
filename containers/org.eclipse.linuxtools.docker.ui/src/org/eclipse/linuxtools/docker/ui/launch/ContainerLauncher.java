@@ -230,7 +230,7 @@ public class ContainerLauncher {
 				// create the container
 				try {
 					String containerId = ((DockerConnection) connection)
-							.createContainer(config);
+							.createContainer(config, hostConfig);
 					OutputStream stream = null;
 					RunConsole oldConsole = getConsole();
 					final RunConsole rc = RunConsole.findConsole(containerId,
@@ -263,7 +263,7 @@ public class ContainerLauncher {
 					// and console id
 					String loggingId = containerId + "." + consoleId;
 					((DockerConnection) connection).startContainer(containerId,
-							loggingId, hostConfig, stream);
+							loggingId, stream);
 					if (rc != null)
 						rc.showConsole();
 					if (containerListener != null) {
