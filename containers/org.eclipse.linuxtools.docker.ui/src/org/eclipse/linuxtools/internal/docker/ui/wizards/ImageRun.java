@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -178,9 +180,18 @@ public class ImageRun extends Wizard {
 		String unixPath = path;
 
 		if (Platform.OS_WIN32.equals(Platform.getOS())) {
-			unixPath = path.replaceAll("\\\\", "/").replaceFirst("\\:", "");
-			if (!unixPath.startsWith("/")) {
-				unixPath = '/' + unixPath;
+			// replace backslashes with slashes
+			unixPath = unixPath.replaceAll("\\\\", "/");
+
+			// replace "C:/" with "/c/"
+			Matcher m = Pattern.compile("([a-zA-Z]):/").matcher(unixPath);
+			if (m.find()) {
+				StringBuffer b = new StringBuffer();
+				b.append('/');
+				m.appendReplacement(b, m.group(1).toLowerCase());
+				b.append('/');
+				m.appendTail(b);
+				unixPath = b.toString();
 			}
 		}
 
