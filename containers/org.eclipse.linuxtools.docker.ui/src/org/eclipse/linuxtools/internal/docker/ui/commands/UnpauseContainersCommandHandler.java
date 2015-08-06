@@ -44,7 +44,6 @@ public class UnpauseContainersCommandHandler extends BaseContainersCommandHandle
 			} else {
 				connection.unpauseContainer(container.id(), null);
 			}
-			connection.getContainers(true);
 		} catch (DockerException | InterruptedException e) {
 			final String errorMessage = DVMessages.getFormattedString(CONTAINER_UNPAUSE_ERROR_MSG, container.id());
 			openError(errorMessage, e);

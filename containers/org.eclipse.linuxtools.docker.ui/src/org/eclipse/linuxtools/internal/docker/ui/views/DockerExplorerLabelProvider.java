@@ -22,6 +22,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.linuxtools.docker.core.EnumDockerStatus;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
@@ -65,7 +66,16 @@ public class DockerExplorerLabelProvider implements IStyledLabelProvider, ILabel
 		} else if(element instanceof IDockerImage) {
 			return SWTImagesFactory.DESC_IMAGE.createImage();
 		} else if(element instanceof IDockerContainer) {
-			return SWTImagesFactory.DESC_CONTAINER.createImage();
+			final IDockerContainer container = (IDockerContainer) element;
+			final EnumDockerStatus containerStatus = EnumDockerStatus
+					.fromStatusMessage(container.status());
+			if (containerStatus == EnumDockerStatus.RUNNING) {
+				return SWTImagesFactory.DESC_CONTAINER_STARTED.createImage();
+			} else if (containerStatus == EnumDockerStatus.PAUSED) {
+				return SWTImagesFactory.DESC_CONTAINER_PAUSED.createImage();
+			} else {
+				return SWTImagesFactory.DESC_CONTAINER_STOPPED.createImage();
+			}
 		} else if(element instanceof LoadingStub) {
 			return SWTImagesFactory.DESC_SYSTEM_PROCESS.createImage();
 		}

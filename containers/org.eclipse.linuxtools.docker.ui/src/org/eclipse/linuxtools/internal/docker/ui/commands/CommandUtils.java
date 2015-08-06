@@ -50,7 +50,7 @@ public class CommandUtils {
 	 * @param viewer
 	 *            - the {@link Viewer} to refresh
 	 */
-	public static void refresh(final Viewer viewer) {
+	public static void asyncRefresh(final Viewer viewer) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {

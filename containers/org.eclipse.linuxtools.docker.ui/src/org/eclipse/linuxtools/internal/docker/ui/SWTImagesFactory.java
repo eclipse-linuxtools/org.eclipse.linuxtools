@@ -81,6 +81,12 @@ public class SWTImagesFactory {
 			+ "repository-middle.gif"; //$NON-NLS-1$
 	public static final String IMG_DB_GROUP = NAME_PREFIX + "dbgroup_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_CONTAINER = NAME_PREFIX + "container.png"; //$NON-NLS-1$
+	public static final String IMG_CONTAINER_STARTED = NAME_PREFIX
+			+ "container_started.png"; //$NON-NLS-1$
+	public static final String IMG_CONTAINER_PAUSED = NAME_PREFIX
+			+ "container_paused.png"; //$NON-NLS-1$
+	public static final String IMG_CONTAINER_STOPPED = NAME_PREFIX
+			+ "container_stopped.png"; //$NON-NLS-1$
 	public static final String IMG_SYSTEM_PROCESS = NAME_PREFIX
 			+ "systemprocess.gif"; //$NON-NLS-1$
 	public static final String IMG_CHECKED = NAME_PREFIX + "checked.gif"; //$NON-NLS-1$
@@ -151,6 +157,12 @@ public class SWTImagesFactory {
 			IMG_DB_GROUP);
 	public static final ImageDescriptor DESC_CONTAINER = createManaged("",
 			IMG_CONTAINER);
+	public static final ImageDescriptor DESC_CONTAINER_STARTED = createManaged(
+			"", IMG_CONTAINER_STARTED);
+	public static final ImageDescriptor DESC_CONTAINER_PAUSED = createManaged(
+			"", IMG_CONTAINER_PAUSED);
+	public static final ImageDescriptor DESC_CONTAINER_STOPPED = createManaged(
+			"", IMG_CONTAINER_STOPPED);
 	public static final ImageDescriptor DESC_SYSTEM_PROCESS = createManaged("",
 			IMG_SYSTEM_PROCESS);
 	public static final ImageDescriptor DESC_CHECKED = createManaged("",

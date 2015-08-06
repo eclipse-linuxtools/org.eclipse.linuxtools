@@ -36,7 +36,6 @@ import org.eclipse.linuxtools.docker.core.IDockerConnectionManagerListener;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerImageListener;
-import org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -363,9 +362,12 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 					// remember the current selection before the viewer is
 					// refreshed
 					final ISelection currentSelection = DockerImagesView.this.viewer.getSelection();
-					CommandUtils.refresh(DockerImagesView.this.getViewer());
+					DockerImagesView.this.viewer.refresh();
 					// restore the selection
-					DockerImagesView.this.viewer.setSelection(currentSelection);
+					if (currentSelection != null) {
+						DockerImagesView.this.viewer
+								.setSelection(currentSelection);
+					}
 					refreshViewTitle();
 				}
 			});
