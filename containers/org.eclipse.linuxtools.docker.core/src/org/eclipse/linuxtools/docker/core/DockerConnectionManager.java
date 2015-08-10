@@ -197,14 +197,6 @@ public class DockerConnectionManager {
 
 	public void removeConnection(IDockerConnection d) {
 		connections.remove(d);
-		String uri = d.getUri();
-		String name = d.getName();
-		for (IDockerConnection connection : connections) {
-			if (connection.getUri().equals(uri)
-					&& connection.getName().equals(name)) {
-				break;
-			}
-		}
 		saveConnections();
 		notifyListeners(IDockerConnectionManagerListener.REMOVE_EVENT);
 	}
