@@ -396,13 +396,10 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 					.asList(this.viewer.getFilters());
 			if (filters.contains(hideDanglingImagesFilter)
 					|| filters.contains(hideIntermediateImagesFilter)) {
-				this.form.setText(
-						DVMessages.getFormattedString(ViewFilteredTitle,
-								new String[] { connection.getName(),
-										Integer.toString(viewer.getTable()
-												.getItemCount()),
-								Integer.toString(
-										connection.getImages().size()), }));
+				this.form.setText(DVMessages.getFormattedString(
+						ViewFilteredTitle, connection.getName(),
+						Integer.toString(viewer.getTable().getItemCount()),
+						Integer.toString(connection.getImages().size())));
 			} else {
 				this.form.setText(DVMessages.getFormattedString(ViewAllTitle,
 						new String[] { connection.getName(), Integer

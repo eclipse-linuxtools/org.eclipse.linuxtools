@@ -8,33 +8,21 @@
  * Contributors:
  *     Red Hat - Initial Contribution
  *******************************************************************************/
+
 package org.eclipse.linuxtools.docker.core;
 
-public interface IDockerImageSearchResult {
+/**
+ * A tag (or version) for a given repository.
+ */
+public interface IRepositoryTag {
 
 	/**
-	 * @return the image description
-	 */
-	String getDescription();
-
-	/**
-	 * @return the official image flag
-	 */
-	boolean isOfficial();
-
-	/**
-	 * @return the automated build flag
-	 */
-	boolean isAutomated();
-
-	/**
-	 * @return the image name
+	 * @return Name of the tag.
 	 */
 	String getName();
 
 	/**
-	 * @return the star count
+	 * @return The corresponding image layer for this specific tag
 	 */
-	int getStarCount();
-
+	String getLayer();
 }

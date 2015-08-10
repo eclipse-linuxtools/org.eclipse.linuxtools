@@ -465,13 +465,10 @@ public class DockerContainersView extends ViewPart implements
 			final List<ViewerFilter> filters = Arrays
 					.asList(this.viewer.getFilters());
 			if (filters.contains(hideStoppedContainersViewerFilter)) {
-				this.form.setText(
-						DVMessages.getFormattedString(ViewFilteredTitle,
-								new String[] { connection.getName(),
-										Integer.toString(viewer.getTable()
-												.getItemCount()),
-								Integer.toString(
-										connection.getContainers().size()), }));
+				this.form.setText(DVMessages.getFormattedString(
+						ViewFilteredTitle, connection.getName(),
+						Integer.toString(viewer.getTable().getItemCount()),
+						Integer.toString(connection.getContainers().size())));
 			} else {
 				this.form.setText(DVMessages.getFormattedString(ViewAllTitle,
 						new String[] { connection.getName(), Integer.toString(

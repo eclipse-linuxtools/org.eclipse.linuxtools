@@ -19,34 +19,42 @@ import org.eclipse.linuxtools.docker.core.IDockerImageSearchResult;
 /**
  * Wizard to search for images.
  * 
- * @author xcoulon
- *
  */
 public class ImageSearch extends Wizard {
 
 	/** the Image Search {@link WizardPage}. */
-	private final ImageSearchPage searchPage;
+	private final ImageSearchPage imageSearchPage;
 
-	/** the databinding model for the {@link ImageSearchPage}. */
-	private final ImageSearchModel model;
+	/** the Image Tag selection {@link WizardPage}. */
+	private final ImageTagSelectionPage imageTagSelectionPage;
+
+	/**
+	 * shared databinding model for {@link ImageSearchPage} and
+	 * {@link ImageTagSelectionPage}.
+	 */
+	private final ImageSearchModel imageSearchModel;
 
 	/**
 	 * Default Constructor
 	 */
 	public ImageSearch(final IDockerConnection connection) {
-		setNeedsProgressMonitor(true);
-		this.model = new ImageSearchModel(connection);
-		this.searchPage = new ImageSearchPage(this.model);
+		setWindowTitle(WizardMessages.getString("ImageSearch.title")); //$NON-NLS-1$
+        setNeedsProgressMonitor(true);
+		this.imageSearchModel = new ImageSearchModel(connection);
+		this.imageSearchPage = new ImageSearchPage(this.imageSearchModel);
+		this.imageTagSelectionPage = new ImageTagSelectionPage(
+				this.imageSearchModel);
 	}
 
 	@Override
 	public void addPages() {
-		addPage(searchPage);
+		addPage(imageSearchPage);
+		addPage(imageTagSelectionPage);
 	}
 
 	@Override
 	public boolean canFinish() {
-		return this.searchPage.isPageComplete();
+		return this.imageTagSelectionPage.isPageComplete();
 	}
 
 	@Override
@@ -55,6 +63,10 @@ public class ImageSearch extends Wizard {
 	}
 
 	public IDockerImageSearchResult getSelectedImage() {
-		return this.model.getSelectedImage();
+		return this.imageSearchPage.getSelectedImage();
+	}
+
+	public DockerImageTagSearchResult getSelectedImageTag() {
+		return this.imageTagSelectionPage.getSelectedImageTag();
 	}
 }

@@ -85,22 +85,34 @@ public interface IDockerConnection {
 	public List<IDockerImage> getImages();
 
 	/**
+	 * Checks if an entry in the current list of {@link IDockerImage} exists
+	 * with the same <code>name</code> and <code>tag</code>
+	 * 
+	 * @param repository
+	 *            the repository of the {@link IDockerImage} to find
+	 * @param tag
+	 *            the tag of the {@link IDockerImage} to find
+	 * @return <code>true</code> if an {@link IDockerImage} was found,
+	 *         <code>false</code> otherwise.
+	 */
+	public boolean hasImage(String repository, String tag);
+
+	/**
+	 * @return Boolean flag to indicate if the list of {@link IDockerImage} has
+	 *         already been loaded ({@code true}) or not ({@code false}).
+	 */
+	public boolean isImagesLoaded();
+
+	/**
 	 * Get the list of {@link IDockerImage} of the remote Docker daemon.
 	 * 
 	 * @param force
 	 *            {@code true} to force a new retrieval of the list of
-	 *            {@link IDockerImage}, {@code false} to use the cached
-	 *            list.
+	 *            {@link IDockerImage}, {@code false} to use the cached list.
 	 * @return an unmodifiable list of {@link IDockerImage} or
 	 *         {@link Collections#emptyList()} if no container exists yet.
 	 */
 	public List<IDockerImage> getImages(final boolean force);
-	
-	/**
-	 * @return Boolean flag to indicate if the list of {@link IDockerImage}
-	 *         has already been loaded ({@code true}) or not ({@code false}).
-	 */
-	public boolean isImagesLoaded();
 
 	public String getName();
 

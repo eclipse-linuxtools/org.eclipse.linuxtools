@@ -784,6 +784,35 @@
 	            </visibleWhen>
 				</command>
 		</menuContribution>
+		<!-- explorer view context menu: pull image -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.pullImage"
+		          icon="icons/pull.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.pullImage"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="or">
+	                      <or>
+			                 <instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerConnection" />
+			                 <instanceof
+			                       value="org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider$DockerImagesCategory" />
+	                      </or>
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
 		<!-- explorer view context menu: push image -->
 		<menuContribution
 			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu">

@@ -193,8 +193,7 @@ public class DockerExplorerView extends CommonNavigator implements
 		GridLayoutFactory.fillDefaults().numColumns(1).margins(5, 5)
 				.applyTo(container);
 		final Link link = new Link(container, SWT.NONE);
-		link.setText(DVMessages.getFormattedString(NO_CONNECTION_LABEL,
-				new String[0]));
+		link.setText(DVMessages.getString(NO_CONNECTION_LABEL));
 		link.setBackground(pageBook.getDisplay().getSystemColor(
 				SWT.COLOR_LIST_BACKGROUND));
 		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.FILL)

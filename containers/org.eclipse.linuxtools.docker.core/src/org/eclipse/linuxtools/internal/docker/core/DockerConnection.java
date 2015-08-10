@@ -1009,6 +1009,20 @@ public class DockerConnection implements IDockerConnection {
 	}
 
 	@Override
+	public boolean hasImage(final String repository, final String tag) {
+		for (IDockerImage image : getImages()) {
+			if (image.repo().equals(repository)) {
+				for (String imageTag : image.tags()) {
+					if (imageTag.startsWith(tag)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
 	public void pullImage(final String id, final IDockerProgressHandler handler)
 			throws DockerException, InterruptedException {
 		try {
@@ -1036,8 +1050,6 @@ public class DockerConnection implements IDockerConnection {
 		}
 	}
 	
-	
-
 	@Override
 	public void pushImage(final String name, final IDockerProgressHandler handler)
 			throws DockerException, InterruptedException {
