@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -36,6 +38,7 @@ import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerListener;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerPortMapping;
+import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -71,6 +74,7 @@ public class DockerContainersView extends ViewPart implements
 	private static final String TOGGLE_STATE = "org.eclipse.ui.commands.toggleState"; //$NON-NLS-1$
 
 	private static final String SHOW_ALL_CONTAINERS_COMMAND_ID = "org.eclipse.linuxtools.docker.ui.commands.showAllContainers"; //$NON-NLS-1$
+	private static final String SHOW_ALL_CONTAINERS_PREFERENCE = "showAllContainers"; //$NON-NLS-1$
 
 	public static final String VIEW_ID = "org.eclipse.linuxtools.docker.ui.dockerContainersView";
 
@@ -136,12 +140,19 @@ public class DockerContainersView extends ViewPart implements
 		DockerConnectionManager.getInstance()
 				.addConnectionManagerListener(this);
 		hookContextMenu();
-		// by default, only show running containers
-		showAllContainers(false);
+
+		// Look at stored preference to determine if all containers should be
+		// shown or just running/paused containers. By default, only show
+		// running/paused containers
+		IEclipsePreferences preferences = InstanceScope.INSTANCE
+				.getNode(Activator.PLUGIN_ID);
+		boolean showAll = preferences.getBoolean(SHOW_ALL_CONTAINERS_PREFERENCE,
+				false);
+		showAllContainers(showAll);
 		final ICommandService service = getViewSite().getWorkbenchWindow()
 				.getService(ICommandService.class);
 		service.getCommand(SHOW_ALL_CONTAINERS_COMMAND_ID)
-				.getState(TOGGLE_STATE).setValue(false);
+				.getState(TOGGLE_STATE).setValue(showAll);
 		service.refreshElements(SHOW_ALL_CONTAINERS_COMMAND_ID, null);
 	}
 	
@@ -436,6 +447,10 @@ public class DockerContainersView extends ViewPart implements
 			}
 			this.viewer.setFilters(filters.toArray(new ViewerFilter[0]));
 		}
+		// Save enablement across sessions using a preference variable.
+		IEclipsePreferences preferences = InstanceScope.INSTANCE
+				.getNode(Activator.PLUGIN_ID);
+		preferences.putBoolean(SHOW_ALL_CONTAINERS_PREFERENCE, enabled);
 		refreshViewTitle();
 	}
 

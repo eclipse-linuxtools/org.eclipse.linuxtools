@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -36,6 +38,7 @@ import org.eclipse.linuxtools.docker.core.IDockerConnectionManagerListener;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerImageListener;
+import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -71,6 +74,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 	private static final String TOGGLE_STATE = "org.eclipse.ui.commands.toggleState"; //$NON-NLS-1$
 
 	private static final String SHOW_ALL_IMAGES_COMMAND_ID = "org.eclipse.linuxtools.docker.ui.commands.showAllImages"; //$NON-NLS-1$
+	private static final String SHOW_ALL_IMAGES_PREFERENCE = "showAllImages"; //$NON-NLS-1$
 
 	private final static String DaemonMissing = "ViewerDaemonMissing.msg"; //$NON-NLS-1$
 	private final static String ViewAllTitle = "ImagesViewTitle.all.msg"; //$NON-NLS-1$
@@ -139,12 +143,18 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 		DockerConnectionManager.getInstance()
 				.addConnectionManagerListener(this);
 		hookContextMenu();
-		// by default, hide dangling and intermediate images
-		showAllImages(false);
+		// Look at stored preference to determine if all images should be
+		// shown or just top-level images. By default, only show
+		// top-level images.
+		IEclipsePreferences preferences = InstanceScope.INSTANCE
+				.getNode(Activator.PLUGIN_ID);
+		boolean showAll = preferences.getBoolean(SHOW_ALL_IMAGES_PREFERENCE,
+				false);
+		showAllImages(showAll);
 		final ICommandService service = getViewSite().getWorkbenchWindow()
 				.getService(ICommandService.class);
 		service.getCommand(SHOW_ALL_IMAGES_COMMAND_ID).getState(TOGGLE_STATE)
-				.setValue(false);
+				.setValue(showAll);
 		service.refreshElements(SHOW_ALL_IMAGES_COMMAND_ID, null);
 
 	}
@@ -464,6 +474,10 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 			}
 			this.viewer.setFilters(filters.toArray(new ViewerFilter[0]));
 		}
+		// Save enablement across sessions using a preference variable.
+		IEclipsePreferences preferences = InstanceScope.INSTANCE
+				.getNode(Activator.PLUGIN_ID);
+		preferences.putBoolean(SHOW_ALL_IMAGES_PREFERENCE, enabled);
 		refreshViewTitle();
 	}
 
