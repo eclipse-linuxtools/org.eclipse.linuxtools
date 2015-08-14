@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
@@ -1634,6 +1635,17 @@ public class DockerConnection implements IDockerConnection {
 							}
 						}
 					} catch (Exception e) {
+						/*
+						 * Temporary workaround for BZ #469717
+						 * Remove this when we begin using a release with :
+						 * https://github.com/spotify/docker-client/pull/223
+						 */
+						if (e instanceof SocketTimeoutException) {
+							try {
+								attachCommand(id, in, out);
+							} catch (DockerException e1) {
+							}
+						}
 					}
 				}
 			});
