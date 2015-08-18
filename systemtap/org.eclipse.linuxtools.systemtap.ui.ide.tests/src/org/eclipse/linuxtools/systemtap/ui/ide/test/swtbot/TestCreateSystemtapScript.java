@@ -27,9 +27,6 @@ import java.io.PrintWriter;
 import java.text.MessageFormat;
 import java.util.List;
 
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Logger;
-import org.apache.log4j.SimpleLayout;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers.ImportDataSetHandler;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.launcher.Messages;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
@@ -92,7 +89,6 @@ import org.swtchart.Range;
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class TestCreateSystemtapScript {
     private static final String SYSTEMTAP_PROJECT_NAME = "SystemtapTest";
-    private static final Logger fLogger = Logger.getRootLogger();
 
     private static SWTWorkbenchBot bot;
     private static SWTBotView projectExplorer;
@@ -265,7 +261,6 @@ public class TestCreateSystemtapScript {
     @BeforeClass
     public static void beforeClass() {
         SWTBotPreferences.TIMEOUT = 20000;
-        fLogger.addAppender(new ConsoleAppender(new SimpleLayout(), ConsoleAppender.SYSTEM_OUT));
         bot = new SWTWorkbenchBot();
 
         try {
