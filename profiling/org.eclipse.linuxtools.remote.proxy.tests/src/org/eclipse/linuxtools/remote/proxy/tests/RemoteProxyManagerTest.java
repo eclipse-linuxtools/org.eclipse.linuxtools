@@ -146,14 +146,13 @@ public class RemoteProxyManagerTest extends AbstractProxyTest {
 		}
 	}
 
-	@SuppressWarnings("static-access")
 	@Test
 	public void testGetRemoteProjectLocationOnSyncProj() {
 		try {
 			String actualLocation = proxyManager.getRemoteProjectLocation(syncProject.getProject());
 			SyncConfig config = getSyncConfig(syncProject.getProject());
 			assertNotNull(config);
-			assertEquals(this.connection.getConnectionType().getScheme(), URI.create(actualLocation).getScheme());
+			assertEquals(connection.getConnectionType().getScheme(), URI.create(actualLocation).getScheme());
 			assertEquals(config.getConnectionName(), URI.create(actualLocation).getAuthority());
 			assertEquals(config.getLocation(),URI.create(actualLocation).getPath());
 		} catch (CoreException e) {

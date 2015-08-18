@@ -261,13 +261,10 @@ public class CovManager implements Serializable {
         if (winOSType.equals("")) { //$NON-NLS-1$
             try {
                 Process process = Runtime.getRuntime().exec(new String[] {"sh", "-c", "echo $OSTYPE"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                @SuppressWarnings("resource")
-                BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                
                 String firstLine = null;
-                try {
+                try (BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                     firstLine = stdout.readLine();
-                } finally {
-                    stdout.close();
                 }
                 if (firstLine != null) {
                     winOSType = firstLine.trim();

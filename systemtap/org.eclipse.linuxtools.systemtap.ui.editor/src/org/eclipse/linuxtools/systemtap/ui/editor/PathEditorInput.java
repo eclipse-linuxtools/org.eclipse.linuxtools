@@ -69,12 +69,12 @@ public class PathEditorInput extends FileStoreEditorInput implements IPathEditor
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    public Object getAdapter(Class adapter) {
+	@Override
+    public <T> T getAdapter(Class<T> adapter) {
         if (PathEditorInput.class.equals(adapter)
                 || IPathEditorInput.class.equals(adapter)
                 || ILocationProvider.class.equals(adapter)) {
-            return this;
+            return (T)this;
         }
         return Platform.getAdapterManager().getAdapter(this, adapter);
     }
