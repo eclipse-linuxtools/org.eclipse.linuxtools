@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-$SHELL -c "env | grep DOCKER"
+$SHELL -i -c "env | grep DOCKER"
