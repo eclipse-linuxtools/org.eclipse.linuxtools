@@ -9,7 +9,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Fragment-Host: org.eclipse.linuxtools.perf
 Require-Bundle: org.junit,
- org.hamcrest.core,
  org.eclipse.linuxtools.profiling.tests,
  org.eclipse.swtbot.eclipse.finder,
  org.apache.log4j
