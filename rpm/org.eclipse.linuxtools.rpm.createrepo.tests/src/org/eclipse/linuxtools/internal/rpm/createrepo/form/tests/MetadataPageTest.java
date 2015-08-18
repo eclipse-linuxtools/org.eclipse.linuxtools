@@ -16,9 +16,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Logger;
-import org.apache.log4j.SimpleLayout;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -51,8 +48,6 @@ import org.osgi.service.prefs.BackingStoreException;
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class MetadataPageTest {
 
-    private static final Logger fLogger = Logger.getRootLogger();
-
     private static TestCreaterepoProject testProject;
     private static SWTWorkbenchBot bot;
     private static SWTBotView navigator;
@@ -66,7 +61,6 @@ public class MetadataPageTest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws CoreException {
-        fLogger.addAppender(new ConsoleAppender(new SimpleLayout(), ConsoleAppender.SYSTEM_OUT));
         testProject = new TestCreaterepoProject();
         assertTrue(testProject.getProject().exists());
         bot = new SWTWorkbenchBot();
