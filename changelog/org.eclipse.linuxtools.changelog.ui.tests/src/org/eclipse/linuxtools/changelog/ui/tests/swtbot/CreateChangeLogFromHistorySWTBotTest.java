@@ -42,6 +42,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -84,6 +85,7 @@ public class CreateChangeLogFromHistorySWTBotTest extends AbstractSWTBotTest {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void canPrepareChangeLogFromSVNHistory() throws Exception {
         // select ChangeLog file
         String teamProviderString = "[changelog/trunk/" + PROJECT_NAME + "]";

@@ -22,6 +22,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -51,6 +52,7 @@ public class DisabledPrepareChangelogSWTBotTest extends AbstractSWTBotTest {
      * @throws Exception
      */
     @Test
+    @Ignore
     public void cannotPrepareChangeLogOnNonCVSOrSVNProject() throws Exception {
         assertNull(project.getTestProject().findMember(new Path("/ChangeLog")));
 
