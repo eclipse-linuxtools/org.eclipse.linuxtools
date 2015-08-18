@@ -24,10 +24,16 @@
    <iu id="com.fasterxml.jackson.core.jackson-databind" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
+   <iu id="com.fasterxml.jackson.datatype.jackson-datatype-guava" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
    <iu id="com.fasterxml.jackson.jaxrs.jackson-jaxrs-base" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="com.fasterxml.jackson.jaxrs.jackson-jaxrs-json-provider" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
+   <iu id="com.fasterxml.jackson.module.jackson-module-jaxb-annotations" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="javax.ws.rs" version="0.0.0">
