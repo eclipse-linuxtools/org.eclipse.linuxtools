@@ -169,6 +169,7 @@ public interface IDockerConnection {
 	 * 
 	 * @return the {@link List} of existing {@link IDockerImage}
 	 * @throws DockerException
+	 *             If listing images failed.
 	 */
 	public List<IDockerImage> listImages() throws DockerException;
 
