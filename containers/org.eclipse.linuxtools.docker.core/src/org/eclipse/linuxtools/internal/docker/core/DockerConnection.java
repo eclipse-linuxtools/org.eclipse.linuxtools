@@ -294,7 +294,10 @@ public class DockerConnection implements IDockerConnection {
 				final String scriptName) {
 			final File script = Activator.getDefault().getBundle()
 					.getDataFile(scriptName);
-			if (script != null && !script.exists()) {
+			// if the script file does not exist or is outdated.
+			if (script != null
+					&& (!script.exists() || script.lastModified() < Activator
+							.getDefault().getBundle().getLastModified())) {
 				try (final FileOutputStream output = new FileOutputStream(
 						script);
 						final InputStream is = DockerConnection.class
