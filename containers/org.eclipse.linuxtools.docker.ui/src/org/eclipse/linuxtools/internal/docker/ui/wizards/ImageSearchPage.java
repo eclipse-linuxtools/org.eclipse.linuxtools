@@ -12,22 +12,32 @@
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
+import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.databinding.wizard.WizardPageSupport;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -78,7 +88,6 @@ public class ImageSearchPage extends WizardPage {
 		super("ImageSearchPage", //$NON-NLS-1$
 				WizardMessages.getString("ImageSearchPage.title"), //$NON-NLS-1$
 				SWTImagesFactory.DESC_BANNER_REPOSITORY);
-		setMessage(WizardMessages.getString("ImageSearchPage.title")); //$NON-NLS-1$
 		this.model = model;
 	}
 
@@ -170,23 +179,16 @@ public class ImageSearchPage extends WizardPage {
 		final IObservableValue observableTermModel = BeanProperties
 				.value(ImageSearchModel.class, ImageSearchModel.TERM)
 				.observe(model);
-		ctx.bindValue(
-				WidgetProperties.text(SWT.Modify).observe(searchImageText),
-				observableTermModel);
-		// enable/disable the search button
-		observableTermModel.addValueChangeListener(new IValueChangeListener() {
+		final UpdateValueStrategy strategy = new UpdateValueStrategy();
+		strategy.setBeforeSetValidator(new SearchTermValidator());
 
-			@Override
-			public void handleValueChange(final ValueChangeEvent event) {
-				final String term = (String) event.getObservableValue()
-						.getValue();
-				if (term.isEmpty()) {
-					searchImageButton.setEnabled(false);
-				} else {
-					searchImageButton.setEnabled(true);
-				}
-			}
-		});
+		final ISWTObservableValue imageSearchTextObservable = WidgetProperties
+				.text(SWT.Modify).observe(searchImageText);
+		ctx.bindValue(imageSearchTextObservable, observableTermModel, strategy,
+				null);
+		// enable/disable the search button
+		imageSearchTextObservable
+				.addValueChangeListener(onTermValueChanged(searchImageButton));
 		// observe the viewer content
 		searchResultTableViewer
 				.setContentProvider(new ObservableListContentProvider());
@@ -211,6 +213,8 @@ public class ImageSearchPage extends WizardPage {
 		ctx.bindValue(WidgetProperties.text().observe(selectedImageDescription),
 				observableSelectedImageDescription);
 		searchImageText.setFocus();
+		// attach the Databinding context status to this wizard page.
+		WizardPageSupport.create(this, this.ctx);
 		setControl(container);
 	}
 
@@ -227,6 +231,26 @@ public class ImageSearchPage extends WizardPage {
 		column.setWidth(width);
 		viewerColumn.setLabelProvider(columnLabelProvider);
 		return viewerColumn;
+	}
+
+	private IValueChangeListener onTermValueChanged(
+			final Button searchImageButton) {
+		return new IValueChangeListener() {
+
+			@Override
+			public void handleValueChange(final ValueChangeEvent event) {
+				final String searchTerm = (String) event.getObservableValue()
+						.getValue();
+				final IStatus status = AggregateValidationStatus
+						.getStatusMaxSeverity(
+								ctx.getValidationStatusProviders());
+				if (searchTerm.isEmpty() || !status.isOK()) {
+					searchImageButton.setEnabled(false);
+				} else {
+					searchImageButton.setEnabled(true);
+				}
+			}
+		};
 	}
 
 	private TraverseListener onSearchImageTextTraverse() {
@@ -246,8 +270,12 @@ public class ImageSearchPage extends WizardPage {
 
 			@Override
 			public void keyReleased(final KeyEvent event) {
-				if (event.character == SWT.CR
-						&& !ImageSearchPage.this.model.getTerm().isEmpty()) {
+				final IStatus status = AggregateValidationStatus
+						.getStatusMaxSeverity(
+								ctx.getValidationStatusProviders());
+				final String searchTerm = ImageSearchPage.this.model.getTerm();
+				if (event.character == SWT.CR && !searchTerm.isEmpty()
+						&& status.isOK()) {
 					searchImages();
 				}
 			}
@@ -285,6 +313,8 @@ public class ImageSearchPage extends WizardPage {
 								searchResultQueue.offer(searchResults);
 							} catch (DockerException e) {
 								Activator.log(e);
+								searchResultQueue.offer(
+										new ArrayList<IDockerImageSearchResult>());
 							}
 							monitor.done();
 						}
@@ -326,6 +356,28 @@ public class ImageSearchPage extends WizardPage {
 	@Override
 	public boolean isPageComplete() {
 		return this.model.getSelectedImage() != null;
+	}
+
+	static class SearchTermValidator implements IValidator {
+
+		private static final Pattern termPattern = Pattern
+				.compile("[a-z0-9]+([._-][a-z0-9]+)*"); //$NON-NLS-1$
+
+		@Override
+		public IStatus validate(final Object value) {
+			final String term = (String) value;
+			if (term == null || term.isEmpty()) {
+				return ValidationStatus.info(WizardMessages
+						.getString("ImageSearchPage.description")); //$NON-NLS-1$
+			} else if (termPattern.matcher(term).matches()) {
+				return Status.OK_STATUS;
+			} else {
+				return ValidationStatus.error(WizardMessages.getFormattedString(
+						"ImageSearchPage.term.invalidformat", //$NON-NLS-1$
+						termPattern.pattern()));
+			}
+		}
+
 	}
 
 	static class ImageNameColumnLabelProvider extends ColumnLabelProvider {
@@ -401,7 +453,6 @@ public class ImageSearchPage extends WizardPage {
 		}
 
 		abstract boolean doPaint(final Object element);
-
 	}
 
 }
