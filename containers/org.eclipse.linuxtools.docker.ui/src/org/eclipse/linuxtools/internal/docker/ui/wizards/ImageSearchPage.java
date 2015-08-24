@@ -319,8 +319,11 @@ public class ImageSearchPage extends WizardPage {
 							monitor.done();
 						}
 					});
-			final List<IDockerImageSearchResult> searchResult = searchResultQueue
+			List<IDockerImageSearchResult> res = searchResultQueue
 					.poll(10, TimeUnit.SECONDS);
+			final List<IDockerImageSearchResult> searchResult = (res == null)
+					? new ArrayList<IDockerImageSearchResult>() : res;
+
 			Display.getCurrent().asyncExec(new Runnable() {
 				@Override
 				public void run() {

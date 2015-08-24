@@ -115,8 +115,10 @@ public class ImageTagSelectionPage extends WizardPage {
 							monitor.done();
 						}
 					});
-			final List<DockerImageTagSearchResult> searchResult = searchResultQueue
-					.poll(10, TimeUnit.SECONDS);
+			List<DockerImageTagSearchResult> res = searchResultQueue.poll(10,
+					TimeUnit.SECONDS);
+			final List<DockerImageTagSearchResult> searchResult = (res == null)
+					? new ArrayList<DockerImageTagSearchResult>() : res;
 			Display.getCurrent().asyncExec(new Runnable() {
 				@Override
 				public void run() {
