@@ -66,7 +66,7 @@ public class OprofileViewDeleteSessionAction extends Action {
                 // delete operf_data folder
                 deleteOperfDataFolder(Oprofile.OprofileProject.getProject()
                         .getFolder(Oprofile.OprofileProject.OPERF_DATA));
-            } else {
+            } else if (Oprofile.OprofileProject.getProfilingBinary().equals(Oprofile.OprofileProject.OPCONTROL_BINARY)) {
                 OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();
             }
         } catch (OpcontrolException e) {

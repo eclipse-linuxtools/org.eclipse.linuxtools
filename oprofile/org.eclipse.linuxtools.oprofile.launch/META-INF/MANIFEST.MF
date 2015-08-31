@@ -27,7 +27,8 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.linuxtools.internal.oprofile.ui,
  org.eclipse.linuxtools.internal.oprofile.ui.view,
  org.eclipse.linuxtools.profiling.launch,
- org.eclipse.ui
+ org.eclipse.ui,
+ org.eclipse.ui.console
 Export-Package: org.eclipse.linuxtools.internal.oprofile.launch;x-friends:="org.eclipse.linuxtools.oprofile.remote.launch",
  org.eclipse.linuxtools.internal.oprofile.launch.configuration;x-friends:="org.eclipse.linuxtools.oprofile.remote.launch",
  org.eclipse.linuxtools.internal.oprofile.launch.launching;x-friends:="org.eclipse.linuxtools.oprofile.remote.launch"

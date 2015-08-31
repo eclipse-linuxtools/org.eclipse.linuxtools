@@ -94,16 +94,16 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
         }
         controlCombo.setText(options.getOprofileComboText());
 
-        if(controlCombo.getText().equals(OprofileProject.OPERF_BINARY)) {
+        if(controlCombo.getText().equals(OprofileProject.OPCONTROL_BINARY)) {
+			checkSeparateLibrary.setEnabled(true);
+            checkSeparateKernel.setEnabled(true);
+            kernelImageFileText.setEnabled(true);
+            kernelLabel.setEnabled(true);
+        } else {
             checkSeparateLibrary.setEnabled(false);
             checkSeparateKernel.setEnabled(false);
             kernelImageFileText.setEnabled(false);
             kernelLabel.setEnabled(false);
-        } else {
-            checkSeparateLibrary.setEnabled(true);
-            checkSeparateKernel.setEnabled(true);
-            kernelImageFileText.setEnabled(true);
-            kernelLabel.setEnabled(true);
         }
         kernelImageFileText.setText(options.getKernelImageFile());
         executionsSpinner.setSelection(options.getExecutionsNumber());
@@ -172,6 +172,15 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
             }
         } catch (Exception e) {
         }
+        try {
+            Process proc = RuntimeProcessFactory.getFactory().exec(
+                    new String [] {"which", OprofileProject.OCOUNT_BINARY }, //$NON-NLS-1$
+                    null);
+            if  (proc.waitFor() == 0) {
+                tools.add(OprofileProject.OCOUNT_BINARY);
+            }
+        } catch (Exception e) {
+        }
         controlCombo.setItems(tools.toArray(new String [0]));
         controlCombo.select(0);
         controlCombo.addModifyListener(new ModifyListener() {
@@ -179,16 +188,16 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
             public void modifyText(ModifyEvent mev) {
                 OprofileProject.setProfilingBinary(controlCombo.getText());
                 options.setOprofileComboText(controlCombo.getText());
-                if(controlCombo.getText().equals(OprofileProject.OPERF_BINARY)) {
-                    checkSeparateLibrary.setEnabled(false);
-                    checkSeparateKernel.setEnabled(false);
-                    kernelImageFileText.setEnabled(false);
-                    kernelLabel.setEnabled(false);
-                } else {
+                if(controlCombo.getText().equals(OprofileProject.OPCONTROL_BINARY)) {
                     checkSeparateLibrary.setEnabled(true);
                     checkSeparateKernel.setEnabled(true);
                     kernelImageFileText.setEnabled(true);
                     kernelLabel.setEnabled(true);
+                } else {
+                    checkSeparateLibrary.setEnabled(false);
+                    checkSeparateKernel.setEnabled(false);
+                    kernelImageFileText.setEnabled(false);
+                    kernelLabel.setEnabled(false);
                 }
                 updateLaunchConfigurationDialog();
             }

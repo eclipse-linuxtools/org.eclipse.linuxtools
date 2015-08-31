@@ -11,5 +11,13 @@
             name="%view.name"
             restorable="true">
       </view>
+      <view
+            category="org.eclipse.linuxtools.profiling.ui"
+            class="org.eclipse.linuxtools.internal.oprofile.ui.view.OcountView"
+            icon="icons/oprofile_view.png"
+            id="org.eclipse.linuxtools.oprofile.ui.OCountView"
+            name="%OcountView.name"
+            restorable="false">
+      </view>
    </extension>
 </plugin>
