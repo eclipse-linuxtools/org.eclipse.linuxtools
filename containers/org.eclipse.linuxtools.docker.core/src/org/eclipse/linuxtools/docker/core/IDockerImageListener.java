@@ -14,6 +14,15 @@ import java.util.List;
 
 public interface IDockerImageListener {
 
-	void listChanged(IDockerConnection manager, List<IDockerImage> list);
+	/**
+	 * Called when the list of {@link IDockerImage} for the given
+	 * {@link IDockerConnection} changed
+	 * 
+	 * @param connection
+	 *            - the Docker connection
+	 * @param images
+	 *            - the new list of {@link IDockerImage}
+	 */
+	void listChanged(IDockerConnection manager, List<IDockerImage> images);
 
 }

@@ -672,7 +672,8 @@ public class DockerConnection implements IDockerConnection {
 		if (containerListeners != null) {
 			Object[] listeners = containerListeners.getListeners();
 			for (int i = 0; i < listeners.length; ++i) {
-				((IDockerContainerListener) listeners[i]).listChanged(this,
+				((IDockerContainerListener) listeners[i])
+						.listChanged(this,
 						list);
 			}
 		}
