@@ -26,8 +26,6 @@ import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.IValueChangeListener;
-import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -127,7 +125,6 @@ public class ImageSearchPage extends WizardPage {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).applyTo(searchImageButton);
 		searchImageButton.addSelectionListener(onSearchImageButtonSelected());
-		searchImageButton.setEnabled(!searchImageText.getText().isEmpty());
 		// result table
 		final Label searchResultLabel = new Label(container, SWT.NONE);
 		searchResultLabel.setText(
@@ -179,16 +176,12 @@ public class ImageSearchPage extends WizardPage {
 		final IObservableValue observableTermModel = BeanProperties
 				.value(ImageSearchModel.class, ImageSearchModel.TERM)
 				.observe(model);
-		final UpdateValueStrategy strategy = new UpdateValueStrategy();
-		strategy.setBeforeSetValidator(new SearchTermValidator());
-
 		final ISWTObservableValue imageSearchTextObservable = WidgetProperties
 				.text(SWT.Modify).observe(searchImageText);
-		ctx.bindValue(imageSearchTextObservable, observableTermModel, strategy,
+		ctx.bindValue(imageSearchTextObservable, observableTermModel,
+				new UpdateValueStrategy().setBeforeSetValidator(
+						new SearchTermValidator(searchImageButton)),
 				null);
-		// enable/disable the search button
-		imageSearchTextObservable
-				.addValueChangeListener(onTermValueChanged(searchImageButton));
 		// observe the viewer content
 		searchResultTableViewer
 				.setContentProvider(new ObservableListContentProvider());
@@ -231,26 +224,6 @@ public class ImageSearchPage extends WizardPage {
 		column.setWidth(width);
 		viewerColumn.setLabelProvider(columnLabelProvider);
 		return viewerColumn;
-	}
-
-	private IValueChangeListener onTermValueChanged(
-			final Button searchImageButton) {
-		return new IValueChangeListener() {
-
-			@Override
-			public void handleValueChange(final ValueChangeEvent event) {
-				final String searchTerm = (String) event.getObservableValue()
-						.getValue();
-				final IStatus status = AggregateValidationStatus
-						.getStatusMaxSeverity(
-								ctx.getValidationStatusProviders());
-				if (searchTerm.isEmpty() || !status.isOK()) {
-					searchImageButton.setEnabled(false);
-				} else {
-					searchImageButton.setEnabled(true);
-				}
-			}
-		};
 	}
 
 	private TraverseListener onSearchImageTextTraverse() {
@@ -363,18 +336,29 @@ public class ImageSearchPage extends WizardPage {
 
 	static class SearchTermValidator implements IValidator {
 
+		private static final String REPOSITORY = "[a-z0-9]+([._-][a-z0-9]+)*";
+		private static final String NAME = "[a-z0-9]+([._-][a-z0-9]+)*";
 		private static final Pattern termPattern = Pattern
-				.compile("[a-z0-9]+([._-][a-z0-9]+)*"); //$NON-NLS-1$
+				.compile("(" + REPOSITORY + "/)?" + NAME);
+
+		private final Button searchImageButton;
+
+		public SearchTermValidator(final Button searchImageButton) {
+			this.searchImageButton = searchImageButton;
+		}
 
 		@Override
 		public IStatus validate(final Object value) {
 			final String term = (String) value;
 			if (term == null || term.isEmpty()) {
+				this.searchImageButton.setEnabled(false);
 				return ValidationStatus.info(WizardMessages
 						.getString("ImageSearchPage.description")); //$NON-NLS-1$
 			} else if (termPattern.matcher(term).matches()) {
+				this.searchImageButton.setEnabled(true);
 				return Status.OK_STATUS;
 			} else {
+				this.searchImageButton.setEnabled(false);
 				return ValidationStatus.error(WizardMessages.getFormattedString(
 						"ImageSearchPage.term.invalidformat", //$NON-NLS-1$
 						termPattern.pattern()));

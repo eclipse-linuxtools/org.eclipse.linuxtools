@@ -14,8 +14,6 @@ package org.eclipse.linuxtools.docker.ui.wizards;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
-import org.eclipse.linuxtools.docker.core.IDockerImageSearchResult;
-import org.eclipse.linuxtools.internal.docker.ui.wizards.DockerImageTagSearchResult;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageSearchModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageSearchPage;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageTagSelectionPage;
@@ -41,11 +39,16 @@ public class ImageSearch extends Wizard {
 
 	/*
 	 * Default Constructor
+	 * 
+	 * @param connection
+	 *            the current connection to a target Docker daemon
+	 * @param name
+	 *            the current image name or <code>null</code> if not applicable
 	 */
-	public ImageSearch(final IDockerConnection connection) {
+	public ImageSearch(final IDockerConnection connection, final String name) {
 		setWindowTitle(WizardMessages.getString("ImageSearch.title")); //$NON-NLS-1$
         setNeedsProgressMonitor(true);
-		this.imageSearchModel = new ImageSearchModel(connection);
+		this.imageSearchModel = new ImageSearchModel(connection, name);
 		this.imageSearchPage = new ImageSearchPage(this.imageSearchModel);
 		this.imageTagSelectionPage = new ImageTagSelectionPage(
 				this.imageSearchModel);
@@ -67,11 +70,9 @@ public class ImageSearch extends Wizard {
 		return true;
 	}
 
-	public IDockerImageSearchResult getSelectedImage() {
-		return this.imageSearchPage.getSelectedImage();
+	public String getSelectedImage() {
+		return this.imageSearchPage.getSelectedImage().getName() + ":"
+				+ this.imageTagSelectionPage.getSelectedImageTag().getName();
 	}
 
-	public DockerImageTagSearchResult getSelectedImageTag() {
-		return this.imageTagSelectionPage.getSelectedImageTag();
-	}
 }

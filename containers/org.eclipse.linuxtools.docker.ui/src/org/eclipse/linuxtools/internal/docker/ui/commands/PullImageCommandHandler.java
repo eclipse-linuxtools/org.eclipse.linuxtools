@@ -23,6 +23,7 @@ import org.eclipse.linuxtools.docker.ui.wizards.ImageSearch;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.linuxtools.internal.docker.ui.views.ImagePullProgressHandler;
+import org.eclipse.linuxtools.internal.docker.ui.wizards.ImagePull;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -43,20 +44,19 @@ public class PullImageCommandHandler extends AbstractHandler {
 		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		final IDockerConnection connection = CommandUtils
 				.getCurrentConnection(activePart);
-		final ImageSearch wizard = new ImageSearch(connection);
+		final ImagePull wizard = new ImagePull(connection);
 		final boolean pullImage = CommandUtils.openWizard(wizard,
 				HandlerUtil.getActiveShell(event));
 		if (pullImage) {
-			performPullImage(connection, wizard.getSelectedImage().getName(),
-					wizard.getSelectedImageTag().getName());
+			performPullImage(connection, wizard.getImageName());
 		}
 		return null;
 	}
 
 	private void performPullImage(final IDockerConnection connection,
-			final String imageName, final String tagName) {
+			final String imageName) {
 		final Job pullImageJob = new Job(DVMessages
-				.getFormattedString(PULL_IMAGE_JOB_TITLE, imageName, tagName)) {
+				.getFormattedString(PULL_IMAGE_JOB_TITLE, imageName)) {
 
 			@Override
 			protected IStatus run(final IProgressMonitor monitor) {
@@ -65,8 +65,7 @@ public class PullImageCommandHandler extends AbstractHandler {
 				// pull the image and let the progress
 				// handler refresh the images when done
 				try {
-					((DockerConnection) connection).pullImage(
-							imageName + ":" + tagName,
+					((DockerConnection) connection).pullImage(imageName,
 							new ImagePullProgressHandler(connection,
 									imageName));
 				} catch (final DockerException e) {
