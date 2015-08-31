@@ -47,8 +47,18 @@ public class ImageSearchModel extends BaseDatabindingModel {
 
 	private DockerImageTagSearchResult selectedImageTag;
 
-	public ImageSearchModel(final IDockerConnection selectedConnection) {
+	public ImageSearchModel(final IDockerConnection selectedConnection,
+			String term) {
 		this.selectedConnection = selectedConnection;
+		// the search term should not contain a tag (eg: 'centos' but not
+		// 'centos:latest')
+		if (term == null) {
+			this.term = null;
+		} else if (term.indexOf(":") != -1) { //$NON-NLS-1$
+			this.term = term.substring(0, term.lastIndexOf(":")); //$NON-NLS-1$
+		} else {
+			this.term = term;
+		}
 	}
 
 	public IDockerConnection getSelectedConnection() {

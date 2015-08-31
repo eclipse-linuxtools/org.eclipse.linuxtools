@@ -28,4 +28,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.docker.ui,
  org.eclipse.linuxtools.docker.ui.launch,
- org.eclipse.linuxtools.internal.docker.ui.preferences
+ org.eclipse.linuxtools.internal.docker.ui.preferences,
+ org.eclipse.linuxtools.internal.docker.ui.wizards;x-friends:="org.eclipse.linuxtools.docker.ui.tests"
