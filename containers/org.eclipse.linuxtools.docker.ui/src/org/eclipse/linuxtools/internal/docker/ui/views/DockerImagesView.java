@@ -364,7 +364,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 	
 	@Override
 	public void listChanged(final IDockerConnection connection,
-			final List<IDockerImage> containers) {
+			final List<IDockerImage> images) {
 		if (connection.getName().equals(connection.getName())) {
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
