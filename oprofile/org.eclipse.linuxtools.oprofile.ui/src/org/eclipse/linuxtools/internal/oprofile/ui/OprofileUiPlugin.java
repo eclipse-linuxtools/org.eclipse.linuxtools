@@ -16,6 +16,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.linuxtools.internal.oprofile.ui.view.OcountView;
 import org.eclipse.linuxtools.internal.oprofile.ui.view.OprofileView;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -31,9 +32,11 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
     private static OprofileUiPlugin plugin;
 
     private OprofileView oprofileview = null;
+    private OcountView   ocountview = null;
 
     public static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.ui"; //$NON-NLS-1$
     public static final String ID_OPROFILE_VIEW = PLUGIN_ID + ".OProfileView"; //$NON-NLS-1$
+    public static final String ID_OCOUNT_VIEW = PLUGIN_ID + ".OCountView"; //$NON-NLS-1$
 
     private static final String ICON_PATH = "icons/"; //$NON-NLS-1$
     public static final String SESSION_ICON = ICON_PATH + "session.gif"; //$NON-NLS-1$
@@ -104,6 +107,14 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 
     public void setOprofileView(OprofileView oprofileview) {
         this.oprofileview = oprofileview;
+    }
+
+    public OcountView getOcountView() {
+        return ocountview;
+    }
+
+    public void setOcountView(OcountView ocountview) {
+        this.ocountview = ocountview;
     }
 
     public static IWorkbenchWindow getActiveWorkbenchWindow() {

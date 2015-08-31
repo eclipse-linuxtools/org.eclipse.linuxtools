@@ -335,7 +335,8 @@ public class InfoAdapter extends AbstractDataAdapter{
          * module was not initialized.
          * TODO: Make possible to select more than one event in a tab.
          */
-        if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY)) {
+        if ((OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY)) ||
+		(OprofileProject.getProfilingBinary().equals(OprofileProject.OCOUNT_BINARY))) {
             return 1;
         }
         try {
