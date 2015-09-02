@@ -25,8 +25,11 @@ public interface IDockerRegistry {
 	 * @param repository
 	 *            the image repository
 	 * @throws InterruptedException
+	 *             TODO add proper docs
 	 * @throws DockerException
+	 *             TODO add proper docs
 	 * @throws ExecutionException
+	 *             TODO add proper docs
 	 */
 	List<IRepositoryTag> getTags(String repository)
 			throws InterruptedException, ExecutionException, DockerException;
