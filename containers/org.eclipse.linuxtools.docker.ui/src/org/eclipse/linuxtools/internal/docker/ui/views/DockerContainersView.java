@@ -401,7 +401,7 @@ public class DockerContainersView extends ViewPart implements
 		this.connection = conn;
 		if (conn != null) {
 			viewer.setInput(conn);
-			form.setText(conn.getName());
+			refreshViewTitle();
 		} else {
 			viewer.setInput(new IDockerContainer[0]);
 			form.setText(DVMessages.getString(DaemonMissing));

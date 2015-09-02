@@ -420,7 +420,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 		this.connection = conn;
 		if (conn != null) {
 			viewer.setInput(conn);
-			form.setText(conn.getName());
+			refreshViewTitle();
 		} else {
 			viewer.setInput(new IDockerImage[0]);
 			form.setText(DVMessages.getString(DaemonMissing));
