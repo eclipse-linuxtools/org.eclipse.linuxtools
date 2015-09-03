@@ -10,6 +10,13 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.commands;
 
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.IPath;
@@ -25,6 +32,7 @@ import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerImagesView;
 import org.eclipse.linuxtools.internal.docker.ui.views.ImageBuildProgressHandler;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageBuild;
+import org.eclipse.linuxtools.internal.docker.ui.wizards.WizardMessages;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -33,6 +41,7 @@ public class BuildImageCommandHandler extends AbstractHandler {
 
 	private final static String BUILD_IMAGE_JOB_TITLE = "ImageBuild.msg"; //$NON-NLS-1$
 	private static final String ERROR_BUILDING_IMAGE = "ImageBuildError.msg"; //$NON-NLS-1$
+	private static final String IMAGE_DIRECTORY_VALIDATE = "ImageDirectoryValidate.msg"; //$NON-NLS-1$
 	
 	private IDockerConnection connection;
 
@@ -61,11 +70,60 @@ public class BuildImageCommandHandler extends AbstractHandler {
 				final String id = wizard.getImageName();
 				final int lines = wizard.getNumberOfLines();
 				final IPath path = wizard.getDirectory();
+
 				monitor.beginTask(DVMessages.getString(BUILD_IMAGE_JOB_TITLE),
-						1);
+						2);
+				monitor.subTask(
+						WizardMessages.getString(IMAGE_DIRECTORY_VALIDATE));
+				try {
+					Files.walkFileTree(Paths.get(path.toString()),
+							new FileVisitor<java.nio.file.Path>() {
+								@Override
+								public FileVisitResult preVisitDirectory(
+										java.nio.file.Path dir,
+										BasicFileAttributes attrs) {
+									return FileVisitResult.CONTINUE;
+								}
+								@Override
+								public FileVisitResult visitFile(
+										java.nio.file.Path file,
+										BasicFileAttributes attrs) {
+									return FileVisitResult.CONTINUE;
+								}
+								@Override
+								public FileVisitResult visitFileFailed(
+										java.nio.file.Path file, IOException exc)
+												throws IOException {
+									throw exc;
+								}
+								@Override
+								public FileVisitResult postVisitDirectory(
+										java.nio.file.Path dir, IOException exc) {
+									return FileVisitResult.CONTINUE;
+								}
+							});
+				} catch (final IOException e) {
+					Display.getDefault().syncExec(new Runnable() {
+						@Override
+						public void run() {
+							MessageDialog.openError(
+									Display.getCurrent().getActiveShell(),
+											WizardMessages.getString(
+													"ErrorInvalidDirectory.msg"),
+									WizardMessages.getFormattedString(
+											"ErrorInvalidPermissions.msg",
+											path.toString()));
+						}
+					});
+					return Status.OK_STATUS;
+				}
+				monitor.worked(1);
+
 				// build the image and let the progress
 				// handler refresh the images when done
 				try {
+					monitor.subTask(
+							DVMessages.getString(BUILD_IMAGE_JOB_TITLE));
 					((DockerConnection) connection)
 							.buildImage(path, id,
 									new ImageBuildProgressHandler(connection,

@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
@@ -45,6 +48,7 @@ public class ImageBuildPage extends WizardPage {
 	private final static String EDIT_LABEL = "EditButton.label"; //$NON-NLS-1$
 	private final static String NONEXISTENT_DIRECTORY = "ErrorNonexistentDirectory.msg"; //$NON-NLS-1$
 	private final static String INVALID_DIRECTORY = "ErrorInvalidDirectory.msg"; //$NON-NLS-1$
+	private final static String UNREADABLE_DIRECTORY = "ErrorUnreadableDirectory.msg"; //$NON-NLS-1$
 	private final static String INVALID_ID = "ErrorInvalidImageId.msg"; //$NON-NLS-1$
 	private final static String NO_DOCKER_FILE = "ErrorNoDockerFile.msg"; //$NON-NLS-1$
 
@@ -111,6 +115,10 @@ public class ImageBuildPage extends WizardPage {
 				} else if (!info.isDirectory()) {
 					error = true;
 					setErrorMessage(WizardMessages.getString(INVALID_DIRECTORY));
+				} else if (!Files.isReadable(Paths.get(dir))) {
+					error = true;
+					setErrorMessage(
+							WizardMessages.getString(UNREADABLE_DIRECTORY));
 				} else {
 					editButton.setEnabled(true);
 					IFileStore dockerStore = fileStore.getChild("Dockerfile"); //$NON-NLS-1$
