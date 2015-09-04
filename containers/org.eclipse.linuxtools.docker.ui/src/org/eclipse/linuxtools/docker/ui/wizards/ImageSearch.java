@@ -9,12 +9,17 @@
  *     Red Hat - Initial Contribution
  *******************************************************************************/
 
-package org.eclipse.linuxtools.internal.docker.ui.wizards;
+package org.eclipse.linuxtools.docker.ui.wizards;
 
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerImageSearchResult;
+import org.eclipse.linuxtools.internal.docker.ui.wizards.DockerImageTagSearchResult;
+import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageSearchModel;
+import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageSearchPage;
+import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageTagSelectionPage;
+import org.eclipse.linuxtools.internal.docker.ui.wizards.WizardMessages;
 
 /**
  * Wizard to search for images.
@@ -34,7 +39,7 @@ public class ImageSearch extends Wizard {
 	 */
 	private final ImageSearchModel imageSearchModel;
 
-	/**
+	/*
 	 * Default Constructor
 	 */
 	public ImageSearch(final IDockerConnection connection) {
