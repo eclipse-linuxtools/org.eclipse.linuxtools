@@ -19,14 +19,14 @@ import org.eclipse.linuxtools.internal.docker.ui.databinding.BaseDatabindingMode
  */
 public class NewDockerConnectionPageModel extends BaseDatabindingModel {
 
-	public static final String CONNECTION_NAME = "connectionName";
-	public static final String CUSTOM_SETTINGS = "customSettings";
-	public static final String UNIX_SOCKET_BINDING_MODE = "unixSocketBindingMode";
-	public static final String UNIX_SOCKET_PATH = "unixSocketPath";
-	public static final String TCP_CONNECTION_BINDING_MODE = "tcpConnectionBindingMode";
-	public static final String TCP_HOST = "tcpHost";
-	public static final String TCP_TLS_VERIFY = "tcpTLSVerify";
-	public static final String TCP_CERT_PATH = "tcpCertPath";
+	public static final String CONNECTION_NAME = "connectionName"; //$NON-NLS-1$
+	public static final String CUSTOM_SETTINGS = "customSettings"; //$NON-NLS-1$
+	public static final String UNIX_SOCKET_BINDING_MODE = "unixSocketBindingMode"; //$NON-NLS-1$
+	public static final String UNIX_SOCKET_PATH = "unixSocketPath"; //$NON-NLS-1$
+	public static final String TCP_CONNECTION_BINDING_MODE = "tcpConnectionBindingMode"; //$NON-NLS-1$
+	public static final String TCP_HOST = "tcpHost"; //$NON-NLS-1$
+	public static final String TCP_TLS_VERIFY = "tcpTLSVerify"; //$NON-NLS-1$
+	public static final String TCP_CERT_PATH = "tcpCertPath"; //$NON-NLS-1$
 
 	/** the name of the connection. */
 	private String connectionName;
