@@ -132,8 +132,8 @@ public class NewDockerConnectionPage extends WizardPage {
 		// custom settings checkbox
 		final Button customConnectionSettingsButton = new Button(container,
 				SWT.CHECK);
-		customConnectionSettingsButton
-				.setText("Use custom connection settings:");
+		customConnectionSettingsButton.setText(WizardMessages
+				.getString("NewDockerConnectionPage.customLabel")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).indent(0, 10).span(COLUMNS, 1)
 				.applyTo(customConnectionSettingsButton);
@@ -662,7 +662,7 @@ public class NewDockerConnectionPage extends WizardPage {
 				try {
 					final URI unixSocketURI = new URI(unixSocketPath);
 					if (unixSocketURI.getScheme() != null
-							&& !unixSocketURI.getScheme().equals("unix")) {
+							&& !unixSocketURI.getScheme().equals("unix")) { //$NON-NLS-1$
 						return ValidationStatus.error(WizardMessages.getString(
 								"NewDockerConnectionPage.validation.invalidUnixSocketScheme.msg")); //$NON-NLS-1$
 					}
@@ -732,8 +732,8 @@ public class NewDockerConnectionPage extends WizardPage {
 					final String host = uri.getHost();
 					final int port = uri.getPort();
 					if (scheme != null
-							&& !(scheme.equals("tcp") || scheme.equals("http")
-									|| scheme.equals("https"))) {
+							&& !(scheme.equals("tcp") || scheme.equals("http") //$NON-NLS-1$ //$NON-NLS-2$
+									|| scheme.equals("https"))) { //$NON-NLS-1$
 						return ValidationStatus.error(WizardMessages.getString(
 								"NewDockerConnectionPage.validation.invalidTcpConnectionScheme.msg")); //$NON-NLS-1$
 					} else if (host == null) {
