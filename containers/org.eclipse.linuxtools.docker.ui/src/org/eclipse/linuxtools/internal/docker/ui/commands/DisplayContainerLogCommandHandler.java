@@ -23,7 +23,6 @@ import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.RunConsole;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerContainersView;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -33,20 +32,18 @@ public class DisplayContainerLogCommandHandler extends AbstractHandler {
 	private static final String CONTAINER_LOG_TITLE = "ContainerLog.title"; //$NON-NLS-1$
 	private static final String ERROR_LOGGING_CONTAINER = "ContainerLogError.msg"; //$NON-NLS-1$
 
-	private IDockerConnection connection;
-	private IDockerContainer container;
 
 	@Override
 	public Object execute(final ExecutionEvent event) {
 		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
-		List<IDockerContainer> selectedContainers = CommandUtils
+		final IDockerConnection connection = CommandUtils
+				.getCurrentConnection(activePart);
+		final List<IDockerContainer> selectedContainers = CommandUtils
 				.getSelectedContainers(activePart);
-		if (activePart instanceof DockerContainersView) {
-			connection = ((DockerContainersView) activePart).getConnection();
-		}
-		if (selectedContainers.size() != 1 || connection == null)
+		if (selectedContainers.size() != 1 || connection == null) {
 			return null;
-		container = selectedContainers.get(0);
+		}
+		final IDockerContainer container = selectedContainers.get(0);
 		final String id = container.id();
 		final String name = container.name();
 		try {
