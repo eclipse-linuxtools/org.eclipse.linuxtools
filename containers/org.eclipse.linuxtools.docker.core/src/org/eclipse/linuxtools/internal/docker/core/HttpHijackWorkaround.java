@@ -39,22 +39,31 @@ import com.spotify.docker.client.LogStream;
 public class HttpHijackWorkaround {
 
 	public static WritableByteChannel getOutputStream(LogStream stream, String uri) throws Exception {
-		final String[] fields = new String[] { "reader", "stream", "original",
-				"input", "in", "in", "wrappedStream", "in", "instream" };
+		final String[] fields = new String[] {
+				"reader", //$NON-NLS-1$
+				"stream", //$NON-NLS-1$
+				"original", //$NON-NLS-1$
+				"input", //$NON-NLS-1$
+				"in", //$NON-NLS-1$
+				"in", //$NON-NLS-1$
+				"wrappedStream", //$NON-NLS-1$
+				"in", //$NON-NLS-1$
+				"instream" //$NON-NLS-1$
+		};
 		final String[] declared = new String[] {
 				LogStream.class.getName(),
 				LogReader.class.getName(),
-				"org.glassfish.jersey.message.internal.ReaderInterceptorExecutor$UnCloseableInputStream",
-				"org.glassfish.jersey.message.internal.EntityInputStream",
+				"org.glassfish.jersey.message.internal.ReaderInterceptorExecutor$UnCloseableInputStream", //$NON-NLS-1$
+				"org.glassfish.jersey.message.internal.EntityInputStream", //$NON-NLS-1$
 				FilterInputStream.class.getName(),
 				FilterInputStream.class.getName(),
-				"org.apache.http.conn.EofSensorInputStream",
-				"org.apache.http.impl.io.IdentityInputStream",
-				"org.apache.http.impl.io.SessionInputBufferImpl" };
+				"org.apache.http.conn.EofSensorInputStream", //$NON-NLS-1$
+				"org.apache.http.impl.io.IdentityInputStream", //$NON-NLS-1$
+				"org.apache.http.impl.io.SessionInputBufferImpl" }; //$NON-NLS-1$
 		final String [] bundles = new String[] {
-				"org.glassfish.jersey.core.jersey-common",
-				"org.apache.httpcomponents.httpcore",
-				"org.apache.httpcomponents.httpclient"
+				"org.glassfish.jersey.core.jersey-common", //$NON-NLS-1$
+				"org.apache.httpcomponents.httpcore", //$NON-NLS-1$
+				"org.apache.httpcomponents.httpclient" //$NON-NLS-1$
 		};
 
 		List<String[]> list = new LinkedList<>();
@@ -62,12 +71,19 @@ public class HttpHijackWorkaround {
 			list.add(new String[] { declared[i], fields[i] });
 		}
 
-		if (uri.startsWith("unix:")) {
-			list.add(new String[] { "sun.nio.ch.ChannelInputStream", "ch" });
-		} else if (uri.startsWith("https:")) {
-			list.add(new String[] { "sun.security.ssl.AppInputStream", "c" });
+		if (uri.startsWith("unix:")) { //$NON-NLS-1$
+			list.add(new String[] { "sun.nio.ch.ChannelInputStream", "ch" }); //$NON-NLS-1$ //$NON-NLS-2$
+		} else if (uri.startsWith("https:")) { //$NON-NLS-1$
+			float jvmVersion = Float.parseFloat(System.getProperty("java.specification.version")); //$NON-NLS-1$
+			String fName;
+			if (jvmVersion < 1.9f) {
+				fName = "c"; //$NON-NLS-1$
+			} else {
+				fName = "socket"; //$NON-NLS-1$
+			}
+			list.add(new String[] { "sun.security.ssl.AppInputStream", fName }); //$NON-NLS-1$
 		} else {
-			list.add(new String[] { "java.net.SocketInputStream", "socket" });
+			list.add(new String[] { "java.net.SocketInputStream", "socket" }); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		Object res = getInternalField(stream, list, bundles);
@@ -87,7 +103,7 @@ public class HttpHijackWorkaround {
 	 * happens with the HTTP Hijacking situation.
 	 */
 	public static InputStream getInputStream(LogStream stream) {
-		final String[] fields = new String[] { "reader", "stream" };
+		final String[] fields = new String[] { "reader", "stream" }; //$NON-NLS-1$ //$NON-NLS-2$
 		final String[] declared = new String[] { LogStream.class.getName(), LogReader.class.getName()};
 
 		List<String[]> list = new LinkedList<>();
