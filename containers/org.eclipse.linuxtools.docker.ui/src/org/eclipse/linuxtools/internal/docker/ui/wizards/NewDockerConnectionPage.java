@@ -17,6 +17,8 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -39,17 +41,24 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.DockerException;
+import org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection.Builder;
+import org.eclipse.linuxtools.internal.docker.core.DockerMachine;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -59,6 +68,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.ListDialog;
 
 /**
  * {@link WizardPage} to input the settings to connect to a Docker
@@ -216,12 +226,21 @@ public class NewDockerConnectionPage extends WizardPage {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.applyTo(tcpCertPathBrowseButton);
 
+		// the 'Search' button
+		final Button searchButton = new Button(container, SWT.NONE);
+		searchButton.setText(WizardMessages
+				.getString("NewDockerConnectionPage.searchButton")); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.span(COLUMNS - 1, 1).align(SWT.BEGINNING, SWT.CENTER)
+				.applyTo(searchButton);
+		searchButton.addSelectionListener(onSearchButtonSelection());
+
 		// the 'test connection' button
 		final Button testConnectionButton = new Button(container, SWT.NONE);
 		testConnectionButton.setText(WizardMessages
 				.getString("NewDockerConnectionPage.testConnection")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
-				.span(COLUMNS, 1).align(SWT.END, SWT.CENTER)
+				.span(1, 1).align(SWT.END, SWT.CENTER)
 				.applyTo(testConnectionButton);
 		testConnectionButton
 				.addSelectionListener(onTestConnectionButtonSelection());
@@ -574,6 +593,67 @@ public class NewDockerConnectionPage extends WizardPage {
 		};
 	}
 
+	private SelectionListener onSearchButtonSelection() {
+		return new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				String[] dmNames = DockerMachine.getNames();
+				List<String> activeNames = new ArrayList<>();
+				for (String name : dmNames) {
+					if (DockerMachine.getHost(name) != null) {
+						activeNames.add(name);
+					}
+				}
+				if (activeNames.size() > 0) {
+					ListDialog connPrompt = new ListDialog(getShell());
+					connPrompt.setContentProvider(new ConnectionSelectionContentProvider());
+					connPrompt.setLabelProvider(new ConnectionSelectionLabelProvider());
+					connPrompt.setTitle(WizardMessages.getString(
+							"NewDockerConnectionPage.searchDialog.title")); //$NON-NLS-1$
+					connPrompt.setMessage(WizardMessages.getString(
+							"NewDockerConnectionPage.searchDialog.message")); //$NON-NLS-1$
+					connPrompt.setInput(activeNames.toArray(new String[0]));
+					if (connPrompt.open() == 0 && connPrompt.getResult().length > 0) {
+						String name = ((String) connPrompt.getResult()[0]);
+						String host = DockerMachine.getHost(name);
+						String certPath = DockerMachine.getCertPath(name);
+						model.setBindingMode(EnumDockerConnectionSettings.TCP_CONNECTION);
+						model.setConnectionName(name);
+						model.setUnixSocketPath(null);
+						model.setTcpHost(host);
+						if (certPath != null) {
+							model.setTcpTLSVerify(true);
+							model.setTcpCertPath(certPath);
+						} else {
+							model.setTcpTLSVerify(false);
+							model.setTcpCertPath(null);
+						}
+					}
+				} else {
+					if (dmNames.length > 0) {
+						StringBuffer connections = new StringBuffer();
+						for (String conn : dmNames) {
+							connections.append(", "); //$NON-NLS-1$
+							connections.append(conn);
+						}
+						MessageDialog.openInformation(getShell(),
+								WizardMessages.getString(
+										"NewDockerConnectionPage.searchDialog.discovery.title"), //$NON-NLS-1$
+								WizardMessages.getFormattedString(
+										"NewDockerConnectionPage.searchDialog.discovery.innactive", //$NON-NLS-1$
+										connections.substring(2)));
+					} else {
+						MessageDialog.openInformation(getShell(),
+								WizardMessages.getString(
+										"NewDockerConnectionPage.searchDialog.discovery.title"), //$NON-NLS-1$
+								WizardMessages.getString(
+										"NewDockerConnectionPage.searchDialog.discovery.empty")); //$NON-NLS-1$
+					}
+				}
+			}
+		};
+	}
+
 	/**
 	 * Opens a new {@link DockerConnection} using the settings of this
 	 * {@link NewDockerConnectionPage}.
@@ -803,6 +883,52 @@ public class NewDockerConnectionPage extends WizardPage {
 			return ValidationStatus.ok();
 		}
 
+	}
+
+	private class ConnectionSelectionContentProvider
+			implements IStructuredContentProvider {
+		@Override
+		public void inputChanged(Viewer viewer, Object oldInput,
+				Object newInput) {
+		}
+
+		@Override
+		public void dispose() {
+		}
+
+		@Override
+		public Object[] getElements(Object inputElement) {
+			return (String[]) (inputElement);
+		}
+	}
+
+	private class ConnectionSelectionLabelProvider implements ILabelProvider {
+		@Override
+		public void removeListener(ILabelProviderListener listener) {
+		}
+
+		@Override
+		public boolean isLabelProperty(Object element, String property) {
+			return false;
+		}
+
+		@Override
+		public void dispose() {
+		}
+
+		@Override
+		public void addListener(ILabelProviderListener listener) {
+		}
+
+		@Override
+		public String getText(Object element) {
+			return element.toString();
+		}
+
+		@Override
+		public Image getImage(Object element) {
+			return SWTImagesFactory.DESC_REPOSITORY_MIDDLE.createImage();
+		}
 	}
 
 }
