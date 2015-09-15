@@ -85,9 +85,9 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 
 	private WritableList links = new WritableList();
 
-	private boolean interactiveMode = true;
+	private boolean interactiveMode = false;
 
-	private boolean allocatePseudoTTY = true;
+	private boolean allocatePseudoTTY = false;
 
 	private boolean removeWhenExits = false;
 
