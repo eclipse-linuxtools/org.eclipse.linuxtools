@@ -828,7 +828,15 @@ public class DockerConnection implements IDockerConnection, Closeable {
 				Activator.logErrorMessage(e.getMessage());
 				throw new InterruptedException();
 			} catch (Exception e) {
-				Activator.logErrorMessage(e.getMessage());
+				/*
+				 * Temporary workaround for BZ #477485
+				 * Remove when docker-client logs() uses noTimeoutClient.
+				 */
+				if (e.getCause() instanceof SocketTimeoutException) {
+					execute();
+				} else {
+					Activator.logErrorMessage(e.getMessage());
+				}
 			} finally {
 				follow = false;
 				copyClient.close(); // we are done with copyClient..dispose
