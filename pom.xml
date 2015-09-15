@@ -21,7 +21,7 @@
   </prerequisites>
   <groupId>org.eclipse.linuxtools</groupId>
   <artifactId>linuxtools-parent</artifactId>
-  <version>4.1.0-SNAPSHOT</version>
+  <version>4.1.0</version>
   <packaging>pom</packaging>
 
   <name>Eclipse Linux Tools Parent</name>
@@ -57,7 +57,7 @@
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../../target/jacoco.exec</sonar.jacoco.reportPath>
-    <sonar.java.source>1.7</sonar.java.source>
+    <sonar.java.source>1.8</sonar.java.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <pluginRepositories>
@@ -172,14 +172,13 @@
     </profile>
   </profiles>
 
-
   <modules>
     <module>profiling</module>
     <module>changelog</module>
     <module>gcov</module>
     <module>gprof</module>
-    <module>libhover</module>
     <module>javadocs</module>
+    <module>libhover</module>
     <module>man</module>
     <module>oprofile</module>
     <module>perf</module>
