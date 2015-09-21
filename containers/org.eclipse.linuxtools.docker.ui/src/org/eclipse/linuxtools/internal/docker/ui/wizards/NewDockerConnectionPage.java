@@ -49,10 +49,13 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings;
+import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection.Builder;
 import org.eclipse.linuxtools.internal.docker.core.DockerMachine;
+import org.eclipse.linuxtools.internal.docker.core.TCPConnectionSettings;
+import org.eclipse.linuxtools.internal.docker.core.UnixSocketConnectionSettings;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -400,16 +403,42 @@ public class NewDockerConnectionPage extends WizardPage {
 							monitor.beginTask(WizardMessages.getString(
 									"NewDockerConnectionPage.retrieveTask"), //$NON-NLS-1$
 									1);
-							final DockerConnection.Defaults defaults = new DockerConnection.Defaults();
-							model.setTcpCertPath(defaults.getTcpCertPath());
-							model.setTcpTLSVerify(defaults.getTcpTlsVerify());
-							model.setTcpHost(defaults.getTcpHost());
-							model.setUnixSocketPath(
-									defaults.getUnixSocketPath());
-							model.setBindingMode(defaults.getBindingMode());
-							model.setCustomSettings(
-									!defaults.isSettingsResolved());
-							model.setConnectionName(defaults.getName());
+							final List<IDockerConnectionSettings> defaults = DockerConnectionManager
+									.getInstance().findConnectionSettings();
+							if (!defaults.isEmpty()) {
+								final IDockerConnectionSettings defaultConnectionSettings = defaults
+										.get(0);
+								model.setCustomSettings(
+										!defaultConnectionSettings
+												.isSettingsResolved());
+								model.setConnectionName(
+										defaultConnectionSettings.getName());
+								switch (defaultConnectionSettings.getType()) {
+								case TCP_CONNECTION:
+									final TCPConnectionSettings tcpConnectionSettings = (TCPConnectionSettings) defaultConnectionSettings;
+									model.setTcpConnectionBindingMode(true);
+									model.setTcpCertPath(tcpConnectionSettings
+											.getPathToCertificates());
+									model.setTcpTLSVerify(tcpConnectionSettings
+											.isTlsVerify());
+									model.setTcpHost(
+											tcpConnectionSettings.getHost());
+									break;
+								case UNIX_SOCKET_CONNECTION:
+									model.setUnixSocketBindingMode(true);
+									final UnixSocketConnectionSettings unixSocketConnectionSettings = (UnixSocketConnectionSettings) defaultConnectionSettings;
+									model.setUnixSocketPath(
+											unixSocketConnectionSettings
+													.getPath());
+									break;
+								}
+							} else {
+								// fall-back to custom settings, suggesting a
+								// Unix Socket connection to the user.
+								model.setCustomSettings(true);
+								model.setUnixSocketBindingMode(true);
+							}
+
 							monitor.done();
 						}
 					});

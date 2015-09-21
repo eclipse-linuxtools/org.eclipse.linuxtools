@@ -25,6 +25,7 @@
   <modules>
     <module>org.eclipse.linuxtools.docker.core</module>
     <module>org.eclipse.linuxtools.docker.ui</module>
+    <module>org.eclipse.linuxtools.docker.tests.hamcrest-wrap</module>
     <module>org.eclipse.linuxtools.docker.ui.tests</module>
     <module>org.eclipse.linuxtools.docker.docs</module>
     <module>org.eclipse.linuxtools.docker-feature</module>

@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.10.0",
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.docker.core,
- org.eclipse.linuxtools.internal.docker.core;x-friends:="org.eclipse.linuxtools.docker.ui"
+ org.eclipse.linuxtools.internal.docker.core;x-friends:="org.eclipse.linuxtools.docker.ui,org.eclipse.linuxtools.docker.ui.tests"
 Import-Package: com.fasterxml.jackson.annotation;version="2.5.0",
  org.eclipse.jface.preference
 Bundle-ClassPath: .

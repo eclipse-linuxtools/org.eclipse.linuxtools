@@ -1,0 +1,4 @@
+This is a wrapper bundle for the hamcrest split packages.
+This solves the dependency issues raised by Mockito 1.9.5 
+at runtime
+See https://bugs.eclipse.org/bugs/show_bug.cgi?id=403676#c10 

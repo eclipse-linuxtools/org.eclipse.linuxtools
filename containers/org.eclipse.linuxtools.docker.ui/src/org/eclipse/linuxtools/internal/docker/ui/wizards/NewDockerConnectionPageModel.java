@@ -31,9 +31,9 @@ public class NewDockerConnectionPageModel extends BaseDatabindingModel {
 	/** the name of the connection. */
 	private String connectionName;
 	/** flag to indicate if custom settings are used. */
-	private boolean customSettings = true;
+	private boolean customSettings = false;
 	/** flag to indicate if the binding uses Unix socket. */
-	private boolean unixSocketBindingMode = true;
+	private boolean unixSocketBindingMode = false;
 	/** the path to the Unix socket (if used). */
 	private String unixSocketPath = null;
 	/** flag to indicate if the binding uses a TCP connection. */
