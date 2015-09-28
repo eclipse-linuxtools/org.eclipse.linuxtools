@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.help.toc">
+      <tocProvider
+            class="org.eclipse.linuxtools.internal.man.help.ManualTocProvider">
+      </tocProvider>
+   </extension>
+   <extension
+         point="org.eclipse.help.contentProducer">
+      <contentProducer
+            producer="org.eclipse.linuxtools.internal.man.help.PageProducer">
+      </contentProducer>
+   </extension>
+   <extension
+         point="org.eclipse.help.base.searchParticipant">
+      <searchParticipant
+            extensions="html"
+            headless="false"
+            id="org.eclipse.linuxtools.man.help.SearchParticipant"
+            participant="org.eclipse.linuxtools.internal.man.help.SimpleSearchParticipant">
+      </searchParticipant>
+   </extension>
+</plugin>
