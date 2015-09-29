@@ -101,13 +101,13 @@ public class ContainerLauncher {
 		final List<String> volumes = new ArrayList<>();
 		if (additionalDirs != null) {
 			for (String dir : additionalDirs) {
-				volumes.add(dir + ":" + dir); //$NON-NLS-1$
+				volumes.add(dir + ":" + dir + ":Z"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		if (workingDir != null)
-			volumes.add(workingDir + ":" + workingDir); //$NON-NLS-1$
+			volumes.add(workingDir + ":" + workingDir + ":Z"); //$NON-NLS-1$ //$NON-NLS-2$
 		if (commandDir != null)
-			volumes.add(commandDir + ":" + commandDir); //$NON-NLS-1$
+			volumes.add(commandDir + ":" + commandDir + ":Z"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		final List<String> cmdList = getCmdList(command);
 
