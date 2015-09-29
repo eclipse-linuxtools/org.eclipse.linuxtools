@@ -16,7 +16,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class DockerMachine {
 
@@ -57,7 +56,7 @@ public class DockerMachine {
 			cmd.addAll(Arrays.asList(args));
 			Process p = Runtime.getRuntime().exec(cmd.toArray(new String[0]));
 			BufferedReader buff = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			if (p.waitFor(5, TimeUnit.SECONDS) && p.exitValue() == 0) {
+			if (p.waitFor() == 0) {
 				String line;
 				while ((line = buff.readLine()) != null) {
 					result.add(line);
