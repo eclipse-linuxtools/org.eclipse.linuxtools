@@ -23,6 +23,7 @@ public class Messages extends NLS {
 	public static String Exited_specifier;
 	public static String Running_specifier;
 	public static String Paused_specifier;
+	public static String Removal_In_Progress_specifier;
 	public static String Missing_Default_Settings;
 	public static String Missing_Settings;
 	public static String Retrieve_Default_Settings_Failure;
