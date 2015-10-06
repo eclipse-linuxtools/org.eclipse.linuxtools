@@ -36,7 +36,6 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
-import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
@@ -198,14 +197,12 @@ public class PreferencesTest extends AbstractTest{
         final Shell shellWidget = bot.activeShell().widget;
 
         // Open profiling configurations dialog
-        UIThreadRunnable.asyncExec(new VoidResult() {
-            @Override
-            public void run() {
-                DebugUITools.openLaunchConfigurationDialogOnGroup(shellWidget,
-                        (StructuredSelection) PlatformUI.getWorkbench().getWorkbenchWindows()[0].
-                        getSelectionService().getSelection(), "org.eclipse.debug.ui.launchGroup.profilee"); //$NON-NLS-1$
-            }
-        });
+		UIThreadRunnable.asyncExec(() -> {
+			DebugUITools.openLaunchConfigurationDialogOnGroup(shellWidget,
+					(StructuredSelection) PlatformUI.getWorkbench().getWorkbenchWindows()[0].getSelectionService()
+							.getSelection(),
+					"org.eclipse.debug.ui.launchGroup.profilee"); //$NON-NLS-1$
+		});
         SWTBotShell shell = bot.shell("Profiling Tools Configurations"); //$NON-NLS-1$
         shell.activate();
 
@@ -276,17 +273,13 @@ public class PreferencesTest extends AbstractTest{
      * @param name partial label of radio button to deselect.
      */
     private static void deselectSelectionByName(final String name, final SWTWorkbenchBot bot) {
-        UIThreadRunnable.syncExec(new VoidResult() {
-            @Override
-            public void run() {
-                @SuppressWarnings("unchecked")
-                Matcher<Widget> matcher = allOf(widgetOfType(Button.class),
-                        withStyle(SWT.RADIO, "SWT.RADIO"), //$NON-NLS-1$
-                        withRegex(name + ".*")); //$NON-NLS-1$
+		UIThreadRunnable.syncExec(() -> {
+			@SuppressWarnings("unchecked")
+			Matcher<Widget> matcher = allOf(widgetOfType(Button.class), withStyle(SWT.RADIO, "SWT.RADIO"), //$NON-NLS-1$
+					withRegex(name + ".*")); //$NON-NLS-1$
 
-                Button b = (Button) bot.widget(matcher); // the current selection
-                b.setSelection(false);
-            }
-        });
+			Button b = (Button) bot.widget(matcher); // the current selection
+			b.setSelection(false);
+		});
     }
 }

@@ -117,43 +117,41 @@ public class MetadataPageTest {
     @Test
     public void testAddTags() {
         // run in UI thread because accessing the tree in the metadata page
-        Display.getDefault().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                String tagName = "testTag"; //$NON-NLS-1$
-                String newTagName = "newUniqueTag"; //$NON-NLS-1$
-                String prefValueToBe = ""; //$NON-NLS-1$
-                metadataPageBot.textWithLabel(Messages.MetadataPage_labelTags).setText(tagName);
-                Tree tree = metadataPageBot.widget(WidgetMatcherFactory.widgetOfType(Tree.class));
-                assertNotNull(tree);
-                // 0 = distro, 1 = content, 2 = repo
-                int category = 0;
-                // select the category and the test adding tags
-                tree.select(tree.getItem(category));
-                metadataPageBot.button(Messages.MetadataPage_buttonAddTag).click();
-                CreaterepoTreeCategory test = (CreaterepoTreeCategory) tree.getItem(category).getData();
-                assertEquals(1, test.getTags().size());
-                // it should be distro = {testTag} now
-                prefValueToBe = tagName;
-                assertTrue(isPreferencesCorrect(CreaterepoPreferenceConstants.PREF_DISTRO_TAG, prefValueToBe));
-                // try adding the same tag to the same category again, it should not work
-                tree.select(tree.getItem(category));
-                metadataPageBot.textWithLabel(Messages.MetadataPage_labelTags).setText(tagName);
-                metadataPageBot.button(Messages.MetadataPage_buttonAddTag).click();
-                assertEquals(1, test.getTags().size());
-                // it should still be distro = {testTag}
-                prefValueToBe = tagName;
-                assertTrue(isPreferencesCorrect(CreaterepoPreferenceConstants.PREF_DISTRO_TAG, prefValueToBe));
-                // try adding a new unique tag to the same category, it should work
-                tree.select(tree.getItem(category));
-                metadataPageBot.textWithLabel(Messages.MetadataPage_labelTags).setText(newTagName);
-                metadataPageBot.button(Messages.MetadataPage_buttonAddTag).click();
-                assertEquals(2, test.getTags().size());
-                // it should be distro = {testTag,  newUniqueTag} now
-                prefValueToBe = tagName + ICreaterepoConstants.DELIMITER + newTagName;
-                assertTrue(isPreferencesCorrect(CreaterepoPreferenceConstants.PREF_DISTRO_TAG, prefValueToBe));
-            }
-        });
+		Display.getDefault().syncExec(() -> {
+			String tagName = "testTag"; //$NON-NLS-1$
+			String newTagName = "newUniqueTag"; //$NON-NLS-1$
+			String prefValueToBe = ""; //$NON-NLS-1$
+			metadataPageBot.textWithLabel(Messages.MetadataPage_labelTags).setText(tagName);
+			Tree tree = metadataPageBot.widget(WidgetMatcherFactory.widgetOfType(Tree.class));
+			assertNotNull(tree);
+			// 0 = distro, 1 = content, 2 = repo
+			int category = 0;
+			// select the category and the test adding tags
+			tree.select(tree.getItem(category));
+			metadataPageBot.button(Messages.MetadataPage_buttonAddTag).click();
+			CreaterepoTreeCategory test = (CreaterepoTreeCategory) tree.getItem(category).getData();
+			assertEquals(1, test.getTags().size());
+			// it should be distro = {testTag} now
+			prefValueToBe = tagName;
+			assertTrue(isPreferencesCorrect(CreaterepoPreferenceConstants.PREF_DISTRO_TAG, prefValueToBe));
+			// try adding the same tag to the same category again, it should not
+			// work
+			tree.select(tree.getItem(category));
+			metadataPageBot.textWithLabel(Messages.MetadataPage_labelTags).setText(tagName);
+			metadataPageBot.button(Messages.MetadataPage_buttonAddTag).click();
+			assertEquals(1, test.getTags().size());
+			// it should still be distro = {testTag}
+			prefValueToBe = tagName;
+			assertTrue(isPreferencesCorrect(CreaterepoPreferenceConstants.PREF_DISTRO_TAG, prefValueToBe));
+			// try adding a new unique tag to the same category, it should work
+			tree.select(tree.getItem(category));
+			metadataPageBot.textWithLabel(Messages.MetadataPage_labelTags).setText(newTagName);
+			metadataPageBot.button(Messages.MetadataPage_buttonAddTag).click();
+			assertEquals(2, test.getTags().size());
+			// it should be distro = {testTag, newUniqueTag} now
+			prefValueToBe = tagName + ICreaterepoConstants.DELIMITER + newTagName;
+			assertTrue(isPreferencesCorrect(CreaterepoPreferenceConstants.PREF_DISTRO_TAG, prefValueToBe));
+		});
     }
 
     /**
@@ -162,48 +160,47 @@ public class MetadataPageTest {
     @Test
     public void testEditTags() {
         // run in UI thread because accessing the tree in the metadata page
-        Display.getDefault().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                String tagName = "testTag"; //$NON-NLS-1$
-                String tagName2 = "testTag2"; //$NON-NLS-1$
-                String newTagName = "renameTag"; //$NON-NLS-1$
-                String prefValueToBe = ""; //$NON-NLS-1$
-                Tree tree = metadataPageBot.widget(WidgetMatcherFactory.widgetOfType(Tree.class));
-                assertNotNull(tree);
-                // 0 = distro, 1 = content, 2 = repo
-                int category = 1;
-                // select the category and test editing tags
-                tree.select(tree.getItem(category));
-                metadataPageBot.textWithLabel(Messages.MetadataPage_labelTags).setText(tagName);
-                metadataPageBot.button(Messages.MetadataPage_buttonAddTag).click();
-                metadataPageBot.textWithLabel(Messages.MetadataPage_labelTags).setText(tagName2);
-                metadataPageBot.button(Messages.MetadataPage_buttonAddTag).click();
-                CreaterepoTreeCategory test = (CreaterepoTreeCategory) tree.getItem(category).getData();
-                assertEquals(2, test.getTags().size());
-                // it should be content = {testTag1, testTag2} now
-                prefValueToBe = tagName + ICreaterepoConstants.DELIMITER + tagName2;
-                assertTrue(isPreferencesCorrect(CreaterepoPreferenceConstants.PREF_CONTENT_TAG, prefValueToBe));
-                // select the first test tag that was created and edit it with a new unique tag
-                tree.select(tree.getItem(category).getItem(0));
-                metadataPageBot.textWithLabel(Messages.MetadataPage_labelTags).setText(newTagName);
-                metadataPageBot.button(Messages.MetadataPage_buttonEditTag).click();
-                assertEquals(2, test.getTags().size());
-                assertEquals(newTagName, test.getTags().get(0));
-                // it should be content = {renameTag, testTag2} now
-                prefValueToBe = newTagName + ICreaterepoConstants.DELIMITER + tagName2;
-                assertTrue(isPreferencesCorrect(CreaterepoPreferenceConstants.PREF_CONTENT_TAG, prefValueToBe));
-                // select the second test tag and try to rename it as the same name as the first tag, this should not work
-                tree.select(tree.getItem(category).getItem(1));
-                metadataPageBot.textWithLabel(Messages.MetadataPage_labelTags).setText(newTagName);
-                metadataPageBot.button(Messages.MetadataPage_buttonEditTag).click();
-                assertEquals(2, test.getTags().size());
-                assertNotEquals(newTagName, test.getTags().get(1));
-                // it should still be content = {renameTag, testTag2}
-                prefValueToBe = newTagName + ICreaterepoConstants.DELIMITER + tagName2;
-                assertTrue(isPreferencesCorrect(CreaterepoPreferenceConstants.PREF_CONTENT_TAG, prefValueToBe));
-            }
-        });
+		Display.getDefault().syncExec(() -> {
+			String tagName = "testTag"; //$NON-NLS-1$
+			String tagName2 = "testTag2"; //$NON-NLS-1$
+			String newTagName = "renameTag"; //$NON-NLS-1$
+			String prefValueToBe = ""; //$NON-NLS-1$
+			Tree tree = metadataPageBot.widget(WidgetMatcherFactory.widgetOfType(Tree.class));
+			assertNotNull(tree);
+			// 0 = distro, 1 = content, 2 = repo
+			int category = 1;
+			// select the category and test editing tags
+			tree.select(tree.getItem(category));
+			metadataPageBot.textWithLabel(Messages.MetadataPage_labelTags).setText(tagName);
+			metadataPageBot.button(Messages.MetadataPage_buttonAddTag).click();
+			metadataPageBot.textWithLabel(Messages.MetadataPage_labelTags).setText(tagName2);
+			metadataPageBot.button(Messages.MetadataPage_buttonAddTag).click();
+			CreaterepoTreeCategory test = (CreaterepoTreeCategory) tree.getItem(category).getData();
+			assertEquals(2, test.getTags().size());
+			// it should be content = {testTag1, testTag2} now
+			prefValueToBe = tagName + ICreaterepoConstants.DELIMITER + tagName2;
+			assertTrue(isPreferencesCorrect(CreaterepoPreferenceConstants.PREF_CONTENT_TAG, prefValueToBe));
+			// select the first test tag that was created and edit it with a new
+			// unique tag
+			tree.select(tree.getItem(category).getItem(0));
+			metadataPageBot.textWithLabel(Messages.MetadataPage_labelTags).setText(newTagName);
+			metadataPageBot.button(Messages.MetadataPage_buttonEditTag).click();
+			assertEquals(2, test.getTags().size());
+			assertEquals(newTagName, test.getTags().get(0));
+			// it should be content = {renameTag, testTag2} now
+			prefValueToBe = newTagName + ICreaterepoConstants.DELIMITER + tagName2;
+			assertTrue(isPreferencesCorrect(CreaterepoPreferenceConstants.PREF_CONTENT_TAG, prefValueToBe));
+			// select the second test tag and try to rename it as the same name
+			// as the first tag, this should not work
+			tree.select(tree.getItem(category).getItem(1));
+			metadataPageBot.textWithLabel(Messages.MetadataPage_labelTags).setText(newTagName);
+			metadataPageBot.button(Messages.MetadataPage_buttonEditTag).click();
+			assertEquals(2, test.getTags().size());
+			assertNotEquals(newTagName, test.getTags().get(1));
+			// it should still be content = {renameTag, testTag2}
+			prefValueToBe = newTagName + ICreaterepoConstants.DELIMITER + tagName2;
+			assertTrue(isPreferencesCorrect(CreaterepoPreferenceConstants.PREF_CONTENT_TAG, prefValueToBe));
+		});
     }
 
     /**
@@ -212,38 +209,35 @@ public class MetadataPageTest {
     @Test
     public void testRemoveTags() {
         // run in UI thread because accessing the tree in the metadata page
-        Display.getDefault().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                String tagName = "testTag"; //$NON-NLS-1$
-                String prefValueToBe = ""; //$NON-NLS-1$
-                Tree tree = metadataPageBot.widget(WidgetMatcherFactory.widgetOfType(Tree.class));
-                assertNotNull(tree);
-                // 0 = distro, 1 = content, 2 = repo
-                int category = 2;
-                // select the category and test removing tags
-                tree.select(tree.getItem(category));
-                metadataPageBot.textWithLabel(Messages.MetadataPage_labelTags).setText(tagName);
-                metadataPageBot.button(Messages.MetadataPage_buttonAddTag).click();
-                CreaterepoTreeCategory test = (CreaterepoTreeCategory) tree.getItem(category).getData();
-                assertEquals(1, test.getTags().size());
-                // it should be repo = {testTag} now
-                prefValueToBe = tagName;
-                assertTrue(isPreferencesCorrect(CreaterepoPreferenceConstants.PREF_REPO_TAG, prefValueToBe));
-                // select the first item and delete it
-                tree.select(tree.getItem(category).getItem(0));
-                metadataPageBot.button(Messages.MetadataPage_buttonRemoveTag).click();
-                assertEquals(0, test.getTags().size());
-                // it should be repo = {} now
-                prefValueToBe = ""; //$NON-NLS-1$
-                assertTrue(isPreferencesCorrect(CreaterepoPreferenceConstants.PREF_REPO_TAG, prefValueToBe));
-                // try to remove the category
-                tree.select(tree.getItem(category));
-                metadataPageBot.button(Messages.MetadataPage_buttonRemoveTag).click();
-                // it should still be there
-                assertNotNull(tree.getItem(category));
-            }
-        });
+		Display.getDefault().syncExec(() -> {
+			String tagName = "testTag"; //$NON-NLS-1$
+			String prefValueToBe = ""; //$NON-NLS-1$
+			Tree tree = metadataPageBot.widget(WidgetMatcherFactory.widgetOfType(Tree.class));
+			assertNotNull(tree);
+			// 0 = distro, 1 = content, 2 = repo
+			int category = 2;
+			// select the category and test removing tags
+			tree.select(tree.getItem(category));
+			metadataPageBot.textWithLabel(Messages.MetadataPage_labelTags).setText(tagName);
+			metadataPageBot.button(Messages.MetadataPage_buttonAddTag).click();
+			CreaterepoTreeCategory test = (CreaterepoTreeCategory) tree.getItem(category).getData();
+			assertEquals(1, test.getTags().size());
+			// it should be repo = {testTag} now
+			prefValueToBe = tagName;
+			assertTrue(isPreferencesCorrect(CreaterepoPreferenceConstants.PREF_REPO_TAG, prefValueToBe));
+			// select the first item and delete it
+			tree.select(tree.getItem(category).getItem(0));
+			metadataPageBot.button(Messages.MetadataPage_buttonRemoveTag).click();
+			assertEquals(0, test.getTags().size());
+			// it should be repo = {} now
+			prefValueToBe = ""; //$NON-NLS-1$
+			assertTrue(isPreferencesCorrect(CreaterepoPreferenceConstants.PREF_REPO_TAG, prefValueToBe));
+			// try to remove the category
+			tree.select(tree.getItem(category));
+			metadataPageBot.button(Messages.MetadataPage_buttonRemoveTag).click();
+			// it should still be there
+			assertNotNull(tree.getItem(category));
+		});
     }
 
     /**

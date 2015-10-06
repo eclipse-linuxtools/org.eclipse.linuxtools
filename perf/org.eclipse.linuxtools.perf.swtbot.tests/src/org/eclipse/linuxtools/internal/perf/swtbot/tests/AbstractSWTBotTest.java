@@ -34,7 +34,6 @@ import org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
-import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
@@ -118,14 +117,12 @@ public abstract class AbstractSWTBotTest extends AbstractTest {
         final Shell shellWidget = bot.activeShell().widget;
 
         // Open profiling configurations dialog
-        UIThreadRunnable.asyncExec(new VoidResult() {
-            @Override
-            public void run() {
-                DebugUITools.openLaunchConfigurationDialogOnGroup(shellWidget,
-                        (StructuredSelection) PlatformUI.getWorkbench().getWorkbenchWindows()[0].
-                        getSelectionService().getSelection(), "org.eclipse.debug.ui.launchGroup.profilee");
-            }
-        });
+		UIThreadRunnable.asyncExec(() -> {
+			DebugUITools.openLaunchConfigurationDialogOnGroup(shellWidget,
+					(StructuredSelection) PlatformUI.getWorkbench().getWorkbenchWindows()[0].getSelectionService()
+							.getSelection(),
+					"org.eclipse.debug.ui.launchGroup.profilee");
+		});
         bot.shell("Profiling Tools Configurations").activate();
 
         // Create new Perf configuration
@@ -207,12 +204,9 @@ public abstract class AbstractSWTBotTest extends AbstractTest {
         event.display = menuItem.getDisplay();
         event.type = SWT.Selection;
 
-        UIThreadRunnable.asyncExec(menuItem.getDisplay(), new VoidResult() {
-            @Override
-            public void run() {
-                menuItem.notifyListeners(SWT.Selection, event);
-            }
-        });
+		UIThreadRunnable.asyncExec(menuItem.getDisplay(), () -> {
+			menuItem.notifyListeners(SWT.Selection, event);
+		});
     }
 
     @Override

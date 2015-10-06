@@ -124,18 +124,15 @@ public class CreaterepoTreeTest {
      */
     @Test
     public void testTreeViewerInitialization() {
-        Display.getDefault().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                initViewer();
-                // there should only be 3 categories
-                assertEquals(3, tree.getItemCount());
-                // and these should be the correct categories
-                for (TreeItem treeItem : tree.getItems()) {
-                    assertTrue(inCategory(treeItem.getText()));
-                }
-            }
-        });
+		Display.getDefault().syncExec(() -> {
+			initViewer();
+			// there should only be 3 categories
+			assertEquals(3, tree.getItemCount());
+			// and these should be the correct categories
+			for (TreeItem treeItem : tree.getItems()) {
+				assertTrue(inCategory(treeItem.getText()));
+			}
+		});
     }
 
     /**
@@ -146,32 +143,31 @@ public class CreaterepoTreeTest {
     @Test
     public void testTreeViewerPreferences() throws BackingStoreException {
         addTestPreferences();
-        Display.getDefault().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                initViewer();
-                for (TreeItem treeItem : tree.getItems()) {
-                    if (treeItem.getData() instanceof CreaterepoTreeCategory) {
-                        CreaterepoTreeCategory category = (CreaterepoTreeCategory) treeItem.getData();
-                        // make sure the categories are still correct
-                        assertTrue(CORRECT_CATEGORIES.containsKey(category.getName()));
-                        // assert that the number of tags stored is the correct amount
-                        assertEquals(CORRECT_CATEGORIES.get(category.getName()).intValue(), category.getTags().size());
-                    }
-                }
-                // do 1 test to make sure the tags were properly stored/loaded
-                for (TreeItem treeItem : tree.getItems()) {
-                    if (treeItem.getData() instanceof CreaterepoTreeCategory) {
-                        CreaterepoTreeCategory category = (CreaterepoTreeCategory) treeItem.getData();
-                        // only check 1 category's tags, as all are loaded the same way
-                        if (category.getName().equals(CreaterepoPreferenceConstants.PREF_DISTRO_TAG)) {
-                            assertArrayEquals(DISTRO_TAGS, category.getTags().toArray());
-                            break;
-                        }
-                    }
-                }
-            }
-        });
+		Display.getDefault().syncExec(() -> {
+			initViewer();
+			for (TreeItem treeItem : tree.getItems()) {
+				if (treeItem.getData() instanceof CreaterepoTreeCategory) {
+					CreaterepoTreeCategory category = (CreaterepoTreeCategory) treeItem.getData();
+					// make sure the categories are still correct
+					assertTrue(CORRECT_CATEGORIES.containsKey(category.getName()));
+					// assert that the number of tags stored is the correct
+					// amount
+					assertEquals(CORRECT_CATEGORIES.get(category.getName()).intValue(), category.getTags().size());
+				}
+			}
+			// do 1 test to make sure the tags were properly stored/loaded
+			for (TreeItem treeItem : tree.getItems()) {
+				if (treeItem.getData() instanceof CreaterepoTreeCategory) {
+					CreaterepoTreeCategory category = (CreaterepoTreeCategory) treeItem.getData();
+					// only check 1 category's tags, as all are loaded the same
+					// way
+					if (category.getName().equals(CreaterepoPreferenceConstants.PREF_DISTRO_TAG)) {
+						assertArrayEquals(DISTRO_TAGS, category.getTags().toArray());
+						break;
+					}
+				}
+			}
+		});
     }
 
     /**
