@@ -13,7 +13,7 @@
       <filesystem
             scheme="ssh">
          <run
-               class="org.eclipse.linuxtools.internal.ssh.proxy.SSHFileSystem">
+               class="org.eclipse.remote.internal.jsch.core.JSchFileSystem">
          </run>
       </filesystem>
    </extension>
