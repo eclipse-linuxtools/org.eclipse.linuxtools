@@ -88,6 +88,10 @@ public class PerfLaunchConfigDelegate extends AbstractCLaunchDelegate {
         try {
             ConfigUtils configUtils = new ConfigUtils(config);
             project = configUtils.getProject();
+
+            // Set the current project that will be profiled
+            PerfPlugin.getDefault().setProfiledProject(project);
+
             // check if Perf exists in $PATH
             if (! PerfCore.checkPerfInPath(project))
             {

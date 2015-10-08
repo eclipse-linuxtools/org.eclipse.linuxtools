@@ -18,6 +18,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -107,7 +108,6 @@ public class PerfPlugin extends AbstractUIPlugin {
     public static final String PERF_DEAFULT_OLD_STAT = "perf.old.stat"; //$NON-NLS-1$
     public static final boolean DEBUG_ON = false; //Spew debug messages or not.
 
-
     // The shared instance
     private static PerfPlugin plugin;
 
@@ -125,6 +125,10 @@ public class PerfPlugin extends AbstractUIPlugin {
 
     // Current working directory
     private IPath curWorkingDir;
+
+    // The last profiled project
+    private IProject profiledProject;
+
 
     public TreeParent getModelRoot() {
         return _modelRoot;
@@ -256,4 +260,21 @@ public class PerfPlugin extends AbstractUIPlugin {
         });
     }
 
+	/**
+	 * Get the project to be profiled
+	 *
+	 * @return project
+	 */
+	public IProject getProfiledProject() {
+		return profiledProject;
+	}
+
+	/**
+	 * Set the project to be profiled
+	 *
+	 * @param project
+	 */
+	public void setProfiledProject(IProject project) {
+		profiledProject = project;
+	}
 }
