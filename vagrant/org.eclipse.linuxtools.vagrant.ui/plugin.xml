@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="%VagrantCategory.name"
+            id="org.eclipse.linuxtools.vagrant.ui">
+      </category>
+       <view
+             category="org.eclipse.linuxtools.vagrant.ui"
+             class="org.eclipse.linuxtools.internal.vagrant.ui.views.VagrantVMView"
+             icon="icons/mock-repository.gif"
+             id="org.eclipse.linuxtools.vagrant.ui.vagrantVMView"
+             name="%VagrantVMView.name"
+             restorable="true">
+       </view>
+       <view
+             category="org.eclipse.linuxtools.vagrant.ui"
+             class="org.eclipse.linuxtools.internal.vagrant.ui.views.VagrantBoxView"
+             icon="icons/dbgroup_obj.gif"
+             id="org.eclipse.linuxtools.vagrant.ui.vagrantBoxView"
+             name="%VagrantBoxView.name"
+             restorable="true">
+       </view>
+   </extension>
+
+ <extension
+       point="org.eclipse.ui.perspectives">
+    <perspective
+          class="org.eclipse.linuxtools.internal.vagrant.ui.VagrantPerspective"
+          icon="icons/repository-middle.gif"
+          id="org.eclipse.linuxtools.vagrant.ui.perspective"
+          name="%VagrantPerspective.name">
+    </perspective>
+ </extension>
+ <extension
+       point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension
+          targetID="org.eclipse.linuxtools.vagrant.ui.perspective">
+       <view
+             id="org.eclipse.linuxtools.vagrant.ui.vagrantBoxView"
+             minimized="false"
+             ratio="0.5"
+             relationship="stack"
+             relative="org.eclipse.ui.editorss">
+       </view>
+       <view
+             id="org.eclipse.linuxtools.vagrant.ui.vagrantVMView"
+             minimized="false"
+             ratio="0.5"
+             relationship="stack"
+             relative="org.eclipse.ui.editorss">
+       </view>
+    </perspectiveExtension>
+ </extension>
+</plugin>
