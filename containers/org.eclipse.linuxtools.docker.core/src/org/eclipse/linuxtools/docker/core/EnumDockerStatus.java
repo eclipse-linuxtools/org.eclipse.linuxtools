@@ -26,7 +26,9 @@ public enum EnumDockerStatus {
 	 * @return the corresponding {@link EnumDockerStatus}
 	 */
 	public static EnumDockerStatus fromStatusMessage(final String statusMessage) {
-		if (statusMessage.startsWith("Exited") || statusMessage.startsWith("Stopped")) {//$NON-NLS-1$
+		if (statusMessage.startsWith("Exited") //$NON-NLS-1$
+				|| statusMessage.startsWith("Stopped") //$NON-NLS-1$
+				|| statusMessage.startsWith("Created")) {//$NON-NLS-1$
 			return STOPPED;
 		} else if (statusMessage.startsWith("Running") && statusMessage.endsWith("(Paused)")) { //$NON-NLS-1$ //$NON-NLS-2$
 			return PAUSED;
