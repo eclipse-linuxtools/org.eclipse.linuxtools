@@ -161,14 +161,14 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 		if(links == null || links.isEmpty()) {
 			return ""; //$NON-NLS-1$
 		} else if(links.size() == 1) {
-			return links.get(0).split(";");
+			return links.get(0);
 		} else {
 			final Object[] result = new Object[links.size()];
 			for(int i = 0; i < links.size(); i++) {
 				final String[] split = links.get(i).split(":");
 				result[i] = new Object[]{split[0], split[1]};
 			}
-			return result;
+			return links;
 		}
 	}
 
