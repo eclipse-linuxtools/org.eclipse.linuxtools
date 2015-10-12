@@ -314,7 +314,7 @@ public class PerfCore {
         if (oldPerfVersion) {
             base.addAll( Arrays.asList( new String[]{PerfPlugin.PERF_COMMAND, "annotate", "-s", symbol, "-l", "-P"} ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         } else {
-            base.addAll( Arrays.asList( new String[]{PerfPlugin.PERF_COMMAND, "annotate", "-d", dso, "-s", symbol, "-l", "-P"} ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+            base.addAll( Arrays.asList( new String[]{PerfPlugin.PERF_COMMAND, "annotate", "--stdio", "-d", dso, "-s", symbol, "-l", "-P"} ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
         }
         if (config != null) {
             try {
@@ -332,6 +332,12 @@ public class PerfCore {
                 }
             } catch (CoreException e) { }
         }
+        /*
+         * Some versions of perf annotate hangs while waiting for an input.
+         * Redirect input from an empty file (or /dev/null) to avoid that behavior.
+         */
+        base.add("<"); //$NON-NLS-1$
+        base.add("/dev/null"); //$NON-NLS-1$
 
         //(Annotate string per symbol)
         return base.toArray( new String[base.size()] );
@@ -536,8 +542,28 @@ public class PerfCore {
                             }
 
                             try {
-                                if(project==null) p = Runtime.getRuntime().exec(annotateCmd);
-                                else p = RuntimeProcessFactory.getFactory().exec(annotateCmd, project);
+                                if(project==null) {
+                                    p = Runtime.getRuntime().exec(annotateCmd);
+                                } else {
+                                    StringBuffer sb = new StringBuffer();
+                                    ArrayList<String> al = new ArrayList<>();
+                                    /*
+                                     *  Wrap the whole Perf annotate line as a single argument of sh command
+                                     *   so that any IO redirection will take effect. Change to working directory before run perf annotate.
+                                     *  It results on a command string as 'sh', '-c', 'cd <workindir> && perf annotate <args> < /dev/null'
+                                     */
+                                    al.add("sh"); //$NON-NLS-1$
+                                    al.add("-c"); //$NON-NLS-1$
+                                    if(workingDir != null) {
+                                        sb.append("cd " + workingDir.toOSString() + " && "); //$NON-NLS-1$ //$NON-NLS-2$
+                                    }
+                                    for(int i=0; i<annotateCmd.length; i++) {
+                                        sb.append(annotateCmd[i]);
+                                        sb.append(" "); //$NON-NLS-1$
+                                    }
+                                    al.add(sb.toString());
+                                    p = RuntimeProcessFactory.getFactory().exec(al.toArray(new String[]{}), project);
+                                }
                                 input = new BufferedReader(new InputStreamReader(p.getInputStream()));
                                 error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
                             } catch (IOException e) {

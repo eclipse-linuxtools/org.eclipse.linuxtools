@@ -324,9 +324,10 @@ public class ModelTest extends AbstractTest {
                 "symbol", "resources/defaultevent-data/perf.data", false);
 
         String[] expectedString = new String[] { PerfPlugin.PERF_COMMAND,
-                "annotate", "-d", "dso", "-s", "symbol", "-l", "-P",
+                "annotate", "--stdio", "-d", "dso", "-s", "symbol", "-l", "-P",
                 "--vmlinux", "/boot/kernel", "-m", "-i",
-                "resources/defaultevent-data/perf.data" };
+                "resources/defaultevent-data/perf.data",
+                "<", "/dev/null" };
 
         assertArrayEquals(expectedString, annotateString);
     }
