@@ -42,7 +42,6 @@ import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.osgi.framework.Version;
 
 public class PerfCore {
 
@@ -207,7 +206,7 @@ public class PerfCore {
     }
 
     //Gets the current version of perf
-    public static Version getPerfVersion(ILaunchConfiguration config) {
+    public static PerfVersion getPerfVersion(ILaunchConfiguration config) {
         IProject project = getProject(config);
         Process p = null;
 
@@ -228,9 +227,9 @@ public class PerfCore {
             perfVersion = perfVersion.substring(0, index);
         }
         perfVersion = perfVersion.replace("perf version", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-        if (perfVersion.length() == 0)
+        if (perfVersion.isEmpty())
         	return null;
-        return new Version(perfVersion);
+        return new PerfVersion(perfVersion);
     }
 
 
@@ -351,10 +350,10 @@ public class PerfCore {
 
         TreeParent invisibleRoot = PerfPlugin.getDefault().clearModelRoot();
 
-        Version perfVersion = getPerfVersion(config);
-        boolean OldPerfVersion = false;
-        if (new Version(0, 0, 2).compareTo(perfVersion) > 0) {
-            OldPerfVersion = true;
+        PerfVersion perfVersion = getPerfVersion(config);
+        boolean oldPerfVersion = false;
+        if (!perfVersion.isNewer(new PerfVersion(0, 0, 2))) {
+            oldPerfVersion = true;
             if (print != null) { print.println("WARNING: You are running an older version of Perf, please update if you can. The plugin may produce unpredictable results."); }
         }
 
@@ -387,7 +386,7 @@ public class PerfCore {
         }
 
         PerfCore.parseRemoteReport(config, workingDir, monitor, perfDataLoc, print,
-                invisibleRoot, OldPerfVersion, input, error, project);
+                invisibleRoot, oldPerfVersion, input, error, project);
     }
 
     /**
