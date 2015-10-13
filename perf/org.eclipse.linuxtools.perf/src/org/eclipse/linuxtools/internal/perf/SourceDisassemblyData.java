@@ -46,8 +46,12 @@ public class SourceDisassemblyData extends AbstractDataManipulator {
     }
 
     protected String [] getCommand(String workingDir) {
-        return new String[] { "perf", "annotate", //$NON-NLS-1$ //$NON-NLS-2$
-                "-i", workingDir + "perf.data" }; //$NON-NLS-1$ //$NON-NLS-2$
+        /*
+         * Some versions of perf annotate hangs waiting for some input that never comes.
+         * Redirecting an empty file or /dev/null to its input will avoid this.
+         */
+        return new String[] { "sh", "-c", "perf annotate -i " + workingDir + "perf.data" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                       " < /dev/null" }; //$NON-NLS-1$
     }
 
 }

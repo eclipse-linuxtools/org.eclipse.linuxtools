@@ -38,7 +38,7 @@ public class DataManipulatorTest {
                 "disassembly data", path); //$NON-NLS-1$
         sdData.parse();
 
-        String expected = "perf annotate -i " + path.toOSString() + "perf.data"; //$NON-NLS-1$
+        String expected = "sh -c perf annotate -i " + path.toOSString() + "perf.data < /dev/null"; //$NON-NLS-1$
 
         assertEquals(expected, sdData.getPerfData().trim());
     }
