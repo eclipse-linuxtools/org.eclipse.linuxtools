@@ -53,7 +53,7 @@ public class PerfOpenData extends ProfileLaunchShortcut implements
                                 projectName = project.getName();
                                 URI fileURI = ((IFile)element).getLocationURI();
                                 ILaunchConfiguration config = createDefaultConfiguration(projectName);
-                                PerfCore.report(config, null, null, null, fileURI.getPath(), null);
+                                PerfCore.report(config, null, null, fileURI.getPath(), null);
                                 String timestamp = DateFormat.getInstance().format(new Date(eFile.getLocalTimeStamp()));
                                 PerfCore.refreshView(fileURI.toString() + " (" + timestamp + ")"); //$NON-NLS-1$ //$NON-NLS-2$
                         }
@@ -61,7 +61,7 @@ public class PerfOpenData extends ProfileLaunchShortcut implements
         } else {
                 projectName = location.getProject().getName();
                 ILaunchConfiguration config = createDefaultConfiguration(projectName);
-                PerfCore.report(config, null, null, null, file.toOSString(), null);
+                PerfCore.report(config, null, null, file.toOSString(), null);
                 String timestamp = DateFormat.getInstance().format(new Date(location.getLocalTimeStamp()));
                 PerfCore.refreshView(file.toOSString() + " (" + timestamp + ")"); //$NON-NLS-1$ //$NON-NLS-2$
         }

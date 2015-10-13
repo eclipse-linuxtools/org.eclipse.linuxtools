@@ -55,7 +55,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.Version;
 
 public class ModelTest extends AbstractTest {
     private ILaunchConfiguration config;
@@ -348,7 +347,7 @@ public class ModelTest extends AbstractTest {
 
         tempConfig.setAttribute(PerfPlugin.ATTR_DefaultEvent, false);
 
-        String[] recordString = PerfCore.getRecordString(tempConfig, new Version(0, 0, 0));
+        String[] recordString = PerfCore.getRecordString(tempConfig);
         assertNotNull(recordString);
 
         String[] expectedString = { PerfPlugin.PERF_COMMAND, "record",

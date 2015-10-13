@@ -244,7 +244,7 @@ public class PerfCore {
     }
 
     //Generates a perf record command string with the options set in the given config. (If null uses default).
-    public static String [] getRecordString(ILaunchConfiguration config, Version perfVersion) {
+    public static String [] getRecordString(ILaunchConfiguration config) {
         String [] base = new String [] {PerfPlugin.PERF_COMMAND, "record"}; //$NON-NLS-1$
         if (config == null) {
             return base;
@@ -346,7 +346,7 @@ public class PerfCore {
     // Runs assuming perf.data has already been recorded, environ and workingDir can be set to null to use default
     //perfDataLoc is optional - it is used to provide a pre-existing data file instead of something recorded from
     //whatever project is being profiled. It is only used for junit tests atm.
-    public static void report(ILaunchConfiguration config, String[] environ, IPath workingDir, IProgressMonitor monitor, String perfDataLoc, PrintStream print) {
+    public static void report(ILaunchConfiguration config, IPath workingDir, IProgressMonitor monitor, String perfDataLoc, PrintStream print) {
         IProject project = getProject(config);
 
         TreeParent invisibleRoot = PerfPlugin.getDefault().clearModelRoot();
