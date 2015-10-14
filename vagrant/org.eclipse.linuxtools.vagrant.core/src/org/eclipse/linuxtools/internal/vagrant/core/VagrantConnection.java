@@ -272,6 +272,11 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	}
 
 	@Override
+	public void addBox(String name, String location) throws VagrantException, InterruptedException {
+		call(new String [] {"--machine-readable", "box", "add", name, location});
+	}
+
+	@Override
 	public void destroyVM(String id) throws VagrantException, InterruptedException {
 		call(new String[] { "--machine-readable", "destroy", id });
 	}
