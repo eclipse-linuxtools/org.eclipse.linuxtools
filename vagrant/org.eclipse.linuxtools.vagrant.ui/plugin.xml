@@ -82,6 +82,11 @@
           id="org.eclipse.linuxtools.vagrant.ui.commands.stopVM"
           name="Stop VMs">
     </command>
+    <command
+          description="SSH into selected VMs"
+          id="org.eclipse.linuxtools.vagrant.ui.commands.sshVM"
+          name="SSH VMs">
+    </command>
  </extension>
  <extension
        point="org.eclipse.ui.handlers">
@@ -152,6 +157,35 @@
           </with>
        </enabledWhen>
     </handler>
+    <handler
+          class="org.eclipse.linuxtools.internal.vagrant.ui.commands.SSHVMCommandHandler"
+          commandId="org.eclipse.linuxtools.vagrant.ui.commands.sshVM">
+       <enabledWhen>
+          <with
+                variable="selection">
+             <iterate
+                   ifEmpty="false">
+                <and>
+                   <instanceof
+                         value="org.eclipse.linuxtools.vagrant.core.IVagrantVM">
+                   </instanceof>
+                   <or>
+                      <test
+                            forcePluginActivation="true"
+                            property="org.eclipse.linuxtools.vagrant.propertytesters.vm.isShutoff"
+                            value="false">
+                      </test>
+                      <test
+                            forcePluginActivation="true"
+                            property="org.eclipse.linuxtools.vagrant.propertytesters.vm.isUnknown"
+                            value="true">
+                      </test>
+                   </or>
+                </and>
+             </iterate>
+          </with>
+       </enabledWhen>
+    </handler>
  </extension>
  <extension
        point="org.eclipse.ui.menus">
@@ -183,6 +217,17 @@
              icon="icons/delete.gif"
              id="org.eclipse.linuxtools.vagrant.ui.commands.removeBoxes"
              mnemonic="R"
+             style="push">
+       </command>
+    </menuContribution>
+    <menuContribution
+          locationURI="toolbar:org.eclipse.linuxtools.vagrant.ui.vagrantVMView">
+       <command
+             commandId="org.eclipse.linuxtools.vagrant.ui.commands.sshVM"
+             disabledIcon="icons/createcontainer_d.gif"
+             icon="icons/createcontainer.gif"
+             id="org.eclipse.linuxtools.vagrant.ui.commands.sshVM"
+             mnemonic="S"
              style="push">
        </command>
     </menuContribution>

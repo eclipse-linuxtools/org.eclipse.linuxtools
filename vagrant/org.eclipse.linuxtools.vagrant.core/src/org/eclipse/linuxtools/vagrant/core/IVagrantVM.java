@@ -25,4 +25,10 @@ public interface IVagrantVM {
 	public String state_desc();
 
 	public File directory();
+
+	public String ip();
+
+	public String user();
+
+	public String identityFile();
 }

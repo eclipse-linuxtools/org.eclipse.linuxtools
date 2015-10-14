@@ -17,10 +17,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.linuxtools.vagrant.core.EnumVMStatus;
 import org.eclipse.linuxtools.vagrant.core.IVagrantBox;
 import org.eclipse.linuxtools.vagrant.core.IVagrantBoxListener;
 import org.eclipse.linuxtools.vagrant.core.IVagrantConnection;
@@ -40,6 +47,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	private boolean containersLoaded = false;
 	private List<IVagrantBox> boxes;
 	private boolean boxesLoaded = false;
+	private Set<String> trackedKeys = new HashSet<>();
 
 	ListenerList vmListeners;
 	ListenerList boxListeners;
@@ -113,13 +121,29 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 			String [] res = call(new String[] { "global-status" });
 			List<String> vmIDs = new LinkedList<>();
 			List<IVagrantVM> containers = new LinkedList<>();
+			Map<String, List<String>> sshConfig = new HashMap<>();
 			for (int i = 0; i < res.length; i++) {
 				String[] items = res[i].split(" ");
 				if (items.length == 6 && i >= 2) {
 					vmIDs.add(items[0]);
 				}
 			}
-			List<String> args = new LinkedList<>(Arrays.asList(new String [] {"--machine-readable", "status"}));
+			List<String> args = new LinkedList<>(Arrays.asList(new String [] { "ssh-config" }));
+			args.addAll(vmIDs);
+			res = call(args.toArray(new String[0]));
+			for (int i = 0; i < res.length; i++) {
+				String[] items = res[i].trim().split(" ");
+				if (items[0].equals("HostName")) {
+					List<String> tmp = new ArrayList<>();
+					tmp.add(items[1]);
+					sshConfig.put(vmIDs.get(i / 11), tmp);
+				} else if (items[0].equals("User")
+						|| items[0].equals("IdentityFile")) {
+					sshConfig.get(vmIDs.get(i / 11)).add(items[1]);
+				}
+			}
+
+			args = new LinkedList<>(Arrays.asList(new String [] {"--machine-readable", "status"}));
 			args.addAll(vmIDs);
 			res = call(args.toArray(new String[0]));
 			String name, provider, state, state_desc;
@@ -133,16 +157,67 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 					state = items[3];
 				} else if (items[2].equals("state-human-long")) {
 					state_desc = items[3];
-					containers.add(new VagrantVM(vmIDs.get((i % 3)), name, provider, state, state_desc, new File("/dev/null")));
+					containers.add(new VagrantVM(vmIDs.get((i / 5)), name,
+							provider, state, state_desc, new File("/dev/null"),
+							sshConfig.get(vmIDs.get((i / 5))).get(0),
+							sshConfig.get(vmIDs.get((i / 5))).get(1),
+							sshConfig.get(vmIDs.get((i / 5))).get(2)));
 				}
 			}
 			this.containersLoaded = true;
 			synchronized (containerLock) {
 				this.vms = containers;
 			}
+			removeKeysFromInnactiveVMs();
 			notifyContainerListeners(this.vms);
 		}
 		return this.vms;
+	}
+
+	/**
+	 * If a key stored in preferences comes from a non-running VM
+	 * or came from a Vagrant VM (tracked) but is not longer
+	 * associated with one, then it is safe to remove it.
+	 */
+	private void removeKeysFromInnactiveVMs() {
+		final String JSCH_ID = "org.eclipse.jsch.core";
+		// org.eclipse.jsch.internal.core.IConstants.KEY_PRIVATEKEY
+		final String KEY = "PRIVATEKEY";
+		String newKeys = "";
+		String keys = InstanceScope.INSTANCE.getNode(JSCH_ID).get(KEY, "");
+		if (keys.isEmpty()) {
+			keys = DefaultScope.INSTANCE.getNode(JSCH_ID).get(KEY, "");
+		}
+		for (String key : keys.split(",")) {
+			for (IVagrantVM vm : vms) {
+				if (key.equals(vm.identityFile())
+						&& !vm.state().equals(EnumVMStatus.RUNNING)) {
+					newKeys = keys.replaceAll("(,)?" + key + "(,)?", "");
+					removeFromTrackedKeys(key);
+					break;
+				}
+			}
+			if (isTrackedKey(key)) {
+				newKeys = keys.replaceAll("(,)?" + key + "(,)?", "");
+				removeFromTrackedKeys(key);
+			}
+		}
+		if (!newKeys.isEmpty() && !newKeys.equals(keys)) {
+			InstanceScope.INSTANCE.getNode(JSCH_ID).put(KEY, newKeys);
+		}
+	}
+
+	@Override
+	public void addToTrackedKeys(String key) {
+		trackedKeys.add(key);
+	}
+
+	private void removeFromTrackedKeys(String key) {
+		trackedKeys.remove(key);
+	}
+
+	private boolean isTrackedKey(String key) {
+		return trackedKeys.contains(key);
 	}
 
 	@Override

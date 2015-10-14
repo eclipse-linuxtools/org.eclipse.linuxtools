@@ -22,15 +22,21 @@ public class VagrantVM implements IVagrantVM {
 	private String state;
 	private String state_desc;
 	private File directory;
+	private String ip;
+	private String user;
+	private String identityFile;
 
-	public VagrantVM(String id, String name, String provider,
-			String state, String state_desc, File directory) {
+	public VagrantVM(String id, String name, String provider, String state,
+			String state_desc, File directory, String ip, String user, String identityFile) {
 		this.id = id;
 		this.name = name;
 		this.provider = provider;
 		this.state = state;
 		this.state_desc = state_desc;
 		this.directory = directory;
+		this.ip = ip;
+		this.user = user;
+		this.identityFile = identityFile;
 	}
 
 	@Override
@@ -64,6 +70,21 @@ public class VagrantVM implements IVagrantVM {
 	}
 
 	@Override
+	public String ip() {
+		return ip;
+	}
+
+	@Override
+	public String user() {
+		return user;
+	}
+
+	@Override
+	public String identityFile() {
+		return identityFile;
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof VagrantVM) {
 			VagrantVM other = (VagrantVM) o;
@@ -76,4 +97,5 @@ public class VagrantVM implements IVagrantVM {
 		}
 		return false;
 	}
+
 }

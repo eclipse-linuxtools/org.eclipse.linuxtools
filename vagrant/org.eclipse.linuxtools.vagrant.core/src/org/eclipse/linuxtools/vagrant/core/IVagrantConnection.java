@@ -26,6 +26,8 @@ public interface IVagrantConnection {
 
 	public boolean isVMsLoaded();
 
+	public void addToTrackedKeys(String key);
+
 	public void addBoxListener(IVagrantBoxListener listener);
 
 	public void removeBoxListener(IVagrantBoxListener listener);
