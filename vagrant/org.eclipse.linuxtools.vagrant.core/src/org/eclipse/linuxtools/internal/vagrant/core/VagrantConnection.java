@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.internal.vagrant.core;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -132,7 +133,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 					state = items[3];
 				} else if (items[2].equals("state-human-long")) {
 					state_desc = items[3];
-					containers.add(new VagrantVM(vmIDs.get((i % 3)), name, provider, state, state_desc, null));
+					containers.add(new VagrantVM(vmIDs.get((i % 3)), name, provider, state, state_desc, new File("/dev/null")));
 				}
 			}
 			this.containersLoaded = true;
@@ -196,12 +197,13 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	}
 
 	@Override
-	public void destroyVM(String id)
-			throws VagrantException, InterruptedException {
+	public void destroyVM(String id) throws VagrantException, InterruptedException {
+		call(new String[] { "--machine-readable", "destroy", id });
 	}
 
 	@Override
 	public void haltVM(String id) throws VagrantException, InterruptedException {
+		call(new String[] { "--machine-readable", "halt", id });
 	}
 
 	@Override
@@ -210,8 +212,8 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	}
 
 	@Override
-	public void removeBox(String name)
-			throws VagrantException, InterruptedException {
+	public void removeBox(String name) throws VagrantException, InterruptedException {
+		call(new String[] { "--machine-readable", "box", "remove", name });
 	}
 
 	@Override
