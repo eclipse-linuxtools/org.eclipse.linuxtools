@@ -354,7 +354,7 @@ public class PerfCore {
         boolean oldPerfVersion = false;
         if (!perfVersion.isNewer(new PerfVersion(0, 0, 2))) {
             oldPerfVersion = true;
-            if (print != null) { print.println("WARNING: You are running an older version of Perf, please update if you can. The plugin may produce unpredictable results."); }
+            if (print != null) { print.println("WARNING: You are running an older version of Perf, please update if you can. The plugin may produce unpredictable results."); } //$NON-NLS-1$
         }
 
 
@@ -438,6 +438,10 @@ public class PerfCore {
                 // line containing report information
                 if ((line.startsWith("#"))) { //$NON-NLS-1$
                     if (line.contains("Events:") || line.contains("Samples:")) { //$NON-NLS-1$ //$NON-NLS-2$
+                    	// ignore lost samples as the plugin has no logic for handling them
+                    	if (line.startsWith("# Total Lost Samples:")) { //$NON-NLS-1$
+                    		continue;
+                    	}
                         String[] tmp = line.trim().split(" "); //$NON-NLS-1$
                         String event = tmp[tmp.length - 1];
                         // In this case, the event name is single quoted
@@ -449,8 +453,8 @@ public class PerfCore {
                         currentCommand = null;
                         currentDso = null;
                     } else if (line.contains("Samples:")) { //"samples" was used instead of events in an older version, some incompatibilities may arise. //$NON-NLS-1$
-                        if (print != null) { print.println("WARNING: You are running an older version of Perf, please update if you can. The plugin may produce unpredictable results."); }
-                        invisibleRoot.addChild(new PMEvent("WARNING: You are running an older version of Perf, the plugin may produce unpredictable results."));
+                        if (print != null) { print.println("WARNING: You are running an older version of Perf, please update if you can. The plugin may produce unpredictable results."); } //$NON-NLS-1$
+                        invisibleRoot.addChild(new PMEvent("WARNING: You are running an older version of Perf, the plugin may produce unpredictable results.")); //$NON-NLS-1$
                     }
                     // contains profiled information
                 } else {
@@ -498,7 +502,7 @@ public class PerfCore {
         } catch (IOException e) {
             logException(e);
         }
-        spitStream(error,"Perf Report", print);
+        spitStream(error,"Perf Report", print); //$NON-NLS-1$
 
         boolean SourceLineNumbers = PerfPlugin.ATTR_SourceLineNumbers_default;
         boolean Kernel_SourceLineNumbers = PerfPlugin.ATTR_Kernel_SourceLineNumbers_default;
@@ -536,7 +540,7 @@ public class PerfCore {
                             if (workingDir == null) {
                                 annotateCmd = getAnnotateString(config, currentDso.getName(), currentSym.getName().substring(4), perfDataLoc, oldPerfVersion);
                             } else {
-                                String perfDefaultDataLoc = workingDir + "/" + PerfPlugin.PERF_DEFAULT_DATA;
+                                String perfDefaultDataLoc = workingDir + "/" + PerfPlugin.PERF_DEFAULT_DATA; //$NON-NLS-1$
                                 annotateCmd = getAnnotateString(config, currentDso.getName(), currentSym.getName().substring(4), perfDefaultDataLoc, oldPerfVersion);
                             }
 
@@ -575,7 +579,7 @@ public class PerfCore {
                         if (currentDso.getFile(PerfPlugin.STRINGS_UnfiledSymbols).getChildren().length == 0) {
                             currentDso.removeChild(currentDso.getFile(PerfPlugin.STRINGS_UnfiledSymbols));
                         }
-                        spitStream(error,"Perf Annotate", print);
+                        spitStream(error,"Perf Annotate", print); //$NON-NLS-1$
                     }
                 }
             }
@@ -583,9 +587,9 @@ public class PerfCore {
 
         if (print != null) {
             if (hasProfileData) {
-                print.println("Profile data loaded into Perf Profile View.");
+                print.println("Profile data loaded into Perf Profile View."); //$NON-NLS-1$
             } else {
-                print.println("No profile data generated to be displayed.");
+                print.println("No profile data generated to be displayed."); //$NON-NLS-1$
             }
         }
     }
