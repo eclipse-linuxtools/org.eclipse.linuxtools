@@ -9,8 +9,7 @@
 <unit id="com.fasterxml.jackson.module.jackson-module-jaxb-annotations" version="0.0.0"/>
 <unit id="com.spotify.docker.client" version="0.0.0"/>
 <unit id="com.spotify.docker.client.source" version="0.0.0"/>
-<repository location="http://download.eclipse.org/linuxtools/docker-client"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150519210750/repository/"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150821153341/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.cdt.feature.group" version="0.0.0"/>
