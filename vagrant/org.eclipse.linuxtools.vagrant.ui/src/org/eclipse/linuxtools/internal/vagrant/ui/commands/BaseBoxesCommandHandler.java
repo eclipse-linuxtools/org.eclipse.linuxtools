@@ -39,7 +39,7 @@ public abstract class BaseBoxesCommandHandler extends AbstractHandler {
 							selectedImages.size());
 					for (final IVagrantBox image : selectedImages) {
 						monitor.setTaskName(getTaskName(image));
-						executeInJob(image);
+						executeInJob(image, monitor);
 						monitor.worked(1);
 					}
 				}
@@ -74,5 +74,5 @@ public abstract class BaseBoxesCommandHandler extends AbstractHandler {
 
 	abstract String getTaskName(final IVagrantBox image);
 	
-	abstract void executeInJob(final IVagrantBox image);
+	abstract void executeInJob(final IVagrantBox image, IProgressMonitor monitor);
 }

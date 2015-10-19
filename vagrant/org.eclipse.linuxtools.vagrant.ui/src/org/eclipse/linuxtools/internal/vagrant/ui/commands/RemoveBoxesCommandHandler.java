@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.internal.vagrant.ui.commands;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.linuxtools.internal.vagrant.core.VagrantConnection;
 import org.eclipse.linuxtools.vagrant.core.IVagrantBox;
 import org.eclipse.linuxtools.vagrant.core.IVagrantConnection;
@@ -30,7 +31,7 @@ public class RemoveBoxesCommandHandler extends BaseBoxesCommandHandler {
 	}
 
 	@Override
-	void executeInJob(IVagrantBox image) {
+	void executeInJob(IVagrantBox image, IProgressMonitor monitor) {
 		IVagrantConnection connection = VagrantConnection.getInstance();
 		try {
 			connection.removeBox(image.getName());

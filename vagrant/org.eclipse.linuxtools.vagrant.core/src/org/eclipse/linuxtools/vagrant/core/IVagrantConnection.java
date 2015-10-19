@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.vagrant.core;
 
+import java.io.File;
 import java.util.List;
 
 public interface IVagrantConnection {
@@ -37,6 +38,10 @@ public interface IVagrantConnection {
 	public List<IVagrantBox> getBoxes();
 
 	public List<IVagrantBox> getBoxes(boolean force);
+
+	public void init(File vagrantDir);
+
+	public Process up(File vagrantDir);
 
 	void addBox(String name, String location) throws VagrantException, InterruptedException;
 

@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.vagrant.ui.commands;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.List;
 
+import org.eclipse.linuxtools.internal.vagrant.core.Activator;
 import org.eclipse.linuxtools.internal.vagrant.core.VagrantConnection;
 import org.eclipse.linuxtools.vagrant.core.IVagrantConnection;
 import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
@@ -34,6 +37,9 @@ public class DestroyVMCommandHandler extends BaseVMCommandHandler {
 		IVagrantConnection connection = VagrantConnection.getInstance();
 		try {
 			connection.destroyVM(vm.id());
+			String stateLoc = Activator.getDefault().getStateLocation().toOSString();
+			File vagrantDir = Paths.get(stateLoc, vm.name()).toFile();
+			CommandUtils.delete(vagrantDir);
 		} catch (VagrantException | InterruptedException e) {
 			final String errorMessage = "Error in deleting " + vm.id();
 			openError(errorMessage, e);

@@ -92,6 +92,11 @@
           id="org.eclipse.linuxtools.vagrant.ui.commands.addBox"
           name="Add Box">
     </command>
+    <command
+          description="Create VM from Box"
+          id="org.eclipse.linuxtools.vagrant.ui.commands.createVM"
+          name="Create VM">
+    </command>
  </extension>
  <extension
        point="org.eclipse.ui.handlers">
@@ -195,6 +200,21 @@
           class="org.eclipse.linuxtools.internal.vagrant.ui.commands.AddBoxCommandHandler"
           commandId="org.eclipse.linuxtools.vagrant.ui.commands.addBox">
     </handler>
+    <handler
+          class="org.eclipse.linuxtools.internal.vagrant.ui.commands.CreateVmCommandHandler"
+          commandId="org.eclipse.linuxtools.vagrant.ui.commands.createVM">
+       <enabledWhen>
+          <with
+                variable="selection">
+             <iterate
+                   ifEmpty="false">
+                <instanceof
+                      value="org.eclipse.linuxtools.vagrant.core.IVagrantBox">
+                </instanceof>
+             </iterate>
+          </with>
+       </enabledWhen>
+    </handler>
  </extension>
  <extension
        point="org.eclipse.ui.menus">
@@ -233,8 +253,7 @@
           locationURI="toolbar:org.eclipse.linuxtools.vagrant.ui.vagrantVMView">
        <command
              commandId="org.eclipse.linuxtools.vagrant.ui.commands.sshVM"
-             disabledIcon="icons/createcontainer_d.gif"
-             icon="icons/createcontainer.gif"
+             icon="icons/console_view.gif"
              id="org.eclipse.linuxtools.vagrant.ui.commands.sshVM"
              mnemonic="S"
              style="push">
@@ -259,6 +278,17 @@
              icon="icons/stopped.gif"
              id="org.eclipse.linuxtools.vagrant.ui.commands.stopVM"
              mnemonic="S"
+             style="push">
+       </command>
+    </menuContribution>
+    <menuContribution
+          locationURI="toolbar:org.eclipse.linuxtools.vagrant.ui.vagrantBoxView">
+       <command
+             commandId="org.eclipse.linuxtools.vagrant.ui.commands.createVM"
+             disabledIcon="icons/createcontainer_d.gif"
+             icon="icons/createcontainer.gif"
+             id="org.eclipse.linuxtools.vagrant.ui.commands.createVM"
+             mnemonic="R"
              style="push">
        </command>
     </menuContribution>
