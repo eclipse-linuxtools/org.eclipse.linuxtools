@@ -13,8 +13,6 @@ package org.eclipse.linuxtools.internal.perf.handlers;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
@@ -39,21 +37,26 @@ public class PerfSaveStatsHandler extends AbstractSaveDataHandler {
         IPerfData statData = PerfPlugin.getDefault().getStatData();
         BufferedWriter writer = null;
         OutputStreamWriter osw = null;
-        URI newDataLocURI = null;
 
         try {
             IRemoteFileProxy proxy = null;
-            newDataLocURI = new URI(newDataLoc.toPortableString());
-            proxy = RemoteProxyManager.getInstance().getFileProxy(newDataLocURI);
-            IFileStore newDataFileStore = proxy.getResource(newDataLocURI.getPath());
+            proxy = RemoteProxyManager.getInstance().getFileProxy(getWorkingDirURI());
+            if(proxy == null) {
+                openErroDialog(Messages.PerfSaveStat_error_title,
+                        Messages.PerfSaveStat_error_msg,
+                        newDataLoc.lastSegment());
+                return null;
+            }
+            IFileStore newDataFileStore = proxy.getResource(newDataLoc.toOSString());
             osw = new OutputStreamWriter(newDataFileStore.openOutputStream(EFS.NONE, null));
             writer = new BufferedWriter(osw);
             writer.write(statData.getPerfData());
+            closeResource(writer);
             IFileInfo info = newDataFileStore.fetchInfo();
             info.setAttribute(EFS.ATTRIBUTE_READ_ONLY, true);
             newDataFileStore.putInfo(info, EFS.SET_ATTRIBUTES, null);
             return newDataLoc;
-        } catch (IOException|CoreException|URISyntaxException e) {
+        } catch (IOException|CoreException e) {
             openErroDialog(Messages.PerfSaveStat_error_title,
                     Messages.PerfSaveStat_error_msg,
                     newDataLoc.lastSegment());

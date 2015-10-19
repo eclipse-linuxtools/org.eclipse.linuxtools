@@ -13,8 +13,6 @@ package org.eclipse.linuxtools.internal.perf;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +25,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.linuxtools.profiling.launch.RemoteConnection;
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteConnectionException;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.swt.widgets.Display;
 
@@ -44,17 +43,13 @@ public abstract class AbstractDataManipulator extends BaseDataManipulator
     private ILaunch launch;
     private IPath pathWorkDir;
     private List<Thread> threads;
-    private IProject project;
+    protected IProject project;
 
     AbstractDataManipulator (String title, IPath pathWorkDir, IProject project) {
-        this(title, pathWorkDir);
-        this.project=project;
-    }
-
-    AbstractDataManipulator (String title, IPath pathWorkDir) {
         this.title = title;
         this.pathWorkDir=pathWorkDir;
         threads = new ArrayList<>();
+        this.project = project;
     }
 
     @Override
@@ -78,20 +73,10 @@ public abstract class AbstractDataManipulator extends BaseDataManipulator
     public void performCommand(String[] cmd, int fd) {
         BufferedReader buffData = null;
         BufferedReader buffTemp = null;
-        URI pathWorkDirURI = null;
         try {
 
             Process proc = null;
-            RemoteConnection exeRC = null;
-            try {
-                pathWorkDirURI = new URI(pathWorkDir.toOSString());
-                exeRC = new RemoteConnection(pathWorkDirURI);
-            } catch (RemoteConnectionException e) {
-                MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
-            } catch (URISyntaxException e) {
-                MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
-            }
-            IFileStore workDirStore = exeRC.getRmtFileProxy().getResource(pathWorkDirURI.getPath());
+            IFileStore workDirStore = getWorkingDirStore();
             proc = RuntimeProcessFactory.getFactory().exec(cmd, null, workDirStore, project);
             StringBuffer data = new StringBuffer();
             StringBuffer temp = new StringBuffer();
@@ -131,19 +116,16 @@ public abstract class AbstractDataManipulator extends BaseDataManipulator
     }
 
     public void performCommand(String[] cmd, String file) {
-        URI pathWorkDirURI = null;
         Process proc = null;
-        RemoteConnection exeRC = null;
+        IRemoteFileProxy fileProxy;
         try {
             try {
-                pathWorkDirURI = new URI(pathWorkDir.toOSString());
-                exeRC = new RemoteConnection(pathWorkDirURI);
+                fileProxy = RemoteProxyManager.getInstance().getFileProxy(project);
             } catch (RemoteConnectionException e) {
                 MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
-            } catch (URISyntaxException e) {
-                MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
+                return;
             }
-            IFileStore workDirStore = exeRC.getRmtFileProxy().getResource(pathWorkDirURI.getPath());
+            IFileStore workDirStore = getWorkingDirStore();
             proc = RuntimeProcessFactory.getFactory().exec(cmd, null, workDirStore, project, new PTY());
             DebugPlugin.newProcess(launch, proc, ""); //$NON-NLS-1$
             proc.waitFor();
@@ -151,7 +133,7 @@ public abstract class AbstractDataManipulator extends BaseDataManipulator
             StringBuffer data = new StringBuffer();
             try (BufferedReader buffData = new BufferedReader(
                     new InputStreamReader(
-                            exeRC.getRmtFileProxy().getResource(file).openInputStream(EFS.NONE, null)))) {
+                            fileProxy.getResource(file).openInputStream(EFS.NONE, null)))) {
                 readStream(buffData, data);
                 joinAll();
             }
@@ -198,4 +180,17 @@ public abstract class AbstractDataManipulator extends BaseDataManipulator
      */
     public abstract void parse();
 
+    private IFileStore getWorkingDirStore() {
+        IRemoteFileProxy fileProxy;
+        try {
+            fileProxy = RemoteProxyManager.getInstance().getFileProxy(project);
+            if(fileProxy == null) {
+                MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
+            }
+        } catch (CoreException e) {
+            MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
+	        return null;
+        }
+        return fileProxy.getResource(pathWorkDir.toOSString());
+    }
 }

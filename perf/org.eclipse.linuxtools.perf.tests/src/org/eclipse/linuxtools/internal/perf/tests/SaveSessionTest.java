@@ -14,22 +14,33 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.StatData;
 import org.eclipse.linuxtools.internal.perf.handlers.AbstractSaveDataHandler;
 import org.eclipse.linuxtools.internal.perf.handlers.PerfSaveSessionHandler;
 import org.eclipse.linuxtools.internal.perf.handlers.PerfSaveStatsHandler;
+import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.osgi.framework.FrameworkUtil;
 
-public class SaveSessionTest {
+public class SaveSessionTest extends AbstractTest {
     private static final String WORKING_DIR = "resources/"; //$NON-NLS-1$
     private static final String DATA_FILE_PATH = "/mock/data/path"; //$NON-NLS-1$
     private static final String PERF_DATA_FILE_PATH = "resources/perf.data"; //$NON-NLS-1$
@@ -37,6 +48,18 @@ public class SaveSessionTest {
     private static final String DATA_FILE_NAME = "data"; //$NON-NLS-1$
     private static final String DATA_FILE_EXT = "ext"; //$NON-NLS-1$
     private ArrayList<IPath> testFiles = new ArrayList<>();
+    private IProject proj;
+
+    @Before
+    public void setUp() {
+        try {
+            proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest").getProject();
+            PerfPlugin.getDefault().setWorkingDir(proj.getLocation());
+        } catch (InvocationTargetException | CoreException | URISyntaxException | InterruptedException | IOException e) {
+            e.printStackTrace();
+            fail("Failed to create test project");
+        }
+    }
 
     @After
     public void tearDown(){
@@ -86,7 +109,7 @@ public class SaveSessionTest {
         assertFalse(handler.verifyData());
 
         PerfPlugin.getDefault().setStatData(
-                new StatData("title", null, "prog", new String[] {}, 1, null) { //$NON-NLS-1$ //$NON-NLS-2$
+                new StatData("title", null, "prog", new String[] {}, 1, null, proj) { //$NON-NLS-1$ //$NON-NLS-2$
                     @Override
                     public String getPerfData() {
                         return PERF_STATS_FILE_PATH;
@@ -135,6 +158,15 @@ public class SaveSessionTest {
         protected IPath getWorkingDir() {
             return new Path(WORKING_DIR);
         }
+    }
+
+    @Override
+    protected ILaunchConfigurationType getLaunchConfigType() {
+        return null;
+    }
+
+    @Override
+    protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
     }
 
 }

@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.internal.perf.handlers;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.text.MessageFormat;
 
 import org.eclipse.core.commands.ExecutionEvent;
@@ -73,6 +72,10 @@ public abstract class AbstractSaveDataHandler extends BaseDataManipulator implem
         return PerfPlugin.getDefault().getWorkingDir();
     }
 
+    protected URI getWorkingDirURI() {
+        return PerfPlugin.getDefault().getWorkingDirURI();
+    }
+
     /**
      * New data location based on specified name, which the specified
      * extension will be appended to.
@@ -95,16 +98,12 @@ public abstract class AbstractSaveDataHandler extends BaseDataManipulator implem
      */
     public boolean canSave(IPath file) {
         IRemoteFileProxy proxy = null;
-        URI fileURI = null;
         try {
-            fileURI = new URI(file.toPortableString());
-            proxy = RemoteProxyManager.getInstance().getFileProxy(fileURI);
-        } catch (URISyntaxException e) {
-            MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
+            proxy = RemoteProxyManager.getInstance().getFileProxy(getWorkingDirURI());
         } catch (CoreException e) {
             MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
         }
-        IFileStore fileStore = proxy.getResource(fileURI.getPath());
+        IFileStore fileStore = proxy.getResource(file.toPortableString());
         if (fileStore.fetchInfo().exists()) {
             String msg = MessageFormat.format(
                     Messages.PerfSaveSession_file_exists_msg,

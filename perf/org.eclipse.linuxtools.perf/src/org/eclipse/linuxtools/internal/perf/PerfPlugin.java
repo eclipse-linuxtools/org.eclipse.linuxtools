@@ -16,15 +16,20 @@ package org.eclipse.linuxtools.internal.perf;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URI;
 import java.util.List;
 
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.internal.perf.model.TreeParent;
+import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
+import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -148,6 +153,24 @@ public class PerfPlugin extends AbstractUIPlugin {
 
     public IPath getWorkingDir(){
         return curWorkingDir;
+    }
+
+    /**
+     * Get the working directory.
+     * @return the URI of the working directory or null.
+     */
+    public URI getWorkingDirURI() {
+        try {
+            IRemoteFileProxy fileProxy = RemoteProxyManager.getInstance().getFileProxy(getProfiledProject());
+            IPath wd = getWorkingDir();
+            if(wd == null || fileProxy == null) {
+                return null;
+            }
+            IFileStore fs = fileProxy.getResource(wd.toOSString());
+            return fs.toURI();
+        } catch (CoreException e) {
+            return null;
+        }
     }
 
     /**

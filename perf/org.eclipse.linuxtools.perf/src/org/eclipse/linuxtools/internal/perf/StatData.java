@@ -11,8 +11,6 @@
 package org.eclipse.linuxtools.internal.perf;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,14 +37,6 @@ public class StatData extends AbstractDataManipulator {
     private String [] args;
     private int runCount;
     private String [] events;
-
-    public StatData(String title, IPath workDir, String prog, String [] args, int runCount, String[] events) {
-        super(title, workDir);
-        this.prog = prog;
-        this.args = args;
-        this.runCount = runCount;
-        this.events = events;
-    }
 
     public StatData(String title, IPath workDir, String prog, String [] args, int runCount, String[] events, IProject project) {
         super(title, workDir, project);
@@ -103,8 +93,6 @@ public class StatData extends AbstractDataManipulator {
      * report data files.
      */
     public void updateStatData() {
-        URI curStatPathURI = null;
-        URI oldStatPathURI = null;
         // build file name format
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(PerfPlugin.PERF_COMMAND);
@@ -118,16 +106,14 @@ public class StatData extends AbstractDataManipulator {
         IPath curStatPath = workingDir.append(curStatName);
         IRemoteFileProxy proxy = null;
         try {
-            curStatPathURI = new URI(curStatPath.toPortableString());
-            proxy = RemoteProxyManager.getInstance().getFileProxy(curStatPathURI);
+            proxy = RemoteProxyManager.getInstance().getFileProxy(project);
 
-            IFileStore curFileStore = proxy.getResource(curStatPathURI.getPath());
+            IFileStore curFileStore = proxy.getResource(curStatPath.toOSString());
             if (curFileStore.fetchInfo().exists()) {
                 // get previous stat file
                 String oldStatName = String.format(statNameFormat, ".old"); //$NON-NLS-1$
                 IPath oldStatPath = workingDir.append(oldStatName);
-                oldStatPathURI = new URI(oldStatPath.toPortableString());
-                IFileStore oldFileStore = proxy.getResource(oldStatPathURI.getPath());
+                IFileStore oldFileStore = proxy.getResource(oldStatPath.toOSString());
                 if (oldFileStore.fetchInfo().exists()) {
                     oldFileStore.delete(EFS.NONE, null);
                 }
@@ -136,7 +122,7 @@ public class StatData extends AbstractDataManipulator {
             }
             PerfSaveStatsHandler saveStats = new PerfSaveStatsHandler();
             saveStats.saveData(PerfPlugin.PERF_COMMAND);
-        } catch (URISyntaxException|CoreException e) {
+        } catch (CoreException e) {
             MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.MsgProxyError, Messages.MsgProxyError);
         }
     }

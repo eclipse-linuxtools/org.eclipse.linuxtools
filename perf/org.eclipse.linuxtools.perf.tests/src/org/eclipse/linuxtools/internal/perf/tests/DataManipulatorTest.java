@@ -11,31 +11,52 @@
 package org.eclipse.linuxtools.internal.perf.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.internal.perf.ReportComparisonData;
 import org.eclipse.linuxtools.internal.perf.SourceDisassemblyData;
 import org.eclipse.linuxtools.internal.perf.StatData;
 import org.eclipse.linuxtools.internal.perf.handlers.PerfStatDataOpenHandler;
+import org.eclipse.linuxtools.profiling.tests.AbstractTest;
+import org.junit.Before;
 import org.junit.Test;
+import org.osgi.framework.FrameworkUtil;
 
-public class DataManipulatorTest {
+public class DataManipulatorTest extends AbstractTest {
 
     private static final String output = "output"; //$NON-NLS-1$
+    private IProject proj;
+
+    @Before
+    public void setUp() {
+        try {
+            proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest").getProject();
+        } catch (InvocationTargetException | CoreException | URISyntaxException | InterruptedException | IOException e) {
+            e.printStackTrace();
+            fail("Failed to create test project");
+        }
+    }
 
     @Test
     public void testEchoSourceDisassemblyData() {
         final IPath path = new Path("/a/b/c/"); //$NON-NLS-1$
 
         StubSourceDisassemblyData sdData = new StubSourceDisassemblyData(
-                "disassembly data", path); //$NON-NLS-1$
+                "disassembly data", path, proj); //$NON-NLS-1$
         sdData.parse();
 
         String expected = "sh -c perf annotate -i " + path.toOSString() + "perf.data < /dev/null"; //$NON-NLS-1$
@@ -49,7 +70,7 @@ public class DataManipulatorTest {
         final int runCount = 3;
 
         StubStatData sData = new StubStatData(
-                "stat data", binary, args, runCount, null); //$NON-NLS-1$
+                "stat data", binary, args, runCount, null, proj); //$NON-NLS-1$
         sData.parse();
 
         String expected = "perf stat -r " + runCount + " -o " + output + " " + binary; //$NON-NLS-1$ //$NON-NLS-2$
@@ -67,7 +88,7 @@ public class DataManipulatorTest {
         final int runCount = 3;
 
         StubStatData sData = new StubStatData(
-                "stat data", binary, args, runCount, events); //$NON-NLS-1$
+                "stat data", binary, args, runCount, events, proj); //$NON-NLS-1$
         sData.parse();
 
         String expected = "perf stat -r " + runCount; //$NON-NLS-1$
@@ -111,8 +132,8 @@ public class DataManipulatorTest {
      */
     private static class StubSourceDisassemblyData extends SourceDisassemblyData {
 
-        public StubSourceDisassemblyData(String title, IPath workingDir) {
-            super(title, workingDir);
+        public StubSourceDisassemblyData(String title, IPath workingDir, IProject proj) {
+            super(title, workingDir, proj);
         }
 
         @Override
@@ -131,8 +152,8 @@ public class DataManipulatorTest {
     private static class StubStatData extends StatData {
 
         public StubStatData(String title, String cmd, String[] args,
-                int runCount, String[] events) {
-            super(title, Path.fromOSString(""), cmd, args, runCount, events);
+                int runCount, String[] events, IProject proj) {
+            super(title, Path.fromOSString(""), cmd, args, runCount, events, proj);
         }
 
         @Override
@@ -170,6 +191,15 @@ public class DataManipulatorTest {
             return ret.toArray(new String[ret.size()]);
         }
 
+    }
+
+    @Override
+    protected ILaunchConfigurationType getLaunchConfigType() {
+        return null;
+    }
+
+    @Override
+    protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
     }
 
 }
