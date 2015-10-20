@@ -13,12 +13,8 @@
 <plugin>
    <extension
          point="org.eclipse.ui.newWizards">
-      <category
-            id="org.eclipse.linuxtools.rpm.createrepo"
-            name="%main.name">
-      </category>
       <wizard
-            category="org.eclipse.linuxtools.rpm.createrepo"
+            category="org.eclipse.linuxtools.rpm.ui.editor"
             class="org.eclipse.linuxtools.internal.rpm.createrepo.wizard.CreaterepoWizard"
             icon="icons/newgroup_wiz.gif"
             id="org.eclipse.linuxtools.internal.rpm.createrepo.wizard.CreaterepoWizard"

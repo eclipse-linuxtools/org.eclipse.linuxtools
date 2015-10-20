@@ -103,7 +103,7 @@ public class CreaterepoWizardTest {
         SWTBotShell shell = bot.shell(ICreaterepoTestConstants.NEW);
         shell.activate();
         bot.text().setText(ICreaterepoTestConstants.CREATEREPO_PROJECT_WIZARD);
-        bot.waitUntil(new TestUtils.NodeAvailableAndSelect(bot.tree(), ICreaterepoTestConstants.CREATEREPO_CATEGORY, ICreaterepoTestConstants.CREATEREPO_PROJECT_WIZARD));
+        bot.waitUntil(new TestUtils.NodeAvailableAndSelect(bot.tree(), ICreaterepoTestConstants.CREATEREPO_PROJECT_CATEGORY, ICreaterepoTestConstants.CREATEREPO_PROJECT_WIZARD));
         bot.button(ICreaterepoTestConstants.NEXT_BUTTON).click();
         bot.textWithLabel(ICreaterepoTestConstants.PROJECT_NAME_LABEL).setText(ICreaterepoTestConstants.PROJECT_NAME);
         bot.button(ICreaterepoTestConstants.NEXT_BUTTON).click();
