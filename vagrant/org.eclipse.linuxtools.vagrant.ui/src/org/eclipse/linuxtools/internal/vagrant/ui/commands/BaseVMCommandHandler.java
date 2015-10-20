@@ -40,7 +40,7 @@ public abstract class BaseVMCommandHandler extends AbstractHandler {
 							selectedContainers.size());
 					for (final IVagrantVM container : selectedContainers) {
 						monitor.setTaskName(getTaskName(container));
-						executeInJob(container);
+						executeInJob(container, monitor);
 						monitor.worked(1);
 					}
 				}
@@ -74,5 +74,5 @@ public abstract class BaseVMCommandHandler extends AbstractHandler {
 
 	abstract String getTaskName(final IVagrantVM container);
 
-	abstract void executeInJob(final IVagrantVM container);
+	abstract void executeInJob(final IVagrantVM container, IProgressMonitor monitor);
 }

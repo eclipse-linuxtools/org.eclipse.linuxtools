@@ -97,6 +97,11 @@
           id="org.eclipse.linuxtools.vagrant.ui.commands.createVM"
           name="Create VM">
     </command>
+    <command
+          description="Start selected VMs"
+          id="org.eclipse.linuxtools.vagrant.ui.commands.startVM"
+          name="Start VMs">
+    </command>
  </extension>
  <extension
        point="org.eclipse.ui.handlers">
@@ -215,6 +220,35 @@
           </with>
        </enabledWhen>
     </handler>
+    <handler
+          class="org.eclipse.linuxtools.internal.vagrant.ui.commands.StartVMCommandHandler"
+          commandId="org.eclipse.linuxtools.vagrant.ui.commands.startVM">
+       <enabledWhen>
+          <with
+                variable="selection">
+             <iterate
+                   ifEmpty="false">
+                <and>
+                   <instanceof
+                         value="org.eclipse.linuxtools.vagrant.core.IVagrantVM">
+                   </instanceof>
+                   <or>
+                      <test
+                            forcePluginActivation="true"
+                            property="org.eclipse.linuxtools.vagrant.propertytesters.vm.isShutoff"
+                            value="true">
+                      </test>
+                      <test
+                            forcePluginActivation="true"
+                            property="org.eclipse.linuxtools.vagrant.propertytesters.vm.isUnknown"
+                            value="true">
+                      </test>
+                   </or>
+                </and>
+             </iterate>
+          </with>
+       </enabledWhen>
+    </handler>
  </extension>
  <extension
        point="org.eclipse.ui.menus">
@@ -299,6 +333,17 @@
              icon="icons/pull.gif"
              id="org.eclipse.linuxtools.vagrant.ui.commands.addBox"
              mnemonic="P"
+             style="push">
+       </command>
+    </menuContribution>
+    <menuContribution
+          locationURI="toolbar:org.eclipse.linuxtools.vagrant.ui.vagrantVMView">
+       <command
+             commandId="org.eclipse.linuxtools.vagrant.ui.commands.startVM"
+             disabledIcon="icons/runningd.gif"
+             icon="icons/running.gif"
+             id="org.eclipse.linuxtools.vagrant.ui.commands.startVM"
+             mnemonic="S"
              style="push">
        </command>
     </menuContribution>
