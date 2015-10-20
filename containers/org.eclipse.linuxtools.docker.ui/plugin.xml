@@ -1336,4 +1336,15 @@
        </launchMode>
     </launchConfigurationTabGroup>
  </extension>
+ <extension
+       point="org.eclipse.ui.console.consolePageParticipants">
+    <consolePageParticipant
+          class="org.eclipse.linuxtools.internal.docker.ui.RunConsolePageParticipant"
+          id="org.eclipse.linuxtools.docker.ui.consolePageParticipant">
+       <enablement>
+          <instanceof
+                value="org.eclipse.linuxtools.internal.docker.ui.RunConsole">
+          </instanceof></enablement>
+    </consolePageParticipant>
+ </extension>
 </plugin>

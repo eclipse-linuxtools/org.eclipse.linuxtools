@@ -103,6 +103,10 @@ public class ImageRun extends Wizard {
 		return this.imageRunSelectionPage.getModel().getContainerName();
 	}
 
+	public boolean removeWhenExits() {
+		return this.imageRunSelectionPage.getModel().isRemoveWhenExits();
+	}
+
 	@SuppressWarnings("unchecked")
 	public IDockerHostConfig getDockerHostConfig() {
 		final ImageRunSelectionModel selectionModel = this.imageRunSelectionPage
