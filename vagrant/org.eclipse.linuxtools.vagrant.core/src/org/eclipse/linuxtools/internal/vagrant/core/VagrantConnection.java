@@ -128,40 +128,53 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 					vmIDs.add(items[0]);
 				}
 			}
-			List<String> args = new LinkedList<>(Arrays.asList(new String [] { "ssh-config" }));
-			args.addAll(vmIDs);
-			res = call(args.toArray(new String[0]));
-			for (int i = 0; i < res.length; i++) {
-				String[] items = res[i].trim().split(" ");
-				if (items[0].equals("HostName")) {
-					List<String> tmp = new ArrayList<>();
-					tmp.add(items[1]);
-					sshConfig.put(vmIDs.get(i / 11), tmp);
-				} else if (items[0].equals("User")
-						|| items[0].equals("IdentityFile")) {
-					sshConfig.get(vmIDs.get(i / 11)).add(items[1]);
+			if (!vmIDs.isEmpty()) {
+				List<String> args = new LinkedList<>(Arrays.asList(new String [] { "ssh-config" }));
+				args.addAll(vmIDs);
+				res = call(args.toArray(new String[0]));
+				for (int i = 0; i < res.length; i++) {
+					String[] items = res[i].trim().split(" ");
+					if (items[0].equals("HostName")) {
+						List<String> tmp = new ArrayList<>();
+						tmp.add(items[1]);
+						sshConfig.put(vmIDs.get(i / 11), tmp);
+					} else if (items[0].equals("User")
+							|| items[0].equals("Port")
+							|| items[0].equals("IdentityFile")) {
+						sshConfig.get(vmIDs.get(i / 11)).add(items[1]);
+					}
 				}
-			}
 
-			args = new LinkedList<>(Arrays.asList(new String [] {"--machine-readable", "status"}));
-			args.addAll(vmIDs);
-			res = call(args.toArray(new String[0]));
-			String name, provider, state, state_desc;
-			name = provider = state = state_desc = "";
-			for (int i = 0; i < res.length; i++) {
-				String[] items = res[i].split(",");
-				if (items[2].equals("provider-name")) {
-					name = items[1];
-					provider = items[3];
-				} else if (items[2].equals("state")) {
-					state = items[3];
-				} else if (items[2].equals("state-human-long")) {
-					state_desc = items[3];
-					containers.add(new VagrantVM(vmIDs.get((i / 5)), name,
-							provider, state, state_desc, new File("/dev/null"),
-							sshConfig.get(vmIDs.get((i / 5))).get(0),
-							sshConfig.get(vmIDs.get((i / 5))).get(1),
-							sshConfig.get(vmIDs.get((i / 5))).get(2)));
+				args = new LinkedList<>(Arrays.asList(new String [] {"--machine-readable", "status"}));
+				args.addAll(vmIDs);
+				res = call(args.toArray(new String[0]));
+				String name, provider, state, state_desc;
+				name = provider = state = state_desc = "";
+				for (int i = 0; i < res.length; i++) {
+					String[] items = res[i].split(",");
+					if (items[2].equals("provider-name")) {
+						name = items[1];
+						provider = items[3];
+					} else if (items[2].equals("state")) {
+						state = items[3];
+					} else if (items[2].equals("state-human-long")) {
+						state_desc = items[3];
+						VagrantVM vm;
+						if (sshConfig.isEmpty()) {
+							// VM exists but ssh is not configured
+							vm = new VagrantVM(vmIDs.get((i / 5)), name,
+									provider, state, state_desc, new File("/dev/null"),
+									null, null, 0, null);
+						} else {
+							vm = new VagrantVM(vmIDs.get((i / 5)), name,
+									provider, state, state_desc, new File("/dev/null"),
+									sshConfig.get(vmIDs.get((i / 5))).get(0),
+									sshConfig.get(vmIDs.get((i / 5))).get(1),
+									Integer.parseInt(sshConfig.get(vmIDs.get((i / 5))).get(2)),
+									sshConfig.get(vmIDs.get((i / 5))).get(3));
+						}
+						containers.add(vm);
+					}
 				}
 			}
 			this.containersLoaded = true;
@@ -188,16 +201,19 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 		if (keys.isEmpty()) {
 			keys = DefaultScope.INSTANCE.getNode(JSCH_ID).get(KEY, "");
 		}
+		boolean vmFound = false;
 		for (String key : keys.split(",")) {
 			for (IVagrantVM vm : vms) {
-				if (key.equals(vm.identityFile())
-						&& !vm.state().equals(EnumVMStatus.RUNNING)) {
-					newKeys = keys.replaceAll("(,)?" + key + "(,)?", "");
-					removeFromTrackedKeys(key);
-					break;
+				if (key.equals(vm.identityFile())) {
+					vmFound = true;
+					if (!EnumVMStatus.RUNNING.equals(EnumVMStatus.fromStatusMessage(vm.state()))) {
+						newKeys = keys.replaceAll("(,)?" + key + "(,)?", "");
+						removeFromTrackedKeys(key);
+						break;
+					}
 				}
 			}
-			if (isTrackedKey(key)) {
+			if (!vmFound && isTrackedKey(key)) {
 				newKeys = keys.replaceAll("(,)?" + key + "(,)?", "");
 				removeFromTrackedKeys(key);
 			}
@@ -288,7 +304,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 
 	@Override
 	public void destroyVM(String id) throws VagrantException, InterruptedException {
-		call(new String[] { "--machine-readable", "destroy", id });
+		call(new String[] { "destroy", "-f", id });
 	}
 
 	@Override

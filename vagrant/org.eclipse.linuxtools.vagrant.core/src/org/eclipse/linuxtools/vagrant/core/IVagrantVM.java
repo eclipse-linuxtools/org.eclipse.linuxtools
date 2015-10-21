@@ -30,5 +30,7 @@ public interface IVagrantVM {
 
 	public String user();
 
+	public int port();
+
 	public String identityFile();
 }

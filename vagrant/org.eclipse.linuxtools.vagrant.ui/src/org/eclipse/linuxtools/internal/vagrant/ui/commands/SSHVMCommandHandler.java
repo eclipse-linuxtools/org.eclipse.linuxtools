@@ -28,7 +28,7 @@ public class SSHVMCommandHandler extends BaseVMCommandHandler {
 		// org.eclipse.tm.terminal.connector.ssh.controls.SshWizardConfigurationPanel
 		Map<String, Object> properties = new HashMap<>();
 		properties.put("ssh.keep_alive", 300);
-		properties.put("ip.port", 22);
+		properties.put("ip.port", vm.port());
 		properties.put("delegateId", "org.eclipse.tm.terminal.connector.ssh.launcher.ssh");
 		properties.put("selection", null);
 		properties.put("ssh.password", "");

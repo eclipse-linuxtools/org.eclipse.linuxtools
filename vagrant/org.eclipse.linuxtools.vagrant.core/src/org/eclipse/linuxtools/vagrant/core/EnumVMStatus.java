@@ -15,7 +15,8 @@ public enum EnumVMStatus {
 	SHUTOFF, RUNNING, PAUSED, UNKNOWN;
 
 	public static EnumVMStatus fromStatusMessage(final String status) {
-		if (status.equals("shutoff")) {//$NON-NLS-1$
+		if (status.equals("shutoff") //$NON-NLS-1$
+				|| status.equals("poweroff")) { //$NON-NLS-1$
 			return SHUTOFF;
 		} else if (status.startsWith("pause")) { //$NON-NLS-1$
 			return PAUSED;
