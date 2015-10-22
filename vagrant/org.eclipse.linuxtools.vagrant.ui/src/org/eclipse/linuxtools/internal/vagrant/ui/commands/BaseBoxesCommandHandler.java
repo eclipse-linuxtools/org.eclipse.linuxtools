@@ -54,14 +54,10 @@ public abstract class BaseBoxesCommandHandler extends AbstractHandler {
 	}
 
 	void openError(final String errorMessage, final Exception e) {
-		Display.getDefault().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				MessageDialog.openError(Display.getCurrent().getActiveShell(),
-						errorMessage,
-						e.getMessage());
-			}
-		});
+		Display.getDefault()
+				.syncExec(() -> MessageDialog.openError(
+						Display.getCurrent().getActiveShell(), errorMessage,
+						e.getMessage()));
 	}
 
 	// allow commands to add confirmation dialog

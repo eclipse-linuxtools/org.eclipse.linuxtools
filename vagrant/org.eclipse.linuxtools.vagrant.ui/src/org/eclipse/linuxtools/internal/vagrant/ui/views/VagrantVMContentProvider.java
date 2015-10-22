@@ -57,12 +57,7 @@ public class VagrantVMContentProvider implements ITreeContentProvider{
 			@Override
 			protected IStatus run(final IProgressMonitor monitor) {
 				connection.getVMs(true);
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						viewer.refresh();
-					}
-				});
+				Display.getDefault().asyncExec(() -> viewer.refresh());
 				return Status.OK_STATUS;
 			}
 		};

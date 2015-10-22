@@ -30,7 +30,6 @@ import org.eclipse.linuxtools.vagrant.core.IVagrantBoxListener;
 import org.eclipse.linuxtools.vagrant.core.IVagrantConnection;
 import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -186,12 +185,7 @@ public class VagrantBoxView extends ViewPart implements IVagrantBoxListener {
 	 * @return
 	 */
 	private ModifyListener onSearch() {
-		return new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
-				VagrantBoxView.this.viewer.refresh();
-			}
-		};
+		return e -> VagrantBoxView.this.viewer.refresh();
 	}
 
 	/**
@@ -214,20 +208,16 @@ public class VagrantBoxView extends ViewPart implements IVagrantBoxListener {
 	@Override
 	public void listChanged(final IVagrantConnection connection,
 			final List<IVagrantBox> images) {
-			Display.getDefault().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					// remember the current selection before the viewer is
-					// refreshed
-					final ISelection currentSelection = VagrantBoxView.this.viewer.getSelection();
-					VagrantBoxView.this.viewer.refresh();
-					// restore the selection
-					if (currentSelection != null) {
-						VagrantBoxView.this.viewer
-								.setSelection(currentSelection);
-					}
-					refreshViewTitle();
+		Display.getDefault().asyncExec(() -> {
+			// remember the current selection before the viewer is refreshed
+			final ISelection currentSelection = VagrantBoxView.this.viewer
+					.getSelection();
+			VagrantBoxView.this.viewer.refresh();
+			// restore the selection
+			if (currentSelection != null) {
+				VagrantBoxView.this.viewer.setSelection(currentSelection);
 				}
+			refreshViewTitle();
 			});
 	}
 
@@ -240,9 +230,8 @@ public class VagrantBoxView extends ViewPart implements IVagrantBoxListener {
 			form.setText(connection.getName());
 		} else {
 			this.form.setText(DVMessages.getFormattedString(
-					"VagrantBoxViewTitle.all.msg",
-					new String[] { connection.getName(),
-							Integer.toString(connection.getBoxes().size()) }));
+					"VagrantBoxViewTitle.all.msg", connection.getName(),
+					Integer.toString(connection.getBoxes().size())));
 		}
 	}
 

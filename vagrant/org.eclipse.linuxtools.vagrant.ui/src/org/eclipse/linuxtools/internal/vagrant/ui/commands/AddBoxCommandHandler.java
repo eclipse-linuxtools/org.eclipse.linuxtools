@@ -57,19 +57,12 @@ public class AddBoxCommandHandler extends AbstractHandler {
 					connection.addBox(boxName, boxLoc);
 					connection.getBoxes(true);
 				} catch (final VagrantException e) {
-					Display.getDefault().syncExec(new Runnable() {
-
-						@Override
-						public void run() {
-							MessageDialog.openError(
+					Display.getDefault()
+							.syncExec(() -> MessageDialog.openError(
 									Display.getCurrent().getActiveShell(),
 									DVMessages.getFormattedString(
 											ERROR_PULLING_IMAGE, boxName),
-									e.getMessage());
-
-						}
-
-					});
+							e.getMessage()));
 					// for now
 				} catch (InterruptedException e) {
 					// do nothing

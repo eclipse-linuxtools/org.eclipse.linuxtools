@@ -46,12 +46,9 @@ public class CommandUtils {
 	 *            - the {@link Viewer} to refresh
 	 */
 	public static void asyncRefresh(final Viewer viewer) {
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				if (viewer != null && !viewer.getControl().isDisposed()) {
-					viewer.refresh();
-				}
+		Display.getDefault().asyncExec(() -> {
+			if (viewer != null && !viewer.getControl().isDisposed()) {
+				viewer.refresh();
 			}
 		});
 	}
