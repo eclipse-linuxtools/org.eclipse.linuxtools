@@ -1316,6 +1316,12 @@
           modes="run"
           name="%BuildDockerImageLaunchConfigType.name">
     </launchConfigurationType>
+    <launchConfigurationType
+          delegate="org.eclipse.linuxtools.internal.docker.ui.launch.RunDockerImageLaunchConfigurationDelegate"
+          id="org.eclipse.linuxtools.docker.ui.runDockerImageLaunchConfigurationType"
+          modes="run"
+          name="%RunDockerImageLaunchConfigType.name">
+    </launchConfigurationType>
  </extension>
  <extension
        point="org.eclipse.debug.ui.launchConfigurationTypeImages">
@@ -1323,6 +1329,11 @@
           configTypeID="org.eclipse.linuxtools.docker.ui.buildDockerImageLaunchConfigurationType"
           icon="icons/image.png"
           id="org.eclipse.linuxtools.docker.ui.buildDockerImageLaunchConfigurationTypeImage">
+    </launchConfigurationTypeImage>
+    <launchConfigurationTypeImage
+          configTypeID="org.eclipse.linuxtools.docker.ui.runDockerImageLaunchConfigurationType"
+          icon="icons/container_started.png"
+          id="org.eclipse.linuxtools.docker.ui.runDockerImageLaunchConfigurationTypeImage">
     </launchConfigurationTypeImage>
  </extension>
  <extension
