@@ -123,8 +123,8 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 			List<IVagrantVM> containers = new LinkedList<>();
 			Map<String, List<String>> sshConfig = new HashMap<>();
 			for (int i = 0; i < res.length; i++) {
-				String[] items = res[i].split(" ");
-				if (items.length == 6 && i >= 2) {
+				String[] items = res[i].split("\\s+");
+				if (items.length == 5 && i >= 2) {
 					vmIDs.add(items[0]);
 				}
 			}
@@ -293,8 +293,8 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	}
 
 	@Override
-	public Process up(File vagrantDir) {
-		return rt_call(new String[] { "up" }, vagrantDir);
+	public Process up(File vagrantDir, String provider) {
+		return rt_call(new String[] { "up", "--provider", provider }, vagrantDir);
 	}
 
 	@Override

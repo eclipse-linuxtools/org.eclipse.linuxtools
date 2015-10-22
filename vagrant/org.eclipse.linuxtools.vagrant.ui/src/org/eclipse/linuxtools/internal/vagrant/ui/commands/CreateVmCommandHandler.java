@@ -70,7 +70,7 @@ public class CreateVmCommandHandler extends BaseBoxesCommandHandler {
 		} catch (IOException e) {
 		}
 
-		Process p = connection.up(vagrantDir);
+		Process p = connection.up(vagrantDir, box.getProvider());
 		BufferedReader buff = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line;
 		try {

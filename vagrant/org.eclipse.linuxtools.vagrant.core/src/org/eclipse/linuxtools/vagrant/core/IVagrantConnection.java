@@ -41,7 +41,7 @@ public interface IVagrantConnection {
 
 	public void init(File vagrantDir);
 
-	public Process up(File vagrantDir);
+	public Process up(File vagrantDir, String provider);
 
 	void addBox(String name, String location) throws VagrantException, InterruptedException;
 
