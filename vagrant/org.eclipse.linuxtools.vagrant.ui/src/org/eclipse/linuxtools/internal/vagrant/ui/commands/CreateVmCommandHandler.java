@@ -20,70 +20,105 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.linuxtools.internal.vagrant.core.Activator;
 import org.eclipse.linuxtools.internal.vagrant.core.VagrantConnection;
 import org.eclipse.linuxtools.internal.vagrant.ui.views.DVMessages;
+import org.eclipse.linuxtools.internal.vagrant.ui.wizards.CreateVMWizard;
 import org.eclipse.linuxtools.vagrant.core.IVagrantBox;
 import org.eclipse.linuxtools.vagrant.core.IVagrantConnection;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.handlers.HandlerUtil;
 
-public class CreateVmCommandHandler extends BaseBoxesCommandHandler {
+public class CreateVmCommandHandler extends AbstractHandler {
 
 	private static final String CREATE_VM_MSG = "CreateVM.msg"; //$NON-NLS-1$
 	private static final String CRATE_VM_TITLE = "CreateVM.title"; //$NON-NLS-1$
 
 	@Override
-	String getJobName(List<IVagrantBox> selectedBoxes) {
-		return DVMessages.getFormattedString(CREATE_VM_MSG);
+	public Object execute(final ExecutionEvent event) {
+		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
+		final List<IVagrantBox> selectedBoxes = CommandUtils.getSelectedImages(activePart);
+		if (selectedBoxes.size() <= 1) {
+			IVagrantBox selectedBox = selectedBoxes.isEmpty() ? null : selectedBoxes.get(0);
+			final CreateVMWizard wizard = new CreateVMWizard(selectedBox);
+			final boolean finished = CommandUtils.openWizard(wizard, HandlerUtil.getActiveShell(event));
+			if (finished) {
+				performCreateVM(wizard.getVMName(), wizard.getBoxName(), wizard.getVMFile());
+			}
+		}
+		return null;
 	}
 
-	@Override
-	String getTaskName(IVagrantBox box) {
-		return DVMessages.getFormattedString(CRATE_VM_TITLE, box.getName());
-	}
+	private void performCreateVM(String vmName, String boxName, String vmFile) {
+		final Job createVMJob = new Job(DVMessages.getFormattedString(CREATE_VM_MSG)) {
+			@Override
+			protected IStatus run(final IProgressMonitor monitor) {
+				monitor.beginTask(DVMessages.getFormattedString(CRATE_VM_TITLE, vmName),
+						IProgressMonitor.UNKNOWN);
 
-	@Override
-	void executeInJob(IVagrantBox box, IProgressMonitor monitor) {
-		IVagrantConnection connection = VagrantConnection.getInstance();
-		String stateLoc = Activator.getDefault().getStateLocation().toOSString();
-		File vagrantDir = Paths.get(stateLoc, box.getName()).toFile();
-		vagrantDir.mkdir();
-		connection.init(vagrantDir);
+				IVagrantConnection connection = VagrantConnection.getInstance();
+				File vagrantDir;
+				if (vmFile == null) {
+					String stateLoc = Activator.getDefault().getStateLocation().toOSString();
+					vagrantDir = Paths.get(stateLoc, vmName).toFile();
+					vagrantDir.mkdir();
+					connection.init(vagrantDir);
 
-		Path vagrantFilePath = Paths.get(stateLoc, box.getName(), "Vagrantfile");
-		String defaultContent;
-		StringBuffer bcontent = new StringBuffer();
-		try {
-			defaultContent = new String(Files.readAllBytes(vagrantFilePath), StandardCharsets.UTF_8);
-			for (String line : defaultContent.split("\n")) {
-				if (line.contains("config.vm.box")) {
-					String defLine = line.replaceAll("config.vm.box = \".*\"", "config.vm.define :" + box.getName());
-					String boxLine = line.replaceAll("config.vm.box = \".*\"", "config.vm.box = \"" + box.getName() + "\"");
-					bcontent.append(defLine + '\n');
-					bcontent.append(boxLine + '\n');
+					Path vagrantFilePath = Paths.get(stateLoc, vmName, "Vagrantfile");
+					String defaultContent;
+					StringBuffer bcontent = new StringBuffer();
+					try {
+						defaultContent = new String(Files.readAllBytes(vagrantFilePath), StandardCharsets.UTF_8);
+						for (String line : defaultContent.split("\n")) {
+							if (line.contains("config.vm.box")) {
+								String defLine = line.replaceAll("config.vm.box = \".*\"", "config.vm.define :" + vmName);
+								String boxLine = line.replaceAll("config.vm.box = \".*\"", "config.vm.box = \"" + boxName + "\"");
+								bcontent.append(defLine + '\n');
+								bcontent.append(boxLine + '\n');
+							} else {
+								bcontent.append(line + '\n');
+							}
+						}
+
+						Files.write(vagrantFilePath, bcontent.toString().getBytes(StandardCharsets.UTF_8));
+					} catch (IOException e) {
+					}
 				} else {
-					bcontent.append(line + '\n');
+					vagrantDir = Paths.get(vmFile).getParent().toFile();
 				}
-			}
 
-			Files.write(vagrantFilePath, bcontent.toString().getBytes(StandardCharsets.UTF_8));
-		} catch (IOException e) {
-		}
-
-		Process p = connection.up(vagrantDir, box.getProvider());
-		String line;
-		try (BufferedReader buff = new BufferedReader(
-				new InputStreamReader(p.getInputStream()))) {
-			while ((line = buff.readLine()) != null) {
-				if (monitor.isCanceled()) {
-					p.destroy();
-					break;
+				IVagrantBox box = null;
+				for (IVagrantBox b : connection.getBoxes()) {
+					if (b.getName().equals(boxName)) {
+						box = b;
+						break;
+					}
 				}
-				line = line.replaceAll("(=)+>", "");
-				monitor.subTask(line);
+				Process p = connection.up(vagrantDir, box != null ? box.getProvider() : null);
+				String line;
+				try (BufferedReader buff = new BufferedReader(
+						new InputStreamReader(p.getInputStream()))) {
+					while ((line = buff.readLine()) != null) {
+						if (monitor.isCanceled()) {
+							p.destroy();
+							break;
+						}
+						line = line.replaceAll("(=)+>", "");
+						monitor.subTask(line);
+					}
+				} catch (IOException e) {
+				}
+				connection.getVMs(true);
+				return Status.OK_STATUS;
 			}
-		} catch (IOException e) {
-		}
-		connection.getVMs(true);
+		};
+		createVMJob.setUser(true);
+		createVMJob.schedule();
 	}
 }

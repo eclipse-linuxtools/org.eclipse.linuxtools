@@ -208,17 +208,6 @@
     <handler
           class="org.eclipse.linuxtools.internal.vagrant.ui.commands.CreateVmCommandHandler"
           commandId="org.eclipse.linuxtools.vagrant.ui.commands.createVM">
-       <enabledWhen>
-          <with
-                variable="selection">
-             <iterate
-                   ifEmpty="false">
-                <instanceof
-                      value="org.eclipse.linuxtools.vagrant.core.IVagrantBox">
-                </instanceof>
-             </iterate>
-          </with>
-       </enabledWhen>
     </handler>
     <handler
           class="org.eclipse.linuxtools.internal.vagrant.ui.commands.StartVMCommandHandler"
