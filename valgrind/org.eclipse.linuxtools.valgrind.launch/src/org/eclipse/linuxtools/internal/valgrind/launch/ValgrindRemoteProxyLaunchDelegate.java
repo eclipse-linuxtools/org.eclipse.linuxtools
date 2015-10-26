@@ -193,6 +193,7 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
 
             // create/empty local output directory
             IValgrindOutputDirectoryProvider provider = getPlugin().getOutputDirectoryProvider();
+            setOutputPath(config, provider.getOutputPath());
             IPath localOutputDir = null;
             try {
                 localOutputDir = provider.getOutputPath();
