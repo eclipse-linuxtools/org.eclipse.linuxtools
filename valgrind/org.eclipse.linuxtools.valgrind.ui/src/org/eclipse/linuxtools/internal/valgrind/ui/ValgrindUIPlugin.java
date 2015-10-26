@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.internal.valgrind.ui;
 
 import java.util.HashMap;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -51,6 +52,9 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
     private ValgrindViewPart view;
     // The page containing the created Valgrind view
     private IWorkbenchPage activePage;
+
+    // The last profiled project
+    private IProject project;
 
     @Override
     public void start(BundleContext context) throws Exception {
@@ -201,4 +205,22 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
         }
         return view;
     }
+
+	/**
+	 * Set the project to be profiled
+	 *
+	 * @param project
+	 */
+	public void setProfiledProject(IProject project) {
+		this.project = project;
+	}
+
+	/**
+	 * Get the project to be profiled
+	 *
+	 * @return project
+	 */
+	public IProject getProfiledProject() {
+		return project;
+	}
 }

@@ -101,6 +101,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
         this.launch    = launch;
         try {
             IProject project = CDebugUtils.verifyCProject(config).getProject();
+            ValgrindUIPlugin.getDefault().setProfiledProject(project);
             command = getValgrindCommand();
 
             // remove any output from previous run
