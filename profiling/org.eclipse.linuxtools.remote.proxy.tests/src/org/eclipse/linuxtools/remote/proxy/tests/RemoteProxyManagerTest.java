@@ -23,6 +23,8 @@ import org.eclipse.linuxtools.internal.profiling.launch.LocalFileProxy;
 import org.eclipse.linuxtools.internal.profiling.launch.LocalLauncher;
 import org.eclipse.linuxtools.internal.rdt.proxy.RDTCommandLauncher;
 import org.eclipse.linuxtools.internal.rdt.proxy.RDTFileProxy;
+import org.eclipse.linuxtools.internal.ssh.proxy.SSHCommandLauncher;
+import org.eclipse.linuxtools.internal.ssh.proxy.SSHFileProxy;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.ptp.rdt.sync.core.SyncConfig;
@@ -52,6 +54,11 @@ public class RemoteProxyManagerTest extends AbstractProxyTest {
 			assertTrue("Should have returned a remote file proxy", fp instanceof RDTFileProxy);
 			fp = proxyManager.getFileProxy(syncProject.getProject());
 			assertTrue("Should have returned a remote file proxy", fp instanceof RDTFileProxy);
+			/*
+			 * Test the proxy for jsch connection scheme
+			 */
+			fp = proxyManager.getFileProxy(URI.create("jsch://" + USERNAME + "@" + HOST + ":22/path/to/file"));
+			assertTrue("Should have returned a remote file proxy", fp instanceof SSHFileProxy);
 		} catch (CoreException e) {
 			fail("Should have returned a file proxy: " + e.getCause());
 		}
@@ -87,6 +94,11 @@ public class RemoteProxyManagerTest extends AbstractProxyTest {
 			assertTrue("Should have returned a remote file proxy", cl instanceof RDTCommandLauncher);
 			cl = proxyManager.getLauncher(syncProject.getProject());
 			assertTrue("Should have returned a remote launcher", cl instanceof RDTCommandLauncher);
+			/*
+			 * Test launcher got for jsch scheme
+			 */
+			cl = proxyManager.getLauncher(URI.create("jsch://" + USERNAME + "@" + HOST + ":22/path/to/file"));
+			assertTrue("Should have returned a remote file proxy", cl instanceof SSHCommandLauncher);
 		} catch (CoreException e) {
 			fail("Should have returned a launcher: " + e.getCause());
 		}

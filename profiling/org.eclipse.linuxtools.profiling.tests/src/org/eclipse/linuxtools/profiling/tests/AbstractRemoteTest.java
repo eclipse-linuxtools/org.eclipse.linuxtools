@@ -53,7 +53,7 @@ public abstract class AbstractRemoteTest extends AbstractTest {
     public static final String SYNC_SERVICE_GIT = "org.eclipse.ptp.rdt.sync.git.core.synchronizeService";
 
     // Sets localhost as default connection if no remote host is given
-    private static String HOST = ""; //$NON-NLS-1$
+    protected static String HOST = ""; //$NON-NLS-1$
     public static String CONNECTION_NAME = "localhost"; //$NON-NLS-1$
     public static final String RESOURCES_DIR = "resources/"; //$NON-NLS-1$
 
