@@ -1314,7 +1314,8 @@
           delegate="org.eclipse.linuxtools.internal.docker.ui.launch.BuildDockerImageLaunchConfigurationDelegate"
           id="org.eclipse.linuxtools.docker.ui.buildDockerImageLaunchConfigurationType"
           modes="run"
-          name="%BuildDockerImageLaunchConfigType.name">
+          name="%BuildDockerImageLaunchConfigType.name"
+          public="true">
     </launchConfigurationType>
     <launchConfigurationType
           delegate="org.eclipse.linuxtools.internal.docker.ui.launch.RunDockerImageLaunchConfigurationDelegate"
@@ -1357,5 +1358,34 @@
                 value="org.eclipse.linuxtools.internal.docker.ui.RunConsole">
           </instanceof></enablement>
     </consolePageParticipant>
+ </extension>
+ <extension
+       point="org.eclipse.debug.ui.launchShortcuts">
+    <shortcut
+          class="org.eclipse.linuxtools.internal.docker.ui.launch.BuildDockerImageShortcut"
+          description="%DockerfileShortcut.desc"
+          icon="icons/build_exec.png"
+          id="org.eclipse.linuxtools.docker.ui.dockerfile.shortcut"
+          label="%DockerfileShortcut.label"
+          modes="run">
+       <contextualLaunch>
+          <enablement>
+             <with variable="selection">
+                <count value="1"/>
+                <iterate>
+                   <adapt
+                         type="org.eclipse.core.resources.IResource">
+                      <and>
+                         <test
+                            property="org.eclipse.core.resources.name"
+                            value="Dockerfile">
+                         </test>
+                      </and>
+                   </adapt>
+                </iterate>
+             </with>
+          </enablement>
+       </contextualLaunch>
+    </shortcut>
  </extension>
 </plugin>

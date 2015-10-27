@@ -20,6 +20,11 @@ import org.eclipse.debug.core.ILaunchConfiguration;
  */
 public interface IBuildDockerImageLaunchConfigurationConstants {
 
+	/**
+	 * the launch id
+	 */
+	public final static String CONFIG_TYPE_ID = "org.eclipse.linuxtools.docker.ui.buildDockerImageLaunchConfigurationType"; //$NON-NLS-1$
+
 	/** the source path to build the Docker Image. */
 	public final static String SOURCE_PATH_LOCATION = "sourcePathLocation"; //$NON-NLS-1$
 

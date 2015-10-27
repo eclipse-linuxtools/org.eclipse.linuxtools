@@ -1798,4 +1798,9 @@ public class DockerConnection implements IDockerConnection, Closeable {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return name;
+	}
+
 }

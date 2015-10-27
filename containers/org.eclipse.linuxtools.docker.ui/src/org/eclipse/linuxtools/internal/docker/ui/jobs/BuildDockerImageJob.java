@@ -77,7 +77,7 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 		this.path = path;
 		this.console = BuildConsole.findConsole();
 		this.numberOfBuildOperations = countLines(
-				path.addTrailingSeparator().append("dockerFile").toOSString()); //$NON-NLS-1$
+				path.addTrailingSeparator().append("Dockerfile").toOSString()); //$NON-NLS-1$
 
 	}
 
@@ -94,7 +94,13 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 				this.progressMonitor.beginTask(
 						JobMessages.getString(BUILD_IMAGE_JOB_TITLE),
 						numberOfBuildOperations + 1);
-				connection.buildImage(path, this);
+				// Give the Image a default name so it can be tagged later.
+				// Otherwise, the Image will be treated as an intermediate Image
+				// by the view filters and Tag Image action will be disabled.
+				// Use the current time in milliseconds to make it unique.
+				String name = "dockerfile:" //$NON-NLS-1$
+						+ Long.toHexString(System.currentTimeMillis());
+				connection.buildImage(path, name, this);
 				connection.getImages(true);
 			}
 		} catch (DockerException | InterruptedException e) {
