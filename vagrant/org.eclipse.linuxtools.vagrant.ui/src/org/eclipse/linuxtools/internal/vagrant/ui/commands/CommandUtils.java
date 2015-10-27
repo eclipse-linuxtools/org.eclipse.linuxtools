@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
@@ -33,9 +32,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 
 /**
- * Utility class for all {@link IHandler} command handlers
- * @author xcoulon
- *
+ * Utility class for all {@link org.eclipse.core.commands.IHandler} command
+ * handlers
+ * 
  */
 public class CommandUtils {
 

@@ -27,8 +27,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class AddBoxCommandHandler extends AbstractHandler {
 
-	private final static String PULL_IMAGE_JOB_TITLE = "ImagePull.title"; //$NON-NLS-1$
-	private final static String PULL_IMAGE_JOB_TASK = "ImagePull.msg"; //$NON-NLS-1$
+	private static final String PULL_IMAGE_JOB_TITLE = "ImagePull.title"; //$NON-NLS-1$
+	private static final String PULL_IMAGE_JOB_TASK = "ImagePull.msg"; //$NON-NLS-1$
 	private static final String ERROR_PULLING_IMAGE = "ImagePullError.msg"; //$NON-NLS-1$
 
 	@Override

@@ -48,7 +48,6 @@ public abstract class BaseVMCommandHandler extends AbstractHandler {
 				return Status.OK_STATUS;
 			}
 		};
-		// job.setPriority(Job.LONG);
 		job.setUser(true);
 		job.schedule();
 		return null;

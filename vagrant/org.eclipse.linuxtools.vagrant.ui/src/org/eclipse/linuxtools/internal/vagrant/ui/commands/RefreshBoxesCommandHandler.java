@@ -22,7 +22,7 @@ import org.eclipse.linuxtools.vagrant.core.IVagrantConnection;
 
 public class RefreshBoxesCommandHandler extends AbstractHandler {
 
-	public final static String BOX_REFRESH_MSG = "BoxRefresh.msg"; //$NON-NLS-1$
+	public static final String BOX_REFRESH_MSG = "BoxRefresh.msg"; //$NON-NLS-1$
 
 	@Override
 	public Object execute(ExecutionEvent event) {

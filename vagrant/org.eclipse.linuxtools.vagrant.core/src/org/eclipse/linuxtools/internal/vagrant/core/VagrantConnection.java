@@ -33,11 +33,12 @@ import org.eclipse.linuxtools.vagrant.core.IVagrantBoxListener;
 import org.eclipse.linuxtools.vagrant.core.IVagrantConnection;
 import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
 import org.eclipse.linuxtools.vagrant.core.IVagrantVMListener;
-import org.eclipse.linuxtools.vagrant.core.VagrantException;
 import org.osgi.framework.Version;
 
 public class VagrantConnection implements IVagrantConnection, Closeable {
 
+	private static final String JSCH_ID = "org.eclipse.jsch.core";
+	private static final String KEY = "PRIVATEKEY";
 	private static final String VG = "vagrant"; //$NON-NLS-1$
 	private static VagrantConnection client;
 	private final Object imageLock = new Object();
@@ -68,7 +69,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	}
 
 	@Override
-	public void close() throws IOException {
+	public void close() {
 	}
 
 	@Override
@@ -193,9 +194,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	 * associated with one, then it is safe to remove it.
 	 */
 	private void removeKeysFromInnactiveVMs() {
-		final String JSCH_ID = "org.eclipse.jsch.core";
 		// org.eclipse.jsch.internal.core.IConstants.KEY_PRIVATEKEY
-		final String KEY = "PRIVATEKEY";
 		String newKeys = "";
 		String keys = InstanceScope.INSTANCE.getNode(JSCH_ID).get(KEY, "");
 		if (keys.isEmpty()) {
@@ -294,31 +293,31 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 
 	@Override
 	public Process up(File vagrantDir, String provider) {
-		return rt_call(new String[] { "up", "--provider", provider }, vagrantDir);
+		return rtCall(new String[] { "up", "--provider", provider },
+				vagrantDir);
 	}
 
 	@Override
-	public void addBox(String name, String location) throws VagrantException, InterruptedException {
+	public void addBox(String name, String location) {
 		call(new String [] {"--machine-readable", "box", "add", name, location});
 	}
 
 	@Override
-	public void destroyVM(String id) throws VagrantException, InterruptedException {
+	public void destroyVM(String id) {
 		call(new String[] { "destroy", "-f", id });
 	}
 
 	@Override
-	public void haltVM(String id) throws VagrantException, InterruptedException {
+	public void haltVM(String id) {
 		call(new String[] { "--machine-readable", "halt", id });
 	}
 
 	@Override
-	public void startVM(String id)
-			throws VagrantException, InterruptedException {
+	public void startVM(String id) {
 	}
 
 	@Override
-	public void removeBox(String name) throws VagrantException, InterruptedException {
+	public void removeBox(String name) {
 		call(new String[] { "--machine-readable", "box", "remove", name });
 	}
 
@@ -355,7 +354,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 		return result.toArray(new String[0]);
 	}
 
-	private static Process rt_call(String[] args, File vagrantDir) {
+	private static Process rtCall(String[] args, File vagrantDir) {
 		try {
 			List<String> cmd = new ArrayList<>();
 			cmd.add(VG);

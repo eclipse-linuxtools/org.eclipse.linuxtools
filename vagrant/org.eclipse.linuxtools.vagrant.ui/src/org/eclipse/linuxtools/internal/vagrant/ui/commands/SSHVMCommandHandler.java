@@ -23,6 +23,8 @@ import org.eclipse.tm.terminal.connector.ssh.launcher.SshLauncherDelegate;
 
 public class SSHVMCommandHandler extends BaseVMCommandHandler {
 
+	private static final String JSCH_ID = "org.eclipse.jsch.core";
+	private static final String KEY = "PRIVATEKEY";
 	@Override
 	void executeInJob(final IVagrantVM vm, IProgressMonitor monitor) {
 		// org.eclipse.tm.terminal.connector.ssh.controls.SshWizardConfigurationPanel
@@ -45,9 +47,7 @@ public class SSHVMCommandHandler extends BaseVMCommandHandler {
 	}
 
 	private void setupKeyPreferences(String identityFile) {
-		final String JSCH_ID = "org.eclipse.jsch.core";
 		// org.eclipse.jsch.internal.core.IConstants.KEY_PRIVATEKEY
-		final String KEY = "PRIVATEKEY";
 		String currentKeys = InstanceScope.INSTANCE.getNode(JSCH_ID).get(KEY, "");
 		if (currentKeys.isEmpty()) {
 			currentKeys = DefaultScope.INSTANCE.getNode(JSCH_ID).get(KEY, "");
