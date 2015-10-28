@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="linuxtools-e4.5" sequenceNumber="34">
+<?pde version="3.8"?><target name="linuxtools-e4.5" sequenceNumber="35">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.swtchart" version="0.0.0"/>
@@ -9,7 +9,10 @@
 <unit id="com.fasterxml.jackson.module.jackson-module-jaxb-annotations" version="0.0.0"/>
 <unit id="com.spotify.docker.client" version="0.0.0"/>
 <unit id="com.spotify.docker.client.source" version="0.0.0"/>
+<unit id="org.mockito" version="1.9.5.v201311280930"/>
+<unit id="org.assertj" version="1.7.1.v20151008-2233"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150821153341/repository/"/>
+<repository location="http://download.eclipse.org/linuxtools/assertj"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.cdt.feature.group" version="0.0.0"/>
