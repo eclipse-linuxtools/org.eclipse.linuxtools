@@ -180,6 +180,18 @@ public interface IDockerConnection {
 	
 	void pushImage(String name, IDockerProgressHandler handler) throws DockerException, InterruptedException;
 
+	/**
+	 * Adds a tag to an existing image
+	 * 
+	 * @param name
+	 *            the image id
+	 * @param newTag
+	 *            the new tag to add to the given image
+	 * @throws DockerException
+	 *             in case of underlying problem (server error)
+	 * @throws InterruptedException
+	 *             if the thread was interrupted
+	 */
 	void tagImage(String name, String newTag) throws DockerException, InterruptedException;
 
 	String buildImage(IPath path, IDockerProgressHandler handler)
@@ -263,6 +275,18 @@ public interface IDockerConnection {
 
 	void removeImage(String name) throws DockerException, InterruptedException;
 
+	/**
+	 * Removes the tagged image
+	 * 
+	 * @param tag
+	 *            the tagged image to remove. If the image has more tags they
+	 *            will be kept. If this is the only tag for the named image, it
+	 *            will be totally removed.
+	 * @throws DockerException
+	 *             in case of underlying problem (server error)
+	 * @throws InterruptedException
+	 *             if the thread was interrupted
+	 */
 	void removeTag(String tag) throws DockerException, InterruptedException;
 
 

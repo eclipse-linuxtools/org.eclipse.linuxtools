@@ -16,7 +16,6 @@ import org.eclipse.linuxtools.docker.core.IDockerImage;
 public class ImageRemoveTag extends Wizard {
 
 	private ImageRemoveTagPage mainPage;
-	private String tag;
 	private IDockerImage image;
 
 	public ImageRemoveTag(IDockerImage image) {
@@ -25,25 +24,25 @@ public class ImageRemoveTag extends Wizard {
 	}
 
 	public String getTag() {
-		return tag;
+		if (this.mainPage != null) {
+			return mainPage.getTag();
+		}
+		return null;
 	}
 
 	@Override
 	public void addPages() {
-		// TODO Auto-generated method stub
-		mainPage = new ImageRemoveTagPage(image);
+		this.mainPage = new ImageRemoveTagPage(image);
 		addPage(mainPage);
 	}
 
 	@Override
 	public boolean canFinish() {
-		return mainPage.isPageComplete();
+		return this.mainPage.isPageComplete();
 	}
 
 	@Override
 	public boolean performFinish() {
-		tag = mainPage.getTag();
-
 		return true;
 	}
 

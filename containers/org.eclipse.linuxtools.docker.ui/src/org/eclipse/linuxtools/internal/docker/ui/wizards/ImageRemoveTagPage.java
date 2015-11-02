@@ -12,14 +12,13 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import java.util.List;
 
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -47,49 +46,31 @@ public class ImageRemoveTagPage extends WizardPage {
 		return tagCombo.getText();
 	}
 
-
 	@Override
 	public void createControl(Composite parent) {
-		final Composite container = new Composite(parent, SWT.NULL);
-		FormLayout layout = new FormLayout();
-		layout.marginHeight = 5;
-		layout.marginWidth = 5;
-		container.setLayout(layout);
+		parent.setLayout(new GridLayout());
+		final Composite container = new Composite(parent, SWT.NONE);
+		GridLayoutFactory.fillDefaults().numColumns(2).margins(6, 6)
+				.applyTo(container);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).span(1, 1)
+				.grab(true, false).applyTo(container);
 
-		Label label = new Label(container, SWT.NULL);
-
-		Label repoLabel = new Label(container, SWT.NULL);
+		final Label repoLabel = new Label(container, SWT.NULL);
 		repoLabel.setText(WizardMessages.getString(REMOVE_TAG_LABEL));
-
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.grab(false, false).applyTo(repoLabel);
 		tagCombo = new Combo(container, SWT.BORDER | SWT.READ_ONLY);
 		tagCombo.setToolTipText(WizardMessages.getString(REMOVE_TAG_TOOLTIP));
-
 		// Set up combo with repoTags that can be removed
-		List<String> repoTags = image.repoTags();
+		final List<String> repoTags = image.repoTags();
 		tagCombo.setItems(repoTags.toArray(new String[0]));
 		tagCombo.select(0);
 
-		Point p1 = label.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-		Point p2 = tagCombo.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-		int centering = (p2.y - p1.y + 1) / 2;
-
-		FormData f = new FormData();
-		f.top = new FormAttachment(0);
-		label.setLayoutData(f);
-
-		f = new FormData();
-		f.top = new FormAttachment(label, 11 + centering);
-		f.left = new FormAttachment(0, 0);
-		repoLabel.setLayoutData(f);
-
-		f = new FormData();
-		f.top = new FormAttachment(label, 11);
-		f.left = new FormAttachment(repoLabel, 5);
-		f.right = new FormAttachment(100);
-		tagCombo.setLayoutData(f);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.grab(true, false).applyTo(tagCombo);
 
 		setControl(container);
-		setPageComplete(true);
+		setPageComplete(false);
 	}
 
 }
