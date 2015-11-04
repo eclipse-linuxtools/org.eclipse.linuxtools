@@ -46,12 +46,17 @@ public class DisplayContainerLogCommandHandler extends AbstractHandler {
 		final IDockerContainer container = selectedContainers.get(0);
 		final String id = container.id();
 		final String name = container.name();
+
+		if (connection.getContainerInfo(id).config().tty()) {
+			RunConsole.attachToTerminal(connection, id);
+			return null;
+		}
 		try {
 			final RunConsole rc = RunConsole.findConsole(id);
-			if (!rc.isAttached()) {
-				rc.attachToConsole(connection);
-			}
 			if (rc != null) {
+				if (!rc.isAttached()) {
+					rc.attachToConsole(connection);
+				}
 				Display.getDefault().syncExec(new Runnable() {
 
 					@Override

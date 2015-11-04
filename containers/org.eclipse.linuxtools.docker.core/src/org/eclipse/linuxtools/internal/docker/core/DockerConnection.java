@@ -63,6 +63,9 @@ import org.eclipse.linuxtools.docker.core.IDockerProgressHandler;
 import org.eclipse.linuxtools.docker.core.ILogger;
 import org.eclipse.linuxtools.docker.core.Messages;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.tm.terminal.view.core.TerminalServiceFactory;
+import org.eclipse.tm.terminal.view.core.interfaces.ITerminalService;
+import org.eclipse.tm.terminal.view.core.interfaces.constants.ITerminalsConnectorConstants;
 
 import com.spotify.docker.client.ContainerNotFoundException;
 import com.spotify.docker.client.DefaultDockerClient;
@@ -1275,7 +1278,7 @@ public class DockerConnection implements IDockerConnection, Closeable {
 		}
 	}
 
-	public WritableByteChannel attachCommand(final String id,
+	public void attachCommand(final String id,
 			final InputStream in, final OutputStream out)
 					throws DockerException {
 
@@ -1285,7 +1288,33 @@ public class DockerConnection implements IDockerConnection, Closeable {
 					AttachParameter.STDIN, AttachParameter.STDOUT,
 					AttachParameter.STDERR, AttachParameter.STREAM,
 					AttachParameter.LOGS);
-			final boolean isTtyEnabled = getContainerInfo(id).config().tty();
+			final IDockerContainerInfo info = getContainerInfo(id);
+			final boolean isTtyEnabled = info.config().tty();
+			final boolean isOpenStdin = info.config().openStdin();
+
+			if (isTtyEnabled) {
+				OutputStream tout = noBlockingOutputStream(HttpHijackWorkaround.getOutputStream(pty_stream, getUri()));
+				InputStream tin = HttpHijackWorkaround.getInputStream(pty_stream);
+				// org.eclipse.tm.terminal.connector.ssh.controls.SshWizardConfigurationPanel
+				Map<String, Object> properties = new HashMap<>();
+				properties.put(ITerminalsConnectorConstants.PROP_DELEGATE_ID, "org.eclipse.tm.terminal.connector.streams.launcher.streams");
+				properties.put(ITerminalsConnectorConstants.PROP_TERMINAL_CONNECTOR_ID, "org.eclipse.tm.terminal.connector.streams.StreamsConnector");
+				properties.put(ITerminalsConnectorConstants.PROP_TITLE, info.name());
+				properties.put(ITerminalsConnectorConstants.PROP_LOCAL_ECHO, false);
+				properties.put(ITerminalsConnectorConstants.PROP_FORCE_NEW, true);
+				properties.put(ITerminalsConnectorConstants.PROP_STREAMS_STDIN, tout);
+				properties.put(ITerminalsConnectorConstants.PROP_STREAMS_STDOUT, tin);
+				/*
+				 * The JVM will call finalize() on 'pty_stream' (LogStream)
+				 * since we hold no references to it (although we do hold
+				 * references to one of its heavily nested fields. The
+				 * LogStream overrides finalize() to close the stream being
+				 * used so we must preserve a reference to it.
+				 */
+				properties.put("PREVENT_JVM_GC_FINALIZE", pty_stream);
+				ITerminalService service = TerminalServiceFactory.getService();
+				service.openConsole(properties, null);
+			}
 
 			// Data from the given input stream
 			// Written to container's STDIN
@@ -1312,145 +1341,12 @@ public class DockerConnection implements IDockerConnection, Closeable {
 				}
 			});
 
-			t_in.start();
-			// Incoming data from container's STDOUT
-			// Written to the given output stream
-			Thread t_out = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						InputStream pty_in = HttpHijackWorkaround
-								.getInputStream(pty_stream);
-						while (getContainerInfo(id).state().running()) {
-							byte[] buff = new byte[1024];
-							int n = pty_in.read(buff);
-							if (n > 0) {
-								/*
-								 * The container's STDOUT contains initial input
-								 * we sent to its STDIN and the result. eg. >
-								 * echo once < echo once \n $ once
-								 * 
-								 * Try to remove this unwanted data from the
-								 * stream.
-								 */
-								if (isTtyEnabled) {
-									int idex = 0;
-									synchronized (prevCmd) {
-										/*
-										 * Check if buff contains a prefix of
-										 * prevCmd ignoring differences in
-										 * carriage return (10,13). Save the
-										 * prefix's ending index.
-										 */
-										for (int i = 0; i < prevCmd.length; i++) {
-											if (prevCmd[i] != buff[i]
-													&& (prevCmd[i] != 10 && buff[i] != 13)
-													&& (prevCmd[i] != 13 && buff[i] != 10)
-													&& prevCmd[i] != 0) {
-												idex = 0;
-												break;
-											} else if (prevCmd[i] != 0) {
-												idex++;
-											}
-										}
-									}
-									// A prefix exists, remove it
-									// Do not include the ending NL/CR
-									if (idex != 0) {
-										shiftLeft(buff, idex + 1);
-									}
-									n = removeTerminalCodes(buff);
-								} else {
-									/*
-									 * If not in TTY mode, first 8 bytes are
-									 * header data describing payload which we
-									 * don't need.
-									 */
-									shiftLeft(buff, 8);
-									n = n - 8;
-								}
-								out.write(buff, 0, n);
-							}
-						}
-					} catch (Exception e) {
-						/*
-						 * Temporary workaround for BZ #469717
-						 * Remove this when we begin using a release with :
-						 * https://github.com/spotify/docker-client/pull/223
-						 */
-						if (e instanceof SocketTimeoutException) {
-							try {
-								attachCommand(id, in, out);
-							} catch (DockerException e1) {
-							}
-						}
-					}
-				}
-			});
-
-			/*
-			 * Our handling of STDOUT for terminals is mandatory, but the
-			 * logging framework can handle catching output very early so use it
-			 * for now.
-			 */
-			if (isTtyEnabled) {
-				t_out.start();
+			if (!isTtyEnabled && isOpenStdin) {
+				t_in.start();
 			}
-
-			return HttpHijackWorkaround.getOutputStream(pty_stream, getUri());
 		} catch (Exception e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
-	}
-
-	/*
-	 * Incoming data from container's STDOUT contains terminal codes which the
-	 * Eclipse Console does not support. Either we install/use some terminal
-	 * plugin that does, or we need to remove these.
-	 */
-	private static int removeTerminalCodes(final byte[] buff) {
-		String tmp = new String(buff);
-		byte[] tmp_buff = tmp.replaceAll("\u001B]0;.*\u0007", "")
-				.replaceAll("\u001B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mK]", "")
-				.replaceAll("\u001B\\[\\?[0-9]{1,4}h\\[", "").getBytes();
-		for (int i = 0; i < buff.length; i++) {
-			if (i >= tmp_buff.length) {
-				buff[i] = 0;
-			} else {
-				buff[i] = tmp_buff[i];
-			}
-		}
-		return getByteLength(buff);
-	}
-
-	/*
-	 * Shift contents of buff[idex] .. buff[buff.length-1] to buff[0] ..
-	 * buff[(buff.length-1) - idex]
-	 */
-	private static void shiftLeft(byte[] buff, int idex) {
-		for (int i = 0; i < buff.length; i++) {
-			if (idex + i < buff.length) {
-				buff[i] = buff[idex + i];
-			} else {
-				buff[i] = 0;
-			}
-		}
-	}
-
-	/*
-	 * Get the number of non-zero bytes from the beginning of the byte array.
-	 */
-	private static int getByteLength(byte[] buff) {
-		int n;
-		for (n = 0; n < buff.length; n++) {
-			if (buff[n] == 0) {
-				break;
-			}
-		}
-		if ((n == buff.length - 1) && buff[buff.length - 1] != 0) {
-			return buff.length;
-		}
-		return n;
 	}
 
 	@Override
@@ -1486,6 +1382,35 @@ public class DockerConnection implements IDockerConnection, Closeable {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	public static OutputStream noBlockingOutputStream(final WritableByteChannel out) {
+		return new OutputStream() {
+
+			@Override
+			public synchronized void write(int i) throws IOException {
+				byte b[] = new byte[1];
+				b[0] = (byte) i;
+				write(b);
+			}
+
+			@Override
+			public synchronized void write(byte[] b, int off, int len)
+					throws IOException {
+				if (len == 0) {
+					return;
+				}
+				ByteBuffer buff = ByteBuffer.wrap(b, off, len);
+				while (buff.remaining() > 0) {
+					out.write(buff);
+				}
+			}
+
+			@Override
+			public void close() throws IOException {
+				out.close();
+			}
+		};
 	}
 
 }

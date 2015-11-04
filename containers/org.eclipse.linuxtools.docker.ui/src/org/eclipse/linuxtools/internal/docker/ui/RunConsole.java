@@ -14,30 +14,19 @@ package org.eclipse.linuxtools.internal.docker.ui;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
-import java.nio.channels.WritableByteChannel;
 
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
-import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.IConsoleView;
 import org.eclipse.ui.console.IOConsole;
-import org.eclipse.ui.console.TextConsole;
-import org.eclipse.ui.internal.console.IOConsolePage;
-import org.eclipse.ui.part.IPageBookViewPage;
 
 /**
  * RpmConsole is used to output rpm/rpmbuild output.
  *
  */
-@SuppressWarnings("restriction")
 public class RunConsole extends IOConsole {
 
 	/** Id of this console. */
@@ -50,7 +39,6 @@ public class RunConsole extends IOConsole {
 
 	private OutputStream outputStream;
 	private boolean attached = false;
-	private final WritableByteChannel[] ptyOutRef = new WritableByteChannel[1];
 
 	/**
 	 * Returns a reference to the console that is for the given container id. If
@@ -135,11 +123,6 @@ public class RunConsole extends IOConsole {
 		return ret;
 	}
 
-	@Override
-	public IPageBookViewPage createPage(IConsoleView view) {
-		return new RunConsolePage(this, view);
-	}
-
 	/**
 	 * Set the title of the RunConsole
 	 * 
@@ -170,11 +153,7 @@ public class RunConsole extends IOConsole {
 								.running()) {
 							Thread.sleep(1000);
 						}
-						WritableByteChannel pty_out = conn
-								.attachCommand(containerId, in, out);
-						if (conn.getContainerInfo(containerId).config().tty()) {
-							ptyOutRef[0] = pty_out;
-						}
+						conn.attachCommand(containerId, in, out);
 					}
 				} catch (Exception e) {
 				}
@@ -182,6 +161,27 @@ public class RunConsole extends IOConsole {
 		});
 		t.start();
 		attached = true;
+	}
+
+	public static void attachToTerminal (final IDockerConnection connection, final String containerId) {
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					DockerConnection conn = (DockerConnection) connection;
+					if (conn.getContainerInfo(containerId).config()
+							.openStdin()) {
+						while (!conn.getContainerInfo(containerId).state()
+								.running()) {
+							Thread.sleep(1000);
+						}
+						conn.attachCommand(containerId, null, null);
+					}
+				} catch (Exception e) {
+				}
+			}
+		});
+		t.start();
 	}
 
 	public void attachToConsole(final IDockerConnection connection,
@@ -263,87 +263,4 @@ public class RunConsole extends IOConsole {
 		this.containerId = containerId;
 		this.id = id;
 	}
-
-	/*
-	 * Custom Page used to add our own set of actions.
-	 */
-	private class RunConsolePage extends IOConsolePage {
-
-		public RunConsolePage(TextConsole console, IConsoleView view) {
-			super(console, view);
-		}
-
-		@Override
-		protected void configureToolBar(IToolBarManager mgr) {
-			super.configureToolBar(mgr);
-
-			if (getControl() != null && getControl() instanceof StyledText) {
-				StyledText styledText = (StyledText) getControl();
-				styledText.addKeyListener(new TTYKeyListener());
-			}
-		}
-
-	}
-
-	/*
-	 * Listener to support sending certain key sequences
-	 */
-	private class TTYKeyListener implements KeyListener {
-		private boolean isCtrlOn;
-
-		private final int CTRL_CODE = 262144;
-		private final int C_CODE = 'c';
-		private final int TAB_CODE = 9;
-
-		public TTYKeyListener() {
-			this.isCtrlOn = false;
-		}
-
-		@Override
-		public void keyReleased(KeyEvent e) {
-			if (ptyOutRef[0] != null && ptyOutRef[0].isOpen()) {
-				WritableByteChannel pty_out = ptyOutRef[0];
-				try {
-					switch (e.keyCode) {
-					case CTRL_CODE:
-						isCtrlOn = false;
-						break;
-					case TAB_CODE:
-						pty_out.write(
-								ByteBuffer.wrap(new byte[] { 9, 9 }, 0, 2));
-						break;
-					}
-				} catch (IOException e1) {
-				}
-			}
-		}
-
-		@Override
-		public void keyPressed(KeyEvent e) {
-			if (ptyOutRef[0] != null && ptyOutRef[0].isOpen()) {
-				WritableByteChannel pty_out = ptyOutRef[0];
-				try {
-					switch (e.keyCode) {
-						/*
-						 * TODO : These values are configurable, so we should
-						 * start using 'stty -a' to know what they really are.
-						 */
-					case C_CODE:
-						// ETX (End Of Text) (3) is usually the interrupt
-						// signal.
-						if (isCtrlOn) {
-							pty_out.write(
-									ByteBuffer.wrap(new byte[] { 3 }, 0, 1));
-						}
-						break;
-					case CTRL_CODE:
-						isCtrlOn = true;
-						break;
-					}
-				} catch (IOException e1) {
-				}
-			}
-		}
-	}
-
 }
