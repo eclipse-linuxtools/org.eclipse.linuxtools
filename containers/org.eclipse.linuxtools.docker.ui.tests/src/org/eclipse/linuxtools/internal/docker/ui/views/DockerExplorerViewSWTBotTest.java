@@ -18,10 +18,12 @@ import org.eclipse.linuxtools.internal.docker.core.DefaultDockerConnectionStorag
 import org.eclipse.linuxtools.internal.docker.ui.BaseSWTBotTest;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionStorageManagerFactory;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerExplorerViewAssertion;
 import org.eclipse.swt.widgets.Display;
 import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 /**
@@ -29,6 +31,9 @@ import org.junit.Test;
  */
 public class DockerExplorerViewSWTBotTest extends BaseSWTBotTest {
 
+	@ClassRule
+	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(); 
+	
 	@Override
 	@Before
 	public void setup() {
