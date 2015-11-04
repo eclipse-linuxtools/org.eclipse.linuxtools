@@ -32,6 +32,7 @@ public class NewDockerConnection extends Wizard {
 	public NewDockerConnection() {
 		super();
 		setNeedsProgressMonitor(true);
+		setWindowTitle(WizardMessages.getString("NewDockerConnection.title")); //$NON-NLS-1$
 	}
 
 	@Override

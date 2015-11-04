@@ -11,6 +11,12 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
+import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.instanceOf;
+
+import java.util.concurrent.TimeUnit;
+
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.internal.docker.core.DefaultDockerConnectionSettingsFinder;
@@ -20,7 +26,9 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CheckBoxAssertion
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.RadioAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TextAssertion;
+import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
+import org.eclipse.ui.IViewReference;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,6 +40,7 @@ import org.junit.Test;
  */
 public class NewDockerConnectionSWTBotTest extends BaseSWTBotTest {
 
+	
 	private SWTBotToolbarButton addConnectionButton;
 
 	@ClassRule
@@ -53,6 +62,8 @@ public class NewDockerConnectionSWTBotTest extends BaseSWTBotTest {
 	}
 
 	private SWTBotToolbarButton getAddConnectionButton() {
+		bot.waitUntil(org.eclipse.swtbot.eclipse.finder.waits.Conditions.waitForView(allOf(instanceOf(IViewReference.class), withPartName("Docker Explorer"))),
+				TimeUnit.SECONDS.toMillis(5));
 		final SWTBotToolbarButton button = bot.toolbarButtonWithTooltip("&Add Connection");
 		if (button == null) {
 			Assert.fail("Failed to find the 'Add Connection' button");
@@ -119,6 +130,7 @@ public class NewDockerConnectionSWTBotTest extends BaseSWTBotTest {
 		MockDockerConnectionSettingsFinder.validTCPConnectionAvailable();
 		// when
 		addConnectionButton.click();
+		bot.waitUntil(Conditions.shellIsActive(WizardMessages.getString("NewDockerConnection.title"))); //$NON-NLS-1$
 		// TODO: should wait until dialog appears.
 		// then
 		// Connection name
