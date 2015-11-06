@@ -17,11 +17,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.ListenerList;
@@ -119,75 +120,125 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	@Override
 	public List<IVagrantVM> getVMs(boolean force) {
 		if (force || !isVMsLoaded()) {
-			String [] res = call(new String[] { "global-status" });
-			List<String> vmIDs = new LinkedList<>();
-			List<String> vmDirs = new LinkedList<>();
-			List<IVagrantVM> containers = new LinkedList<>();
-			Map<String, List<String>> sshConfig = new HashMap<>();
-			for (int i = 0; i < res.length; i++) {
-				String[] items = res[i].split("\\s+");
-				if (items.length == 5 && i >= 2) {
-					vmIDs.add(items[0]);
-					vmDirs.add(items[items.length - 1]);
-				}
-			}
-			if (!vmIDs.isEmpty()) {
-				List<String> args = new LinkedList<>(Arrays.asList(new String [] { "ssh-config" }));
-				args.addAll(vmIDs);
-				res = call(args.toArray(new String[0]));
-				for (int i = 0; i < res.length; i++) {
-					String[] items = res[i].trim().split(" ");
-					if (items[0].equals("HostName")) {
-						List<String> tmp = new ArrayList<>();
-						tmp.add(items[1]);
-						sshConfig.put(vmIDs.get(i / 11), tmp);
-					} else if (items[0].equals("User")
-							|| items[0].equals("Port")
-							|| items[0].equals("IdentityFile")) {
-						sshConfig.get(vmIDs.get(i / 11)).add(items[1]);
-					}
-				}
-
-				args = new LinkedList<>(Arrays.asList(new String [] {"--machine-readable", "status"}));
-				args.addAll(vmIDs);
-				res = call(args.toArray(new String[0]));
-				String name, provider, state, state_desc;
-				name = provider = state = state_desc = "";
-				for (int i = 0; i < res.length; i++) {
-					String[] items = res[i].split(",");
-					if (items[2].equals("provider-name")) {
-						name = items[1];
-						provider = items[3];
-					} else if (items[2].equals("state")) {
-						state = items[3];
-					} else if (items[2].equals("state-human-long")) {
-						state_desc = items[3];
-						VagrantVM vm;
-						if (sshConfig.isEmpty()) {
-							// VM exists but ssh is not configured
-							vm = new VagrantVM(vmIDs.get((i / 5)), name,
-									provider, state, state_desc, new File(vmDirs.get(i / 5)),
-									null, null, 0, null);
-						} else {
-							vm = new VagrantVM(vmIDs.get((i / 5)), name,
-									provider, state, state_desc, new File(vmDirs.get(i / 5)),
-									sshConfig.get(vmIDs.get((i / 5))).get(0),
-									sshConfig.get(vmIDs.get((i / 5))).get(1),
-									Integer.parseInt(sshConfig.get(vmIDs.get((i / 5))).get(2)),
-									sshConfig.get(vmIDs.get((i / 5))).get(3));
-						}
-						containers.add(vm);
-					}
-				}
-			}
-			this.containersLoaded = true;
-			synchronized (containerLock) {
-				this.vms = containers;
-			}
-			removeKeysFromInnactiveVMs();
-			notifyContainerListeners(this.vms);
+			refreshVMs();
 		}
 		return this.vms;
+	}
+
+	protected void refreshVMs() {
+		String[] res = call(new String[] { "global-status" });
+		List<String> vmIDs = new LinkedList<>();
+		List<String> vmDirs = new LinkedList<>();
+		final List<IVagrantVM> containers = new LinkedList<>();
+		for (int i = 0; i < res.length; i++) {
+			String[] items = res[i].split("\\s+");
+			if (items.length == 5 && i >= 2) {
+				vmIDs.add(items[0]);
+				vmDirs.add(items[items.length - 1]);
+			}
+		}
+
+		List<String> completed = new ArrayList<String>();
+		if (!vmIDs.isEmpty()) {
+			Iterator<String> vmIterator = vmIDs.iterator();
+			Iterator<String> vmDirIterator = vmDirs.iterator();
+			while (vmIterator.hasNext()) {
+				final String vmid = vmIterator.next();
+				final String vmDir = vmDirIterator.next();
+				new Thread("Checking ssh-config for vm " + vmid) {
+					@Override
+					public void run() {
+						try {
+							VagrantVM ret = createVagrantVM(vmid, vmDir);
+							if (ret != null) {
+								containers.add(ret);
+							}
+						} finally {
+							// Ensure this gets called no matter what
+							completed.add(vmid);
+						}
+					}
+				}.start();
+			}
+		}
+
+		// Should set a max timeout?
+
+		// Wait for completed to have same count as vmIDs
+		while (completed.size() < vmIDs.size()) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException ie) {
+				// Ignore
+			}
+		}
+
+		Collections.sort(containers, new Comparator<IVagrantVM>() {
+			@Override
+			public int compare(IVagrantVM o1, IVagrantVM o2) {
+				return o1.name().compareTo(o2.name());
+			}
+		});
+
+		this.containersLoaded = true;
+		synchronized (containerLock) {
+			this.vms = containers;
+		}
+		removeKeysFromInnactiveVMs();
+		notifyContainerListeners(this.vms);
+	}
+
+	private VagrantVM createVagrantVM(String vmid, String vmDir) {
+		List<String> args = new LinkedList<>(
+				Arrays.asList(new String[] { "ssh-config" }));
+		args.add(vmid);
+
+		List<String> sshConfig = null;
+
+		// Run and handle ssh-config for this vm
+		String[] res = call(args.toArray(new String[0]));
+		for (int i = 0; i < res.length; i++) {
+			String[] items = res[i].trim().split(" ");
+			if (items[0].equals("HostName")) {
+				List<String> tmp = new ArrayList<>();
+				tmp.add(items[1]);
+				sshConfig = tmp;
+			} else if (items[0].equals("User") || items[0].equals("Port")
+					|| items[0].equals("IdentityFile")) {
+				sshConfig.add(items[1]);
+			}
+		}
+
+		// Run and handle status for this vm
+		VagrantVM vm = null;
+		args = new LinkedList<>(
+				Arrays.asList(new String[] { "--machine-readable", "status" }));
+		args.add(vmid);
+		res = call(args.toArray(new String[0]));
+		String name, provider, state, state_desc;
+		name = provider = state = state_desc = "";
+		for (int i = 0; i < res.length; i++) {
+			String[] items = res[i].split(",");
+			if (items[2].equals("provider-name")) {
+				name = items[1];
+				provider = items[3];
+			} else if (items[2].equals("state")) {
+				state = items[3];
+			} else if (items[2].equals("state-human-long")) {
+				state_desc = items[3];
+				if (sshConfig == null || sshConfig.isEmpty()) {
+					// VM exists but ssh is not configured
+					vm = new VagrantVM(vmid, name, provider, state, state_desc,
+							new File(vmDir), null, null, 0, null);
+				} else {
+					vm = new VagrantVM(vmid, name, provider, state, state_desc,
+							new File(vmDir), sshConfig.get(0), sshConfig.get(1),
+							Integer.parseInt(sshConfig.get(2)),
+							sshConfig.get(3));
+				}
+			}
+		}
+		return vm;
 	}
 
 	/**
