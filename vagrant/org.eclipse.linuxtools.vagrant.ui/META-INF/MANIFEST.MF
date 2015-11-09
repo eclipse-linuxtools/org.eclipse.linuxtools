@@ -29,3 +29,8 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
+Export-Package: org.eclipse.linuxtools.internal.vagrant.ui;x-internal:=true,
+ org.eclipse.linuxtools.internal.vagrant.ui.commands;x-internal:=true,
+ org.eclipse.linuxtools.internal.vagrant.ui.propertytesters;x-internal:=true,
+ org.eclipse.linuxtools.internal.vagrant.ui.views;x-internal:=true,
+ org.eclipse.linuxtools.internal.vagrant.ui.wizards;x-internal:=true

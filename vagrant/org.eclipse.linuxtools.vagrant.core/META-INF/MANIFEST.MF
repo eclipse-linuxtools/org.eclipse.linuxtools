@@ -14,5 +14,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.jface.preference
 Bundle-ClassPath: .
-Export-Package: org.eclipse.linuxtools.internal.vagrant.core,
+Export-Package: org.eclipse.linuxtools.internal.vagrant.core;x-internal:=true,
  org.eclipse.linuxtools.vagrant.core

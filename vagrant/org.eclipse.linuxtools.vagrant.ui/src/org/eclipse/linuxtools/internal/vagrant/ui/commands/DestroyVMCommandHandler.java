@@ -16,10 +16,10 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.linuxtools.internal.vagrant.core.Activator;
-import org.eclipse.linuxtools.internal.vagrant.core.VagrantConnection;
 import org.eclipse.linuxtools.vagrant.core.IVagrantConnection;
 import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
 import org.eclipse.linuxtools.vagrant.core.VagrantException;
+import org.eclipse.linuxtools.vagrant.core.VagrantService;
 
 public class DestroyVMCommandHandler extends BaseVMCommandHandler {
 
@@ -35,7 +35,7 @@ public class DestroyVMCommandHandler extends BaseVMCommandHandler {
 
 	@Override
 	void executeInJob(IVagrantVM vm, IProgressMonitor monitor) {
-		IVagrantConnection connection = VagrantConnection.getInstance();
+		IVagrantConnection connection = VagrantService.getInstance();
 		try {
 			connection.destroyVM(vm.id());
 			String stateLoc = Activator.getDefault().getStateLocation().toOSString();

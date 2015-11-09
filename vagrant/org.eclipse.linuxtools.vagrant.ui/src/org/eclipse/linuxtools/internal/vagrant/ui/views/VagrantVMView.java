@@ -24,12 +24,12 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.linuxtools.internal.vagrant.core.VagrantConnection;
 import org.eclipse.linuxtools.internal.vagrant.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.vagrant.core.IVagrantBox;
 import org.eclipse.linuxtools.vagrant.core.IVagrantConnection;
 import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
 import org.eclipse.linuxtools.vagrant.core.IVagrantVMListener;
+import org.eclipse.linuxtools.vagrant.core.VagrantService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -174,7 +174,7 @@ public class VagrantVMView extends ViewPart implements IVagrantVMListener {
 		viewer.setComparator(comparator);
 		// apply search filter
 		this.viewer.addFilter(getContainersFilter());
-		setConnection(VagrantConnection.getInstance());
+		setConnection(VagrantService.getInstance());
 		connection.addVMListener(this);
 		// get the current selection in the tableviewer
 		getSite().setSelectionProvider(viewer);

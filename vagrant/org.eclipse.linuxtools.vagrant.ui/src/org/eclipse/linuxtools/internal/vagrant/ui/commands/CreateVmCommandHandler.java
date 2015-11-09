@@ -27,11 +27,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.linuxtools.internal.vagrant.core.Activator;
-import org.eclipse.linuxtools.internal.vagrant.core.VagrantConnection;
 import org.eclipse.linuxtools.internal.vagrant.ui.views.DVMessages;
 import org.eclipse.linuxtools.internal.vagrant.ui.wizards.CreateVMWizard;
 import org.eclipse.linuxtools.vagrant.core.IVagrantBox;
 import org.eclipse.linuxtools.vagrant.core.IVagrantConnection;
+import org.eclipse.linuxtools.vagrant.core.VagrantService;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -62,7 +62,7 @@ public class CreateVmCommandHandler extends AbstractHandler {
 				monitor.beginTask(DVMessages.getFormattedString(CRATE_VM_TITLE, vmName),
 						IProgressMonitor.UNKNOWN);
 
-				IVagrantConnection connection = VagrantConnection.getInstance();
+				IVagrantConnection connection = VagrantService.getInstance();
 				File vagrantDir;
 				if (vmFile == null) {
 					String stateLoc = Activator.getDefault().getStateLocation().toOSString();

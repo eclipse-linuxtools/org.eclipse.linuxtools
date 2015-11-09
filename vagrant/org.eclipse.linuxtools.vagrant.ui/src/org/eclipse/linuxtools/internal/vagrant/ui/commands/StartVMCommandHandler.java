@@ -16,10 +16,10 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.linuxtools.internal.vagrant.core.VagrantConnection;
 import org.eclipse.linuxtools.internal.vagrant.ui.views.DVMessages;
 import org.eclipse.linuxtools.vagrant.core.IVagrantConnection;
 import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
+import org.eclipse.linuxtools.vagrant.core.VagrantService;
 
 public class StartVMCommandHandler extends BaseVMCommandHandler {
 
@@ -38,7 +38,7 @@ public class StartVMCommandHandler extends BaseVMCommandHandler {
 
 	@Override
 	void executeInJob(IVagrantVM vm, IProgressMonitor monitor) {
-		IVagrantConnection connection = VagrantConnection.getInstance();
+		IVagrantConnection connection = VagrantService.getInstance();
 		Process p = connection.up(vm.directory(), vm.provider());
 		String line;
 		try (BufferedReader buff = new BufferedReader(

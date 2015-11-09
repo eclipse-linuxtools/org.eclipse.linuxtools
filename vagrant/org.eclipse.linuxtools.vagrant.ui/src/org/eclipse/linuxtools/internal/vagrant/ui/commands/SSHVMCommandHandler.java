@@ -17,8 +17,8 @@ import java.util.Map;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.linuxtools.internal.vagrant.core.VagrantConnection;
 import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
+import org.eclipse.linuxtools.vagrant.core.VagrantService;
 import org.eclipse.tm.terminal.connector.ssh.launcher.SshLauncherDelegate;
 
 public class SSHVMCommandHandler extends BaseVMCommandHandler {
@@ -53,7 +53,7 @@ public class SSHVMCommandHandler extends BaseVMCommandHandler {
 			currentKeys = DefaultScope.INSTANCE.getNode(JSCH_ID).get(KEY, "");
 		}
 		InstanceScope.INSTANCE.getNode(JSCH_ID).put(KEY, currentKeys + "," + identityFile);
-		VagrantConnection.getInstance().addToTrackedKeys(identityFile);
+		VagrantService.getInstance().addToTrackedKeys(identityFile);
 	}
 
 	@Override
