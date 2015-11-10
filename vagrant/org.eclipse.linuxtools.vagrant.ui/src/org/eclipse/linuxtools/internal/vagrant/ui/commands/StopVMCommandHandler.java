@@ -29,7 +29,7 @@ public class StopVMCommandHandler extends BaseVMCommandHandler {
 	void executeInJob(final IVagrantVM vm, IProgressMonitor monitor) {
 		IVagrantConnection connection = VagrantService.getInstance();
 		try {
-			connection.haltVM(vm.id());
+			connection.haltVM(vm);
 		} catch (VagrantException | InterruptedException e) {
 			final String errorMessage = DVMessages.getFormattedString(CONTAINER_STOP_ERROR_MSG, vm.id());
 			openError(errorMessage, e);

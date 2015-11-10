@@ -11,6 +11,8 @@
 
 package org.eclipse.linuxtools.internal.vagrant.ui.wizards;
 
+import java.util.Map;
+
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.linuxtools.vagrant.core.IVagrantBox;
 
@@ -52,6 +54,10 @@ public class CreateVMWizard extends Wizard {
 
 	public String getVMFile() {
 		return this.createVMPage.getVMFile();
+	}
+
+	public Map<String, String> getVMEnvironment() {
+		return this.createVMPage.getEnvironment();
 	}
 
 }

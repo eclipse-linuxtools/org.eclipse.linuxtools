@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.internal.vagrant.ui.wizards;
 
 import java.nio.file.Paths;
+import java.util.Map;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
@@ -20,15 +21,20 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.validation.MultiValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.linuxtools.internal.vagrant.core.EnvironmentsManager;
 import org.eclipse.linuxtools.internal.vagrant.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.vagrant.core.IVagrantBox;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -43,6 +49,8 @@ public class CreateVMPage extends WizardPage {
 
 	private final CreateVMPageModel model;
 	private final DataBindingContext dbc;
+
+	private CreateVMAdvancedComposite advanced;
 
 	public CreateVMPage(IVagrantBox box) {
 		super("createVMPage", //$NON-NLS-1$
@@ -72,6 +80,10 @@ public class CreateVMPage extends WizardPage {
 
 	public String getVMFile() {
 		return model.getBoxLocMode() ? this.model.getVMFile() : null;
+	}
+
+	public Map<String, String> getEnvironment() {
+		return model.getEnvironment();
 	}
 
 	@Override
@@ -152,6 +164,12 @@ public class CreateVMPage extends WizardPage {
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(boxLocText),
 				boxLocObservable);
+		boxLocText.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				vmFileChanged(boxLocText.getText());
+			}
+		});
 
 		// search
 		final Button searchButton = new Button(container, SWT.NONE);
@@ -167,6 +185,11 @@ public class CreateVMPage extends WizardPage {
 
 		dbc.addValidationStatusProvider(new CreateVMValidationStatusProvider(vmmNameObservable,
 				boxNameObservable, boxLocObservable));
+
+		advanced = new CreateVMAdvancedComposite(
+				container, model);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).span(3, 1)
+				.grab(true, false).applyTo(advanced);
 
 		// setup validation support
 		WizardPageSupport.create(this, dbc);
@@ -213,9 +236,20 @@ public class CreateVMPage extends WizardPage {
 				String location = fd.open();
 				if (location != null && !location.isEmpty()) {
 					model.setVMFile(location);
+					vmFileChanged(location);
 				}
 			}
 		};
+	}
+
+	private void vmFileChanged(String vagrantFile) {
+		IPath folder = new Path(vagrantFile).removeLastSegments(1);
+		Map<String, String> existingEnv = EnvironmentsManager.getSingleton()
+				.getEnvironment(folder.toFile());
+		if (existingEnv != null) {
+			model.setEnvironment(existingEnv);
+			advanced.refresh();
+		}
 	}
 
 	public class CreateVMValidationStatusProvider extends MultiValidator {

@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.internal.vagrant.core;
 
 import java.io.File;
+import java.util.Map;
 
 import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
 
@@ -104,6 +105,11 @@ public class VagrantVM implements IVagrantVM {
 					&& directory.equals(other.directory());
 		}
 		return false;
+	}
+
+	@Override
+	public Map<String, String> getEnvironment() {
+		return EnvironmentsManager.getSingleton().getEnvironment(directory);
 	}
 
 }

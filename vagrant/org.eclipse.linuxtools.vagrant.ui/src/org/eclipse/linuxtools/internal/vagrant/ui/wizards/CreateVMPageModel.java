@@ -11,17 +11,22 @@
 
 package org.eclipse.linuxtools.internal.vagrant.ui.wizards;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CreateVMPageModel extends BaseDatabindingModel {
 
 	public static final String VM_NAME = "VMName";
 	public static final String BOX_NAME = "boxName";
 	public static final String VM_FILE = "VMFile";
 	public static final String BOX_LOC_MODE = "boxLocMode";
+	public static final String ENVIRONMENT = "environment";
 
 	private String vmName;
 	private String vmFile;
 	private String boxName;
 	private boolean boxLocMode;
+	private Map<String, String> environment = new HashMap<>();
 
 	public String getVMName() {
 		return vmName;
@@ -33,6 +38,10 @@ public class CreateVMPageModel extends BaseDatabindingModel {
 
 	public String getVMFile() {
 		return vmFile;
+	}
+
+	public Map<String, String> getEnvironment() {
+		return environment;
 	}
 
 	public boolean getBoxLocMode() {
@@ -55,4 +64,8 @@ public class CreateVMPageModel extends BaseDatabindingModel {
 		firePropertyChange(BOX_LOC_MODE, this.boxLocMode, this.boxLocMode = boxLocMode);
 	}
 
+	public void setEnvironment(final Map<String, String> map) {
+		firePropertyChange(ENVIRONMENT, this.environment,
+				this.environment = map);
+	}
 }

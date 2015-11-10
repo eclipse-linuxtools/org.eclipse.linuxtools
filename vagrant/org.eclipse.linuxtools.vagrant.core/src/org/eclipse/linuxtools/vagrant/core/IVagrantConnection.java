@@ -45,11 +45,11 @@ public interface IVagrantConnection {
 
 	void addBox(String name, String location) throws VagrantException, InterruptedException;
 
-	void destroyVM(String id) throws VagrantException, InterruptedException;
+	void destroyVM(IVagrantVM vm) throws VagrantException, InterruptedException;
 
-	void haltVM(String id) throws VagrantException, InterruptedException;
+	void haltVM(IVagrantVM vm) throws VagrantException, InterruptedException;
 
-	void startVM(String id) throws VagrantException, InterruptedException;
+	void startVM(IVagrantVM vm) throws VagrantException, InterruptedException;
 
 	void removeBox(String name) throws VagrantException, InterruptedException;
 }

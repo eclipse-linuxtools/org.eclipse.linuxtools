@@ -20,10 +20,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -138,6 +140,13 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 			}
 		}
 
+		Collections.sort(containers, new Comparator<IVagrantVM>() {
+			@Override
+			public int compare(IVagrantVM o1, IVagrantVM o2) {
+				return o1.name().compareTo(o2.name());
+			}
+		});
+
 		List<String> completed = new ArrayList<>();
 		if (!vmIDs.isEmpty()) {
 			Iterator<String> vmIterator = vmIDs.iterator();
@@ -173,9 +182,6 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 			}
 		}
 
-		Collections.sort(containers,
-				(o1, o2) -> o1.name().compareTo(o2.name()));
-
 		this.containersLoaded = true;
 		synchronized (containerLock) {
 			this.vms = containers;
@@ -185,6 +191,10 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	}
 
 	private VagrantVM createVagrantVM(String vmid, String vmDir) {
+
+		Map<String, String> env = EnvironmentsManager.getSingleton()
+				.getEnvironment(new File(vmDir));
+
 		List<String> args = new LinkedList<>(
 				Arrays.asList(new String[] { "ssh-config" }));
 		args.add(vmid);
@@ -192,7 +202,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 		List<String> sshConfig = null;
 
 		// Run and handle ssh-config for this vm
-		String[] res = call(args.toArray(new String[0]));
+		String[] res = call(args.toArray(new String[0]), new File(vmDir), env);
 		for (int i = 0; i < res.length; i++) {
 			String[] items = res[i].trim().split(" ");
 			if (items[0].equals("HostName")) {
@@ -210,7 +220,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 		args = new LinkedList<>(
 				Arrays.asList(new String[] { "--machine-readable", "status" }));
 		args.add(vmid);
-		res = call(args.toArray(new String[0]));
+		res = call(args.toArray(new String[0]), new File(vmDir), env);
 		String name, provider, state, state_desc;
 		name = provider = state = state_desc = "";
 		for (int i = 0; i < res.length; i++) {
@@ -342,10 +352,18 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 
 	@Override
 	public void up(File vagrantDir, String provider) {
+		up(vagrantDir, provider,
+				EnvironmentsManager.getSingleton().getEnvironment(vagrantDir));
+	}
+
+
+	private void up(File vagrantDir, String provider,
+			Map<String, String> environment) {
 		if (provider != null) {
-			rtCall(new String[] { "up", "--provider", provider }, vagrantDir);
+			rtCall(new String[] { "up", "--provider", provider },
+					vagrantDir, environment);
 		} else {
-			rtCall(new String[] { "up" }, vagrantDir);
+			rtCall(new String[] { "up" }, vagrantDir, environment);
 		}
 	}
 
@@ -355,17 +373,23 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	}
 
 	@Override
-	public void destroyVM(String id) {
-		call(new String[] { "destroy", "-f", id });
+	public void destroyVM(IVagrantVM vm) {
+		call(new String[] { "destroy", "-f", vm.id() }, vm.directory(),
+				EnvironmentsManager.getSingleton()
+						.getEnvironment(vm.directory()));
 	}
 
 	@Override
-	public void haltVM(String id) {
-		call(new String[] { "--machine-readable", "halt", id });
+	public void haltVM(IVagrantVM vm) {
+		call(new String[] { "--machine-readable", "halt", vm.id() },
+				vm.directory(), EnvironmentsManager.getSingleton()
+						.getEnvironment(vm.directory()));
 	}
 
 	@Override
-	public void startVM(String id) {
+	public void startVM(IVagrantVM vm) {
+		up(vm.directory(), vm.provider(), EnvironmentsManager.getSingleton()
+				.getEnvironment(vm.directory()));
 	}
 
 	@Override
@@ -383,13 +407,21 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	}
 
 	private static String[] call(String[] args, File vagrantDir) {
+		return call(args, vagrantDir, null);
+	}
+
+	private static String[] call(String[] args, File vagrantDir,
+			Map<String, String> env) {
+		String[] envp = (env == null ? null
+				: EnvironmentsManager.convertEnvironment(env));
+
 		List<String> result = new ArrayList<>();
 		try {
 			List<String> cmd = new ArrayList<>();
 			cmd.add(VG);
 			cmd.addAll(Arrays.asList(args));
 			Process p = Runtime.getRuntime().exec(cmd.toArray(new String[0]),
-					null, vagrantDir);
+					envp, vagrantDir);
 			BufferedReader buff = new BufferedReader(
 					new InputStreamReader(p.getInputStream()));
 			if (p.waitFor() == 0) {
@@ -406,7 +438,9 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 		return result.toArray(new String[0]);
 	}
 
-	private void rtCall(String[] args, File vagrantDir) {
+	private void rtCall(String[] args, File vagrantDir,
+			Map<String, String> environment) {
+
 		// org.eclipse.core.externaltools.internal.IExternalToolConstants
 		final String EXTERNAL_TOOLS = "org.eclipse.ui.externaltools.ProgramLaunchConfigurationType"; //$NON-NLS-1$
 		final String UI_PLUGIN_ID = "org.eclipse.ui.externaltools"; //$NON-NLS-1$
@@ -424,6 +458,8 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 			wc.setAttribute(ATTR_LOCATION, vagrantPath);
 			wc.setAttribute(ATTR_TOOL_ARGUMENTS, arguments);
 			wc.setAttribute(ATTR_WORKING_DIRECTORY, vagrantDir.getAbsolutePath());
+			wc.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES,
+					environment);
 			wc.launch(ILaunchManager.RUN_MODE, new NullProgressMonitor());
 		} catch (CoreException e1) {
 			Activator.log(e1);
