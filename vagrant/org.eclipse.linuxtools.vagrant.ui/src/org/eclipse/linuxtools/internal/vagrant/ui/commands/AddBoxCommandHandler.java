@@ -17,7 +17,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.linuxtools.internal.vagrant.core.VagrantConnection;
 import org.eclipse.linuxtools.internal.vagrant.ui.views.DVMessages;
 import org.eclipse.linuxtools.internal.vagrant.ui.wizards.AddBoxWizard;
 import org.eclipse.linuxtools.vagrant.core.IVagrantConnection;

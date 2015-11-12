@@ -15,5 +15,5 @@ Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.debug.core,
  org.eclipse.jface.preference
 Bundle-ClassPath: .
-Export-Package: org.eclipse.linuxtools.internal.vagrant.core;x-internal:=true,
+Export-Package: org.eclipse.linuxtools.internal.vagrant.core;x-friends:="org.eclipse.linuxtools.vagrant.ui",
  org.eclipse.linuxtools.vagrant.core
