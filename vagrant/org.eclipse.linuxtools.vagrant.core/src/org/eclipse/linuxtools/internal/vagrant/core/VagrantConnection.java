@@ -20,7 +20,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -139,7 +138,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 			}
 		}
 
-		List<String> completed = new ArrayList<String>();
+		List<String> completed = new ArrayList<>();
 		if (!vmIDs.isEmpty()) {
 			Iterator<String> vmIterator = vmIDs.iterator();
 			Iterator<String> vmDirIterator = vmDirs.iterator();
@@ -174,12 +173,8 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 			}
 		}
 
-		Collections.sort(containers, new Comparator<IVagrantVM>() {
-			@Override
-			public int compare(IVagrantVM o1, IVagrantVM o2) {
-				return o1.name().compareTo(o2.name());
-			}
-		});
+		Collections.sort(containers,
+				(o1, o2) -> o1.name().compareTo(o2.name()));
 
 		this.containersLoaded = true;
 		synchronized (containerLock) {
