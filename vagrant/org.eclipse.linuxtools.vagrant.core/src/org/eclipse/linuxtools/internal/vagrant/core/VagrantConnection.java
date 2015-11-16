@@ -20,7 +20,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -140,12 +139,8 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 			}
 		}
 
-		Collections.sort(containers, new Comparator<IVagrantVM>() {
-			@Override
-			public int compare(IVagrantVM o1, IVagrantVM o2) {
-				return o1.name().compareTo(o2.name());
-			}
-		});
+		Collections.sort(containers,
+				(o1, o2) -> o1.name().compareTo(o2.name()));
 
 		List<String> completed = new ArrayList<>();
 		if (!vmIDs.isEmpty()) {
@@ -438,7 +433,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 		return result.toArray(new String[0]);
 	}
 
-	private void rtCall(String[] args, File vagrantDir,
+	private static void rtCall(String[] args, File vagrantDir,
 			Map<String, String> environment) {
 
 		// org.eclipse.core.externaltools.internal.IExternalToolConstants
@@ -453,6 +448,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 		ILaunchConfigurationType type = manager.getLaunchConfigurationType(EXTERNAL_TOOLS);
 		try {
+			// TODO: worth handling 'vagrant' (not on PATH) as an alias ?
 			String vagrantPath = findVagrantPath();
 			ILaunchConfigurationWorkingCopy wc = type.newInstance(null, VG);
 			wc.setAttribute(ATTR_LOCATION, vagrantPath);
@@ -473,7 +469,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	 * @return The location of 'vagrant' as a string if it exists under
 	 * the PATH, or null if it could not be found.
 	 */
-	private String findVagrantPath() {
+	public static String findVagrantPath() {
 		final String envPath = System.getenv("PATH"); //$NON-NLS-1$
 		if (envPath != null) {
 			for (String dir : envPath.split(File.pathSeparator)) {

@@ -25,13 +25,17 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.internal.vagrant.core.Activator;
 import org.eclipse.linuxtools.internal.vagrant.core.EnvironmentsManager;
+import org.eclipse.linuxtools.internal.vagrant.core.VagrantConnection;
 import org.eclipse.linuxtools.internal.vagrant.ui.views.DVMessages;
 import org.eclipse.linuxtools.internal.vagrant.ui.wizards.CreateVMWizard;
+import org.eclipse.linuxtools.internal.vagrant.ui.wizards.WizardMessages;
 import org.eclipse.linuxtools.vagrant.core.IVagrantBox;
 import org.eclipse.linuxtools.vagrant.core.IVagrantConnection;
 import org.eclipse.linuxtools.vagrant.core.VagrantService;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -42,15 +46,26 @@ public class CreateVmCommandHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(final ExecutionEvent event) {
-		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
-		final List<IVagrantBox> selectedBoxes = CommandUtils.getSelectedImages(activePart);
-		if (selectedBoxes.size() <= 1) {
-			IVagrantBox selectedBox = selectedBoxes.isEmpty() ? null : selectedBoxes.get(0);
-			final CreateVMWizard wizard = new CreateVMWizard(selectedBox);
-			final boolean finished = CommandUtils.openWizard(wizard, HandlerUtil.getActiveShell(event));
-			if (finished) {
-				performCreateVM(wizard.getVMName(), wizard.getBoxName(),
-						wizard.getVMFile(), wizard.getVMEnvironment());
+		if (VagrantConnection.findVagrantPath() == null) {
+			Display.getDefault()
+					.syncExec(() -> MessageDialog.openError(Display.getCurrent()
+							.getActiveShell(),
+							WizardMessages.getString("VagrantCommandNotFound.title"), //$NON-NLS-1$
+							WizardMessages.getString("VagrantCommandNotFound.msg"))); //$NON-NLS-1$
+		} else {
+			final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
+			final List<IVagrantBox> selectedBoxes = CommandUtils
+					.getSelectedImages(activePart);
+			if (selectedBoxes.size() <= 1) {
+				IVagrantBox selectedBox = selectedBoxes.isEmpty() ? null
+						: selectedBoxes.get(0);
+				final CreateVMWizard wizard = new CreateVMWizard(selectedBox);
+				final boolean finished = CommandUtils.openWizard(wizard,
+						HandlerUtil.getActiveShell(event));
+				if (finished) {
+					performCreateVM(wizard.getVMName(), wizard.getBoxName(),
+							wizard.getVMFile(), wizard.getVMEnvironment());
+				}
 			}
 		}
 		return null;
