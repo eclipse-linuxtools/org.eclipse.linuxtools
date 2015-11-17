@@ -18,6 +18,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -57,6 +59,7 @@ import org.eclipse.linuxtools.internal.docker.core.DockerMachine;
 import org.eclipse.linuxtools.internal.docker.core.TCPConnectionSettings;
 import org.eclipse.linuxtools.internal.docker.core.UnixSocketConnectionSettings;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
+import org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -72,6 +75,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ListDialog;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 
 /**
  * {@link WizardPage} to input the settings to connect to a Docker
@@ -80,7 +84,10 @@ import org.eclipse.ui.dialogs.ListDialog;
  */
 public class NewDockerConnectionPage extends WizardPage {
 
+	private static final String DOCKER_MACHINE_PREFERENCE_PAGE_ID = "org.eclipse.linuxtools.docker.ui.preferences.DockerMachinePreferencePage"; //$NON-NLS-1$
+
 	private final DataBindingContext dbc;
+	
 	private final NewDockerConnectionPageModel model;
 
 	public NewDockerConnectionPage() {
@@ -140,7 +147,17 @@ public class NewDockerConnectionPage extends WizardPage {
 		connectionNameText.setToolTipText(WizardMessages
 				.getString("NewDockerConnectionPage.nameTooltip")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
-				.grab(true, false).span(2, 1).applyTo(connectionNameText);
+				.grab(true, false).span(1, 1).applyTo(connectionNameText);
+
+		// the 'Search' button
+		final Button searchButton = new Button(container, SWT.NONE);
+		searchButton.setText(WizardMessages
+				.getString("NewDockerConnectionPage.searchButton")); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).span(1, 1)
+				.align(SWT.BEGINNING, SWT.CENTER).grab(false, false)
+				.applyTo(searchButton);
+		searchButton.addSelectionListener(onSearchButtonSelection());
+
 
 		// custom settings checkbox
 		final Button customConnectionSettingsButton = new Button(container,
@@ -229,22 +246,12 @@ public class NewDockerConnectionPage extends WizardPage {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.applyTo(tcpCertPathBrowseButton);
 
-		// the 'Search' button
-		final Button searchButton = new Button(container, SWT.NONE);
-		searchButton.setText(WizardMessages
-				.getString("NewDockerConnectionPage.searchButton")); //$NON-NLS-1$
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
-				.span(COLUMNS - 1, 1).align(SWT.BEGINNING, SWT.CENTER)
-				.applyTo(searchButton);
-		searchButton.addSelectionListener(onSearchButtonSelection());
-
 		// the 'test connection' button
 		final Button testConnectionButton = new Button(container, SWT.NONE);
 		testConnectionButton.setText(WizardMessages
 				.getString("NewDockerConnectionPage.testConnection")); //$NON-NLS-1$
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
-				.span(1, 1).align(SWT.END, SWT.CENTER)
-				.applyTo(testConnectionButton);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).span(3, 1)
+				.align(SWT.END, SWT.CENTER).applyTo(testConnectionButton);
 		testConnectionButton
 				.addSelectionListener(onTestConnectionButtonSelection());
 
@@ -624,12 +631,53 @@ public class NewDockerConnectionPage extends WizardPage {
 
 	private SelectionListener onSearchButtonSelection() {
 		return new SelectionAdapter() {
+			
+			private String getVMDriverInstallDir() {
+				return Activator.getDefault()
+						.getPreferenceStore().getString(
+								PreferenceConstants.VM_DRIVER_INSTALLATION_DIRECTORY);
+			}
+
+			private String getDockerMachineInstallDir() {
+				return Activator.getDefault()
+						.getPreferenceStore()
+						.getString(PreferenceConstants.DOCKER_MACHINE_INSTALLATION_DIRECTORY);
+			}
+			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				String[] dmNames = DockerMachine.getNames();
-				List<String> activeNames = new ArrayList<>();
+				if (getDockerMachineInstallDir().equals("")
+						|| getVMDriverInstallDir().equals("")) {
+					final boolean confirm = MessageDialog.openConfirm(
+							getShell(),
+									WizardMessages.getString(
+											"DockerMachineSupport.title"), //$NON-NLS-1$
+							WizardMessages
+									.getString("DockerMachineSupport.message")); //$NON-NLS-1$
+					if (confirm) {
+						PreferencesUtil.createPreferenceDialogOn(getShell(),
+								DOCKER_MACHINE_PREFERENCE_PAGE_ID,
+								new String[] {
+										DOCKER_MACHINE_PREFERENCE_PAGE_ID },
+								null).open();
+						// after user input data, check again
+						if (getDockerMachineInstallDir().equals("")
+								|| getVMDriverInstallDir().equals("")) {
+							return;
+						}
+					} else {
+						return;
+					}
+				}
+				final String dockerMachineInstallDir = getDockerMachineInstallDir();
+				final String vmDriverInstallDir = getVMDriverInstallDir();
+				
+				final String[] dmNames = DockerMachine
+						.getNames(dockerMachineInstallDir);
+				final List<String> activeNames = new ArrayList<>();
 				for (String name : dmNames) {
-					if (DockerMachine.getHost(name) != null) {
+					if (DockerMachine.getHost(name, dockerMachineInstallDir,
+							vmDriverInstallDir) != null) {
 						activeNames.add(name);
 					}
 				}
@@ -644,8 +692,10 @@ public class NewDockerConnectionPage extends WizardPage {
 					connPrompt.setInput(activeNames.toArray(new String[0]));
 					if (connPrompt.open() == 0 && connPrompt.getResult().length > 0) {
 						String name = ((String) connPrompt.getResult()[0]);
-						String host = DockerMachine.getHost(name);
-						String certPath = DockerMachine.getCertPath(name);
+						String host = DockerMachine.getHost(name,
+								dockerMachineInstallDir, vmDriverInstallDir);
+						String certPath = DockerMachine.getCertPath(name,
+								dockerMachineInstallDir, vmDriverInstallDir);
 						model.setBindingMode(EnumDockerConnectionSettings.TCP_CONNECTION);
 						model.setConnectionName(name);
 						model.setUnixSocketPath(null);
@@ -659,18 +709,29 @@ public class NewDockerConnectionPage extends WizardPage {
 						}
 					}
 				} else {
-					if (dmNames.length > 0) {
-						StringBuffer connections = new StringBuffer();
-						for (String conn : dmNames) {
-							connections.append(", "); //$NON-NLS-1$
-							connections.append(conn);
+					if (dmNames.length == 1) {
+						MessageDialog.openInformation(getShell(),
+								WizardMessages.getString(
+										"NewDockerConnectionPage.searchDialog.discovery.title"), //$NON-NLS-1$
+								WizardMessages.getFormattedString(
+										"NewDockerConnectionPage.searchDialog.discovery.innactive.single", //$NON-NLS-1$
+										dmNames[0]));
+					} else if (dmNames.length > 1) {
+						final StringBuffer connections = new StringBuffer();
+						for (Iterator<String> iterator = Arrays.asList(dmNames)
+								.iterator(); iterator.hasNext();) {
+							final String dmName = iterator.next();
+							connections.append(dmName);
+							if (iterator.hasNext()) {
+								connections.append(", "); //$NON-NLS-1$
+							}
 						}
 						MessageDialog.openInformation(getShell(),
 								WizardMessages.getString(
 										"NewDockerConnectionPage.searchDialog.discovery.title"), //$NON-NLS-1$
 								WizardMessages.getFormattedString(
-										"NewDockerConnectionPage.searchDialog.discovery.innactive", //$NON-NLS-1$
-										connections.substring(2)));
+										"NewDockerConnectionPage.searchDialog.discovery.innactive.multiple", //$NON-NLS-1$
+										connections.toString()));
 					} else {
 						MessageDialog.openInformation(getShell(),
 								WizardMessages.getString(
@@ -681,6 +742,8 @@ public class NewDockerConnectionPage extends WizardPage {
 				}
 			}
 		};
+
+			
 	}
 
 	/**

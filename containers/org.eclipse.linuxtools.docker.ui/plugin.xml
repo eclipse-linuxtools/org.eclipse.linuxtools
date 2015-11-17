@@ -5,15 +5,21 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            name="%PreferencesPage.name"
+            name="%DockerPreferencePage.name"
             class="org.eclipse.linuxtools.internal.docker.ui.preferences.DockerPreferencePage"
             id="org.eclipse.linuxtools.docker.ui.preferences.DockerPreferencePage">
       </page>
       <page
             category="org.eclipse.linuxtools.docker.ui.preferences.DockerPreferencePage"
             class="org.eclipse.linuxtools.internal.docker.ui.preferences.LoggingPreferencePage"
-            id="org.eclipse.linuxtools.docker.ui.preferences.LoggingPage"
-            name="%LoggingPreferencesPage.name">
+            id="org.eclipse.linuxtools.docker.ui.preferences.LoggingPreferencePage"
+            name="%LoggingPreferencePage.name">
+      </page>
+      <page
+            category="org.eclipse.linuxtools.docker.ui.preferences.DockerPreferencePage"
+            class="org.eclipse.linuxtools.internal.docker.ui.preferences.DockerMachinePreferencePage"
+            id="org.eclipse.linuxtools.docker.ui.preferences.DockerMachinePreferencePage"
+            name="%DockerMachinePreferencePage.name">
       </page>
    </extension>
    <extension

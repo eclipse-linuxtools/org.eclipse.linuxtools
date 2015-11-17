@@ -30,6 +30,8 @@ public class DockerPreferencePage extends PreferencePage implements
 		IWorkbenchPreferencePage {
 
 	private static final String REFRESH_TIME_MSG = "RefreshTime.label"; //$NON-NLS-1$
+
+	private static final String INVALID_REFRESH_TIME_MSG = "RefreshTime.invalid.label"; //$NON-NLS-1$
 	
 	private IntegerFieldEditor refreshTimeField;
 
@@ -93,6 +95,10 @@ public class DockerPreferencePage extends PreferencePage implements
 		refreshTimeField
 				.setValidateStrategy(StringFieldEditor.VALIDATE_ON_KEY_STROKE);
 		refreshTimeField.setValidRange(5, 200);
+		refreshTimeField.setPage(this);
+		refreshTimeField
+				.setErrorMessage(Messages.getString(INVALID_REFRESH_TIME_MSG));
+		refreshTimeField.showErrorMessage();
 		refreshTimeField.load();
 		// If the preference changes, alert the Refresh Manager
 		refreshTimeField
