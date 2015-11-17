@@ -111,34 +111,36 @@ public class DockerExplorerLabelProvider implements IStyledLabelProvider, ILabel
 			styledString.setStyle(connectionName.length(), message.length() - connectionName.length(), StyledString.QUALIFIER_STYLER);
 			return styledString;
 		} else if(element instanceof DockerImagesCategory) {
-			return new StyledString("Images");
+			return new StyledString(
+					DVMessages.getString("DockerImagesCategory.label")); //$NON-NLS-1$
 		} else if(element instanceof DockerContainersCategory) {
-			return new StyledString("Containers");
-		} else {
-			if(element instanceof IDockerContainer) {
-				final IDockerContainer dockerContainer = (IDockerContainer)element;
-				final String containerName = dockerContainer.name();
-				final String image = dockerContainer.image();
-				final String message = containerName + " (" + image + ")";
-				final StyledString styledString = new StyledString(message);
-				styledString.setStyle(containerName.length(), message.length() - containerName.length(), StyledString.QUALIFIER_STYLER);
-				return styledString;
-			} else if(element instanceof IDockerImage) {
-				final IDockerImage dockerImage = (IDockerImage)element;
-				final String imageShortId = dockerImage.id().substring(0, 12);
-				final StringBuilder messageBuilder = new StringBuilder(dockerImage.repo());
-				final int startTags = messageBuilder.length();
-				if(!dockerImage.tags().isEmpty()) {
-					final List<String> tags = new ArrayList<>(
-							dockerImage.tags());
-					Collections.sort(tags);
-					messageBuilder.append(": ");
-					for (Iterator<String> tagIterator = tags
-							.iterator(); tagIterator.hasNext();) {
-						messageBuilder.append(tagIterator.next());
-						if(tagIterator.hasNext()) {
-							messageBuilder.append(" / ");
-						}
+			return new StyledString(
+					DVMessages.getString("DockerContainersCategory.label")); //$NON-NLS-1$
+		} else if (element instanceof IDockerContainer) {
+			final IDockerContainer dockerContainer = (IDockerContainer) element;
+			final String containerName = dockerContainer.name();
+			final String image = dockerContainer.image();
+			final String message = containerName + " (" + image + ")";
+			final StyledString styledString = new StyledString(message);
+			styledString.setStyle(containerName.length(),
+					message.length() - containerName.length(),
+					StyledString.QUALIFIER_STYLER);
+			return styledString;
+		} else if (element instanceof IDockerImage) {
+			final IDockerImage dockerImage = (IDockerImage) element;
+			final String imageShortId = dockerImage.id().substring(0, 12);
+			final StringBuilder messageBuilder = new StringBuilder(
+					dockerImage.repo());
+			final int startTags = messageBuilder.length();
+			if (!dockerImage.tags().isEmpty()) {
+				final List<String> tags = new ArrayList<>(dockerImage.tags());
+				Collections.sort(tags);
+				messageBuilder.append(":");
+				for (Iterator<String> tagIterator = tags.iterator(); tagIterator
+						.hasNext();) {
+					messageBuilder.append(tagIterator.next());
+					if (tagIterator.hasNext()) {
+						messageBuilder.append(", ");
 					}
 				}
 				final int startImageId = messageBuilder.length();
@@ -150,9 +152,9 @@ public class DockerExplorerLabelProvider implements IStyledLabelProvider, ILabel
 				// styled image id
 				styledString.setStyle(startImageId, message.length() - startImageId, StyledString.QUALIFIER_STYLER);
 				return styledString;
-			} else if(element instanceof LoadingStub) {
-				return new StyledString("Loading...");
 			}
+		} else if (element instanceof LoadingStub) {
+			return new StyledString(DVMessages.getString("Loading.label")); //$NON-NLS-1$
 		}
 		return null;
 	}
