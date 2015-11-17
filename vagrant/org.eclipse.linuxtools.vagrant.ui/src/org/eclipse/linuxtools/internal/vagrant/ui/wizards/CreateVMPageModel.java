@@ -17,23 +17,23 @@ import java.util.Map;
 public class CreateVMPageModel extends BaseDatabindingModel {
 
 	public static final String VM_NAME = "VMName";
-	public static final String BOX_NAME = "boxName";
+	public static final String BOX_REF = "boxRef";
 	public static final String VM_FILE = "VMFile";
-	public static final String BOX_LOC_MODE = "boxLocMode";
+	public static final String V_FILE_MODE = "VFileMode";
 	public static final String ENVIRONMENT = "environment";
 
 	private String vmName;
 	private String vmFile;
-	private String boxName;
-	private boolean boxLocMode;
+	private String boxRef;
+	private boolean vFileMode;
 	private Map<String, String> environment = new HashMap<>();
 
 	public String getVMName() {
 		return vmName;
 	}
 
-	public String getBoxName() {
-		return boxName;
+	public String getBoxRef() {
+		return boxRef;
 	}
 
 	public String getVMFile() {
@@ -44,24 +44,25 @@ public class CreateVMPageModel extends BaseDatabindingModel {
 		return environment;
 	}
 
-	public boolean getBoxLocMode() {
-		return boxLocMode;
+	public boolean getVFileMode() {
+		return vFileMode;
 	}
 
 	public void setVMName(final String vmName) {
 		firePropertyChange(VM_NAME, this.vmName, this.vmName = vmName);
 	}
 
-	public void setBoxName(final String boxName) {
-		firePropertyChange(BOX_NAME, this.boxName, this.boxName = boxName);
+	public void setBoxRef(final String boxRef) {
+		firePropertyChange(BOX_REF, this.boxRef, this.boxRef = boxRef);
 	}
 
 	public void setVMFile(final String vmFile) {
 		firePropertyChange(VM_FILE, this.vmFile, this.vmFile = vmFile);
 	}
 
-	public void setBoxLocMode(final boolean boxLocMode) {
-		firePropertyChange(BOX_LOC_MODE, this.boxLocMode, this.boxLocMode = boxLocMode);
+	public void setVFileMode(final boolean vFileMode) {
+		firePropertyChange(V_FILE_MODE, this.vFileMode,
+				this.vFileMode = vFileMode);
 	}
 
 	public void setEnvironment(final Map<String, String> map) {

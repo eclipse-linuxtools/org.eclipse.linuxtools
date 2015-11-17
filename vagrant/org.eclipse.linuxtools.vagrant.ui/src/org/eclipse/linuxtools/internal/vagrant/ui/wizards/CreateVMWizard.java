@@ -48,8 +48,8 @@ public class CreateVMWizard extends Wizard {
 		return this.createVMPage.getVMName();
 	}
 
-	public String getBoxName() {
-		return this.createVMPage.getBoxName();
+	public String getBoxReference() {
+		return this.createVMPage.getBoxReference();
 	}
 
 	public String getVMFile() {
