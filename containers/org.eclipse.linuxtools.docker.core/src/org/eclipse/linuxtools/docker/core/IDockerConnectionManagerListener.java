@@ -16,6 +16,16 @@ public interface IDockerConnectionManagerListener {
 	int REMOVE_EVENT = 1;
 	int RENAME_EVENT = 2;
 
+	/**
+	 * Notifies the listener that a {@link IDockerConnection} changed.
+	 * 
+	 * @param type
+	 *            the type of change
+	 * @deprecated Use
+	 *             {@link IDockerConnectionManagerListener2#changeEvent(IDockerConnection, int)}
+	 *             instead.
+	 */
+	@Deprecated
 	public void changeEvent(int type);
 
 }

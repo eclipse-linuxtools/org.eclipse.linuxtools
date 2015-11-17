@@ -10,20 +10,17 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.docker.core;
 
-import java.util.List;
-
-public interface IDockerContainerListener {
+public interface IDockerConnectionManagerListener2
+		extends IDockerConnectionManagerListener {
 
 	/**
-	 * Called when the list of {@link IDockerContainer} for the given
-	 * {@link IDockerConnection} changed (including when it was loaded for the
-	 * first time)
+	 * Notifies the listener that the given {@link IDockerConnection} changed.
 	 * 
 	 * @param connection
-	 *            - the Docker connection
-	 * @param list
-	 *            - the new list of {@link IDockerContainer}
+	 *            the connection that changed
+	 * @param type
+	 *            the type of change
 	 */
-	void listChanged(IDockerConnection connection, List<IDockerContainer> list);
+	public void changeEvent(IDockerConnection connection, int type);
 
 }

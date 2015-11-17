@@ -33,7 +33,6 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.EnumDockerStatus;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
-import org.eclipse.linuxtools.docker.core.IDockerConnectionManagerListener;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerListener;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
@@ -69,7 +68,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
  */
 public class DockerContainersView extends ViewPart implements
 		IDockerContainerListener, ISelectionListener,
-		IDockerConnectionManagerListener, ITabbedPropertySheetPageContributor {
+		ITabbedPropertySheetPageContributor {
 
 	private static final String TOGGLE_STATE = "org.eclipse.ui.commands.toggleState"; //$NON-NLS-1$
 
@@ -97,8 +96,6 @@ public class DockerContainersView extends ViewPart implements
 		// stop tracking selection changes in the Docker Explorer view (only)
 		getSite().getWorkbenchWindow().getSelectionService()
 				.removeSelectionListener(DockerExplorerView.VIEW_ID, this);
-		DockerConnectionManager.getInstance().removeConnectionManagerListener(
-				this);
 		super.dispose();
 	}
 
@@ -137,8 +134,6 @@ public class DockerContainersView extends ViewPart implements
 		// track selection changes in the Docker Explorer view (only)
 		getSite().getWorkbenchWindow().getSelectionService()
 				.addSelectionListener(DockerExplorerView.VIEW_ID, this);
-		DockerConnectionManager.getInstance()
-				.addConnectionManagerListener(this);
 		hookContextMenu();
 
 		// Look at stored preference to determine if all containers should be
@@ -478,29 +473,4 @@ public class DockerContainersView extends ViewPart implements
 		}
 	}
 
-	@Override
-	public void changeEvent(int type) {
-		String currUri = null;
-		int currIndex = 0;
-		IDockerConnection[] connections = DockerConnectionManager.getInstance()
-				.getConnections();
-		if (connection != null) {
-			currUri = connection.getUri();
-		}
-		int index = 0;
-		for (int i = 0; i < connections.length; ++i) {
-			if (connections[i].getUri().equals(currUri))
-				index = i;
-		}
-		if (type == IDockerConnectionManagerListener.RENAME_EVENT) {
-			index = currIndex; // no change in connection displayed
-		}
-		if (connections.length > 0
-				&& type != IDockerConnectionManagerListener.REMOVE_EVENT) {
-			setConnection(connections[index]);
-		} else {
-			setConnection(null);
-		}
-	}
-	
 }

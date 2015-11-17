@@ -10,12 +10,17 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.core;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.linuxtools.docker.core.Activator;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerListener;
@@ -37,20 +42,45 @@ public class DockerContainerRefreshManager implements IDockerContainerListener {
 		return instance;
 	}
 
+	/**
+	 * @return an immutable {@link Set} of all the {@link IDockerConnection}
+	 *         that are monitored
+	 */
+	public Set<IDockerConnection> getConnections() {
+		return Collections.unmodifiableSet(refreshThreadMap.keySet());
+	}
+
 	@Override
 	public synchronized void listChanged(
 			final IDockerConnection connection,
 			final List<IDockerContainer> dclist) {
 
-		ContainerRefreshThread rt = refreshThreadMap.get(connection);
-		if (rt == null) {
+		if (!refreshThreadMap.containsKey(connection)) {
 			long refreshRateInSeconds = Platform.getPreferencesService()
 					.getLong("org.eclipse.linuxtools.docker.ui", //$NON-NLS-1$ 
 							"containerRefreshTime", DEFAULT_REFRESH_TIME, null); //$NON-NLS-1$
-			rt = new ContainerRefreshThread(connection,
+			final ContainerRefreshThread rt = new ContainerRefreshThread(
+					connection,
 					TimeUnit.SECONDS.toMillis(refreshRateInSeconds));
 			rt.start();
 			refreshThreadMap.put(connection, rt);
+		}
+	}
+
+	/**
+	 * Stops and remove the {@link ContainerRefreshThread} associated with the
+	 * given {@link IDockerConnection}.
+	 * 
+	 * @param connection
+	 *            the connection that was monitored
+	 */
+	public synchronized void removeContainerRefreshThread(
+			final IDockerConnection connection) {
+
+		if (refreshThreadMap.containsKey(connection)) {
+			final ContainerRefreshThread containerRefreshThread = refreshThreadMap.get(connection);
+			containerRefreshThread.stopMonitoring();
+			refreshThreadMap.remove(connection);
 		}
 	}
 
@@ -80,11 +110,22 @@ public class DockerContainerRefreshManager implements IDockerContainerListener {
 		private IDockerConnection connection;
 		private long sleepTime;
 		private boolean kill;
+		private boolean monitor;
 
 		public ContainerRefreshThread(IDockerConnection connection,
 				long sleepTime) {
 			this.connection = connection;
 			this.sleepTime = sleepTime;
+			this.monitor = true;
+		}
+
+		/**
+		 * Stop this {@link ContainerRefreshThread} to monitor changes for the
+		 * associated {@link IDockerConnection} (after it was removed, for
+		 * example)
+		 */
+		public void stopMonitoring() {
+			monitor = false;
 		}
 
 		public IDockerConnection getConnection() {
@@ -107,16 +148,20 @@ public class DockerContainerRefreshManager implements IDockerContainerListener {
 
 		@Override
 		public void run() {
-			for (;;) {
+			while (monitor) {
 				try {
 					Thread.sleep(getSleepTime());
 					// After sleep period, update the containers list, but make
 					// sure the refreshManager isn't notified since that
 					// is what triggered this to begin with.
 					synchronized (instance) {
-						connection.removeContainerListener(instance);
-						((DockerConnection) connection).getContainers(true);
-						connection.addContainerListener(instance);
+						// monitoring may have been switched off while the
+						// thread was sleeping
+						if (monitor) {
+							// connection.removeContainerListener(instance);
+							((DockerConnection) connection).getContainers(true);
+							// connection.addContainerListener(instance);
+						}
 					}
 				} catch (InterruptedException e) {
 					if (kill)
@@ -124,6 +169,9 @@ public class DockerContainerRefreshManager implements IDockerContainerListener {
 					// otherwise..continue
 				}
 			}
+			Activator.log(new Status(IStatus.INFO, Activator.PLUGIN_ID,
+					"Stopped monitor container changes for connection '"
+							+ connection.getName() + "'"));
 		}
 	}
 

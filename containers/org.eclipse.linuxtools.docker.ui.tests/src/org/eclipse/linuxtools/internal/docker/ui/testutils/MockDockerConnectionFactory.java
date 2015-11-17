@@ -11,30 +11,42 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils;
 
-import java.util.Collections;
-
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
+import org.eclipse.linuxtools.internal.docker.core.DockerClientFactory;
+import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.mockito.Mockito;
+
+import com.spotify.docker.client.DockerCertificateException;
+import com.spotify.docker.client.DockerClient;
 
 /**
  * Factory for mocked {@link IDockerConnection}
  */
 public class MockDockerConnectionFactory {
 
-	public static IDockerConnection noImageNoContainer(final String name) {
-		final IDockerConnection connection = Mockito
-				.mock(IDockerConnection.class);
-		Mockito.when(connection.getName()).thenReturn(name);
-		noImageAvailable(connection);
-		noContainerAvailable(connection);
-		return connection;
-	}
-	
-	private static void noImageAvailable(final IDockerConnection connection) {
-		Mockito.when(connection.getImages()).thenReturn(Collections.emptyList());
+	public static Builder from(final String name, final DockerClient dockerClient) {
+		return new Builder(name, dockerClient);
 	}
 
-	private static void noContainerAvailable(final IDockerConnection connection) {
-		Mockito.when(connection.getContainers()).thenReturn(Collections.emptyList());
+	public static class Builder {
+		
+		private final DockerConnection connection;
+		
+		private Builder(final String name, final DockerClient dockerClient) {
+			this.connection = new DockerConnection.Builder().name(name).build();
+			final DockerClientFactory dockerClientFactory = Mockito.mock(DockerClientFactory.class);
+			this.connection.setDockerClientFactory(dockerClientFactory);
+			try {
+				Mockito.when(dockerClientFactory.getClient(Mockito.anyString(), Mockito.anyString(),  Mockito.anyString())).thenReturn(dockerClient);
+			} catch (DockerCertificateException e) {
+				// rest assured, nothing will happen while mocking the DockerClientFactory   
+			}
+		}
+		
+		public DockerConnection get() {
+			return connection;
+		}
+
 	}
+	
 }

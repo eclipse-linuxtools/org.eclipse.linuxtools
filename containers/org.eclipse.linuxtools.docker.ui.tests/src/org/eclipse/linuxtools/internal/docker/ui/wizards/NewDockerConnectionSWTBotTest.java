@@ -11,46 +11,48 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
-import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.instanceOf;
-
-import java.util.concurrent.TimeUnit;
-
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.internal.docker.core.DefaultDockerConnectionSettingsFinder;
-import org.eclipse.linuxtools.internal.docker.ui.BaseSWTBotTest;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionSettingsFinder;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CheckBoxAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.RadioAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TextAssertion;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
-import org.eclipse.ui.IViewReference;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Testing the {@link NewDockerConnection} {@link Wizard}
  */
-public class NewDockerConnectionSWTBotTest extends BaseSWTBotTest {
+@RunWith(SWTBotJunit4ClassRunner.class) 
+public class NewDockerConnectionSWTBotTest {
 
-	
+	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 	private SWTBotToolbarButton addConnectionButton;
+	private SWTBotView dockerExplorerViewBot;
 
 	@ClassRule
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(); 
 	
-	@Override
 	@Before
-	public void setup() {
-		super.setup();
-		this.addConnectionButton = getAddConnectionButton();
+	public void lookupDockerExplorerView() throws Exception {
+		dockerExplorerViewBot = bot.viewById("org.eclipse.linuxtools.docker.ui.dockerExplorerView");
+		dockerExplorerViewBot.show();
+		bot.views().stream()
+				.filter(v -> v.getReference().getId().equals("org.eclipse.linuxtools.docker.ui.dockerContainersView")
+						|| v.getReference().getId().equals("org.eclipse.linuxtools.docker.ui.dockerImagesView"))
+				.forEach(v -> v.close());
+		dockerExplorerViewBot.setFocus();
+		this.addConnectionButton = dockerExplorerViewBot.toolbarButton("&Add Connection");
 	}
 
 	@After
@@ -59,16 +61,6 @@ public class NewDockerConnectionSWTBotTest extends BaseSWTBotTest {
 			bot.button("Cancel").click();
 		}
 		DockerConnectionManager.getInstance().setConnectionSettingsFinder(new DefaultDockerConnectionSettingsFinder());
-	}
-
-	private SWTBotToolbarButton getAddConnectionButton() {
-		bot.waitUntil(org.eclipse.swtbot.eclipse.finder.waits.Conditions.waitForView(allOf(instanceOf(IViewReference.class), withPartName("Docker Explorer"))),
-				TimeUnit.SECONDS.toMillis(5));
-		final SWTBotToolbarButton button = bot.toolbarButtonWithTooltip("&Add Connection");
-		if (button == null) {
-			Assert.fail("Failed to find the 'Add Connection' button");
-		}
-		return button;
 	}
 
 	@Test

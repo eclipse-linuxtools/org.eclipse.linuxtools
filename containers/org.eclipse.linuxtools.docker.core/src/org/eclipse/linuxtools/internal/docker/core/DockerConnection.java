@@ -10,21 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.core;
 
-import static org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings.BINDING_MODE;
-import static org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings.TCP_CERT_PATH;
-import static org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings.TCP_CONNECTION;
-import static org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings.TCP_HOST;
-import static org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings.TCP_TLS_VERIFY;
-import static org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings.UNIX_SOCKET;
-import static org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings.UNIX_SOCKET_PATH;
-
-import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.SocketTimeoutException;
 import java.net.URI;
@@ -38,7 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
@@ -56,7 +44,6 @@ import org.eclipse.linuxtools.docker.core.Activator;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.DockerContainerNotFoundException;
 import org.eclipse.linuxtools.docker.core.DockerException;
-import org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.EnumDockerLoggingStatus;
 import org.eclipse.linuxtools.docker.core.IDockerConfParameter;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
@@ -100,9 +87,6 @@ import com.spotify.docker.client.messages.Info;
 import com.spotify.docker.client.messages.PortBinding;
 import com.spotify.docker.client.messages.Version;
 
-import jnr.unixsocket.UnixSocketAddress;
-import jnr.unixsocket.UnixSocketChannel;
-
 /**
  * A connection to a Docker daemon. The connection may rely on Unix Socket or TCP connection (using the REST API). 
  * All low-level communication is delegated to a wrapped {@link DockerClient}.
@@ -110,315 +94,6 @@ import jnr.unixsocket.UnixSocketChannel;
  *
  */
 public class DockerConnection implements IDockerConnection, Closeable {
-
-	@Deprecated
-	public static class Defaults {
-
-		public static final String DEFAULT_UNIX_SOCKET_PATH = "unix:///var/run/docker.sock"; //$NON-NLS-1$
-
-		private boolean settingsResolved;
-		private String name = null;
-		private final Map<EnumDockerConnectionSettings, Object> settings = new HashMap<>();
-
-		public Defaults() {
-			try {
-				// first, looking for a Unix socket at /var/run/docker.sock
-				if (defaultsWithUnixSocket() || defaultsWithSystemEnv()
-						|| defaultWithShellEnv()) {
-					this.settingsResolved = true;
-					// attempt to connect and retrieve the 'name' from the system
-					// info
-					try(final DockerConnection connection = new Builder()
-							.unixSocket(getUnixSocketPath()).tcpHost(getTcpHost())
-							.tcpCertPath(getTcpCertPath()).build()) {
-						connection.open(false);
-						final IDockerConnectionInfo info = connection.getInfo();
-						if (info != null) {
-							this.name = info.getName();
-						}
-					} catch (DockerException e) {
-						// force custom settings in that case
-						this.settingsResolved = false;
-					}
-				} else {
-					this.settingsResolved = false;
-					Activator.log(
-							new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-									Messages.Missing_Default_Settings));
-				}
-			} catch (DockerException e) {
-				Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-						Messages.Missing_Default_Settings, e));
-			}		
-		}
-
-		/**
-		 * Checks if there is a Unix socket available at the given location
-		 * 
-		 * @return {@code true} if the Unix socket exists and is readable,
-		 *         {@code false} otherwise.
-		 */
-		private boolean defaultsWithUnixSocket() {
-			final File unixSocketFile = new File("/var/run/docker.sock"); //$NON-NLS-1$
-			if (unixSocketFile.exists() && unixSocketFile.canRead()) {
-				try {
-					final UnixSocketAddress address = new UnixSocketAddress(
-							unixSocketFile);
-					final UnixSocketChannel channel = UnixSocketChannel
-							.open(address);
-					// assume socket works
-					channel.close();
-					settings.put(BINDING_MODE, UNIX_SOCKET);
-					// putting the full URI with the unix:// scheme here
-					settings.put(UNIX_SOCKET_PATH, DEFAULT_UNIX_SOCKET_PATH);
-					return true;
-				} catch (IOException e) {
-					// do nothing, just assume socket did not work.
-				}
-			}
-			return false;
-		}
-
-		/**
-		 * Checks if there are DOCKER_xxx environment variables
-		 * 
-		 * @return {@code true} if the env variables exist and is readable,
-		 *         {@code false} otherwise.
-		 */
-		private boolean defaultsWithSystemEnv() {
-			final String dockerHostEnv = System.getenv("DOCKER_HOST"); //$NON-NLS-1$
-			if (dockerHostEnv != null) {
-				settings.put(BINDING_MODE, TCP_CONNECTION);
-				settings.put(TCP_HOST, dockerHostEnv);
-				final String tlsVerifyEnv = System.getenv("DOCKER_TLS_VERIFY"); //$NON-NLS-1$
-				if (tlsVerifyEnv != null && tlsVerifyEnv.equals("1")) {
-					settings.put(TCP_TLS_VERIFY, Boolean.TRUE);
-					final String dockerCertPathEnv = System
-							.getenv("DOCKER_CERT_PATH"); //$NON-NLS-1$
-					if (dockerCertPathEnv != null) {
-						settings.put(TCP_CERT_PATH, dockerCertPathEnv);
-					}
-				} else {
-					settings.put(TCP_TLS_VERIFY, Boolean.FALSE);
-				}
-				return true;
-			}
-			return false;
-		}
-
-		/**
-		 * Checks if there are DOCKER_xxx environment variables when running a
-		 * script in a shell. The expected varibles are written in a file that
-		 * can be read later.
-		 * 
-		 * @return {@code true} if the env variables exist and is readable,
-		 *         {@code false} otherwise.
-		 * @throws DockerException
-		 */
-		private boolean defaultWithShellEnv() throws DockerException {
-			try {
-				final String connectionSettingsDetectionScriptName = getConnectionSettingsDetectionScriptName();
-				if (connectionSettingsDetectionScriptName == null) {
-					Activator.log(new Status(IStatus.WARNING,
-							Activator.PLUGIN_ID,
-							Messages.Docker_No_Settings_Description_Script));
-					return false;
-				}
-				final File connectionSettingsDetectionScript = getConnectionSettingsDetectionScript(
-						connectionSettingsDetectionScriptName);
-				final String[] cmdArray = getConnectionSettingsDetectionCommandArray(
-						connectionSettingsDetectionScript);
-				final Process process = Runtime.getRuntime().exec(cmdArray);
-				process.waitFor();
-				final int exitValue = process.exitValue();
-				if (exitValue == 0) {
-					final InputStream processInputStream = process
-							.getInputStream();
-					// read content from temp file
-					Properties dockerSettings = new Properties();
-					dockerSettings.load(processInputStream);
-					settings.put(BINDING_MODE, TCP_CONNECTION);
-					if (dockerSettings.containsKey("DOCKER_HOST")) { //$NON-NLS-1$
-						settings.put(TCP_HOST,
-								dockerSettings.get("DOCKER_HOST").toString()); //$NON-NLS-1$
-					}
-					if (dockerSettings.containsKey("DOCKER_CERT_PATH")) { //$NON-NLS-1$
-						settings.put(TCP_CERT_PATH,
-								dockerSettings.get("DOCKER_CERT_PATH") //$NON-NLS-1$
-										.toString());
-					}
-					if (dockerSettings.containsKey("DOCKER_TLS_VERIFY")) { //$NON-NLS-1$
-						settings.put(TCP_TLS_VERIFY,
-								Boolean.valueOf(
-										dockerSettings.get("DOCKER_TLS_VERIFY") //$NON-NLS-1$
-												.toString()
-										.equals("1")));
-					}
-					return true;
-				} else {
-					// log what happened if the process did not end as expected
-					// an exit value of 1 should indicate no connection found
-					if (exitValue != 1) {
-						final InputStream processErrorStream = process
-								.getErrorStream();
-						final String errorMessage = streamToString(
-								processErrorStream);
-						Activator.log(new Status(IStatus.ERROR,
-								Activator.PLUGIN_ID, errorMessage));
-					}
-				}
-			} catch (IOException | IllegalArgumentException
-					| InterruptedException e) {
-				throw new DockerException(Messages.Retrieve_Default_Settings_Failure, e);
-			}
-			return false;
-		}
-
-		/**
-		 * @param script
-		 *            the script to execute
-		 * @return the OS-specific command to run the connection settings
-		 *         detection script.
-		 */
-		private String[] getConnectionSettingsDetectionCommandArray(
-				final File script) {
-			final String osName = System.getProperty("os.name"); //$NON-NLS-1$
-			if (osName.toLowerCase().startsWith("win")) { //$NON-NLS-1$
-				return new String[] { "cmd.exe", "/C", //$NON-NLS-1$ //$NON-NLS-2$
-						script.getAbsolutePath() };
-			} else if (osName.toLowerCase().startsWith("mac") //$NON-NLS-1$
-					|| osName.toLowerCase().contains("linux") //$NON-NLS-1$
-					|| osName.toLowerCase().contains("nix")) { //$NON-NLS-1$
-				return new String[] { script.getAbsolutePath() };
-			} else {
-				return null;
-			}
-		}
-
-		/**
-		 * Finds the script file in the data directory of the bundle given its
-		 * name, or creates it from the 'resources' dir in the bundle if it was
-		 * not found in the data dir.
-		 * 
-		 * @param scriptName
-		 *            the name of the script to load in the data dir or in the
-		 *            'resources' dir in the bundle
-		 * @return the script {@link File}
-		 */
-		private File getConnectionSettingsDetectionScript(
-				final String scriptName) {
-			final File script = Activator.getDefault().getBundle()
-					.getDataFile(scriptName);
-			// if the script file does not exist or is outdated.
-			if (script != null
-					&& (!script.exists() || script.lastModified() < Activator
-							.getDefault().getBundle().getLastModified())) {
-				try (final FileOutputStream output = new FileOutputStream(
-						script);
-						final InputStream is = DockerConnection.class
-								.getResourceAsStream(
-										"/resources/" + scriptName)) { //$NON-NLS-1$
-					byte[] buff = new byte[1024];
-					int n;
-					while ((n = is.read(buff)) > 0) {
-						output.write(buff, 0, n);
-					}
-					script.setExecutable(true);
-				} catch (IOException e) {
-					Activator.logErrorMessage(e.getMessage());
-				}
-			}
-			return script;
-		}
-
-		/**
-		 * @return the name of the script to run, depending on the OS (Windows,
-		 *         MAc, *Nix)
-		 */
-		private String getConnectionSettingsDetectionScriptName() {
-			final String osName = System.getProperty("os.name"); //$NON-NLS-1$
-			if (osName.toLowerCase().startsWith("win")) { //$NON-NLS-1$
-				return "script.bat"; //$NON-NLS-1$
-			} else if (osName.toLowerCase().startsWith("mac") //$NON-NLS-1$
-					|| osName.toLowerCase().contains("linux") //$NON-NLS-1$
-					|| osName.toLowerCase().contains("nix")) { //$NON-NLS-1$
-				return "script.sh";//$NON-NLS-1$
-			} else {
-				return null;
-			}
-		}
-
-		private String streamToString(InputStream stream) {
-			BufferedReader buff = new BufferedReader(
-					new InputStreamReader(stream));
-			StringBuffer res = new StringBuffer();
-			String line = "";
-			try {
-				while ((line = buff.readLine()) != null) {
-					res.append(System.getProperty("line.separator")); //$NON-NLS-1$
-					res.append(line);
-				}
-				buff.close();
-			} catch (IOException e) {
-			}
-			return res.length() > 0 ? res.substring(1) : "";
-		}
-
-		public boolean isSettingsResolved() {
-			return settingsResolved;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		/**
-		 * @return the default binding mode that was found, or UNIX_SOCKET if
-		 *         the property was not was not found.
-		 */
-		public EnumDockerConnectionSettings getBindingMode() {
-			if (settings.containsKey(BINDING_MODE)) {
-				return (EnumDockerConnectionSettings) settings
-						.get(BINDING_MODE);
-			}
-			return UNIX_SOCKET;
-		}
-
-		/**
-		 * @return the path to the Unix socket, or {@code null} if if the
-		 *         property was not was not found.
-		 */
-		public String getUnixSocketPath() {
-			return (String) settings.get(UNIX_SOCKET_PATH);
-		}
-
-		/**
-		 * @return the TCP host, or {@code null} if none was found.
-		 */
-		public String getTcpHost() {
-			return (String) settings.get(TCP_HOST);
-		}
-
-		/**
-		 * @return the TLS_VERIFY {@link Boolean} flag, or {@code false} if the
-		 *         property was not was not found.
-		 */
-		public boolean getTcpTlsVerify() {
-			if (settings.containsKey(TCP_TLS_VERIFY)) {
-				return (Boolean) settings.get(TCP_TLS_VERIFY);
-			}
-			return false;
-		}
-
-		/**
-		 * @return the path to the TCP certificates, or {@code null} if the
-		 *         property was not was found.
-		 */
-		public String getTcpCertPath() {
-			return (String) settings.get(TCP_CERT_PATH);
-		}
-
-	}
 
 	// Builder allowing different binding modes (unix socket vs TCP connection)
 	public static class Builder {
@@ -480,7 +155,8 @@ public class DockerConnection implements IDockerConnection, Closeable {
 	private final Object containerLock = new Object();
 	private final Object actionLock = new Object();
 	private final Object clientLock = new Object();
-	private DefaultDockerClient client;
+	private DockerClientFactory dockerClientFactory = new DockerClientFactory();
+	private DockerClient client;
 
 	private Map<String, Job> actionJobs;
 
@@ -557,25 +233,10 @@ public class DockerConnection implements IDockerConnection, Closeable {
 		// synchronized block to avoid concurrent attempts to open a connection
 		// to the same Docker daemon
 		synchronized (this) {
-			try {
-				if (this.client == null) {
-					if (this.socketPath != null) {
-						this.client = DefaultDockerClient.builder()
-								.uri(socketPath).build();
-					} else if (this.tcpHost != null) {
-						if (this.tcpCertPath != null) {
-							this.client = DefaultDockerClient
-									.builder()
-									.uri(URI.create(tcpHost))
-									.dockerCertificates(
-											new DockerCertificates(new File(
-													tcpCertPath).toPath()))
-									.build();
-						} else {
-							this.client = DefaultDockerClient.builder()
-									.uri(URI.create(tcpHost)).build();
-						}
-					}
+			if (this.client == null) {
+				try {
+					setClient(dockerClientFactory.getClient(this.socketPath,
+							this.tcpHost, this.tcpCertPath));
 					if (registerContainerRefreshManager) {
 						// Add the container refresh manager to watch the
 						// containers
@@ -584,12 +245,32 @@ public class DockerConnection implements IDockerConnection, Closeable {
 								.getInstance();
 						addContainerListener(dcrm);
 					}
+				} catch (DockerCertificateException e) {
+					throw new DockerException(NLS
+							.bind(Messages.Open_Connection_Failure, this.name));
 				}
-			} catch (DockerCertificateException e) {
-				throw new DockerException(
-						NLS.bind(Messages.Open_Connection_Failure, this.name));
+
 			}
 		}
+	}
+
+	public DockerClient getClient() {
+		return client;
+	}
+
+	public void setClient(final DockerClient client) {
+		this.client = client;
+	}
+	/**
+	 * Change the default {@link DockerClientFactory}
+	 * 
+	 * @param dockerClientFactory
+	 *            the new {@link DockerClientFactory} to use when opening a
+	 *            connection.
+	 */
+	public void setDockerClientFactory(
+			final DockerClientFactory dockerClientFactory) {
+		this.dockerClientFactory = dockerClientFactory;
 	}
 
 	@Override
@@ -1019,7 +700,9 @@ public class DockerConnection implements IDockerConnection, Closeable {
 				imageParentIds.add(rawImage.parentId());
 			}
 			for (Image rawImage : rawImages) {
-				final boolean taggedImage = !(rawImage.repoTags().size() == 1 && rawImage
+				final boolean taggedImage = !(rawImage.repoTags() != null
+						&& rawImage.repoTags().size() == 1
+						&& rawImage
 						.repoTags().contains("<none>:<none>")); //$NON-NLS-1$
 				final boolean intermediateImage = !taggedImage
 						&& imageParentIds.contains(rawImage.id());
