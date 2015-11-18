@@ -7,6 +7,9 @@
    <feature url="features/org.eclipse.linuxtools.docker.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.docker.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
+   <feature url="features/org.eclipse.linuxtools.vagrant.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.vagrant.feature" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
    <!-- Orbit Dependencies -->
    <iu id="com.spotify.docker.client" version="0.0.0">
         <category name="Docker Client Dependencies"/>
