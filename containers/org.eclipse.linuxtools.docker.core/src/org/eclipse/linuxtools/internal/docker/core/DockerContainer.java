@@ -32,6 +32,7 @@ public class DockerContainer implements IDockerContainer {
 	private List<IDockerPortMapping> ports;
 	private Long sizeRw;
 	private Long sizeRootFs;
+	private IDockerContainerInfo containerInfo;
 
 	public DockerContainer(final IDockerConnection connection,
 			Container container) {
@@ -115,10 +116,24 @@ public class DockerContainer implements IDockerContainer {
 	public List<String> names() {
 		return names;
 	}
+
 	
 	@Override
 	public IDockerContainerInfo info() {
-		return this.parent.getContainerInfo(id);
+		return info(false);
+	}
+
+	@Override
+	public IDockerContainerInfo info(final boolean force) {
+		if (force || isInfoLoaded()) {
+			this.containerInfo = this.parent.getContainerInfo(id);
+		}
+		return this.containerInfo;
+	}
+
+	@Override
+	public boolean isInfoLoaded() {
+		return this.containerInfo != null;
 	}
 
 	@Override

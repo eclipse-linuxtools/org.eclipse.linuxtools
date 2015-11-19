@@ -39,7 +39,7 @@ public class MockDockerContainerFactory {
 		private static char[] hexa = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 		
 		private final Container container;
-
+		
 		private Builder(final String name, final String... otherNames) {
 			this.container = Mockito
 					.mock(Container.class);
@@ -59,5 +59,6 @@ public class MockDockerContainerFactory {
 		public Container build() {
 			return container;
 		}
+
 	}
 }

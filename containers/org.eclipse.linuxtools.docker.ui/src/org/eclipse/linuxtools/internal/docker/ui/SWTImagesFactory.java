@@ -87,6 +87,12 @@ public class SWTImagesFactory {
 			+ "container_paused.png"; //$NON-NLS-1$
 	public static final String IMG_CONTAINER_STOPPED = NAME_PREFIX
 			+ "container_stopped.png"; //$NON-NLS-1$
+	public static final String IMG_CONTAINER_VOLUME = NAME_PREFIX
+			+ "container_volume.png"; //$NON-NLS-1$
+	public static final String IMG_CONTAINER_PORT = NAME_PREFIX
+			+ "container_port.png"; //$NON-NLS-1$
+	public static final String IMG_CONTAINER_LINK = NAME_PREFIX
+			+ "container_link.png"; //$NON-NLS-1$
 	public static final String IMG_SYSTEM_PROCESS = NAME_PREFIX
 			+ "systemprocess.gif"; //$NON-NLS-1$
 	public static final String IMG_CHECKED = NAME_PREFIX + "checked.gif"; //$NON-NLS-1$
@@ -164,6 +170,12 @@ public class SWTImagesFactory {
 			"", IMG_CONTAINER_PAUSED);
 	public static final ImageDescriptor DESC_CONTAINER_STOPPED = createManaged(
 			"", IMG_CONTAINER_STOPPED);
+	public static final ImageDescriptor DESC_CONTAINER_VOLUME = createManaged("",
+			IMG_CONTAINER_VOLUME);
+	public static final ImageDescriptor DESC_CONTAINER_PORT = createManaged("",
+			IMG_CONTAINER_PORT);
+	public static final ImageDescriptor DESC_CONTAINER_LINK = createManaged("",
+			IMG_CONTAINER_LINK);
 	public static final ImageDescriptor DESC_SYSTEM_PROCESS = createManaged("",
 			IMG_SYSTEM_PROCESS);
 	public static final ImageDescriptor DESC_CHECKED = createManaged("",

@@ -121,23 +121,59 @@ public class SWTUtils {
 	}
 
 	/**
-	 * @param viewBot the {@link SWTBotView} containing the {@link Tree} to traverse
-	 * @param path the node path in the {@link SWTBotTree} associated with the given {@link SWTBotView}
-	 * @return the first {@link SWTBotTreeItem} matching the given node names
+	 * Waits for all {@link Job} to complete. 
+	 * 
+	 * @throws InterruptedException
 	 */
-	public static SWTBotTreeItem getTreeItem(final SWTBotView viewBot, final String... path) {
-		final SWTBotTree tree = viewBot.bot().tree();
-		return getTreeItem(tree.getAllItems(), path);
+	public static void waitForJobsToComplete() throws InterruptedException {
+		Thread.sleep(TimeUnit.SECONDS.toMillis(1));
+		while (!Job.getJobManager().isIdle()) {
+			Thread.sleep(TimeUnit.SECONDS.toMillis(1));
+		}
 	}
 
-	private static SWTBotTreeItem getTreeItem(final SWTBotTreeItem[] treeItems, final String[] path) {
-		final SWTBotTreeItem swtBotTreeItem = Stream.of(treeItems).filter(item -> item.getText().startsWith(path[0])).findFirst().get();
-		if(path.length > 1) {
-			final String[] remainingPath = new String[path.length -1];
-			System.arraycopy(path, 1, remainingPath, 0, remainingPath.length);
+	/**
+	 * @param viewBot the {@link SWTBotView} containing the {@link Tree} to traverse
+	 * @param paths the node path in the {@link SWTBotTree} associated with the given {@link SWTBotView}
+	 * @return the first {@link SWTBotTreeItem} matching the given node names
+	 */
+	public static SWTBotTreeItem getTreeItem(final SWTBotView viewBot, final String... paths) {
+		final SWTBotTree tree = viewBot.bot().tree();
+		return getTreeItem(tree.getAllItems(), paths);
+	}
+	
+	public static SWTBotTreeItem getTreeItem(final SWTBotTreeItem parentTreeItem, final String... paths) {
+		if(paths.length == 1) {
+			return getTreeItem(parentTreeItem, paths[0]);
+		}
+		final String[] remainingPaths = new String[paths.length-1];
+		System.arraycopy(paths, 1, remainingPaths, 0, paths.length-1);
+		return getTreeItem(getTreeItem(parentTreeItem, paths[0]), remainingPaths);
+	}
+
+	/**
+	 * Returns the first child node in the given parent tree item whose text matches (ie, begins with) the given path argument.
+	 * @param parentTreeItem the parent tree item
+	 * @param path the text of the node that should match
+	 * @return the first matching node or <code>null</code> if none could be found
+	 */
+	public static SWTBotTreeItem getTreeItem(final SWTBotTreeItem parentTreeItem, final String path) {
+		for (SWTBotTreeItem child : parentTreeItem.getItems()) {
+			if(child.getText().startsWith(path)) {
+				return child;
+			}
+		}
+		return null;
+	}
+	
+	private static SWTBotTreeItem getTreeItem(final SWTBotTreeItem[] treeItems, final String[] paths) {
+		final SWTBotTreeItem swtBotTreeItem = Stream.of(treeItems).filter(item -> item.getText().startsWith(paths[0])).findFirst().get();
+		if(paths.length > 1) {
+			final String[] remainingPath = new String[paths.length -1];
+			System.arraycopy(paths, 1, remainingPath, 0, remainingPath.length);
 			return getTreeItem(swtBotTreeItem.getItems(), remainingPath);
 		}
 		return swtBotTreeItem;
 	}
-
+	
 }

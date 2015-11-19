@@ -15,7 +15,7 @@ package org.eclipse.linuxtools.docker.core;
  * Port mapping for {@link IDockerContainer}
  *
  */
-public interface IDockerPortMapping {
+public interface IDockerPortMapping extends Comparable<IDockerPortMapping> {
 
 	public int getPrivatePort();
 	

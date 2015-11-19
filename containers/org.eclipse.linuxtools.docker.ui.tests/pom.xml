@@ -7,7 +7,6 @@
 		<version>1.2.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>org.eclipse.linuxtools.docker.ui.tests</artifactId>
-	<version>1.2.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 
 
@@ -17,37 +16,10 @@
 	</properties>
 
 
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.eclipse.tycho</groupId>
-					<artifactId>tycho-surefire-plugin</artifactId>
-					<version>${tycho-version}</version>
-					<configuration>
-						<!-- skipTests>true</skipTests -->
-						<!-- useUIHarness>true</useUIHarness -->
-						<useUIThread>false</useUIThread>
-						<!-- kill test JVM if tests take more than 10 minutes (600 seconds) 
-							to finish -->
-						<forkedProcessTimeoutInSeconds>${tycho.surefire.timeout}</forkedProcessTimeoutInSeconds>
-						<argLine>${tycho.test.jvmArgs}</argLine>
-						<includes>
-							<include>**/*Test.class</include>
-						</includes>
-						<excludes>
-							<exclude>**/*SWTBotTest.class</exclude>
-						</excludes>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-
 	<profiles>
 		<profile>
 			<!-- Ignore optional deps to swt.macosx -->
-			<id>ignore-mac-deps-on-other-os</id>
+			<id>ignore-mac-deps-on-other-os-and-skip-swtbot-tests</id>
 			<activation>
 				<os>
 					<family>!mac</family>
@@ -69,6 +41,26 @@
 						<artifactId>tycho-compiler-plugin</artifactId>
 						<configuration>
 							<optionalDependencies>ignore</optionalDependencies>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-surefire-plugin</artifactId>
+						<version>${tycho-version}</version>
+						<configuration>
+							<!-- skipTests>true</skipTests -->
+							<!-- useUIHarness>true</useUIHarness -->
+							<useUIThread>false</useUIThread>
+							<!-- kill test JVM if tests take more than 10 minutes (600 seconds) 
+								to finish -->
+							<forkedProcessTimeoutInSeconds>${tycho.surefire.timeout}</forkedProcessTimeoutInSeconds>
+							<argLine>${tycho.test.jvmArgs}</argLine>
+							<includes>
+								<include>**/*Test.class</include>
+							</includes>
+							<excludes>
+								<exclude>**/*SWTBotTest.class</exclude>
+							</excludes>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -99,6 +91,23 @@
 									<arch>x86_64</arch>
 								</environment>
 							</environments>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-surefire-plugin</artifactId>
+						<configuration>
+							<!-- skipTests>true</skipTests -->
+							<!-- useUIHarness>true</useUIHarness -->
+							<useUIThread>false</useUIThread>
+							<!-- kill test JVM if tests take more than 10 minutes (600 seconds) to 
+								finish -->
+							<forkedProcessTimeoutInSeconds>${tycho.surefire.timeout}</forkedProcessTimeoutInSeconds>
+							<argLine>${tycho.test.jvmArgs}</argLine>
+							<!-- execute all tests on Mac -->
+							<includes>
+								<include>**/*Test.class</include>
+							</includes>
 						</configuration>
 					</plugin>
 				</plugins>

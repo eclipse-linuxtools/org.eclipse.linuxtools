@@ -24,9 +24,11 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFacto
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionStorageManagerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerContainerFactory;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerContainerInfoFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerExplorerViewAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTBotTreeItemAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
@@ -95,7 +97,7 @@ public class DockerExplorerViewSWTBotTest {
 				dockerExplorerView.getCommonViewer().refresh(true); 
 				dockerExplorerView.showConnectionsOrExplanations();});
 	}
-	
+
 	@AfterClass
 	public static void restoreDefaultConfig() {
 		DockerConnectionManager.getInstance().setConnectionStorageManager(new DefaultDockerConnectionStorageManager());
@@ -131,7 +133,7 @@ public class DockerExplorerViewSWTBotTest {
 	}
 
 	@Test
-	public void shouldRefreshImagesAndShowChanges() throws Exception {
+	public void shouldRefreshImagesAndShowChanges() throws InterruptedException {
 		// given
 		final DockerClient client = MockDockerClientFactory.noImages().noContainers();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
@@ -159,9 +161,9 @@ public class DockerExplorerViewSWTBotTest {
 		Assertions.assertThat(imagesTreeItem.isExpanded()).isTrue();
 		Assertions.assertThat(imagesTreeItem.getItems().length).isEqualTo(1);
 	}
-	
+
 	@Test
-	public void shouldRefreshContainersAndShowChanges() throws Exception {
+	public void shouldRefreshContainersAndShowChanges() throws InterruptedException {
 		// given
 		final DockerClient client = MockDockerClientFactory.noImages().noContainers();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
@@ -178,7 +180,7 @@ public class DockerExplorerViewSWTBotTest {
 		Assertions.assertThat(containersTreeItem.getItems().length).isEqualTo(0);
 		
 		// update the client 
-		final DockerClient updatedClient = MockDockerClientFactory.noImages().containers(MockDockerContainerFactory.name("foo_bar").build());
+		final DockerClient updatedClient = MockDockerClientFactory.noImages().container(MockDockerContainerFactory.name("foo_bar").build()).build();
 		dockerConnection.setClient(updatedClient);
 		dockerExplorerViewTreeBot = dockerExplorerViewBot.bot().tree();
 		dockerExplorerViewTreeBot.select(containersTreeItem);
@@ -188,6 +190,133 @@ public class DockerExplorerViewSWTBotTest {
 		// then check that there are images now
 		Assertions.assertThat(containersTreeItem.isExpanded()).isTrue();
 		Assertions.assertThat(containersTreeItem.getItems().length).isEqualTo(1);
+	}
+
+	@Test
+	public void shouldShowContainerPortMapping() throws InterruptedException {
+		// given
+		final DockerClient client = MockDockerClientFactory.noImages()
+				.container(MockDockerContainerFactory.name("foo_bar").build(), MockDockerContainerInfoFactory
+						.port("8080/tcp", "0.0.0.0", "8080").port("8787/tcp", "0.0.0.0", "8787").build())
+				.build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		configureConnectionManager(dockerConnection);
+		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
+		// when a second call to expand the container is done (because the first
+		// expandAll stopped with a "Loading..." job that retrieved the
+		// containers)
+		final SWTBotTreeItem containerTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test (null)",
+				"Containers", "foo_bar (null)");
+		SWTUtils.asyncExec(() -> containerTreeItem.expand());
+		final SWTBotTreeItem containerPortsTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test (null)",
+				"Containers", "foo_bar (null)", "Ports");
+		SWTUtils.asyncExec(() -> containerPortsTreeItem.expand());
+		// then
+		SWTUtils.syncAssert(() -> {
+			SWTBotTreeItemAssertions.assertThat(containerPortsTreeItem).isExpanded().hasChildItems(2);
+			SWTBotTreeItemAssertions.assertThat(containerPortsTreeItem.getNode(0))
+					.hasText("0.0.0.0:8080 -> 8080 (tcp)");
+			SWTBotTreeItemAssertions.assertThat(containerPortsTreeItem.getNode(1))
+					.hasText("0.0.0.0:8787 -> 8787 (tcp)");
+		});
+	}
+
+	@Test
+	public void shouldShowContainerLinks() throws InterruptedException {
+		// given
+		final DockerClient client = MockDockerClientFactory.noImages()
+				.container(MockDockerContainerFactory.name("foo_bar").build(), MockDockerContainerInfoFactory
+						.link("/postgres-demo:/foo_bar/postgres1").link("/postgres-demo:/foo_bar/postgres2").build())
+				.build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		configureConnectionManager(dockerConnection);
+		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
+		// when a second call to expand the container is done (because the first
+		// expandAll stopped with a "Loading..." job that retrieved the
+		// containers)
+		final SWTBotTreeItem containerTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test (null)",
+				"Containers", "foo_bar (null)");
+		SWTUtils.asyncExec(() -> containerTreeItem.expand());
+		final SWTBotTreeItem containerLinksTreeItem = SWTUtils.getTreeItem(containerTreeItem, "Links");
+		SWTUtils.asyncExec(() -> containerLinksTreeItem.expand());
+		// then
+		SWTUtils.syncAssert(() -> {
+			SWTBotTreeItemAssertions.assertThat(containerLinksTreeItem).isExpanded().hasChildItems(2);
+			SWTBotTreeItemAssertions.assertThat(containerLinksTreeItem.getNode(0)).hasText("postgres-demo (postgres1)");
+			SWTBotTreeItemAssertions.assertThat(containerLinksTreeItem.getNode(1)).hasText("postgres-demo (postgres2)");
+		});
+	}
+
+	@Test
+	public void shouldShowContainerVolumes() throws InterruptedException {
+		// given
+		final DockerClient client = MockDockerClientFactory.noImages()
+				.container(MockDockerContainerFactory.name("foo_bar").build(),
+						MockDockerContainerInfoFactory.volume("/path/to/container")
+								.volume("/path/to/host:/path/to/container")
+								.volume("/path/to/host:/path/to/container:Z,ro").build())
+				.build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		configureConnectionManager(dockerConnection);
+		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
+		// when a second call to expand the container is done (because the first
+		// expandAll stopped with a "Loading..." job that retrieved the
+		// containers)
+		final SWTBotTreeItem containerTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test (null)",
+				"Containers", "foo_bar (null)");
+		SWTUtils.asyncExec(() -> containerTreeItem.expand());
+		final SWTBotTreeItem containerVolumesItem = SWTUtils.getTreeItem(containerTreeItem, "Volumes");
+		SWTUtils.asyncExec(() -> containerVolumesItem.expand());
+		// then
+		SWTUtils.syncAssert(() -> {
+			SWTBotTreeItemAssertions.assertThat(containerVolumesItem).isExpanded().hasChildItems(3);
+			SWTBotTreeItemAssertions.assertThat(containerVolumesItem.getNode(0)).hasText("/path/to/container");
+			SWTBotTreeItemAssertions.assertThat(containerVolumesItem.getNode(1))
+					.hasText("/path/to/host -> /path/to/container");
+			SWTBotTreeItemAssertions.assertThat(containerVolumesItem.getNode(2))
+					.hasText("/path/to/host -> /path/to/container (Z,ro)");
+		});
+	}
+
+	@Test
+	public void shouldRemainExpandedAfterRefresh() throws InterruptedException {
+		// given
+		final DockerClient client = MockDockerClientFactory.noImages()
+				.container(MockDockerContainerFactory.name("foo_bar").build(),
+						MockDockerContainerInfoFactory.volume("/path/to/container")
+								.port("8080/tcp", "0.0.0.0", "8080")
+								.link("/foo:/bar/foo")
+								.volume("/path/to/host:/path/to/container:Z,ro").build())
+				.build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		configureConnectionManager(dockerConnection);
+		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
+		final SWTBotTreeItem containersTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test (null)",
+				"Containers");
+		final SWTBotTreeItem containerTreeItem = SWTUtils.getTreeItem(containersTreeItem, "foo_bar (null)");
+		SWTUtils.asyncExec(() -> containerTreeItem.expand());
+		SWTUtils.asyncExec(() -> SWTUtils.getTreeItem(containerTreeItem, "Links").expand());
+		SWTUtils.asyncExec(() -> SWTUtils.getTreeItem(containerTreeItem, "Ports").expand());
+		SWTUtils.asyncExec(() -> SWTUtils.getTreeItem(containerTreeItem, "Volumes").expand());
+		// ensure items are actually expanded before calling the 'refresh' command
+		SWTUtils.syncAssert(() -> {
+			SWTBotTreeItemAssertions.assertThat(SWTUtils.getTreeItem(containerTreeItem, "Links")).isExpanded();
+			SWTBotTreeItemAssertions.assertThat(SWTUtils.getTreeItem(containerTreeItem, "Ports")).isExpanded();
+			SWTBotTreeItemAssertions.assertThat(SWTUtils.getTreeItem(containerTreeItem, "Volumes")).isExpanded();
+		});
+		// when refreshing the container
+		SWTUtils.asyncExec(() -> {
+			dockerExplorerViewTreeBot = dockerExplorerViewBot.bot().tree();
+			dockerExplorerViewTreeBot.select(containersTreeItem);
+			dockerExplorerViewTreeBot.contextMenu("Refresh").click();
+		});
+		SWTUtils.asyncExec(() -> containersTreeItem.expand());
+		// then all items should remain expanded (after they were reloaded)
+		SWTUtils.syncAssert(() -> {
+			SWTBotTreeItemAssertions.assertThat(SWTUtils.getTreeItem(containerTreeItem, "Links")).isExpanded();
+			SWTBotTreeItemAssertions.assertThat(SWTUtils.getTreeItem(containerTreeItem, "Ports")).isExpanded();
+			SWTBotTreeItemAssertions.assertThat(SWTUtils.getTreeItem(containerTreeItem, "Volumes")).isExpanded();
+		});
 	}
 
 }

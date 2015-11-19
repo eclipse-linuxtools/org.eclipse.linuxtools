@@ -45,7 +45,7 @@ public class DockerConnectionManagerTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
 		dockerConnectionManager
 				.setConnectionStorageManager(MockDockerConnectionStorageManagerFactory.providing(dockerConnection));
-		SWTUtils.asyncExec(() -> dockerConnectionManager.reloadConnections());
+		SWTUtils.syncExec(() -> dockerConnectionManager.reloadConnections());
 		// when
 		dockerConnection.getContainers();
 		// then
@@ -59,7 +59,7 @@ public class DockerConnectionManagerTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
 		dockerConnectionManager
 				.setConnectionStorageManager(MockDockerConnectionStorageManagerFactory.providing(dockerConnection));
-		dockerConnectionManager.reloadConnections();
+		SWTUtils.syncExec(() -> dockerConnectionManager.reloadConnections());
 		dockerConnection.getContainers();
 		Assertions.assertThat(dockerContainersRefreshManager.getConnections()).contains(dockerConnection);
 		// when

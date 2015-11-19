@@ -49,11 +49,28 @@ public interface IDockerContainer {
 	public IDockerConnection getConnection();
 
 	/**
+	 * @return <code>true</code> if the {@link IDockerContainerInfo} has been
+	 *         loaded, <code>false</code> otherwise.
+	 */
+	public boolean isInfoLoaded();
+
+	/**
+	 * @return the {@link IDockerContainerInfo} by calling the Docker daemon
+	 *         using the {@link IDockerConnection} associated with this
+	 *         {@link IDockerContainer} if it was not loaded before, otherwise
+	 *         uses the previous version.
+	 */
+	public IDockerContainerInfo info();
+
+	/**
+	 * @param force
+	 *            <code>true</code> to force refresh, <code>false</code> to use
+	 *            existing {@link IDockerContainerInfo} if it was loaded before.
 	 * @return the {@link IDockerContainerInfo} by calling the Docker daemon
 	 *         using the {@link IDockerConnection} associated with this
 	 *         {@link IDockerContainer}.
 	 */
-	public IDockerContainerInfo info();
-
+	public IDockerContainerInfo info(boolean force);
+	
 
 }

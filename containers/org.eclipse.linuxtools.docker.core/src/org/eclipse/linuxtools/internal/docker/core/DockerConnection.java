@@ -590,7 +590,7 @@ public class DockerConnection implements IDockerConnection, Closeable {
 	}
 
 	@Override
-	public IDockerContainerInfo getContainerInfo(String id) {
+	public IDockerContainerInfo getContainerInfo(final String id) {
 		try {
 			final ContainerInfo info = client.inspectContainer(id);
 			return new DockerContainerInfo(info);
