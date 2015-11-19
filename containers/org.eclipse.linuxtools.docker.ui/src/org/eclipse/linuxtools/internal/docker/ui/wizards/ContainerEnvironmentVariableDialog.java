@@ -40,7 +40,7 @@ public class ContainerEnvironmentVariableDialog extends Dialog {
 
 	private final DataBindingContext dbc = new DataBindingContext();
 
-	protected ContainerEnvironmentVariableDialog(final Shell parentShell) {
+	public ContainerEnvironmentVariableDialog(final Shell parentShell) {
 		super(parentShell);
 		this.model = new EnvironmentVariableModel();
 	}

@@ -1455,4 +1455,12 @@
        </contextualLaunch>
     </shortcut>
  </extension>
+ <extension
+       point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    <launchConfigurationTabGroup
+          class="org.eclipse.linuxtools.internal.docker.ui.launch.RunImageLaunchConfigurationTabGroup"
+          id="org.eclipse.linuxtools.docker.ui.runLaunchConfigurationTabGroup"
+          type="org.eclipse.linuxtools.docker.ui.runDockerImageLaunchConfigurationType">
+    </launchConfigurationTabGroup>
+ </extension>
 </plugin>

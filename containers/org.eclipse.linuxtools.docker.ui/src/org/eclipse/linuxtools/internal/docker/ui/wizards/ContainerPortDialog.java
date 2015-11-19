@@ -44,7 +44,7 @@ public class ContainerPortDialog extends Dialog {
 
 	private final DataBindingContext dbc = new DataBindingContext();
 
-	protected ContainerPortDialog(final Shell parentShell) {
+	public ContainerPortDialog(final Shell parentShell) {
 		super(parentShell);
 		this.model = new ContainerPortDialogModel();
 	}

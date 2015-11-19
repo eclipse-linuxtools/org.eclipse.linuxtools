@@ -57,16 +57,21 @@ public class SWTImagesFactory {
 			+ "docker_small.gif"; //$NON-NLS-1$
 	public static final String IMG_WIZARD = NAME_PREFIX
 			+ "banner-repository.gif"; //$NON-NLS-1$
+	public static final String IMG_ENV = NAME_PREFIX + "environment_co.gif"; //$NON-NLS-1$
 	public static final String IMG_FILTER = NAME_PREFIX + "filter_ps.gif"; //$NON-NLS-1$
 	public static final String IMG_KILL = NAME_PREFIX + "kill.gif"; //$NON-NLS-1$
 	public static final String IMG_KILLD = NAME_PREFIX + "killd.gif"; //$NON-NLS-1$
+	public static final String IMG_LINKS = NAME_PREFIX + "links_obj.gif"; //$NON-NLS-1$
+	public static final String IMG_MAIN_TAB = NAME_PREFIX + "main_tab.gif"; //$NON-NLS-1$
 	public static final String IMG_PULL = NAME_PREFIX + "pull.gif"; //$NON-NLS-1$
 	public static final String IMG_PUSH = NAME_PREFIX + "push.gif"; //$NON-NLS-1$
 	public static final String IMG_BUILD = NAME_PREFIX + "build_exec.png"; //$NON-NLS-1$
 	public static final String IMG_PAUSE = NAME_PREFIX + "suspend.gif"; //$NON-NLS-1$
 	public static final String IMG_PAUSE_D = NAME_PREFIX + "suspendd.gif"; //$NON-NLS-1$
+	public static final String IMG_PORTS_TAB = NAME_PREFIX + "ports_tab.gif"; //$NON-NLS-1$
 	public static final String IMG_REMOVE = NAME_PREFIX + "delete.gif"; //$NON-NLS-1$
 	public static final String IMG_REMOVE_D = NAME_PREFIX + "delete_d.gif"; //$NON-NLS-1$
+	public static final String IMG_RESOURCE = NAME_PREFIX + "resource_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_RESUME = NAME_PREFIX + "resume.gif"; //$NON-NLS-1$
 	public static final String IMG_RESUME_D = NAME_PREFIX + "resumed.gif"; //$NON-NLS-1$
 	public static final String IMG_START = NAME_PREFIX + "running.gif"; //$NON-NLS-1$
@@ -100,6 +105,7 @@ public class SWTImagesFactory {
 	public static final String IMG_RESOLVED = NAME_PREFIX + "resolved.gif"; //$NON-NLS-1$
 	public static final String IMG_BANNER_REPOSITORY = NAME_PREFIX
 			+ "banner-repository.gif"; //$NON-NLS-1$
+	public static final String IMG_VOLUMES = NAME_PREFIX + "volumes.gif"; //$NON-NLS-1$
 	public static final String IMG_WARNING = NAME_PREFIX + "warning_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_ERROR = NAME_PREFIX + "error_obj.gif"; //$NON-NLS-1$
 
@@ -107,6 +113,7 @@ public class SWTImagesFactory {
 			IMG_CONNECTION);
 	public static final ImageDescriptor DESC_CREATE_CONTAINER = createManaged(
 			"", IMG_CREATE_CONTAINER);
+	public static final ImageDescriptor DESC_ENV = createManaged("", IMG_ENV);
 	public static final ImageDescriptor DESC_FOLDER = createManaged("",
 			IMG_FOLDER);
 	public static final ImageDescriptor DESC_FOLDER_CLOSED = createManaged("",
@@ -121,6 +128,8 @@ public class SWTImagesFactory {
 	public static final ImageDescriptor DESC_KILL = createManaged("", IMG_KILL);
 	public static final ImageDescriptor DESC_KILLD = createManaged("",
 			IMG_KILLD);
+	public static final ImageDescriptor DESC_LINKS = createManaged("",
+			IMG_LINKS);
 	public static final ImageDescriptor DESC_DOCKER_LARGE = createManaged("",
 			IMG_DOCKER_LARGE);
 	public static final ImageDescriptor DESC_DOCKER_SMALL = createManaged("",
@@ -129,6 +138,8 @@ public class SWTImagesFactory {
 			IMG_WIZARD);
 	public static final ImageDescriptor DESC_FILTER = createManaged("",
 			IMG_FILTER);
+	public static final ImageDescriptor DESC_MAIN_TAB = createManaged("",
+			IMG_MAIN_TAB);
 	public static final ImageDescriptor DESC_PULL = createManaged("", IMG_PULL);
 	public static final ImageDescriptor DESC_PUSH = createManaged("", IMG_PUSH);
 	public static final ImageDescriptor DESC_BUILD = createManaged("",
@@ -137,10 +148,14 @@ public class SWTImagesFactory {
 			IMG_PAUSE);
 	public static final ImageDescriptor DESC_PAUSE_D = createManaged("",
 			IMG_PAUSE_D);
+	public static final ImageDescriptor DESC_PORTS_TAB = createManaged("",
+			IMG_PORTS_TAB);
 	public static final ImageDescriptor DESC_REMOVE = createManaged("",
 			IMG_REMOVE);
 	public static final ImageDescriptor DESC_REMOVE_D = createManaged("",
 			IMG_REMOVE_D);
+	public static final ImageDescriptor DESC_RESOURCE = createManaged("",
+			IMG_RESOURCE);
 	public static final ImageDescriptor DESC_RESUME = createManaged("",
 			IMG_RESUME);
 	public static final ImageDescriptor DESC_RESUME_D = createManaged("",
@@ -186,6 +201,8 @@ public class SWTImagesFactory {
 			IMG_RESOLVED);
 	public static final ImageDescriptor DESC_BANNER_REPOSITORY = createManaged(
 			"", IMG_BANNER_REPOSITORY);
+	public static final ImageDescriptor DESC_VOLUMES = createManaged("",
+			IMG_VOLUMES);
 	public static final ImageDescriptor DESC_WARNING = createManaged("",
 			IMG_WARNING);
 	public static final ImageDescriptor DESC_ERROR = createManaged("",

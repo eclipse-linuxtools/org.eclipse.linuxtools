@@ -141,8 +141,17 @@ public class ImageRunResourceVolumesVariablesModel
 
 	public void setEnvironmentVariables(
 			final WritableList environmentVariables) {
+		firePropertyChange(ENVIRONMENT_VARIABLES, this.environmentVariables,
+				this.environmentVariables = environmentVariables);
+	}
+
+	public void addEnvironmentVariable(
+			final EnvironmentVariableModel variable) {
+		this.environmentVariables.add(variable);
+	}
+
+	public void removeEnvironmentVariables() {
 		this.environmentVariables.clear();
-		this.environmentVariables.addAll(environmentVariables);
 	}
 
 	public void removeEnvironmentVariable(

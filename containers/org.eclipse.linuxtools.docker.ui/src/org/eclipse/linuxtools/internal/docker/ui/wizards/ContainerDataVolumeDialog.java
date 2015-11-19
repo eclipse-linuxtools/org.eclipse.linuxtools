@@ -74,7 +74,7 @@ public class ContainerDataVolumeDialog extends Dialog {
 
 	private final IDockerConnection connection;
 
-	protected ContainerDataVolumeDialog(final Shell parentShell,
+	public ContainerDataVolumeDialog(final Shell parentShell,
 			final IDockerConnection connection,
 			final DataVolumeModel selectedDataVolume) {
 		super(parentShell);
@@ -83,7 +83,7 @@ public class ContainerDataVolumeDialog extends Dialog {
 		this.containerNames = WizardUtils.getContainerNames(connection);
 	}
 
-	protected ContainerDataVolumeDialog(final Shell parentShell,
+	public ContainerDataVolumeDialog(final Shell parentShell,
 			final IDockerConnection connection) {
 		super(parentShell);
 		this.connection = connection;

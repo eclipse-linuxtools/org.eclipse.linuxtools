@@ -81,7 +81,7 @@ public class RunImageCommandHandler extends AbstractHandler {
 		return null;
 	}
 
-	private void runImage(final IDockerConnection connection,
+	public static void runImage(final IDockerConnection connection,
 			final IDockerContainerConfig containerConfig,
 			final IDockerHostConfig hostConfig, final String containerName,
 			final boolean removeWhenExits) {

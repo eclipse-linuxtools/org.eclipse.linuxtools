@@ -22,6 +22,8 @@ import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunResourceVolumes
 public class DataVolumeModel extends BaseDatabindingModel
 		implements Comparable<DataVolumeModel> {
 
+	private static final String SEPARATOR = ":"; //$NON-NLS-1$
+
 	public static final String CONTAINER_PATH = "containerPath"; //$NON-NLS-1$
 
 	public static final String MOUNT_TYPE = "mountType"; //$NON-NLS-1$
@@ -33,6 +35,8 @@ public class DataVolumeModel extends BaseDatabindingModel
 	public static final String READ_ONLY_VOLUME = "readOnly"; //$NON-NLS-1$
 
 	public static final String CONTAINER_MOUNT = "containerMount"; //$NON-NLS-1$
+
+	public static final String SELECTED = "selected"; //$NON-NLS-1$
 
 	private final String id = UUID.randomUUID().toString();
 
@@ -47,6 +51,8 @@ public class DataVolumeModel extends BaseDatabindingModel
 	private String containerMount;
 
 	private boolean readOnly = false;
+
+	private boolean selected;
 
 	public DataVolumeModel() {
 	}
@@ -74,6 +80,35 @@ public class DataVolumeModel extends BaseDatabindingModel
 		} else {
 			this.mountType = MountType.NONE;
 		}
+	}
+
+	/**
+	 * Create a DataVolumeModel from a toString() output.
+	 * 
+	 * @param fromString
+	 * @return DataVolumeModel
+	 */
+	public static DataVolumeModel createDataVolumeModel(
+			final String fromString) {
+		final DataVolumeModel model = new DataVolumeModel();
+		final String[] items = fromString.split(SEPARATOR); // $NON-NLS-1$
+		model.containerPath = items[0];
+		model.mountType = MountType.valueOf(items[1]);
+		switch (model.mountType) {
+		case CONTAINER:
+			model.setContainerMount(items[2]);
+			model.setSelected(Boolean.valueOf(items[3]));
+			break;
+		case HOST_FILE_SYSTEM:
+			model.setHostPathMount(items[2]);
+			model.setReadOnly(Boolean.valueOf(items[3]));
+			model.setSelected(Boolean.valueOf(items[4]));
+			break;
+		case NONE:
+			model.setSelected(Boolean.valueOf(items[2]));
+			break;
+		}
+		return model;
 	}
 
 	public String getContainerPath() {
@@ -145,9 +180,38 @@ public class DataVolumeModel extends BaseDatabindingModel
 		}
 	}
 
+	public boolean getSelected() {
+		return selected;
+	}
+
+	public void setSelected(final boolean selected) {
+		firePropertyChange(SELECTED, this.selected, this.selected = selected);
+	}
+
 	@Override
 	public int compareTo(final DataVolumeModel other) {
 		return this.getContainerPath().compareTo(other.getContainerPath());
+	}
+
+	// FIXME we should have a dedicated method to serialize the bean
+	@Override
+	public String toString() {
+		final StringBuffer buffer = new StringBuffer();
+		buffer.append(
+				this.containerPath + SEPARATOR + getMountType() + SEPARATOR);
+		switch (getMountType()) {
+		case CONTAINER:
+			buffer.append(getContainerMount());
+			break;
+		case HOST_FILE_SYSTEM:
+			buffer.append(getHostPathMount() + SEPARATOR); // $NON-NLS-1$
+			buffer.append(isReadOnly());
+			break;
+		case NONE:
+			break;
+		}
+		buffer.append(SEPARATOR).append(this.selected);
+		return buffer.toString();
 	}
 
 	@Override
