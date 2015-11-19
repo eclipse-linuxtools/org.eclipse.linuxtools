@@ -66,6 +66,7 @@
 			<insertionPoint name="group.edit" separator="true"/>
 			<insertionPoint name="group.logs" separator="true"/>
 			<insertionPoint name="group.tags" separator="true"/>
+			<insertionPoint name="group.showIn" separator="true"/>
 			</popupMenu>
             <options>
 				<property
@@ -247,6 +248,17 @@
 	        id="org.eclipse.linuxtools.docker.ui.commands.runImage"
 	        name="%command.runimage.name">
         </command>
+        <command
+            name="%command.showInWebBrowser.menu.name"
+            description="%command.showInWebBrowser.menu.description"
+            id="org.eclipse.linuxtools.docker.ui.commands.showInWebBrowser">
+      	</command>
+        <command
+            name="%command.showInSystemExplorer.menu.name"
+            description="%command.showInSystemExplorer.menu.description"
+            id="org.eclipse.linuxtools.docker.ui.commands.showInSystemExplorer">
+      	</command>
+		      
 	</extension>
     <extension
 		point="org.eclipse.ui.handlers">
@@ -475,7 +487,6 @@
 	          </with>
      		</enabledWhen>
       	</handler>
-		
 		<handler
               commandId="org.eclipse.linuxtools.docker.ui.commands.showAllImages"
               class="org.eclipse.linuxtools.internal.docker.ui.commands.ShowAllImagesCommandHandler">
@@ -491,6 +502,14 @@
 	                  </iterate>
 	            </with>
      		</enabledWhen>
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.showInWebBrowser"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.ShowInWebBrowserCommandHandler">
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.showInSystemExplorer"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.ShowInSystemExplorerCommandHandler">
      	</handler>
      	
 	</extension>
@@ -942,9 +961,47 @@
 	            </visibleWhen>
 				</command>
 		</menuContribution>
-		
-		
-		
+		<!-- explorer view context menu: Show In -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu?after=group.showIn">
+			<menu
+	           id="org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu.showIn"
+	           label="%menu.showIn">
+			</menu>
+		</menuContribution>		
+		<!-- explorer view context menu: Show In>Web Browser (on container ports)-->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu.showIn">
+		     <command
+		           commandId="org.eclipse.linuxtools.docker.ui.commands.showInWebBrowser"
+		           style="push">
+			     <visibleWhen>
+		     		<with variable="selection">
+		     		   <count value="1"/>
+		                  <iterate ifEmpty="false">
+		                     <instanceof value="org.eclipse.linuxtools.docker.core.IDockerPortMapping"></instanceof>
+		                  </iterate>
+		            </with>
+	     		</visibleWhen>
+		     </command>
+		</menuContribution>
+		<!-- explorer view context menu: Show In>File System (on container volumes)-->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu.showIn">
+		     <command
+		           commandId="org.eclipse.linuxtools.docker.ui.commands.showInSystemExplorer"
+		           label="%command.showInSystemExplorer.menu.name"
+             	style="push">
+			     <visibleWhen>
+		     		<with variable="selection">
+		     		   <count value="1"/>
+		                  <iterate ifEmpty="false">
+		                     <instanceof value="org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider$DockerContainerVolume"></instanceof>
+		                  </iterate>
+		            </with>
+	     		</visibleWhen>
+		     </command>
+		</menuContribution>
 		<!-- containers view toolbar: start containers -->
 		<menuContribution
 			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerContainersView">
@@ -1176,7 +1233,6 @@
 				</command>
 		</menuContribution>
 		
-				
 	</extension>
 	
     <extension point="org.eclipse.ui.views.properties.tabbed.propertyContributor">

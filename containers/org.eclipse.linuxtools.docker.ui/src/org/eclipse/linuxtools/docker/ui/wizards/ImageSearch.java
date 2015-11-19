@@ -37,7 +37,7 @@ public class ImageSearch extends Wizard {
 	 */
 	private final ImageSearchModel imageSearchModel;
 
-	/*
+	/**
 	 * Default Constructor
 	 * 
 	 * @param connection

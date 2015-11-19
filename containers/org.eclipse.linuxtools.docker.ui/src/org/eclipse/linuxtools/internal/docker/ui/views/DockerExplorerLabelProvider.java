@@ -176,7 +176,7 @@ public class DockerExplorerLabelProvider implements IStyledLabelProvider, ILabel
 		} else if (element instanceof IDockerPortMapping) {
 			final IDockerPortMapping mapping = (IDockerPortMapping) element;
 			final String hostMapping = mapping.getIp() + ":"
-								+ mapping.getPublicPort() + " -> ";
+					+ mapping.getPublicPort() + " -> ";
 			final String containerMapping = Integer
 					.toString(mapping.getPrivatePort());
 			final String mappingType = " (" + mapping.getType() + ")";

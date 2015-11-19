@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.docker.ui.views;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -371,7 +372,7 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 
 		private final IDockerContainer container;
 
-		private final Map<String, List<IDockerPortBinding>> bindings;
+		private final List<IDockerPortMapping> portMappings;
 
 		/**
 		 * @param container
@@ -382,11 +383,7 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 				final IDockerContainer container,
 				final Map<String, List<IDockerPortBinding>> bindings) {
 			this.container = container;
-			this.bindings = bindings;
-		}
-
-		public List<IDockerPortMapping> getPortMappings() {
-			final List<IDockerPortMapping> portMappings = new ArrayList<>();
+			this.portMappings = new ArrayList<>();
 			if (bindings != null) {
 				for (Entry<String, List<IDockerPortBinding>> entry : bindings
 						.entrySet()) {
@@ -395,14 +392,32 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 					final int privatePort = Integer.parseInt(source[0]);
 					final String type = source[1];
 					for (IDockerPortBinding portBinding : entry.getValue()) {
-						portMappings.add(new DockerPortMapping(privatePort,
-								Integer.parseInt(portBinding.hostPort()), type,
-								portBinding.hostIp()));
+						portMappings.add(
+								new DockerPortMapping(container, privatePort,
+										Integer.parseInt(
+												portBinding.hostPort()),
+										type, portBinding.hostIp()));
 					}
 				}
 			}
-			Collections.sort(portMappings);
-			return portMappings;
+			Collections.sort(portMappings,
+					new Comparator<IDockerPortMapping>() {
+
+						@Override
+						public int compare(final IDockerPortMapping portMapping,
+								final IDockerPortMapping otherPortMapping) {
+							return portMapping.getPrivatePort()
+									- otherPortMapping.getPrivatePort();
+						}
+					});
+		}
+
+		public IDockerContainer getContainer() {
+			return container;
+		}
+
+		public List<IDockerPortMapping> getPortMappings() {
+			return this.portMappings;
 		}
 
 		@Override
@@ -435,7 +450,6 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 				return false;
 			return true;
 		}
-
 	}
 
 	/**
@@ -462,9 +476,13 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 			this.links = new ArrayList<>();
 			if (links != null) {
 				for (String link : links) {
-					this.links.add(new DockerContainerLink(link));
+					this.links.add(new DockerContainerLink(container, link));
 				}
 			}
+		}
+
+		public IDockerContainer getContainer() {
+			return container;
 		}
 
 		public List<DockerContainerLink> getLinks() {
@@ -479,11 +497,6 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 			return "Container links for " + this.container.name();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Object#hashCode()
-		 */
 		@Override
 		public int hashCode() {
 			final int prime = 31;
@@ -493,11 +506,6 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 			return result;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Object#equals(java.lang.Object)
-		 */
 		@Override
 		public boolean equals(Object obj) {
 			if (this == obj)
@@ -519,6 +527,8 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 
 	public static class DockerContainerLink {
 
+		private final IDockerContainer container;
+
 		private final String containerName;
 
 		private final String containerAlias;
@@ -529,12 +539,18 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 		 * @param linkValue
 		 *            the bind value provided by the {@link IDockerHostConfig}.
 		 */
-		public DockerContainerLink(final String linkValue) {
+		public DockerContainerLink(final IDockerContainer container,
+				final String linkValue) {
+			this.container = container;
 			// format: "container_name:containerAlias"
 			final String[] args = linkValue.split(":");
 			this.containerName = getDisplayableContainerName(args[0]);
 			this.containerAlias = args.length > 0
 					? getDisplayableContainerAlias(args[1]) : null;
+		}
+
+		public IDockerContainer getContainer() {
+			return container;
 		}
 
 		/**
@@ -629,9 +645,14 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 			this.volumes = new ArrayList<>();
 			if (volumes != null) {
 				for (String volume : volumes) {
-					this.volumes.add(new DockerContainerVolume(volume));
+					this.volumes
+							.add(new DockerContainerVolume(container, volume));
 				}
 			}
+		}
+
+		public IDockerContainer getContainer() {
+			return container;
 		}
 
 		public List<DockerContainerVolume> getVolumes() {
@@ -676,6 +697,8 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 
 	public static class DockerContainerVolume {
 
+		private final IDockerContainer container;
+
 		private final String hostPath;
 
 		private final String containerPath;
@@ -683,12 +706,15 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 		private final String flags;
 
 		/**
+		 * @param container
 		 * @param volume
 		 *            the volume value provided by the {@link IDockerHostConfig}
 		 *            .
 		 * @return a {@link DockerContainerVolume}
 		 */
-		public DockerContainerVolume(final String volume) {
+		public DockerContainerVolume(final IDockerContainer container,
+				final String volume) {
+			this.container = container;
 			// (1) "container_path" to create a new volume for the container
 			// (2) "host_path:container_path" to bind-mount a host path into the
 			// container
@@ -703,6 +729,10 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 			this.containerPath = args.length > 1 ? args[1] : args[0];
 			// flags exists on case (3) only
 			this.flags = args.length > 2 ? args[2] : null;
+		}
+
+		public IDockerContainer getContainer() {
+			return container;
 		}
 
 		public String getHostPath() {

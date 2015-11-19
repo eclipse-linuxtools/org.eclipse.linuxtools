@@ -29,6 +29,7 @@ Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.docker.ui,
  org.eclipse.linuxtools.docker.ui.launch,
  org.eclipse.linuxtools.docker.ui.wizards,
+ org.eclipse.linuxtools.internal.docker.ui.commands;x-friends:="org.eclipse.linuxtools.docker.ui.tests",
  org.eclipse.linuxtools.internal.docker.ui.preferences,
  org.eclipse.linuxtools.internal.docker.ui.views;x-friends:="org.eclipse.linuxtools.docker.ui.tests",
  org.eclipse.linuxtools.internal.docker.ui.wizards;x-friends:="org.eclipse.linuxtools.docker.ui.tests"
