@@ -20,18 +20,18 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public abstract class BaseVMCommandHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) {
-		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
+		final ISelection selection = HandlerUtil.getCurrentSelection(event);
 		final List<IVagrantVM> selectedContainers = CommandUtils
-				.getSelectedContainers(activePart);
+				.getSelectedContainers(selection);
 		final Job job = new Job(getJobName(selectedContainers)) {
 			@Override
 			protected IStatus run(final IProgressMonitor monitor) {

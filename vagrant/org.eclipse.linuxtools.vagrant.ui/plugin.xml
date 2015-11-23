@@ -365,6 +365,27 @@
              style="push">
        </command>
     </menuContribution>
+    <menuContribution
+          allPopups="false"
+          locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+       <toolbar
+             id="org.eclipse.linuxtools.vagrant.ui.toolbar">
+          <command
+                commandId="org.eclipse.linuxtools.vagrant.ui.commands.createVM"
+                icon="icons/createcontainer.gif"
+                id="org.eclipse.linuxtools.vagrant.ui.toolbar.item"
+                style="pulldown">
+          </command>
+       </toolbar>
+    </menuContribution>
+    <menuContribution
+          allPopups="false"
+          locationURI="menu:org.eclipse.linuxtools.vagrant.ui.toolbar.item">
+       <dynamic
+             class="org.eclipse.linuxtools.internal.vagrant.ui.commands.VagrantToolBarContributionItem"
+             id="org.eclipse.linuxtools.vagrant.ui.dynamic">
+       </dynamic>
+    </menuContribution>
  </extension>
  <extension
        point="org.eclipse.core.expressions.propertyTesters">

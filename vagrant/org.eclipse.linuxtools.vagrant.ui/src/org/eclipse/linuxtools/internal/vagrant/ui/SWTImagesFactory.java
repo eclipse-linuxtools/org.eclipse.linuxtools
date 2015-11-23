@@ -95,6 +95,7 @@ public class SWTImagesFactory {
 			+ "banner-repository.gif"; //$NON-NLS-1$
 	public static final String IMG_WARNING = NAME_PREFIX + "warning_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_ERROR = NAME_PREFIX + "error_obj.gif"; //$NON-NLS-1$
+	public static final String IMG_CONSOLE = NAME_PREFIX + "console_view.gif"; //$NON-NLS-1$
 
 	public static final ImageDescriptor DESC_CONNECTION = createManaged("",
 			IMG_CONNECTION);
@@ -177,6 +178,8 @@ public class SWTImagesFactory {
 			IMG_WARNING);
 	public static final ImageDescriptor DESC_ERROR = createManaged("",
 			IMG_ERROR);
+	public static final ImageDescriptor DESC_CONSOLE = createManaged("",
+			IMG_CONSOLE);
 
 	private static ImageDescriptor createManaged(String prefix, String name) {
 		return createManaged(imageRegistry, prefix, name);
