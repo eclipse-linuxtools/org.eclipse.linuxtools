@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.linuxtools.internal.docker.ui.validators.ImageNameValidator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,12 +20,11 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
-public class ImagePullPatternTest {
+public class ImagePullPatternTest { 
 	
 	private static Object[] match(final String imageName, final int expectedSeverity) {
 		return new Object[]{imageName, expectedSeverity};
 	}
-	
 	
 	@Parameters(name="{0} -> {1}")
 	public static Object[][] data() {
@@ -37,21 +37,21 @@ public class ImagePullPatternTest {
 			match("jboss/wildfly:", IStatus.WARNING),
 			match("jboss/wildfly:latest", IStatus.OK),
 			match("localhost/wildfly/", IStatus.WARNING),
-			match("localhost/wildfly/jboss", IStatus.WARNING),
-			match("localhost/wildfly/jboss:", IStatus.WARNING),
-			match("localhost/wildfly/jboss:latest", IStatus.OK),
-			match("localhost/wildfly/jboss:9", IStatus.OK),
-			match("localhost/wildfly/jboss:9.", IStatus.WARNING),
-			match("localhost/wildfly/jboss:9.0.1.", IStatus.WARNING),
-			match("localhost/wildfly/jboss:9.0.1.Final", IStatus.OK),
+			match("localhost/jboss/wildfly", IStatus.WARNING),
+			match("localhost/jboss/wildfly:", IStatus.WARNING),
+			match("localhost/jboss/wildfly:latest", IStatus.WARNING),
+			match("localhost/jboss/wildfly:9", IStatus.WARNING),
+			match("localhost/jboss/wildfly:9.", IStatus.WARNING),
+			match("localhost/jboss/wildfly:9.0.1.", IStatus.WARNING),
+			match("localhost/jboss/wildfly:9.0.1.Final", IStatus.WARNING),
 			match("localhost:", IStatus.WARNING),
 			match("localhost:5000", IStatus.OK), // bc it matches the REPO:TAG pattern.
 			match("localhost:5000/", IStatus.WARNING),
-			match("localhost:5000/wildfly", IStatus.WARNING),
-			match("localhost:5000/wildfly/", IStatus.WARNING),
-			match("localhost:5000/wildfly/jboss", IStatus.WARNING),
-			match("localhost:5000/wildfly/jboss:", IStatus.WARNING),
-			match("localhost:5000/wildfly/jboss:latest", IStatus.OK),
+			match("localhost:5000/jboss/wildfly", IStatus.WARNING),
+			match("localhost:5000/jboss/wildfly/", IStatus.WARNING),
+			match("localhost:5000/jboss/wildfly", IStatus.WARNING),
+			match("localhost:5000/jboss/wildfly:", IStatus.WARNING),
+			match("localhost:5000/jboss/wildfly:latest", IStatus.OK),
 		};
 	}
 	
@@ -63,7 +63,7 @@ public class ImagePullPatternTest {
 	
 	@Test
 	public void verifyData() {
-		final IStatus status = new ImagePullPage.ImageNameValidator().validate(imageName);
+		final IStatus status = new ImageNameValidator().validate(imageName);
 		// then
 		Assert.assertEquals(expectedSeverity, status.getSeverity());
 	}

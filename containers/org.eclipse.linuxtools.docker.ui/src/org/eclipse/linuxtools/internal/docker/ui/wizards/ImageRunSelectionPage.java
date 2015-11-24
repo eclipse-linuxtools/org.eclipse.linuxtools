@@ -174,6 +174,8 @@ public class ImageRunSelectionPage extends WizardPage {
 		final ImageSelectionValidator imageSelectionValidator = new ImageSelectionValidator(
 				imageSelectionObservable);
 		dbc.addValidationStatusProvider(imageSelectionValidator);
+		imageSelectionObservable
+				.addValueChangeListener(onImageSelectionChange());
 		final IObservableValue containerNameObservable = BeanProperties
 				.value(ImageRunSelectionModel.class,
 						ImageRunSelectionModel.CONTAINER_NAME)
@@ -181,7 +183,6 @@ public class ImageRunSelectionPage extends WizardPage {
 		final ContainerNameValidator containerNameValidator = new ContainerNameValidator(
 				model.getSelectedConnection(), containerNameObservable);
 		dbc.addValidationStatusProvider(containerNameValidator);
-		//
 		setControl(container);
 	}
 

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.docker.core;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
@@ -70,6 +72,17 @@ public class DockerConnectionManager {
 
 	public IDockerConnection[] getConnections() {
 		return connections.toArray(new IDockerConnection[connections.size()]);
+	}
+
+	/**
+	 * @return an immutable {@link List} of the {@link IDockerConnection} names
+	 */
+	public List<String> getConnectionNames() {
+		final List<String> connectionNames = new ArrayList<>();
+		for (IDockerConnection connection : this.connections) {
+			connectionNames.add(connection.getName());
+		}
+		return Collections.unmodifiableList(connectionNames);
 	}
 
 	public IDockerConnection findConnection(final String name) {

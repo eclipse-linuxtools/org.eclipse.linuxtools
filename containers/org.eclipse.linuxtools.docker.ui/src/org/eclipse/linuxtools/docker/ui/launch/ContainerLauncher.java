@@ -231,7 +231,7 @@ public class ContainerLauncher {
 				String containerId = null;
 				try {
 					containerId = ((DockerConnection) connection)
-							.createContainer(config, hostConfig);
+							.createContainer(config, hostConfig, null);
 					OutputStream stream = null;
 					RunConsole oldConsole = getConsole();
 					final RunConsole rc = RunConsole.findConsole(containerId,

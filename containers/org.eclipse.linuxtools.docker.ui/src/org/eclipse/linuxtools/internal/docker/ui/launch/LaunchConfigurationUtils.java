@@ -39,6 +39,17 @@ public class LaunchConfigurationUtils {
 	private LaunchConfigurationUtils() {
 		// empty
 	}
+	
+	/**
+	 * @return the ILaunchConfigurationType for the given configuration type.
+	 * @param configType
+	 *            the id of the configuration type
+	 */
+	public static ILaunchConfigurationType getLaunchConfigType(
+			final String configType) {
+		return DebugPlugin.getDefault().getLaunchManager()
+				.getLaunchConfigurationType(configType);
+	}
 
 	public static ILaunchConfiguration saveLaunchConfiguration(
 			final IDockerContainer container) {

@@ -18,11 +18,12 @@ public interface IDockerImageListener {
 	 * Called when the list of {@link IDockerImage} for the given
 	 * {@link IDockerConnection} changed
 	 * 
-	 * @param manager
-	 *            - the Docker connection
+	 * @param connection
+	 *            the {@link IDockerConnection} in which the list of
+	 *            {@link IDockerImage} changed
 	 * @param images
-	 *            - the new list of {@link IDockerImage}
+	 *            the new list of {@link IDockerImage}
 	 */
-	void listChanged(IDockerConnection manager, List<IDockerImage> images);
+	void listChanged(IDockerConnection connection, List<IDockerImage> images);
 
 }

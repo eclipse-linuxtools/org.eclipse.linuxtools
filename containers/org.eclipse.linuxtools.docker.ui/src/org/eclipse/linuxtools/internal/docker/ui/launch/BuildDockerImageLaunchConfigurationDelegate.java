@@ -11,16 +11,22 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.launch;
 
-import static org.eclipse.linuxtools.internal.docker.ui.launch.IBuildDockerImageLaunchConfigurationConstants.DOCKER_CONNECTION;
+import static org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions.DOCKER_CONNECTION;
+import static org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions.FORCE_RM_INTERMEDIATE_CONTAINERS;
+import static org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions.NO_CACHE;
+import static org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions.QUIET_BUILD;
+import static org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions.REPO_NAME;
+import static org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions.RM_INTERMEDIATE_CONTAINERS;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IBuildDockerImageLaunchConfigurationConstants.SOURCE_PATH_LOCATION;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IBuildDockerImageLaunchConfigurationConstants.SOURCE_PATH_WORKSPACE_RELATIVE_LOCATION;
 
-import org.eclipse.core.resources.ResourcesPlugin;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunch;
@@ -44,18 +50,31 @@ public class BuildDockerImageLaunchConfigurationDelegate
 	private static final String MISSING_CONNECTION_ERROR_MSG = "MissingConnectionError.msg"; //$NON-NLS-1$
 
 	@Override
-	public void launch(ILaunchConfiguration configuration, String mode,
-			ILaunch launch, IProgressMonitor monitor) throws CoreException {
+	public void launch(final ILaunchConfiguration configuration,
+			final String mode, final ILaunch launch,
+			final IProgressMonitor monitor) throws CoreException {
 		final String sourcePathLocation = configuration
 				.getAttribute(SOURCE_PATH_LOCATION, (String) null);
 		final boolean sourcePathWorkspaceRelativeLocation = configuration
-				.getAttribute(SOURCE_PATH_WORKSPACE_RELATIVE_LOCATION, false);
-		final IPath sourcePath = getPath(sourcePathLocation,
+				.getAttribute(SOURCE_PATH_WORKSPACE_RELATIVE_LOCATION,
+						false);
+		final IPath sourcePath = BuildDockerImageUtils.getPath(
+				sourcePathLocation,
 				sourcePathWorkspaceRelativeLocation);
 		final String connectionName = configuration
 				.getAttribute(DOCKER_CONNECTION, (String) null);
+		final String repoName = configuration.getAttribute(REPO_NAME,
+				(String) null);
 		final DockerConnection connection = (DockerConnection) getDockerConnection(
 				connectionName);
+		final Map<String, Object> buildOptions = new HashMap<>();
+		buildOptions.put(QUIET_BUILD,
+				configuration.getAttribute(QUIET_BUILD, false));
+		buildOptions.put(NO_CACHE, configuration.getAttribute(NO_CACHE, false));
+		buildOptions.put(RM_INTERMEDIATE_CONTAINERS, configuration
+				.getAttribute(RM_INTERMEDIATE_CONTAINERS, true));
+		buildOptions.put(FORCE_RM_INTERMEDIATE_CONTAINERS, configuration
+				.getAttribute(FORCE_RM_INTERMEDIATE_CONTAINERS, false));
 		if (connection == null) {
 			Activator
 					.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
@@ -64,22 +83,19 @@ public class BuildDockerImageLaunchConfigurationDelegate
 									connectionName)));
 		}
 		try {
-			final Job buildImageJob = new BuildDockerImageJob(connection,
-					sourcePath);
-			buildImageJob.schedule();
+			if (connection != null && sourcePath != null) {
+				final Job buildImageJob = new BuildDockerImageJob(connection,
+						sourcePath, repoName, buildOptions);
+				buildImageJob.schedule();
+			} else {
+				Activator.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
+						LaunchMessages.getString(
+								"BuildDockerImageLaunchConfiguration.error.incomplete"))); //$NON-NLS-1$
+			}
 		} catch (DockerException e) {
 			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					e.getMessage(), e));
 		}
-	}
-
-	private IPath getPath(final String sourcePathLocation,
-			final boolean sourcePathWorkspaceRelativeLocation) {
-		if (sourcePathWorkspaceRelativeLocation) {
-			return ResourcesPlugin.getWorkspace().getRoot()
-					.findMember(new Path(sourcePathLocation)).getLocation();
-		}
-		return new Path(sourcePathLocation);
 	}
 
 	/**

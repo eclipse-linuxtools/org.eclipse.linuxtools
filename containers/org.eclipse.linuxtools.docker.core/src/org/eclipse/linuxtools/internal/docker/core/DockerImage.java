@@ -17,17 +17,31 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 
 public class DockerImage implements IDockerImage {
+
+	private static final String REGISTRY_HOST = "[a-zA-Z0-9]+([\\._-][a-zA-Z0-9]+)*"; //$NON-NLS-1$
+	private static final String REGISTRY_PORT = "[0-9]+"; //$NON-NLS-1$
+	private static final String REPOSITORY = "[a-z0-9]+([\\._-][a-z0-9]+)*"; //$NON-NLS-1$
+	private static final String NAME = "[a-z0-9]+([\\._-][a-z0-9]+)*"; //$NON-NLS-1$
+	private static final String TAG = "[a-zA-Z0-9]+([\\._-][a-zA-Z0-9]+)*"; //$NON-NLS-1$
+
+	/** the image name pattern. */
+	public static final Pattern imageNamePattern = Pattern.compile("(" //$NON-NLS-1$
+			+ REGISTRY_HOST + "\\:" + REGISTRY_PORT + "/)?" //$NON-NLS-1$ //$NON-NLS-2$
+			+ "((?<repository>" + REPOSITORY + ")/)?" //$NON-NLS-1$ //$NON-NLS-2$
+			+ "(?<name>" + NAME + ")" //$NON-NLS-1$ //$NON-NLS-2$
+			+ "(\\:(?<tag>" + TAG + "))?"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	// SimpleDateFormat is not thread-safe, so give one to each thread
     private static final ThreadLocal<SimpleDateFormat> formatter = new ThreadLocal<SimpleDateFormat>(){
         @Override
         protected SimpleDateFormat initialValue()
         {
-            return new SimpleDateFormat("yyyy-MM-dd");
+			return new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
         }
     };
     

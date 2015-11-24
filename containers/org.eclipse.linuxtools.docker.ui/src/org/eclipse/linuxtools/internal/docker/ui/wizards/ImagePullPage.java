@@ -12,16 +12,11 @@
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.core.databinding.validation.ValidationStatus;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -29,8 +24,10 @@ import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.ui.wizards.ImageSearch;
+import org.eclipse.linuxtools.internal.docker.core.DockerImage;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils;
+import org.eclipse.linuxtools.internal.docker.ui.validators.ImageNameValidator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -50,15 +47,6 @@ public class ImagePullPage extends WizardPage {
 	private final DataBindingContext dbc;
 	private final IDockerConnection connection;
 
-	private static final String REGISTRY_HOST = "[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*"; //$NON-NLS-1$
-	private static final String REGISTRY_PORT = "[0-9]+"; //$NON-NLS-1$
-	private static final String REPOSITORY = "[a-z0-9]+([._-][a-z0-9]+)*"; //$NON-NLS-1$
-	private static final String NAME = "[a-z0-9]+([._-][a-z0-9]+)*"; //$NON-NLS-1$
-	private static final String TAG = "[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*"; //$NON-NLS-1$
-	private static final Pattern imageNamePattern = Pattern.compile("(" //$NON-NLS-1$
-			+ REGISTRY_HOST + "(\\:" + REGISTRY_PORT + ")?/)?" + "(" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			+ REPOSITORY + "/)?" + NAME + "(?<tag>\\:" + TAG + ")?"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
 	public ImagePullPage(final IDockerConnection connection) {
 		super("ImagePullPage", //$NON-NLS-1$
 				WizardMessages.getString("ImagePull.label"), //$NON-NLS-1$
@@ -76,7 +64,7 @@ public class ImagePullPage extends WizardPage {
 	}
 
 	public String getImageName() {
-		final Matcher matcher = imageNamePattern
+		final Matcher matcher = DockerImage.imageNamePattern
 				.matcher(this.model.getImageName());
 		// Matcher#matches() must be called before any attempt to access a given
 		// named capturing-group.
@@ -149,33 +137,6 @@ public class ImagePullPage extends WizardPage {
 				}
 			}
 		};
-	}
-
-	/**
-	 * Validates that the image name matches
-	 * [REGISTRY_HOST[:REGISTRY_PORT]/]IMAGE_NAME[:TAG]
-	 */
-	public static class ImageNameValidator implements IValidator {
-
-		@Override
-		public IStatus validate(final Object value) {
-			final String imageName = (String) value;
-			if (imageName.isEmpty()) {
-				return ValidationStatus
-						.cancel(WizardMessages.getString("ImagePull.desc")); //$NON-NLS-1$
-			}
-			final Matcher matcher = imageNamePattern.matcher(imageName);
-			if (!matcher.matches()) {
-				return ValidationStatus.warning(WizardMessages
-						.getString("ImagePull.name.invalidformat.msg")); //$NON-NLS-1$
-			} else if (matcher.group("tag") == null) { //$NON-NLS-1$
-				return ValidationStatus.warning(
-						WizardMessages.getString("ImagePull.assumeLatest.msg")); //$NON-NLS-1$
-
-			}
-			return Status.OK_STATUS;
-		}
-
 	}
 
 }

@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -31,6 +32,7 @@ import org.eclipse.linuxtools.docker.core.IDockerProgressHandler;
 import org.eclipse.linuxtools.docker.core.IDockerProgressMessage;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.ui.BuildConsole;
+import org.eclipse.linuxtools.internal.docker.ui.launch.IBuildDockerImageLaunchConfigurationConstants;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -51,6 +53,12 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 	/** The path to the source code. */
 	private final IPath path;
 
+	/** the build options. */
+	private final Map<String, Object> buildOptions;
+
+	/** the optional repoName (i.e., repo[tag]) for the image to build */
+	private final String repoName;
+
 	/** The number of steps to build the image. */
 	private final int numberOfBuildOperations;
 
@@ -64,21 +72,30 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 	 * Constructor
 	 * 
 	 * @param connection
-	 *            the Docker connection to use (ie, on which Docker engine to
+	 *            the Docker connection to use (i.e., on which Docker engine to
 	 *            build the image)
 	 * @param path
 	 *            the path to the source code
+	 * @param repoName
+	 *            the optional repoName (i.e., repo[tag]) for the image to build
+	 * @param buildOptions
+	 *            build options
 	 * @throws IOException
+	 * @see {@link IBuildDockerImageLaunchConfigurationConstants} for build
+	 *      options.
 	 */
 	public BuildDockerImageJob(final IDockerConnection connection,
-			final IPath path) throws DockerException {
+			final IPath path, final String repoName,
+			final Map<String, Object> buildOptions)
+					throws DockerException {
 		super(JobMessages.getString(BUILD_IMAGE_JOB_TITLE));
 		this.connection = connection;
 		this.path = path;
+		this.repoName = repoName;
+		this.buildOptions = buildOptions;
 		this.console = BuildConsole.findConsole();
 		this.numberOfBuildOperations = countLines(
 				path.addTrailingSeparator().append("Dockerfile").toOSString()); //$NON-NLS-1$
-
 	}
 
 	@Override
@@ -94,13 +111,21 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 				this.progressMonitor.beginTask(
 						JobMessages.getString(BUILD_IMAGE_JOB_TITLE),
 						numberOfBuildOperations + 1);
-				// Give the Image a default name so it can be tagged later.
-				// Otherwise, the Image will be treated as an intermediate Image
-				// by the view filters and Tag Image action will be disabled.
-				// Use the current time in milliseconds to make it unique.
-				String name = "dockerfile:" //$NON-NLS-1$
-						+ Long.toHexString(System.currentTimeMillis());
-				connection.buildImage(path, name, this);
+				if (repoName == null) {
+					// Give the Image a default name so it can be tagged later.
+					// Otherwise, the Image will be treated as an intermediate
+					// Image
+					// by the view filters and Tag Image action will be
+					// disabled.
+					// Use the current time in milliseconds to make it unique.
+					final String name = "dockerfile:" //$NON-NLS-1$
+							+ Long.toHexString(System.currentTimeMillis());
+					connection.buildImage(this.path, name, this,
+							this.buildOptions);
+				} else {
+					connection.buildImage(this.path, this.repoName, this,
+							this.buildOptions);
+				}
 				connection.getImages(true);
 			}
 		} catch (DockerException | InterruptedException e) {
@@ -162,7 +187,7 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 	 * statements to execute (ignoring comments and empty lines).
 	 * 
 	 * @param fileName
-	 *            the full name of the Docker file to read
+	 *            the full repoName of the Docker file to read
 	 * @return the number of instructions.
 	 * @throws DockerException
 	 * @throws IOException
