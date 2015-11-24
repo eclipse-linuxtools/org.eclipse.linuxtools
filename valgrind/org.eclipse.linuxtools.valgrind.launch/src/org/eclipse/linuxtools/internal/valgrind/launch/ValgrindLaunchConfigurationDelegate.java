@@ -368,7 +368,10 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
             }
         }
         opts.addAll(Arrays.asList(dynamicDelegate.getCommandArray(config, valgrindVersion, outputPath)));
-
+        String otherOptions = config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_EXTRA_OPTIONS,"").trim(); //$NON-NLS-1$
+		if (!otherOptions.isEmpty()) {
+			opts.addAll(Arrays.asList(otherOptions.split("\\s+"))); //$NON-NLS-1$
+		}
         String[] ret = new String[opts.size()];
         return opts.toArray(ret);
     }

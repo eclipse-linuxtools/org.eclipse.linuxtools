@@ -10,10 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
@@ -503,5 +500,17 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 
         String text = messages[0].getText();
         assertTrue(text.contains(notExistentFile));
+    }
+
+    @Test
+    public void testExtraOptions() throws Exception {
+        ILaunchConfigurationWorkingCopy wc = initConfig();
+        tab.getExtraOptionsText().setText(" -v  -v");
+        ILaunch launch = saveAndLaunch(wc, "testExtraOptions"); //$NON-NLS-1$
+        IProcess[] p = launch.getProcesses();
+        assertTrue("process array should not be empty", p.length > 0);
+        String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+        assertEquals(0, p[0].getExitValue());
+        assertTrue(cmd.contains("-v -v")); //$NON-NLS-1$
     }
 }

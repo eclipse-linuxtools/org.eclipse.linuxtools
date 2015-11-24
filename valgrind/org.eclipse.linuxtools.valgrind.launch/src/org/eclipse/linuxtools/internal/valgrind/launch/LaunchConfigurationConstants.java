@@ -31,6 +31,7 @@ public final class LaunchConfigurationConstants {
     public static final String ATTR_GENERAL_BELOWMAIN = PLUGIN_ID + ".GENERAL_BELOWMAIN"; //$NON-NLS-1$
     public static final String ATTR_GENERAL_MAXFRAME = PLUGIN_ID + ".GENERAL_MAXFRAME"; //$NON-NLS-1$
     public static final String ATTR_GENERAL_SUPPFILES = PLUGIN_ID + ".GENERAL_SUPPFILES"; //$NON-NLS-1$
+    public static final String ATTR_GENERAL_EXTRA_OPTIONS = PLUGIN_ID + ".GENERAL_OTHER_OPTIONS"; //$NON-NLS-1$
 
     // 3.4.0 specific
     public static final String ATTR_GENERAL_MAINSTACK_BOOL = PLUGIN_ID + ".GENERAL_MAINSTACK_BOOL"; //$NON-NLS-1$
