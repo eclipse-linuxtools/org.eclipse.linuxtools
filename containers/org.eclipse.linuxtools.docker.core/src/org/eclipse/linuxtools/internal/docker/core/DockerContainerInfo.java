@@ -45,25 +45,29 @@ public class DockerContainerInfo implements IDockerContainerInfo {
 	private Map<String, Boolean> volumesRW;
 
 	public DockerContainerInfo (final ContainerInfo info) {
-		this.id = info.id();
-		this.created = info.created();
-		this.path = info.path();
-		this.args = info.args();
-		this.config = new DockerContainerConfig(info.config());
-		this.hostConfig = new DockerHostConfig(info.hostConfig());
-		this.state = new DockerContainerState(info.state());
-		this.image = info.image();
-		this.networkSettings = new DockerNetworkSettings(info.networkSettings());
-		this.resolvConfPath = info.resolvConfPath();
-		this.hostnamePath = info.hostnamePath();
-		this.hostsPath = info.hostsPath();
-		this.name = info.name();
-		this.driver = info.driver();
-		this.execDriver = info.execDriver();
-		this.processLabel = info.processLabel();
-		this.mountLabel = info.mountLabel();
-		this.volumes = info.volumes();
-		this.volumesRW = info.volumesRW();
+		this.id = info != null ? info.id() : null;
+		this.created = info != null ? info.created() : null;
+		this.path = info != null ? info.path() : null;
+		this.args = info != null ? info.args() : null;
+		this.config = info != null ? new DockerContainerConfig(info.config())
+				: null;
+		this.hostConfig = info != null ? new DockerHostConfig(info.hostConfig())
+				: null;
+		this.state = info != null ? new DockerContainerState(info.state())
+				: null;
+		this.image = info != null ? info.image() : null;
+		this.networkSettings = info != null
+				? new DockerNetworkSettings(info.networkSettings()) : null;
+		this.resolvConfPath = info != null ? info.resolvConfPath() : null;
+		this.hostnamePath = info != null ? info.hostnamePath() : null;
+		this.hostsPath = info != null ? info.hostsPath() : null;
+		this.name = info != null ? info.name() : null;
+		this.driver = info != null ? info.driver() : null;
+		this.execDriver = info != null ? info.execDriver() : null;
+		this.processLabel = info != null ? info.processLabel() : null;
+		this.mountLabel = info != null ? info.mountLabel() : null;
+		this.volumes = info != null ? info.volumes() : null;
+		this.volumesRW = info != null ? info.volumesRW() : null;
 	}
 
 	@Override

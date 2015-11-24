@@ -32,7 +32,7 @@ public class SWTBotTreeItemAssertions extends AbstractSWTBotAssertion<SWTBotTree
 	public SWTBotTreeItemAssertions isExpanded() {
 		notNullValue();
 		if(!actual.isExpanded()) {
-			failWithMessage("Expected tree item %s to be expanded but it was not.", actual.getText());;
+			failWithMessage("Expected tree item %s to be expanded but it was not.", actual.getText());
 		}
 		return this;
 	}
@@ -45,7 +45,7 @@ public class SWTBotTreeItemAssertions extends AbstractSWTBotAssertion<SWTBotTree
 	public SWTBotTreeItemAssertions hasChildItems(final int expectedCount) {
 		notNullValue();
 		if(actual.getItems().length != expectedCount) {
-			failWithMessage("Expected tree item %s to be have %s items but it had %s.", actual.getText(), expectedCount, actual.getItems().length);;
+			failWithMessage("Expected tree item %s to be have %s items but it had %s.", actual.getText(), expectedCount, actual.getItems().length);
 		}
 		for (SWTBotTreeItem swtBotTreeItem : actual.getItems()) {
 			Assertions.assertThat(swtBotTreeItem.getText()).isNotNull();

@@ -971,7 +971,8 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			final ContainerCreation creation = client
 					.createContainer(builder.build(),
 					containerName);
-			final String id = creation.id();
+
+			final String id = creation != null ? creation.id() : null;
 			// force a refresh of the current containers to include the new one
 			listContainers();
 			return id;

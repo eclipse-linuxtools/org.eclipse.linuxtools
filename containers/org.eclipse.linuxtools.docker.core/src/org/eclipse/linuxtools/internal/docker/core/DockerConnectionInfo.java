@@ -53,31 +53,32 @@ public class DockerConnectionInfo implements IDockerConnectionInfo {
 	private final String dockerRootDir;
 	
 	public DockerConnectionInfo(final Info info, final Version version) {
-		this.containers = info.containers();
-		this.debug = info.debug();
-		this.executionDriver = info.executionDriver();
-		this.fileDescriptors = info.fileDescriptors();
-		this.goroutines = info.goroutines();
-		this.images = info.images();
-		this.initPath = info.initPath();
-		this.kernelVersion = info.kernelVersion();
-		this.memoryLimit = info.memoryLimit();
-		this.storageDriver = info.storageDriver();
-		this.swapLimit = info.swapLimit();
-		this.apiVersion = version.apiVersion();
-		this.gitCommit = version.gitCommit();
-		this.os = version.os();
-		this.version = version.version();
-		this.driverStatus = info.driverStatus();
-		this.cpuNumber = info.cpus();
-		this.totalMemory = info.memTotal();
-		this.name = info.name();
-		this.id = info.id();
-		this.initSha1 = info.initSha1();
-		this.ipv4Forwarding = info.ipv4Forwarding();
-		this.indexServerAddress = info.indexServerAddress();
-		this.labels = info.labels();
-		this.dockerRootDir = info.dockerRootDir();
+		this.containers = info != null ? info.containers() : -1;
+		this.debug = info != null ? info.debug() : false;
+		this.executionDriver = info != null ? info.executionDriver() : null;
+		this.fileDescriptors = info != null ? info.fileDescriptors() : -1;
+		this.goroutines = info != null ? info.goroutines() : -1;
+		this.images = info != null ? info.images() : -1;
+		this.initPath = info != null ? info.initPath() : null;
+		this.kernelVersion = info != null ? info.kernelVersion() : null;
+		this.memoryLimit = info != null ? info.memoryLimit() : false;
+		this.storageDriver = info != null ? info.storageDriver() : null;
+		this.swapLimit = info != null ? info.swapLimit() : false;
+		this.apiVersion = version != null ? version.apiVersion() : null;
+		this.gitCommit = version != null ? version.gitCommit() : null;
+		this.os = version != null ? version.os() : "";
+		this.version = version != null ? version.version() : null;
+		this.driverStatus = info != null ? info.driverStatus() : null;
+		this.cpuNumber = info != null ? info.cpus() : -1;
+		this.totalMemory = info != null ? info.memTotal() : -1;
+		this.name = info != null ? info.name() : null;
+		this.id = info != null ? info.id() : null;
+		this.initSha1 = info != null ? info.initSha1() : null;
+		this.ipv4Forwarding = info != null ? info.ipv4Forwarding() : false;
+		this.indexServerAddress = info != null ? info.indexServerAddress()
+				: null;
+		this.labels = info != null ? info.labels() : null;
+		this.dockerRootDir = info != null ? info.dockerRootDir() : null;
 		
 	}
 

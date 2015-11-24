@@ -243,7 +243,10 @@ public class CommandUtils {
 	 * @return the {@link RunConsole} or {@code null}
 	 */
 	public static RunConsole getRunConsole(final IDockerConnection connection, final IDockerContainer container) {
-		if (connection.getContainerInfo(container.id()).config().tty()) {
+		if (container != null
+				&& connection.getContainerInfo(container.id()) != null
+				&& connection.getContainerInfo(container.id()).config() != null
+				&& connection.getContainerInfo(container.id()).config().tty()) {
 			RunConsole.attachToTerminal(connection, container.id());
 			return null;
 		}

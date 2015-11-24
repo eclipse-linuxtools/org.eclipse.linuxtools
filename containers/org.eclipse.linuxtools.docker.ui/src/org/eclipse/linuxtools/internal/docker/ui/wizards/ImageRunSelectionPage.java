@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
@@ -55,6 +54,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
+import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerImageInfo;
 import org.eclipse.linuxtools.docker.ui.Activator;
@@ -174,6 +174,13 @@ public class ImageRunSelectionPage extends WizardPage {
 		final ImageSelectionValidator imageSelectionValidator = new ImageSelectionValidator(
 				imageSelectionObservable);
 		dbc.addValidationStatusProvider(imageSelectionValidator);
+		final IObservableValue containerNameObservable = BeanProperties
+				.value(ImageRunSelectionModel.class,
+						ImageRunSelectionModel.CONTAINER_NAME)
+				.observe(model);
+		final ContainerNameValidator containerNameValidator = new ContainerNameValidator(
+				model.getSelectedConnection(), containerNameObservable);
+		dbc.addValidationStatusProvider(containerNameValidator);
 		//
 		setControl(container);
 	}
@@ -198,7 +205,8 @@ public class ImageRunSelectionPage extends WizardPage {
 	private void createImageSettingsSection(final Composite container) {
 		// Image selection name
 		final Label imageSelectionLabel = new Label(container, SWT.NONE);
-		imageSelectionLabel.setText("Image:"); //$NON-NLS-1$
+		imageSelectionLabel.setText(
+				WizardMessages.getString("ImageRunSelectionPage.imageName")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).applyTo(imageSelectionLabel);
 		final Combo imageSelectionCombo = new Combo(container, SWT.BORDER);
@@ -262,7 +270,8 @@ public class ImageRunSelectionPage extends WizardPage {
 		final Label containerNameLabel = new Label(container, SWT.NONE);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).applyTo(imageSelectionLabel);
-		containerNameLabel.setText("Name:"); //$NON-NLS-1$
+		containerNameLabel.setText(WizardMessages
+				.getString("ImageRunSelectionPage.containerName")); //$NON-NLS-1$
 		final Text containerNameText = new Text(container, SWT.BORDER);
 		containerNameText.setToolTipText(WizardMessages
 				.getString("ImageRunSelectionPage.containerTooltip")); //$NON-NLS-1$
@@ -781,24 +790,24 @@ public class ImageRunSelectionPage extends WizardPage {
 			getContainer().run(true, true, findImageInfoRunnable);
 			final IDockerImageInfo selectedImageInfo = findImageInfoRunnable
 					.getResult();
-			final Set<String> exposedPortInfos = selectedImageInfo.config()
-					.exposedPorts();
-			final WritableList availablePorts = new WritableList();
-			if (exposedPortInfos != null) {
-				for (String exposedPortInfo : exposedPortInfos) {
-					final String privatePort = exposedPortInfo.substring(0,
-							exposedPortInfo.indexOf('/'));
-					final String type = exposedPortInfo
-							.substring(exposedPortInfo.indexOf('/')); // $NON-NLS-1$
-					final ExposedPortModel exposedPort = new ExposedPortModel(
-							privatePort, type, "", privatePort);
-					availablePorts.add(exposedPort); // $NON-NLS-1$
+			if (selectedImageInfo.config() != null) {
+				model.setCommand(selectedImageInfo.config().cmd());
+				model.setEntrypoint(selectedImageInfo.config().entrypoint());
+				if (selectedImageInfo.config().exposedPorts() != null) {
+					final WritableList availablePorts = new WritableList();
+					for (String exposedPortInfo : selectedImageInfo.config()
+							.exposedPorts()) {
+						final String privatePort = exposedPortInfo.substring(0,
+								exposedPortInfo.indexOf('/'));
+						final String type = exposedPortInfo
+								.substring(exposedPortInfo.indexOf('/')); // $NON-NLS-1$
+						final ExposedPortModel exposedPort = new ExposedPortModel(
+								privatePort, type, "", privatePort);
+						availablePorts.add(exposedPort); // $NON-NLS-1$
+					}
+					model.setExposedPorts(availablePorts);
 				}
 			}
-			model.setExposedPorts(availablePorts);
-			model.setCommand(selectedImageInfo.config().cmd());
-			model.setEntrypoint(selectedImageInfo.config().entrypoint());
-
 		} catch (InvocationTargetException | InterruptedException e) {
 			Activator.log(e);
 		}
@@ -916,6 +925,41 @@ public class ImageRunSelectionPage extends WizardPage {
 		public IObservableList getTargets() {
 			WritableList targets = new WritableList();
 			targets.add(imageSelectionObservable);
+			return targets;
+		}
+
+	}
+
+	private class ContainerNameValidator extends MultiValidator {
+
+		private final IDockerConnection connection;
+
+		private final IObservableValue containerNameObservable;
+
+		ContainerNameValidator(final IDockerConnection connection,
+				final IObservableValue containerNameObservable) {
+			this.connection = connection;
+			this.containerNameObservable = containerNameObservable;
+		}
+
+		@Override
+		protected IStatus validate() {
+			final String containerName = (String) containerNameObservable
+					.getValue();
+
+			for (IDockerContainer container : connection.getContainers()) {
+				if (container.name().equals(containerName)) {
+					return ValidationStatus.error(WizardMessages.getString(
+							"ImageRunSelectionPage.containerWithSameName")); //$NON-NLS-1$
+				}
+			}
+			return ValidationStatus.ok();
+		}
+
+		@Override
+		public IObservableList getTargets() {
+			WritableList targets = new WritableList();
+			targets.add(containerNameObservable);
 			return targets;
 		}
 

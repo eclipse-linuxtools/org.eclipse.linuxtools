@@ -39,9 +39,9 @@ public class DockerConnectionManagerTest {
 	}
 
 	@Test
-	public void shouldRegisterConnectionOnRefreshContainersManager() throws InterruptedException {
+	public void shouldRegisterConnectionOnRefreshContainersManager() {
 		// given
-		final DockerClient client = MockDockerClientFactory.noImages().noContainers();
+		final DockerClient client = MockDockerClientFactory.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
 		dockerConnectionManager
 				.setConnectionStorageManager(MockDockerConnectionStorageManagerFactory.providing(dockerConnection));
@@ -55,7 +55,7 @@ public class DockerConnectionManagerTest {
 	@Test
 	public void shouldUnregisterConnectionOnRefreshContainersManager() throws InterruptedException {
 		// given
-		final DockerClient client = MockDockerClientFactory.noImages().noContainers();
+		final DockerClient client = MockDockerClientFactory.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
 		dockerConnectionManager
 				.setConnectionStorageManager(MockDockerConnectionStorageManagerFactory.providing(dockerConnection));
@@ -66,6 +66,5 @@ public class DockerConnectionManagerTest {
 		SWTUtils.asyncExec(() -> dockerConnectionManager.removeConnection(dockerConnection));
 		// then
 		Assertions.assertThat(dockerContainersRefreshManager.getConnections()).isEmpty();
-
 	}
 }

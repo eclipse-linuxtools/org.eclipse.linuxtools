@@ -32,19 +32,21 @@ public class DockerImageInfo implements IDockerImageInfo {
 	private String os;
 	private Long size;
 
-	public DockerImageInfo(ImageInfo info) {
-		this.id = info.id();
-		this.parent = info.parent();
-		this.comment = info.comment();
-		this.created = info.created();
-		this.container = info.container();
-		this.containerConfig = new DockerContainerConfig(info.containerConfig());
-		this.dockerVersion = info.dockerVersion();
-		this.author = info.author();
-		this.config = new DockerContainerConfig(info.config());
-		this.architecture = info.architecture();
-		this.os = info.os();
-		this.size = info.size();
+	public DockerImageInfo(final ImageInfo info) {
+		this.id = info != null ? info.id() : null;
+		this.parent = info != null ? info.parent() : null;
+		this.comment = info != null ? info.comment() : null;
+		this.created = info != null ? info.created() : null;
+		this.container = info != null ? info.container() : null;
+		this.containerConfig = info != null
+				? new DockerContainerConfig(info.containerConfig()) : null;
+		this.dockerVersion = info != null ? info.dockerVersion() : null;
+		this.author = info != null ? info.author() : null;
+		this.config = info != null ? new DockerContainerConfig(info.config())
+				: null;
+		this.architecture = info != null ? info.architecture() : null;
+		this.os = info != null ? info.os() : null;
+		this.size = info != null ? info.size() : null;
 	}
 
 	@Override

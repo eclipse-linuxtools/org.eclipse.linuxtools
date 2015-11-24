@@ -97,7 +97,8 @@ public class ImageRunResourceVolumesVariablesModel
 			if (selectedImage != null) {
 				this.imageInfo = selectedImage.getConnection()
 						.getImageInfo(selectedImage.id());
-				if (this.imageInfo.config().volumes() != null) {
+				if (this.imageInfo.config() != null
+						&& this.imageInfo.config().volumes() != null) {
 					for (String volume : this.imageInfo.config().volumes()) {
 						newDataVolumes.add(new DataVolumeModel(volume));
 					}
