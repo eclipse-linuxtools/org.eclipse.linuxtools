@@ -5,9 +5,15 @@ Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.ui;singleton:=true
 Bundle-Version: 2.0.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin
 Bundle-Vendor: %Bundle-Vendor.0
-Require-Bundle: org.eclipse.ui,
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui,
  org.eclipse.ui.ide,
- org.eclipse.core.runtime,
+ org.eclipse.linuxtools.valgrind.core,
+ org.eclipse.linuxtools.profiling.ui,
+ org.eclipse.debug.core,
+ org.eclipse.jface.text,
+ org.eclipse.debug.ui,
+ org.eclipse.cdt.core,
  org.eclipse.cdt.codan.ui.cxx
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
@@ -24,16 +30,3 @@ Export-Package: org.eclipse.linuxtools.internal.valgrind.ui;
    org.eclipse.linuxtools.valgrind.memcheck.tests",
  org.eclipse.linuxtools.valgrind.ui
 Bundle-Localization: plugin
-Import-Package: org.eclipse.cdt.core.dom.ast,
- org.eclipse.cdt.core.model,
- org.eclipse.cdt.debug.ui,
- org.eclipse.core.resources,
- org.eclipse.debug.core,
- org.eclipse.debug.core.model,
- org.eclipse.debug.core.sourcelookup,
- org.eclipse.debug.ui,
- org.eclipse.debug.ui.sourcelookup,
- org.eclipse.jface.text,
- org.eclipse.linuxtools.internal.valgrind.core,
- org.eclipse.linuxtools.profiling.ui,
- org.eclipse.linuxtools.valgrind.core

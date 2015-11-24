@@ -7,21 +7,25 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
+ *    Alena Laskavaia - Bug 482947 - Valgrind Message API's: get rid of launch dependency
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.core;
 
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.linuxtools.internal.valgrind.core.ValgrindStackFrame;
 
 public interface IValgrindMessage {
+	IValgrindMessage getParent();
 
-    IValgrindMessage getParent();
+	IValgrindMessage[] getChildren();
 
-    IValgrindMessage[] getChildren();
+	String getText();
+	/**
+	 * Returns launch object associated with this message, it may be null if trace was imported
+	 * Use {@link ValgrindStackFrame#getSourceLocator()} to resolve locations instead
+	 * @return launch object
+	 */
+	ILaunch getLaunch();
 
-    String getText();
-
-    ILaunch getLaunch();
-
-    void addChild(IValgrindMessage child);
-
+	void addChild(IValgrindMessage child);
 }

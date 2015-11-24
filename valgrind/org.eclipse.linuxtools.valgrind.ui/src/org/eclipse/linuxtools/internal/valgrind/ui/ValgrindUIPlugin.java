@@ -209,4 +209,33 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 	public IProject getProfiledProject() {
 		return project;
 	}
+
+	/**
+	 * log the status
+	 * @param status - Status to log
+	 * */
+	public static void log(IStatus status) {
+		if (plugin != null)
+			getDefault().getLog().log(status);
+		else {
+			// log on console when plugin is not loaded, can happen when run junit without osgi
+			System.err.println(status.getMessage());
+			if (status.getException() != null) {
+				status.getException().printStackTrace(System.err);
+			}
+		}
+	}
+	/** log string as error
+	 * @param string - String to log
+	 * */
+	public static void log(String string) {
+		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, string, null));
+	}
+
+	/** log Throwable
+	 * @param e - Throwable to log
+	 * */
+	public static void log(Throwable e) {
+		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, e.getMessage(), e));
+	}
 }
