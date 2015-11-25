@@ -29,19 +29,27 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.internal.vagrant.ui.Activator;
 import org.eclipse.linuxtools.internal.vagrant.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.vagrant.core.EnumVMStatus;
+import org.eclipse.linuxtools.vagrant.core.IVagrantConnection;
 import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
+import org.eclipse.linuxtools.vagrant.core.IVagrantVMListener;
 import org.eclipse.linuxtools.vagrant.core.VagrantService;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
 
-public class VagrantToolBarContributionItem extends ContributionItem {
+public class VagrantToolBarContributionItem extends ContributionItem
+		implements IVagrantVMListener {
+
+	private List<IVagrantVM> vms = new ArrayList<>();
 
 	public VagrantToolBarContributionItem() {
+		IVagrantConnection conn = VagrantService.getInstance();
+		conn.addVMListener(this);
 		Thread t = new Thread(() -> {
-			VagrantService.getInstance().getVMs();
+			vms = conn.getVMs();
 		});
 		t.start();
 	}
@@ -54,14 +62,14 @@ public class VagrantToolBarContributionItem extends ContributionItem {
 	public void fill(Menu menu, int index) {
 		// The menu passed in doesn't allow us to have sub-menus
 		// Ignore it, get the parent IMenuManager and create the structure
-		if (getParent() instanceof IMenuManager && VagrantService.getInstance().isVMsLoaded()) {
+		if (getParent() instanceof IMenuManager) {
 			IMenuManager mm = (IMenuManager) getParent();
 			IContributionItem v = mm.find(getId());
 			// Menu manager contributions get aggregated so remove them first
 			mm.removeAll();
 			// dynamic menu contribution ensures fill() gets called
 			mm.add(v);
-			for (IVagrantVM vm : VagrantService.getInstance().getVMs()) {
+			for (IVagrantVM vm : vms) {
 				EnumVMStatus containerStatus = EnumVMStatus.fromStatusMessage(vm.state());
 				ImageDescriptor img = (containerStatus == EnumVMStatus.RUNNING)
 						? SWTImagesFactory.DESC_CONTAINER_STARTED
@@ -128,5 +136,23 @@ public class VagrantToolBarContributionItem extends ContributionItem {
 	@Override
 	public boolean isDynamic() {
 		return true;
+	}
+
+	@Override
+	public boolean isDirty() {
+		return true;
+	}
+
+	@Override
+	public void listChanged(IVagrantConnection connection,
+			List<IVagrantVM> list) {
+		this.vms = list;
+		// Need to call update(false) so menu manager is up to date
+		if (getParent() instanceof IMenuManager) {
+			IMenuManager mm = (IMenuManager) getParent();
+			Display.getDefault().asyncExec(() -> {
+				mm.update(false);
+			});
+		}
 	}
 }
