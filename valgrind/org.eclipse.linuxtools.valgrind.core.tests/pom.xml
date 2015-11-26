@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2015 QNX Software Systems
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+ 
+ Contributors:
+    Alena Laskavaia - initial API and implementation
+-->
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>linuxtools-valgrind-parent</artifactId>
+    <groupId>org.eclipse.linuxtools.valgrind</groupId>
+    <version>3.1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>org.eclipse.linuxtools.valgrind.core.tests</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>eclipse-test-plugin</packaging>
+
+  <name>Linux Tools Valgrind Core Tests Plug-in</name>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-surefire-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <excludes>
+            <!-- test mojo matches TestProject be default and treats it as PojoTest -->
+            <exclude>**/Test*.class</exclude>
+          </excludes>
+          <testSuite>org.eclipse.linuxtools.valgrind.core.tests</testSuite>
+          <testClass>org.eclipse.linuxtools.valgrind.core.tests.AllTests</testClass>
+             <useUIHarness>false</useUIHarness>
+          <useUIThread>false</useUIThread>
+          <product>org.eclipse.platform.ide</product>
+          <surefire.timeout>1800</surefire.timeout>
+          <forkedProcessTimeoutInSeconds>1800</forkedProcessTimeoutInSeconds>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

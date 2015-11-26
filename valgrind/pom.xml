@@ -57,6 +57,7 @@
     <module>org.eclipse.linuxtools.valgrind.ui.tests</module>
     <module>org.eclipse.linuxtools.valgrind.ui.editor</module>
     <module>org.eclipse.linuxtools.valgrind-feature</module>
+    <module>org.eclipse.linuxtools.valgrind.core.tests</module>
   </modules>
 
 </project>
