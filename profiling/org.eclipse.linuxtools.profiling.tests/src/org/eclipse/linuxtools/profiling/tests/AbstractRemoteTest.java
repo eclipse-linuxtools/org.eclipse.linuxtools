@@ -10,20 +10,14 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.profiling.tests;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.junit.Assume.assumeTrue;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.ptp.rdt.sync.core.SyncConfig;
-import org.eclipse.ptp.rdt.sync.core.SyncConfigManager;
-import org.eclipse.ptp.rdt.sync.core.SyncFlag;
-import org.eclipse.ptp.rdt.sync.core.SyncManager;
 import org.eclipse.remote.core.IRemoteConnection;
 import org.eclipse.remote.core.IRemoteConnectionType;
 import org.eclipse.remote.core.IRemoteConnectionWorkingCopy;
@@ -123,31 +117,6 @@ public abstract class AbstractRemoteTest extends AbstractTest {
     protected static void deleteConnection(IRemoteConnection conn) throws RemoteConnectionException {
         IRemoteConnectionType ct = conn.getConnectionType();
         ct.removeConnection(conn);
-    }
-
-    /**
-     * Prepare a sync project from an already available local project
-     *
-     * @param project any local project
-     * @param conn remote connection
-     * @param location sync'ed folder path in remote machine
-     * @throws CoreException
-     */
-    protected static void convertToSyncProject(IProject project, IRemoteConnection conn, String location) throws CoreException {
-        // Convert to sync project without file filters
-        SyncManager.makeSyncProject(project, conn.getName() + "_sync", SYNC_SERVICE_GIT, conn, location, null);
-        // Synchronize project from local to remote
-        SyncManager.sync(null, project, SyncFlag.LR_ONLY, null);
-    }
-
-    /**
-     * Get the *active* synchronize configuration associated with the project
-     *
-     * @param project A sync project
-     * @return the active synchronize configuration
-     */
-    protected static SyncConfig getSyncConfig(IProject project) {
-        return SyncConfigManager.getActive(project);
     }
 
     private static IRemoteServicesManager getServicesManager() {
