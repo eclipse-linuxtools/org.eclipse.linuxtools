@@ -13,8 +13,8 @@ package org.eclipse.linuxtools.internal.vagrant.ui.wizards;
 
 public class AddBoxPageModel extends BaseDatabindingModel {
 
-	public static final String BOX_NAME = "boxName";
-	public static final String BOX_LOC = "boxLoc";
+	public static final String BOX_NAME = "boxName"; //$NON-NLS-1$
+	public static final String BOX_LOC = "boxLoc"; //$NON-NLS-1$
 
 	private String boxName;
 	private String boxLoc;

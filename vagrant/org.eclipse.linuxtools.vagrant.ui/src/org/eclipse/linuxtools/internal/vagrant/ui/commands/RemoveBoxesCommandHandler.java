@@ -22,12 +22,12 @@ public class RemoveBoxesCommandHandler extends BaseBoxesCommandHandler {
 
 	@Override
 	String getJobName(List<IVagrantBox> selectedImages) {
-		return "Removing Boxes...";
+		return Messages.RemoveBoxesCommandHandler_removing_title;
 	}
 
 	@Override
 	String getTaskName(IVagrantBox image) {
-		return "Removing " + image.getName();
+		return Messages.RemoveBoxesCommandHandler_removing_msg + image.getName();
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class RemoveBoxesCommandHandler extends BaseBoxesCommandHandler {
 		try {
 			connection.removeBox(image.getName());
 		} catch (VagrantException | InterruptedException e) {
-			final String errorMessage = "Error in deleting " + image.getName();
+			final String errorMessage = Messages.RemoveBoxesCommandHandler_error + image.getName();
 				openError(errorMessage, e);
 		} finally {
 			// always get images as we sometimes get errors on intermediate

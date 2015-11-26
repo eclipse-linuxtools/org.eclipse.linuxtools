@@ -16,11 +16,11 @@ import java.util.Map;
 
 public class CreateVMPageModel extends BaseDatabindingModel {
 
-	public static final String VM_NAME = "VMName";
-	public static final String BOX_REF = "boxRef";
-	public static final String VM_FILE = "VMFile";
-	public static final String V_FILE_MODE = "VFileMode";
-	public static final String ENVIRONMENT = "environment";
+	public static final String VM_NAME = "VMName"; //$NON-NLS-1$
+	public static final String BOX_REF = "boxRef"; //$NON-NLS-1$
+	public static final String VM_FILE = "VMFile"; //$NON-NLS-1$
+	public static final String V_FILE_MODE = "VFileMode"; //$NON-NLS-1$
+	public static final String ENVIRONMENT = "environment"; //$NON-NLS-1$
 
 	private String vmName;
 	private String vmFile;

@@ -44,14 +44,14 @@ public class CreateVMAdvancedComposite extends ExpandableComposite {
 	private CreateVMPageModel model;
 	private final TableViewer tv;
 	private static final String KEY = WizardMessages
-			.getString("CreateVMAdvancedComposite.Key");
+			.getString("CreateVMAdvancedComposite.Key"); //$NON-NLS-1$
 	private static final String VALUE = WizardMessages
-			.getString("CreateVMAdvancedComposite.Value");
+			.getString("CreateVMAdvancedComposite.Value"); //$NON-NLS-1$
 
 	private static final String DEFAULT_KEY = WizardMessages
-			.getString("CreateVMAdvancedComposite.DefaultKey");
+			.getString("CreateVMAdvancedComposite.DefaultKey"); //$NON-NLS-1$
 	private static final String DEFAULT_VALUE = WizardMessages
-			.getString("CreateVMAdvancedComposite.DefaultValue");
+			.getString("CreateVMAdvancedComposite.DefaultValue"); //$NON-NLS-1$
 
 	private String[] KEY_VALUE = new String[] { KEY, VALUE };
 
@@ -62,7 +62,7 @@ public class CreateVMAdvancedComposite extends ExpandableComposite {
 		this.model = model;
 
 		setText(WizardMessages
-				.getString("CreateVMAdvancedComposite.EnvironmentVariables"));
+				.getString("CreateVMAdvancedComposite.EnvironmentVariables")); //$NON-NLS-1$
 
 		final Composite advancedComposite = new Composite(this, SWT.NONE);
 		setClient(advancedComposite);
@@ -123,7 +123,7 @@ public class CreateVMAdvancedComposite extends ExpandableComposite {
 				if (model.getEnvironment().containsKey(varToAdd)) {
 					boolean done = false;
 					while (!done) {
-						String toTest = varToAdd + " (" + i++ + ")";
+						String toTest = varToAdd + " (" + i++ + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 						if (!model.getEnvironment().containsKey(toTest)) {
 							model.getEnvironment().put(toTest, DEFAULT_VALUE);
 							done = true;
@@ -222,7 +222,7 @@ public class CreateVMAdvancedComposite extends ExpandableComposite {
 			if (property == VALUE) {
 				return model.getEnvironment().get(element);
 			}
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 
 		@Override

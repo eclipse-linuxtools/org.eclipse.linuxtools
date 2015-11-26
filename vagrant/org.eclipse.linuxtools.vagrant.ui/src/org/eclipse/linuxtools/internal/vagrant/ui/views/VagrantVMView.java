@@ -25,6 +25,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.linuxtools.internal.vagrant.ui.SWTImagesFactory;
+import org.eclipse.linuxtools.vagrant.core.EnumVMStatus;
 import org.eclipse.linuxtools.vagrant.core.IVagrantBox;
 import org.eclipse.linuxtools.vagrant.core.IVagrantConnection;
 import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
@@ -48,7 +49,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class VagrantVMView extends ViewPart implements IVagrantVMListener {
 
-	public static final String VIEW_ID = "org.eclipse.linuxtools.vagrant.ui.vagrantVMView";
+	public static final String VIEW_ID = "org.eclipse.linuxtools.vagrant.ui.vagrantVMView"; //$NON-NLS-1$
 
 	private final static String DaemonMissing = "ViewerDaemonMissing.msg"; //$NON-NLS-1$
 
@@ -122,7 +123,8 @@ public class VagrantVMView extends ViewPart implements IVagrantVMListener {
 				if (element instanceof IVagrantVM) {
 					final IVagrantVM container = (IVagrantVM) element;
 					final String state = container.state();
-					if (state.equals("running")) {
+					if (EnumVMStatus.RUNNING
+							.equals(EnumVMStatus.fromStatusMessage(state))) {
 						return SWTImagesFactory.DESC_CONTAINER_STARTED
 								.createImage();
 					} else {
@@ -288,7 +290,7 @@ public class VagrantVMView extends ViewPart implements IVagrantVMListener {
 			form.setText(connection.getName());
 		} else {
 			this.form.setText(DVMessages.getFormattedString(
-					"VagrantVMViewTitle.all.msg", connection.getName(),
+					"VagrantVMViewTitle.all.msg", connection.getName(), //$NON-NLS-1$
 					Integer.toString(connection.getVMs().size())));
 		}
 	}

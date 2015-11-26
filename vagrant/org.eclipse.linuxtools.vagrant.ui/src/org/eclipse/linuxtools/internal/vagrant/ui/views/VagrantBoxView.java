@@ -46,7 +46,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class VagrantBoxView extends ViewPart implements IVagrantBoxListener {
 
-	public static final String VIEW_ID = "org.eclipse.linuxtools.vagrant.ui.vagrantBoxView";
+	public static final String VIEW_ID = "org.eclipse.linuxtools.vagrant.ui.vagrantBoxView"; //$NON-NLS-1$
 
 	private final static String DaemonMissing = "ViewerDaemonMissing.msg"; //$NON-NLS-1$
 
@@ -230,7 +230,7 @@ public class VagrantBoxView extends ViewPart implements IVagrantBoxListener {
 			form.setText(connection.getName());
 		} else {
 			this.form.setText(DVMessages.getFormattedString(
-					"VagrantBoxViewTitle.all.msg", connection.getName(),
+					"VagrantBoxViewTitle.all.msg", connection.getName(), //$NON-NLS-1$
 					Integer.toString(connection.getBoxes().size())));
 		}
 	}

@@ -246,7 +246,7 @@ public class CreateVMPage extends WizardPage {
 				FileDialog fd = new FileDialog(getShell());
 				String location = fd.open();
 				if (location != null && !location.isEmpty()) {
-					if (location.endsWith("box")) { // $NON-NLS-1
+					if (location.endsWith("box")) { //$NON-NLS-1$
 						model.setBoxRef(location);
 					} else {
 						model.setVMFile(location);

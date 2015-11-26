@@ -14,6 +14,16 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.vagrant.ui.commands.messages"; //$NON-NLS-1$
+	public static String DestroyVMCommandHandler_error;
+	public static String DestroyVMCommandHandler_removing_msg;
+	public static String DestroyVMCommandHandler_removing_title;
+	public static String RemoveBoxesCommandHandler_error;
+	public static String RemoveBoxesCommandHandler_removing_msg;
+	public static String RemoveBoxesCommandHandler_removing_title;
+	public static String SSHVMCommandHandler_bad_credentials;
+	public static String SSHVMCommandHandler_failed;
+	public static String SSHVMCommandHandler_msg;
+	public static String SSHVMCommandHandler_title;
 	public static String VagrantToolBarContributionItem_destroy;
 	public static String VagrantToolBarContributionItem_open;
 	public static String VagrantToolBarContributionItem_ssh;

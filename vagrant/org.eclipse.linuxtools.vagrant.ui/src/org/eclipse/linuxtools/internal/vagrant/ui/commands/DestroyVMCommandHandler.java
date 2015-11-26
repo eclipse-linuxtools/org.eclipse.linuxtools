@@ -25,12 +25,12 @@ public class DestroyVMCommandHandler extends BaseVMCommandHandler {
 
 	@Override
 	String getJobName(List<IVagrantVM> selectedVMs) {
-		return "Removing VMs...";
+		return Messages.DestroyVMCommandHandler_removing_title;
 	}
 
 	@Override
 	String getTaskName(IVagrantVM vm) {
-		return "Removing " + vm.id();
+		return Messages.DestroyVMCommandHandler_removing_msg + vm.id();
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class DestroyVMCommandHandler extends BaseVMCommandHandler {
 			File vagrantDir = Paths.get(stateLoc, vm.name()).toFile();
 			CommandUtils.delete(vagrantDir);
 		} catch (VagrantException | InterruptedException e) {
-			final String errorMessage = "Error in deleting " + vm.id();
+			final String errorMessage = Messages.DestroyVMCommandHandler_error + vm.id();
 			openError(errorMessage, e);
 		} finally {
 			// always get images as we sometimes get errors on intermediate

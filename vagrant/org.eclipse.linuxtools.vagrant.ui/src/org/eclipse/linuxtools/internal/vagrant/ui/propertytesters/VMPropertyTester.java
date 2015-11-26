@@ -16,11 +16,11 @@ import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
 
 public class VMPropertyTester extends PropertyTester {
 
-	public static final String IS_RUNNING = "isRunning";
-	public static final String IS_SHUTOFF = "isShutoff";
-	public static final String IS_PAUSED = "isPaused";
-	public static final String IS_REMOVABLE = "isRemovable";
-	public static final String IS_UNKNOWN = "isUnknown";
+	public static final String IS_RUNNING = "isRunning"; //$NON-NLS-1$
+	public static final String IS_SHUTOFF = "isShutoff"; //$NON-NLS-1$
+	public static final String IS_PAUSED = "isPaused"; //$NON-NLS-1$
+	public static final String IS_REMOVABLE = "isRemovable"; //$NON-NLS-1$
+	public static final String IS_UNKNOWN = "isUnknown"; //$NON-NLS-1$
 
 	@Override
 	public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {

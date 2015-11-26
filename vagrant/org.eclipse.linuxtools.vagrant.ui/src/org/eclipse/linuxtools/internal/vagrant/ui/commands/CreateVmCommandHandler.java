@@ -90,7 +90,7 @@ public class CreateVmCommandHandler extends AbstractHandler {
 							// Generate the box name from the file name (basename)
 							boxName = boxRef.substring(
 									boxRef.lastIndexOf(File.separator) + 1)
-									.replace(".box", ""); //$NON-NLS-1$
+									.replace(".box", ""); //$NON-NLS-1$ //$NON-NLS-2$
 							connection.addBox(boxName, boxPath);
 						} catch (VagrantException e) {
 						} catch (InterruptedException e) {
@@ -138,18 +138,18 @@ public class CreateVmCommandHandler extends AbstractHandler {
 		vagrantDir.mkdir();
 		connection.init(vagrantDir);
 
-		Path vagrantFilePath = Paths.get(stateLoc, vmName, "Vagrantfile");
+		Path vagrantFilePath = Paths.get(stateLoc, vmName, "Vagrantfile"); //$NON-NLS-1$
 		String defaultContent;
 		StringBuffer bcontent = new StringBuffer();
 		try {
 			defaultContent = new String(Files.readAllBytes(vagrantFilePath),
 					StandardCharsets.UTF_8);
-			for (String line : defaultContent.split("\n")) {
-				if (line.contains("config.vm.box")) {
-					String defLine = line.replaceAll("config.vm.box = \".*\"",
-							"config.vm.define :" + vmName);
-					String boxLine = line.replaceAll("config.vm.box = \".*\"",
-							"config.vm.box = \"" + boxName + "\"");
+			for (String line : defaultContent.split("\n")) { //$NON-NLS-1$
+				if (line.contains("config.vm.box")) { //$NON-NLS-1$
+					String defLine = line.replaceAll("config.vm.box = \".*\"", //$NON-NLS-1$
+							"config.vm.define :" + vmName); //$NON-NLS-1$
+					String boxLine = line.replaceAll("config.vm.box = \".*\"", //$NON-NLS-1$
+							"config.vm.box = \"" + boxName + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 					bcontent.append(defLine + '\n');
 					bcontent.append(boxLine + '\n');
 				} else {

@@ -59,9 +59,9 @@ public class EnvironmentsManager {
 	}
 
 	private class Environment {
-		private static final String ENVIRONMENT_ATTRIBUTE = "org.eclipse.linuxtools.internal.vagrant.core.EnvironmentsManager.EnvironmentKey";
+		private static final String ENVIRONMENT_ATTRIBUTE = "org.eclipse.linuxtools.internal.vagrant.core.EnvironmentsManager.EnvironmentKey"; //$NON-NLS-1$
 		private static final String SECURE_PREFERNCES_BASEKEY = Activator.PLUGIN_ID;
-		private static final String ENVIRONMENT_KEY = "environment";
+		private static final String ENVIRONMENT_KEY = "environment"; //$NON-NLS-1$
 
 		private static final boolean READ = true;
 		private static final boolean WRITE = false;
@@ -128,10 +128,10 @@ public class EnvironmentsManager {
 			// TODO externalize?
 			if (action == READ)
 				return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-						"Error reading environments from secured storage.", t);
+						Messages.EnvironmentsManager_error_read, t);
 			else
 				return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-						"Error writing environments to secured storage.", t);
+						Messages.EnvironmentsManager_error_write, t);
 		}
 
 		public void setEnvironmentForFolder(File folder,
@@ -189,7 +189,7 @@ public class EnvironmentsManager {
 		String working = null;
 		while (it.hasNext()) {
 			working = it.next();
-			ret.add(working + "=" + original.get(working));
+			ret.add(working + "=" + original.get(working)); //$NON-NLS-1$
 		}
 		return ret.toArray(new String[ret.size()]);
 	}
