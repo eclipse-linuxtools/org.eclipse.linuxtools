@@ -139,9 +139,6 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 			}
 		}
 
-		Collections.sort(containers,
-				(o1, o2) -> o1.name().compareTo(o2.name()));
-
 		List<String> completed = new ArrayList<>();
 		if (!vmIDs.isEmpty()) {
 			Iterator<String> vmIterator = vmIDs.iterator();
@@ -176,6 +173,9 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 				// Ignore
 			}
 		}
+
+		Collections.sort(containers,
+				(o1, o2) -> o1.name().compareTo(o2.name()));
 
 		this.containersLoaded = true;
 		synchronized (containerLock) {
