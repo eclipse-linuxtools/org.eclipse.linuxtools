@@ -23,6 +23,12 @@ import org.eclipse.linuxtools.internal.docker.core.DockerContainerRefreshManager
 
 public class DockerConnectionManager {
 
+	/**
+	 * @deprecated see the {@link IDockerConnectionStorageManager} implementation instead.
+	 */
+	@Deprecated
+	public final static String CONNECTIONS_FILE_NAME = "dockerconnections.xml"; //$NON-NLS-1$
+
 	private static DockerConnectionManager instance;
 
 	private List<IDockerConnection> connections;
@@ -114,6 +120,14 @@ public class DockerConnectionManager {
 				.removeContainerRefreshThread(connection);
 	}
 
+	/**
+	 * Notifies that a connection was renamed.
+	 */
+	public void notifyConnectionRename() {
+		saveConnections();
+		notifyListeners(IDockerConnectionManagerListener.RENAME_EVENT);
+	}
+
 	public void addConnectionManagerListener(
 			IDockerConnectionManagerListener listener) {
 		if (connectionManagerListeners == null)
@@ -127,6 +141,35 @@ public class DockerConnectionManager {
 			connectionManagerListeners.remove(listener);
 	}
 
+	/**
+	 * Notifies all listeners that a change occurred on a connection
+	 * 
+	 * @param type
+	 *            the type of change
+	 * @deprecated use
+	 *             {@link DockerConnectionManager#notifyListeners(IDockerConnection, int)}
+	 *             instead
+	 */
+	@Deprecated
+	@SuppressWarnings("deprecation")
+	public void notifyListeners(int type) {
+		if (connectionManagerListeners != null) {
+			Object[] listeners = connectionManagerListeners.getListeners();
+			for (int i = 0; i < listeners.length; ++i) {
+				((IDockerConnectionManagerListener) listeners[i])
+						.changeEvent(type);
+			}
+		}
+	}
+
+	/**
+	 * Notifies all listeners that a change occurred on the given connection
+	 * 
+	 * @param connection
+	 *            the connection that changed
+	 * @param type
+	 *            the type of change
+	 */
 	@SuppressWarnings("deprecation")
 	public void notifyListeners(final IDockerConnection connection,
 			final int type) {
