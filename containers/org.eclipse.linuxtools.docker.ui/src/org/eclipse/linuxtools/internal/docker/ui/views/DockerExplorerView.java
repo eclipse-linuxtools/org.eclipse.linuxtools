@@ -252,28 +252,35 @@ public class DockerExplorerView extends CommonNavigator implements
 	@Override
 	public void changeEvent(final IDockerConnection connection,
 			final int type) {
-		showConnectionsOrExplanations();
-		switch(type) {
-		case IDockerConnectionManagerListener.ADD_EVENT:
-			registerListeners(connection);
-			getCommonViewer().refresh();
-			getCommonViewer().setSelection(new StructuredSelection(connection));
-			break;
-		case IDockerConnectionManagerListener.REMOVE_EVENT:
-			unregisterListeners(connection);
-			getCommonViewer().refresh();
-			// move viewer selection to the first connection or set to null if
-			// no other connection exists
-			final IDockerConnection[] connections = DockerConnectionManager
-					.getInstance().getConnections();
-			if (connections.length > 0) {
-				getCommonViewer().setSelection(
-						new StructuredSelection(connections[0]), true);
-			} else {
-				getCommonViewer().setSelection(null);
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				showConnectionsOrExplanations();
+				switch (type) {
+				case IDockerConnectionManagerListener.ADD_EVENT:
+					registerListeners(connection);
+					getCommonViewer().refresh();
+					getCommonViewer()
+							.setSelection(new StructuredSelection(connection));
+					break;
+				case IDockerConnectionManagerListener.REMOVE_EVENT:
+					unregisterListeners(connection);
+					getCommonViewer().refresh();
+					// move viewer selection to the first connection or set to
+					// null if
+					// no other connection exists
+					final IDockerConnection[] connections = DockerConnectionManager
+							.getInstance().getConnections();
+					if (connections.length > 0) {
+						getCommonViewer().setSelection(
+								new StructuredSelection(connections[0]), true);
+					} else {
+						getCommonViewer().setSelection(null);
+					}
+					break;
+				}
 			}
-			break;
-		}
+		});
 	}
 
 	private void registerListeners() {
