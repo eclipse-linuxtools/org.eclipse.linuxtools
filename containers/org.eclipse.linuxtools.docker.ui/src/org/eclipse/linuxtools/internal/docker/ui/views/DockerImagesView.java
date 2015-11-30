@@ -343,7 +343,9 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		final ITreeSelection treeSelection = (ITreeSelection) selection;
+		// empty the viewer if the selection is empty
 		if(treeSelection.isEmpty()) {
+			setConnection(null);
 			return;
 		}
 		// remove this view as a container listener on the former select connection 
@@ -411,7 +413,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 		return connection;
 	}
 
-	public void setConnection(IDockerConnection conn) {
+	private void setConnection(final IDockerConnection conn) {
 		this.connection = conn;
 		if (conn != null) {
 			viewer.setInput(conn);

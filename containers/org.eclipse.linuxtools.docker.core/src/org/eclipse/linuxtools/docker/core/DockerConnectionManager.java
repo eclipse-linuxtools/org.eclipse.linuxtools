@@ -151,7 +151,6 @@ public class DockerConnectionManager {
 	 *             instead
 	 */
 	@Deprecated
-	@SuppressWarnings("deprecation")
 	public void notifyListeners(int type) {
 		if (connectionManagerListeners != null) {
 			Object[] listeners = connectionManagerListeners.getListeners();

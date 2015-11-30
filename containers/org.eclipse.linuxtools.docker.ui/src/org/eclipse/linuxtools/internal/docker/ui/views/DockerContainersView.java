@@ -350,6 +350,7 @@ public class DockerContainersView extends ViewPart implements
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		final ITreeSelection treeSelection = (ITreeSelection) selection;
 		if(treeSelection.isEmpty()) {
+			setConnection(null);
 			return;
 		}
 		// remove this view as a container listener on the former select connection 
