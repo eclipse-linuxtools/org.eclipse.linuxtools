@@ -16,7 +16,6 @@ import org.eclipse.linuxtools.internal.docker.ui.wizards.NewDockerConnection;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.navigator.CommonNavigator;
-import org.eclipse.ui.navigator.CommonViewer;
 
 /**
  * @author xcoulon
@@ -28,11 +27,8 @@ public class AddConnectionCommandHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) {
 		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		if(activePart instanceof CommonNavigator) {
-			final boolean connectionAdded = CommandUtils.openWizard(new NewDockerConnection(), HandlerUtil.getActiveShell(event));
-			if(connectionAdded) {
-				final CommonViewer viewer = ((CommonNavigator)activePart).getCommonViewer();
-				viewer.refresh();
-			}
+			CommandUtils.openWizard(new NewDockerConnection(),
+					HandlerUtil.getActiveShell(event));
 		}
 		return null;
 	}
