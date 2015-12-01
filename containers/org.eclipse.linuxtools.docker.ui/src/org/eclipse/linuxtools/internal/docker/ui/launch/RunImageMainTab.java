@@ -251,8 +251,8 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 				WizardMessages.getString("ImageRunSelectionPage.search")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).span(1, 1)
-				// .hint(LaunchConfigurationUtils
-				// .getButtonWidthHint(searchImageButton), SWT.DEFAULT)
+				.hint(LaunchConfigurationUtils
+						.getButtonWidthHint(searchImageButton), SWT.DEFAULT)
 				.applyTo(searchImageButton);
 		searchImageButton.addSelectionListener(onSearchImage());
 		imageSelectionComboViewer
@@ -366,7 +366,7 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 				// skip if the selected image does not exist in the local Docker
 				// host
 				if (selectedImage == null) {
-					model.setExposedPorts(new WritableList());
+					model.setExposedPorts(new ArrayList<ExposedPortModel>());
 					return;
 				}
 				findImageInfo(selectedImage);
@@ -389,7 +389,8 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 						model.setSelectedImageName(imageNames.get(0));
 						selectedImage = model.getSelectedImage();
 					} else {
-						model.setExposedPorts(new WritableList());
+						model.setExposedPorts(
+								new ArrayList<ExposedPortModel>());
 						return;
 					}
 				}
@@ -431,7 +432,7 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 					.getResult();
 			final Set<String> exposedPortInfos = selectedImageInfo.config()
 					.exposedPorts();
-			final WritableList availablePorts = new WritableList();
+			final List<ExposedPortModel> availablePorts = new ArrayList<>();
 			if (exposedPortInfos != null) {
 				for (String exposedPortInfo : exposedPortInfos) {
 					final String privatePort = exposedPortInfo.substring(0,
@@ -572,9 +573,14 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(
 				IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
 				model.getSelectedConnectionName());
-		configuration.setAttribute(
-				IRunDockerImageLaunchConfigurationConstants.IMAGE_NAME,
-				model.getSelectedImageName());
+		if (model.getSelectedImage() != null) {
+			configuration.setAttribute(
+					IRunDockerImageLaunchConfigurationConstants.IMAGE_ID,
+					model.getSelectedImage().id());
+			configuration.setAttribute(
+					IRunDockerImageLaunchConfigurationConstants.IMAGE_NAME,
+					model.getSelectedImageName());
+		}
 		configuration.setAttribute(
 				IRunDockerImageLaunchConfigurationConstants.COMMAND,
 				model.getCommand());

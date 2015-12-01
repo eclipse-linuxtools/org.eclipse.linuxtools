@@ -466,7 +466,9 @@ public class ContainerDataVolumeDialog extends Dialog {
 				return ValidationStatus.error(null);
 			}
 			final IDockerContainerInfo selectedContainerInfo = container.info();
-			if (!selectedContainerInfo.volumes()
+			if (selectedContainerInfo != null
+					&& selectedContainerInfo.volumes() != null
+					&& !selectedContainerInfo.volumes()
 					.containsKey(model.getContainerPath())) {
 				return ValidationStatus
 						.warning(WizardMessages.getFormattedString(

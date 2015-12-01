@@ -20,7 +20,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.linuxtools.docker.core.DockerException;
@@ -32,6 +34,8 @@ import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig.Builder;
 import org.eclipse.linuxtools.internal.docker.core.DockerHostConfig;
 import org.eclipse.linuxtools.internal.docker.core.DockerPortBinding;
+import org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants;
+import org.eclipse.linuxtools.internal.docker.ui.launch.LaunchConfigurationUtils;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel.ContainerLinkModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel.ExposedPortModel;
 
@@ -70,13 +74,23 @@ public class ImageRun extends Wizard {
 	 * @param selectedImage
 	 *            the {@link IDockerImage} to use to fill the wizard pages
 	 * @throws DockerException
+	 * @throws CoreException
 	 */
-	public ImageRun(final IDockerImage selectedImage) throws DockerException {
+	public ImageRun(final IDockerImage selectedImage)
+			throws DockerException, CoreException {
 		setWindowTitle(WizardMessages.getString("ImageRun.title")); //$NON-NLS-1$
 		setNeedsProgressMonitor(true);
-		this.imageRunSelectionPage = new ImageRunSelectionPage(selectedImage);
+		// attempt to find the last "Image Run" launch configuration for this
+		// image
+		final ILaunchConfiguration lastLaunchConfiguration = LaunchConfigurationUtils
+				.getLaunchConfigurationByImageName(
+						LaunchConfigurationUtils.getLaunchConfigType(
+								IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID),
+						selectedImage.repoTags().get(0));
+		this.imageRunSelectionPage = new ImageRunSelectionPage(selectedImage,
+				lastLaunchConfiguration);
 		this.imageRunResourceVolumesPage = new ImageRunResourceVolumesVariablesPage(
-				selectedImage.getConnection());
+				selectedImage, lastLaunchConfiguration);
 	}
 
 	@Override
@@ -160,7 +174,7 @@ public class ImageRun extends Wizard {
 			switch (dataVolume.getMountType()) {
 			case HOST_FILE_SYSTEM:
 				String bind = convertToUnixPath(dataVolume.getHostPathMount())
-						+ ':' + dataVolume.getContainerPath() + ':' + 'Z';
+						+ ':' + dataVolume.getContainerPath() + ":Z"; //$NON-NLS-1$ //$NON-NLS-2$
 				if (dataVolume.isReadOnly()) {
 					bind += ",ro"; //$NON-NLS-1$
 				}
@@ -185,10 +199,10 @@ public class ImageRun extends Wizard {
 
 		if (Platform.OS_WIN32.equals(Platform.getOS())) {
 			// replace backslashes with slashes
-			unixPath = unixPath.replaceAll("\\\\", "/");
+			unixPath = unixPath.replaceAll("\\\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			// replace "C:/" with "/c/"
-			Matcher m = Pattern.compile("([a-zA-Z]):/").matcher(unixPath);
+			Matcher m = Pattern.compile("([a-zA-Z]):/").matcher(unixPath); //$NON-NLS-1$
 			if (m.find()) {
 				StringBuffer b = new StringBuffer();
 				b.append('/');

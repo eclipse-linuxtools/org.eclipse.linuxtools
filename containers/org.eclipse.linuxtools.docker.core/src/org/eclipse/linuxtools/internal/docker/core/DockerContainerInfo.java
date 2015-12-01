@@ -49,14 +49,14 @@ public class DockerContainerInfo implements IDockerContainerInfo {
 		this.created = info != null ? info.created() : null;
 		this.path = info != null ? info.path() : null;
 		this.args = info != null ? info.args() : null;
-		this.config = info != null ? new DockerContainerConfig(info.config())
-				: null;
-		this.hostConfig = info != null ? new DockerHostConfig(info.hostConfig())
-				: null;
-		this.state = info != null ? new DockerContainerState(info.state())
-				: null;
+		this.config = info != null && info.config() != null
+				? new DockerContainerConfig(info.config()) : null;
+		this.hostConfig = info != null && info.hostConfig() != null
+				? new DockerHostConfig(info.hostConfig()) : null;
+		this.state = info != null && info.state() != null
+				? new DockerContainerState(info.state()) : null;
 		this.image = info != null ? info.image() : null;
-		this.networkSettings = info != null
+		this.networkSettings = info != null && info.networkSettings() != null
 				? new DockerNetworkSettings(info.networkSettings()) : null;
 		this.resolvConfPath = info != null ? info.resolvConfPath() : null;
 		this.hostnamePath = info != null ? info.hostnamePath() : null;

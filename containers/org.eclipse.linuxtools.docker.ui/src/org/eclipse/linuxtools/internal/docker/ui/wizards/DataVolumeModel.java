@@ -13,10 +13,11 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 import java.util.UUID;
 
 import org.eclipse.linuxtools.internal.docker.ui.databinding.BaseDatabindingModel;
+import org.eclipse.linuxtools.internal.docker.ui.launch.LaunchConfigurationUtils;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunResourceVolumesVariablesModel.MountType;
 
 /**
- * @author xcoulon
+ * Data binding model for container data volumes
  *
  */
 public class DataVolumeModel extends BaseDatabindingModel
@@ -54,12 +55,31 @@ public class DataVolumeModel extends BaseDatabindingModel
 
 	private boolean selected;
 
+	
+	/**
+	 * Default constructor
+	 */
 	public DataVolumeModel() {
 	}
 
+	/**
+	 * Constructor
+	 * 
+	 * @param containerPath
+	 *            the container path
+	 */
 	public DataVolumeModel(final String containerPath) {
 		this.containerPath = containerPath;
 		this.mountType = MountType.NONE;
+	}
+
+	public DataVolumeModel(final String containerPath, final String hostPath,
+			final boolean readOnly) {
+		this.containerPath = containerPath;
+		this.mountType = MountType.HOST_FILE_SYSTEM;
+		this.hostPathMount = hostPath;
+		this.mount = this.hostPathMount;
+		this.readOnly = readOnly;
 	}
 
 	public DataVolumeModel(final DataVolumeModel selectedDataVolume) {
@@ -88,7 +108,7 @@ public class DataVolumeModel extends BaseDatabindingModel
 	 * @param fromString
 	 * @return DataVolumeModel
 	 */
-	public static DataVolumeModel createDataVolumeModel(
+	public static DataVolumeModel parseString(
 			final String fromString) {
 		final DataVolumeModel model = new DataVolumeModel();
 		final String[] items = fromString.split(SEPARATOR); // $NON-NLS-1$
@@ -108,6 +128,52 @@ public class DataVolumeModel extends BaseDatabindingModel
 			model.setSelected(Boolean.valueOf(items[2]));
 			break;
 		}
+		return model;
+	}
+
+	/**
+	 * creates a {@link DataVolumeModel} from the 'volumeFrom' container info
+	 * 
+	 * @param volumeFrom
+	 *            the value to parse.
+	 * 
+	 *            Format: <code>&lt;containerName&gt;</code>
+	 * 
+	 * @See <a href="https://docs.docker.com/engine/userguide/dockervolumes/">
+	 *      https://docs.docker.com/engine/userguide/dockervolumes/</a>
+	 */
+	public static DataVolumeModel parseVolumeFrom(String volumeFrom) {
+		final DataVolumeModel model = new DataVolumeModel();
+		model.mountType = MountType.CONTAINER;
+		model.containerMount = volumeFrom;
+		model.selected = true;
+		return model;
+	}
+
+	/**
+	 * creates a {@link DataVolumeModel} from the 'volumeFrom' container info
+	 * 
+	 * @param volumeFrom
+	 *            the value to parse. Format:
+	 *            <code>&lt;host_path&gt;:&lt;container_path&gt;:&lt;label_suffix_flag&gt;</code>
+	 * 
+	 * @See <a href="https://docs.docker.com/engine/userguide/dockervolumes/">
+	 *      https://docs.docker.com/engine/userguide/dockervolumes/</a>
+	 */
+	public static DataVolumeModel parseHostBinding(String volumeFrom) {
+		final DataVolumeModel model = new DataVolumeModel();
+		final String[] items = volumeFrom.split(SEPARATOR); // $NON-NLS-1$
+		// converts the host path to a valid Win32 path if Platform OS is Win32 
+		model.setHostPathMount(
+				LaunchConfigurationUtils.convertToWin32Path(items[0]));
+		model.containerPath = items[1];
+		model.mountType = MountType.HOST_FILE_SYSTEM;
+		if (items[2].equals("ro")) {
+			model.setReadOnly(true);
+		} else {
+			model.setReadOnly(false);
+		}
+		model.selected = true;
 		return model;
 	}
 
