@@ -852,7 +852,24 @@ public class DockerConnection implements IDockerConnection, Closeable {
 		}
 	}
 
-	@Override
+	/**
+	 * Builds an {@link IDockerImage}
+	 * 
+	 * @param path
+	 *            path to the build context
+	 * @param name
+	 *            optional name and tag of the image to build
+	 * @param handler
+	 *            progress handler
+	 * @param buildOptions
+	 *            build options
+	 * @return the id of the {@link IDockerImage} that was build
+	 * @throws DockerException
+	 *             if building image failed
+	 * @throws InterruptedException
+	 *             if the thread was interrupted
+	 */
+	// TODO: add this method in the public interface
 	public String buildImage(final IPath path, final String name,
 			final IDockerProgressHandler handler,
 			final Map<String, Object> buildOptions)

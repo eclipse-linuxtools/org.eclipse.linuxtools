@@ -31,6 +31,7 @@ import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerProgressHandler;
 import org.eclipse.linuxtools.docker.core.IDockerProgressMessage;
 import org.eclipse.linuxtools.docker.ui.Activator;
+import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.BuildConsole;
 import org.eclipse.linuxtools.internal.docker.ui.launch.IBuildDockerImageLaunchConfigurationConstants;
 import org.eclipse.swt.widgets.Display;
@@ -120,10 +121,12 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 					// Use the current time in milliseconds to make it unique.
 					final String name = "dockerfile:" //$NON-NLS-1$
 							+ Long.toHexString(System.currentTimeMillis());
-					connection.buildImage(this.path, name, this,
+					((DockerConnection) connection).buildImage(this.path, name,
+							this,
 							this.buildOptions);
 				} else {
-					connection.buildImage(this.path, this.repoName, this,
+					((DockerConnection) connection).buildImage(this.path,
+							this.repoName, this,
 							this.buildOptions);
 				}
 				connection.getImages(true);
