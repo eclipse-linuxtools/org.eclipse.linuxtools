@@ -39,6 +39,10 @@ public class MockDockerContainerInfoFactory {
 	public static Builder volume(final String volume) {
 		return new Builder().volume(volume);
 	}
+	
+	public static ContainerInfo build() {
+		return new Builder().build();
+	}
 
 	public static class Builder {
 		
@@ -53,6 +57,27 @@ public class MockDockerContainerInfoFactory {
 		private Builder() {
 			this.containerInfo = Mockito
 					.mock(ContainerInfo.class, Mockito.RETURNS_DEEP_STUBS);
+			Mockito.when(this.containerInfo.id()).thenReturn(null);
+			Mockito.when(this.containerInfo.created()).thenReturn(null);
+			Mockito.when(this.containerInfo.path()).thenReturn(null);
+			Mockito.when(this.containerInfo.args()).thenReturn(null);
+			Mockito.when(this.containerInfo.config()).thenReturn(null);
+			Mockito.when(this.containerInfo.hostConfig()).thenReturn(null);
+			Mockito.when(this.containerInfo.state()).thenReturn(null);
+			Mockito.when(this.containerInfo.image()).thenReturn(null);
+			Mockito.when(this.containerInfo.networkSettings()).thenReturn(null);
+			Mockito.when(this.containerInfo.resolvConfPath()).thenReturn(null);
+			Mockito.when(this.containerInfo.hostnamePath()).thenReturn(null);
+			Mockito.when(this.containerInfo.hostsPath()).thenReturn(null);
+			Mockito.when(this.containerInfo.name()).thenReturn(null);
+			Mockito.when(this.containerInfo.driver()).thenReturn(null);
+			Mockito.when(this.containerInfo.execDriver()).thenReturn(null);
+			Mockito.when(this.containerInfo.processLabel()).thenReturn(null);
+			Mockito.when(this.containerInfo.hostsPath()).thenReturn(null);
+			Mockito.when(this.containerInfo.mountLabel()).thenReturn(null);
+			Mockito.when(this.containerInfo.volumes()).thenReturn(null);
+			Mockito.when(this.containerInfo.volumesRW()).thenReturn(null);
+			
 		}
 		
 		public Builder link(final String link) {

@@ -166,7 +166,7 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 	}
 
 	private void logMessage(final String buildMessage) {
-		if (this.console != null) {
+		if (this.console != null && buildMessage != null) {
 			Display.getDefault().asyncExec(new Runnable() {
 
 				@Override

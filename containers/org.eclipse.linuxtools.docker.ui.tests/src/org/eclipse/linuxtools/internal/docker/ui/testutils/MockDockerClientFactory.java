@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
+import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
@@ -147,6 +148,23 @@ public class MockDockerClientFactory {
 				// nothing may happen when mocking the method call 
 			}
 			return this.dockerClient;
+		}
+	}
+
+	/**
+	 * Adds the given {@link IDockerContainer} and associated {@link IDockerContainerInfo} to the list of containers returned by the given {@link DockerClient}.
+	 * @param client
+	 * @param container
+	 * @param containerInfo
+	 */
+	public static void addContainer(DockerClient dockerClient, Container container, ContainerInfo containerInfo) {
+		try {
+			final List<Container> containers = dockerClient.listContainers(new DockerClient.ListContainersParam[0]);
+		containers.add(container);
+		Mockito.when(dockerClient.inspectContainer(container.id())).thenReturn(containerInfo);
+		Mockito.when(dockerClient.listContainers(Matchers.any())).thenReturn(containers);
+		} catch (DockerException | InterruptedException e) {
+			// nothing may happen when mocking the method call 
 		}
 	}
 	

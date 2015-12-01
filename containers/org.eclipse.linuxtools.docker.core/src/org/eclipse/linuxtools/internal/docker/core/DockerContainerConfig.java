@@ -49,37 +49,53 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 	private final List<String> onBuild;
 
 	public DockerContainerConfig(final ContainerConfig containerConfig) {
-		HostConfig hc = containerConfig.hostConfig();
-		this.hostname = containerConfig.hostname();
-		this.domainname = containerConfig.domainname();
-		this.user = containerConfig.user();
+		this.hostname = containerConfig != null ? containerConfig.hostname()
+				: null;
+		this.domainname = containerConfig != null ? containerConfig.domainname()
+				: null;
+		this.user = containerConfig != null ? containerConfig.user() : null;
+		final HostConfig hc = containerConfig != null
+				? containerConfig.hostConfig() : null;
 		this.memory = hc != null ? hc.memory() : null;
 		this.memorySwap = hc != null ? hc.memorySwap() : null;
 		this.cpuShares = hc != null ? hc.cpuShares() : null;
 		this.cpuset = hc != null ? hc.cpusetCpus() : null;
-		this.attachStdin = containerConfig.attachStdin() != null
+		this.attachStdin = containerConfig != null
+				&& containerConfig.attachStdin() != null
 				? containerConfig.attachStdin() : false;
-		this.attachStdout = containerConfig.attachStdout() != null
+		this.attachStdout = containerConfig != null
+				&& containerConfig.attachStdout() != null
 				? containerConfig.attachStdout() : false;
-		this.attachStderr = containerConfig.attachStderr() != null
+		this.attachStderr = containerConfig != null
+				&& containerConfig.attachStderr() != null
 				? containerConfig.attachStderr() : false;
-		this.portSpecs = containerConfig.portSpecs();
-		this.exposedPorts = containerConfig.exposedPorts();
-		this.tty = containerConfig.tty() != null ? containerConfig.tty()
+		this.portSpecs = containerConfig != null ? containerConfig.portSpecs()
+				: null;
+		this.exposedPorts = containerConfig != null
+				? containerConfig.exposedPorts() : null;
+		this.tty = containerConfig != null && containerConfig.tty() != null
+				? containerConfig.tty()
 				: false;
-		this.openStdin = containerConfig.openStdin() != null
+		this.openStdin = containerConfig != null
+				&& containerConfig.openStdin() != null
 				? containerConfig.openStdin() : false;
-		this.stdinOnce = containerConfig.stdinOnce() != null
+		this.stdinOnce = containerConfig != null
+				&& containerConfig.stdinOnce() != null
 				? containerConfig.stdinOnce() : false;
-		this.env = containerConfig.env();
-		this.cmd = containerConfig.cmd();
-		this.image = containerConfig.image();
-		this.volumes = containerConfig.volumes();
-		this.workingDir = containerConfig.workingDir();
-		this.entrypoint = containerConfig.entrypoint();
-		this.networkDisabled = containerConfig.networkDisabled() != null
+		this.env = containerConfig != null ? containerConfig.env() : null;
+		this.cmd = containerConfig != null ? containerConfig.cmd() : null;
+		this.image = containerConfig != null ? containerConfig.image() : null;
+		this.volumes = containerConfig != null ? containerConfig.volumes()
+				: null;
+		this.workingDir = containerConfig != null ? containerConfig.workingDir()
+				: null;
+		this.entrypoint = containerConfig != null ? containerConfig.entrypoint()
+				: null;
+		this.networkDisabled = containerConfig != null
+				&& containerConfig.networkDisabled() != null
 				? containerConfig.networkDisabled() : false;
-		this.onBuild = containerConfig.onBuild();
+		this.onBuild = containerConfig != null ? containerConfig.onBuild()
+				: null;
 	}
 
 	private DockerContainerConfig(final Builder builder) {

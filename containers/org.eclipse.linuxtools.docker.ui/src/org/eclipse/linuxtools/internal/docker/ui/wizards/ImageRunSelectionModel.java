@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -275,13 +276,10 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 		this.exposedPorts.remove(port);
 	}
 
-	public void setExposedPorts(final WritableList ports) {
+	public void setExposedPorts(final List<ExposedPortModel> exposedPorts) {
 		this.exposedPorts.clear();
-		this.exposedPorts.addAll(ports);
-	}
-
-	public void removeExposedPorts() {
-		this.exposedPorts.clear();
+		this.exposedPorts.addAll(exposedPorts);
+		// FIXME: also add all given exposedPorts to selectedExposedPorts ?
 	}
 
 	public void addExposedPort(final ExposedPortModel exposedPort) {
@@ -292,6 +290,10 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 
 	public void removeExposedPort(final ExposedPortModel exposedPort) {
 		this.exposedPorts.remove(exposedPort);
+	}
+
+	public void removeExposedPorts() {
+		this.exposedPorts.clear();
 	}
 
 	public Set<ExposedPortModel> getSelectedPorts() {
@@ -334,6 +336,22 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 		this.links.addAll(links);
 	}
 
+	/**
+	 * Set the container links
+	 * 
+	 * @param links
+	 *            in the following format:
+	 *            <code>&lt;containerName&gt;:&lt;containerAlias&gt;</code>
+	 */
+	public void setLinks(final List<String> links) {
+		for (String link : links) {
+			final String[] items = link.split(":");
+			if (items.length == 2) {
+				addLink(items[0], items[1]);
+			}
+		}
+	}
+
 	public static String getImageName(final String repo, final String tag) {
 		return repo + ":" + tag;
 	}
@@ -370,6 +388,8 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 
 		private static final String SEPARATOR = ":"; //$NON-NLS-1$
 
+		private static final String CONTAINER_TYPE_SEPARATOR = "/"; //$NON-NLS-1$
+
 		public static final String SELECTED = "selected"; //$NON-NLS-1$
 
 		public static final String CONTAINER_PORT = "containerPort"; //$NON-NLS-1$
@@ -393,6 +413,65 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 		private String hostPort;
 
 		/**
+		 * Parses and converts the {@link List} of the given {@link String}
+		 * values into a {@link List} of {@link ExposedPortModel}
+		 * 
+		 * @param exposedPortInfos
+		 *            the input values
+		 * @return the corresponding {@link ExposedPortModel}s
+		 */
+		public static List<ExposedPortModel> fromStrings(
+				final Collection<String> exposedPortInfos) {
+			final List<ExposedPortModel> exposedPorts = new ArrayList<>();
+			for (String exposedPortInfo : exposedPortInfos) {
+				final ExposedPortModel exposedPort = ExposedPortModel
+						.fromString(exposedPortInfo);
+				if (exposedPort != null) {
+					exposedPorts.add(exposedPort);
+				}
+			}
+			return exposedPorts;
+		}
+
+		/**
+		 * Parse the given value and returns an instance of
+		 * {@link ExposedPortModel}.
+		 * 
+		 * @param exposedPortInfo
+		 *            the value to parse
+		 * @return the corresponding {@link ExposedPortModel}
+		 */
+		public static ExposedPortModel fromString(
+				final String exposedPortInfo) {
+			final String privatePort = exposedPortInfo.substring(0,
+					exposedPortInfo.indexOf(CONTAINER_TYPE_SEPARATOR));
+			// exposed ports without host IP/port info
+			final int firstColumnSeparator = exposedPortInfo.indexOf(SEPARATOR);
+			if (firstColumnSeparator == -1 && exposedPortInfo
+					.indexOf(CONTAINER_TYPE_SEPARATOR) != -1) {
+				final String type = exposedPortInfo.substring(
+						exposedPortInfo.indexOf(CONTAINER_TYPE_SEPARATOR)); // $NON-NLS-1$
+				final ExposedPortModel exposedPort = new ExposedPortModel(
+						privatePort, type, "", privatePort); // $NON-NLS-1$
+				return exposedPort; // $NON-NLS-1$
+			} else {
+				final int secondColumnSeparator = exposedPortInfo
+						.indexOf(SEPARATOR,
+						firstColumnSeparator + 1);
+				final String type = exposedPortInfo.substring(
+						exposedPortInfo.indexOf(CONTAINER_TYPE_SEPARATOR), // $NON-NLS-1$
+						firstColumnSeparator); // $NON-NLS-1$
+				final String hostIP = exposedPortInfo.substring(
+						firstColumnSeparator + 1, secondColumnSeparator);
+				final String hostPort = exposedPortInfo
+						.substring(secondColumnSeparator + 1);
+				final ExposedPortModel exposedPort = new ExposedPortModel(
+						privatePort, type, hostIP, hostPort); // $NON-NLS-1$
+				return exposedPort; // $NON-NLS-1$
+			}
+		}
+
+		/**
 		 * Full constructor
 		 * 
 		 * @param privatePort
@@ -414,14 +493,19 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 		/**
 		 * Create an ExposedPortModel from its toString output
 		 * 
-		 * @param fromString
+		 * @param stringValue
 		 * @return ExposedPortModel
 		 */
-		static public ExposedPortModel createPortModel(String fromString) {
-			String[] s = fromString.split(SEPARATOR);
-			ExposedPortModel model = new ExposedPortModel(s[0], s[1], s[2],
-					s[3]);
-			model.selected = Boolean.valueOf(s[4]);
+		static public ExposedPortModel createPortModel(String stringValue) {
+			final String[] elements = stringValue.split(SEPARATOR);
+			final String[] containerPortElements = elements[0]
+					.split(CONTAINER_TYPE_SEPARATOR);
+			ExposedPortModel model = new ExposedPortModel(
+					containerPortElements[0], containerPortElements[1],
+					elements[1], elements[2]);
+			// check the last argument if exists otherwise assume 'true'
+			model.selected = (elements.length == 4)
+					? Boolean.valueOf(elements[3]) : true;
 			return model;
 		}
 
@@ -503,7 +587,7 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 		@Override
 		public String toString() {
 			StringBuffer buffer = new StringBuffer();
-			buffer.append(containerPort + SEPARATOR + portType
+			buffer.append(containerPort + CONTAINER_TYPE_SEPARATOR + portType
 					+ SEPARATOR + hostAddress + SEPARATOR + hostPort
 					+ SEPARATOR + selected);
 			return buffer.toString();

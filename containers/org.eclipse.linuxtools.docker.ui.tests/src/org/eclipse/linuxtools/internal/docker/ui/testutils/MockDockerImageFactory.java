@@ -29,33 +29,50 @@ import com.spotify.docker.client.messages.Image;
  */
 public class MockDockerImageFactory {
 
+	public static Builder id(final String id) {
+		return new Builder().id(id);
+	}
+
 	public static Builder name(final String repoTag, final String... otherRepoTags) {
-		return new Builder(repoTag, otherRepoTags);
+		return new Builder().randomId().name(repoTag, otherRepoTags);
 	}
 
 	public static class Builder {
-		
-		private static char[] hexa = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-		
+
+		private static char[] hexa = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+
 		private final Image image;
 
-		private Builder(final String repoTag, final String... otherRepoTags) {
-			this.image = Mockito
-					.mock(Image.class);
+		private Builder() {
+			this.image = Mockito.mock(Image.class);
+		}
+
+		private Builder id(final String id) {
+			Mockito.when(this.image.id()).thenReturn(id);
+			return this;
+		}
+		
+		private Builder randomId() {
 			// generate a random id for the image
 			final String id = IntStream.range(0, 12)
 					.mapToObj(i -> Character.valueOf(hexa[new Random().nextInt(16)]).toString())
 					.collect(Collectors.joining());
 			Mockito.when(this.image.id()).thenReturn(id);
+			return this;
+		}
+		
+		public Builder name(final String repoTag, final String... otherRepoTags) {
 			final List<String> repoTags = new ArrayList<>();
 			repoTags.add(repoTag);
 			Stream.of(otherRepoTags).forEach(r -> repoTags.add(r));
 			Mockito.when(this.image.repoTags()).thenReturn(ImmutableList.copyOf(repoTags));
 			Mockito.when(this.image.created()).thenReturn(Long.toString(new Date().getTime()));
+			return this;
 		}
-		
+
 		public Image build() {
 			return image;
 		}
 	}
+
 }

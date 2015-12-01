@@ -430,15 +430,15 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
-		final WritableList volumes = new WritableList();
+		final List<DataVolumeModel> volumes = new ArrayList<>();
 		try {
 			final List<String> volumesList = configuration.getAttribute(
-					IRunDockerImageLaunchConfigurationConstants.DATA_VOLUME,
+					IRunDockerImageLaunchConfigurationConstants.DATA_VOLUMES,
 					new ArrayList<String>());
 			final Set<DataVolumeModel> selectedVolumes = new HashSet<>();
 			for (String volume : volumesList) {
 				DataVolumeModel volumeModel = DataVolumeModel
-						.createDataVolumeModel(volume);
+						.parseString(volume);
 				volumes.add(volumeModel);
 				if (volumeModel.getSelected()) {
 					selectedVolumes.add(volumeModel);
@@ -506,7 +506,7 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 				IRunDockerImageLaunchConfigurationConstants.VOLUMES_FROM,
 				volumesFrom);
 		configuration.setAttribute(
-				IRunDockerImageLaunchConfigurationConstants.DATA_VOLUME,
+				IRunDockerImageLaunchConfigurationConstants.DATA_VOLUMES,
 				volumesList);
 	}
 

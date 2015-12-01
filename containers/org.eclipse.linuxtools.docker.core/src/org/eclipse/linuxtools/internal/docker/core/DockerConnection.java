@@ -11,11 +11,9 @@
 package org.eclipse.linuxtools.internal.docker.core;
 
 import java.io.Closeable;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 import java.nio.file.FileSystems;
@@ -68,9 +66,7 @@ import org.eclipse.tm.terminal.view.core.interfaces.ITerminalService;
 import org.eclipse.tm.terminal.view.core.interfaces.constants.ITerminalsConnectorConstants;
 
 import com.spotify.docker.client.ContainerNotFoundException;
-import com.spotify.docker.client.DefaultDockerClient;
 import com.spotify.docker.client.DockerCertificateException;
-import com.spotify.docker.client.DockerCertificates;
 import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.DockerClient.AttachParameter;
 import com.spotify.docker.client.DockerClient.BuildParameter;
@@ -352,28 +348,13 @@ public class DockerConnection implements IDockerConnection, Closeable {
 	 * @see DockerConnection#open(boolean)
 	 */
 	private DockerClient getClientCopy() throws DockerException {
-		if (this.socketPath != null) {
-			return DefaultDockerClient.builder().uri(socketPath).build();
-		} else if (this.tcpHost != null) {
-			if (this.tcpCertPath != null) {
-				try {
-					return DefaultDockerClient
-							.builder()
-							.uri(URI.create(tcpHost))
-							.dockerCertificates(
-									new DockerCertificates(
-											new File(tcpCertPath).toPath()))
-							.build();
-				} catch (DockerCertificateException e) {
-					throw new DockerException(Messages.Retrieve_Docker_Certificates_Failure, e);
-				}
-			} else {
-				return DefaultDockerClient.builder().uri(URI.create(tcpHost))
-						.build();
-			}
+		try {
+			return dockerClientFactory.getClient(this.socketPath, this.tcpHost,
+					this.tcpCertPath);
+		} catch (DockerCertificateException e) {
+			throw new DockerException(
+					NLS.bind(Messages.Open_Connection_Failure, this.name));
 		}
-		throw new DockerException(Messages.Missing_Settings);
-
 	}
 
 	public void notifyContainerListeners(List<IDockerContainer> list) {
@@ -637,6 +618,23 @@ public class DockerConnection implements IDockerConnection, Closeable {
 	@Override
 	public List<IDockerImage> getImages() {
 		return getImages(false);
+	}
+
+	/**
+	 * @return the {@link IDockerImage} identified by the given {@code id} or
+	 *         <code>null</code> if none was found.
+	 * @param id
+	 *            the {@link IDockerImage} id
+	 */
+	// TODO: declare the method in the interface to make it part of the API.
+	public IDockerImage getImage(String id) {
+		List<IDockerImage> images = getImages();
+		for (IDockerImage image : images) {
+			if (image.id().equals(id)) {
+				return image;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -1020,12 +1018,13 @@ public class DockerConnection implements IDockerConnection, Closeable {
 				builder = builder.onBuild(c.onBuild());
 			}
 
-			// create container with default random name
+			// create container with default random name if an empty/null
+			// containerName argument was passed
 			final ContainerCreation creation = client
 					.createContainer(builder.build(),
-					containerName);
-
-			final String id = creation != null ? creation.id() : null;
+					(containerName != null && !containerName.isEmpty())
+							? containerName : null);
+			final String id = creation.id();
 			// force a refresh of the current containers to include the new one
 			listContainers();
 			return id;
@@ -1172,7 +1171,10 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			// start container
 			client.startContainer(id);
 			// Log the started container if a stream is provided
-			if (stream != null && !getContainerInfo(id).config().tty()) {
+			final IDockerContainerInfo containerInfo = getContainerInfo(id);
+			if (stream != null && containerInfo != null
+					&& containerInfo.config() != null
+					&& !containerInfo.config().tty()) {
 				// display logs for container
 				synchronized (loggingThreads) {
 					LogThread t = loggingThreads.get(id);
@@ -1268,6 +1270,14 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			if (t != null)
 				t.requestStop();
 		}
+		while (loggingStatus(id) == EnumDockerLoggingStatus.LOGGING_ACTIVE) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				Activator.log(e);
+			}
+		}
+
 	}
 
 	@Override
