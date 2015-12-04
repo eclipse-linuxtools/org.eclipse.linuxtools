@@ -138,7 +138,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
             ArrayList<String> cmdLine = new ArrayList<>(1 + arguments.length);
             cmdLine.add(valgrindCommand);
             cmdLine.addAll(Arrays.asList(opts));
-            cmdLine.add(exePath.toOSString());
+            cmdLine.add(exePath.toPortableString());
             cmdLine.addAll(Arrays.asList(arguments));
             String[] commandArray = cmdLine.toArray(new String[cmdLine.size()]);
             boolean usePty = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL, ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
@@ -327,7 +327,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
         ArrayList<String> opts = new ArrayList<>();
         opts.add(CommandLineConstants.OPT_TOOL + EQUALS + getPlugin().getToolName(toolID));
         opts.add(CommandLineConstants.OPT_QUIET); // suppress uninteresting output
-        opts.add(CommandLineConstants.OPT_LOGFILE + EQUALS + outputPath.append(LOG_FILE).toOSString());
+        opts.add(CommandLineConstants.OPT_LOGFILE + EQUALS + outputPath.append(LOG_FILE).toPortableString());
 
         opts.add(CommandLineConstants.OPT_TRACECHILD + EQUALS + (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, LaunchConfigurationConstants.DEFAULT_GENERAL_TRACECHILD) ? YES : NO));
         opts.add(CommandLineConstants.OPT_CHILDSILENT + EQUALS + YES); // necessary for parsing
@@ -359,7 +359,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
         for (Object strpath : suppFiles) {
             IPath suppfile = getPlugin().parseWSPath((String) strpath);
             if (suppfile != null) {
-                opts.add(CommandLineConstants.OPT_SUPPFILE + EQUALS + suppfile.toOSString());
+                opts.add(CommandLineConstants.OPT_SUPPFILE + EQUALS + suppfile.toPortableString());
             }
         }
         opts.addAll(Arrays.asList(dynamicDelegate.getCommandArray(config, valgrindVersion, outputPath)));

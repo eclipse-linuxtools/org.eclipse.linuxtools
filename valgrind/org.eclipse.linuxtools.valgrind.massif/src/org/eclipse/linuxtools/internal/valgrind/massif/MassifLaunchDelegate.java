@@ -76,7 +76,7 @@ public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
     throws CoreException {
         ArrayList<String> opts = new ArrayList<>();
 
-        opts.add(MassifCommandConstants.OPT_MASSIF_OUTFILE + EQUALS + logDir.append(OUT_FILE).toOSString());
+        opts.add(MassifCommandConstants.OPT_MASSIF_OUTFILE + EQUALS + logDir.append(OUT_FILE).toPortableString());
 
         opts.add(MassifCommandConstants.OPT_HEAP + EQUALS + (config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAP, MassifLaunchConstants.DEFAULT_MASSIF_HEAP) ? YES : NO));
         opts.add(MassifCommandConstants.OPT_HEAPADMIN + EQUALS + config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAPADMIN, MassifLaunchConstants.DEFAULT_MASSIF_HEAPADMIN));
