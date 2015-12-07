@@ -18,6 +18,7 @@ import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.docker.core.IDockerPortMapping;
 
+import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.messages.Container;
 
 public class DockerContainer implements IDockerContainer {
@@ -34,8 +35,17 @@ public class DockerContainer implements IDockerContainer {
 	private Long sizeRootFs;
 	private IDockerContainerInfo containerInfo;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param connection
+	 *            the Docker connection
+	 * @param container
+	 *            the underlying {@link Container} data returned by the
+	 *            {@link DockerClient}
+	 */
 	public DockerContainer(final IDockerConnection connection,
-			Container container) {
+			final Container container) {
 		this.parent = connection;
 		this.id = container.id();
 		this.image = container.image();
@@ -60,6 +70,26 @@ public class DockerContainer implements IDockerContainer {
 			ports.add(portMapping);
 		}
 		// TODO: include volumes
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param connection
+	 *            the Docker connection
+	 * @param container
+	 *            the underlying {@link Container} data returned by the
+	 *            {@link DockerClient}
+	 * @param containerInfo
+	 *            the {@link IDockerContainerInfo} that was previously retrieved
+	 *            for this {@link IDockerContainer}, assuming it did not change
+	 *            in the mean time.
+	 */
+	public DockerContainer(final IDockerConnection connection,
+			final Container container,
+			final IDockerContainerInfo containerInfo) {
+		this(connection, container);
+		this.containerInfo = containerInfo;
 	}
 
 	@Override
