@@ -163,12 +163,12 @@ public class DockerConnection implements IDockerConnection, Closeable {
 
 	private Map<String, LogThread> loggingThreads = new HashMap<>();
 
-	// private Set<String> printIds = new HashSet<String>();
-
 	// containers sorted by name
 	private List<IDockerContainer> containers;
 	// containers indexed by id
 	private Map<String, IDockerContainer> containersById;
+	// flag to indicate if the connection to the Docker daemon is active
+	private boolean active = false;
 	private boolean containersLoaded = false;
 	private List<IDockerImage> images;
 	private boolean imagesLoaded = false;
@@ -519,6 +519,7 @@ public class DockerConnection implements IDockerConnection, Closeable {
 				}
 				nativeContainers.addAll(client.listContainers(
 						DockerClient.ListContainersParam.allContainers()));
+				this.active = true;
 			}
 			// We have a list of containers. Now, we translate them to our own
 			// core format in case we decide to change the underlying engine
@@ -556,10 +557,13 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			}
 		} catch (com.spotify.docker.client.DockerException
 				| InterruptedException e) {
-			throw new DockerException(
-					NLS.bind(Messages.List_Docker_Containers_Failure,
-							this.getName()),
-					e);
+			if (active) {
+				active = false;
+				throw new DockerException(
+						NLS.bind(Messages.List_Docker_Containers_Failure,
+								this.getName()),
+						e);
+			}
 		} finally {
 			// assign the new list of containers in a locked block of code to
 			// prevent concurrent access, even if an exception was raised.
@@ -1405,8 +1409,8 @@ public class DockerConnection implements IDockerConnection, Closeable {
 		}
 	}
 
-	public void attachCommand(final String id,
-			final InputStream in, final OutputStream out)
+	public void attachCommand(final String id, final InputStream in,
+			@SuppressWarnings("unused") final OutputStream out)
 					throws DockerException {
 
 		final byte[] prevCmd = new byte[1024];
