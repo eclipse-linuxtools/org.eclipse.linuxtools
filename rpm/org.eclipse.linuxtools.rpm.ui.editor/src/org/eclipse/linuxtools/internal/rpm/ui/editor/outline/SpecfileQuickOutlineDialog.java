@@ -21,8 +21,6 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.FontMetrics;
@@ -99,15 +97,12 @@ public class SpecfileQuickOutlineDialog extends PopupDialog {
                 }
             }
         });
-        filterText.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                String filterTextInput = ((Text) e.widget).getText()
-                        .toLowerCase();
-                treeViewerFilter.setLookFor(filterTextInput);
-                stringMatcherUpdated();
-            }
-        });
+        filterText.addModifyListener(e -> {
+		    String filterTextInput = ((Text) e.widget).getText()
+		            .toLowerCase();
+		    treeViewerFilter.setLookFor(filterTextInput);
+		    stringMatcherUpdated();
+		});
         return filterText;
     }
 

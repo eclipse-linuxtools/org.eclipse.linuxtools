@@ -28,16 +28,12 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.rpm.core.RPMProjectCreator;
 import org.eclipse.linuxtools.rpm.ui.SRPMImportOperation;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -108,36 +104,29 @@ public class SRPMImportPage extends WizardPage {
         gridData.horizontalAlignment = GridData.FILL;
         gridData.grabExcessHorizontalSpace = true;
         sourceSRPM.setLayoutData(gridData);
-        sourceSRPM.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                boolean validSRPM = canFinish();
-                if (validSRPM) {
-                    setPageComplete(validSRPM);
-                    changeProjectSettings();
-                }
-            }
-
-        });
+        sourceSRPM.addModifyListener(e -> {
+		    boolean validSRPM = canFinish();
+		    if (validSRPM) {
+		        setPageComplete(validSRPM);
+		        changeProjectSettings();
+		    }
+		});
 
         Button srpmBrowse = new Button(sourceSpecComposite, SWT.PUSH);
         srpmBrowse.setToolTipText(Messages
                 .getString("SRPMImportPage.toolTip_Open_file_navigator")); //$NON-NLS-1$
         srpmBrowse.setText(Messages.getString("RPMPage.Browse")); //$NON-NLS-1$
-        srpmBrowse.addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                FileDialog srpmBrowseDialog = new FileDialog(getContainer()
-                        .getShell(), SWT.OPEN);
-                String selectedSRPMName = srpmBrowseDialog.open();
-                if (selectedSRPMName != null) {
-                    File testSRPMfilename = new File(selectedSRPMName);
-                    if (testSRPMfilename.isFile()) {
-                        sourceSRPM.setText(selectedSRPMName);
-                    }
-                }
-            }
-        });
+        srpmBrowse.addListener(SWT.Selection, event -> {
+		    FileDialog srpmBrowseDialog = new FileDialog(getContainer()
+		            .getShell(), SWT.OPEN);
+		    String selectedSRPMName = srpmBrowseDialog.open();
+		    if (selectedSRPMName != null) {
+		        File testSRPMfilename = new File(selectedSRPMName);
+		        if (testSRPMfilename.isFile()) {
+		            sourceSRPM.setText(selectedSRPMName);
+		        }
+		    }
+		});
     }
 
     private void changeProjectSettings() {

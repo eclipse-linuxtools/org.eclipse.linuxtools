@@ -184,14 +184,9 @@ public class RpmConsole extends IOConsole {
     }
 
     private void showErrorDialog() {
-        PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-            @Override
-            public void run() {
-                MessageDialog.openError(PlatformUI.getWorkbench()
-                .getActiveWorkbenchWindow().getShell(),
-                Messages.getString("RPMConsole.OperationRunningTitle"), //$NON-NLS-1$
-                Messages.getString("RPMConsole.OperationRunningMessage")); //$NON-NLS-1$
-            }
-        });
+        PlatformUI.getWorkbench().getDisplay().asyncExec(() -> MessageDialog.openError(PlatformUI.getWorkbench()
+		.getActiveWorkbenchWindow().getShell(),
+		Messages.getString("RPMConsole.OperationRunningTitle"), //$NON-NLS-1$
+		Messages.getString("RPMConsole.OperationRunningMessage"))); //$NON-NLS-1$
     }
 }

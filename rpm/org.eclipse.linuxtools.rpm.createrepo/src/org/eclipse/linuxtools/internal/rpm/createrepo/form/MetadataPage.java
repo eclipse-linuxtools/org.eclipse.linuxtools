@@ -13,11 +13,7 @@ package org.eclipse.linuxtools.internal.rpm.createrepo.form;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Activator;
 import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoPreferenceConstants;
@@ -157,31 +153,25 @@ public class MetadataPage extends FormPage {
         CreaterepoCategoryModel model = new CreaterepoCategoryModel(project);
         tagsTreeViewer.setInput(model);
         // change the tag text field on change (make editing tag easier)
-        tagsTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-            @Override
-            public void selectionChanged(SelectionChangedEvent event) {
-                if (tagsTree.getSelectionCount() == 1) {
-                    TreeItem treeItem = tagsTree.getSelection()[0];
-                    if (!(treeItem.getData() instanceof CreaterepoTreeCategory)) {
-                        String tag = (String) treeItem.getData();
-                        tagTxt.setText(tag);
-                    } else {
-                        tagTxt.setText(ICreaterepoConstants.EMPTY_STRING);
-                    }
-                }
-            }
-        });
+        tagsTreeViewer.addSelectionChangedListener(event -> {
+		    if (tagsTree.getSelectionCount() == 1) {
+		        TreeItem treeItem = tagsTree.getSelection()[0];
+		        if (!(treeItem.getData() instanceof CreaterepoTreeCategory)) {
+		            String tag = (String) treeItem.getData();
+		            tagTxt.setText(tag);
+		        } else {
+		            tagTxt.setText(ICreaterepoConstants.EMPTY_STRING);
+		        }
+		    }
+		});
         // expand or shrink a category
-        tagsTreeViewer.addDoubleClickListener(new IDoubleClickListener() {
-            @Override
-            public void doubleClick(DoubleClickEvent event) {
-                IStructuredSelection selection = (IStructuredSelection) tagsTreeViewer.getSelection();
-                if (selection.getFirstElement() instanceof CreaterepoTreeCategory) {
-                    CreaterepoTreeCategory category = (CreaterepoTreeCategory) selection.getFirstElement();
-                    tagsTreeViewer.setExpandedState(category, !tagsTreeViewer.getExpandedState(category));
-                }
-            }
-        });
+        tagsTreeViewer.addDoubleClickListener(event -> {
+		    IStructuredSelection selection = (IStructuredSelection) tagsTreeViewer.getSelection();
+		    if (selection.getFirstElement() instanceof CreaterepoTreeCategory) {
+		        CreaterepoTreeCategory category = (CreaterepoTreeCategory) selection.getFirstElement();
+		        tagsTreeViewer.setExpandedState(category, !tagsTreeViewer.getExpandedState(category));
+		    }
+		});
         tagsTree = tagsTreeViewer.getTree();
         tagsTree.setLayoutData(expandComposite());
 

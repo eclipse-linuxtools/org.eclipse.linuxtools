@@ -41,14 +41,11 @@ public class CloseConsoleAction extends Action implements RpmConsoleObserver {
      */
     @Override
     public void run() {
-        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                if(fConsole != null){
-                    ConsolePlugin.getDefault().getConsoleManager().removeConsoles(new IConsole[]{fConsole});
-                }
-            }
-        });
+        PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
+		    if(fConsole != null){
+		        ConsolePlugin.getDefault().getConsoleManager().removeConsoles(new IConsole[]{fConsole});
+		    }
+		});
     }
 
     @Override

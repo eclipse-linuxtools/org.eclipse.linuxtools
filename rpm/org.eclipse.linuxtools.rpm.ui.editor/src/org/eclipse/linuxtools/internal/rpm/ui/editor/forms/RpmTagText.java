@@ -16,8 +16,6 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -44,12 +42,7 @@ public class RpmTagText {
             }
         }
         text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        text.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                specfile.modifyDefine(rpmTag, text.getText());
-            }
-        });
+        text.addModifyListener(e -> specfile.modifyDefine(rpmTag, text.getText()));
     }
 
     public RpmTagText(Composite parent, final String rpmTag,
@@ -62,12 +55,7 @@ public class RpmTagText {
             text.setText(define.getStringValue());
         }
         text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        text.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                specfile.modifyDefine(rpmTag, rpmPackage, text.getText());
-            }
-        });
+        text.addModifyListener(e -> specfile.modifyDefine(rpmTag, rpmPackage, text.getText()));
     }
 
     public RpmTagText(Composite parent, final SpecfileTag require, final Specfile specfile) {
@@ -76,12 +64,7 @@ public class RpmTagText {
         final Text text = new Text(parent, SWT.BORDER_SOLID);
         text.setText(require.getStringValue());
         text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        text.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                 specfile.modifyDefine(require, text.getText());
-            }
-        });
+        text.addModifyListener(e -> specfile.modifyDefine(require, text.getText()));
     }
 
 }

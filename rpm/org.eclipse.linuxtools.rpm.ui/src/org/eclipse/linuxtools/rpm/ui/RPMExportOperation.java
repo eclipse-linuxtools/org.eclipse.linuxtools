@@ -92,22 +92,19 @@ public class RPMExportOperation extends Job {
      */
     @Override
     protected void canceling() {
-        Thread pollThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (getResult() == null) {
-                    Thread thread = getThread();
-                    if (thread != null) {
-                        thread.interrupt();
-                    }
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        break;
-                    }
-                }
-            }
-        });
+        Thread pollThread = new Thread(() -> {
+		    while (getResult() == null) {
+		        Thread thread = getThread();
+		        if (thread != null) {
+		            thread.interrupt();
+		        }
+		        try {
+		            Thread.sleep(1000);
+		        } catch (InterruptedException e) {
+		            break;
+		        }
+		    }
+		});
         pollThread.start();
     }
 }

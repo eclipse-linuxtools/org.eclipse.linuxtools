@@ -19,7 +19,6 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.internal.rpm.createrepo.ICreaterepoConstants;
 import org.eclipse.linuxtools.internal.rpm.createrepo.Messages;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -74,12 +73,7 @@ public class CreaterepoNewWizardPageTwo extends WizardPage {
         information.setLayout(layout);
 
         // listen on modifying the Text widgets
-        ModifyListener modifyListner = new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                setPageComplete(isValid());
-            }
-        };
+        ModifyListener modifyListner = e -> setPageComplete(isValid());
         repositoryIDTxt = createTextFieldWithLabel(information, Messages.CreaterepoNewWizardPageTwo_labelID,
                 Messages.CreaterepoNewWizardPageTwo_tooltipID);
         repositoryIDTxt.addModifyListener(modifyListner);

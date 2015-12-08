@@ -32,7 +32,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
@@ -172,7 +172,7 @@ public class SpecStructureCreator extends StructureCreator {
         if (monitor == null) {
             return new NullProgressMonitor();
         }
-        return new SubProgressMonitor(monitor, IProgressMonitor.UNKNOWN);
+        return SubMonitor.convert(monitor);
     }
 
     private SpecNode addNode(DocumentRangeNode parent, IDocument doc,

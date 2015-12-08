@@ -111,19 +111,16 @@ public class CreaterepoWizard extends Wizard implements INewWizard {
             }
             monitor.worked(1);
             monitor.setTaskName(Messages.CreaterepoWizard_openFileOnCreation);
-            getShell().getDisplay().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    IWorkbenchPage page = PlatformUI.getWorkbench()
-                            .getActiveWorkbenchWindow().getActivePage();
-                    try {
-                        IDE.openEditor(page, file, true);
-                    } catch (PartInitException e) {
-                        Activator.logError(
-                                Messages.CreaterepoWizard_errorOpeningNewlyCreatedFile, e);
-                    }
-                }
-            });
+            getShell().getDisplay().asyncExec(() -> {
+			    IWorkbenchPage page = PlatformUI.getWorkbench()
+			            .getActiveWorkbenchWindow().getActivePage();
+			    try {
+			        IDE.openEditor(page, file, true);
+			    } catch (PartInitException e) {
+			        Activator.logError(
+			                Messages.CreaterepoWizard_errorOpeningNewlyCreatedFile, e);
+			    }
+			});
             monitor.worked(1);
         } catch (CoreException e) {
             Activator.logError(Messages.CreaterepoWizard_errorCreatingProject, e);

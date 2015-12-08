@@ -30,7 +30,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.core.utils.BufferedProcessInputStream;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
@@ -47,15 +46,11 @@ public final class RpmPackageBuildProposalsJob extends Job {
 
     private IJobChangeListener updateFinishedListener = new JobChangeAdapter();
 
-    protected static final IPropertyChangeListener PROPERTY_LISTENER = new IPropertyChangeListener() {
-
-        @Override
-        public void propertyChange(PropertyChangeEvent event) {
-            if (event.getProperty().equals(PreferenceConstants.P_CURRENT_RPMTOOLS)) {
-                updateAsync();
-            }
-        }
-    };
+    protected static final IPropertyChangeListener PROPERTY_LISTENER = event -> {
+	    if (event.getProperty().equals(PreferenceConstants.P_CURRENT_RPMTOOLS)) {
+	        updateAsync();
+	    }
+	};
 
     protected static final IPreferenceStore STORE = Activator.getDefault().getPreferenceStore();
 

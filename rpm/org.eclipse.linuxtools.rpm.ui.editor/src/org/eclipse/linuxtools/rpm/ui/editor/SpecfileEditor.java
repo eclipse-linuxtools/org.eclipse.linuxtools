@@ -202,15 +202,12 @@ public class SpecfileEditor extends TextEditor {
         if (fOccurrencesUpdater != null) {
             Shell shell = getSite().getShell();
             if (!(shell == null || shell.isDisposed())) {
-                shell.getDisplay().asyncExec(new Runnable() {
-                    @Override
-                    public void run() {
-                        ISourceViewer viewer = getSourceViewer();
-                        if (viewer != null) {
-                            fOccurrencesUpdater.update(viewer);
-                        }
-                    }
-                });
+                shell.getDisplay().asyncExec(() -> {
+				    ISourceViewer viewer = getSourceViewer();
+				    if (viewer != null) {
+				        fOccurrencesUpdater.update(viewer);
+				    }
+				});
             }
         }
 

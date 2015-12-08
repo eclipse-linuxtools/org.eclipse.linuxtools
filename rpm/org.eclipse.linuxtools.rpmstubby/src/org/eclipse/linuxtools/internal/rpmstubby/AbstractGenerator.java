@@ -72,18 +72,15 @@ public abstract class AbstractGenerator {
         } catch (IOException|CoreException e) {
             StubbyLog.logError(e);
         }
-        Display.getCurrent().asyncExec(new Runnable() {
-            @Override
-            public void run() {
-                IWorkbenchPage page = PlatformUI.getWorkbench()
-                        .getActiveWorkbenchWindow().getActivePage();
-                try {
-                    IDE.openEditor(page, openFile, true);
-                } catch (PartInitException e) {
-                    StubbyLog.logError(e);
-                }
-            }
-        });
+        Display.getCurrent().asyncExec(() -> {
+		    IWorkbenchPage page = PlatformUI.getWorkbench()
+		            .getActiveWorkbenchWindow().getActivePage();
+		    try {
+		        IDE.openEditor(page, openFile, true);
+		    } catch (PartInitException e) {
+		        StubbyLog.logError(e);
+		    }
+		});
     }
 
     /**

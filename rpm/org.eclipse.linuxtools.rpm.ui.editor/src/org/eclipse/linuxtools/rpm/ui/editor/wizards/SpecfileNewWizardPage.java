@@ -34,8 +34,6 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -114,12 +112,7 @@ public class SpecfileNewWizardPage extends WizardPage {
         projectText = new Text(container, SWT.BORDER | SWT.SINGLE);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         projectText.setLayoutData(gd);
-        projectText.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                dialogChanged();
-            }
-        });
+        projectText.addModifyListener(e -> dialogChanged());
         Button button = new Button(container, SWT.PUSH);
         button.setText(Messages.SpecfileNewWizardPage_12);
         button.addSelectionListener(new SelectionAdapter() {
@@ -140,50 +133,47 @@ public class SpecfileNewWizardPage extends WizardPage {
         }
         // empty label for the last row.
         label = new Label(container, SWT.NULL);
-        templateCombo.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                selectedTemplate = ((Combo) e.getSource()).getText();
-                InputStream inputStream = runRpmdevNewSpec(selectedTemplate);
-                LineNumberReader reader = new LineNumberReader(
-                        new InputStreamReader(inputStream));
-                String line;
-                try {
-                    content = ""; //$NON-NLS-1$
-                    setDefaultValues();
-                    while ((line = reader.readLine()) != null) {
-                        if (line.startsWith("Name:")) { //$NON-NLS-1$
-                            setTemplateTagValue(nameText, line);
-                        }
-                        if (line.startsWith("Version:")) { //$NON-NLS-1$
-                            setTemplateTagValue(versionText, line);
-                        }
-                        if (line.startsWith("Summary:")) { //$NON-NLS-1$
-                            setTemplateTagValue(summaryText, line);
-                        }
-                        if (line.startsWith("Group:")) { //$NON-NLS-1$
-                            String[] items = line.split(":", 2); //$NON-NLS-1$
-                            String value = items[1].trim();
-                            if (!value.equals("")) {//$NON-NLS-1$
-                                groupCombo.setText(value);
-                            }
-                        }
-                        if (line.startsWith("License:")) { //$NON-NLS-1$
-                            setTemplateTagValue(licenseText, line);
-                        }
-                        if (line.startsWith("URL:")) { //$NON-NLS-1$
-                            setTemplateTagValue(urlText, line);
-                        }
-                        if (line.startsWith("Source0:")) { //$NON-NLS-1$
-                            setTemplateTagValue(source0Text, line);
-                        }
-                        content += line + '\n';
-                    }
-                } catch (IOException e1) {
-                    SpecfileLog.logError(e1);
-                }
-            }
-        });
+        templateCombo.addModifyListener(e -> {
+		    selectedTemplate = ((Combo) e.getSource()).getText();
+		    InputStream inputStream = runRpmdevNewSpec(selectedTemplate);
+		    LineNumberReader reader = new LineNumberReader(
+		            new InputStreamReader(inputStream));
+		    String line;
+		    try {
+		        content = ""; //$NON-NLS-1$
+		        setDefaultValues();
+		        while ((line = reader.readLine()) != null) {
+		            if (line.startsWith("Name:")) { //$NON-NLS-1$
+		                setTemplateTagValue(nameText, line);
+		            }
+		            if (line.startsWith("Version:")) { //$NON-NLS-1$
+		                setTemplateTagValue(versionText, line);
+		            }
+		            if (line.startsWith("Summary:")) { //$NON-NLS-1$
+		                setTemplateTagValue(summaryText, line);
+		            }
+		            if (line.startsWith("Group:")) { //$NON-NLS-1$
+		                String[] items = line.split(":", 2); //$NON-NLS-1$
+		                String value = items[1].trim();
+		                if (!value.equals("")) {//$NON-NLS-1$
+		                    groupCombo.setText(value);
+		                }
+		            }
+		            if (line.startsWith("License:")) { //$NON-NLS-1$
+		                setTemplateTagValue(licenseText, line);
+		            }
+		            if (line.startsWith("URL:")) { //$NON-NLS-1$
+		                setTemplateTagValue(urlText, line);
+		            }
+		            if (line.startsWith("Source0:")) { //$NON-NLS-1$
+		                setTemplateTagValue(source0Text, line);
+		            }
+		            content += line + '\n';
+		        }
+		    } catch (IOException e1) {
+		        SpecfileLog.logError(e1);
+		    }
+		});
 
         // Package Name
         nameText = setTextItem(container, Messages.SpecfileNewWizardPage_14);
@@ -221,12 +211,7 @@ public class SpecfileNewWizardPage extends WizardPage {
         label.setText(textLabel);
         Text text = new Text(container, SWT.BORDER | SWT.SINGLE);
         text.setLayoutData(gd);
-        text.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                dialogChanged();
-            }
-        });
+        text.addModifyListener(e -> dialogChanged());
         // empty label for the last row.
         new Label(container, SWT.NULL);
         return text;

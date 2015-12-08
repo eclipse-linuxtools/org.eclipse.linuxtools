@@ -99,22 +99,18 @@ public class Utils {
                 new SequenceInputStream(child.getInputStream(),
                         child.getErrorStream()));
 
-        Thread readinJob = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    int i;
-                    while ((i = in.read()) != -1) {
-                        outStream.write(i);
-                    }
-                    outStream.flush();
-                    outStream.close();
-                    in.close();
-                } catch (IOException e) {}
-                return;
-            }
-
-        });
+        Thread readinJob = new Thread(() -> {
+		    try {
+		        int i;
+		        while ((i = in.read()) != -1) {
+		            outStream.write(i);
+		        }
+		        outStream.flush();
+		        outStream.close();
+		        in.close();
+		    } catch (IOException e) {}
+		    return;
+		});
         readinJob.start();
 
         boolean canceled = false;

@@ -24,8 +24,6 @@ import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -281,17 +279,14 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
                 layout.marginWidth = 0;
                 buttonBox.setLayout(layout);
                 createButtons(buttonBox);
-                buttonBox.addDisposeListener(new DisposeListener() {
-                    @Override
-                    public void widgetDisposed(DisposeEvent event) {
-                        addFileButton = null;
-                        addDirButton = null;
-                        removeButton = null;
-                        upButton = null;
-                        downButton = null;
-                        buttonBox = null;
-                    }
-                });
+                buttonBox.addDisposeListener(event -> {
+				    addFileButton = null;
+				    addDirButton = null;
+				    removeButton = null;
+				    upButton = null;
+				    downButton = null;
+				    buttonBox = null;
+				});
 
             } else {
                 checkParent(buttonBox, parent);
@@ -314,12 +309,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
                         | SWT.H_SCROLL);
                 list.setFont(parent.getFont());
                 list.addSelectionListener(getSelectionListener());
-                list.addDisposeListener(new DisposeListener() {
-                    @Override
-                    public void widgetDisposed(DisposeEvent event) {
-                        list = null;
-                    }
-                });
+                list.addDisposeListener(event -> list = null);
             } else {
                 checkParent(list, parent);
             }

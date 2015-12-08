@@ -29,11 +29,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 /**
@@ -82,12 +80,7 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
         // TODO: use BooleanFieldEditor and get it to layout properly
         //        with the link (lnWorkspaceSettings)
         btnProjectSettings = new Button(composite, SWT.CHECK);
-        btnProjectSettings.addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                toggleEnabled();
-            }
-        });
+        btnProjectSettings.addListener(SWT.Selection, event -> toggleEnabled());
         layoutData = new GridData();
         layoutData.horizontalAlignment = GridData.BEGINNING;
         layoutData.horizontalAlignment = GridData.FILL;
@@ -109,14 +102,11 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
         lnWorkspaceSettings.setLayoutData(layoutData);
         lnWorkspaceSettings.setText(NLS.bind(linkTags, Messages.CreaterepoGeneralPropertyPage_workspaceSettings));
         lnWorkspaceSettings.setFont(parent.getFont());
-        lnWorkspaceSettings.addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                PreferenceDialog preferenceDialog = PreferencesUtil.createPreferenceDialogOn(getShell(),
-                        CREATEREPO_PREFERENCE_ID, new String[] {CREATEREPO_PREFERENCE_ID}, null);
-                preferenceDialog.open();
-            }
-        });
+        lnWorkspaceSettings.addListener(SWT.Selection, event -> {
+		    PreferenceDialog preferenceDialog = PreferencesUtil.createPreferenceDialogOn(getShell(),
+		            CREATEREPO_PREFERENCE_ID, new String[] {CREATEREPO_PREFERENCE_ID}, null);
+		    preferenceDialog.open();
+		});
 
         // general group
         generalGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);

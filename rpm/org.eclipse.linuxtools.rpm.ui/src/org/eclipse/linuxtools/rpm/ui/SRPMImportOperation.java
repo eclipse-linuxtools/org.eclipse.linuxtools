@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
-import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.internal.rpm.ui.Messages;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
@@ -89,7 +89,7 @@ public class SRPMImportOperation implements IRunnableWithProgress {
                 rpmProject.importSourceRPM(sourceRPM);
                 progressMonitor.worked(2);
             } else if (remoteSRPM != null) {
-                SubProgressMonitor submonitor = new SubProgressMonitor(progressMonitor, 1);
+                SubMonitor submonitor = SubMonitor.convert(progressMonitor, 1);
                 rpmProject.importSourceRPM(remoteSRPM, submonitor);
                 progressMonitor.worked(2);
             }

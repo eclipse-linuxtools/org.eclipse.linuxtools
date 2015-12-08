@@ -119,12 +119,7 @@ public class Activator extends AbstractUIPlugin {
             String docDir = "/usr/share/doc/"; //$NON-NLS-1$
             File dir = new File(docDir);
             if (dir.exists()) {
-                File files[] = dir.listFiles(new FilenameFilter() {
-                    @Override
-                    public boolean accept(File dir, String name) {
-                        return name.startsWith("rpm-"); //$NON-NLS-1$
-                    }
-                });
+                File files[] = dir.listFiles((FilenameFilter) (dir1, name) -> name.startsWith("rpm-")); //$NON-NLS-1$
                 try {
                     // We can not be sure that there is only one directory here
                     // starting with rpm-

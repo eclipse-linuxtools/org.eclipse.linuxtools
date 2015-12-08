@@ -78,20 +78,15 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
         final String containerName = page.getProjectName();
         final String fileName = page.getFileName();
         final InputStream contentInputStream = openContentStream();
-        IRunnableWithProgress op = new IRunnableWithProgress() {
-            @Override
-            public void run(IProgressMonitor monitor)
-                    throws InvocationTargetException {
-                try {
-                    doFinish(containerName, fileName, contentInputStream,
-                            monitor);
-                } catch (CoreException e) {
-                    throw new InvocationTargetException(e);
-                } finally {
-                    monitor.done();
-                }
-            }
-        };
+		IRunnableWithProgress op = monitor -> {
+			try {
+				doFinish(containerName, fileName, contentInputStream, monitor);
+			} catch (CoreException e) {
+				throw new InvocationTargetException(e);
+			} finally {
+				monitor.done();
+			}
+		};
         try {
             getContainer().run(true, false, op);
         } catch (InterruptedException e) {
@@ -135,17 +130,14 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
         }
         monitor.worked(1);
         monitor.setTaskName(Messages.SpecfileNewWizard_4);
-        getShell().getDisplay().asyncExec(new Runnable() {
-            @Override
-            public void run() {
-                IWorkbenchPage page = PlatformUI.getWorkbench()
-                        .getActiveWorkbenchWindow().getActivePage();
-                try {
-                    IDE.openEditor(page, file, true);
-                } catch (PartInitException e) {
-                }
-            }
-        });
+        getShell().getDisplay().asyncExec(() -> {
+		    IWorkbenchPage page = PlatformUI.getWorkbench()
+		            .getActiveWorkbenchWindow().getActivePage();
+		    try {
+		        IDE.openEditor(page, file, true);
+		    } catch (PartInitException e) {
+		    }
+		});
         monitor.worked(1);
     }
 
