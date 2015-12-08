@@ -242,55 +242,52 @@ public class GprofLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
                 if (l.equals(launch)) {
                     //need to run this in the ui thread otherwise get SWT Exceptions
                     // based on concurrency issues
-                    Display.getDefault().syncExec(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                String s = exePath.toOSString();
-                                RemoteProxyManager rpmgr = RemoteProxyManager.getInstance();
-                                IRemoteFileProxy proxy = rpmgr.getFileProxy(getProject());
-                                // gmon.out file should be in working directory used for the launch.
-                                String gmonExpected = getWorkingDirectory(config).getAbsolutePath() + "/gmon.out"; //$NON-NLS-1$
-                                IFileStore gmonFileStore = proxy.getResource(gmonExpected);
-                                if (!gmonFileStore.fetchInfo().exists()) {
-                                    Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+                    Display.getDefault().syncExec(() -> {
+					    try {
+					        String s = exePath.toOSString();
+					        RemoteProxyManager rpmgr = RemoteProxyManager.getInstance();
+					        IRemoteFileProxy proxy = rpmgr.getFileProxy(getProject());
+					        // gmon.out file should be in working directory used for the launch.
+					        String gmonExpected = getWorkingDirectory(config).getAbsolutePath() + "/gmon.out"; //$NON-NLS-1$
+					        IFileStore gmonFileStore = proxy.getResource(gmonExpected);
+					        if (!gmonFileStore.fetchInfo().exists()) {
+					            Shell parent1 = PlatformUI.getWorkbench().getDisplay().getActiveShell();
 
-                                   //Missing gmon.out logic:
-                                   //    This point is reached if pg flags were not set. (e.g in an unmanaged makefile project.)
-                                   //    or PG flag was set but gmon.out could not be found. (e.g chDir was used by the program
+					           //Missing gmon.out logic:
+					           //    This point is reached if pg flags were not set. (e.g in an unmanaged makefile project.)
+					           //    or PG flag was set but gmon.out could not be found. (e.g chDir was used by the program
 
-                                   //Prompt user about missing gmon.out
-                                   GprofNoGmonDialog noGmonDialog = new GprofNoGmonDialog(project, parent);
-                                   gmonExpected = noGmonDialog.getGmonExpected();
+					           //Prompt user about missing gmon.out
+					           GprofNoGmonDialog noGmonDialog = new GprofNoGmonDialog(project, parent1);
+					           gmonExpected = noGmonDialog.getGmonExpected();
 
-                                   //See if user specified a path to gmon.
-                                   if (gmonExpected == null) {
-                                       // If user gmon.out selection was bad, we cancle launch.
-                                       return;
-                                   } else {
-                                       // Otherwise we try to retrive the gmon.out file.
-                                       gmonFileStore = proxy.getResource(gmonExpected);
-                                   }
+					           //See if user specified a path to gmon.
+					           if (gmonExpected == null) {
+					               // If user gmon.out selection was bad, we cancle launch.
+					               return;
+					           } else {
+					               // Otherwise we try to retrive the gmon.out file.
+					               gmonFileStore = proxy.getResource(gmonExpected);
+					           }
 
-                                }
+					        }
 
-                                // We found gmon.out.  Make sure it was generated after the executable was formed.
-                                IFileStore exe = proxy.getResource(exePath.toString());
-                                if (exe.fetchInfo().getLastModified() > gmonFileStore.fetchInfo().getLastModified()) {
-                                    String title = GprofLaunchMessages.GprofGmonStale_msg;
-                                    String message = GprofLaunchMessages.GprofGmonStaleExplanation_msg;
-                                    Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-                                    MessageDialog.openWarning(parent, title, message);
-                                }
-                                Display.getDefault().asyncExec(new LaunchTerminationWatcherRunnable(s, gmonExpected));
+					        // We found gmon.out.  Make sure it was generated after the executable was formed.
+					        IFileStore exe = proxy.getResource(exePath.toString());
+					        if (exe.fetchInfo().getLastModified() > gmonFileStore.fetchInfo().getLastModified()) {
+					            String title = GprofLaunchMessages.GprofGmonStale_msg;
+					            String message = GprofLaunchMessages.GprofGmonStaleExplanation_msg;
+					            Shell parent2 = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+					            MessageDialog.openWarning(parent2, title, message);
+					        }
+					        Display.getDefault().asyncExec(new LaunchTerminationWatcherRunnable(s, gmonExpected));
 
-                            } catch (NullPointerException e) {
-                                // Do nothing
-                            } catch (CoreException e) {
-                                // Do nothing
-                            }
-                        }
-                    });
+					    } catch (NullPointerException e1) {
+					        // Do nothing
+					    } catch (CoreException e2) {
+					        // Do nothing
+					    }
+					});
                 }
             }
         }

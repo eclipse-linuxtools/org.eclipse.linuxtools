@@ -31,7 +31,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
-import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.navigator.ResourceComparator;
@@ -149,18 +148,15 @@ public class GprofNoGmonDialog {
        dialog.setAllowMultiple(false);
        dialog.setInitialSelection(project);
 
-       dialog.setValidator(new ISelectionStatusValidator() {
-           @Override
-           public IStatus validate(Object[] selection) {
-               if (selection.length != 1) {
-                   return new Status(IStatus.ERROR, GprofLaunch.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
-               }
-               if (!(selection[0] instanceof IFile)) {
-                   return new Status(IStatus.ERROR, GprofLaunch.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
-               }
-               return new Status(IStatus.OK, GprofLaunch.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
-           }
-       });
+       dialog.setValidator(selection -> {
+	       if (selection.length != 1) {
+	           return new Status(IStatus.ERROR, GprofLaunch.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+	       }
+	       if (!(selection[0] instanceof IFile)) {
+	           return new Status(IStatus.ERROR, GprofLaunch.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+	       }
+	       return new Status(IStatus.OK, GprofLaunch.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+	   });
 
        //Open dialogue.
        if (dialog.open() == IDialogConstants.OK_ID) {

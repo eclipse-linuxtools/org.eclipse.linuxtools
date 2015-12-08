@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
-import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.navigator.ResourceComparator;
@@ -164,7 +163,7 @@ public class OpenGmonDialog extends Dialog {
         IStringVariableManager mgr = VariablesPlugin.getDefault().getStringVariableManager();
         try {
             binValue = mgr.performStringSubstitution(binValue, false);
-        } catch (CoreException _) {
+        } catch (CoreException e) {
             // do nothing: never occurs
         }
 
@@ -205,18 +204,15 @@ public class OpenGmonDialog extends Dialog {
         if (c != null) {
             dialog.setInitialSelection(c.getProject());
         }
-        dialog.setValidator(new ISelectionStatusValidator() {
-            @Override
-            public IStatus validate(Object[] selection) {
-                if (selection.length != 1) {
-                    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
-                }
-                if (!(selection[0] instanceof IFile)) {
-                    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
-                }
-                return new Status(IStatus.OK, Activator.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
-            }
-        });
+        dialog.setValidator(selection -> {
+		    if (selection.length != 1) {
+		        return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+		    }
+		    if (!(selection[0] instanceof IFile)) {
+		        return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+		    }
+		    return new Status(IStatus.OK, Activator.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+		});
         if (dialog.open() == IDialogConstants.OK_ID) {
             IResource resource = (IResource) dialog.getFirstResult();
             text.setText("${resource_loc:" + resource.getFullPath() + "}"); //$NON-NLS-1$//$NON-NLS-2$
@@ -230,7 +226,7 @@ public class OpenGmonDialog extends Dialog {
         IStringVariableManager mgr = VariablesPlugin.getDefault().getStringVariableManager();
         try {
             t = mgr.performStringSubstitution(t, false);
-        } catch (CoreException _) {
+        } catch (CoreException e) {
             // do nothing: never occurs
         }
         File f = new File(t);

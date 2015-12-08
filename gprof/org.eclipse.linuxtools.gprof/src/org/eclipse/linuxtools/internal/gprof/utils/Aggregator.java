@@ -57,9 +57,9 @@ public class Aggregator {
                 errorMessage += pr.errorMessage;
 
             }
-        } catch (Exception _) {
+        } catch (Exception e) {
             errorMessage = Messages.Aggregator_ERROR_COMMON_PREFIX;
-            errorMessage += _.getMessage();
+            errorMessage += e.getMessage();
         }
         File ret = new File(directory, "gmon.sum"); //$NON-NLS-1$
         if (!ret.isFile() && errorMessage == null) {
@@ -70,13 +70,8 @@ public class Aggregator {
 
         if (errorMessage != null) {
             final String finalErrorMessage = errorMessage;
-            PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                            Messages.Aggregator_GPROF_ERROR, finalErrorMessage);
-                }
-            });
+            PlatformUI.getWorkbench().getDisplay().asyncExec(() -> MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+			        Messages.Aggregator_GPROF_ERROR, finalErrorMessage));
             return null;
         }
         return ret;

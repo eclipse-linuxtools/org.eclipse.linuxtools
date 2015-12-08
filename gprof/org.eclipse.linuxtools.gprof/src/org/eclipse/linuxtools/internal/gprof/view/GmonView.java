@@ -44,8 +44,6 @@ import org.eclipse.linuxtools.internal.gprof.view.fields.SampleProfField;
 import org.eclipse.linuxtools.internal.gprof.view.histogram.CGArc;
 import org.eclipse.linuxtools.internal.gprof.view.histogram.CGCategory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -106,21 +104,19 @@ public class GmonView extends AbstractSTDataView {
         ColorRegistry colorRegistry = JFaceResources.getColorRegistry();
         Color background = colorRegistry.get("org.eclipse.ui.workbench.INACTIVE_TAB_BG_START"); //$NON-NLS-1$
         label = new Label(parent, SWT.WRAP);
-        if (background != null)
+        if (background != null) {
             label.setBackground(background);
+        }
         GridData data = new GridData(SWT.FILL, SWT.BEGINNING, true, false, 1, 1);
         label.setLayoutData(data);
         fFilterText = new Text(parent, SWT.BORDER | SWT.SINGLE | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
         fFilterText.setMessage(Messages.GmonView_type_filter_text);
         fFilterText.setToolTipText(Messages.GmonView_filter_by_name);
         fFilterText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        fFilterText.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                String text = fFilterText.getText();
-                fViewerFilter.setMatchingText(text);
-            }
-        });
+        fFilterText.addModifyListener(e -> {
+		    String text = fFilterText.getText();
+		    fViewerFilter.setMatchingText(text);
+		});
     }
 
     @Override
