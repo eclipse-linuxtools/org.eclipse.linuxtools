@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.vagrant.ui.commands;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -63,7 +66,13 @@ public class AddBoxCommandHandler extends AbstractHandler {
 				// handler refresh the images when done
 				try {
 					IVagrantConnection connection = VagrantService.getInstance();
-					connection.addBox(boxName, boxLoc);
+					boolean isValidURL = true;
+					try {
+						new URL(boxLoc);
+					} catch (MalformedURLException e) {
+						isValidURL = false;
+					}
+					connection.addBox(boxName, boxLoc, isValidURL);
 					connection.getBoxes(true);
 				} catch (final VagrantException e) {
 					Display.getDefault()

@@ -43,7 +43,7 @@ public interface IVagrantConnection {
 
 	void up(File vagrantDir, String provider);
 
-	void addBox(String name, String location) throws VagrantException, InterruptedException;
+	void addBox(String name, String location, boolean progress) throws VagrantException, InterruptedException;
 
 	void destroyVM(IVagrantVM vm) throws VagrantException, InterruptedException;
 

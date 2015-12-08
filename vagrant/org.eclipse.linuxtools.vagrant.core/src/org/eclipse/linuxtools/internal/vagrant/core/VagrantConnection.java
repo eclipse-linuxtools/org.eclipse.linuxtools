@@ -363,8 +363,12 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	}
 
 	@Override
-	public void addBox(String name, String location) {
-		call(new String [] {"--machine-readable", "box", "add", name, location}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	public void addBox(String name, String location, boolean progress) {
+		if (progress) {
+			rtCall(new String[] { "box", "add", name, location }, null, null); //$NON-NLS-1$ //$NON-NLS-2$
+		} else {
+			call(new String [] {"--machine-readable", "box", "add", name, location}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
 	}
 
 	@Override
@@ -453,7 +457,8 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 			ILaunchConfigurationWorkingCopy wc = type.newInstance(null, VG);
 			wc.setAttribute(ATTR_LOCATION, vagrantPath);
 			wc.setAttribute(ATTR_TOOL_ARGUMENTS, arguments);
-			wc.setAttribute(ATTR_WORKING_DIRECTORY, vagrantDir.getAbsolutePath());
+			wc.setAttribute(ATTR_WORKING_DIRECTORY,
+					vagrantDir != null ? vagrantDir.getAbsolutePath() : null);
 			wc.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES,
 					environment);
 			wc.launch(ILaunchManager.RUN_MODE, new NullProgressMonitor());
