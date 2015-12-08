@@ -131,15 +131,11 @@ public class PrepareChangeLogAction extends ChangeLogAction {
      * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
      */
     protected void doRun() {
-        IRunnableWithProgress code = new IRunnableWithProgress() {
-
-            @Override
-            public void run(IProgressMonitor monitor) {
-                monitor.beginTask(Messages.getString("ChangeLog.PrepareChangeLog"), 1000); // $NON-NLS-1$
-                prepareChangeLog(monitor);
-                monitor.done();
-            }
-        };
+        IRunnableWithProgress code = monitor -> {
+		    monitor.beginTask(Messages.getString("ChangeLog.PrepareChangeLog"), 1000); // $NON-NLS-1$
+		    prepareChangeLog(monitor);
+		    monitor.done();
+		};
 
         ProgressMonitorDialog pd = new ProgressMonitorDialog(PlatformUI.getWorkbench()
                 .getActiveWorkbenchWindow().getShell());

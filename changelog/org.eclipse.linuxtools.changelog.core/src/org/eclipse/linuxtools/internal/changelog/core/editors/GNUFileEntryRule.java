@@ -40,12 +40,7 @@ public class GNUFileEntryRule implements IPredicateRule {
 
     private boolean started = false;
 
-    private IWhitespaceDetector fWsDetector = new IWhitespaceDetector() {
-        @Override
-        public boolean isWhitespace(char character) {
-            return Character.isWhitespace(character);
-        }
-    };
+    private IWhitespaceDetector fWsDetector = character -> Character.isWhitespace(character);
 
     /** Internal setting for the un-initialized column constraint */
     protected static final int UNDEFINED = -1;
