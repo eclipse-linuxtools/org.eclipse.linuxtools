@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.internal.oprofile.ui.view;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -119,28 +118,20 @@ public class OprofileView extends ViewPart implements ISelectionChangedListener 
             e.printStackTrace();
         }
 
-        IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
-            @Override
-            public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                monitor.beginTask(OprofileUiMessages.getString("view.dialog.parsing.text"), 2); //$NON-NLS-1$
+        IRunnableWithProgress refreshRunner = monitor -> {
+		    monitor.beginTask(OprofileUiMessages.getString("view.dialog.parsing.text"), 2); //$NON-NLS-1$
 
-                OpModelRoot dataModelRoot = OpModelRoot.getDefault();
-                dataModelRoot.refreshModel();
-                monitor.worked(1);
+		    OpModelRoot dataModelRoot = OpModelRoot.getDefault();
+		    dataModelRoot.refreshModel();
+		    monitor.worked(1);
 
-                final UiModelRoot UiRoot = UiModelRoot.getDefault();
-                UiRoot.refreshModel();
+		    final UiModelRoot UiRoot = UiModelRoot.getDefault();
+		    UiRoot.refreshModel();
 
-                Display.getDefault().asyncExec(new Runnable() {
-                    @Override
-                    public void run() {
-                        OprofileUiPlugin.getDefault().getOprofileView().getTreeViewer().setInput(UiRoot);
-                    }
-                });
-                monitor.worked(1);
-                monitor.done();
-            }
-        };
+		    Display.getDefault().asyncExec(() -> OprofileUiPlugin.getDefault().getOprofileView().getTreeViewer().setInput(UiRoot));
+		    monitor.worked(1);
+		    monitor.done();
+		};
 
         ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
         try {
