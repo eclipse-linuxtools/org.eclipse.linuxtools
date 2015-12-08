@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.actions.KernelSourceAction;
@@ -190,16 +189,13 @@ public class KernelBrowserView extends BrowserView {
      * A <code>IPropertyChangeListener</code> that detects changes to the Kernel Source location
      * and runs the <code>updateKernelSourceTree</code> method.
      */
-    private final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
-        @Override
-        public void propertyChange(PropertyChangeEvent event) {
-            if (event.getProperty().equals(IDEPreferenceConstants.P_KERNEL_SOURCE) ||
-                event.getProperty().equals(IDEPreferenceConstants.P_REMOTE_LOCAL_KERNEL_SOURCE) ||
-                event.getProperty().equals(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE)) {
-                refresh();
-            }
-        }
-    };
+    private final IPropertyChangeListener propertyChangeListener = event -> {
+	    if (event.getProperty().equals(IDEPreferenceConstants.P_KERNEL_SOURCE) ||
+	        event.getProperty().equals(IDEPreferenceConstants.P_REMOTE_LOCAL_KERNEL_SOURCE) ||
+	        event.getProperty().equals(IDEPreferenceConstants.P_EXCLUDED_KERNEL_SOURCE)) {
+	        refresh();
+	    }
+	};
 
     @Override
     public void dispose() {

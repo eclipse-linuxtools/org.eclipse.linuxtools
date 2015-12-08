@@ -45,7 +45,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -157,20 +156,12 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
         }
     };
 
-    private ModifyListener modifyListener = new ModifyListener() {
-        @Override
-        public void modifyText(ModifyEvent e) {
-            updateLaunchConfigurationDialog();
-        }
-    };
+    private ModifyListener modifyListener = e -> updateLaunchConfigurationDialog();
 
-    private ModifyListener modifyListenerOutput = new ModifyListener() {
-        @Override
-        public void modifyText(ModifyEvent e) {
-            updateLaunchConfigurationDialog();
-            outputFileHasChanged = true;
-        }
-    };
+    private ModifyListener modifyListenerOutput = e -> {
+	    updateLaunchConfigurationDialog();
+	    outputFileHasChanged = true;
+	};
 
     private FocusListener focusListener = new FocusAdapter() {
 

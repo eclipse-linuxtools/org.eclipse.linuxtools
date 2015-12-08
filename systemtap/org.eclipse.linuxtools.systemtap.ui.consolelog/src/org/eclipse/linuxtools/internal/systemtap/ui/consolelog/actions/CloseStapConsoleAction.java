@@ -23,14 +23,11 @@ public class CloseStapConsoleAction extends ConsoleAction implements ScriptConso
 
     @Override
     public void run() {
-        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                if(null != console){
-                    ConsolePlugin.getDefault().getConsoleManager().removeConsoles(new IConsole[]{console});
-                }
-            }
-        });
+        PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
+		    if(null != console){
+		        ConsolePlugin.getDefault().getConsoleManager().removeConsoles(new IConsole[]{console});
+		    }
+		});
     }
 
     public CloseStapConsoleAction(ScriptConsole fConsole) {

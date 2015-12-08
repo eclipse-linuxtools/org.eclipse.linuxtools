@@ -24,8 +24,8 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -48,12 +48,7 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
     private Text text[] = new Text[IDEPreferenceConstants.STAP_STRING_OPTIONS.length];
     private Text targetProgramText;
 
-    private ModifyListener modifyListener = new ModifyListener() {
-        @Override
-        public void modifyText(ModifyEvent e) {
-            updateLaunchConfigurationDialog();
-        }
-    };
+    private ModifyListener modifyListener = e -> updateLaunchConfigurationDialog();
     private FileDialog fileDialog;
     private Text miscCommandsText;
 
@@ -97,7 +92,7 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
         selectTargetProgramButton.setLayoutData(gridData);
         selectTargetProgramButton
                 .setText(Messages.SystemTapScriptLaunchConfigurationTab_browse);
-        selectTargetProgramButton.addSelectionListener(new SelectionListener() {
+        selectTargetProgramButton.addSelectionListener(new SelectionAdapter() {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -105,10 +100,6 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
                 if (fileName != null) {
                     targetProgramText.setText(fileName);
                 }
-            }
-
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
             }
         });
 

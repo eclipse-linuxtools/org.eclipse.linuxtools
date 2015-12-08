@@ -31,18 +31,15 @@ public class ExceptionErrorDialog {
     }
 
     public static void openError(final String title, final String message, final Exception e) {
-        Display.getDefault().asyncExec(new Runnable() {
-            @Override
-            public void run() {
-                StringWriter writer = new StringWriter();
-                e.printStackTrace(new PrintWriter(writer));
-                Status status = new Status(IStatus.ERROR, GraphingUIPlugin.PLUGIN_ID,
-                        e.toString(), new Throwable(writer.toString()));
-                ErrorDialog.openError(PlatformUI.getWorkbench()
-                        .getActiveWorkbenchWindow().getShell(),
-                        title, message, status);
-            }
-        });
+        Display.getDefault().asyncExec(() -> {
+		    StringWriter writer = new StringWriter();
+		    e.printStackTrace(new PrintWriter(writer));
+		    Status status = new Status(IStatus.ERROR, GraphingUIPlugin.PLUGIN_ID,
+		            e.toString(), new Throwable(writer.toString()));
+		    ErrorDialog.openError(PlatformUI.getWorkbench()
+		            .getActiveWorkbenchWindow().getShell(),
+		            title, message, status);
+		});
     }
 
 }

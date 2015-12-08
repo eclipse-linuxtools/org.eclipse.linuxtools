@@ -109,19 +109,16 @@ public class GraphComposite extends Composite {
     }
 
     public void addCheckOption(final String title, final SelectionListener listener) {
-        Display.getDefault().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                Button b = new Button(checkOptionComp, SWT.CHECK);
-                b.setText(title);
-                b.addSelectionListener(listener);
-                checkOptions.add(b);
-                b.setSelection(true);
-                if (sidebarVisible) {
-                    configure(true);
-                }
-            }
-        });
+        Display.getDefault().syncExec(() -> {
+		    Button b = new Button(checkOptionComp, SWT.CHECK);
+		    b.setText(title);
+		    b.addSelectionListener(listener);
+		    checkOptions.add(b);
+		    b.setSelection(true);
+		    if (sidebarVisible) {
+		        configure(true);
+		    }
+		});
     }
 
     /**

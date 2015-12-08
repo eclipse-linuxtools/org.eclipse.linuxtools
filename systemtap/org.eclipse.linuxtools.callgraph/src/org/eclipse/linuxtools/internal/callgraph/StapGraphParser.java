@@ -104,15 +104,8 @@ public class StapGraphParser extends SystemTapParser {
         try {
             buff = new BufferedReader(new FileReader(sourcePath));
         } catch (FileNotFoundException e1) {
-            Display.getDefault().asyncExec(new Runnable() {
-
-                @Override
-                public void run(){
-                    MessageDialog.openError(new Shell(), Messages.getString("StapGraphParser.FileNotFound"),  //$NON-NLS-1$
-                            Messages.getString("StapGraphParser.CouldNotOpen") + sourcePath); //$NON-NLS-1$
-
-                }
-            });
+            Display.getDefault().asyncExec(() -> MessageDialog.openError(new Shell(), Messages.getString("StapGraphParser.FileNotFound"),  //$NON-NLS-1$
+			        Messages.getString("StapGraphParser.CouldNotOpen") + sourcePath)); //$NON-NLS-1$
             return Status.CANCEL_STATUS;
         }
         internalData = buff;

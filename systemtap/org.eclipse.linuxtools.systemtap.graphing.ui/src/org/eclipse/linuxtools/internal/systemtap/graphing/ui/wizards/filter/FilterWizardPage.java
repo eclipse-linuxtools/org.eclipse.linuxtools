@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.internal.systemtap.graphing.ui.wizards.filter;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.systemtap.graphing.core.filters.IDataSetFilter;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -54,12 +53,7 @@ public abstract class FilterWizardPage extends WizardPage {
         }
     };
 
-    protected final ModifyListener modifyListener = new ModifyListener() {
-        @Override
-        public void modifyText(ModifyEvent e) {
-            update();
-        }
-    };
+    protected final ModifyListener modifyListener = e -> update();
 
     private void update() {
         createFilter();

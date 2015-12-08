@@ -24,8 +24,6 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -73,13 +71,7 @@ public class GraphSelectorEditor extends EditorPart {
             final GraphDisplaySet gds = new GraphDisplaySet(parent, dataSets.get(i));
             displaySets.add(gds);
             item.setControl(parent);
-            item.addDisposeListener(new DisposeListener() {
-
-                @Override
-                public void widgetDisposed(DisposeEvent e) {
-                    gds.dispose();
-                }
-            });
+            item.addDisposeListener(e -> gds.dispose());
         }
 
         scriptFolder.setSelection(item); // Choose the last created item.

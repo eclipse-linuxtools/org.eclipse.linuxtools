@@ -17,8 +17,6 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.Localization;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -104,12 +102,7 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements
         if (edit) {
             txtTitle.setText(model.getGraphData().title);
         }
-        txtTitle.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                checkErrors(false);
-            }
-        });
+        txtTitle.addModifyListener(e -> checkErrors(false));
 
         // Add the data series widgets
         String[] labels = model.getSeries();

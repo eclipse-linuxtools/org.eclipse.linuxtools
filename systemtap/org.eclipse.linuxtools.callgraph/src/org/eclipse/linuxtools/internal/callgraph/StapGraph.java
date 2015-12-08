@@ -1705,12 +1705,7 @@ public class StapGraph extends Graph {
         }
     }
 
-    private static final Comparator<Entry<String, Long>> VALUE_ORDER = new Comparator<Entry<String, Long>>() {
-        @Override
-        public int compare(Entry<String, Long> a, Entry<String, Long> b) {
-            return a.getValue().compareTo((b.getValue()));
-        }
-    };
+    private static final Comparator<Entry<String, Long>> VALUE_ORDER = (a, b) -> a.getValue().compareTo((b.getValue()));
 
     /**
      * Smoothly increments the scrollbars by x, y

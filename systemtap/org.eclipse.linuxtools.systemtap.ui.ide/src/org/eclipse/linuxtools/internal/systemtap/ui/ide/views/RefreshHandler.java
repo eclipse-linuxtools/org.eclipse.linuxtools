@@ -37,12 +37,7 @@ public class RefreshHandler extends AbstractHandler {
         if (active) {
             final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
             if (activePart instanceof BrowserView) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((BrowserView) activePart).refresh();
-                    }
-                }).start();
+                new Thread(() -> ((BrowserView) activePart).refresh()).start();
             }
         }
         return null;

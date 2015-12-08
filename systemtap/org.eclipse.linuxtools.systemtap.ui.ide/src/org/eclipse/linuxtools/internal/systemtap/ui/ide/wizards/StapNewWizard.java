@@ -76,18 +76,15 @@ public class StapNewWizard extends Wizard implements INewWizard {
     public boolean performFinish() {
         final String containerName = page.getContainerName();
         final String fileName = page.getFileName();
-        IRunnableWithProgress op = new IRunnableWithProgress() {
-            @Override
-            public void run(IProgressMonitor monitor) throws InvocationTargetException {
-                try {
-                    doFinish(containerName, fileName, monitor);
-                } catch (CoreException e) {
-                    throw new InvocationTargetException(e);
-                } finally {
-                    monitor.done();
-                }
-            }
-        };
+        IRunnableWithProgress op = monitor -> {
+		    try {
+		        doFinish(containerName, fileName, monitor);
+		    } catch (CoreException e) {
+		        throw new InvocationTargetException(e);
+		    } finally {
+		        monitor.done();
+		    }
+		};
         try {
             getContainer().run(true, false, op);
         } catch (InterruptedException e) {
@@ -117,18 +114,15 @@ public class StapNewWizard extends Wizard implements INewWizard {
         newFile.create(new ByteArrayInputStream(envString.getBytes()) , true, monitor);
         monitor.worked(1);
         monitor.setTaskName(resourceBundle.getString("StapNewWizard.SetTask")); //$NON-NLS-1$
-        getShell().getDisplay().asyncExec(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getWorkbench()
-                            .showPerspective(IDEPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-                    IDE.openEditor(page, newFile);
-                } catch (WorkbenchException e1) {
-                    // ignore, the file is created but opening the editor failed
-                }
-            }
-        });
+        getShell().getDisplay().asyncExec(() -> {
+		    try {
+		        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getWorkbench()
+		                .showPerspective(IDEPerspective.ID, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+		        IDE.openEditor(page, newFile);
+		    } catch (WorkbenchException e1) {
+		        // ignore, the file is created but opening the editor failed
+		    }
+		});
         monitor.worked(1);
     }
 

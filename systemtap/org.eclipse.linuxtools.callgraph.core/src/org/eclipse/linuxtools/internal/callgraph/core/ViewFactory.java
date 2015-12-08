@@ -34,25 +34,21 @@ public class ViewFactory {
      * @return : The view object that corresponds to the viewID
      */
     public static SystemTapView createView(final String viewID) {
-        Display.getDefault().syncExec(new Runnable() {
+        Display.getDefault().syncExec(() -> {
+		    try {
+		        IViewPart view = PlatformUI.getWorkbench()
+		        .getActiveWorkbenchWindow().getActivePage().
+		        showView(viewID);
+		        if (!(view instanceof SystemTapView)) {
+		            return;
+		        }
 
-            @Override
-            public void run() {
-                try {
-                    IViewPart view = PlatformUI.getWorkbench()
-                    .getActiveWorkbenchWindow().getActivePage().
-                    showView(viewID);
-                    if (!(view instanceof SystemTapView)) {
-                        return;
-                    }
-
-                    newView = ((SystemTapView) view);
-                    newView.setViewID();
-                } catch (PartInitException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+		        newView = ((SystemTapView) view);
+		        newView.setViewID();
+		    } catch (PartInitException e) {
+		        e.printStackTrace();
+		    }
+		});
 
         addView(newView);
         return newView;
@@ -64,23 +60,19 @@ public class ViewFactory {
      * @return : The view object that corresponds to the viewID
      */
     public static SystemTapView createView(final String viewID, final String secondaryID) {
-        Display.getDefault().syncExec(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    IViewPart view = PlatformUI.getWorkbench()
-                    .getActiveWorkbenchWindow().getActivePage().showView(viewID, secondaryID, IWorkbenchPage.VIEW_VISIBLE);
-                    if (!(view instanceof SystemTapView)) {
-                        return;
-                    }
-                    newView = ((SystemTapView) view);
-                    newView.setViewID();
-                } catch (PartInitException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        Display.getDefault().syncExec(() -> {
+		    try {
+		        IViewPart view = PlatformUI.getWorkbench()
+		        .getActiveWorkbenchWindow().getActivePage().showView(viewID, secondaryID, IWorkbenchPage.VIEW_VISIBLE);
+		        if (!(view instanceof SystemTapView)) {
+		            return;
+		        }
+		        newView = ((SystemTapView) view);
+		        newView.setViewID();
+		    } catch (PartInitException e) {
+		        e.printStackTrace();
+		    }
+		});
 
         addView(newView);
         return newView;

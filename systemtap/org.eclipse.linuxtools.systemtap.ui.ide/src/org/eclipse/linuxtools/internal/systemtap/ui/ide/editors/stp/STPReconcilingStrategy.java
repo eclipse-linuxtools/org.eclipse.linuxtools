@@ -116,12 +116,7 @@ public class STPReconcilingStrategy  implements IReconcilingStrategy,
         buildPositions();
 
         // Paint the folding annotations in the background.
-        Display.getDefault().asyncExec(new Runnable() {
-            @Override
-            public void run() {
-                currentEditor.updateFoldingStructure(documentPositionList);
-            }
-        });
+        Display.getDefault().asyncExec(() -> currentEditor.updateFoldingStructure(documentPositionList));
     }
 
     /**

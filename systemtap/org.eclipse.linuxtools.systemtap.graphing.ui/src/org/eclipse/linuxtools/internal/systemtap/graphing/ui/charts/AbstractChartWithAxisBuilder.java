@@ -17,7 +17,6 @@ import org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.listeners.Ch
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.preferences.GraphingPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.graphing.core.adapters.IAdapter;
 import org.eclipse.linuxtools.systemtap.graphing.ui.charts.AbstractChartBuilder;
-import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
@@ -133,41 +132,33 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
         // with blanks in the PaintListener and have the title paint after it
         // once the title has been altered.
         if (title instanceof Control) {
-            titleBoundsPaintListener = new PaintListener() {
-
-                @Override
-                public void paintControl(PaintEvent e) {
-                    Rectangle bounds = chart.getPlotArea().getBounds();
-                    Control title = (Control) chart.getTitle();
-                    Rectangle titleBounds = title.getBounds();
-                    title.setLocation(new Point(bounds.x + (bounds.width - titleBounds.width) / 2, title.getLocation().y));
-                }
-            };
+            titleBoundsPaintListener = e -> {
+			    Rectangle bounds = chart.getPlotArea().getBounds();
+			    Control title1 = (Control) chart.getTitle();
+			    Rectangle titleBounds = title1.getBounds();
+			    title1.setLocation(new Point(bounds.x + (bounds.width - titleBounds.width) / 2, title1.getLocation().y));
+			};
             chart.addPaintListener(titleBoundsPaintListener);
         } else {
             // move title paint listener to end
             chart.removePaintListener((PaintListener)title);
-            titleBoundsPaintListener = new PaintListener() {
-
-                @Override
-                public void paintControl(PaintEvent e) {
-                    ITitle title = chart.getTitle();
-                    Font font = title.getFont();
-                    Font oldFont = e.gc.getFont();
-                    e.gc.setFont(font);
-                    Control legend = (Control)chart.getLegend();
-                    Rectangle legendBounds = legend.getBounds();
-                    int adjustment = legendBounds.width - 15;
-                    Point blankSize = e.gc.textExtent(" "); //$NON-NLS-1$
-                    int numBlanks = ((adjustment / blankSize.x) >> 1) << 1;
-                    String text = title.getText().trim();
-                    for (int i = 0; i < numBlanks; ++i) {
-                        text += " "; //$NON-NLS-1$
-                    }
-                    e.gc.setFont(oldFont);
-                    title.setText(text);
-                }
-            };
+            titleBoundsPaintListener = e -> {
+			    ITitle title1 = chart.getTitle();
+			    Font font = title1.getFont();
+			    Font oldFont = e.gc.getFont();
+			    e.gc.setFont(font);
+			    Control legend = (Control)chart.getLegend();
+			    Rectangle legendBounds = legend.getBounds();
+			    int adjustment = legendBounds.width - 15;
+			    Point blankSize = e.gc.textExtent(" "); //$NON-NLS-1$
+			    int numBlanks = ((adjustment / blankSize.x) >> 1) << 1;
+			    String text = title1.getText().trim();
+			    for (int i = 0; i < numBlanks; ++i) {
+			        text += " "; //$NON-NLS-1$
+			    }
+			    e.gc.setFont(oldFont);
+			    title1.setText(text);
+			};
             chart.addPaintListener(titleBoundsPaintListener);
             chart.addPaintListener((PaintListener)title);
         }

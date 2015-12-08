@@ -66,12 +66,7 @@ public class ErrorTableDisplay {
      * Clears all items from the table.
      */
     public void clear() {
-        table.getDisplay().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                table.removeAll();
-            }
-        });
+        table.getDisplay().syncExec(() -> table.removeAll());
     }
 
     /**
@@ -88,18 +83,14 @@ public class ErrorTableDisplay {
      * @param img The image to display with the error.
      */
     private void addRow(final String[] row, final Image img) {
-        table.getDisplay().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                item = new TableItem(table, SWT.NULL);
-                for(int i=0; i<row.length; i++) {
-                    item.setText(i+1, row[i]);
-                }
-                item.setImage(img);
-                updateColumns();
-            }
-
-        });
+        table.getDisplay().syncExec(() -> {
+		    item = new TableItem(table, SWT.NULL);
+		    for(int i=0; i<row.length; i++) {
+		        item.setText(i+1, row[i]);
+		    }
+		    item.setImage(img);
+		    updateColumns();
+		});
     }
 
     /**

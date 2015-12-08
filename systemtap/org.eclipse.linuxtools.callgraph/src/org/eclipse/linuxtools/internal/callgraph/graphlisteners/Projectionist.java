@@ -63,13 +63,10 @@ public class Projectionist extends Job {
             if (System.currentTimeMillis() - snapshot >= frameTime) {
                 snapshot = System.currentTimeMillis();
                 busy = true;
-                Display.getDefault().asyncExec(new Runnable() {
-                    @Override
-                    public void run() {
-                        graph.drawNextNode();
-                        busy = false;
-                    }
-                });
+                Display.getDefault().asyncExec(() -> {
+				    graph.drawNextNode();
+				    busy = false;
+				});
 
             } else {
                 try {

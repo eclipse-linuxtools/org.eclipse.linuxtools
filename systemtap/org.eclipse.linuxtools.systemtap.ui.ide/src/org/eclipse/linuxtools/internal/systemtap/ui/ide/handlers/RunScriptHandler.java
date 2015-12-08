@@ -166,32 +166,29 @@ public class RunScriptHandler extends AbstractHandler {
         }
         final String[] script = buildStandardScript();
         final String[] envVars = EnvironmentVariablesPreferencePage.getEnvironmentVariables();
-        Display.getDefault().asyncExec(new Runnable() {
-            @Override
-            public void run() {
-                String name = getConsoleName();
-                if (ScriptConsole.instanceIsRunning(name)) {
-                    MessageDialog dialog = new MessageDialog(
-                            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                            Messages.RunScriptHandler_AlreadyRunningDialogTitle, null,
-                            MessageFormat.format(Messages.RunScriptHandler_AlreadyRunningDialogMessage, fileName),
-                            MessageDialog.QUESTION, new String[]{"Yes", "No"}, 0); //$NON-NLS-1$ //$NON-NLS-2$
-                    if (dialog.open() != Window.OK) {
-                        if (launch != null) {
-                            launch.forceRemove();
-                        }
-                        return;
-                    }
-                }
-                final ScriptConsole console = ScriptConsole.getInstance(name);
-                if (!local) {
-                    console.run(script, envVars, remoteOptions, new StapErrorParser());
-                } else {
-                    console.runLocally(script, envVars, new StapErrorParser(), getProject());
-                }
-                scriptConsoleInitialized(console);
-            }
-        });
+        Display.getDefault().asyncExec(() -> {
+		    String name = getConsoleName();
+		    if (ScriptConsole.instanceIsRunning(name)) {
+		        MessageDialog dialog = new MessageDialog(
+		                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+		                Messages.RunScriptHandler_AlreadyRunningDialogTitle, null,
+		                MessageFormat.format(Messages.RunScriptHandler_AlreadyRunningDialogMessage, fileName),
+		                MessageDialog.QUESTION, new String[]{"Yes", "No"}, 0); //$NON-NLS-1$ //$NON-NLS-2$
+		        if (dialog.open() != Window.OK) {
+		            if (launch != null) {
+		                launch.forceRemove();
+		            }
+		            return;
+		        }
+		    }
+		    final ScriptConsole console = ScriptConsole.getInstance(name);
+		    if (!local) {
+		        console.run(script, envVars, remoteOptions, new StapErrorParser());
+		    } else {
+		        console.runLocally(script, envVars, new StapErrorParser(), getProject());
+		    }
+		    scriptConsoleInitialized(console);
+		});
     }
 
     private String getConsoleName() {
@@ -274,14 +271,11 @@ public class RunScriptHandler extends AbstractHandler {
         }
 
         if (targetEditor != null && targetEditor.isDirty()) {
-            Display.getDefault().syncExec(new Runnable() {
-                @Override
-                public void run() {
-                    Shell shell = event != null ? HandlerUtil.getActiveShell(event)
-                            : PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-                    targetEditor.doSave(new ProgressMonitorPart(shell, new FillLayout()));
-                }
-            });
+            Display.getDefault().syncExec(() -> {
+			    Shell shell = event != null ? HandlerUtil.getActiveShell(event)
+			            : PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+			    targetEditor.doSave(new ProgressMonitorPart(shell, new FillLayout()));
+			});
         }
     }
 

@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.Localization;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
@@ -92,34 +91,26 @@ public final class TapsetLibrary {
         }
     }
 
-    private static final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
-        @Override
-        public void propertyChange(PropertyChangeEvent event) {
-            String property = event.getProperty();
-            if (property.equals(IDEPreferenceConstants.P_TAPSETS)) {
-                applyTapsetChanges((String) event.getOldValue(), (String) event.getNewValue());
-            } else if (property.equals(PreferenceConstants.P_ENV.SYSTEMTAP_TAPSET.toPrefKey())
-                    || property.equals(IDEPreferenceConstants.P_REMOTE_PROBES)) {
-                runStapParser();
-            } else if (property.equals(IDEPreferenceConstants.P_STORED_TREE)) {
-                if (event.getNewValue().equals(false)) {
-                    // When turning off stored trees, reload the tapset contents directly.
-                    TreeSettings.deleteTrees();
-                    runStapParser();
-                } else if (isReady()) {
-                    // When turning on stored trees, store the current trees immediately.
-                    TreeSettings.setTrees(getFunctions(), getProbes());
-                }
-            }
-        }
-    };
+    private static final IPropertyChangeListener propertyChangeListener = event -> {
+	    String property = event.getProperty();
+	    if (property.equals(IDEPreferenceConstants.P_TAPSETS)) {
+	        applyTapsetChanges((String) event.getOldValue(), (String) event.getNewValue());
+	    } else if (property.equals(PreferenceConstants.P_ENV.SYSTEMTAP_TAPSET.toPrefKey())
+	            || property.equals(IDEPreferenceConstants.P_REMOTE_PROBES)) {
+	        runStapParser();
+	    } else if (property.equals(IDEPreferenceConstants.P_STORED_TREE)) {
+	        if (event.getNewValue().equals(false)) {
+	            // When turning off stored trees, reload the tapset contents directly.
+	            TreeSettings.deleteTrees();
+	            runStapParser();
+	        } else if (isReady()) {
+	            // When turning on stored trees, store the current trees immediately.
+	            TreeSettings.setTrees(getFunctions(), getProbes());
+	        }
+	    }
+	};
 
-    private static final IPropertyChangeListener credentialChangeListener = new IPropertyChangeListener() {
-        @Override
-        public void propertyChange(PropertyChangeEvent event) {
-            runStapParser();
-        }
-    };
+    private static final IPropertyChangeListener credentialChangeListener = event -> runStapParser();
 
     private static JobChangeAdapter parseCompletionListener = new JobChangeAdapter() {
         @Override
@@ -236,24 +227,19 @@ public final class TapsetLibrary {
             return f;
         }
 
-        Display.getDefault().asyncExec(new Runnable() {
-
-            @Override
-            public void run() {
-                InputDialog i = new InputDialog(
-                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                        Localization.getString("TapsetBrowserView.TapsetLocation"), //$NON-NLS-1$
-                        Localization.getString("TapsetBrowserView.WhereDefaultTapset"), null, null); //$NON-NLS-1$
-                i.open();
-                String path = i.getValue();
-                if (path != null) {
-                    // This preference update should trigger a property listener
-                    // that will update the tapset trees.
-                    p.setValue(PreferenceConstants.P_ENV.SYSTEMTAP_TAPSET.toPrefKey(), i.getValue());
-                }
-            }
-
-        });
+        Display.getDefault().asyncExec(() -> {
+		    InputDialog i = new InputDialog(
+		            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+		            Localization.getString("TapsetBrowserView.TapsetLocation"), //$NON-NLS-1$
+		            Localization.getString("TapsetBrowserView.WhereDefaultTapset"), null, null); //$NON-NLS-1$
+		    i.open();
+		    String path = i.getValue();
+		    if (path != null) {
+		        // This preference update should trigger a property listener
+		        // that will update the tapset trees.
+		        p.setValue(PreferenceConstants.P_ENV.SYSTEMTAP_TAPSET.toPrefKey(), i.getValue());
+		    }
+		});
         return null;
     }
 

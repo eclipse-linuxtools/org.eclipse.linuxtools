@@ -17,7 +17,6 @@ import org.eclipse.jface.text.rules.BufferedRuleBasedScanner;
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
-import org.eclipse.jface.text.rules.IWhitespaceDetector;
 import org.eclipse.jface.text.rules.IWordDetector;
 import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.SingleLineRule;
@@ -98,11 +97,6 @@ public class STPElementScanner extends BufferedRuleBasedScanner {
                 new EndOfLineRule("#define", defaultToken), //$NON-NLS-1$
                 new SingleLineRule("\"", "\"", stringToken, '\\'), //$NON-NLS-1$ //$NON-NLS-2$
                 new SingleLineRule("'", "'", stringToken, '\\'), //$NON-NLS-1$//$NON-NLS-2$
-                keywordsRule, new WhitespaceRule(new IWhitespaceDetector() {
-                    @Override
-                    public boolean isWhitespace(char c) {
-                        return Character.isWhitespace(c);
-                    }
-                }), });
+                keywordsRule, new WhitespaceRule(c -> Character.isWhitespace(c)), });
     }
 }

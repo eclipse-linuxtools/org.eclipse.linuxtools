@@ -16,7 +16,6 @@ import java.text.MessageFormat;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.GraphingUIPlugin;
@@ -38,8 +37,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
@@ -79,14 +76,11 @@ public class DataGrid implements IUpdateListener {
         clickLocation = new Point(-1, -1);
         createPartControl(composite);
 
-        propertyChangeListener = new IPropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent event) {
-                if (event.getProperty().equals(GraphingPreferenceConstants.P_MAX_DATA_ITEMS)) {
-                    handleUpdateEvent();
-                }
-            }
-        };
+        propertyChangeListener = event -> {
+		    if (event.getProperty().equals(GraphingPreferenceConstants.P_MAX_DATA_ITEMS)) {
+		        handleUpdateEvent();
+		    }
+		};
         prefs.addPropertyChangeListener(propertyChangeListener);
     }
 
@@ -117,13 +111,10 @@ public class DataGrid implements IUpdateListener {
 
         table.setMenu(this.initMenus());
 
-        table.addListener(SWT.MouseDown, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                clickLocation.x = event.x;
-                clickLocation.y = event.y;
-            }
-        });
+        table.addListener(SWT.MouseDown, event -> {
+		    clickLocation.x = event.x;
+		    clickLocation.y = event.y;
+		});
         handleUpdateEvent();
     }
 
@@ -294,66 +285,63 @@ public class DataGrid implements IUpdateListener {
             return;
         }
 
-        table.getDisplay().asyncExec(new Runnable() {
-            @Override
-            public void run() {
-                if (table.isDisposed()) {
-                    return;
-                }
-                TableItem item;
-                int startLocation;
-                int endLocation = filteredDataSet.getRowCount();
-                int maxItems = prefs.getInt(GraphingPreferenceConstants.P_MAX_DATA_ITEMS);
-                int oldSelection = table.getSelectionIndex();
+        table.getDisplay().asyncExec(() -> {
+		    if (table.isDisposed()) {
+		        return;
+		    }
+		    TableItem item;
+		    int startLocation;
+		    int endLocation = filteredDataSet.getRowCount();
+		    int maxItems = prefs.getInt(GraphingPreferenceConstants.P_MAX_DATA_ITEMS);
+		    int oldSelection = table.getSelectionIndex();
 
-                //Remove old items to refresh table, and only read in as many items as will fit.
-                //Note that a full refresh is necessary in order for filtered data to appear correctly.
-                table.removeAll();
-                startLocation = Math.max(endLocation-maxItems, 0);
+		    //Remove old items to refresh table, and only read in as many items as will fit.
+		    //Note that a full refresh is necessary in order for filtered data to appear correctly.
+		    table.removeAll();
+		    startLocation = Math.max(endLocation-maxItems, 0);
 
-                //Add all the new items to the table
-                Object[] os;
-                for (int j, i = startLocation; i < endLocation; i++) {
-                    item = new TableItem(table, SWT.NONE);
-                    os = filteredDataSet.getRow(i);
+		    //Add all the new items to the table
+		    Object[] os;
+		    for (int j, i1 = startLocation; i1 < endLocation; i1++) {
+		        item = new TableItem(table, SWT.NONE);
+		        os = filteredDataSet.getRow(i1);
 
-                    //Add 1 to the index/row num since graphs start counting rows at 1, not 0.
-                    item.setText(0, Integer.toString(i + 1));
-                    for (j = 0; j < os.length; j++) {
-                        //Ignore null items
-                        if (os[j] != null) {
-                            item.setText(j+1, columnFormat[j].format(os[j].toString()));
-                        }
-                    }
-                }
-                //Re-select the old table selection, if there was one
-                if (oldSelection != -1) {
-                    table.select(oldSelection);
-                }
+		        //Add 1 to the index/row num since graphs start counting rows at 1, not 0.
+		        item.setText(0, Integer.toString(i1 + 1));
+		        for (j = 0; j < os.length; j++) {
+		            //Ignore null items
+		            if (os[j] != null) {
+		                item.setText(j+1, columnFormat[j].format(os[j].toString()));
+		            }
+		        }
+		    }
+		    //Re-select the old table selection, if there was one
+		    if (oldSelection != -1) {
+		        table.select(oldSelection);
+		    }
 
-                //Resize the columns
-                TableColumn col = table.getColumn(0);
-                col.pack();
-                if (autoResizeMenuItem.getSelection()) {
-                    TableColumn[] cols = table.getColumns();
-                    for (int i = 1; i < cols.length; i++) {
-                        cols[i].pack();
-                    }
-                }
+		    //Resize the columns
+		    TableColumn col = table.getColumn(0);
+		    col.pack();
+		    if (autoResizeMenuItem.getSelection()) {
+		        TableColumn[] cols = table.getColumns();
+		        for (int i2 = 1; i2 < cols.length; i2++) {
+		            cols[i2].pack();
+		        }
+		    }
 
-                //Use if we want to set focus to newly added item.
-                //Run async so the table can be fully constructed before jumping to an entry.
-                if (jumpToEntryMenuItem.getSelection() && table.getItemCount() > 0) {
-                    table.getDisplay().asyncExec(new Runnable() {
-                        @Override
-                        public void run() {
-                            table.showItem(table.getItem(table.getItemCount()-1));
-                        }
-                    });
-                }
-                formatMenuItem.setEnabled(table.getItemCount() > 0);
-            }
-        });
+		    //Use if we want to set focus to newly added item.
+		    //Run async so the table can be fully constructed before jumping to an entry.
+		    if (jumpToEntryMenuItem.getSelection() && table.getItemCount() > 0) {
+		        table.getDisplay().asyncExec(new Runnable() {
+		            @Override
+		            public void run() {
+		                table.showItem(table.getItem(table.getItemCount()-1));
+		            }
+		        });
+		    }
+		    formatMenuItem.setEnabled(table.getItemCount() > 0);
+		});
     }
 
     public void dispose() {
