@@ -14,5 +14,5 @@ Require-Bundle: org.eclipse.ui,
  org.cyberneko.html;bundle-version="1.9.14",
  org.apache.xerces;bundle-version="2.9.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %provider
