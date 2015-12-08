@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.docker.core.Activator;
 import org.eclipse.linuxtools.docker.core.DockerException;
@@ -170,7 +171,7 @@ public class DefaultDockerConnectionSettingsFinder
 		try {
 			final String connectionSettingsDetectionScriptName = getConnectionSettingsDetectionScriptName();
 			if (connectionSettingsDetectionScriptName == null) {
-				Activator.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
+				Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 						Messages.Docker_No_Settings_Description_Script));
 				return null;
 			}
@@ -223,21 +224,16 @@ public class DefaultDockerConnectionSettingsFinder
 	/**
 	 * @param script
 	 *            the script to execute
-	 * @return the OS-specific command to run the connection settings
-	 *         detection script.
+	 * @return the OS-specific command to run the connection settings detection
+	 *         script or <code>null</code> if the current OS is not supported.
 	 */
 	private String[] getConnectionSettingsDetectionCommandArray(
 			final File script) {
-		final String osName = System.getProperty("os.name"); //$NON-NLS-1$
-		if (osName.toLowerCase().startsWith("win")) { //$NON-NLS-1$
+		if (Platform.getOS().equals(Platform.OS_WIN32)) {
 			return new String[] { "cmd.exe", "/C", //$NON-NLS-1$ //$NON-NLS-2$
 					script.getAbsolutePath() };
-		} else if (osName.toLowerCase().startsWith("mac") //$NON-NLS-1$
-				|| osName.toLowerCase().contains("linux") //$NON-NLS-1$
-				|| osName.toLowerCase().contains("nix")) { //$NON-NLS-1$
-			return new String[] { script.getAbsolutePath() };
 		} else {
-			return null;
+			return new String[] { script.getAbsolutePath() };
 		}
 	}
 
@@ -278,27 +274,25 @@ public class DefaultDockerConnectionSettingsFinder
 	}
 
 	/**
-	 * @return the name of the script to run, depending on the OS (Windows,
-	 *         MAc, *Nix)
+	 * @return the name of the script to run, depending on the OS (Windows, MAc,
+	 *         *Nix) or <code>null</code> if the current OS is not supported.
 	 */
 	private String getConnectionSettingsDetectionScriptName() {
-		final String osName = System.getProperty("os.name"); //$NON-NLS-1$
-		if (osName.toLowerCase().startsWith("win")) { //$NON-NLS-1$
-			return "script.bat"; //$NON-NLS-1$
-		} else if (osName.toLowerCase().startsWith("mac") //$NON-NLS-1$
-				|| osName.toLowerCase().contains("linux") //$NON-NLS-1$
-				|| osName.toLowerCase().contains("nix")) { //$NON-NLS-1$
+		if (Platform.getOS().equals(Platform.OS_LINUX)) {
 			return "script.sh";//$NON-NLS-1$
-		} else {
-			return null;
+		} else if (Platform.getOS().equals(Platform.OS_MACOSX)) {
+			return "script-macosx.sh";//$NON-NLS-1$
+		} else if (Platform.getOS().equals(Platform.OS_WIN32)) {
+			return "script.bat"; //$NON-NLS-1$
 		}
+		return null;
 	}
 
 	private String streamToString(InputStream stream) {
 		BufferedReader buff = new BufferedReader(
 				new InputStreamReader(stream));
 		StringBuffer res = new StringBuffer();
-		String line = "";
+		String line = ""; //$NON-NLS-1$
 		try {
 			while ((line = buff.readLine()) != null) {
 				res.append(System.getProperty("line.separator")); //$NON-NLS-1$
