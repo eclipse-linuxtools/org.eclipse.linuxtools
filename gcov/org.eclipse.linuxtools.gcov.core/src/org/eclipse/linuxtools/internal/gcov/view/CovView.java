@@ -44,8 +44,6 @@ import org.eclipse.linuxtools.internal.gcov.parser.SourceFile;
 import org.eclipse.linuxtools.internal.gcov.view.annotatedsource.OpenSourceFileAction;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -130,13 +128,10 @@ public class CovView extends AbstractSTDataView {
         fFilterText.setMessage(Messages.CovView_type_filter_text);
         fFilterText.setToolTipText(Messages.CovView_filter_by_name);
         fFilterText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        fFilterText.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                String text = fFilterText.getText();
-                fViewerFilter.setMatchingText(text);
-            }
-        });
+        fFilterText.addModifyListener(e -> {
+		    String text = fFilterText.getText();
+		    fViewerFilter.setMatchingText(text);
+		});
     }
 
     private static void setCovViewTitle(CovView view, String title, String binaryPath, String timestamp) {
@@ -207,13 +202,10 @@ public class CovView extends AbstractSTDataView {
         Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR, message, ex);
 
         Activator.getDefault().getLog().log(status);
-        PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-            @Override
-            public void run() {
-                Shell s = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-                MessageDialog.openError(s, Messages.CovView_parsing_error, message);
-            }
-        });
+        PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+		    Shell s = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+		    MessageDialog.openError(s, Messages.CovView_parsing_error, message);
+		});
     }
 
     /**

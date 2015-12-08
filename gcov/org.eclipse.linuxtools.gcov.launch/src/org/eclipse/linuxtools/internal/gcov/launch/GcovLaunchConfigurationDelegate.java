@@ -214,28 +214,25 @@ public class GcovLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
                 if (l.equals(launch)) {
                     //need to run this in the ui thread otherwise get SWT Exceptions
                     // based on concurrency issues
-                    Display.getDefault().syncExec(new Runnable() {
-                        @Override
-                        public void run() {
-                            String s = exePath.toOSString();
-                            CovManager cvrgeMnger = new CovManager(s, getProject());
+                    Display.getDefault().syncExec(() -> {
+					    String s = exePath.toOSString();
+					    CovManager cvrgeMnger = new CovManager(s, getProject());
 
-                            try {
-                                List<String> gcdaPaths = cvrgeMnger.getGCDALocations();
-                                if (gcdaPaths.isEmpty()) {
-                                    String title = GcovLaunchMessages.GcovCompilerOptions_msg;
-                                    String message = GcovLaunchMessages.GcovCompileAgain_msg;
-                                    Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-                                    MessageDialog.openWarning(parent, title, message);
-                                }
-                                CovView.displayCovResults(s, null);
-                                GcovAnnotationModelTracker.getInstance().addProject(getProject(), exePath);
-                                GcovAnnotationModelTracker.getInstance().annotateAllCEditors();
-                            } catch (InterruptedException e) {
-                                // Do nothing
-                            }
-                        }
-                    });
+					    try {
+					        List<String> gcdaPaths = cvrgeMnger.getGCDALocations();
+					        if (gcdaPaths.isEmpty()) {
+					            String title = GcovLaunchMessages.GcovCompilerOptions_msg;
+					            String message = GcovLaunchMessages.GcovCompileAgain_msg;
+					            Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+					            MessageDialog.openWarning(parent, title, message);
+					        }
+					        CovView.displayCovResults(s, null);
+					        GcovAnnotationModelTracker.getInstance().addProject(getProject(), exePath);
+					        GcovAnnotationModelTracker.getInstance().annotateAllCEditors();
+					    } catch (InterruptedException e) {
+					        // Do nothing
+					    }
+					});
                 }
             }
 

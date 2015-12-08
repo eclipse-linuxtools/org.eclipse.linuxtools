@@ -106,7 +106,7 @@ public final class OpenSourceFileAction {
                         try {
                             int start = document.getLineOffset(lineNumber - 1);
                             ((ITextEditor) editor).selectAndReveal(start, 0);
-                        } catch (BadLocationException _) {
+                        } catch (BadLocationException e) {
                             // ignore
                         }
                         IWorkbenchPage p = editor.getSite().getPage();
