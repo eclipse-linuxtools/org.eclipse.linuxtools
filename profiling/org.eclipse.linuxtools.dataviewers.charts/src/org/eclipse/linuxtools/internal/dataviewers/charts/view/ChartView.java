@@ -57,22 +57,19 @@ public class ChartView extends ViewPart {
      * @param chart The chart to create view for.
      */
     public static void createChartView(final Chart chart) {
-        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    synchronized (lock) {
-                        ChartView view = (ChartView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                                .getActivePage().showView(VIEW_ID, String.valueOf(SEC_ID++), IWorkbenchPage.VIEW_ACTIVATE);
-                        view.setChart(chart);
+        PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
+		    try {
+		        synchronized (lock) {
+		            ChartView view = (ChartView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+		                    .getActivePage().showView(VIEW_ID, String.valueOf(SEC_ID++), IWorkbenchPage.VIEW_ACTIVATE);
+		            view.setChart(chart);
 
-                    }
-                } catch (PartInitException e) {
-                    Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e);
-                    Activator.getDefault().getLog().log(s);
-                }
-            }
-        });
+		        }
+		    } catch (PartInitException e) {
+		        Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e);
+		        Activator.getDefault().getLog().log(s);
+		    }
+		});
 
     }
 

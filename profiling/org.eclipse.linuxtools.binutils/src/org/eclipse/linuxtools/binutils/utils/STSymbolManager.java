@@ -83,24 +83,21 @@ public class STSymbolManager {
      * Constructor
      */
     private STSymbolManager() {
-        Runnable worker = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    do {
-                        try {
-                            Thread.sleep(AUTO_DISPOSE_TIMEOUT);
-                        } catch (InterruptedException e) {
-                            break;
-                        }
-                        cleanup();
-                    } while (true);
-                } catch (Exception e) {
-                    Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);
-                    Activator.getDefault().getLog().log(s);
-                }
-            }
-        };
+        Runnable worker = () -> {
+		    try {
+		        do {
+		            try {
+		                Thread.sleep(AUTO_DISPOSE_TIMEOUT);
+		            } catch (InterruptedException e1) {
+		                break;
+		            }
+		            cleanup();
+		        } while (true);
+		    } catch (Exception e2) {
+		        Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e2.getMessage(), e2);
+		        Activator.getDefault().getLog().log(s);
+		    }
+		};
         new Thread(worker, "ST System Analysis Symbol Manager").start(); //$NON-NLS-1$
         // TODO: perhaps this thread has to be lazy-created ?
         // and perhaps this thread has to destroy itself when it is no longer

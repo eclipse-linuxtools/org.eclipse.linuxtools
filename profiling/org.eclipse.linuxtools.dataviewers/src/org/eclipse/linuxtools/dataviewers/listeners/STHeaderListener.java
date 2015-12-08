@@ -57,12 +57,9 @@ public class STHeaderListener implements SelectionListener {
             sorter.setTopPriority(column, field);
         }
 
-        BusyIndicator.showWhile(null, new Runnable() {
-            @Override
-            public void run() {
-                stViewer.getViewer().refresh();
-                stViewer.updateDirectionIndicator(column);
-            }
-        });
+        BusyIndicator.showWhile(null, () -> {
+		    stViewer.getViewer().refresh();
+		    stViewer.updateDirectionIndicator(column);
+		});
     }
 }

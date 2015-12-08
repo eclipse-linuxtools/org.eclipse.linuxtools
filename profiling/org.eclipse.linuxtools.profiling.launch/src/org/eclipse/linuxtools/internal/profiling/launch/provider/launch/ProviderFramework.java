@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.internal.profiling.launch.provider.launch;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.SortedMap;
@@ -244,32 +243,28 @@ public class ProviderFramework {
             }
         }
 
-        Collections.sort(configList, new Comparator<IConfigurationElement>() {
-            @Override
-            public int compare(IConfigurationElement c1,
-                    IConfigurationElement c2) {
-                int p1, p2;
-                // If priority is not an int or is < 0, corresponding config has
-                // lowest priority.
-                try {
-                    p1 = Integer.parseInt(c1.getAttribute("priority")); //$NON-NLS-1$
-                    if (p1 <= 0) {
-                        return 1;
-                    }
-                } catch (NumberFormatException e) {
-                    return 1;
-                }
-                try {
-                    p2 = Integer.parseInt(c2.getAttribute("priority")); //$NON-NLS-1$
-                    if (p2 <= 0) {
-                        return -1;
-                    }
-                } catch (NumberFormatException e) {
-                    return -1;
-                }
-                return p1 < p2 ? -1 : 1;
-            }
-        });
+		Collections.sort(configList, (c1, c2) -> {
+			int p1, p2;
+			// If priority is not an int or is < 0, corresponding config has
+			// lowest priority.
+			try {
+				p1 = Integer.parseInt(c1.getAttribute("priority")); //$NON-NLS-1$
+				if (p1 <= 0) {
+					return 1;
+				}
+			} catch (NumberFormatException e1) {
+				return 1;
+			}
+			try {
+				p2 = Integer.parseInt(c2.getAttribute("priority")); //$NON-NLS-1$
+				if (p2 <= 0) {
+					return -1;
+				}
+			} catch (NumberFormatException e2) {
+				return -1;
+			}
+			return p1 < p2 ? -1 : 1;
+		});
         return configList;
     }
 

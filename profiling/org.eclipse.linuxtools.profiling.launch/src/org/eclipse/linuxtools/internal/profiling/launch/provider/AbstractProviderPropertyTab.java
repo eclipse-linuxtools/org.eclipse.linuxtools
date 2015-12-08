@@ -24,8 +24,6 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.Messages;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderFramework;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -156,13 +154,10 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
                 }
             });
         }
-        projectSettingsGroup.addDisposeListener(new DisposeListener() {
-            @Override
-            public void widgetDisposed(DisposeEvent event) {
-                projectSettingsGroup = null;
-                radioButtons = null;
-            }
-        });
+        projectSettingsGroup.addDisposeListener(event -> {
+		    projectSettingsGroup = null;
+		    radioButtons = null;
+		});
         updateOptionsEnable();
         updateValue(getPreferenceStore().getString(ProviderProfileConstants.PREFS_KEY + getType()));
         PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, getHelpContextId());

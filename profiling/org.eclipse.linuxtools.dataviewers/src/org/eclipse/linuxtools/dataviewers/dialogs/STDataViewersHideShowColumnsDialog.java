@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.dataviewers.dialogs;
 
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -130,12 +129,7 @@ public class STDataViewersHideShowColumnsDialog extends Dialog {
         }
     }
 
-    private ICheckStateListener checkStateListener = new ICheckStateListener() {
-        @Override
-        public void checkStateChanged(CheckStateChangedEvent event) {
-            dirty = true;
-        }
-    };
+    private ICheckStateListener checkStateListener = event -> dirty = true;
 
     /**
      * Creates a separator line above the OK/Cancel buttons bar.

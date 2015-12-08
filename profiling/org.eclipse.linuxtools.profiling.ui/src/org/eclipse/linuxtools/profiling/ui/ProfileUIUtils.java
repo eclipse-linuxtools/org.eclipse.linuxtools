@@ -240,17 +240,15 @@ public class ProfileUIUtils {
         final ArrayList<ICProject> ret = new ArrayList<>();
 
         // visitor object to check for the matching path string
-        ICElementVisitor vis = new ICElementVisitor() {
-            @Override
-            public boolean visit(ICElement element) {
-                if (element.getElementType() == ICElement.C_CCONTAINER
-                        || element.getElementType() == ICElement.C_PROJECT){
-                    return true;
-                }else if (absPath.equals(workspaceLoc+element.getPath().toFile().getAbsolutePath())){
-                    ret.add(element.getCProject());
-                }
-                return false;
-        }};
+        ICElementVisitor vis = element -> {
+		    if (element.getElementType() == ICElement.C_CCONTAINER
+		            || element.getElementType() == ICElement.C_PROJECT){
+		        return true;
+		    }else if (absPath.equals(workspaceLoc+element.getPath().toFile().getAbsolutePath())){
+		        ret.add(element.getCProject());
+		    }
+		    return false;
+      };
 
         ICProject[] cProjects = CCorePlugin.getDefault().getCoreModel().getCModel().getCProjects();
         for (ICProject proj : cProjects){

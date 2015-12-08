@@ -14,8 +14,6 @@ import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Item;
@@ -100,18 +98,14 @@ public abstract class AbstractSTTreeViewer extends AbstractSTViewer {
             viewerColumn.setLabelProvider(createColumnLabelProvider(tc));
         }
 
-        tree.addMouseMoveListener(new MouseMoveListener() {
-            @Override
-            public void mouseMove(MouseEvent e) {
-                Tree tree = (Tree) e.widget;
-                TreeItem item = tree.getItem(new Point(e.x, e.y));
-                if (item == null) {
-                    return;
-                }
-                tree.setCursor(e.display.getSystemCursor(SWT.CURSOR_ARROW));
-            }
-
-        });
+        tree.addMouseMoveListener(e -> {
+		    Tree tree1 = (Tree) e.widget;
+		    TreeItem item = tree1.getItem(new Point(e.x, e.y));
+		    if (item == null) {
+		        return;
+		    }
+		    tree1.setCursor(e.display.getSystemCursor(SWT.CURSOR_ARROW));
+		});
     }
 
     /**

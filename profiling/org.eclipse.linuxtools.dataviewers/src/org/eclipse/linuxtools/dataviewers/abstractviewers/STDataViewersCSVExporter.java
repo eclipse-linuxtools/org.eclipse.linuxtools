@@ -408,59 +408,56 @@ public class STDataViewersCSVExporter {
     }
 
     private void collectViewerParameters() {
-        Display.getDefault().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                // getting columns with the right order
-                Item[] unOrdColumns = stViewer.getColumns();
-                Item[] columns = new Item[unOrdColumns.length];
-                int[] columnOrder = stViewer.getColumnOrder();
-                for (int i = 0; i < unOrdColumns.length; i++) {
-                    columns[i] = unOrdColumns[columnOrder[i]];
-                }
+        Display.getDefault().syncExec(() -> {
+		    // getting columns with the right order
+		    Item[] unOrdColumns = stViewer.getColumns();
+		    Item[] columns = new Item[unOrdColumns.length];
+		    int[] columnOrder = stViewer.getColumnOrder();
+		    for (int i1 = 0; i1 < unOrdColumns.length; i1++) {
+		        columns[i1] = unOrdColumns[columnOrder[i1]];
+		    }
 
-                // getting fields mapping
-                // (before removing hidden columns)
-                Map<Item, ISTDataViewersField> fieldsMap = new HashMap<>();
-                for (Item column : columns) {
-                    fieldsMap.put(column, (ISTDataViewersField) column.getData());
-                }
+		    // getting fields mapping
+		    // (before removing hidden columns)
+		    Map<Item, ISTDataViewersField> fieldsMap = new HashMap<>();
+		    for (Item column : columns) {
+		        fieldsMap.put(column, (ISTDataViewersField) column.getData());
+		    }
 
-                // creating a GUI-thread-independent comparator
-                comparator = new CSVDataComparator(stViewer.getTableSorter(), fieldsMap);
+		    // creating a GUI-thread-independent comparator
+		    comparator = new CSVDataComparator(stViewer.getTableSorter(), fieldsMap);
 
-                // getting only visible columns, using the column order
-                if (!showHiddenColumns) {
-                    int[] columnsState = stViewer.getHideShowManager().getColumnsState();
-                    List<Item> enabledColumns = new ArrayList<>();
-                    for (int i = 0; i < columnsState.length; i++) {
-                        if (columnsState[columnOrder[i]] == STDataViewersHideShowManager.STATE_SHOWN) {
-                            enabledColumns.add(columns[i]);
-                        }
-                    }
-                    columns = enabledColumns.toArray(new Item[enabledColumns.size()]);
-                }
+		    // getting only visible columns, using the column order
+		    if (!showHiddenColumns) {
+		        int[] columnsState = stViewer.getHideShowManager().getColumnsState();
+		        List<Item> enabledColumns = new ArrayList<>();
+		        for (int i2 = 0; i2 < columnsState.length; i2++) {
+		            if (columnsState[columnOrder[i2]] == STDataViewersHideShowManager.STATE_SHOWN) {
+		                enabledColumns.add(columns[i2]);
+		            }
+		        }
+		        columns = enabledColumns.toArray(new Item[enabledColumns.size()]);
+		    }
 
-                // collecting fields from columns (ordered & shown)
-                fields = new ISTDataViewersField[columns.length];
-                for (int i = 0; i < columns.length; i++) {
-                    fields[i] = (ISTDataViewersField) columns[i].getData();
-                }
+		    // collecting fields from columns (ordered & shown)
+		    fields = new ISTDataViewersField[columns.length];
+		    for (int i3 = 0; i3 < columns.length; i3++) {
+		        fields[i3] = (ISTDataViewersField) columns[i3].getData();
+		    }
 
-                // getting input object
-                input = stViewer.getViewer().getInput();
+		    // getting input object
+		    input = stViewer.getViewer().getInput();
 
-                // getting content provider
-                contentProvider = stViewer.getViewer().getContentProvider();
+		    // getting content provider
+		    contentProvider = stViewer.getViewer().getContentProvider();
 
-                // getting expanded elements if necessary
-                expandedElts = new ArrayList<>();
-                if (!expandAll && stViewer.getViewer() instanceof TreeViewer) {
-                    TreeViewer tv = (TreeViewer) stViewer.getViewer();
-                    expandedElts = Arrays.asList(tv.getExpandedElements());
-                }
-            }
-        });
+		    // getting expanded elements if necessary
+		    expandedElts = new ArrayList<>();
+		    if (!expandAll && stViewer.getViewer() instanceof TreeViewer) {
+		        TreeViewer tv = (TreeViewer) stViewer.getViewer();
+		        expandedElts = Arrays.asList(tv.getExpandedElements());
+		    }
+		});
     }
 
     private void dumpColumnHeaders() {

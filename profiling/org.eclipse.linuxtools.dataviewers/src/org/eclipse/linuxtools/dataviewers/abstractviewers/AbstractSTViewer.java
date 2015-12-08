@@ -15,7 +15,6 @@ import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.IContentProvider;
-import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.OpenEvent;
 import org.eclipse.linuxtools.dataviewers.listeners.STDisposeListener;
 import org.eclipse.linuxtools.dataviewers.listeners.STHeaderListener;
@@ -128,12 +127,7 @@ public abstract class AbstractSTViewer {
             bar.setSelection(restoreHorizontalScrollBarPosition());
         }
 
-        viewer.addOpenListener(new IOpenListener() {
-            @Override
-            public void open(OpenEvent event) {
-                handleOpenEvent(event);
-            }
-        });
+        viewer.addOpenListener(event -> handleOpenEvent(event));
 
         viewer.getControl().addDisposeListener(new STDisposeListener(this));
 

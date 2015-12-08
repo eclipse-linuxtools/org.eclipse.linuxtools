@@ -371,27 +371,24 @@ public class CProjectBuildHelpers {
 
         // need to run this in the ui thread otherwise get SWT Exceptions
         // based on concurrency issues.
-        Display.getDefault().syncExec(new Runnable() {
-            @Override
-            public void run() {
+        Display.getDefault().syncExec(() -> {
 
-                //Code copied from private methd: SetAutotoolsStringOptionValue.setOptionValue()
-                //Except I added a line to save the configuration to disk as well.
-                AutotoolsConfigurationManager.getInstance().syncConfigurations(project);
-                ICConfigurationDescription cfgds = CoreModel.getDefault()
-                        .getProjectDescription(project).getActiveConfiguration();
-                if (cfgds != null) {
-                    IAConfiguration iaConfig = AutotoolsConfigurationManager.getInstance()
-                            .getConfiguration(project, cfgds.getId());
+		    //Code copied from private methd: SetAutotoolsStringOptionValue.setOptionValue()
+		    //Except I added a line to save the configuration to disk as well.
+		    AutotoolsConfigurationManager.getInstance().syncConfigurations(project);
+		    ICConfigurationDescription cfgds = CoreModel.getDefault()
+		            .getProjectDescription(project).getActiveConfiguration();
+		    if (cfgds != null) {
+		        IAConfiguration iaConfig = AutotoolsConfigurationManager.getInstance()
+		                .getConfiguration(project, cfgds.getId());
 
-                    //Read option value
-                    IConfigureOption option = iaConfig.getOption(optionId);
-                    String optValString = option.getValue();
-                    boolean optVal = Boolean.parseBoolean(optValString);
-                    userChoiceBool.setVal(optVal);
-                }
-            }
-        });
+		        //Read option value
+		        IConfigureOption option = iaConfig.getOption(optionId);
+		        String optValString = option.getValue();
+		        boolean optVal = Boolean.parseBoolean(optValString);
+		        userChoiceBool.setVal(optVal);
+		    }
+		});
 
         return userChoiceBool.getVal();
     }
@@ -415,28 +412,25 @@ public class CProjectBuildHelpers {
 
         // need to run this in the ui thread otherwise get SWT Exceptions
         // based on concurrency issues.
-        Display.getDefault().syncExec(new Runnable() {
-            @Override
-            public void run() {
+        Display.getDefault().syncExec(() -> {
 
-                //Code copied from private methd: SetAutotoolsStringOptionValue.setOptionValue()
-                //Except I added a line to save the configuration to disk as well.
-                AutotoolsConfigurationManager.getInstance().syncConfigurations(project);
-                ICConfigurationDescription cfgds = CoreModel.getDefault().
-                        getProjectDescription(project).getActiveConfiguration();
+		    //Code copied from private methd: SetAutotoolsStringOptionValue.setOptionValue()
+		    //Except I added a line to save the configuration to disk as well.
+		    AutotoolsConfigurationManager.getInstance().syncConfigurations(project);
+		    ICConfigurationDescription cfgds = CoreModel.getDefault().
+		            getProjectDescription(project).getActiveConfiguration();
 
-                if (cfgds != null) {
-                    IAConfiguration iaConfig = AutotoolsConfigurationManager.getInstance()
-                            .getConfiguration(project, cfgds.getId());
+		    if (cfgds != null) {
+		        IAConfiguration iaConfig = AutotoolsConfigurationManager.getInstance()
+		                .getConfiguration(project, cfgds.getId());
 
-                    //Set option value.
-                    iaConfig.setOption(optId, optVal);
+		        //Set option value.
+		        iaConfig.setOption(optId, optVal);
 
-                    //Save option to disk.
-                    AutotoolsConfigurationManager.getInstance().saveConfigs(project);
-                }
-            }
-        });
+		        //Save option to disk.
+		        AutotoolsConfigurationManager.getInstance().saveConfigs(project);
+		    }
+		});
     }
 
     /**

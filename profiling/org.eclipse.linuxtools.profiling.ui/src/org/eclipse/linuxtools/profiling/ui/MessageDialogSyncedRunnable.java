@@ -158,30 +158,28 @@ public class MessageDialogSyncedRunnable extends MessageDialog {
 
         //To generate U.I, we make a syncronised call the U.I thread,
         //otherwise we get an U.I exception.
-        PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-                switch (type) {
-                case INFO:
-                    MessageDialog.openInformation(parent, title, message);
-                    break;
-                case ERROR:
-                    MessageDialog.openError(parent, title, message);
-                    break;
-                case CONFIRMATION:
-                    boolean okPressed = MessageDialog.openConfirm(parent, title, message);
-                    userChoiceBool.setVal(okPressed);
-                    break;
-                case QUESTION:
-                    boolean okPressedQ = MessageDialog.openQuestion(parent, title, message);
-                    userChoiceBool.setVal(okPressedQ);
-                    break;
-                default:
-                    break;
-                }
-                return;
-        }});
+        PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
+		    Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+		    switch (type) {
+		    case INFO:
+		        MessageDialog.openInformation(parent, title, message);
+		        break;
+		    case ERROR:
+		        MessageDialog.openError(parent, title, message);
+		        break;
+		    case CONFIRMATION:
+		        boolean okPressed = MessageDialog.openConfirm(parent, title, message);
+		        userChoiceBool.setVal(okPressed);
+		        break;
+		    case QUESTION:
+		        boolean okPressedQ = MessageDialog.openQuestion(parent, title, message);
+		        userChoiceBool.setVal(okPressedQ);
+		        break;
+		    default:
+		        break;
+		    }
+		    return;
+      });
         return userChoiceBool.getVal();
     }
 }

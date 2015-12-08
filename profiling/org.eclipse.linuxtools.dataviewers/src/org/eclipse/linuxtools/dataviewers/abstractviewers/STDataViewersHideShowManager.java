@@ -15,8 +15,6 @@ import java.util.HashMap;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.linuxtools.dataviewers.listeners.STColumnSizeListener;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Item;
 
 /**
@@ -54,13 +52,10 @@ public class STDataViewersHideShowManager {
             STColumnSizeListener l = new STColumnSizeListener(this);
             columnsSizeListener.put(columns[i], l);
             columns[i].addListener(SWT.Resize, l);
-            columns[i].addDisposeListener(new DisposeListener() {
-                @Override
-                public void widgetDisposed(DisposeEvent e) {
-                    Item column = (Item) e.widget;
-                    column.removeListener(SWT.Resize, columnsSizeListener.get(column));
-                }
-            });
+            columns[i].addDisposeListener(e -> {
+			    Item column = (Item) e.widget;
+			    column.removeListener(SWT.Resize, columnsSizeListener.get(column));
+			});
         }
     }
 

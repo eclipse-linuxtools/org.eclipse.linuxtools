@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.dataviewers.abstractview;
 
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
@@ -213,13 +212,10 @@ public abstract class AbstractSTDataView extends ViewPart {
     private MenuManager initContextMenu() {
         MenuManager mgr = new MenuManager();
         mgr.setRemoveAllWhenShown(true);
-        mgr.addMenuListener(new IMenuListener() {
-            @Override
-            public void menuAboutToShow(IMenuManager mgr) {
-                getSTViewer().getViewer().cancelEditing();
-                fillContextMenu(mgr);
-            }
-        });
+        mgr.addMenuListener(mgr1 -> {
+		    getSTViewer().getViewer().cancelEditing();
+		    fillContextMenu(mgr1);
+		});
         return mgr;
     }
 

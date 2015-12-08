@@ -19,8 +19,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 import org.eclipse.osgi.util.TextProcessor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -183,12 +181,7 @@ public class ResourceSelectorWidget {
             }
         });
 
-        uriField.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                updateFilesystemSelector(uriField.getText());
-            }
-        });
+        uriField.addModifyListener(e -> updateFilesystemSelector(uriField.getText()));
     }
 
     public ResourceSelectorWidget(Composite parent, ResourceType resourceType, int colSpan, String sectionLabelText, String uriLabelText) {
