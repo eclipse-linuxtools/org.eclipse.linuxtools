@@ -12,6 +12,8 @@ package org.eclipse.linuxtools.internal.vagrant.ui.commands;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -80,18 +82,25 @@ public class CreateVmCommandHandler extends AbstractHandler {
 				monitor.beginTask(DVMessages.getFormattedString(CRATE_VM_TITLE, vmName),
 						IProgressMonitor.UNKNOWN);
 				IVagrantConnection connection = VagrantService.getInstance();
+				IVagrantBox box = null;
 				File vagrantDir;
 				String boxName = boxRef;
 				if (vmFile == null) {
-					// The boxRef is a reference to an actual box file
-					if (Paths.get(boxRef).toFile().canRead()) {
+					// The boxRef is a reference to an actual box file/url
+					boolean isValidURL = true;
+					try {
+						new URL(boxRef);
+					} catch (MalformedURLException e1) {
+						isValidURL = false;
+					}
+					if (Paths.get(boxRef).toFile().canRead() || isValidURL) {
 						try {
 							String boxPath = boxRef;
 							// Generate the box name from the file name (basename)
 							boxName = boxRef.substring(
 									boxRef.lastIndexOf(File.separator) + 1)
 									.replace(".box", ""); //$NON-NLS-1$ //$NON-NLS-2$
-							connection.addBox(boxName, boxPath);
+							connection.addBox(boxName, boxPath, isValidURL);
 						} catch (VagrantException e) {
 						} catch (InterruptedException e) {
 						}
@@ -99,12 +108,27 @@ public class CreateVmCommandHandler extends AbstractHandler {
 
 					// Init a new vagrant folder inside plugin metadata
 					vagrantDir = performInit(vmName, boxName, connection);
+
+					// box download job might not be complete so we wait
+					box = findBox(connection, boxName);
+					while (box == null && isValidURL) {
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+						}
+						connection.getVMs(true);
+						box = findBox(connection, boxName);
+						if (monitor.isCanceled()) {
+							CommandUtils.delete(vagrantDir);
+							return Status.CANCEL_STATUS;
+						}
+					}
 				} else {
 					vagrantDir = Paths.get(vmFile).getParent().toFile();
 				}
 				EnvironmentsManager.getSingleton().setEnvironment(vagrantDir,
 						environment);
-				IVagrantBox box = findBox(connection, boxName);
+
 				String provider = (box == null ? null : box.getProvider());
 				connection.up(vagrantDir, provider);
 				connection.getVMs(true);
