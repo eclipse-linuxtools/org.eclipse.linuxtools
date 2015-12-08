@@ -74,21 +74,17 @@ public class StatView extends ViewPart {
      * Refresh perf statistics view.
      */
     public static void refreshView () {
-        Display.getDefault().syncExec(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    // A new view is created every time
-                    StatView view = (StatView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-                            .showView(PerfPlugin.STAT_VIEW_ID);
-                    view.updateData();
-                } catch (PartInitException e) {
-                    IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID, e.getMessage(), e);
-                    PerfPlugin.getDefault().getLog().log(status);
-                }
-            }
-        });
+        Display.getDefault().syncExec(() -> {
+		    try {
+		        // A new view is created every time
+		        StatView view = (StatView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+		                .showView(PerfPlugin.STAT_VIEW_ID);
+		        view.updateData();
+		    } catch (PartInitException e) {
+		        IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID, e.getMessage(), e);
+		        PerfPlugin.getDefault().getLog().log(status);
+		    }
+		});
     }
 
 }

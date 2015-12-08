@@ -134,22 +134,18 @@ public class SourceDisassemblyView extends ViewPart implements IFindReplaceTarge
     }
 
     public static void refreshView () {
-        Display.getDefault().syncExec(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    // A new view is created every time
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-                            .showView(PerfPlugin.SOURCE_DISASSEMBLY_VIEW_ID,
-                                    Integer.toString(SECONDARY_ID++),
-                                    IWorkbenchPage.VIEW_CREATE);
-                } catch (PartInitException e) {
-                    IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID, e.getMessage(), e);
-                    PerfPlugin.getDefault().getLog().log(status);
-                }
-            }
-        });
+        Display.getDefault().syncExec(() -> {
+		    try {
+		        // A new view is created every time
+		        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+		                .showView(PerfPlugin.SOURCE_DISASSEMBLY_VIEW_ID,
+		                        Integer.toString(SECONDARY_ID++),
+		                        IWorkbenchPage.VIEW_CREATE);
+		    } catch (PartInitException e) {
+		        IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID, e.getMessage(), e);
+		        PerfPlugin.getDefault().getLog().log(status);
+		    }
+		});
     }
 
     /**

@@ -274,13 +274,8 @@ public class PerfPlugin extends AbstractUIPlugin {
         final Status status = new Status(IStatus.ERROR, PLUGIN_ID, formattedMessage, new Throwable(writer.toString()));
 
         getLog().log(status);
-        Display.getDefault().asyncExec(new Runnable() {
-            @Override
-            public void run() {
-                ErrorDialog.openError(Display.getDefault().getActiveShell(),
-                        title, message, status);
-            }
-        });
+        Display.getDefault().asyncExec(() -> ErrorDialog.openError(Display.getDefault().getActiveShell(),
+		        title, message, status));
     }
 
 	/**

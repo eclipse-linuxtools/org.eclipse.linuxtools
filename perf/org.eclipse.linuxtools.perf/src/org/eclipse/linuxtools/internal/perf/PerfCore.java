@@ -682,21 +682,17 @@ public class PerfCore {
     }
 
     public static void refreshView (final String title) {
-        Display.getDefault().syncExec(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    PerfProfileView view = (PerfProfileView) PlatformUI
-                            .getWorkbench().getActiveWorkbenchWindow()
-                            .getActivePage().showView(PerfPlugin.VIEW_ID);
-                    view.setContentDescription(title);
-                    view.refreshModel();
-                } catch (PartInitException e) {
-                    logException(e);
-                }
-            }
-        });
+        Display.getDefault().syncExec(() -> {
+		    try {
+		        PerfProfileView view = (PerfProfileView) PlatformUI
+		                .getWorkbench().getActiveWorkbenchWindow()
+		                .getActivePage().showView(PerfPlugin.VIEW_ID);
+		        view.setContentDescription(title);
+		        view.refreshModel();
+		    } catch (PartInitException e) {
+		        logException(e);
+		    }
+		});
     }
 
     /**

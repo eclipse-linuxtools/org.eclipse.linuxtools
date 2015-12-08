@@ -153,12 +153,7 @@ public abstract class AbstractDataManipulator extends BaseDataManipulator
      */
     private void readStream(final BufferedReader buff,
             final StringBuffer strBuff) {
-        Thread readThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                strBuff.append(getBufferContents(buff));
-            }
-        });
+        Thread readThread = new Thread(() -> strBuff.append(getBufferContents(buff)));
         readThread.start();
         threads.add(readThread);
     }

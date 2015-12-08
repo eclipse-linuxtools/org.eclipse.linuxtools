@@ -25,8 +25,6 @@ import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.PerfVersion;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -35,10 +33,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
@@ -117,12 +113,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
         txtKernelLocation = new Text(kernelComp, SWT.SINGLE | SWT.BORDER);
         data = new GridData(GridData.FILL_HORIZONTAL);
         txtKernelLocation.setLayoutData(data);
-        txtKernelLocation.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent mev) {
-                handleKernelImageFileTextModify(txtKernelLocation);
-            }
-        });
+        txtKernelLocation.addModifyListener(mev -> handleKernelImageFileTextModify(txtKernelLocation));
 
         Button button = createPushButton(kernelComp, Messages.PerfOptionsTab_Browse, null);
         final Shell shell = top.getShell();
@@ -161,12 +152,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
         statRunCount = new Spinner(showStatComp, SWT.BORDER);
         statRunCount.setEnabled(false);
         statRunCount.setMinimum(1);
-        statRunCount.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                updateLaunchConfigurationDialog();
-            }
-        });
+        statRunCount.addModifyListener(e -> updateLaunchConfigurationDialog());
 
         chkSourceLineNumbers.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -193,22 +179,12 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
         rtPriority = new Spinner(realtimeComp, SWT.BORDER);
         rtPriority.setEnabled(chkRecordRealtime.getSelection());
         rtPriority.setMinimum(1);
-        rtPriority.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                updateLaunchConfigurationDialog();
-            }
-        });
+        rtPriority.addModifyListener(e -> updateLaunchConfigurationDialog());
 
         // A disabled button does not respond to mouse events so use a composite.
         final Composite multiplexEventsComp = new Composite(chkBoxComp, SWT.NONE);
         multiplexEventsComp.setLayout(chkBoxLayout);
-        multiplexEventsComp.addListener(SWT.MouseHover, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                multiplexEventsComp.setToolTipText(Messages.PerfOptionsTab_Requires_LTE + multiplexEventsVersion);
-            }
-        });
+        multiplexEventsComp.addListener(SWT.MouseHover, event -> multiplexEventsComp.setToolTipText(Messages.PerfOptionsTab_Requires_LTE + multiplexEventsVersion));
         chkMultiplexEvents = createCheckButtonHelper(multiplexEventsComp, PerfPlugin.STRINGS_Multiplex);
 
         scrollTop.setContent(top);

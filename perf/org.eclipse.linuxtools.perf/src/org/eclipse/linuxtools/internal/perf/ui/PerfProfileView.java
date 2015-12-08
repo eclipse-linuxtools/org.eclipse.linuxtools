@@ -11,13 +11,10 @@
 package org.eclipse.linuxtools.internal.perf.ui;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
@@ -80,12 +77,7 @@ public class PerfProfileView extends ViewPart {
     private void hookContextMenu() {
         MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
         menuMgr.setRemoveAllWhenShown(true);
-        menuMgr.addMenuListener(new IMenuListener() {
-            @Override
-            public void menuAboutToShow(IMenuManager manager) {
-                PerfProfileView.this.fillContextMenu(manager);
-            }
-        });
+        menuMgr.addMenuListener(manager -> PerfProfileView.this.fillContextMenu(manager));
         Menu menu = menuMgr.createContextMenu(viewer.getControl());
         viewer.getControl().setMenu(menu);
         getSite().registerContextMenu(menuMgr, viewer);
@@ -108,12 +100,7 @@ public class PerfProfileView extends ViewPart {
 
     private void hookDoubleClickAction() {
         doubleClickAction = new PerfDoubleClickAction(viewer);
-        viewer.addDoubleClickListener(new IDoubleClickListener() {
-            @Override
-            public void doubleClick(DoubleClickEvent event) {
-                doubleClickAction.run();
-            }
-        });
+        viewer.addDoubleClickListener(event -> doubleClickAction.run());
     }
 
     public TreeViewer getTreeViewer () {
