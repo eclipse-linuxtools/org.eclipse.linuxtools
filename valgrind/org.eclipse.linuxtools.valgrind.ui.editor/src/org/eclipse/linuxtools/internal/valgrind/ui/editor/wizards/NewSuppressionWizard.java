@@ -87,18 +87,15 @@ public class NewSuppressionWizard extends Wizard implements INewWizard {
     public boolean performFinish() {
         final String containerName = page.getContainerFullPath().toOSString();
         final String fileName = page.getFileName();
-        IRunnableWithProgress op = new IRunnableWithProgress() {
-            @Override
-            public void run(IProgressMonitor monitor) throws InvocationTargetException {
-                try {
-                    doFinish(containerName, fileName, monitor);
-                } catch (CoreException e) {
-                    throw new InvocationTargetException(e);
-                } finally {
-                    monitor.done();
-                }
-            }
-        };
+        IRunnableWithProgress op = monitor -> {
+		    try {
+		        doFinish(containerName, fileName, monitor);
+		    } catch (CoreException e) {
+		        throw new InvocationTargetException(e);
+		    } finally {
+		        monitor.done();
+		    }
+		};
         try {
             getContainer().run(true, false, op);
         } catch (InterruptedException e) {
@@ -141,17 +138,14 @@ public class NewSuppressionWizard extends Wizard implements INewWizard {
         }
         monitor.worked(1);
         monitor.setTaskName(Messages.getString("NewSuppressionWizard.Opening_file_task")); //$NON-NLS-1$
-        getShell().getDisplay().asyncExec(new Runnable() {
-            @Override
-            public void run() {
-                IWorkbenchPage page =
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                try {
-                    IDE.openEditor(page, file, true);
-                } catch (PartInitException e) {
-                }
-            }
-        });
+        getShell().getDisplay().asyncExec(() -> {
+		    IWorkbenchPage page =
+		        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		    try {
+		        IDE.openEditor(page, file, true);
+		    } catch (PartInitException e) {
+		    }
+		});
         monitor.worked(1);
     }
 

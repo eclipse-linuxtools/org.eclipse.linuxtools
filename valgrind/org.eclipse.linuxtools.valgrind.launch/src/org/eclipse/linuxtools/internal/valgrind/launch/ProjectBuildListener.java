@@ -102,12 +102,7 @@ public class ProjectBuildListener implements IResourceChangeListener {
             project.deleteMarkers(ValgrindLaunchPlugin.MARKER_TYPE, true,IResource.DEPTH_INFINITE);
 
             // clear valgrind error view
-            Display.getDefault().syncExec(new Runnable() {
-                @Override
-                public void run() {
-                    ValgrindUIPlugin.getDefault().resetView();
-                }
-            });
+            Display.getDefault().syncExec(() -> ValgrindUIPlugin.getDefault().resetView());
         } catch (CoreException e) {
             Status status = new Status(IStatus.ERROR, ValgrindLaunchPlugin.PLUGIN_ID, e.getMessage());
             ValgrindLaunchPlugin.getDefault().getLog().log(status);

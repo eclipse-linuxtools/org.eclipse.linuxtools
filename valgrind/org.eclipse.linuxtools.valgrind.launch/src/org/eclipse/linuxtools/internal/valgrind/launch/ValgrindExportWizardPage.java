@@ -24,8 +24,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -121,12 +119,7 @@ public class ValgrindExportWizardPage extends WizardPage {
 
         if (logPath != null) {
             // List all output files in our output directory from the recent launch
-            File logs[] = logPath.toFile().listFiles(new FileFilter() {
-                @Override
-                public boolean accept(File pathname) {
-                    return pathname.isFile();
-                }
-            });
+            File logs[] = logPath.toFile().listFiles((FileFilter) pathname -> pathname.isFile());
             viewer.setInput(logs);
             viewer.setAllChecked(true);
         }
@@ -156,12 +149,7 @@ public class ValgrindExportWizardPage extends WizardPage {
 
         destText = new Text(destGroup, SWT.BORDER);
         destText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        destText.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                setPageComplete(isValid());
-            }
-        });
+        destText.addModifyListener(e -> setPageComplete(isValid()));
 
         Button browseButton = new Button(destGroup, SWT.PUSH);
         browseButton.setText(Messages.getString("ValgrindExportWizardPage.Browse")); //$NON-NLS-1$

@@ -241,18 +241,15 @@ public class ChartEditor extends EditorPart {
      * Shows the Valgrind view in the active page and gives it focus.
      */
     private void showView() {
-        Display.getDefault().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    IWorkbenchPage activePage = PlatformUI.getWorkbench()
-                            .getActiveWorkbenchWindow().getActivePage();
-                    activePage.showView(IValgrindToolView.VIEW_ID);
-                } catch (PartInitException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        Display.getDefault().syncExec(() -> {
+		    try {
+		        IWorkbenchPage activePage = PlatformUI.getWorkbench()
+		                .getActiveWorkbenchWindow().getActivePage();
+		        activePage.showView(IValgrindToolView.VIEW_ID);
+		    } catch (PartInitException e) {
+		        e.printStackTrace();
+		    }
+		});
     }
 
     /**

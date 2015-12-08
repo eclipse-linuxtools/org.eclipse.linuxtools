@@ -32,12 +32,7 @@ import org.osgi.framework.Version;
 public class CachegrindLaunchDelegate implements IValgrindLaunchDelegate {
     protected static final String OUT_PREFIX = "cachegrind_"; //$NON-NLS-1$
     protected static final String OUT_FILE = OUT_PREFIX + "%p.txt"; //$NON-NLS-1$
-    protected static final FileFilter CACHEGRIND_FILTER = new FileFilter() {
-        @Override
-        public boolean accept(File pathname) {
-            return pathname.getName().startsWith(OUT_PREFIX);
-        }
-    };
+    protected static final FileFilter CACHEGRIND_FILTER = pathname -> pathname.getName().startsWith(OUT_PREFIX);
 
     private static final String COMMA = ","; //$NON-NLS-1$
     private static final String EQUALS = "="; //$NON-NLS-1$

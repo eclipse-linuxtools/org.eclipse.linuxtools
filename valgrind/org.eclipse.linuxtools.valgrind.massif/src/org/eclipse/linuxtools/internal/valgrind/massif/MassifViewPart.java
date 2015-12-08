@@ -19,8 +19,6 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -132,21 +130,18 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
         treeViewer = new MassifTreeViewer(top);
         treeViewer.getViewer().getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
 
-        viewer.addDoubleClickListener(new IDoubleClickListener() {
-            @Override
-            public void doubleClick(DoubleClickEvent event) {
-                MassifSnapshot snapshot = (MassifSnapshot) ((IStructuredSelection) event
-                        .getSelection()).getFirstElement();
-                if (snapshot.getType() != SnapshotType.EMPTY) {
-                    treeAction.setChecked(true);
-                    setTopControl(treeViewer.getViewer().getControl());
-                    treeViewer.getViewer().setSelection(new StructuredSelection(snapshot
-                            .getRoot()), true);
-                    treeViewer.getViewer().expandToLevel(snapshot.getRoot(),
-                            AbstractTreeViewer.ALL_LEVELS);
-                }
-            }
-        });
+        viewer.addDoubleClickListener(event -> {
+		    MassifSnapshot snapshot = (MassifSnapshot) ((IStructuredSelection) event
+		            .getSelection()).getFirstElement();
+		    if (snapshot.getType() != SnapshotType.EMPTY) {
+		        treeAction.setChecked(true);
+		        setTopControl(treeViewer.getViewer().getControl());
+		        treeViewer.getViewer().setSelection(new StructuredSelection(snapshot
+		                .getRoot()), true);
+		        treeViewer.getViewer().expandToLevel(snapshot.getRoot(),
+		                AbstractTreeViewer.ALL_LEVELS);
+		    }
+		});
 
         stackLayout.topControl = viewer.getControl();
         top.layout();
@@ -281,18 +276,15 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
     }
 
     private void displayChart(final ChartEditorInput chartInput) {
-        Display.getDefault().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    IWorkbenchPage page = PlatformUI.getWorkbench()
-                    .getActiveWorkbenchWindow().getActivePage();
-                    page.openEditor(chartInput, MassifPlugin.EDITOR_ID);
-                } catch (PartInitException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        Display.getDefault().syncExec(() -> {
+		    try {
+		        IWorkbenchPage page = PlatformUI.getWorkbench()
+		        .getActiveWorkbenchWindow().getActivePage();
+		        page.openEditor(chartInput, MassifPlugin.EDITOR_ID);
+		    } catch (PartInitException e) {
+		        e.printStackTrace();
+		    }
+		});
         saveChartAction.setChart(chartInput.getChart().getChartControl(), chartInput.getName());
     }
 

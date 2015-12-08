@@ -22,17 +22,14 @@ public class ExportHandler extends AbstractHandler {
 
     @Override
     public Object execute(ExecutionEvent event) {
-        Display.getDefault().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                Shell parent = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-                IWorkbenchWizard wizard = new ValgrindExportWizard();
-                wizard.init(PlatformUI.getWorkbench(), null);
+        Display.getDefault().syncExec(() -> {
+		    Shell parent = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		    IWorkbenchWizard wizard = new ValgrindExportWizard();
+		    wizard.init(PlatformUI.getWorkbench(), null);
 
-                WizardDialog dialog = new WizardDialog(parent, wizard);
-                dialog.open();
-            }
-        });
+		    WizardDialog dialog = new WizardDialog(parent, wizard);
+		    dialog.open();
+		});
 
         return null;
     }

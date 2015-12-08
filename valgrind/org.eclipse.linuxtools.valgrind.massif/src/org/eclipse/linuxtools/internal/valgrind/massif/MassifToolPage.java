@@ -22,7 +22,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.internal.valgrind.launch.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -74,12 +73,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
             updateLaunchConfigurationDialog();
         }
     };
-    private ModifyListener modifyListener = new ModifyListener() {
-        @Override
-        public void modifyText(ModifyEvent e) {
-            updateLaunchConfigurationDialog();
-        }
-    };
+    private ModifyListener modifyListener = e -> updateLaunchConfigurationDialog();
 
     @Override
     public void createControl(Composite parent) {

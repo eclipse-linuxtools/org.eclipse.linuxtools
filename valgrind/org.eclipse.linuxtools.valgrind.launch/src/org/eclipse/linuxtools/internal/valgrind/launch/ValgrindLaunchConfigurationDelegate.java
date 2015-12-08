@@ -69,12 +69,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 
     private static final String LOG_FILE = CommandLineConstants.LOG_PREFIX + "%p.txt"; //$NON-NLS-1$
     private static final Pattern CORE_PATTERN = Pattern.compile("^.*\\.txt\\.core\\.[0-9]+$");  //$NON-NLS-1$
-    private static final FileFilter LOG_FILTER = new FileFilter() {
-        @Override
-        public boolean accept(File pathname) {
-            return pathname.getName().startsWith(CommandLineConstants.LOG_PREFIX) && !CORE_PATTERN.matcher(pathname.getName()).matches();
-        }
-    };
+    private static final FileFilter LOG_FILTER = pathname -> pathname.getName().startsWith(CommandLineConstants.LOG_PREFIX) && !CORE_PATTERN.matcher(pathname.getName()).matches();
 
     protected String toolID;
     protected ValgrindCommand command;

@@ -17,12 +17,9 @@ import org.eclipse.cdt.core.model.ISourceRange;
 import org.eclipse.cdt.core.model.ISourceReference;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
-import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.ITreeSelection;
@@ -112,60 +109,54 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
         viewer.setContentProvider(contentProvider);
         viewer.setLabelProvider(labelProvider);
         viewer.setAutoExpandLevel(2);
-        doubleClickListener = new IDoubleClickListener() {
-            @Override
-            public void doubleClick(DoubleClickEvent event) {
-                Object selection = ((StructuredSelection) event.getSelection()).getFirstElement();
-                String path = null;
-                int line = 0;
-                if (selection instanceof CachegrindFile) {
-                    path = ((CachegrindFile) selection).getPath();
-                } else if (selection instanceof CachegrindLine) {
-                    CachegrindLine element = (CachegrindLine) selection;
-                    CachegrindFile file = (CachegrindFile) element.getParent().getParent();
-                    path = file.getPath();
-                    line = element.getLine();
-                } else if (selection instanceof CachegrindFunction) {
-                    CachegrindFunction function = (CachegrindFunction) selection;
-                    path = ((CachegrindFile) function.getParent()).getPath();
-                    if (function.getModel() instanceof ISourceReference) {
-                        ISourceReference model = (ISourceReference) function.getModel();
-                        try {
-                            ISourceRange sr = model.getSourceRange();
-                            if (sr != null) {
-                                line = sr.getStartLine();
-                            }
-                        } catch (CModelException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                if (path != null) {
-                    try {
-                    	ProfileUIUtils.openEditorAndSelect(path, line, ValgrindUIPlugin.getDefault().getProfiledProject());
-                    } catch (BadLocationException | CoreException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        };
+        doubleClickListener = event -> {
+		    Object selection = ((StructuredSelection) event.getSelection()).getFirstElement();
+		    String path = null;
+		    int line = 0;
+		    if (selection instanceof CachegrindFile) {
+		        path = ((CachegrindFile) selection).getPath();
+		    } else if (selection instanceof CachegrindLine) {
+		        CachegrindLine element = (CachegrindLine) selection;
+		        CachegrindFile file = (CachegrindFile) element.getParent().getParent();
+		        path = file.getPath();
+		        line = element.getLine();
+		    } else if (selection instanceof CachegrindFunction) {
+		        CachegrindFunction function = (CachegrindFunction) selection;
+		        path = ((CachegrindFile) function.getParent()).getPath();
+		        if (function.getModel() instanceof ISourceReference) {
+		            ISourceReference model = (ISourceReference) function.getModel();
+		            try {
+		                ISourceRange sr = model.getSourceRange();
+		                if (sr != null) {
+		                    line = sr.getStartLine();
+		                }
+		            } catch (CModelException e1) {
+		                e1.printStackTrace();
+		            }
+		        }
+		    }
+		    if (path != null) {
+		        try {
+		        	ProfileUIUtils.openEditorAndSelect(path, line, ValgrindUIPlugin.getDefault().getProfiledProject());
+		        } catch (BadLocationException | CoreException e2) {
+		            e2.printStackTrace();
+		        }
+		    }
+		};
         viewer.addDoubleClickListener(doubleClickListener);
 
         expandAction = new ExpandAction(viewer);
         collapseAction = new CollapseAction(viewer);
 
         MenuManager manager = new MenuManager();
-        manager.addMenuListener(new IMenuListener() {
-            @Override
-            public void menuAboutToShow(IMenuManager manager) {
-                ITreeSelection selection = (ITreeSelection) viewer.getSelection();
-                ICachegrindElement element = (ICachegrindElement) selection.getFirstElement();
-                if (contentProvider.hasChildren(element)) {
-                    manager.add(expandAction);
-                    manager.add(collapseAction);
-                }
-            }
-        });
+        manager.addMenuListener(manager1 -> {
+		    ITreeSelection selection = (ITreeSelection) viewer.getSelection();
+		    ICachegrindElement element = (ICachegrindElement) selection.getFirstElement();
+		    if (contentProvider.hasChildren(element)) {
+		        manager1.add(expandAction);
+		        manager1.add(collapseAction);
+		    }
+		});
 
         manager.setRemoveAllWhenShown(true);
         Menu contextMenu = manager.createContextMenu(viewer.getTree());
