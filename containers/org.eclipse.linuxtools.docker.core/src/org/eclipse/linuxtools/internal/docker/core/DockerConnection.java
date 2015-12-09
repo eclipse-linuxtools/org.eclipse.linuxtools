@@ -1056,14 +1056,24 @@ public class DockerConnection implements IDockerConnection, Closeable {
 				}
 				hbuilder.portBindings(realBindings);
 			}
-			if (hc.volumesFrom() != null)
+			if (hc.volumesFrom() != null) {
 				hbuilder.volumesFrom(hc.volumesFrom());
+			}
+			// FIXME: add the 'memory()' method in the IDockerHostConfig
+			// interface
+			if (((DockerHostConfig) hc).memory() != null) {
+				hbuilder.memory(((DockerHostConfig) hc).memory());
+			}
+			// FIXME: add the 'cpuShares()' method in the IDockerHostConfig
+			// interface
+			if (((DockerHostConfig) hc).cpuShares() != null
+					&& ((DockerHostConfig) hc).cpuShares().longValue() > 0) {
+				hbuilder.cpuShares(((DockerHostConfig) hc).cpuShares());
+			}
 
 			ContainerConfig.Builder builder = ContainerConfig.builder()
 					.hostname(c.hostname()).domainname(c.domainname())
-					.user(c.user()).memory(c.memory())
-					.memorySwap(c.memorySwap()).cpuShares(c.cpuShares())
-					.cpuset(c.cpuset()).attachStdin(c.attachStdin())
+					.user(c.user()).attachStdin(c.attachStdin())
 					.attachStdout(c.attachStdout())
 					.attachStderr(c.attachStderr()).tty(c.tty())
 					.openStdin(c.openStdin()).stdinOnce(c.stdinOnce())

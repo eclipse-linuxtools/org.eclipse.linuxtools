@@ -143,21 +143,31 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 		return user;
 	}
 
+	/**
+	 * @see DockerHostConfig#memory()
+	 */
+	@Deprecated
 	@Override
 	public Long memory() {
 		return memory;
 	}
 
+	@Deprecated
 	@Override
 	public Long memorySwap() {
 		return memorySwap;
 	}
 
+	/**
+	 * @see DockerHostConfig#cpuShares()
+	 */
+	@Deprecated
 	@Override
 	public Long cpuShares() {
 		return cpuShares;
 	}
 
+	@Deprecated
 	@Override
 	public String cpuset() {
 		return cpuset;

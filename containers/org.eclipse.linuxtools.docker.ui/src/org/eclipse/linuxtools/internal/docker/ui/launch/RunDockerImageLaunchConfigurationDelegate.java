@@ -174,14 +174,14 @@ public class RunDockerImageLaunchConfigurationDelegate
 				IRunDockerImageLaunchConfigurationConstants.ENABLE_LIMITS,
 				false);
 		if (limits_enabled) {
-			int memory = lconfig.getAttribute(
+			long memory = Long.parseLong(lconfig.getAttribute(
 					IRunDockerImageLaunchConfigurationConstants.MEMORY_LIMIT,
-					0);
-			int cpuShares = lconfig.getAttribute(
+					"0"));
+			config.memory(memory);
+			long cpuShares = Long.parseLong(lconfig.getAttribute(
 					IRunDockerImageLaunchConfigurationConstants.CPU_PRIORITY,
-					0);
-			config.memory(Long.valueOf(memory) * 1048576);
-			config.cpuShares(Long.valueOf(cpuShares));
+					"0"));
+			config.cpuShares(cpuShares);
 		}
 		// environment variables
 		final List<String> environmentVariables = lconfig.getAttribute(

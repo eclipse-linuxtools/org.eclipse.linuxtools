@@ -10,11 +10,18 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.launch;
 
+import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.MEMORY_LIMIT;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.observable.ChangeEvent;
+import org.eclipse.core.databinding.observable.IChangeListener;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -27,9 +34,6 @@ import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunResourceVolumesVariablesModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.WizardMessages;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -88,6 +92,7 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 						.value(ImageRunResourceVolumesVariablesModel.class,
 								ImageRunResourceVolumesVariablesModel.ENABLE_RESOURCE_LIMITATIONS)
 						.observe(model));
+
 		final int COLUMNS = 5;
 		final int INDENT = 20;
 		final Composite subContainer = new Composite(container, SWT.NONE);
@@ -108,34 +113,26 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 				SWT.RADIO);
 		lowCPULimitationButton.setText(WizardMessages
 				.getString("ImageRunResourceVolVarPage.lowButton")); //$NON-NLS-1$
-		lowCPULimitationButton.addSelectionListener(
-				onCpuShareWeighting(ImageRunResourceVolumesVariablesModel.LOW));
+		bindButton(lowCPULimitationButton,
+				ImageRunResourceVolumesVariablesModel.CPU_LOW);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.applyTo(lowCPULimitationButton);
 		final Button mediumCPULimitationButton = new Button(subContainer,
 				SWT.RADIO);
 		mediumCPULimitationButton.setText(WizardMessages
 				.getString("ImageRunResourceVolVarPage.mediumButton")); //$NON-NLS-1$
-		mediumCPULimitationButton.addSelectionListener(onCpuShareWeighting(
-				ImageRunResourceVolumesVariablesModel.MEDIUM));
+		bindButton(mediumCPULimitationButton,
+				ImageRunResourceVolumesVariablesModel.CPU_MEDIUM);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.applyTo(mediumCPULimitationButton);
 		final Button highCPULimitationButton = new Button(subContainer,
 				SWT.RADIO);
-		mediumCPULimitationButton.setSelection(true);
 		highCPULimitationButton.setText(WizardMessages
 				.getString("ImageRunResourceVolVarPage.highButton")); //$NON-NLS-1$
-		highCPULimitationButton.addSelectionListener(onCpuShareWeighting(
-				ImageRunResourceVolumesVariablesModel.HIGH));
+		bindButton(highCPULimitationButton,
+				ImageRunResourceVolumesVariablesModel.CPU_HIGH);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).span(2, 1)
 				.applyTo(highCPULimitationButton);
-		dbc.bindValue(
-				WidgetProperties.selection()
-						.observe(enableResourceLimitationButton),
-				BeanProperties
-						.value(ImageRunResourceVolumesVariablesModel.class,
-								ImageRunResourceVolumesVariablesModel.ENABLE_RESOURCE_LIMITATIONS)
-						.observe(model));
 
 		// Memory limitation
 		final Label memoryLimitLabel = new Label(subContainer, SWT.NONE);
@@ -149,9 +146,7 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 		memoryLimitSpinner.setBackground(
 				Display.getDefault().getSystemColor(SWT.COLOR_TRANSPARENT));
 		memoryLimitSpinner.setMinimum(0);
-		int maxMemory = this.model.getTotalMemory();
 		memoryLimitSpinner.setMaximum(this.model.getTotalMemory());
-		memoryLimitSpinner.setSelection(Math.min(512, maxMemory));
 		memoryLimitSpinner.setPageIncrement(64);
 		dbc.bindValue(WidgetProperties.selection().observe(memoryLimitSpinner),
 				BeanProperties
@@ -180,8 +175,16 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 				.grab(false, false).applyTo(memoryLimitValueLabel);
 
 		// enable/disable controls
-		enableResourceLimitationButton
-				.addSelectionListener(onEnableResourceLimitation(subContainer));
+		final IObservableValue enableResourceLimitationsObservable = BeanProperties
+				.value(ImageRunResourceVolumesVariablesModel.class,
+						ImageRunResourceVolumesVariablesModel.ENABLE_RESOURCE_LIMITATIONS)
+				.observe(model);
+		dbc.bindValue(
+				WidgetProperties.selection()
+						.observe(enableResourceLimitationButton),
+				enableResourceLimitationsObservable);
+		enableResourceLimitationsObservable
+				.addChangeListener(onEnableResourceLimitation(subContainer));
 		toggleResourceLimitationControls(subContainer);
 
 	}
@@ -194,23 +197,48 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 		return container;
 	}
 
-	private SelectionListener onCpuShareWeighting(final int cpuShareWeigth) {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				model.setCpuShareWeight(cpuShareWeigth);
-			}
-		};
+	/**
+	 * Binds the given <code>cpuShares</code> value to the given {@link Button}
+	 * when it is selected.
+	 * 
+	 * @param button
+	 *            the {@link Button} to bind
+	 * @param cpuShares
+	 *            the <code>cpuShares</code> to bind to the {@link Button}
+	 * @return
+	 */
+	private Binding bindButton(final Button button, final long cpuShares) {
+		return dbc.bindValue(WidgetProperties.selection().observe(button),
+				BeanProperties
+						.value(ImageRunResourceVolumesVariablesModel.class,
+								ImageRunResourceVolumesVariablesModel.CPU_SHARE_WEIGHT)
+						.observe(model),
+				new UpdateValueStrategy() {
+					@Override
+					public Object convert(Object value) {
+						if (value.equals(Boolean.TRUE)) {
+							return cpuShares;
+						}
+						return 0l;
+					}
+
+				}, new UpdateValueStrategy() {
+					@Override
+					public Object convert(final Object value) {
+						return value.equals(cpuShares);
+					}
+				});
 	}
 
-	private SelectionListener onEnableResourceLimitation(
+	private IChangeListener onEnableResourceLimitation(
 			final Composite container) {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				toggleResourceLimitationControls(container);
-			}
+		return new IChangeListener() {
 
+			@Override
+			public void handleChange(ChangeEvent event) {
+				toggleResourceLimitationControls(container);
+
+			}
 		};
 	}
 
@@ -244,18 +272,20 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 					IRunDockerImageLaunchConfigurationConstants.ENABLE_LIMITS,
 					false);
 			model.setEnableResourceLimitations(enableLimits);
-
-			int cpuShareWeight = configuration.getAttribute(
+			long cpuShareWeight = Long.parseLong(configuration.getAttribute(
 					IRunDockerImageLaunchConfigurationConstants.CPU_PRIORITY,
-					1024);
+					Long.toString(
+							ImageRunResourceVolumesVariablesModel.CPU_MEDIUM)));
 			model.setCpuShareWeight(cpuShareWeight);
 
 			int maxMemory = this.model.getTotalMemory();
-			int memoryLimit = Math.min(512, maxMemory);
-			memoryLimit = configuration.getAttribute(
-					IRunDockerImageLaunchConfigurationConstants.MEMORY_LIMIT,
-					memoryLimit);
-			model.setMemoryLimit(memoryLimit);
+			// retrieve memory limit stored in MB
+			final long memoryLimit = Long
+					.parseLong(configuration.getAttribute(MEMORY_LIMIT,
+							Long.toString(
+							ImageRunResourceVolumesVariablesModel.DEFAULT_MEMORY)));
+			// make sure memory limit is not higher than maxMemory
+			model.setMemoryLimit(Math.min(maxMemory, memoryLimit));
 			toggleResourceLimitationControls(getContainer());
 		} catch (CoreException e) {
 			Activator.logErrorMessage(
@@ -274,10 +304,10 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 				model.isEnableResourceLimitations());
 		configuration.setAttribute(
 				IRunDockerImageLaunchConfigurationConstants.MEMORY_LIMIT,
-				model.getMemoryLimit());
+				Long.toString(model.getMemoryLimit()));
 		configuration.setAttribute(
 				IRunDockerImageLaunchConfigurationConstants.CPU_PRIORITY,
-				model.getCpuShareWeight());
+				Long.toString(model.getCpuShareWeight()));
 	}
 
 	@Override
