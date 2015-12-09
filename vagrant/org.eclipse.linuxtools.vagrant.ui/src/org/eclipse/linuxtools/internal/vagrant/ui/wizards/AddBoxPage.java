@@ -14,7 +14,12 @@ package org.eclipse.linuxtools.internal.vagrant.ui.wizards;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.validation.MultiValidator;
+import org.eclipse.core.databinding.validation.ValidationStatus;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -101,11 +106,11 @@ public class AddBoxPage extends WizardPage {
 		boxLocText.setToolTipText(
 				WizardMessages.getString("ImagePull.loc.tooltip")); //$NON-NLS-1$
 		// Location binding
-		final IObservableValue imgeNameObservable = BeanProperties
+		final IObservableValue imageNameObservable = BeanProperties
 				.value(AddBoxPageModel.class, AddBoxPageModel.BOX_LOC)
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(boxLocText),
-				imgeNameObservable, new UpdateValueStrategy(), null);
+				imageNameObservable, new UpdateValueStrategy(), null);
 		// search
 		final Button searchButton = new Button(container, SWT.NONE);
 		searchButton
@@ -113,6 +118,9 @@ public class AddBoxPage extends WizardPage {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).applyTo(searchButton);
 		searchButton.addSelectionListener(onSearchImage());
+
+		dbc.addValidationStatusProvider(new CreateBoxValidationStatusProvider(
+				boxNameObservable, imageNameObservable));
 
 		// setup validation support
 		WizardPageSupport.create(this, dbc);
@@ -136,6 +144,39 @@ public class AddBoxPage extends WizardPage {
 				}
 			}
 		};
+	}
+
+	private class CreateBoxValidationStatusProvider extends MultiValidator {
+
+		private IObservableValue boxNameOb, boxLocOb;
+
+		public CreateBoxValidationStatusProvider(IObservableValue boxNameOb,
+				IObservableValue boxLocOb) {
+			this.boxNameOb = boxNameOb;
+			this.boxLocOb = boxLocOb;
+		}
+
+		@Override
+		public IObservableList getTargets() {
+			// Work around for NPE triggered by DialogPageSupport.dispose()
+			return new WritableList();
+		}
+
+		@Override
+		protected IStatus validate() {
+			String boxName = (String) boxNameOb.getValue();
+			String boxLoc = (String) boxLocOb.getValue();
+			if (boxName == null || boxName.isEmpty()) {
+				return ValidationStatus.error(
+						WizardMessages
+							.getString("AddBoxPage.emptyBoxName")); //$NON-NLS-1$
+			} else if (boxLoc == null || boxLoc.isEmpty()) {
+				return ValidationStatus.error(
+						WizardMessages
+							.getString("AddBoxPage.emptyBoxLoc")); //$NON-NLS-1$
+				}
+			return ValidationStatus.ok();
+		}
 	}
 
 }
