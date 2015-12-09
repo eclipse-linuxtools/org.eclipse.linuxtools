@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
+import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.CPU_PRIORITY;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.DATA_VOLUMES;
+import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.ENABLE_LIMITS;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.ENV_VARIABLES;
+import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.MEMORY_LIMIT;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -23,11 +26,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.beans.IBeanValueProperty;
+import org.eclipse.core.databinding.observable.ChangeEvent;
+import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.property.Properties;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -174,13 +182,6 @@ image);
 				"ImageRunResourceVolVarPage.enableLimitationButton")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.applyTo(enableResourceLimitationButton);
-		dbc.bindValue(
-				WidgetProperties.selection()
-						.observe(enableResourceLimitationButton),
-				BeanProperties
-						.value(ImageRunResourceVolumesVariablesModel.class,
-								ImageRunResourceVolumesVariablesModel.ENABLE_RESOURCE_LIMITATIONS)
-						.observe(model));
 		final int COLUMNS = 5;
 		final int INDENT = 20;
 		final Composite subContainer = new Composite(container, SWT.NONE);
@@ -198,36 +199,28 @@ image);
 				.grab(false, false).applyTo(cpuPriorityLabel);
 		final Button lowCPULimitationButton = new Button(subContainer,
 				SWT.RADIO);
+		bindButton(lowCPULimitationButton,
+				ImageRunResourceVolumesVariablesModel.CPU_LOW);
 		lowCPULimitationButton.setText(WizardMessages
 				.getString("ImageRunResourceVolVarPage.lowButton")); //$NON-NLS-1$
-		lowCPULimitationButton.addSelectionListener(
-				onCpuShareWeighting(ImageRunResourceVolumesVariablesModel.LOW));
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.applyTo(lowCPULimitationButton);
 		final Button mediumCPULimitationButton = new Button(subContainer,
 				SWT.RADIO);
 		mediumCPULimitationButton.setText(WizardMessages
 				.getString("ImageRunResourceVolVarPage.mediumButton")); //$NON-NLS-1$
-		mediumCPULimitationButton.addSelectionListener(onCpuShareWeighting(
-				ImageRunResourceVolumesVariablesModel.MEDIUM));
+		bindButton(mediumCPULimitationButton,
+				ImageRunResourceVolumesVariablesModel.CPU_MEDIUM);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.applyTo(mediumCPULimitationButton);
 		final Button highCPULimitationButton = new Button(subContainer,
 				SWT.RADIO);
-		mediumCPULimitationButton.setSelection(true);
 		highCPULimitationButton.setText(WizardMessages
 				.getString("ImageRunResourceVolVarPage.highButton")); //$NON-NLS-1$
-		highCPULimitationButton.addSelectionListener(onCpuShareWeighting(
-				ImageRunResourceVolumesVariablesModel.HIGH));
+		bindButton(highCPULimitationButton,
+				ImageRunResourceVolumesVariablesModel.CPU_HIGH);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).span(2, 1)
 				.applyTo(highCPULimitationButton);
-		dbc.bindValue(
-				WidgetProperties.selection()
-						.observe(enableResourceLimitationButton),
-				BeanProperties
-						.value(ImageRunResourceVolumesVariablesModel.class,
-								ImageRunResourceVolumesVariablesModel.ENABLE_RESOURCE_LIMITATIONS)
-						.observe(model));
 
 		// Memory limitation
 		final Label memoryLimitLabel = new Label(subContainer, SWT.NONE);
@@ -242,7 +235,6 @@ image);
 				Display.getDefault().getSystemColor(SWT.COLOR_TRANSPARENT));
 		memoryLimitSpinner.setMinimum(0);
 		memoryLimitSpinner.setMaximum(this.model.getTotalMemory());
-		memoryLimitSpinner.setSelection(512);
 		memoryLimitSpinner.setPageIncrement(64);
 		dbc.bindValue(WidgetProperties.selection().observe(memoryLimitSpinner),
 				BeanProperties
@@ -266,29 +258,62 @@ image);
 				.grab(false, false).applyTo(memoryLimitValueLabel);
 
 		// enable/disable controls
-		enableResourceLimitationButton
-				.addSelectionListener(onEnableResourceLimitation(subContainer));
+		final IObservableValue enableResourceLimitationsObservable = BeanProperties
+				.value(ImageRunResourceVolumesVariablesModel.class,
+						ImageRunResourceVolumesVariablesModel.ENABLE_RESOURCE_LIMITATIONS)
+				.observe(model);
+		dbc.bindValue(
+				WidgetProperties.selection()
+						.observe(enableResourceLimitationButton),
+				enableResourceLimitationsObservable);
+		enableResourceLimitationsObservable
+				.addChangeListener(onEnableResourceLimitation(subContainer));
 		toggleResourceLimitationControls(subContainer);
 
 	}
 
-	private SelectionListener onCpuShareWeighting(final int cpuShareWeigth) {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				model.setCpuShareWeight(cpuShareWeigth);
-			}
-		};
+	/**
+	 * Binds the given <code>cpuShares</code> value to the given {@link Button}
+	 * when it is selected.
+	 * 
+	 * @param button
+	 *            the {@link Button} to bind
+	 * @param cpuShares
+	 *            the <code>cpuShares</code> to bind to the {@link Button}
+	 * @return
+	 */
+	private Binding bindButton(final Button button, final long cpuShares) {
+		return dbc.bindValue(WidgetProperties.selection().observe(button),
+				BeanProperties
+						.value(ImageRunResourceVolumesVariablesModel.class,
+								ImageRunResourceVolumesVariablesModel.CPU_SHARE_WEIGHT)
+						.observe(model),
+				new UpdateValueStrategy() {
+					@Override
+					public Object convert(Object value) {
+						if (value.equals(Boolean.TRUE)) {
+							return cpuShares;
+						}
+						return 0l;
+					}
+
+				}, new UpdateValueStrategy() {
+					@Override
+					public Object convert(final Object value) {
+						return value.equals(cpuShares);
+					}
+				});
 	}
 
-	private SelectionListener onEnableResourceLimitation(
+	private IChangeListener onEnableResourceLimitation(
 			final Composite container) {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				toggleResourceLimitationControls(container);
-			}
+		return new IChangeListener() {
 
+			@Override
+			public void handleChange(ChangeEvent event) {
+				toggleResourceLimitationControls(container);
+
+			}
 		};
 	}
 
@@ -398,6 +423,20 @@ image);
 				model.setEnvironmentVariables(
 						lastLaunchConfiguration.getAttribute(ENV_VARIABLES,
 								Collections.<String> emptyList()));
+				// resource limitations
+				model.setEnableResourceLimitations(lastLaunchConfiguration
+						.getAttribute(ENABLE_LIMITS, false));
+				// CPU shares
+				model.setCpuShareWeight(Long.parseLong(lastLaunchConfiguration
+						.getAttribute(CPU_PRIORITY, Long.toString(
+								ImageRunResourceVolumesVariablesModel.CPU_MEDIUM))));
+				// retrieve memory limit stored in MB
+				final long memoryLimit = Long.parseLong(lastLaunchConfiguration
+						.getAttribute(MEMORY_LIMIT, Long.toString(
+								ImageRunResourceVolumesVariablesModel.DEFAULT_MEMORY)));
+				// make sure memory limit is not higher than maxMemory
+				model.setMemoryLimit(
+						Math.min(model.getTotalMemory(), memoryLimit));
 			}
 			model.setDataVolumes(volumes.values());
 			model.setSelectedDataVolumes(selectedVolumes);

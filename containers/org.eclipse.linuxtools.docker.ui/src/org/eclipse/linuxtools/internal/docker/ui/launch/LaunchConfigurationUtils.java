@@ -26,6 +26,7 @@ import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLa
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.IMAGE_NAME;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.INTERACTIVE;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.LINKS;
+import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.MB;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.MEMORY_LIMIT;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PUBLISHED_PORTS;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PUBLISH_ALL_PORTS;
@@ -175,13 +176,13 @@ public class LaunchConfigurationUtils {
 			workingCopy.setAttribute(AUTO_REMOVE, removeWhenExits);
 			workingCopy.setAttribute(ALLOCATE_PSEUDO_CONSOLE,
 					containerConfig.tty());
-			workingCopy.setAttribute(INTERACTIVE,
-					containerConfig.attachStdin());
+			workingCopy.setAttribute(INTERACTIVE, containerConfig.openStdin());
 			// resources limitations
 			if (containerConfig.memory() != null) {
 				workingCopy.setAttribute(ENABLE_LIMITS, true);
-				workingCopy.setAttribute(MEMORY_LIMIT,
-						containerConfig.memory().toString());
+				// memory in containerConfig is expressed in bytes
+				workingCopy.setAttribute(MEMORY_LIMIT, Long
+						.toString(containerConfig.memory().longValue() / MB));
 			}
 			if (containerConfig.cpuShares() != null) {
 				workingCopy.setAttribute(ENABLE_LIMITS, true);

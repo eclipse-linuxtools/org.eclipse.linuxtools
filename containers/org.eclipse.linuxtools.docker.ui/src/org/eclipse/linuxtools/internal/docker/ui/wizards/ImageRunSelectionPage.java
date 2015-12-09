@@ -11,10 +11,12 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
+import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.ALLOCATE_PSEUDO_CONSOLE;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.AUTO_REMOVE;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.COMMAND;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.CONTAINER_NAME;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.ENTRYPOINT;
+import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.INTERACTIVE;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.LINKS;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PUBLISHED_PORTS;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PUBLISH_ALL_PORTS;
@@ -871,6 +873,10 @@ public class ImageRunSelectionPage extends WizardPage {
 				// other options
 				this.model.setRemoveWhenExits(lastLaunchConfiguration
 						.getAttribute(AUTO_REMOVE, false));
+				this.model.setInteractiveMode(lastLaunchConfiguration
+						.getAttribute(INTERACTIVE, false));
+				this.model.setAllocatePseudoTTY(lastLaunchConfiguration
+						.getAttribute(ALLOCATE_PSEUDO_CONSOLE, false));
 			} catch (CoreException e) {
 				Activator.log(e);
 			}
