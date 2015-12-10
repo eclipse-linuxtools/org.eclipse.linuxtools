@@ -60,13 +60,8 @@ public class VagrantBoxContentProvider implements ITreeContentProvider{
 		final Job loadImagesJob = new Job(DVMessages.getString("BoxesLoadJob.msg")) { //$NON-NLS-1$
 			@Override
 			protected IStatus run(final IProgressMonitor monitor) {
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						connection.getBoxes(true);
-						viewer.refresh();
-					}
-				});
+				connection.getBoxes(true);
+				Display.getDefault().asyncExec(() -> viewer.refresh());
 				return Status.OK_STATUS;
 			}
 		};
