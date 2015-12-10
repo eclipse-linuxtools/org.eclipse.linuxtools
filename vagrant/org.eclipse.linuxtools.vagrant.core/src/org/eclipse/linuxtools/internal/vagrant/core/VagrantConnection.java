@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.debug.core.DebugPlugin;
@@ -478,7 +479,9 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 		final String envPath = System.getenv("PATH"); //$NON-NLS-1$
 		if (envPath != null) {
 			for (String dir : envPath.split(File.pathSeparator)) {
-				Path vgPath = Paths.get(dir, VG);
+				final String vgName = Platform.OS_WIN32.equals(Platform.getOS())
+						? VG + ".exe" : VG; //$NON-NLS-1$
+				Path vgPath = Paths.get(dir, vgName);
 				if (vgPath.toFile().exists()) {
 					return vgPath.toString();
 				}
