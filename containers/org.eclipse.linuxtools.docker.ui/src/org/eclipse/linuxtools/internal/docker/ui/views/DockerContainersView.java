@@ -142,7 +142,7 @@ public class DockerContainersView extends ViewPart implements
 		IEclipsePreferences preferences = InstanceScope.INSTANCE
 				.getNode(Activator.PLUGIN_ID);
 		boolean showAll = preferences.getBoolean(SHOW_ALL_CONTAINERS_PREFERENCE,
-				false);
+				true);
 		showAllContainers(showAll);
 		final ICommandService service = getViewSite().getWorkbenchWindow()
 				.getService(ICommandService.class);

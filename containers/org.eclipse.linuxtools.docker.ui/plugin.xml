@@ -132,7 +132,7 @@
             name="%DanglingImagesViewFilter.name">
       </commonFilter>
       <commonFilter
-            activeByDefault="true"
+            activeByDefault="false"
             class="org.eclipse.linuxtools.internal.docker.ui.views.HideStoppedContainersViewerFilter"
             id="org.eclipse.linuxtools.docker.ui.stoppedContainersViewerFilter"
             name="%StoppedContainerViewFilter.name">
