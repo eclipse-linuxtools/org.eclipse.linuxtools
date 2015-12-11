@@ -433,8 +433,7 @@ public class BuildDockerImageLaunchConfigurationMainTab
 			}
 			final String repoName = launchConfig.getAttribute(REPO_NAME, ""); // $NON-NLS-1$
 			if (repoName.isEmpty()) {
-				setWarningMessage(
-LaunchMessages.getString(REPO_NAME_MISSING));
+				setWarningMessage(LaunchMessages.getString(REPO_NAME_MISSING));
 			} else {
 				setWarningMessage(null);
 			}
