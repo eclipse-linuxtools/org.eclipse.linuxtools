@@ -37,13 +37,13 @@
 		<p>This perspective brings up three new views added:</p>
 		<ul>
 			<li>
-				<a href="#Docker_Explorer_View">Docker Explorer View</a> - view for creating/managing connections to Docker daemons]]
+				<a href="Docker-Tooling-Perspective.html#Docker_Explorer_View">Docker Explorer View</a> - view for creating/managing connections to Docker daemons
 			</li>
 			<li>
-				<a href="#Docker_Images_View">Docker Images View</a> - view for managing Docker Images]]
+				<a href="Docker-Tooling-Perspective.html#Docker_Images_View">Docker Images View</a> - view for managing Docker Images
 			</li>
 			<li>
-				<a href="#Docker_Containers_View">Docker Containers View</a> - view for managing Docker Containers]]
+				<a href="Docker-Tooling-Perspective.html#Docker_Containers_View">Docker Containers View</a> - view for managing Docker Containers
 			</li>
 		</ul>
 		<p>In addition, the Docker Tooling Perspective adds the Console View and the Properties View.</p>
@@ -94,49 +94,49 @@
 		<ul>
 			<li>Dangling Images (intermediate images that are no longer referred to)</li>
 			<li>Intermediate Images (images with no repo tags that are parents of named images)</li>
-			<li>Stopped Containers (this includes paused Containers)</li>
+			<li>Stopped Containers (this does not include paused Containers)</li>
 			<li>Top-level Images (only show the first repo tag for an Image with multiple tags)</li>
 		</ul>
 		<h3 id="Docker_Explorer_Context_Menu">Docker Explorer Context Menu</h3>
 		<p>For both Containers and Images in the Docker Explorer View, right-clicking on a selection brings up the context menu with tasks to
 			perform on the selected item(s).  Actions applying to multiple items are only enabled if the action can be performed on all selected items.</p>
 		<p>
-			<img border="0" src="images/LinuxToolsExplorerContainerMenu.png"/>
+			<img border="0" src="images/LinuxToolsExplorerContainerContextMenu.png"/>
 		</p>
 		<p>For Containers, one can:</p>
 		<ul>
-			<li>Start selected Containers - start a stopped Container</li>
-			<li>Pause selected Containers - pause a running Container</li>
-			<li>Unpause selected Containers - continue a paused Container</li>
-			<li>Stop selected Containers - stop running Containers</li>
-			<li>Kill selected Containers - kill running Containers</li>
-			<li>Remove selected Containers - delete stopped Containers</li>
+			<li>Start - start a stopped Container</li>
+			<li>Pause - pause a running Container</li>
+			<li>Unpause - continue a paused Container</li>
+			<li>Stop - stop running Containers</li>
+			<li>Kill - kill running Containers</li>
+			<li>Remove - delete stopped Containers</li>
 			<li>
-				<a href="#Commit_Container">Commit Container</a> - commit the Container to an Image
+				<a href="Docker-Tooling-Perspective.html#Commit_Container">Commit</a> - commit the Container to an Image
 			</li>
 			<li>
-				<a href="#Display_Log">Display Log</a> - display the log for the Container
+				<a href="Docker-Tooling-Perspective.html#Display_Log">Display Log</a> - display the log for the Container
 			</li>
 			<li>Remove Log - removes the log for the Container from Eclipse Console View</li>
 		</ul>
 		<p>
-			<img border="0" src="images/LinuxToolsExplorerImageMenu.png"/>
+			<img border="0" src="images/LinuxToolsExplorerImageContextMenu.png"/>
 		</p>
 		<p>For Images, one can:</p>
 		<ul>
 			<li>
-				<a href="#Run_Image">Run Image</a> - build a Container and run it
+				<a href="Docker-Tooling-Perspective.html#Run_Image">Run</a> - build a Container and run it
+			</li>
+			<li>Remove - delete selected Images</li>
+			<li>
+				<a href="Docker-Tooling-Perspective.html#Push_Image">Push</a> - push an Image to a registry
 			</li>
 			<li>
-				<a href="#Push_Image">Push Image</a> - push an Image to a registry
+				<a href="Docker-Tooling-Perspective.html#Add_Tag">Add Tag</a> - add a tag to an Image
 			</li>
 			<li>
-				<a href="#Tag_Image">Tag Image</a> - add a tag to an Image
+				<a href="Docker-Tooling-Perspective.html#Remove_Tag">Remove Tag</a> - remove a tag from an Image with multiple tags
 			</li>
-			<li>
-				<a href="#Remove_Tag">Remove Tag</a> - remove a tag from an Image with multiple tags
-			</li>
-			<li>Remove Selected Images - delete selected Images</li>
 		</ul>
 		<h2 id="Docker_Images_View">Docker Images View</h2>
 		<h3 id="Overview_2">Overview</h3>
@@ -152,26 +152,26 @@
 		<ul>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerImageViewPull.png"/> - 
-				<a href="#Pull_Image">pull an Image from the Repository</a>
+				<a href="Docker-Tooling-Perspective.html#Pull_Image">pull an Image from the Repository</a>
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerImageViewPush.png"/> - 
-				<a href="#Push_Image">push an Image to the Repository</a>
+				<a href="Docker-Tooling-Perspective.html#Push_Image">push an Image to the Repository</a>
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerContainerCreate.png"/> - 
-				<a href="#Run_Image">create a Container from an Image</a>
+				<a href="Docker-Tooling-Perspective.html#Run_Image">create a Container from an Image</a>
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerImageBuild.png"/> - 
-				<a href="#Build_Image">build an Image from a Dockerfile</a>
-			</li>
-			<li>
-				<img border="0" src="images/LinuxToolsDockerDeleteImage.png"/> - delete one or more Images (requires confirmation)
+				<a href="Docker-Tooling-Perspective.html#Build_Image">build an Image from a Dockerfile</a>
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerTagImage.png"/> - 
-				<a href="#Tag_Image">tag an Image</a>
+				<a href="Docker-Tooling-Perspective.html#Add_Tag">tag an Image</a>
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerDeleteImage.png"/> - delete one or more Images (requires confirmation)
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerRefreshImage.png"/> - refresh Images list
@@ -180,10 +180,10 @@
 		<p>There are also context menu actions supported:</p>
 		<ul>
 			<li>
-				<a href="#Tag_Image">Tag Image</a> - same as the toolbar tag image action
+				<a href="Docker-Tooling-Perspective.html#Add_Tag">Add Tag</a> - same as the toolbar tag image action
 			</li>
 			<li>
-				<a href="#Remove_Tag">Remove Tag</a> - remove a tag from an Image with multiple repo tags
+				<a href="Docker-Tooling-Perspective.html#Remove_Tag">Remove Tag</a> - remove a tag from an Image with multiple repo tags
 			</li>
 		</ul>
 		<p>The text entry below the Connection name is used to search/filter the contents of the list.
@@ -196,6 +196,19 @@
 		<p>
 			<img border="0" src="images/LinuxToolsDockerPullWizard.png"/>
 		</p>
+		<p>The user can either fill in the complete name of the image to download or a search can be performed
+			using the Search button.  This brings up the Search Image Wizard.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerSearchImageWizard.png"/>
+		</p>
+		<p>Hitting the Search button will cause a search to list all repositories with the given search term.
+			Hitting Next... shows the various tags that can be selected.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerSearchImageWizard2.png"/>
+		</p>
+		<p>A search is performed only on the official Docker registry.  If a user needs to download an image from a
+			private registry, then the full specification of the image, including registry, needs to be made
+			manually in the initial Wizard text box.</p>
 		<p>Once complete, the user hits the "Finish" button or hits "Cancel" to abort.</p>
 		<p>The pull of an Image may take a long time.  This is because an Image may use several intermediate
 			Images each of which may be several bytes.  The Linux Tools Docker Tooling provides status jobs
@@ -257,6 +270,21 @@
 			<li>Environment Variables - way of specifying Env variables to use in the Container</li>
 			<li>Enable Resource Limits - this is used to restrict memory or CPU priority for the Container</li>
 		</ul>
+		<p>As of Docker Tools 1.2.0, the Run Image settings are stored in a Run Launch Configuration.  You can
+			optionally use the Run Configurations Dialog (Run -&gt; Run Configurations...) to edit or create a
+			Run Image configuration.  The same data that appears in the Run Image Wizard is broken up into
+			launch configuration tabs:</p>
+		<p>
+			<img border="0" src="images/LinuxToolsRunImageLaunchConfig.png"/>
+		</p>
+		<ul>
+			<li>Main - this tab contains the Connection name, Image name, Container name, entry-point, command, and flags such as remove on exit, use STDIN, and allocate a pseudo-TTY</li>
+			<li>Volumes - this tab allows a user to mount Host volumes in the Container or mount other Container volumes</li>
+			<li>Ports - this tab allows a user to expose ports from the Container</li>
+			<li>Links - this tab allows links to other Containers</li>
+			<li>Environment - this tab allows specification of environment variables for the Container</li>
+			<li>Resources - this tab allows the user to restrict memory or CPU priority for the Container</li>
+		</ul>
 		<h3 id="Build_Image">Build Image</h3>
 		<p>Building an Image takes an existing Image and modifies it to create a new Image.  Typically this
 			involves installing new packages.  The specification of the new Docker Image is done via
@@ -277,7 +305,7 @@
 		<p>The directory can be specified using the "Browse" button.  Once a valid existing directory
 			is specified, the "Edit" button will be enabled, allowing creation and modification of the
 			Dockerfile using a 
-			<a href="#Dockerfile_Editor">basic editor dialog</a>.
+			<a href="Docker-Tooling-Perspective.html#Dockerfile_Editor">basic editor dialog</a>.
 		</p>
 		<p>When the Dockerfile is considered complete, hitting the "Finish" button will start the
 			Image build action.  When the build is complete, the Docker Images View will be refreshed
@@ -296,8 +324,7 @@
 				</ul>
 			</li>
 			<li>MAINTAINER name - this sets the Author field of the Image and is optional</li>
-			<li>RUN &lt;cmd | 
-				<a href="&quot;executable&quot;,">"arg0", "arg1" ...</a>&gt; - this is a command that is run to modify the base Image in either the cmd format or the executable format
+			<li>RUN &lt;cmd | ["executable", "arg0", "arg1" ...]&gt; - this is a command that is run to modify the base Image in either the cmd format or the executable format
 				<ul>
 					<li>The cmd form is run in a shell (/bin/sh -c cmd). </li>
 					<li>Typically, this is how you install new packages (e.g. RUN yum install -y gdb).  It can also be used to modify the configuration (e.g. sed operations on a config file).</li>
@@ -309,11 +336,8 @@
 				<ul>
 					<li>There are three forms:
 						<ul>
-							<li>
-								<a href="&quot;executable&quot;,">"param1", "param2"</a> - executable form
-							</li>
-							<li>
-								<a href="&quot;param1&quot;,">"param2"</a> - default parameters to Entrypoint (see 
+							<li>["executable", "param1", "param2"] - executable form</li>
+							<li>["param1", "param2"] - default parameters to Entrypoint (see 
 								<a href="#Create_Container">Entrypoint parameter of Create Container</a>
 							</li>
 							<li>command param1 param2 - command form</li>
@@ -344,10 +368,8 @@
 				<ul>
 					<li>There are two forms:
 						<ul>
-							<li>ADD &lt;src&gt;... &lt;dest&gt;</li>
-							<li>ADD 
-								<a href="&quot;&lt;src&quot;&quot;...">"&lt;dest&gt;</a>
-							</li>
+							<li>ADD &lt;src&gt; ... &lt;dest&gt;</li>
+							<li>ADD ["&lt;src&gt;" ... "&lt;dest&gt;"]</li>
 						</ul>
 					</li>
 					<li>The second form is used to quote names that have white-space.</li>
@@ -357,10 +379,8 @@
 				<ul>
 					<li>There are two forms:
 						<ul>
-							<li>COPY &lt;src&gt;... &lt;dest&gt;</li>
-							<li>COPY 
-								<a href="&quot;&lt;src&quot;&quot;...">"&lt;dest&gt;</a>
-							</li>
+							<li>COPY &lt;src&gt; ... &lt;dest&gt;</li>
+							<li>COPY ["&lt;src&gt;"... "&lt;dest&gt;"]</li>
 						</ul>
 					</li>
 					<li>The second form is used to quote names that have white-space.</li>
@@ -370,7 +390,7 @@
 		<p>For more details, see 
 			<a href="http://docs.docker.com/reference/builder">the official Dockerfile reference</a>
 		</p>
-		<h3 id="Tag_Image">Tag Image</h3>
+		<h3 id="Add_Tag">Add Tag</h3>
 		<p>The Tag Image dialog can be brought up directly from the Docker Images View toolbar or using the
 			context menu by right-clicking on an Image.</p>
 		<p>
@@ -440,10 +460,10 @@
 		<p>The following context menu actions are supported:</p>
 		<ul>
 			<li>Commit Container - 
-				<a href="#Commit_Container">commit all changes of a selected Container into a new Image</a>
+				<a href="Docker-Tooling-Perspective.html#Commit_Container">commit all changes of a selected Container into a new Image</a>
 			</li>
 			<li>Display Log - 
-				<a href="#Display_Log">display the stdout/stderr logs of a selected Container in the Console View</a>
+				<a href="Docker-Tooling-Perspective.html#Display_Log">display the stdout/stderr logs of a selected Container in the Console View</a>
 			</li>
 			<li>Remove Log - remove the stdout/stderr logs of a selected Container from the Console View</li>
 		</ul>
@@ -463,8 +483,16 @@
 			<li>Comment - optional comment to add for the Image</li>
 		</ul>
 		<h3 id="Display_Log">Display Log</h3>
-		<p>The Display Log action opens a console in the Console View with the
-			stdout/stderr output for the Container.</p>
+		<p>The Display Log action displays the stdout/stderr output for a Container in either
+			the Console View or the Terminal View, depending on whether the Container specified
+			use of a TTY.</p>
+		<p>For Containers that run with the TTY
+			flag enabled, the output goes to the Terminal View:</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerTerminal.png"/>
+		</p>
+		<p>For Containers that run without a TTY, the
+			output is shown in the Console View:</p>
 		<p>
 			<img border="0" src="images/LinuxToolsDockerDisplayLog.png"/>
 		</p>
@@ -483,9 +511,9 @@
 		</ul>
 		<h2 id="Properties_View">Properties View</h2>
 		<p>The Properties View will respond to selections in the three Docker Tooling Views: 
-			<a href="#Docker_Explorer_View">Docker Explorer View</a>, 
-			<a href="#Docker_Images_View">Docker Images View</a>, and the 
-			<a href="#Docker_Containers_View">Docker Containers View</a>.  The data shown will depend on what is being selected:
+			<a href="Docker-Tooling-Perspective.html#Docker_Explorer_View">Docker Explorer View</a>, 
+			<a href="Docker-Tooling-Perspective.html#Docker_Images_View">Docker Images View</a>, and the 
+			<a href="Docker-Tooling-Perspective.html#Docker_Containers_View">Docker Containers View</a>.  The data shown will depend on what is being selected:
 		</p>
 		<ul>
 			<li>Docker Connection</li>
