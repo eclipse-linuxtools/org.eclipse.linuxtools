@@ -228,8 +228,8 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
     }
 
     @Override
-    protected Map getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
-        Map<String, Object> targets= super.getHyperlinkDetectorTargets(sourceViewer);
+    protected Map<String, IAdaptable> getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
+        Map<String, IAdaptable> targets= super.getHyperlinkDetectorTargets(sourceViewer);
         targets.put("org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditorTarget", editor); //$NON-NLS-1$
         targets.put("org.eclipse.ui.DefaultTextEditor", editor); //$NON-NLS-1$
         return targets;
