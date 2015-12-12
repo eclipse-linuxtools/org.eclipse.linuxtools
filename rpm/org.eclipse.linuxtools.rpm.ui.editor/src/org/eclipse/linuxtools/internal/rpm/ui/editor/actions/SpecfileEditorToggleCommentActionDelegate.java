@@ -38,7 +38,7 @@ public class SpecfileEditorToggleCommentActionDelegate extends AbstractHandler {
         }
 
         SpecfileEditor specfileEditor = (SpecfileEditor) editor;
-        IDocument document = (IDocument) specfileEditor.getAdapter(IDocument.class);
+        IDocument document = specfileEditor.getAdapter(IDocument.class);
         ISelection currentSelection = specfileEditor.getSpecfileSourceViewer()
                 .getSelection();
         if (currentSelection instanceof ITextSelection) {

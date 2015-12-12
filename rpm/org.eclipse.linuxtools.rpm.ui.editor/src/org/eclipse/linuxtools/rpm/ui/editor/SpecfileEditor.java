@@ -127,19 +127,20 @@ public class SpecfileEditor extends TextEditor {
         return null;
     }
 
-    @Override
-    public Object getAdapter(Class required) {
+    @SuppressWarnings("unchecked")
+	@Override
+    public <T> T getAdapter(Class<T> required) {
         if (IContentOutlinePage.class.equals(required)) {
-            return getOutlinePage();
+            return (T) getOutlinePage();
         }
         if (IDocument.class.equals(required)) {
-            return getDocumentProvider().getDocument(input);
+            return (T) getDocumentProvider().getDocument(input);
         }
         if (projectionSupport != null) {
             Object adapter = projectionSupport.getAdapter(getSourceViewer(),
                     required);
             if (adapter != null) {
-                return adapter;
+                return (T) adapter;
             }
         }
         return super.getAdapter(required);

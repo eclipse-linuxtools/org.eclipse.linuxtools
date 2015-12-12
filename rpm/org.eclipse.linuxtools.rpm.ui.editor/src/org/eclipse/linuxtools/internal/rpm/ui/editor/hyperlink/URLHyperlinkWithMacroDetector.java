@@ -34,7 +34,7 @@ public class URLHyperlinkWithMacroDetector extends URLHyperlinkDetector {
     @Override
     public IHyperlink[] detectHyperlinks(ITextViewer textViewer, IRegion region, boolean canShowMultipleHyperlinks) {
         if (specfile == null) {
-            SpecfileEditor a = ((SpecfileEditor) this.getAdapter(SpecfileEditor.class));
+			SpecfileEditor a = this.getAdapter(SpecfileEditor.class);
             if (a != null) {
                 specfile = a.getSpecfile();
             } else {

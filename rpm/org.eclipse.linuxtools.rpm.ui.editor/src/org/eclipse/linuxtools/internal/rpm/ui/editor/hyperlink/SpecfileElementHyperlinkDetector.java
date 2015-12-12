@@ -65,7 +65,7 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
         // otherwise, a new SpecfileParser does not initialize errorHandler
         // until a SpecfileEditor#editorSaved is called
         if (specfile == null) {
-            SpecfileEditor a = ((SpecfileEditor) this.getAdapter(SpecfileEditor.class));
+			SpecfileEditor a = this.getAdapter(SpecfileEditor.class);
             if (a != null && a.getSpecfile() != null) {
                 specfile = a.getSpecfile();
             } else {

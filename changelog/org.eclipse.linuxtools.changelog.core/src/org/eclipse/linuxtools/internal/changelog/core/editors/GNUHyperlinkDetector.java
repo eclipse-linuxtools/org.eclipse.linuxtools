@@ -73,7 +73,7 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
     public IHyperlink[] detectHyperlinks(ITextViewer textViewer,
             IRegion region, boolean canShowMultipleHyperlinks) {
         if (documentLocation == null) {
-            ITextEditor ed = (ITextEditor) this.getAdapter(ITextEditor.class);
+            ITextEditor ed = this.getAdapter(ITextEditor.class);
             documentLocation = getDocumentLocation(ed);
         }
 

@@ -136,7 +136,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
                 region, specfile, prefix);
         result.addAll(sourcesProposals);
         // Get the current content type
-        String currentContentType = ((IDocument)editor.getAdapter(IDocument.class)).getDocumentPartitioner().getContentType(region.getOffset());
+        String currentContentType = editor.getAdapter(IDocument.class).getDocumentPartitioner().getContentType(region.getOffset());
         if (currentContentType.equals(SpecfilePartitionScanner.SPEC_PREP)){
             List<ICompletionProposal> patchesProposals = computePatchesProposals(
                     region, specfile, prefix);

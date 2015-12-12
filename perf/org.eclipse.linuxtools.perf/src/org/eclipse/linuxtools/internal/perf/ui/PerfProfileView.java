@@ -17,7 +17,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.model.TreeParent;
 import org.eclipse.swt.SWT;
@@ -41,7 +41,7 @@ public class PerfProfileView extends ViewPart {
     private DrillDownAdapter drillDownAdapter;
     private Action doubleClickAction;
 
-    static class NameSorter extends ViewerSorter {
+    static class NameComparator extends ViewerComparator {
         @Override
         public int compare(Viewer viewer, Object e1, Object e2) {
             return (((TreeParent) e1).getPercent()
@@ -60,7 +60,7 @@ public class PerfProfileView extends ViewPart {
         viewer.setContentProvider(new PerfViewContentProvider());
 
         viewer.setLabelProvider(new PerfViewLabelProvider());
-        viewer.setSorter(new NameSorter());
+        viewer.setComparator(new NameComparator());
 
         // Create the help context id for the viewer's control
         PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "org.eclipse.linuxtools.internal.perf.viewer"); //$NON-NLS-1$

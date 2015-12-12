@@ -30,8 +30,8 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile.OprofileProject;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
@@ -626,8 +626,8 @@ AbstractLaunchConfigurationTab {
             });
 
             // sorter
-            ListviewerSorter sorter = new ListviewerSorter();
-            eventList.setSorter(sorter);
+            ListviewerComparator comparator = new ListviewerComparator();
+            eventList.setComparator(comparator);
 
             //adds the events to the list from the counter
             sourceList.addAll(Arrays.asList(counter.getValidEvents()));
@@ -677,8 +677,8 @@ AbstractLaunchConfigurationTab {
             });
 
             // sorter
-             sorter = new ListviewerSorter();
-             selectedEventList.setSorter(sorter);
+             ListviewerComparator viewerComparator = new ListviewerComparator();
+             selectedEventList.setComparator(viewerComparator);
 
             //adds the events to the list from the counter
             if(counter.getEvents().length != 0 && null != counter.getEvents()[0])
@@ -1422,7 +1422,7 @@ AbstractLaunchConfigurationTab {
      * Event sorting for selected as well as all available events
      * @since 3.0
      */
-    protected class ListviewerSorter extends ViewerSorter
+    protected class ListviewerComparator extends ViewerComparator
     {
         @Override
         public int compare(Viewer viewer, Object e1, Object e2) {
@@ -1431,7 +1431,7 @@ AbstractLaunchConfigurationTab {
             String op1txt = op1.getText();
             String op2txt = op2.getText();
             if(op1txt !=null && op2txt !=null && op1txt.trim().length() !=0 && op2txt.trim().length() !=0)
-                return collator.compare(op1txt, op2txt);
+                return getComparator().compare(op1txt, op2txt);
             return super.compare(viewer, e1, e2);
         }
     }

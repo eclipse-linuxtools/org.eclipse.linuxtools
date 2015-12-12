@@ -42,7 +42,7 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
             return null;
         }
         if (editor == null) {
-            editor = ((SpecfileEditor) this.getAdapter(SpecfileEditor.class));
+			editor = this.getAdapter(SpecfileEditor.class);
             if (editor == null) {
                 return null;
             }
@@ -205,7 +205,7 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
     private String getBody() {
         String body = null;
         // Get current selection
-        IDocument document= (IDocument) editor.getAdapter(IDocument.class);
+        IDocument document= editor.getAdapter(IDocument.class);
         ISelection currentSelection= editor.getSpecfileSourceViewer().getSelection();
         if (currentSelection instanceof ITextSelection) {
             ITextSelection selection= (ITextSelection) currentSelection;

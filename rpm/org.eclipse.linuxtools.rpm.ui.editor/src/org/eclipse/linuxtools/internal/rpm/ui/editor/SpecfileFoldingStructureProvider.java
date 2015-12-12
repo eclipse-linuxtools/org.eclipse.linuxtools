@@ -61,8 +61,7 @@ public class SpecfileFoldingStructureProvider {
     }
 
     public void updateFoldingRegions() {
-        ProjectionAnnotationModel model = (ProjectionAnnotationModel) sEditor
-                .getAdapter(ProjectionAnnotationModel.class);
+		ProjectionAnnotationModel model = sEditor.getAdapter(ProjectionAnnotationModel.class);
         if (model != null) {
             updateFoldingRegions(model);
         }
