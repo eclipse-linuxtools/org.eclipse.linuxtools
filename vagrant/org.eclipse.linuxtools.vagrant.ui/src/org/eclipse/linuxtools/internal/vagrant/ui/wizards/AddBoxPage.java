@@ -87,7 +87,7 @@ public class AddBoxPage extends WizardPage {
 		boxNameText.setToolTipText(
 				WizardMessages.getString("ImagePull.name.tooltip")); //$NON-NLS-1$
 		// Name binding
-		final IObservableValue boxNameObservable = BeanProperties
+		final IObservableValue<String> boxNameObservable = BeanProperties
 				.value(AddBoxPageModel.class, AddBoxPageModel.BOX_NAME)
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(boxNameText),
@@ -106,7 +106,7 @@ public class AddBoxPage extends WizardPage {
 		boxLocText.setToolTipText(
 				WizardMessages.getString("ImagePull.loc.tooltip")); //$NON-NLS-1$
 		// Location binding
-		final IObservableValue imageNameObservable = BeanProperties
+		final IObservableValue<String> imageNameObservable = BeanProperties
 				.value(AddBoxPageModel.class, AddBoxPageModel.BOX_LOC)
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(boxLocText),
@@ -148,24 +148,25 @@ public class AddBoxPage extends WizardPage {
 
 	private class CreateBoxValidationStatusProvider extends MultiValidator {
 
-		private IObservableValue boxNameOb, boxLocOb;
+		private IObservableValue<String> boxNameOb, boxLocOb;
 
-		public CreateBoxValidationStatusProvider(IObservableValue boxNameOb,
-				IObservableValue boxLocOb) {
+		public CreateBoxValidationStatusProvider(
+				IObservableValue<String> boxNameOb,
+				IObservableValue<String> boxLocOb) {
 			this.boxNameOb = boxNameOb;
 			this.boxLocOb = boxLocOb;
 		}
 
 		@Override
-		public IObservableList getTargets() {
+		public IObservableList<String> getTargets() {
 			// Work around for NPE triggered by DialogPageSupport.dispose()
-			return new WritableList();
+			return new WritableList<>();
 		}
 
 		@Override
 		protected IStatus validate() {
-			String boxName = (String) boxNameOb.getValue();
-			String boxLoc = (String) boxLocOb.getValue();
+			String boxName = boxNameOb.getValue();
+			String boxLoc = boxLocOb.getValue();
 			if (boxName == null || boxName.isEmpty()) {
 				return ValidationStatus.error(
 						WizardMessages
