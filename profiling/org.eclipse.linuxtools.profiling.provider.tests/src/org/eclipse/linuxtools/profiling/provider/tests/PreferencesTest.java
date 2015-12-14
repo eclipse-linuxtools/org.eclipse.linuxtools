@@ -30,7 +30,6 @@ import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
@@ -275,10 +274,10 @@ public class PreferencesTest extends AbstractTest{
     private static void deselectSelectionByName(final String name, final SWTWorkbenchBot bot) {
 		UIThreadRunnable.syncExec(() -> {
 			@SuppressWarnings("unchecked")
-			Matcher<Widget> matcher = allOf(widgetOfType(Button.class), withStyle(SWT.RADIO, "SWT.RADIO"), //$NON-NLS-1$
+			Matcher<Button> matcher = allOf(widgetOfType(Button.class), withStyle(SWT.RADIO, "SWT.RADIO"), //$NON-NLS-1$
 					withRegex(name + ".*")); //$NON-NLS-1$
 
-			Button b = (Button) bot.widget(matcher); // the current selection
+			Button b = bot.widget(matcher); // the current selection
 			b.setSelection(false);
 		});
     }
