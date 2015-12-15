@@ -885,7 +885,7 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			final DockerProgressHandler d = new DockerProgressHandler(handler);
 			final java.nio.file.Path p = FileSystems.getDefault()
 					.getPath(path.makeAbsolute().toOSString());
-			return client.build(p, d, BuildParameter.FORCE_RM);
+			return getClientCopy().build(p, d, BuildParameter.FORCE_RM);
 		} catch (com.spotify.docker.client.DockerRequestException e) {
 			throw new DockerException(e.message());
 		} catch (com.spotify.docker.client.DockerException | IOException e) {
@@ -902,7 +902,7 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			DockerProgressHandler d = new DockerProgressHandler(handler);
 			java.nio.file.Path p = FileSystems.getDefault().getPath(
 					path.makeAbsolute().toOSString());
-			return client.build(p, name, d, BuildParameter.FORCE_RM);
+			return getClientCopy().build(p, name, d, BuildParameter.FORCE_RM);
 		} catch (com.spotify.docker.client.DockerRequestException e) {
 			throw new DockerException(e.message());
 		} catch (com.spotify.docker.client.DockerException | IOException e) {
@@ -937,7 +937,7 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			final DockerProgressHandler d = new DockerProgressHandler(handler);
 			final java.nio.file.Path p = FileSystems.getDefault()
 					.getPath(path.makeAbsolute().toOSString());
-			return client.build(p, name, d, getBuildParameters(buildOptions));
+			return getClientCopy().build(p, name, d, getBuildParameters(buildOptions));
 		} catch (com.spotify.docker.client.DockerRequestException e) {
 			throw new DockerException(e.message());
 		} catch (com.spotify.docker.client.DockerException | IOException e) {
