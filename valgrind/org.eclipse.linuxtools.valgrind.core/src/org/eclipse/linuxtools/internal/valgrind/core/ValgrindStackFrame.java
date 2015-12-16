@@ -20,17 +20,6 @@ public class ValgrindStackFrame extends AbstractValgrindMessage {
 	protected int line;
 	private ISourceLocator locator;
 
-	/**
-	 * @deprecated use {@link #ValgrindStackFrame(IValgrindMessage, String, ILaunch, ISourceLocator, String, int)}
-	 */
-	@Deprecated
-	public ValgrindStackFrame(IValgrindMessage message, String text, ILaunch launch, String file, int line) {
-		super(message, text, launch);
-		this.file = file;
-		this.line = line;
-		this.locator = ValgrindCoreParser.copyLaunchSourceLocator(launch);
-	}
-
 	public ValgrindStackFrame(IValgrindMessage message, String text, ILaunch launch, ISourceLocator locator, String file, int line) {
 		super(message, text, launch);
 		this.file = file;
