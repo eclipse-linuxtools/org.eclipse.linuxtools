@@ -14,11 +14,27 @@ package org.eclipse.linuxtools.valgrind.core;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindStackFrame;
 
+
+/**
+ * Represents a valgrind message
+ */
 public interface IValgrindMessage {
+	/**
+	 * If message if part of hierarchy returns the parent message
+	 * @return parent message, can be null
+	 */
 	IValgrindMessage getParent();
 
+	/**
+	 * If message if part of hierarchy returns children messages
+	 * @return non null array of children messages
+	 */
 	IValgrindMessage[] getChildren();
 
+	/**
+	 * Get message test
+	 * @return message test
+	 */
 	String getText();
 	/**
 	 * Returns launch object associated with this message, it may be null if trace was imported
@@ -27,5 +43,9 @@ public interface IValgrindMessage {
 	 */
 	ILaunch getLaunch();
 
+	/**
+	 * Add a child message to a message
+	 * @param child - a child message, cannot be null
+	 */
 	void addChild(IValgrindMessage child);
 }

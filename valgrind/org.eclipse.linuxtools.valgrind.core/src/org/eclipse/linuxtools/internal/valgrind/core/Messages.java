@@ -13,6 +13,9 @@ package org.eclipse.linuxtools.internal.valgrind.core;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * Helper class to get localized messages. This is internal class to be used only in valgrind.core plugin.
+ */
 public class Messages {
     private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.valgrind.core.messages"; //$NON-NLS-1$
 
@@ -22,6 +25,13 @@ public class Messages {
     private Messages() {
     }
 
+	/**
+	 * Gets a string from the resource bundle.
+	 *
+	 * @param key the string used to get the bundle value, must not be
+	 *            <code>null</code>
+	 * @return the string from the resource bundle
+	 */
     public static String getString(String key) {
         try {
             return RESOURCE_BUNDLE.getString(key);

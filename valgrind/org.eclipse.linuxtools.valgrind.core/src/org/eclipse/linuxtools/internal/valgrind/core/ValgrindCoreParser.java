@@ -31,6 +31,9 @@ import org.eclipse.linuxtools.valgrind.core.CommandLineConstants;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 import org.eclipse.linuxtools.valgrind.core.ValgrindParserUtils;
 
+/**
+ * Parser for paring valgrind generic output into array of hierarchical messages
+ */
 public class ValgrindCoreParser {
     private static final String AT = "at"; //$NON-NLS-1$
     private static final String BY = "by"; //$NON-NLS-1$
@@ -51,7 +54,7 @@ public class ValgrindCoreParser {
      *            - launch object, can be null
      * @param locator
      *            - source locator
-     * @throws IOException
+     * @throws IOException if file is not found or error reading it
      */
     public ValgrindCoreParser(File inputFile, ILaunch launch, ISourceLocator locator) throws IOException {
         this.launch = launch;
@@ -129,15 +132,31 @@ public class ValgrindCoreParser {
         return new ValgrindError(message, line, launch, pid);
     }
 
+    /**
+     * Return messages from paring
+     * @return all parsed messages
+     *
+     */
     public IValgrindMessage[] getMessages() {
         return messages.toArray(new IValgrindMessage[messages.size()]);
     }
 
+    /**
+     * Constructor
+     * @param inputFile - file to parse
+     * @param launch - launch object can be null
+     * @throws IOException if cannot open file
+     */
     public ValgrindCoreParser(File inputFile, ILaunch launch) throws IOException {
-
         this(inputFile, launch, copyLaunchSourceLocator(launch));
     }
 
+    /**
+     * Return a safe source locator from launch object which won't be disposed if launch object is disposed
+     * @param launch - launch object
+     * @return source locator
+     *
+     */
     public static ISourceLocator copyLaunchSourceLocator(ILaunch launch) {
         if (launch == null)
             return null;

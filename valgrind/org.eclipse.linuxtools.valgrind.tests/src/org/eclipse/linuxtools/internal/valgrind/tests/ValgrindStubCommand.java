@@ -23,7 +23,7 @@ public class ValgrindStubCommand extends ValgrindCommand {
     }
 
     @Override
-    public void execute(String[] commandArray, Object env, File wd, boolean usePty, IProject project) {
+    public void execute(String[] commandArray, String[] env, File wd, boolean usePty, IProject project) {
         args = commandArray;
     }
 

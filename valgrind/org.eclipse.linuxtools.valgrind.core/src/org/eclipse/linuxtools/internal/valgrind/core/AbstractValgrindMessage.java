@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 
+/**
+ * Abstract class implementing IValgrindMessage
+ */
 public class AbstractValgrindMessage implements IValgrindMessage {
 
     private IValgrindMessage parent;
@@ -22,6 +25,12 @@ public class AbstractValgrindMessage implements IValgrindMessage {
     private ArrayList<IValgrindMessage> children;
     private String text;
 
+    /**
+     * Contructor
+     * @param parent - parent message can be null
+     * @param text - message text, cannot be null
+     * @param launch - launch object, can be null
+     */
     public AbstractValgrindMessage(IValgrindMessage parent, String text, ILaunch launch) {
         children = new ArrayList<>();
         this.parent = parent;
@@ -48,6 +57,10 @@ public class AbstractValgrindMessage implements IValgrindMessage {
         return parent;
     }
 
+	/**
+	 * If message if part of hierarchy returns children messages
+	 * @return non null array of children messages
+	 */
     @Override
     public IValgrindMessage[] getChildren() {
         return children.toArray(new IValgrindMessage[children.size()]);

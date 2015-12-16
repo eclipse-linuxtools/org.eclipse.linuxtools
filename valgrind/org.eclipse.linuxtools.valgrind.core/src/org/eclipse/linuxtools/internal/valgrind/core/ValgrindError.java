@@ -7,18 +7,28 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
+ *    Alena Laskavaia - javadoc comments and cleanup
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.core;
 
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 
-
+/**
+ * Valgrind Error message object
+ */
 public class ValgrindError extends AbstractValgrindMessage {
     protected int pid;
 
-    public ValgrindError(IValgrindMessage message, String text, ILaunch launch, int pid) {
-        super(message, text, launch);
+    /**
+     * Constructor
+     * @param parent - parent message
+     * @param text - message test cannot be null
+     * @param launch - launch object can be null
+     * @param pid - process pid
+     */
+    public ValgrindError(IValgrindMessage parent, String text, ILaunch launch, int pid) {
+        super(parent, text, launch);
         this.pid = pid;
     }
 
