@@ -195,7 +195,7 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 	/**
 	 * Set the project to be profiled
 	 *
-	 * @param project
+	 * @param project - project to be profiled
 	 */
 	public void setProfiledProject(IProject project) {
 		this.project = project;
