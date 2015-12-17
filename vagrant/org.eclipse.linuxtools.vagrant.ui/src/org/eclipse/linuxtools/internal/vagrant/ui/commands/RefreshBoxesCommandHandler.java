@@ -41,7 +41,6 @@ public class RefreshBoxesCommandHandler extends AbstractHandler {
 			}
 		};
 		job.setPriority(Job.LONG);
-		job.setUser(true);
 		job.schedule();
 		return null;
 	}

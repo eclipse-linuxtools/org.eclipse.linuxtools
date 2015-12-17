@@ -52,4 +52,6 @@ public interface IVagrantConnection {
 	void startVM(IVagrantVM vm) throws VagrantException, InterruptedException;
 
 	void removeBox(String name) throws VagrantException, InterruptedException;
+
+	void packageVM(IVagrantVM vm, String name) throws VagrantException, InterruptedException;
 }

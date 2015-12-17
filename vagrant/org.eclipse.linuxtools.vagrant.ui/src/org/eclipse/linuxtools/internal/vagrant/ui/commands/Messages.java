@@ -17,6 +17,10 @@ public class Messages extends NLS {
 	public static String DestroyVMCommandHandler_error;
 	public static String DestroyVMCommandHandler_removing_msg;
 	public static String DestroyVMCommandHandler_removing_title;
+	public static String PackageVMCommandHandler_failed;
+	public static String PackageVMCommandHandler_failed_desc;
+	public static String PackageVMCommandHandler_msg;
+	public static String PackageVMCommandHandler_title;
 	public static String RemoveBoxesCommandHandler_error;
 	public static String RemoveBoxesCommandHandler_removing_msg;
 	public static String RemoveBoxesCommandHandler_removing_title;
@@ -26,6 +30,7 @@ public class Messages extends NLS {
 	public static String SSHVMCommandHandler_title;
 	public static String VagrantToolBarContributionItem_destroy;
 	public static String VagrantToolBarContributionItem_open;
+	public static String VagrantToolBarContributionItem_package;
 	public static String VagrantToolBarContributionItem_ssh;
 	public static String VagrantToolBarContributionItem_start;
 	public static String VagrantToolBarContributionItem_stop;

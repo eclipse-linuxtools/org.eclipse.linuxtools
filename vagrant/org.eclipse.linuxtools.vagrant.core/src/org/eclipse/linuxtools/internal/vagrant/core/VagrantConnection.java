@@ -398,6 +398,11 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	}
 
 	@Override
+	public void packageVM(IVagrantVM vm, String name) {
+		rtCall(new String[] { "package", vm.id(), "--output", name}, vm.directory(), null); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Override
 	public String getName() {
 		return Messages.VagrantConnection_sys_vagrant_conn;
 	}

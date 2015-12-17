@@ -101,6 +101,9 @@ public class VagrantToolBarContributionItem extends ContributionItem
 					"org.eclipse.linuxtools.vagrant.ui.commands.startVM", //$NON-NLS-1$
 					SWTImagesFactory.DESC_START, vm));
 		}
+		list.add(createAction(Messages.VagrantToolBarContributionItem_package,
+				"org.eclipse.linuxtools.vagrant.ui.commands.packageVM", //$NON-NLS-1$
+				SWTImagesFactory.DESC_BUILD, vm));
 		list.add(createAction(Messages.VagrantToolBarContributionItem_open,
 				"org.eclipse.linuxtools.vagrant.ui.commands.openVFile", //$NON-NLS-1$
 				SWTImagesFactory.DESC_FILE, vm));
