@@ -53,7 +53,7 @@ import org.eclipse.linuxtools.docker.ui.wizards.ImageSearch;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils;
 import org.eclipse.linuxtools.internal.docker.ui.utils.IRunnableWithResult;
-import org.eclipse.linuxtools.internal.docker.ui.validators.ImageNameValidator;
+import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageNameValidator;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunResourceVolumesVariablesModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel.ExposedPortModel;
