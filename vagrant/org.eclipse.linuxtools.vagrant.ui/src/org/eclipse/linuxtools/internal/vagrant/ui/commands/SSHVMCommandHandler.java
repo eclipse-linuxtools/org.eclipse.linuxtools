@@ -18,6 +18,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jsch.internal.core.JSchCorePlugin;
+import org.eclipse.linuxtools.internal.vagrant.core.VagrantConnection;
 import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
 import org.eclipse.linuxtools.vagrant.core.VagrantService;
 import org.eclipse.osgi.util.NLS;
@@ -46,7 +48,10 @@ public class SSHVMCommandHandler extends BaseVMCommandHandler {
 				"org.eclipse.tm.terminal.connector.ssh.launcher.ssh"); //$NON-NLS-1$
 		properties.put("selection", null); //$NON-NLS-1$
 		properties.put("ssh.password", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		if (!vm.identityFile().isEmpty()) {
+		// TODO: Do this through API later
+		VagrantConnection conn = (VagrantConnection) VagrantService.getInstance();
+		if (!vm.identityFile().isEmpty()
+				&& !conn.isTrackedKey(vm.identityFile())) {
 			setupKeyPreferences(vm.identityFile());
 		}
 		properties.put("tm.terminal.connector.id", //$NON-NLS-1$
@@ -67,6 +72,8 @@ public class SSHVMCommandHandler extends BaseVMCommandHandler {
 		}
 		InstanceScope.INSTANCE.getNode(JSCH_ID).put(KEY, currentKeys + ',' + identityFile);
 		VagrantService.getInstance().addToTrackedKeys(identityFile);
+		// Ensure keys get reloaded
+		JSchCorePlugin.getPlugin().setNeedToLoadKeys(true);
 	}
 
 	@Override
