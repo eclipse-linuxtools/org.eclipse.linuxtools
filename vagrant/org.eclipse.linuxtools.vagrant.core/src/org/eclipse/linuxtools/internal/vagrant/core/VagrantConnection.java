@@ -261,14 +261,14 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 				if (key.equals(vm.identityFile())) {
 					vmFound = true;
 					if (!EnumVMStatus.RUNNING.equals(EnumVMStatus.fromStatusMessage(vm.state()))) {
-						newKeys = keys.replaceAll("(,)?" + key + "(,)?", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						newKeys = removeFromKeys(keys, key);
 						removeFromTrackedKeys(key);
 						break;
 					}
 				}
 			}
 			if (!vmFound && isTrackedKey(key)) {
-				newKeys = keys.replaceAll("(,)?" + key + "(,)?", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				newKeys = removeFromKeys(keys, key);
 				removeFromTrackedKeys(key);
 			}
 		}
@@ -286,7 +286,18 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 		trackedKeys.remove(key);
 	}
 
-	private boolean isTrackedKey(String key) {
+	private String removeFromKeys(String keys, String key) {
+		StringBuffer res = new StringBuffer();
+		for (String k : keys.split(",")) {
+			if (!key.equals(k)) {
+				res.append(","); //$NON-NLS-1$
+				res.append(k);
+			}
+		}
+		return res.substring(1);
+	}
+
+	public boolean isTrackedKey(String key) {
 		return trackedKeys.contains(key);
 	}
 
