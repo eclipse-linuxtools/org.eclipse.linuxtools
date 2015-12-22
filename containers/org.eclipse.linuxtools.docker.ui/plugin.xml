@@ -1373,6 +1373,9 @@
              relationship="left"
              relative="org.eclipse.ui.editorss">
        </view>
+       <actionSet
+             id="org.eclipse.debug.ui.launchActionSet">
+       </actionSet>
     </perspectiveExtension>
  </extension>
  <extension
