@@ -65,9 +65,11 @@ public class ShowInWebBrowserCommandHandler extends AbstractHandler {
 									.equalsIgnoreCase(connectionURI.getScheme())
 							|| "https".equalsIgnoreCase( //$NON-NLS-1$
 									connectionURI.getScheme())) {
-						final String host = connectionURI.getHost();
+						final String host = "unix" //$NON-NLS-1$
+								.equalsIgnoreCase(connectionURI.getScheme())
+										? "127.0.0.1" : connectionURI.getHost(); //$NON-NLS-1$
 						final URL location = new URL("http", host, //$NON-NLS-1$
-								selectedPort.getPublicPort(), "/");
+								selectedPort.getPublicPort(), "/"); //$NON-NLS-1$
 						openLocationInWebBrowser(location);
 					}
 				} catch (URISyntaxException | MalformedURLException e) {
