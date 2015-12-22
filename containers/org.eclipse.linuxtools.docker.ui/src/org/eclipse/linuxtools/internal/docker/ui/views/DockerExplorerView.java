@@ -161,6 +161,10 @@ public class DockerExplorerView extends CommonNavigator implements
 		super.createPartControl(container);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
 				.grab(true, true).applyTo(getCommonViewer().getControl());
+		if (DockerConnectionManager.getInstance().getConnections().length > 0) {
+			IDockerConnection conn = DockerConnectionManager.getInstance().getConnections()[0];
+			getCommonViewer().setSelection(new StructuredSelection(conn));
+		}
 		return form;
 	}
 
