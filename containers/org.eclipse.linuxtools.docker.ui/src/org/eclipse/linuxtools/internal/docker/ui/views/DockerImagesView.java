@@ -366,15 +366,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					// remember the current selection before the viewer is
-					// refreshed
-					final ISelection currentSelection = DockerImagesView.this.viewer.getSelection();
 					DockerImagesView.this.viewer.refresh();
-					// restore the selection
-					if (currentSelection != null) {
-						DockerImagesView.this.viewer
-								.setSelection(currentSelection);
-					}
 					refreshViewTitle();
 				}
 			});
