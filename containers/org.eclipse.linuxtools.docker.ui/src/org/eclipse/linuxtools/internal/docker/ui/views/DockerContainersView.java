@@ -371,15 +371,7 @@ public class DockerContainersView extends ViewPart implements
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					// remember the current selection before the viewer is
-					// refreshed
-					final ISelection currentSelection = DockerContainersView.this.viewer.getSelection();
 					DockerContainersView.this.viewer.refresh();
-					// restore the selection
-					if (currentSelection != null) {
-						DockerContainersView.this.viewer
-								.setSelection(currentSelection);
-					}
 					refreshViewTitle();
 				}
 			});

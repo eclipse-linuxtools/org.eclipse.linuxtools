@@ -18,7 +18,6 @@ import java.util.Map;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -326,14 +325,7 @@ public class DockerExplorerView extends CommonNavigator implements
 
 			@Override
 			public void run() {
-				// following is to force Container property testers
-				// to run again after list is updated. They won't do so by
-				// default.
-				final ISelection selection = getCommonViewer().getSelection();
 				getCommonViewer().refresh(connection, true);
-				if (selection != null) {
-					getCommonViewer().setSelection(selection, false);
-				}
 			}
 		});
 	}
