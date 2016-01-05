@@ -81,6 +81,9 @@ public class ImageSearchPage extends WizardPage {
 
 	/**
 	 * Default constructor.
+	 * 
+	 * @param model
+	 *            the model for this page
 	 */
 	public ImageSearchPage(final ImageSearchModel model) {
 		super("ImageSearchPage", //$NON-NLS-1$
@@ -89,6 +92,9 @@ public class ImageSearchPage extends WizardPage {
 		this.model = model;
 	}
 
+	/**
+	 * @return the selected Docker Image in the result table
+	 */
 	public IDockerImageSearchResult getSelectedImage() {
 		return model.getSelectedImage();
 	}
@@ -209,6 +215,10 @@ public class ImageSearchPage extends WizardPage {
 		// attach the Databinding context status to this wizard page.
 		WizardPageSupport.create(this, this.ctx);
 		setControl(container);
+		// trigger a search if an image name was provided
+		if (model.getTerm() != null && !model.getTerm().isEmpty()) {
+			searchImages();
+		}
 	}
 
 	private TableViewerColumn addTableViewerColum(final TableViewer tableViewer,

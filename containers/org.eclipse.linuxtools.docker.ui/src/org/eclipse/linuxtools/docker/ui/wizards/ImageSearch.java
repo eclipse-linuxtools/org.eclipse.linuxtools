@@ -70,6 +70,10 @@ public class ImageSearch extends Wizard {
 		return true;
 	}
 
+	/**
+	 * @return the selected docker Image as a {@link String} concatenation of
+	 *         the name and tag.
+	 */
 	public String getSelectedImage() {
 		return this.imageSearchPage.getSelectedImage().getName() + ":"
 				+ this.imageTagSelectionPage.getSelectedImageTag().getName();
