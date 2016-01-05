@@ -809,21 +809,25 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			throw f;
 		}
 	}
-	
+
 	@Override
 	public List<IDockerImageSearchResult> searchImages(final String term) throws DockerException {
 		try {
 			final List<ImageSearchResult> searchResults = client.searchImages(term);
 			final List<IDockerImageSearchResult> results = new ArrayList<>();
 			for(ImageSearchResult r : searchResults) {
-				results.add(new DockerImageSearchResult(r.getDescription(), r.isOfficial(), r.isAutomated(), r.getName(), r.getStarCount()));
+				if (r.getName().contains(term)) {
+					results.add(new DockerImageSearchResult(r.getDescription(),
+							r.isOfficial(), r.isAutomated(), r.getName(),
+							r.getStarCount()));
+				}
 			}
 			return results;
 		} catch (com.spotify.docker.client.DockerException | InterruptedException e) {
 			throw new DockerException(e);
 		}
 	}
-	
+
 	@Override
 	public void pushImage(final String name, final IDockerProgressHandler handler)
 			throws DockerException, InterruptedException {
