@@ -58,6 +58,9 @@ public class ImageTagSelectionPage extends WizardPage {
 
 	/**
 	 * Default constructor.
+	 * 
+	 * @param model
+	 *            the model associated to this page
 	 */
 	public ImageTagSelectionPage(final ImageSearchModel model) {
 		super("ImageTagSelectionPage", //$NON-NLS-1$
@@ -151,6 +154,9 @@ public class ImageTagSelectionPage extends WizardPage {
 		}
 	}
 
+	/**
+	 * @return the selected tag in the search result table
+	 */
 	public DockerImageTagSearchResult getSelectedImageTag() {
 		return model.getSelectedImageTag();
 	}

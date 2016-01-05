@@ -16,7 +16,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.junit.rules.ExternalResource;
 
 /**
- * Closes the wizard after each test, if the "Cancel" button is available
+ * Closes the wizard(s) after each test, if the "Cancel" button is available
  */
 public class CloseWizardRule extends ExternalResource {
 
@@ -24,7 +24,7 @@ public class CloseWizardRule extends ExternalResource {
 	protected void after() {
 		final SWTWorkbenchBot bot = new SWTWorkbenchBot();
 		try {
-			if (bot.button("Cancel") != null) {
+			while (bot.button("Cancel") != null) {
 				bot.button("Cancel").click();
 			}
 		} catch (WidgetNotFoundException e) {
