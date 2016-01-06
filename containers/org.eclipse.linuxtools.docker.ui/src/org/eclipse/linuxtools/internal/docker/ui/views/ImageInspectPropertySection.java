@@ -88,7 +88,11 @@ public class ImageInspectPropertySection extends BasePropertySection {
 			protected IStatus run(final IProgressMonitor monitor) {
 				monitor.beginTask(
 						DVMessages.getString(PropertiesLoadingImageInfo), 1);
-				result.add(connection.getImageInfo(image.id()));
+				final IDockerImageInfo imageInfo = connection
+						.getImageInfo(image.id());
+				if (imageInfo != null) {
+					result.add(imageInfo);
+				}
 				monitor.done();
 				return Status.OK_STATUS;
 			}
