@@ -62,7 +62,7 @@ public class ImageSearchSWTBotTest {
 	}
 
 	@Test
-	public void shouldTriggerSearchIfTermWasGiven() throws InterruptedException {
+	public void shouldTriggerSearchIfTermWasGiven() {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.onSearch("foo", MockImageSearchResultFactory.name("foo").build()).build();
@@ -88,7 +88,7 @@ public class ImageSearchSWTBotTest {
 	}
 
 	@Test
-	public void shouldNotTriggerSearchIfNoTermWasGiven() throws InterruptedException {
+	public void shouldNotTriggerSearchIfNoTermWasGiven() {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.onSearch("foo", MockImageSearchResultFactory.name("foo").build()).build();

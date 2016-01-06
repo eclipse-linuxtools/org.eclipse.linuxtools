@@ -575,9 +575,6 @@
 	               checkEnabled="false">
 	               <with
 	                   variable="selection">
-	               <count
-	                      value="1">
-	                </count>
 	                <iterate
 	                      ifEmpty="false"
 	                      operator="and">
@@ -600,9 +597,6 @@
 	               checkEnabled="false">
 	               <with
 	                   variable="selection">
-	               <count
-	                      value="1">
-	                </count>
 	                <iterate
 	                      ifEmpty="false"
 	                      operator="and">
@@ -625,9 +619,6 @@
 	               checkEnabled="false">
 	               <with
 	                   variable="selection">
-	               <count
-	                      value="1">
-	                </count>
 	                <iterate
 	                      ifEmpty="false"
 	                      operator="and">
@@ -650,9 +641,6 @@
 	               checkEnabled="false">
 	               <with
 	                   variable="selection">
-	               <count
-	                      value="1">
-	                </count>
 	                <iterate
 	                      ifEmpty="false"
 	                      operator="and">
@@ -675,9 +663,6 @@
 	               checkEnabled="false">
 	               <with
 	                   variable="selection">
-	               <count
-	                      value="1">
-	                </count>
 	                <iterate
 	                      ifEmpty="false"
 	                      operator="and">
@@ -700,9 +685,6 @@
 	               checkEnabled="false">
 	               <with
 	                   variable="selection">
-	               <count
-	                      value="1">
-	                </count>
 	                <iterate
 	                      ifEmpty="false"
 	                      operator="and">

@@ -1,9 +1,13 @@
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
+import static org.assertj.core.api.Assertions.fail;
+
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.core.runtime.jobs.Job;
@@ -91,7 +95,7 @@ public class SWTUtils {
 	 * @param runnable
 	 * @throws InterruptedException
 	 */
-	public static void asyncExec(final Runnable runnable) throws InterruptedException {
+	public static void asyncExec(final Runnable runnable) {
 		final Queue<ComparisonFailure> failure = new ArrayBlockingQueue<>(1);
 		final Queue<SWTException> swtException = new ArrayBlockingQueue<>(1);
 		Display.getDefault().asyncExec(new Runnable() {
@@ -121,10 +125,10 @@ public class SWTUtils {
 	 * 
 	 * @throws InterruptedException
 	 */
-	public static void waitForJobsToComplete() throws InterruptedException {
-		Thread.sleep(TimeUnit.SECONDS.toMillis(1));
+	public static void waitForJobsToComplete() {
+		wait(1, TimeUnit.SECONDS);
 		while (!Job.getJobManager().isIdle()) {
-			Thread.sleep(TimeUnit.SECONDS.toMillis(1));
+			wait(1, TimeUnit.SECONDS);
 		}
 	}
 
@@ -170,6 +174,27 @@ public class SWTUtils {
 			return getTreeItem(swtBotTreeItem.getItems(), remainingPath);
 		}
 		return swtBotTreeItem;
+	}
+
+	public static void wait(final int duration, final TimeUnit unit) {
+		try {
+			Thread.sleep(unit.toMillis(duration));
+		} catch (InterruptedException e) {
+			fail("Failed to wait for a " + unit.toMillis(duration) + "ms", e);
+		}
+	}
+
+	/**
+	 * Selects all child items in the given <code>parentTreeItm</code> whose labels match the given <code>items</code>.
+	 * @param parentTreeItem the parent tree item
+	 * @param matchItems the items to select
+	 */
+	public static void select(SWTBotTreeItem parentTreeItem, String... matchItems) {
+		final List<String> fullyQualifiedItems = Stream.of(parentTreeItem.getItems())
+				.filter(treeItem -> Stream.of(matchItems)
+						.anyMatch(matchItem -> treeItem.getText().startsWith(matchItem)))
+				.map(item -> item.getText()).collect(Collectors.toList());
+		parentTreeItem.select(fullyQualifiedItems.toArray(new String[0]));
 	}
 	
 }
