@@ -32,10 +32,9 @@ public class DockerConnectionManagerUtils {
 	 * {@link DockerExplorerView}.
 	 * 
 	 * @param connections the connection to configure in the {@link DockerConnectionManager} via a mocked {@link IDockerConnectionStorageManager}
-	 * @throws InterruptedException
 	 */
 	public static void configureConnectionManager(
-			final IDockerConnection... connections) throws InterruptedException {
+			final IDockerConnection... connections) {
 		DockerConnectionManager.getInstance()
 				.setConnectionStorageManager(MockDockerConnectionStorageManagerFactory.providing(connections));
 		final SWTWorkbenchBot bot = new SWTWorkbenchBot();
@@ -47,7 +46,7 @@ public class DockerConnectionManagerUtils {
 				dockerExplorerView.getCommonViewer().refresh();
 				dockerExplorerView.showConnectionsOrExplanations();
 			});
-			Thread.sleep(TimeUnit.SECONDS.toMillis(1));
+			SWTUtils.wait(1, TimeUnit.SECONDS);
 		}
 	}
 }

@@ -11,6 +11,10 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.views;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.concurrent.TimeUnit;
+
 import org.assertj.core.api.Assertions;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
@@ -30,6 +34,7 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.PlatformUI;
@@ -63,7 +68,7 @@ public class DockerExplorerViewSWTBotTest {
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
 	
 	@Before
-	public void setup() throws InterruptedException {
+	public void setup() {
 		this.bot = new SWTWorkbenchBot();
 		SWTUtils.asyncExec(() -> {try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
@@ -81,7 +86,7 @@ public class DockerExplorerViewSWTBotTest {
 	}
 
 	@Test
-	public void shouldDisplayExplanationPane() throws InterruptedException {
+	public void shouldDisplayExplanationPane() {
 		// given
 		DockerConnectionManagerUtils.configureConnectionManager();
 		// then
@@ -89,7 +94,7 @@ public class DockerExplorerViewSWTBotTest {
 	}
 
 	@Test
-	public void shouldDisplayConnectionsPane() throws InterruptedException {
+	public void shouldDisplayConnectionsPane() {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
@@ -99,7 +104,7 @@ public class DockerExplorerViewSWTBotTest {
 	}
 
 	@Test
-	public void shouldRefreshImagesAndShowChanges() throws InterruptedException {
+	public void shouldRefreshImagesAndShowChanges() {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
@@ -121,7 +126,7 @@ public class DockerExplorerViewSWTBotTest {
 		dockerExplorerViewTreeBot = dockerExplorerViewBot.bot().tree();
 		dockerExplorerViewTreeBot.select(imagesTreeItem);
 		dockerExplorerViewTreeBot.contextMenu("Refresh").click();
-		Thread.sleep(2000);
+		SWTUtils.wait(2, TimeUnit.SECONDS);
 		imagesTreeItem.expand();
 		Conditions.waitForJobs(DockerExplorerView.class, "Docker Explorer View jobs");
 		// then check that there are images now
@@ -130,7 +135,7 @@ public class DockerExplorerViewSWTBotTest {
 	}
 
 	@Test
-	public void shouldRefreshContainersAndShowChanges() throws InterruptedException {
+	public void shouldRefreshContainersAndShowChanges() {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
@@ -160,7 +165,7 @@ public class DockerExplorerViewSWTBotTest {
 	}
 
 	@Test
-	public void shouldShowContainerPortMapping() throws InterruptedException {
+	public void shouldShowContainerPortMapping() {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockDockerContainerFactory.name("foo_bar").build(), MockDockerContainerInfoFactory
@@ -172,11 +177,11 @@ public class DockerExplorerViewSWTBotTest {
 		// when a second call to expand the container is done (because the first
 		// expandAll stopped with a "Loading..." job that retrieved the
 		// containers)
-		final SWTBotTreeItem containerTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test (null)",
-				"Containers", "foo_bar (null)");
+		final SWTBotTreeItem containerTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test",
+				"Containers", "foo_bar");
 		SWTUtils.asyncExec(() -> containerTreeItem.expand());
-		final SWTBotTreeItem containerPortsTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test (null)",
-				"Containers", "foo_bar (null)", "Ports");
+		final SWTBotTreeItem containerPortsTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test",
+				"Containers", "foo_bar", "Ports");
 		SWTUtils.asyncExec(() -> containerPortsTreeItem.expand());
 		// then
 		SWTUtils.syncAssert(() -> {
@@ -189,7 +194,7 @@ public class DockerExplorerViewSWTBotTest {
 	}
 
 	@Test
-	public void shouldShowContainerLinks() throws InterruptedException {
+	public void shouldShowContainerLinks() {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockDockerContainerFactory.name("foo_bar").build(), MockDockerContainerInfoFactory
@@ -201,8 +206,8 @@ public class DockerExplorerViewSWTBotTest {
 		// when a second call to expand the container is done (because the first
 		// expandAll stopped with a "Loading..." job that retrieved the
 		// containers)
-		final SWTBotTreeItem containerTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test (null)",
-				"Containers", "foo_bar (null)");
+		final SWTBotTreeItem containerTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test",
+				"Containers", "foo_bar");
 		SWTUtils.asyncExec(() -> containerTreeItem.expand());
 		final SWTBotTreeItem containerLinksTreeItem = SWTUtils.getTreeItem(containerTreeItem, "Links");
 		SWTUtils.asyncExec(() -> containerLinksTreeItem.expand());
@@ -215,7 +220,7 @@ public class DockerExplorerViewSWTBotTest {
 	}
 
 	@Test
-	public void shouldShowContainerVolumes() throws InterruptedException {
+	public void shouldShowContainerVolumes() {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockDockerContainerFactory.name("foo_bar").build(),
@@ -229,8 +234,8 @@ public class DockerExplorerViewSWTBotTest {
 		// when a second call to expand the container is done (because the first
 		// expandAll stopped with a "Loading..." job that retrieved the
 		// containers)
-		final SWTBotTreeItem containerTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test (null)",
-				"Containers", "foo_bar (null)");
+		final SWTBotTreeItem containerTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test",
+				"Containers", "foo_bar");
 		SWTUtils.asyncExec(() -> containerTreeItem.expand());
 		final SWTBotTreeItem containerVolumesItem = SWTUtils.getTreeItem(containerTreeItem, "Volumes");
 		SWTUtils.asyncExec(() -> containerVolumesItem.expand());
@@ -246,7 +251,7 @@ public class DockerExplorerViewSWTBotTest {
 	}
 
 	@Test
-	public void shouldRemainExpandedAfterRefresh() throws InterruptedException {
+	public void shouldRemainExpandedAfterRefresh() {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockDockerContainerFactory.name("foo_bar").build(),
@@ -258,9 +263,9 @@ public class DockerExplorerViewSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
-		final SWTBotTreeItem containersTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test (null)",
+		final SWTBotTreeItem containersTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test",
 				"Containers");
-		final SWTBotTreeItem containerTreeItem = SWTUtils.getTreeItem(containersTreeItem, "foo_bar (null)");
+		final SWTBotTreeItem containerTreeItem = SWTUtils.getTreeItem(containersTreeItem, "foo_bar");
 		SWTUtils.asyncExec(() -> containerTreeItem.expand());
 		SWTUtils.asyncExec(() -> SWTUtils.getTreeItem(containerTreeItem, "Links").expand());
 		SWTUtils.asyncExec(() -> SWTUtils.getTreeItem(containerTreeItem, "Ports").expand());
@@ -284,4 +289,208 @@ public class DockerExplorerViewSWTBotTest {
 		});
 	}
 
+	@Test
+	public void shouldProvideEnabledStartCommandOnMultipleContainersAtOnce() {
+		// given
+		final DockerClient client = MockDockerClientFactory
+				.container(MockDockerContainerFactory.name("gentle_foo").status("Stopped").build())
+				.container(MockDockerContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// open the context menu on one of the containers
+		selectMultipleContainersInTreeView();
+		final SWTBotMenu menuCommand = dockerExplorerViewBot.bot().tree().contextMenu("Start");
+		// then
+		assertThat(menuCommand.isVisible()).isEqualTo(true);
+		assertThat(menuCommand.isEnabled()).isEqualTo(true);
+	}
+
+	@Test
+	public void shouldProvideDisabledStartCommandOnMultipleContainersAtOnce() {
+		// given
+		final DockerClient client = MockDockerClientFactory
+				.container(MockDockerContainerFactory.name("gentle_foo").status("Stopped").build())
+				.container(MockDockerContainerFactory.name("angry_bar").status("Running").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// open the context menu on one of the containers
+		selectMultipleContainersInTreeView();
+		final SWTBotMenu menuCommand = dockerExplorerViewBot.bot().tree().contextMenu("Start");
+		// then
+		assertThat(menuCommand.isVisible()).isEqualTo(true);
+		assertThat(menuCommand.isEnabled()).isEqualTo(false);
+	}
+	
+	@Test
+	public void shouldProvideEnabledStopCommandOnMultipleContainersAtOnce() {
+		// given
+		final DockerClient client = MockDockerClientFactory
+				.container(MockDockerContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockDockerContainerFactory.name("angry_bar").status("Running").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// open the context menu on one of the containers
+		selectMultipleContainersInTreeView();
+		final SWTBotMenu menuCommand = dockerExplorerViewBot.bot().tree().contextMenu("Stop");
+		// then
+		assertThat(menuCommand.isVisible()).isEqualTo(true);
+		assertThat(menuCommand.isEnabled()).isEqualTo(true);
+	}
+
+	@Test
+	public void shouldProvideDisabledStopCommandOnMultipleContainersAtOnce() {
+		// given
+		final DockerClient client = MockDockerClientFactory
+				.container(MockDockerContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockDockerContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// open the context menu on one of the containers
+		selectMultipleContainersInTreeView();
+		final SWTBotMenu menuCommand = dockerExplorerViewBot.bot().tree().contextMenu("Stop");
+		// then
+		assertThat(menuCommand.isVisible()).isEqualTo(true);
+		assertThat(menuCommand.isEnabled()).isEqualTo(false);
+	}
+	
+	@Test
+	public void shouldProvideEnabledPauseCommandOnMultipleContainersAtOnce() {
+		// given
+		final DockerClient client = MockDockerClientFactory
+				.container(MockDockerContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockDockerContainerFactory.name("angry_bar").status("Running").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// open the context menu on one of the containers
+		selectMultipleContainersInTreeView();
+		final SWTBotMenu menuCommand = dockerExplorerViewBot.bot().tree().contextMenu("Pause");
+		// then
+		assertThat(menuCommand.isVisible()).isEqualTo(true);
+		assertThat(menuCommand.isEnabled()).isEqualTo(true);
+	}
+
+	@Test
+	public void shouldProvideDisabledPauseCommandOnMultipleContainersAtOnce() {
+		// given
+		final DockerClient client = MockDockerClientFactory
+				.container(MockDockerContainerFactory.name("gentle_foo").status("Up (Paused)").build())
+				.container(MockDockerContainerFactory.name("angry_bar").status("Running").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// open the context menu on one of the containers
+		selectMultipleContainersInTreeView();
+		final SWTBotMenu menuCommand = dockerExplorerViewBot.bot().tree().contextMenu("Pause");
+		// then
+		assertThat(menuCommand.isVisible()).isEqualTo(true);
+		assertThat(menuCommand.isEnabled()).isEqualTo(false);
+	}
+	
+	@Test
+	public void shouldProvideEnabledUnpauseCommandOnMultipleContainersAtOnce() {
+		// given
+		final DockerClient client = MockDockerClientFactory
+				.container(MockDockerContainerFactory.name("gentle_foo").status("Up (Paused)").build())
+				.container(MockDockerContainerFactory.name("angry_bar").status("Up (Paused)").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// open the context menu on one of the containers
+		selectMultipleContainersInTreeView();
+		final SWTBotMenu menuCommand = dockerExplorerViewBot.bot().tree().contextMenu("Unpause");
+		// then
+		assertThat(menuCommand.isVisible()).isEqualTo(true);
+		assertThat(menuCommand.isEnabled()).isEqualTo(true);
+	}
+
+	@Test
+	public void shouldProvideDisabledUnpauseCommandOnMultipleContainersAtOnce() {
+		// given
+		final DockerClient client = MockDockerClientFactory
+				.container(MockDockerContainerFactory.name("gentle_foo").status("Up (Paused)").build())
+				.container(MockDockerContainerFactory.name("angry_bar").status("Running").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// open the context menu on one of the containers
+		selectMultipleContainersInTreeView();
+		final SWTBotMenu menuCommand = dockerExplorerViewBot.bot().tree().contextMenu("Unpause");
+		// then
+		assertThat(menuCommand.isVisible()).isEqualTo(true);
+		assertThat(menuCommand.isEnabled()).isEqualTo(false);
+	}
+	
+	@Test
+	public void shouldProvideEnabledKillCommandOnMultipleContainersAtOnce() {
+		// given
+		final DockerClient client = MockDockerClientFactory
+				.container(MockDockerContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockDockerContainerFactory.name("angry_bar").status("Running").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// open the context menu on one of the containers
+		selectMultipleContainersInTreeView();
+		final SWTBotMenu menuCommand = dockerExplorerViewBot.bot().tree().contextMenu("Kill");
+		// then
+		assertThat(menuCommand.isVisible()).isEqualTo(true);
+		assertThat(menuCommand.isEnabled()).isEqualTo(true);
+	}
+
+	@Test
+	public void shouldProvideDisabledKillCommandOnMultipleContainersAtOnce() {
+		// given
+		final DockerClient client = MockDockerClientFactory
+				.container(MockDockerContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockDockerContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// open the context menu on one of the containers
+		selectMultipleContainersInTreeView();
+		final SWTBotMenu menuCommand = dockerExplorerViewBot.bot().tree().contextMenu("Kill");
+		// then
+		assertThat(menuCommand.isVisible()).isEqualTo(true);
+		assertThat(menuCommand.isEnabled()).isEqualTo(false);
+	}
+	
+	@Test
+	public void shouldProvideEnabledRemoveCommandOnMultipleContainersAtOnce() {
+		// given
+		final DockerClient client = MockDockerClientFactory
+				.container(MockDockerContainerFactory.name("gentle_foo").status("Stopped").build())
+				.container(MockDockerContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// open the context menu on one of the containers
+		selectMultipleContainersInTreeView();
+		final SWTBotMenu menuCommand = dockerExplorerViewBot.bot().tree().contextMenu("Remove");
+		// then
+		assertThat(menuCommand.isVisible()).isEqualTo(true);
+		assertThat(menuCommand.isEnabled()).isEqualTo(true);
+	}
+
+	@Test
+	public void shouldProvideRemoveCommandOnMultipleContainersAtOnce() {
+		// given
+		final DockerClient client = MockDockerClientFactory
+				.container(MockDockerContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockDockerContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// open the context menu on one of the containers
+		selectMultipleContainersInTreeView();
+		final SWTBotMenu menuCommand = dockerExplorerViewBot.bot().tree().contextMenu("Remove");
+		// then
+		assertThat(menuCommand.isVisible()).isEqualTo(true);
+		assertThat(menuCommand.isEnabled()).isEqualTo(false);
+	}
+	
+	private SWTBotTreeItem selectMultipleContainersInTreeView() {
+		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
+		// when a second call to expand the container is done (because the first
+		// expandAll stopped with a "Loading..." job that retrieved the
+		// containers)
+		final SWTBotTreeItem containersTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Containers");
+		SWTUtils.asyncExec(() -> containersTreeItem.expand());
+		// select both containers
+		SWTUtils.select(containersTreeItem, "gentle_foo", "angry_bar");
+		final SWTBotTreeItem containerTreeItem = SWTUtils.getTreeItem(containersTreeItem, "gentle_foo");
+		return containerTreeItem;
+	}
 }
