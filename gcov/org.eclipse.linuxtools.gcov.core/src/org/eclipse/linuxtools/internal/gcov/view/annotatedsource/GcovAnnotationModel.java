@@ -174,6 +174,8 @@ public final class GcovAnnotationModel implements IAnnotationModel {
         final private ICElement element;
         private boolean keepSearching = true;
         private boolean found;
+        private IResource resource;
+        private String lastLinkPath;
 
         public FindLinkedResourceVisitor(ICElement element) {
             this.element = element;
@@ -183,10 +185,21 @@ public final class GcovAnnotationModel implements IAnnotationModel {
             return found;
         }
 
+        public IResource getResource() {
+        	return resource;
+        }
+        
         @Override
         public boolean visit(IResourceProxy proxy) {
-            if (proxy.isLinked() && proxy.requestResource().getLocationURI().equals(element.getLocationURI())) {
+        	// To correctly find a file in a linked directory, we cannot just look at the isLinked() attribute
+        	// which is not set for the file but is set for one of its parent directories.  So, we keep track
+        	// of linked directories and use them to determine if we should bother getting the resource to compare with.
+        	if (proxy.isLinked()) {
+        		lastLinkPath = proxy.requestFullPath().toString();
+        	}
+            if (lastLinkPath != null && proxy.requestFullPath().toString().startsWith(lastLinkPath) && proxy.requestResource().getLocationURI().equals(element.getLocationURI())) {
                 found = true;
+                resource = proxy.requestResource();
                 keepSearching = false;
             }
             return keepSearching;
@@ -197,6 +210,7 @@ public final class GcovAnnotationModel implements IAnnotationModel {
     private SourceFile findSourceCoverageForElement(ICElement element) {
         List<SourceFile> sources = new ArrayList<> ();
         ICProject cProject = element.getCProject();
+        IResource elementResource = element.getResource();
         IPath target = GcovAnnotationModelTracker.getInstance().getBinaryPath(cProject.getProject());
         if (target == null) {
             // We cannot find a target for this element, using it's project.
@@ -214,6 +228,7 @@ public final class GcovAnnotationModel implements IAnnotationModel {
                     if (visitor.foundElement()) {
                         target = GcovAnnotationModelTracker.getInstance().getBinaryPath(proj);
                         cProject = CoreModel.getDefault().getCModel().getCProject(proj.getName());
+                        elementResource = visitor.getResource();
                         break;
                     }
                 } catch (CoreException e) {
@@ -236,7 +251,6 @@ public final class GcovAnnotationModel implements IAnnotationModel {
         } catch (IOException|CoreException|InterruptedException e) {
         }
 
-        IResource elementResource = element.getResource();
         if (elementResource != null) {
             IPath elementLocation = elementResource.getLocation();
             if (elementLocation != null) {
