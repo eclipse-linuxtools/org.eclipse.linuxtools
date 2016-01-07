@@ -137,9 +137,9 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 
 	public ImageRunSelectionModel(final IDockerImage selectedImage) {
 		this(selectedImage.getConnection());
-		if (selectedImage.tags().contains("latest")) { //$NON-NLS-1$
-			setSelectedImageName(ImageRunSelectionModel
-					.getImageName(selectedImage.repo(), "latest")); //$NON-NLS-1$
+		if (selectedImage.tags().contains(IDockerImage.TAG_LATEST)) {
+			setSelectedImageName(ImageRunSelectionModel.getImageName(
+					selectedImage.repo(), IDockerImage.TAG_LATEST));
 		} else {
 			final String lastTag = selectedImage.tags()
 					.get(selectedImage.tags().size() - 1);

@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.junit.rules.ExternalResource;
@@ -24,8 +25,8 @@ public class CloseWizardRule extends ExternalResource {
 	protected void after() {
 		final SWTWorkbenchBot bot = new SWTWorkbenchBot();
 		try {
-			while (bot.button("Cancel") != null) {
-				bot.button("Cancel").click();
+			while (bot.button(IDialogConstants.CANCEL_LABEL) != null) {
+				bot.button(IDialogConstants.CANCEL_LABEL).click();
 			}
 		} catch (WidgetNotFoundException e) {
 			// ignoring
