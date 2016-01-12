@@ -69,10 +69,10 @@
 					id="org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu">
 			<insertionPoint name="group.run" separator="true"/>
 			<insertionPoint name="group.refresh" separator="true"/>
+			<insertionPoint name="group.navigate" separator="true"/>
 			<insertionPoint name="group.edit" separator="true"/>
 			<insertionPoint name="group.logs" separator="true"/>
 			<insertionPoint name="group.tags" separator="true"/>
-			<insertionPoint name="group.showIn" separator="true"/>
 			</popupMenu>
             <options>
 				<property
@@ -254,6 +254,11 @@
 	        id="org.eclipse.linuxtools.docker.ui.commands.runImage"
 	        name="%command.runimage.name">
         </command>
+        <command
+            name="%command.showInPropertiesView.menu.name"
+            description="%command.showInPropertiesView.menu.description"
+            id="org.eclipse.linuxtools.docker.ui.commands.showInPropertiesView">
+      	</command>
         <command
             name="%command.showInWebBrowser.menu.name"
             description="%command.showInWebBrowser.menu.description"
@@ -510,6 +515,10 @@
      		</enabledWhen>
      	</handler>
 		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.showInPropertiesView"
+              class="org.eclipse.ui.views.properties.NewPropertySheetHandler">
+     	</handler>
+		<handler
               commandId="org.eclipse.linuxtools.docker.ui.commands.showInWebBrowser"
               class="org.eclipse.linuxtools.internal.docker.ui.commands.ShowInWebBrowserCommandHandler">
      	</handler>
@@ -562,6 +571,32 @@
 		          mnemonic="D"
 		          style="push">
 				</command>
+		</menuContribution>
+		<!-- explorer view context menu: Show In -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu?after=group.navigate">
+			<menu
+	           id="org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu.showIn"
+	           label="%menu.showIn">
+			</menu>
+		</menuContribution>		
+		<!-- explorer view context menu: Show In>Properties (on Connection)-->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu.showIn">
+		     <command
+		           commandId="org.eclipse.linuxtools.docker.ui.commands.showInPropertiesView"
+		           label="%command.showInPropertiesView.menu.name"
+		           id="org.eclipse.linuxtools.docker.ui.showConnectionInPropertiesView"
+             	style="push">
+			     <visibleWhen>
+		     		<with variable="selection">
+		     		   <count value="1"/>
+		                  <iterate ifEmpty="false">
+		                     <instanceof value="org.eclipse.linuxtools.docker.core.IDockerConnection"></instanceof>
+		                  </iterate>
+		            </with>
+	     		</visibleWhen>
+		     </command>
 		</menuContribution>
 		<!-- explorer view context menu: start containers -->
 		<menuContribution
@@ -694,6 +729,24 @@
 	               </with>
 	            </visibleWhen>
 				</command>
+		</menuContribution>
+		<!-- explorer view context menu: Show In>Properties (on container)-->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu.showIn">
+		     <command
+		           commandId="org.eclipse.linuxtools.docker.ui.commands.showInPropertiesView"
+		           label="%command.showInPropertiesView.menu.name"
+		           id="org.eclipse.linuxtools.docker.ui.showContainerInPropertiesView"
+             	style="push">
+			     <visibleWhen>
+		     		<with variable="selection">
+		     		   <count value="1"/>
+		                  <iterate ifEmpty="false">
+		                     <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
+		                  </iterate>
+		            </with>
+	     		</visibleWhen>
+		     </command>
 		</menuContribution>
 		<!-- explorer view context menu: commit container -->
 		<menuContribution
@@ -875,6 +928,24 @@
 	            </visibleWhen>
 				</command>
 		</menuContribution>
+		<!-- explorer view context menu: Show In>Properties (on Image)-->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu.showIn">
+		     <command
+		           commandId="org.eclipse.linuxtools.docker.ui.commands.showInPropertiesView"
+		           label="%command.showInPropertiesView.menu.name"
+		           id="org.eclipse.linuxtools.docker.ui.showImageInPropertiesView"
+             	style="push">
+			     <visibleWhen>
+		     		<with variable="selection">
+		     		   <count value="1"/>
+		                  <iterate ifEmpty="false">
+		                     <instanceof value="org.eclipse.linuxtools.docker.core.IDockerImage"></instanceof>
+		                  </iterate>
+		            </with>
+	     		</visibleWhen>
+		     </command>
+		</menuContribution>
 		<!-- explorer view context menu: push image -->
 		<menuContribution
 			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu?after=org.eclipse.linuxtools.docker.ui.commands.removeImages">
@@ -949,14 +1020,7 @@
 	            </visibleWhen>
 				</command>
 		</menuContribution>
-		<!-- explorer view context menu: Show In -->
-		<menuContribution
-			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu?after=group.showIn">
-			<menu
-	           id="org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu.showIn"
-	           label="%menu.showIn">
-			</menu>
-		</menuContribution>		
+		
 		<!-- explorer view context menu: Show In>Web Browser (on container ports)-->
 		<menuContribution
 			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu.showIn">

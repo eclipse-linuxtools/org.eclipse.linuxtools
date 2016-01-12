@@ -66,6 +66,7 @@ public class DockerExplorerView extends CommonNavigator implements
 
 	private static final String NO_CONNECTION_LABEL = "NoConnection.label"; //$NON-NLS-1$
 
+	/** the id of the {@link DockerExplorerView}. */
 	public static final String VIEW_ID = "org.eclipse.linuxtools.docker.ui.dockerExplorerView";
 	
 	private Control connectionsPane;
@@ -99,7 +100,7 @@ public class DockerExplorerView extends CommonNavigator implements
 	
 	@Override
     public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
-        if (adapter == IPropertySheetPage.class) {
+		if (IPropertySheetPage.class.isAssignableFrom(adapter)) {
             return new TabbedPropertySheetPage(this, true);
         }
         return super.getAdapter(adapter);

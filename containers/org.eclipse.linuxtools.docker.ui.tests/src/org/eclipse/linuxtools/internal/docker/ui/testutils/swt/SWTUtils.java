@@ -11,14 +11,25 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.Result;
+import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.junit.Assert;
 import org.junit.ComparisonFailure;
 
+/**
+ * Utility class for SWT
+ */
 public class SWTUtils {
 
 	/**
@@ -61,7 +72,8 @@ public class SWTUtils {
 	 *            the {@link Runnable} to execute
 	 * @throws ComparisonFailure
 	 *             if an assertion failed.
-	 * @throws SWTException if an {@link SWTException} occurred             
+	 * @throws SWTException
+	 *             if an {@link SWTException} occurred
 	 */
 	public static void syncAssert(final Runnable runnable) throws SWTException, ComparisonFailure {
 		final Queue<ComparisonFailure> failure = new ArrayBlockingQueue<>(1);
@@ -121,7 +133,7 @@ public class SWTUtils {
 	}
 
 	/**
-	 * Waits for all {@link Job} to complete. 
+	 * Waits for all {@link Job} to complete.
 	 * 
 	 * @throws InterruptedException
 	 */
@@ -133,33 +145,47 @@ public class SWTUtils {
 	}
 
 	/**
-	 * @param viewBot the {@link SWTBotView} containing the {@link Tree} to traverse
-	 * @param paths the node path in the {@link SWTBotTree} associated with the given {@link SWTBotView}
+	 * @param viewBot
+	 *            the {@link SWTBotView} containing the {@link Tree} to traverse
+	 * @param paths
+	 *            the node path in the {@link SWTBotTree} associated with the
+	 *            given {@link SWTBotView}
 	 * @return the first {@link SWTBotTreeItem} matching the given node names
 	 */
 	public static SWTBotTreeItem getTreeItem(final SWTBotView viewBot, final String... paths) {
 		final SWTBotTree tree = viewBot.bot().tree();
 		return getTreeItem(tree.getAllItems(), paths);
 	}
-	
+
+	/**
+	 * 
+	 * @param parentTreeItem the parent tree item from which to start
+	 * @param paths the relative path to the item to return 
+	 * @return the {@link SWTBotTreeItem} that matches the given path from the given parent tree item 
+	 */
 	public static SWTBotTreeItem getTreeItem(final SWTBotTreeItem parentTreeItem, final String... paths) {
-		if(paths.length == 1) {
+		if (paths.length == 1) {
 			return getTreeItem(parentTreeItem, paths[0]);
 		}
-		final String[] remainingPaths = new String[paths.length-1];
-		System.arraycopy(paths, 1, remainingPaths, 0, paths.length-1);
+		final String[] remainingPaths = new String[paths.length - 1];
+		System.arraycopy(paths, 1, remainingPaths, 0, paths.length - 1);
 		return getTreeItem(getTreeItem(parentTreeItem, paths[0]), remainingPaths);
 	}
 
 	/**
-	 * Returns the first child node in the given parent tree item whose text matches (ie, begins with) the given path argument.
-	 * @param parentTreeItem the parent tree item
-	 * @param path the text of the node that should match
-	 * @return the first matching node or <code>null</code> if none could be found
+	 * Returns the first child node in the given parent tree item whose text
+	 * matches (ie, begins with) the given path argument.
+	 * 
+	 * @param parentTreeItem
+	 *            the parent tree item
+	 * @param path
+	 *            the text of the node that should match
+	 * @return the first matching node or <code>null</code> if none could be
+	 *         found
 	 */
 	public static SWTBotTreeItem getTreeItem(final SWTBotTreeItem parentTreeItem, final String path) {
 		for (SWTBotTreeItem child : parentTreeItem.getItems()) {
-			if(child.getText().startsWith(path)) {
+			if (child.getText().startsWith(path)) {
 				return child;
 			}
 		}
@@ -167,15 +193,21 @@ public class SWTUtils {
 	}
 
 	private static SWTBotTreeItem getTreeItem(final SWTBotTreeItem[] treeItems, final String[] paths) {
-		final SWTBotTreeItem swtBotTreeItem = Stream.of(treeItems).filter(item -> item.getText().startsWith(paths[0])).findFirst().get();
-		if(paths.length > 1) {
-			final String[] remainingPath = new String[paths.length -1];
+		final SWTBotTreeItem swtBotTreeItem = Stream.of(treeItems).filter(item -> item.getText().startsWith(paths[0]))
+				.findFirst().get();
+		if (paths.length > 1) {
+			final String[] remainingPath = new String[paths.length - 1];
 			System.arraycopy(paths, 1, remainingPath, 0, remainingPath.length);
 			return getTreeItem(swtBotTreeItem.getItems(), remainingPath);
 		}
 		return swtBotTreeItem;
 	}
 
+	/**
+	 * Waits for the given duration
+	 * @param duration the duration 
+	 * @param unit the duration unit
+	 */
 	public static void wait(final int duration, final TimeUnit unit) {
 		try {
 			Thread.sleep(unit.toMillis(duration));
@@ -185,9 +217,13 @@ public class SWTUtils {
 	}
 
 	/**
-	 * Selects all child items in the given <code>parentTreeItm</code> whose labels match the given <code>items</code>.
-	 * @param parentTreeItem the parent tree item
-	 * @param matchItems the items to select
+	 * Selects <strong> all child items</strong> in the given <code>parentTreeItem</code> whose
+	 * labels match the given <code>items</code>.
+	 * 
+	 * @param parentTreeItem
+	 *            the parent tree item
+	 * @param matchItems
+	 *            the items to select
 	 */
 	public static void select(SWTBotTreeItem parentTreeItem, String... matchItems) {
 		final List<String> fullyQualifiedItems = Stream.of(parentTreeItem.getItems())
@@ -195,6 +231,70 @@ public class SWTUtils {
 						.anyMatch(matchItem -> treeItem.getText().startsWith(matchItem)))
 				.map(item -> item.getText()).collect(Collectors.toList());
 		parentTreeItem.select(fullyQualifiedItems.toArray(new String[0]));
+	}
+
+	/**
+	 * @param tree the root {@link SWTBotTree}
+	 * @param path the path for the menu
+	 * @return the child {@link SWTBotMenu} named with the first item in the given <code>path</code> from the given {@link SWTBotTree}
+	 */
+	public static SWTBotMenu getContextMenu(final SWTBotTree tree, String... path) {
+		final SWTBotMenu contextMenu = tree.contextMenu(path[0]);
+		if(contextMenu == null) {
+			Assert.fail("Failed to find context menu '" + path[0] +"'.");
+		}
+		if(path.length == 1) {
+			return contextMenu;
+		}
+		final String[] remainingPath = new String[path.length -1];
+		System.arraycopy(path, 1, remainingPath, 0, remainingPath.length);
+		return getSubMenu(contextMenu, remainingPath);
+	}
+	
+	/**
+	 * Hides the menu for the given <code>tree</code>
+	 * @param tree the tree whose {@link Menu} should be hidden
+	 */
+	public static void hideMenu(final SWTBotTree tree) {
+		final Menu menu = UIThreadRunnable.syncExec(new Result<Menu>() {
+
+			@Override
+			public Menu run() {
+				return tree.widget.getMenu();
+			}
+		});
+		UIThreadRunnable.syncExec(new VoidResult() {
+			
+			@Override
+			public void run() {
+				hide(menu);
+			}
+
+			private void hide(final Menu menu) {
+				menu.notifyListeners(SWT.Hide, new Event());
+				if (menu.getParentMenu() != null) {
+					hide(menu.getParentMenu());
+				}
+			}
+		});
+	}
+
+	/**
+	 * @param menu the parent menu
+	 * @param path the path for the menu
+	 * @return the child {@link SWTBotMenu} named with the first item in the given <code>path</code> from the given {@link SWTBotMenu}
+	 */
+	public static SWTBotMenu getSubMenu(final SWTBotMenu menu, String... path) {
+		final SWTBotMenu subMenu = menu.menu(path[0]);
+		if(subMenu == null) {
+			Assert.fail("Failed to find submenu '" + path[0] +"'.");
+		}
+		if(path.length == 1) {
+			return subMenu;
+		}
+		final String[] remainingPath = new String[path.length -1];
+		System.arraycopy(path, 1, remainingPath, 0, remainingPath.length);
+		return getSubMenu(subMenu, remainingPath);
 	}
 	
 }
