@@ -41,17 +41,22 @@ public class DockerClientFactory {
 	 */
 	public DockerClient getClient(final String socketPath, final String tcpHost,
 			final String tcpCertPath) throws DockerCertificateException {
-		if (socketPath != null) {
+		final boolean validSocketPath = socketPath != null
+				&& !socketPath.isEmpty();
+		final boolean validTcpHost = tcpHost != null && !tcpHost.isEmpty();
+		final boolean validTcpCertPath = tcpCertPath != null
+				&& !tcpCertPath.isEmpty();
+		if (validSocketPath) {
 			return DefaultDockerClient.builder().uri(socketPath).build();
-		} else if (tcpCertPath != null) {
+		} else if (validTcpCertPath && validTcpHost) {
 			return DefaultDockerClient.builder().uri(URI.create(tcpHost))
 					.dockerCertificates(new DockerCertificates(
 							new File(tcpCertPath).toPath()))
 					.build();
-		} else {
+		} else if (validTcpHost) {
 			return DefaultDockerClient.builder().uri(URI.create(tcpHost))
 					.build();
 		}
-
+		return null;
 	}
 }
