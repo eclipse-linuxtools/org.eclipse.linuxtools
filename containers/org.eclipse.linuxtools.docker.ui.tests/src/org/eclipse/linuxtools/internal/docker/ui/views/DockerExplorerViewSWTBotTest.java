@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import org.assertj.core.api.Assertions;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
+import org.eclipse.linuxtools.internal.docker.core.DockerContainerRefreshManager;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerContainerFactory;
@@ -492,5 +493,28 @@ public class DockerExplorerViewSWTBotTest {
 		SWTUtils.select(containersTreeItem, "gentle_foo", "angry_bar");
 		final SWTBotTreeItem containerTreeItem = SWTUtils.getTreeItem(containersTreeItem, "gentle_foo");
 		return containerTreeItem;
+	}
+	
+	@Test
+	public void shouldRemoveListenersWhenClosingView() {
+		// given
+		final DockerClient client = MockDockerClientFactory
+				.image(MockDockerImageFactory.name("angry_bar").build())
+				.container(MockDockerContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// remove the DockerContainerRefreshManager
+		dockerConnection.removeContainerListener(DockerContainerRefreshManager
+								.getInstance());
+		// DockerExplorerView inner classes
+		assertThat(dockerConnection.getContainerListeners()).hasSize(1);
+		assertThat(dockerConnection.getImageListeners()).hasSize(1);
+		// close the Docker Explorer View
+		dockerExplorerViewBot.close();
+		// there should be one listener left: DockerConnectionRefreshManager
+		assertThat(dockerConnection.getContainerListeners()).hasSize(0);
+		assertThat(dockerConnection.getImageListeners()).hasSize(0);
+		
+		
 	}
 }
