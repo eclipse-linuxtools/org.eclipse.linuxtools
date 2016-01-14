@@ -93,6 +93,10 @@ public class DockerContainersView extends ViewPart implements
 	
 	@Override
 	public void dispose() {
+		// remove this listener instance registered on the Docker connection
+		if (connection != null) {
+			connection.removeContainerListener(this);
+		}
 		// stop tracking selection changes in the Docker Explorer view (only)
 		getSite().getWorkbenchWindow().getSelectionService()
 				.removeSelectionListener(DockerExplorerView.VIEW_ID, this);
