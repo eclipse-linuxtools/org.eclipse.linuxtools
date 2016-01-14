@@ -70,7 +70,7 @@ public class CommandUtilsSWTBotTest {
 	}
 
 	@Test
-	public void shouldRetrieveConnectionFromSelectedContainersCategory() throws InterruptedException {
+	public void shouldRetrieveConnectionFromSelectedContainersCategory() {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockDockerContainerFactory.name("foo_bar").build()).build();
@@ -84,7 +84,7 @@ public class CommandUtilsSWTBotTest {
 	}
 
 	@Test
-	public void shouldRetrieveConnectionFromSelectedContainer() throws InterruptedException {
+	public void shouldRetrieveConnectionFromSelectedContainer() {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockDockerContainerFactory.name("foo_bar").build()).build();
@@ -98,7 +98,7 @@ public class CommandUtilsSWTBotTest {
 	}
 
 	@Test
-	public void shouldRetrieveConnectionFromSelectedContainerLinksCategory() throws InterruptedException {
+	public void shouldRetrieveConnectionFromSelectedContainerLinksCategory() {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockDockerContainerFactory.name("foo_bar").build(),
@@ -118,7 +118,7 @@ public class CommandUtilsSWTBotTest {
 	}
 	
 	@Test
-	public void shouldRetrieveConnectionFromSelectedContainerLink() throws InterruptedException {
+	public void shouldRetrieveConnectionFromSelectedContainerLink() {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockDockerContainerFactory.name("foo_bar").build(),
@@ -139,7 +139,7 @@ public class CommandUtilsSWTBotTest {
 	}
 	
 	@Test
-	public void shouldRetrieveConnectionFromSelectedContainerVolumesCategory() throws InterruptedException {
+	public void shouldRetrieveConnectionFromSelectedContainerVolumesCategory() {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockDockerContainerFactory.name("foo_bar").build(),
@@ -160,7 +160,7 @@ public class CommandUtilsSWTBotTest {
 	}
 
 	@Test
-	public void shouldRetrieveConnectionFromSelectedContainerVolume() throws InterruptedException {
+	public void shouldRetrieveConnectionFromSelectedContainerVolume() {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockDockerContainerFactory.name("foo_bar").build(),
@@ -181,7 +181,7 @@ public class CommandUtilsSWTBotTest {
 	}
 
 	@Test
-	public void shouldRetrieveConnectionFromSelectedContainerPortsCategory() throws InterruptedException {
+	public void shouldRetrieveConnectionFromSelectedContainerPortsCategory() {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockDockerContainerFactory.name("foo_bar").build(),
@@ -201,7 +201,7 @@ public class CommandUtilsSWTBotTest {
 	}
 	
 	@Test
-	public void shouldRetrieveConnectionFromSelectedContainerPort() throws InterruptedException {
+	public void shouldRetrieveConnectionFromSelectedContainerPort() {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockDockerContainerFactory.name("foo_bar").build(),
@@ -222,7 +222,7 @@ public class CommandUtilsSWTBotTest {
 	}
 	
 	@Test
-	public void shouldRetrieveConnectionFromSelectedImagesCategory() throws InterruptedException {
+	public void shouldRetrieveConnectionFromSelectedImagesCategory() {
 		// given
 		final DockerClient client = MockDockerClientFactory.image(MockDockerImageFactory.name("foo").build())
 				.build();
@@ -236,7 +236,7 @@ public class CommandUtilsSWTBotTest {
 	}
 	
 	@Test
-	public void shouldRetrieveConnectionFromSelectedImage() throws InterruptedException {
+	public void shouldRetrieveConnectionFromSelectedImage() {
 		// given
 		final DockerClient client = MockDockerClientFactory.image(MockDockerImageFactory.name("foo").build())
 				.build();
