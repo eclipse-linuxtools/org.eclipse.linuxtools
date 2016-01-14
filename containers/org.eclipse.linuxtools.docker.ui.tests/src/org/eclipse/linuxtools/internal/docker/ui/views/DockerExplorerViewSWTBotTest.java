@@ -578,10 +578,8 @@ public class DockerExplorerViewSWTBotTest {
 		assertThat(dockerConnection.getImageListeners()).hasSize(1);
 		// close the Docker Explorer View
 		dockerExplorerViewBot.close();
-		// there should be one listener left: DockerConnectionRefreshManager
+		// there should be no listener left
 		assertThat(dockerConnection.getContainerListeners()).hasSize(0);
 		assertThat(dockerConnection.getImageListeners()).hasSize(0);
-		
-		
 	}
 }
