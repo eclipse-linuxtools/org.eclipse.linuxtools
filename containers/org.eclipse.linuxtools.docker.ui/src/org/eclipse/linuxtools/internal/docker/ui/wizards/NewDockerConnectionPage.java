@@ -77,6 +77,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
+import com.spotify.docker.client.DockerCertificateException;
+
 /**
  * {@link WizardPage} to input the settings to connect to a Docker
  * engine/daemon.
@@ -572,12 +574,19 @@ public class NewDockerConnectionPage extends WizardPage {
 									IProgressMonitor.UNKNOWN);
 							try {
 								final DockerConnection dockerConnection = getDockerConnection();
-								dockerConnection.open(false);
-								dockerConnection.ping();
-								dockerConnection.close();
-								resultQueue.add(true);
+								if (dockerConnection.getClient() != null) {
+									dockerConnection.open(false);
+									dockerConnection.ping();
+									dockerConnection.close();
+									resultQueue.add(true);
+								} else {
+									resultQueue.add(false);
+								}
 							} catch (DockerException e) {
-								Activator.log(e);
+								// only log if there's an underlying cause.
+								if (e.getCause() != null) {
+									Activator.log(e);
+								}
 								resultQueue.add(false);
 							}
 						}
