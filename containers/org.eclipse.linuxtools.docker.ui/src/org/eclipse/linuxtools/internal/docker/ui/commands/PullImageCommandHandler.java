@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015,2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,17 +38,26 @@ public class PullImageCommandHandler extends AbstractHandler {
 	private final static String PULL_IMAGE_JOB_TITLE = "ImagePull.title"; //$NON-NLS-1$
 	private final static String PULL_IMAGE_JOB_TASK = "ImagePull.msg"; //$NON-NLS-1$
 	private static final String ERROR_PULLING_IMAGE = "ImagePullError.msg"; //$NON-NLS-1$
+	private static final String ERROR_PULLING_IMAGE_NO_CONNECTION = "command.pullImage.failure.no_connection"; //$NON-NLS-1$
+	private static final String MISSING_CONNECTION = "missing_connection"; //$NON-NLS-1$
 
 	@Override
 	public Object execute(final ExecutionEvent event) {
 		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		final IDockerConnection connection = CommandUtils
 				.getCurrentConnection(activePart);
-		final ImagePull wizard = new ImagePull(connection);
-		final boolean pullImage = CommandUtils.openWizard(wizard,
-				HandlerUtil.getActiveShell(event));
-		if (pullImage) {
-			performPullImage(connection, wizard.getImageName());
+		if (connection == null) {
+			MessageDialog.openError(Display.getCurrent().getActiveShell(),
+					CommandMessages.getString(MISSING_CONNECTION),
+					CommandMessages
+							.getString(ERROR_PULLING_IMAGE_NO_CONNECTION));
+		} else {
+			final ImagePull wizard = new ImagePull(connection);
+			final boolean pullImage = CommandUtils.openWizard(wizard,
+					HandlerUtil.getActiveShell(event));
+			if (pullImage) {
+				performPullImage(connection, wizard.getImageName());
+			}
 		}
 		return null;
 	}
