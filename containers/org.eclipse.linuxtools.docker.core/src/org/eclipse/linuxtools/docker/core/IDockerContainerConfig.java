@@ -61,4 +61,7 @@ public interface IDockerContainerConfig {
 
 	public List<String> onBuild();
 
+	// FIXME: to be included in Neon
+	// public Map<String, String> labels();
+
 }

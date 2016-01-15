@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -47,6 +48,7 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 	private final List<String> entrypoint;
 	private final boolean networkDisabled;
 	private final List<String> onBuild;
+	private final Map<String, String> labels;
 
 	public DockerContainerConfig(final ContainerConfig containerConfig) {
 		this.hostname = containerConfig != null ? containerConfig.hostname()
@@ -96,6 +98,7 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 				? containerConfig.networkDisabled() : false;
 		this.onBuild = containerConfig != null ? containerConfig.onBuild()
 				: null;
+		this.labels = containerConfig != null ? containerConfig.labels() : null;
 	}
 
 	private DockerContainerConfig(final Builder builder) {
@@ -126,6 +129,7 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 		this.networkDisabled = builder.networkDisabled != null
 				? builder.networkDisabled : false;
 		this.onBuild = builder.onBuild;
+		this.labels = builder.labels;
 	}
 
 	@Override
@@ -274,6 +278,14 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 		return onBuild;
 	}
 
+	// @Override
+	public Map<String, String> labels() {
+		if (this.labels == null) {
+			return Collections.emptyMap();
+		}
+		return this.labels;
+	}
+
 	public static class Builder {
 
 		private String hostname;
@@ -299,6 +311,7 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 		private List<String> entrypoint;
 		private Boolean networkDisabled;
 		private List<String> onBuild;
+		private Map<String, String> labels;
 
 		public Builder hostname(final String hostname) {
 			this.hostname = hostname;
@@ -556,6 +569,11 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 
 		public List<String> onBuild() {
 			return onBuild;
+		}
+
+		public Builder labels(final Map<String, String> labels) {
+			this.labels = labels;
+			return this;
 		}
 
 		public DockerContainerConfig build() {
