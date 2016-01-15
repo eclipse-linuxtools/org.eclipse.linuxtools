@@ -721,7 +721,6 @@ public class ImageRunSelectionPage extends WizardPage {
 				}
 				final IDockerImageInfo selectedImageInfo = getImageInfo(
 						selectedImage);
-
 				applyImageInfo(selectedImageInfo);
 			}
 		};
@@ -859,13 +858,16 @@ public class ImageRunSelectionPage extends WizardPage {
 								Collections.<String> emptyList());
 				// FIXME: handle the case where ports where added (and selected)
 				// by the user.
-				final List<ExposedPortModel> exposedPorts = ExposedPortModel
-						.fromStrings(selectedImageInfo.config().exposedPorts());
-				model.setExposedPorts(exposedPorts);
-				final List<ExposedPortModel> selectedExposedPorts = ExposedPortModel
-						.fromStrings(exposedPortInfos);
-				this.model
-						.setSelectedPorts(new HashSet<>(selectedExposedPorts));
+				if (selectedImageInfo != null) {
+					final List<ExposedPortModel> exposedPorts = ExposedPortModel
+							.fromStrings(
+									selectedImageInfo.config().exposedPorts());
+					model.setExposedPorts(exposedPorts);
+					final List<ExposedPortModel> selectedExposedPorts = ExposedPortModel
+							.fromStrings(exposedPortInfos);
+					this.model.setSelectedPorts(
+							new HashSet<>(selectedExposedPorts));
+				}
 
 				// links
 				this.model.setLinks(lastLaunchConfiguration.getAttribute(LINKS,
