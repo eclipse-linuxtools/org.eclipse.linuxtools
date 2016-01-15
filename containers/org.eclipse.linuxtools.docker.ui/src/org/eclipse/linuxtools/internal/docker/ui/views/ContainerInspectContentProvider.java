@@ -23,6 +23,7 @@ import org.eclipse.linuxtools.docker.core.IDockerContainerState;
 import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
 import org.eclipse.linuxtools.docker.core.IDockerNetworkSettings;
 import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
+import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig;
 
 /**
  * @author xcoulon
@@ -110,6 +111,8 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 					new Object[]{"ExposedPorts", LabelUtils.reduce(config.exposedPorts())}, //$NON-NLS-1$
 					new Object[]{"Hostname", config.hostname()}, //$NON-NLS-1$
 					new Object[]{"Image", config.image()}, //$NON-NLS-1$
+					new Object[] { "Labels", //$NON-NLS-1$
+							((DockerContainerConfig) config).labels() },
 					new Object[]{"Memory", config.memory()}, //$NON-NLS-1$
 					new Object[]{"MemorySwap", config.memorySwap()}, //$NON-NLS-1$
 					new Object[]{"NetworkDisabled", config.networkDisabled()}, //$NON-NLS-1$
