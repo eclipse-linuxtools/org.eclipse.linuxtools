@@ -25,6 +25,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Image;
@@ -56,6 +57,7 @@ public class CreateVMAdvancedComposite extends ExpandableComposite {
 	private String[] KEY_VALUE = new String[] { KEY, VALUE };
 
 	public CreateVMAdvancedComposite(Composite parent,
+			ScrolledComposite scrollTop,
 			CreateVMPageModel model) {
 		super(parent, ExpandableComposite.COMPACT | ExpandableComposite.TWISTIE
 				| ExpandableComposite.EXPANDED | SWT.BORDER);
@@ -72,6 +74,9 @@ public class CreateVMAdvancedComposite extends ExpandableComposite {
 				Shell shell = parent.getShell();
 				Point minSize = shell.getMinimumSize();
 				shell.setMinimumSize(shell.getSize().x, minSize.y);
+				Point point = parent.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+				scrollTop.setSize(point);
+				scrollTop.setMinSize(point);
 				shell.pack();
 				parent.layout();
 				shell.setMinimumSize(minSize);
