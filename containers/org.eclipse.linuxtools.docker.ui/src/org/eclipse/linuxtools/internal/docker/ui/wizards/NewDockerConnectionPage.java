@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
@@ -92,6 +90,9 @@ public class NewDockerConnectionPage extends WizardPage {
 	
 	private final NewDockerConnectionPageModel model;
 
+	/**
+	 * Constructor.
+	 */
 	public NewDockerConnectionPage() {
 		super("NewDockerConnectionPage", //$NON-NLS-1$
 				WizardMessages.getString("NewDockerConnectionPage.title"), //$NON-NLS-1$
@@ -561,8 +562,6 @@ public class NewDockerConnectionPage extends WizardPage {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				final ArrayBlockingQueue<Boolean> resultQueue = new ArrayBlockingQueue<>(
-						1);
 				try {
 					getWizard().getContainer().run(true, false,
 							new IRunnableWithProgress() {
@@ -574,65 +573,63 @@ public class NewDockerConnectionPage extends WizardPage {
 									IProgressMonitor.UNKNOWN);
 							try {
 								final DockerConnection dockerConnection = getDockerConnection();
-								if (dockerConnection.getClient() != null) {
-									dockerConnection.open(false);
-									dockerConnection.ping();
-									dockerConnection.close();
-									resultQueue.add(true);
-								} else {
-									resultQueue.add(false);
-								}
+								dockerConnection.open(false);
+								dockerConnection.ping();
+								dockerConnection.close();
+								// ping succeeded
+								displaySuccessDialog();
 							} catch (DockerException e) {
 								// only log if there's an underlying cause.
 								if (e.getCause() != null) {
 									Activator.log(e);
 								}
-								resultQueue.add(false);
+								displayErrorDialog();
 							}
 						}
+
 					});
 				} catch (InvocationTargetException | InterruptedException o_O) {
 					Activator.log(o_O);
 				}
-				try {
-					final Boolean result = resultQueue.poll(5000,
-							TimeUnit.MILLISECONDS);
-					if (result != null && result) {
-						new MessageDialog(Display.getDefault().getActiveShell(),
-								WizardMessages.getString(
-										"NewDockerConnectionPage.success"), //$NON-NLS-1$
-								null,
-								WizardMessages.getString(
-										"NewDockerConnectionPage.pingSuccess"), //$NON-NLS-1$
-								SWT.ICON_INFORMATION,
-								new String[] { WizardMessages.getString(
-										"NewDockerConnectionPage.ok") }, //$NON-NLS-1$
-								0).open();
 
-					} else {
+			}
+
+			private void displaySuccessDialog() {
+				displayDialog(
+						WizardMessages
+								.getString("NewDockerConnectionPage.success"), //$NON-NLS-1$
+						WizardMessages.getString(
+								"NewDockerConnectionPage.pingSuccess"), //$NON-NLS-1$
+						SWT.ICON_INFORMATION,
+						new String[] { WizardMessages
+								.getString("NewDockerConnectionPage.ok") } //$NON-NLS-1$
+						);
+			}
+
+			private void displayErrorDialog() {
+				displayDialog(
+						WizardMessages
+								.getString("NewDockerConnectionPage.failure"), //$NON-NLS-1$
+						WizardMessages.getString(
+								"NewDockerConnectionPage.pingFailure"), //$NON-NLS-1$
+						SWT.ICON_ERROR,
+						new String[] { WizardMessages
+								.getString("NewDockerConnectionPage.ok") } //$NON-NLS-1$
+						);
+			}
+			
+			private void displayDialog(final String dialogTitle,
+					final String dialogMessage, final int icon,
+					final String[] buttonLabels) {
+				Display.getDefault().syncExec(new Runnable() {
+
+					@Override
+					public void run() {
 						new MessageDialog(Display.getDefault().getActiveShell(),
-								WizardMessages.getString(
-										"NewDockerConnectionPage.failure"), //$NON-NLS-1$
-								null,
-								WizardMessages.getString(
-										"NewDockerConnectionPage.pingFailure"), //$NON-NLS-1$
-								SWT.ICON_ERROR,
-								new String[] { WizardMessages.getString(
-										"NewDockerConnectionPage.ok") }, //$NON-NLS-1$
-								0).open();
+								dialogTitle, null, dialogMessage, icon,
+								buttonLabels, 0).open();
 					}
-				} catch (InterruptedException o_O) {
-					new MessageDialog(Display.getDefault().getActiveShell(),
-							WizardMessages.getString(
-									"NewDockerConnectionPage.failure"), //$NON-NLS-1$
-							null,
-							WizardMessages.getString(
-									"NewDockerConnectionPage.pingFailure"), //$NON-NLS-1$
-							SWT.ICON_ERROR,
-							new String[] { WizardMessages
-									.getString("NewDockerConnectionPage.ok") }, //$NON-NLS-1$
-							0).open();
-				}
+				});
 			}
 
 		};
