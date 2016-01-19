@@ -73,16 +73,16 @@ public class DockerExplorerViewSWTBotTest {
 		this.bot = new SWTWorkbenchBot();
 		SWTUtils.asyncExec(() -> {try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.showView("org.eclipse.linuxtools.docker.ui.dockerExplorerView");
+					.showView(DockerExplorerView.VIEW_ID);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail("Failed to open Docker Explorer view: " + e.getMessage());
 		}});
-		this.dockerExplorerViewBot = bot.viewById("org.eclipse.linuxtools.docker.ui.dockerExplorerView");
+		this.dockerExplorerViewBot = bot.viewById(DockerExplorerView.VIEW_ID);
 		this.dockerExplorerView = (DockerExplorerView) (dockerExplorerViewBot.getViewReference().getView(true));
 		this.bot.views().stream()
-				.filter(v -> v.getReference().getId().equals("org.eclipse.linuxtools.docker.ui.dockerContainersView")
-						|| v.getReference().getId().equals("org.eclipse.linuxtools.docker.ui.dockerImagesView")
+				.filter(v -> v.getReference().getId().equals(DockerContainersView.VIEW_ID)
+						|| v.getReference().getId().equals(DockerImagesView.VIEW_ID)
 						|| v.getReference().getId().equals("org.eclipse.ui.views.PropertySheet"))
 				.forEach(v -> v.close());
 	}

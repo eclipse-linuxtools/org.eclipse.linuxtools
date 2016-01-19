@@ -18,13 +18,19 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionS
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CheckBoxAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.RadioAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TextAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.views.DockerContainersView;
+import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
+import org.eclipse.linuxtools.internal.docker.ui.views.DockerImagesView;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
+import org.eclipse.ui.PlatformUI;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -45,11 +51,18 @@ public class NewDockerConnectionSWTBotTest {
 	
 	@Before
 	public void lookupDockerExplorerView() throws Exception {
-		dockerExplorerViewBot = bot.viewById("org.eclipse.linuxtools.docker.ui.dockerExplorerView");
+		SWTUtils.asyncExec(() -> {try {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.showView(DockerExplorerView.VIEW_ID);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Failed to open Docker Explorer view: " + e.getMessage());
+		}});
+		dockerExplorerViewBot = bot.viewById(DockerExplorerView.VIEW_ID);
 		dockerExplorerViewBot.show();
 		bot.views().stream()
-				.filter(v -> v.getReference().getId().equals("org.eclipse.linuxtools.docker.ui.dockerContainersView")
-						|| v.getReference().getId().equals("org.eclipse.linuxtools.docker.ui.dockerImagesView"))
+				.filter(v -> v.getReference().getId().equals(DockerContainersView.VIEW_ID)
+						|| v.getReference().getId().equals(DockerImagesView.VIEW_ID))
 				.forEach(v -> v.close());
 		dockerExplorerViewBot.setFocus();
 		this.addConnectionButton = dockerExplorerViewBot.toolbarButton("&Add Connection");
