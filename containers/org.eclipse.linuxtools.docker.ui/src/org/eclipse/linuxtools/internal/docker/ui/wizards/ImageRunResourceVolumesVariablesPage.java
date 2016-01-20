@@ -64,10 +64,12 @@ import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.internal.docker.ui.jobs.FindImageInfoRunnable;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunResourceVolumesVariablesModel.MountType;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -147,7 +149,11 @@ image);
 
 	@Override
 	public void createControl(Composite parent) {
-		final Composite container = new Composite(parent, SWT.NONE);
+		final ScrolledComposite scrollTop = new ScrolledComposite(parent,
+				SWT.H_SCROLL | SWT.V_SCROLL);
+		scrollTop.setExpandVertical(true);
+		scrollTop.setExpandHorizontal(true);
+		final Composite container = new Composite(scrollTop, SWT.NONE);
 		GridLayoutFactory.fillDefaults().numColumns(COLUMNS).margins(6, 6)
 				.applyTo(container);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
@@ -158,6 +164,12 @@ image);
 		createSectionSeparator(container, true);
 		createResourceSettingsContainer(container);
 		setDefaultValues();
+
+		scrollTop.setContent(container);
+		Point point = container.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		scrollTop.setSize(point);
+		scrollTop.setMinSize(point);
+		// TODO: Workaround https://bugs.eclipse.org/bugs/show_bug.cgi?id=487160
 		setControl(container);
 	}
 
