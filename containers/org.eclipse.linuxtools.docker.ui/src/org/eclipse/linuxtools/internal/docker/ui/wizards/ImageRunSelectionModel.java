@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
+import org.eclipse.linuxtools.internal.docker.core.DockerImage;
 import org.eclipse.linuxtools.internal.docker.ui.databinding.BaseDatabindingModel;
 
 /**
@@ -137,9 +138,9 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 
 	public ImageRunSelectionModel(final IDockerImage selectedImage) {
 		this(selectedImage.getConnection());
-		if (selectedImage.tags().contains("latest")) { //$NON-NLS-1$
-			setSelectedImageName(ImageRunSelectionModel
-					.getImageName(selectedImage.repo(), "latest")); //$NON-NLS-1$
+		if (selectedImage.tags().contains(DockerImage.TAG_LATEST)) {
+			setSelectedImageName(ImageRunSelectionModel.getImageName(
+					selectedImage.repo(), DockerImage.TAG_LATEST));
 		} else {
 			final String lastTag = selectedImage.tags()
 					.get(selectedImage.tags().size() - 1);

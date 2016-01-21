@@ -58,6 +58,8 @@ public class DockerImage implements IDockerImage {
 
 	private final boolean intermediateImage;
 	private final boolean danglingImage;
+	/** the literal value for the 'latest' tag on Docker images. */
+	public static final String TAG_LATEST = "latest"; //$NON-NLS-1$
 
 	public DockerImage(final DockerConnection parent, @Deprecated final List<String> repoTags, final String repo, final List<String> tags, 
 			final String id, final String parentId, final String created, final Long size,
