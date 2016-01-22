@@ -27,8 +27,14 @@ public interface IDockerImage {
 
 	public List<String> repoTags();
 	
+	/**
+	 * @return the first repo/name of the Image.
+	 */
 	public String repo();
 
+	/**
+	 * @return all tags associated with the first repo/name of this image
+	 */
 	public List<String> tags();
 
 	public Long size();

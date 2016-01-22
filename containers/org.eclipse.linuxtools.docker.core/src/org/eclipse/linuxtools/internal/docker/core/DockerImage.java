@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import org.eclipse.linuxtools.docker.core.IDockerImage;
@@ -37,14 +38,13 @@ public class DockerImage implements IDockerImage {
 			+ "(\\:(?<tag>" + TAG + "))?"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	// SimpleDateFormat is not thread-safe, so give one to each thread
-    private static final ThreadLocal<SimpleDateFormat> formatter = new ThreadLocal<SimpleDateFormat>(){
-        @Override
-        protected SimpleDateFormat initialValue()
-        {
+	private static final ThreadLocal<SimpleDateFormat> formatter = new ThreadLocal<SimpleDateFormat>() {
+		@Override
+		protected SimpleDateFormat initialValue() {
 			return new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
-        }
-    };
-    
+		}
+	};
+
 	private final DockerConnection parent;
 	private final String created;
 	private final String createdDate;
@@ -59,9 +59,11 @@ public class DockerImage implements IDockerImage {
 	private final boolean intermediateImage;
 	private final boolean danglingImage;
 
-	public DockerImage(final DockerConnection parent, @Deprecated final List<String> repoTags, final String repo, final List<String> tags, 
-			final String id, final String parentId, final String created, final Long size,
-			final Long virtualSize, final boolean intermediateImage, final boolean danglingImage) {
+	public DockerImage(final DockerConnection parent,
+			@Deprecated final List<String> repoTags, final String repo,
+			final List<String> tags, final String id, final String parentId,
+			final String created, final Long size, final Long virtualSize,
+			final boolean intermediateImage, final boolean danglingImage) {
 		this.parent = parent;
 		this.repoTags = repoTags;
 		this.repo = repo;
@@ -69,7 +71,8 @@ public class DockerImage implements IDockerImage {
 		this.id = id;
 		this.parentId = parentId;
 		this.created = created;
-		this.createdDate = formatter.get().format(new Date(Long.valueOf(created).longValue() * 1000));
+		this.createdDate = formatter.get()
+				.format(new Date(Long.valueOf(created).longValue() * 1000));
 		this.size = size;
 		this.virtualSize = virtualSize;
 		this.intermediateImage = intermediateImage;
@@ -77,47 +80,98 @@ public class DockerImage implements IDockerImage {
 	}
 
 	/**
-	 * Extracts the org/repo and all the associated tags from the given {@code repoTags}, assuming that the given repoTags elements have the following format:
-	 * <pre>org/repo:tag</pre> or <pre>repo:tag</pre>.
-	 * @param repoTags the list of repo/tags to analyze
+	 * Extracts the org/repo and all the associated tags from the given
+	 * {@code repoTags}, assuming that the given repoTags elements have the
+	 * following format: {@code [org/]repo[:tag]}. Tags are sorted by their
+	 * natural order.
+	 * 
+	 * @param repoTags
+	 *            the list of repo/tags to analyze
 	 * @return the tags indexed by org/repo
 	 */
-	public static Map<String, List<String>> extractTagsByRepo(final List<String> repoTags) {
+	public static Map<String, List<String>> extractTagsByRepo(
+			final List<String> repoTags) {
 		final Map<String, List<String>> results = new HashMap<>();
-		for(String entry : repoTags) {
+		for (String entry : repoTags) {
 			final int indexOfColonChar = entry.lastIndexOf(':');
-			final String repo = (indexOfColonChar > -1) ? entry.substring(0, indexOfColonChar) : entry;
-			if(!results.containsKey(repo)) {
+			final String repo = (indexOfColonChar > -1)
+					? entry.substring(0, indexOfColonChar) : entry;
+			if (!results.containsKey(repo)) {
 				results.put(repo, new ArrayList<String>());
 			}
-			if(indexOfColonChar > -1) {
-				results.get(repo).add(entry.substring(indexOfColonChar+1));
+			if (indexOfColonChar > -1) {
+				results.get(repo).add(entry.substring(indexOfColonChar + 1));
 			}
+		}
+		// now sort the tags
+		for (Entry<String, List<String>> entry : results.entrySet()) {
+			Collections.sort(entry.getValue());
 		}
 		return results;
 	}
 
 	/**
-	 * Extracts the list of tags in the give repo/tags, assuming that the given repoTags elements have the following format:
-	 * <pre>org/repo:tag</pre> or <pre>repo:tag</pre>.
-	 * @param repoTags the repo/tags list to analyze
+	 * Extracts the list of tags in the given repo/tags, assuming that the given
+	 * repoTags elements have the following format: {@code [org/]repo[:tag]}.
+	 * 
+	 * @param repoTags
+	 *            the repo/tags list to analyze
 	 * @return the list of tags or empty list if none was found.
 	 */
 	public static List<String> extractTags(final List<String> repoTags) {
-		if(repoTags.isEmpty()) {
+		if (repoTags.isEmpty()) {
 			return Collections.emptyList();
-		} 
+		}
 		final List<String> tags = new ArrayList<>();
-		for(String repoTag : repoTags) {
+		for (String repoTag : repoTags) {
 			final int indexOfColonChar = repoTag.lastIndexOf(':');
-			if(indexOfColonChar == -1) {
+			if (indexOfColonChar == -1) {
 				continue;
 			}
-			tags.add(repoTag.substring(indexOfColonChar+1));
+			final String tag = repoTag.substring(indexOfColonChar + 1);
+			tags.add(tag);
 		}
 		return tags;
 	}
-	
+
+	/**
+	 * Extracts the tag in the given repo/tag, assuming that the given repoTag
+	 * element has the following format: {@code [org/]repo[:tag]}.
+	 * 
+	 * @param repoTag
+	 *            the repo/tag to analyze
+	 * @return the tag or null if none was found.
+	 */
+	public static String extractRepo(final String repoTag) {
+		if (repoTag == null) {
+			return null;
+		}
+		final int indexOfColonChar = repoTag.lastIndexOf(':');
+		if (indexOfColonChar == -1) {
+			return repoTag;
+		}
+		return repoTag.substring(0, indexOfColonChar);
+	}
+
+	/**
+	 * Extracts the tag in the given repo/tag, assuming that the given repoTag
+	 * element has the following format: {@code [org/]repo[:tag]}
+	 * 
+	 * @param repoTag
+	 *            the repo/tag to analyze
+	 * @return the tag or null if none was found.
+	 */
+	public static String extractTag(final String repoTag) {
+		if (repoTag == null) {
+			return null;
+		}
+		final int indexOfColonChar = repoTag.lastIndexOf(':');
+		if (indexOfColonChar == -1) {
+			return null;
+		}
+		return repoTag.substring(indexOfColonChar + 1);
+	}
+
 	@Override
 	public DockerConnection getConnection() {
 		return parent;
@@ -132,12 +186,12 @@ public class DockerImage implements IDockerImage {
 	public String repo() {
 		return repo;
 	}
-	
+
 	@Override
 	public List<String> tags() {
 		return tags;
 	}
-	
+
 	@Override
 	public String id() {
 		return id;
@@ -167,12 +221,12 @@ public class DockerImage implements IDockerImage {
 	public Long virtualSize() {
 		return virtualSize;
 	}
-	
+
 	@Override
 	public boolean isDangling() {
 		return danglingImage;
 	}
-	
+
 	@Override
 	public boolean isIntermediateImage() {
 		return intermediateImage;
@@ -180,10 +234,10 @@ public class DockerImage implements IDockerImage {
 
 	@Override
 	public String toString() {
-		return "Image: id=" + id() + "\n" + "  parentId=" + parentId() + "\n"
-				+ "  created=" + created() + "\n" + "  repoTags="
-				+ repoTags().toString() + "\n" + "  size=" + size() + "\n"
-				+ "  virtualSize=" + virtualSize() + "\n";
+		return "Image: id=" + id() + "\n  parentId=" + parentId()
+				+ "\n  created=" + created() + "\n  repo=" + repo()
+				+ "\n  tags=" + tags() + "\n  size=" + size()
+				+ "\n  virtualSize=" + virtualSize();
 	}
 
 	@Override
@@ -191,23 +245,37 @@ public class DockerImage implements IDockerImage {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((repo == null) ? 0 : repo.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		DockerImage other = (DockerImage) obj;
+		}
+		final DockerImage other = (DockerImage) obj;
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
+		}
+		if (repo == null) {
+			if (other.repo != null) {
+				return false;
+			}
+		} else if (!repo.equals(other.repo)) {
+			return false;
+		}
+
 		return true;
 	}
 

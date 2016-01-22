@@ -37,7 +37,9 @@ import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerNetworkSettings;
 import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
 import org.eclipse.linuxtools.docker.core.IDockerPortMapping;
+import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainer;
+import org.eclipse.linuxtools.internal.docker.core.DockerImage;
 import org.eclipse.linuxtools.internal.docker.core.DockerPortMapping;
 import org.eclipse.swt.widgets.Display;
 
@@ -48,16 +50,17 @@ import org.eclipse.swt.widgets.Display;
 public class DockerExplorerContentProvider implements ITreeContentProvider {
 
 	private final Object[] EMPTY = new Object[0];
-	
+
 	private TreeViewer viewer;
-	
+
 	@Override
 	public void dispose() {
 	}
 
 	@Override
-	public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
-		this.viewer = (TreeViewer)viewer;
+	public void inputChanged(final Viewer viewer, final Object oldInput,
+			final Object newInput) {
+		this.viewer = (TreeViewer) viewer;
 	}
 
 	@Override
@@ -87,7 +90,27 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 			final DockerImagesCategory imagesCategory = (DockerImagesCategory) parentElement;
 			final IDockerConnection connection = imagesCategory.getConnection();
 			if(connection.isImagesLoaded()) {
-				return connection.getImages().toArray();
+				// here we duplicate the images to show one org/repo with all
+				// its tags per node in the tree
+				final List<IDockerImage> allImages = connection.getImages();
+				final List<IDockerImage> explorerImages = new ArrayList<>();
+				for (IDockerImage image : allImages) {
+					final Map<String, List<String>> tagsByRepo = DockerImage
+							.extractTagsByRepo(image.repoTags());
+					for (Entry<String, List<String>> entry : tagsByRepo
+							.entrySet()) {
+						final IDockerImage explorerImage = new DockerImage(
+								(DockerConnection) image.getConnection(),
+								image.repoTags(), entry.getKey(),
+								entry.getValue(), image.id(), image.parentId(),
+								image.created(), image.size(),
+								image.virtualSize(),
+								image.isIntermediateImage(),
+								image.isDangling());
+						explorerImages.add(explorerImage);
+					}
+				}
+				return explorerImages.toArray();
 			}
 			loadImages(imagesCategory);
 			return new Object[] { new LoadingStub(imagesCategory) };
@@ -130,10 +153,14 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 	}
 
 	/**
-	 * Call the {@link IDockerConnection#getContainers(boolean)} in a background job to avoid blocking the UI.
-	 * @param containersCategory the selected {@link DockerContainersCategory}
+	 * Call the {@link IDockerConnection#getContainers(boolean)} in a background
+	 * job to avoid blocking the UI.
+	 * 
+	 * @param containersCategory
+	 *            the selected {@link DockerContainersCategory}
 	 */
-	private void loadContainers(final DockerContainersCategory containersCategory) {
+	private void loadContainers(
+			final DockerContainersCategory containersCategory) {
 		final Job loadContainersJob = new Job(
 				DVMessages.getString("ContainersLoadJob.msg")) { //$NON-NLS-1$
 			@Override
@@ -200,8 +227,11 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 	}
 
 	/**
-	 * Call the {@link IDockerConnection#getImages(boolean)} in a background job to avoid blocking the UI.
-	 * @param imagesCategory the selected {@link DockerImagesCategory}
+	 * Call the {@link IDockerConnection#getImages(boolean)} in a background job
+	 * to avoid blocking the UI.
+	 * 
+	 * @param imagesCategory
+	 *            the selected {@link DockerImagesCategory}
 	 */
 	private void loadImages(final DockerImagesCategory imagesCategory) {
 		final Job loadImagesJob = new Job(
@@ -226,7 +256,7 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 		});
 		loadImagesJob.schedule();
 	}
-	
+
 	@Override
 	public Object getParent(final Object element) {
 		if (element instanceof DockerImagesCategory) {
@@ -253,7 +283,7 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 						&& !((DockerContainerVolumesCategory) element)
 								.getVolumes().isEmpty()));
 	}
-	
+
 	/**
 	 * Refresh the whole content tree for the <strong>given target node and all
 	 * its subelements</strong>.
@@ -370,7 +400,7 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Wrapper node to display {@link IDockerPortMapping} of a given
 	 * {@link IDockerContainer}
@@ -598,7 +628,8 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + ((containerAlias == null) ? 0 : containerAlias.hashCode());
+			result = prime * result + ((containerAlias == null) ? 0
+					: containerAlias.hashCode());
 			result = prime * result
 					+ ((containerName == null) ? 0 : containerName.hashCode());
 			return result;
@@ -799,13 +830,13 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 	 * Node to indicate that a job is running and loading data.
 	 */
 	public static class LoadingStub {
-		
+
 		private final Object element;
-		
+
 		public LoadingStub(final Object element) {
 			this.element = element;
 		}
-		
+
 		public Object getElement() {
 			return element;
 		}
