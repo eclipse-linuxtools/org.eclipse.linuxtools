@@ -759,7 +759,7 @@ public class DockerConnection implements IDockerConnection, Closeable {
 
 	@Override
 	public List<IDockerImage> listImages() throws DockerException {
-		final List<IDockerImage> dilist = new ArrayList<>();
+		final List<IDockerImage> tempImages = new ArrayList<>();
 		synchronized (imageLock) {
 			List<Image> rawImages = null;
 			try {
@@ -768,7 +768,7 @@ public class DockerConnection implements IDockerConnection, Closeable {
 					// been closed but there is an async request to update the
 					// images list left in the queue
 					if (client == null)
-						return dilist;
+						return tempImages;
 					rawImages = client.listImages(
 							DockerClient.ListImagesParam.allImages());
 				}
@@ -795,25 +795,25 @@ public class DockerConnection implements IDockerConnection, Closeable {
 						&& imageParentIds.contains(rawImage.id());
 				final boolean danglingImage = !taggedImage
 						&& !intermediateImage;
-				// FIXME: if an image with a unique ID belongs to multiple repos, we should
-				// probably have multiple instances of IDockerImage
-				final Map<String, List<String>> repoTags = DockerImage.extractTagsByRepo(rawImage.repoTags());
-				for(Entry<String, List<String>> entry : repoTags.entrySet()) {
-					final String repo = entry.getKey();
-					final List<String> tags = entry.getValue();
-					dilist.add(new DockerImage(this, rawImage
-							.repoTags(), repo, tags, rawImage.id(), rawImage.parentId(),
-							rawImage.created(), rawImage.size(), rawImage
-									.virtualSize(), intermediateImage,
-							danglingImage));
-				}
+				// return one IDockerImage per raw image
+				final List<String> repoTags = new ArrayList<>(
+						rawImage.repoTags());
+				Collections.sort(repoTags);
+				final String repo = DockerImage.extractRepo(repoTags.get(0));
+				final List<String> tags = Arrays
+						.asList(DockerImage.extractTag(repoTags.get(0)));
+				tempImages.add(new DockerImage(this, repoTags, repo,
+						tags, rawImage.id(), rawImage.parentId(),
+						rawImage.created(), rawImage.size(),
+						rawImage.virtualSize(), intermediateImage,
+						danglingImage));
 			}
-			images = dilist;
+			images = tempImages;
 		}
 		// Perform notification outside of lock so that listener doesn't cause a
 		// deadlock to occur
-		notifyImageListeners(dilist);
-		return dilist;
+		notifyImageListeners(tempImages);
+		return tempImages;
 	}
 
 	@Override

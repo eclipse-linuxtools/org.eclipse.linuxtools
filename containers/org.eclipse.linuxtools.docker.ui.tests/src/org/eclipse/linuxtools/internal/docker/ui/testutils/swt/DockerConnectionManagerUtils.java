@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
@@ -20,6 +21,8 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionS
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerContainersView;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 
 /**
  * 
@@ -38,8 +41,8 @@ public class DockerConnectionManagerUtils {
 		DockerConnectionManager.getInstance()
 				.setConnectionStorageManager(MockDockerConnectionStorageManagerFactory.providing(connections));
 		final SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		final DockerExplorerView dockerExplorerView = getDockerExplorerView(bot);
-		final DockerContainersView dockerContainersView = getDockerContainersView(bot);
+		final DockerExplorerView dockerExplorerView = getView(bot, DockerExplorerView.VIEW_ID);
+		final DockerContainersView dockerContainersView = getView(bot, DockerContainersView.VIEW_ID);
 		SWTUtils.syncExec(() -> {
 			DockerConnectionManager.getInstance().reloadConnections();
 			if (dockerExplorerView != null) {
@@ -53,16 +56,14 @@ public class DockerConnectionManagerUtils {
 		SWTUtils.wait(1, TimeUnit.SECONDS);
 	}
 	
-	private static DockerExplorerView getDockerExplorerView(final SWTWorkbenchBot bot) {
-		return bot.views().stream().filter(v -> v.getReference().getId().equals(DockerExplorerView.VIEW_ID))
-				.map(viewBot -> (DockerExplorerView) (viewBot.getViewReference().getView(true))).findFirst()
-				.orElse(null);
-	}
-
-	private static DockerContainersView getDockerContainersView(final SWTWorkbenchBot bot) {
-		return bot.views().stream().filter(v -> v.getReference().getId().equals(DockerContainersView.VIEW_ID))
-				.map(viewBot -> (DockerContainersView) (viewBot.getViewReference().getView(true))).findFirst()
-				.orElse(null);
+	@SuppressWarnings("unchecked")
+	private static <T> T getView(final SWTWorkbenchBot bot, final String viewId) {
+		final Optional<SWTBotView> viewBot = bot.views().stream().filter(v -> v.getReference().getId().equals(viewId))
+				.findFirst();
+		if(viewBot.isPresent()) {
+			return UIThreadRunnable.syncExec(() ->  (T) (viewBot.get().getViewReference().getView(true)));
+		}
+		return null;
 	}
 
 }
