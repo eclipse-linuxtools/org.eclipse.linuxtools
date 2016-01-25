@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Red Hat, Inc.
+ * Copyright (c) 2011, 2016 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -191,24 +191,20 @@ public class ExportWizardTest extends AbstractMassifTest {
     }
 
     protected void createWizard() {
-        Display.getDefault().syncExec(new Runnable() {
-            @Override
-            public void run() {
-                wizard = new ValgrindExportWizard();
-                wizard.init(PlatformUI.getWorkbench(), null);
+        Display.getDefault().syncExec(() -> {
+		    wizard = new ValgrindExportWizard();
+		    wizard.init(PlatformUI.getWorkbench(), null);
 
-                dialog = new WizardDialog(PlatformUI.getWorkbench()
-                        .getActiveWorkbenchWindow().getShell(), wizard);
-                dialog.setBlockOnOpen(false);
-                dialog.open();
+		    dialog = new WizardDialog(PlatformUI.getWorkbench()
+		            .getActiveWorkbenchWindow().getShell(), wizard);
+		    dialog.setBlockOnOpen(false);
+		    dialog.open();
 
-                assertFalse(wizard.canFinish());
+		    assertFalse(wizard.canFinish());
 
-                page = (ValgrindExportWizardPage) wizard.getPages()[0];
-                assertFalse(page.isPageComplete());
+		    page = (ValgrindExportWizardPage) wizard.getPages()[0];
+		    assertFalse(page.isPageComplete());
 
-            }
-
-        });
+		});
     }
 }

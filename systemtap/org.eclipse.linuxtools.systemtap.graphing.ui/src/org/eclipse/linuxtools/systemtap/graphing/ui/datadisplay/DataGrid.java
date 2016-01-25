@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+ * Copyright (c) 2006, 2016 IBM Corporation.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -333,12 +333,7 @@ public class DataGrid implements IUpdateListener {
 		    //Use if we want to set focus to newly added item.
 		    //Run async so the table can be fully constructed before jumping to an entry.
 		    if (jumpToEntryMenuItem.getSelection() && table.getItemCount() > 0) {
-		        table.getDisplay().asyncExec(new Runnable() {
-		            @Override
-		            public void run() {
-		                table.showItem(table.getItem(table.getItemCount()-1));
-		            }
-		        });
+		        table.getDisplay().asyncExec(() -> table.showItem(table.getItem(table.getItemCount()-1)));
 		    }
 		    formatMenuItem.setEnabled(table.getItemCount() > 0);
 		});

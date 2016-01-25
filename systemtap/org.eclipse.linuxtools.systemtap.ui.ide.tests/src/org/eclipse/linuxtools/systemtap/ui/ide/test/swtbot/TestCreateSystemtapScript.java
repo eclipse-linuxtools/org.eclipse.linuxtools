@@ -1391,14 +1391,11 @@ public class TestCreateSystemtapScript {
         } else {
             // The "Add Graph" button is actually a tab that doesn't get activated when clicked.
             // Use a background thread to supress the wait for tab activation.
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        bot.activeEditor().bot().cTabItem(1).activate();
-                    } catch (TimeoutException e) {}
-                }
-            }).start();
+            new Thread(() -> {
+			    try {
+			        bot.activeEditor().bot().cTabItem(1).activate();
+			    } catch (TimeoutException e) {}
+			}).start();
         }
     }
 

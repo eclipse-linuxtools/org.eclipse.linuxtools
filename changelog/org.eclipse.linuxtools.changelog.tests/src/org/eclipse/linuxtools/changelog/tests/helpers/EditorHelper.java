@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat Inc. and others.
+ * Copyright (c) 2010, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,14 +44,8 @@ public class EditorHelper {
      */
     public static void closeEditor(final IEditorPart editor) {
         if (editor.getSite().getWorkbenchWindow().getActivePage() != null) {
-            PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
-                @Override
-                public void run() {
-                    // close editor
-                    editor.getSite().getWorkbenchWindow().getActivePage()
-                            .closeEditor(editor, false);
-                }
-            });
+            PlatformUI.getWorkbench().getDisplay().syncExec(() -> editor.getSite().getWorkbenchWindow().getActivePage()
+			        .closeEditor(editor, false));
         }
     }
 
