@@ -37,14 +37,10 @@ public class CProjectHelper {
 
     public final static String PLUGIN_ID = "org.eclipse.linuxtools.cdt.libhover.tests"; //$NON-NLS-1$
 
-    public static ICProject createCProject(final String projectName, String binFolderName) throws CoreException {
-        return createCCProject(projectName, binFolderName, null);
-    }
-
     /**
      * Creates a ICProject.
      */
-    public static ICProject createCProject(final String projectName, String binFolderName, final String indexerID) throws CoreException {
+    private static ICProject createCProject(final String projectName, String binFolderName, final String indexerID) throws CoreException {
         final IWorkspace ws = ResourcesPlugin.getWorkspace();
         final ICProject newProject[] = new ICProject[1];
         ws.run((IWorkspaceRunnable) monitor -> {
@@ -80,7 +76,7 @@ public class CProjectHelper {
      * @param project
      * @throws CoreException
      */
-    public static boolean addDefaultBinaryParser(IProject project) throws CoreException {
+    private static boolean addDefaultBinaryParser(IProject project) throws CoreException {
         ICConfigExtensionReference[] binaryParsers= CCorePlugin.getDefault().getDefaultBinaryParserExtensions(project);
         if (binaryParsers == null || binaryParsers.length == 0) {
             ICProjectDescription desc= CCorePlugin.getDefault().getProjectDescription(project);
@@ -107,7 +103,7 @@ public class CProjectHelper {
         return newProject[0];
     }
 
-    public static void addNatureToProject(IProject proj, String natureId, IProgressMonitor monitor) throws CoreException {
+    private static void addNatureToProject(IProject proj, String natureId, IProgressMonitor monitor) throws CoreException {
         IProjectDescription description = proj.getDescription();
         String[] prevNatures = description.getNatureIds();
         String[] newNatures = new String[prevNatures.length + 1];

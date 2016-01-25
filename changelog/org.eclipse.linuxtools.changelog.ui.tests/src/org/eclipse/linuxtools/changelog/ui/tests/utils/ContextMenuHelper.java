@@ -17,7 +17,6 @@ import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
@@ -93,42 +92,6 @@ public class ContextMenuHelper {
             }
         }
         return theItem;
-    }
-
-    /**
-     * Checks if the context menu matching the text is enabled
-     *
-     * @param bot
-     *
-     * @param texts
-     *            the text on the context menu.
-     * @return true if the context menu is enabled
-     * @throws WidgetNotFoundException
-     *             if the widget is not found.
-     */
-    public static boolean isContextMenuItemEnabled(final AbstractSWTBot<?> bot,
-            final String... texts) {
-
-        final AtomicBoolean enabled = new AtomicBoolean(false);
-        // show
-        final MenuItem menuItem = UIThreadRunnable
-				.syncExec((WidgetResult<MenuItem>) () -> {
-					MenuItem theItem = getMenuItem(bot, texts);
-					if (theItem != null && theItem.isEnabled())
-						enabled.set(true);
-					return theItem;
-				});
-        if (menuItem == null) {
-            throw new WidgetNotFoundException("Could not find menu: "
-                    + Arrays.asList(texts));
-        }
-        // hide
-		UIThreadRunnable.syncExec(() -> {
-			if (menuItem.isDisposed())
-				return; // menu already gone
-			hide(menuItem.getParent());
-		});
-        return enabled.get();
     }
 
     private static MenuItem show(final Menu menu, final Matcher<MenuItem> matcher) {

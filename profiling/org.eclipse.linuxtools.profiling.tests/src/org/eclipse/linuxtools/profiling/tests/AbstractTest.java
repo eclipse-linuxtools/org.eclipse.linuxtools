@@ -266,12 +266,7 @@ public abstract class AbstractTest {
 
         ImportOperation op = new ImportOperation(project.getFullPath(),
                 testDir, FileSystemStructureProvider.INSTANCE,
-                new IOverwriteQuery() {
-                    @Override
-                    public String queryOverwrite(String pathString) {
-                        return ALL;
-                    }
-                });
+                pathString -> IOverwriteQuery.ALL);
         op.setCreateContainerStructure(false);
         op.run(null);
 
