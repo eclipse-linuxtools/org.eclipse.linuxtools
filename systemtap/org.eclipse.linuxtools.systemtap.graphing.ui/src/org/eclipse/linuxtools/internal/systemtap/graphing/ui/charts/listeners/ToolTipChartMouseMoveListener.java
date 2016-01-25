@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Red Hat, Inc.
+ * Copyright (c) 2014, 2016 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.listeners;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.RunnableFuture;
@@ -64,12 +63,7 @@ public class ToolTipChartMouseMoveListener extends AbstractChartMouseMoveListene
      */
     @Override
     public String getMouseMessage() {
-        RunnableFuture<String> f = new FutureTask<>(new Callable<String>() {
-            @Override
-            public String call() {
-                return tipText.isVisible() ? tipText.getText() : ""; //$NON-NLS-1$
-            }
-        });
+        RunnableFuture<String> f = new FutureTask<>(() -> tipText.isVisible() ? tipText.getText() : ""); //$NON-NLS-1$
         tipText.getDisplay().syncExec(f);
         try {
             return f.get();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008-2015 Red Hat, Inc.
+ * Copyright (c) 2008, 2016 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -240,12 +240,7 @@ public abstract class AbstractTest {
                     Messages.getString("AbstractTest.Build_failed"), curProject.getName(), status.getMessage())); //$NON-NLS-1$
         }
 
-        IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
-            @Override
-            public void run(IProgressMonitor monitor) throws CoreException {
-                curProject.refreshLocal(IResource.DEPTH_INFINITE, null);
-            }
-        };
+        IWorkspaceRunnable runnable = monitor -> curProject.refreshLocal(IResource.DEPTH_INFINITE, null);
 
         wsp.run(runnable, wsp.getRoot(), IWorkspace.AVOID_UPDATE, null);
     }
@@ -299,12 +294,7 @@ public abstract class AbstractTest {
     }
 
     protected void deleteProject(final ICProject cproject) throws CoreException {
-        ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
-            @Override
-            public void run(IProgressMonitor monitor) {
-                CProjectHelper.delete(cproject);
-            }
-        }, null);
+        ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) monitor -> CProjectHelper.delete(cproject), null);
     }
 
     protected ILaunchConfiguration createConfiguration(IProject proj)
