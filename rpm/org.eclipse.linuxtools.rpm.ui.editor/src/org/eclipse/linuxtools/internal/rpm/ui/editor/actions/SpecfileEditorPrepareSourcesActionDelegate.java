@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Red Hat, Inc.
+ * Copyright (c) 2013, 2016 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -94,8 +94,7 @@ public class SpecfileEditorPrepareSourcesActionDelegate extends AbstractHandler 
 
     public boolean downloadFile(Shell shell, RPMProject rpj, Specfile specfile) {
         // retrieve source(s) from specfile
-        final List<SpecfileSource> sourceURLList = specfile != null ? (List<SpecfileSource>) specfile
-                .getSources() : null;
+		final List<SpecfileSource> sourceURLList = specfile != null ? specfile.getSources() : null;
         for (final SpecfileSource sourceurls : sourceURLList) {
             try {
                 String resolvedURL = UiUtils.resolveDefines(specfile, sourceurls.getFileName());
