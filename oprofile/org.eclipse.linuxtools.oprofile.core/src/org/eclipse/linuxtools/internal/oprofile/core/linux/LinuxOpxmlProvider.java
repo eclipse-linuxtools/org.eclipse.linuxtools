@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2004, 2016 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.oprofile.core.linux;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -29,71 +28,70 @@ import org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions.SessionsProc
  */
 public class LinuxOpxmlProvider implements IOpxmlProvider {
 
-    @Override
-    public IRunnableWithProgress info(final OpInfo info) {
-        return new OpInfoRunner(info);
-    }
+	@Override
+	public IRunnableWithProgress info(final OpInfo info) {
+		return new OpInfoRunner(info);
+	}
 
-    //public because it is used in OpInfo.java:getInfo()
-    public class OpInfoRunner implements IRunnableWithProgress {
-        private boolean b;
-        private final OpInfo info;
+	// public because it is used in OpInfo.java:getInfo()
+	public class OpInfoRunner implements IRunnableWithProgress {
+		private boolean b;
+		private final OpInfo info;
 
-        public OpInfoRunner(OpInfo info) {
-            this.info = info;
-        }
+		public OpInfoRunner(OpInfo info) {
+			this.info = info;
+		}
 
-        public boolean run0(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-            run(monitor);
-            return b;
-        }
+		public boolean run0(IProgressMonitor monitor) {
+			run(monitor);
+			return b;
+		}
 
-        @Override
-        public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-            OpxmlRunner runner = new OpxmlRunner();
-            String[] args = new String[] { OpxmlConstants.OPXML_INFO };
-            b = runner.run(args, info);
-        }
-    }
+		@Override
+		public void run(IProgressMonitor monitor) {
+			OpxmlRunner runner = new OpxmlRunner();
+			String[] args = new String[] { OpxmlConstants.OPXML_INFO };
+			b = runner.run(args, info);
+		}
+	}
 
-    @Override
-    public IRunnableWithProgress modelData(final String eventName, final String sessionName, final OpModelImage image) {
-        return monitor -> {
-            OpxmlRunner runner = new OpxmlRunner();
+	@Override
+	public IRunnableWithProgress modelData(final String eventName, final String sessionName, final OpModelImage image) {
+		return monitor -> {
+			OpxmlRunner runner = new OpxmlRunner();
 
-            String[] args = new String[] { OpxmlConstants.OPXML_MODELDATA,
-		    eventName, sessionName };
+			String[] args = new String[] { OpxmlConstants.OPXML_MODELDATA, eventName, sessionName };
 
-            ModelDataProcessor.CallData data = new ModelDataProcessor.CallData(
-		    image);
-            runner.run(args, data);
-         };
-    }
-
-    @Override
-    public IRunnableWithProgress checkEvents(final int ctr, final String event, final int um, final int[] eventValid) {
-        return monitor -> {
-		    OpxmlRunner runner = new OpxmlRunner();
-		    String[] args = new String[] { OpxmlConstants.CHECKEVENTS_TAG,
-		            Integer.toString(ctr), event, Integer.toString(um) };
-
-		    runner.run(args, eventValid);
+			ModelDataProcessor.CallData data = new ModelDataProcessor.CallData(image);
+			runner.run(args, data);
 		};
-    }
+	}
 
-    /**
-     *  return list of session collected on this system as well as events under each of them.
-     *  @since 3.0
-     */
-    @Override
-    public IRunnableWithProgress sessions(final ArrayList<OpModelSession> sessionList) {
-        return monitor -> {
-		    OpxmlRunner runner = new OpxmlRunner();
-		    String[] args = new String[] { OpxmlConstants.OPXML_SESSIONS, };
+	@Override
+	public IRunnableWithProgress checkEvents(final int ctr, final String event, final int um, final int[] eventValid) {
+		return monitor -> {
+			OpxmlRunner runner = new OpxmlRunner();
+			String[] args = new String[] { OpxmlConstants.CHECKEVENTS_TAG, Integer.toString(ctr), event,
+					Integer.toString(um) };
 
-		    SessionsProcessor.SessionInfo sinfo = new SessionsProcessor.SessionInfo(
-		            sessionList);
-		    runner.run(args, sinfo);
+			runner.run(args, eventValid);
 		};
-    }
+	}
+
+	/**
+	 * return list of session collected on this system as well as events under
+	 * each of them.
+	 * 
+	 * @since 3.0
+	 */
+	@Override
+	public IRunnableWithProgress sessions(final ArrayList<OpModelSession> sessionList) {
+		return monitor -> {
+			OpxmlRunner runner = new OpxmlRunner();
+			String[] args = new String[] { OpxmlConstants.OPXML_SESSIONS, };
+
+			SessionsProcessor.SessionInfo sinfo = new SessionsProcessor.SessionInfo(sessionList);
+			runner.run(args, sinfo);
+		};
+	}
 }
