@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Alphonse Van Assche.
+ * Copyright (c) 2007, 2016 Alphonse Van Assche.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,10 +13,11 @@ package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
 import static org.junit.Assert.fail;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmMacroProposalsList;
-import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -81,7 +82,7 @@ public class RpmMacroProposalsListTest {
 
     @Test
     public final void testGetMacroEval() {
-        if (Utils.fileExist("/bin/rpm")) {
+        if (Files.exists(Paths.get("/bin/rpm"))) {
             if (RpmMacroProposalsList.getMacroEval("%_libdir").indexOf("lib") == -1) {
                 fail("getMacroEval faild, eval don't end with 'lib'");
             }

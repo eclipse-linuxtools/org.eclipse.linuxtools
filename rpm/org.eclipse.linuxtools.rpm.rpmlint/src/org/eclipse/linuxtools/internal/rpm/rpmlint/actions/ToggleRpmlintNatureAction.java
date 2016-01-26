@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Red Hat, Inc.
+ * Copyright (c) 2009, 2016 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,9 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.rpmlint.actions;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -25,7 +28,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.Activator;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.builder.RpmlintNature;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.preferences.PreferenceConstants;
-import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
@@ -66,7 +68,7 @@ public class ToggleRpmlintNatureAction extends AbstractHandler {
     private static void toggleNature(IProject project) {
         String rpmlintPath = new ScopedPreferenceStore(InstanceScope.INSTANCE,Activator.PLUGIN_ID).getString(
                 PreferenceConstants.P_RPMLINT_PATH);
-        if(!Utils.fileExist(rpmlintPath)) {
+        if(!Files.exists(Paths.get(rpmlintPath))) {
             IStatus warning = new Status(
                     IStatus.WARNING,
                     Activator.PLUGIN_ID,

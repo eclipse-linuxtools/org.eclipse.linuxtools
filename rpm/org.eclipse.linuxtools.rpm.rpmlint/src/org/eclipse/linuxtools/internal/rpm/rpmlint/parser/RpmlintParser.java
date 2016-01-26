@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Alphonse Van Assche.
+ * Copyright (c) 2007, 2016 Alphonse Van Assche.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +61,7 @@ public class RpmlintParser {
          * a guard if we have configuration changing or someone playing with the
          * project files.
          */
-        if (visitedResources.isEmpty() || !Utils.fileExist(rpmlintPath)) {
+        if (visitedResources.isEmpty() || !Files.exists(Paths.get(rpmlintPath))) {
             return new ArrayList<>();
         }
         return parseRpmlintOutput(runRpmlintCommand(visitedResources));

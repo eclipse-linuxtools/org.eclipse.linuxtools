@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 Red Hat, Inc.
+ * Copyright (c) 2009, 2016 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@
 package org.eclipse.linuxtools.internal.rpm.rpmlint.actions;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -82,7 +84,7 @@ public class RunRpmlintAction extends AbstractHandler{
         String rpmlintPath = new ScopedPreferenceStore(InstanceScope.INSTANCE,Activator.PLUGIN_ID).getString(
                 PreferenceConstants.P_RPMLINT_PATH);
         try {
-            if (Utils.fileExist(rpmlintPath)) {
+            if (Files.exists(Paths.get(rpmlintPath))) {
                 String output = Utils.runCommandToString(rpmlintPath,
                         "-i", location); //$NON-NLS-1$
                 MessageConsole myConsole = findConsole(Messages.RunRpmlintAction_0);
