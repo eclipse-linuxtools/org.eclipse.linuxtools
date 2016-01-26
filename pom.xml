@@ -77,33 +77,6 @@
       <build>
         <plugins>
           <plugin>
-	  <groupId>org.eclipse.tycho</groupId>
-	  <artifactId>tycho-surefire-plugin</artifactId>
-	  <version>${tycho-version}</version>
-	  <configuration>
-	    <useUIHarness>true</useUIHarness>
-	    <useUIThread>true</useUIThread>
-              <dependencies>
-                <dependency>
-                  <type>p2-installable-unit</type>
-                  <artifactId>org.eclipse.platform.feature.group</artifactId>
-                  <version>${sdk-version}</version>
-                </dependency>
-              </dependencies>
-              <product>org.eclipse.platform.ide</product>
-	      <argLine>${tycho.testArgLine} -Declipse.valgrind.tests.runValgrind=no</argLine>
-	    </configuration>
-	  </plugin>
-          <plugin>
-            <groupId>org.eclipse.tycho</groupId>
-            <artifactId>target-platform-configuration</artifactId>
-            <version>${tycho-version}</version>
-              <configuration>
-                <resolver>p2</resolver>
-                <includePackedArtifacts>true</includePackedArtifacts>
-              </configuration>
-          </plugin>
-          <plugin>
             <groupId>org.eclipse.tycho.extras</groupId>
             <artifactId>tycho-pack200a-plugin</artifactId>
             <version>${tycho-version}</version>
@@ -177,7 +150,7 @@
           <plugin>
             <groupId>org.eclipse.cbi.maven.plugins</groupId>
             <artifactId>eclipse-cbi-plugin</artifactId>
-            <version>1.0.4</version>
+            <version>1.1.2</version>
             <executions>
               <execution>
                 <id>generate-api-build-xml</id>
