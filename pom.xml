@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-   Copyright (C) 2011, Red Hat, Inc. and others
+   Copyright (C) 2011, 2016 Red Hat, Inc. and others
 
    All rights reserved. This program and the accompanying materials
    are made available under the terms of the Eclipse Public License v1.0
@@ -197,7 +197,7 @@
                 <repository>
                   <id>eclipse</id>
                   <layout>p2</layout>
-                  <url>http://download.eclipse.org/releases/mars</url>
+                  <url>http://download.eclipse.org/releases/neon</url>
                 </repository>
               </repositories>
               <!-- actuall indexer call -->
