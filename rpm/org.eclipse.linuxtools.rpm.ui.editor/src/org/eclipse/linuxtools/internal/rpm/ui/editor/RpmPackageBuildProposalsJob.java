@@ -29,12 +29,15 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.core.utils.BufferedProcessInputStream;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
+import org.osgi.framework.FrameworkUtil;
 
 public final class RpmPackageBuildProposalsJob extends Job {
 
@@ -49,87 +52,15 @@ public final class RpmPackageBuildProposalsJob extends Job {
 
 	protected static final IPropertyChangeListener PROPERTY_LISTENER = event -> {
 		if (event.getProperty().equals(PreferenceConstants.P_CURRENT_RPMTOOLS)) {
-			updateAsync();
+			update(true);
 		}
 	};
 
-	protected static final IPreferenceStore STORE = Activator.getDefault().getPreferenceStore();
+	protected static final IPreferenceStore STORE = new ScopedPreferenceStore(InstanceScope.INSTANCE,
+			FrameworkUtil.getBundle(RpmPackageBuildProposalsJob.class).getSymbolicName());
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		return retrievePackageList(monitor);
-	}
-
-	@Override
-	public boolean shouldSchedule() {
-		return equals(job);
-	}
-
-	public static void updateSync() {
-		update(false);
-	}
-
-	public static void updateAsync() {
-		update(true);
-	}
-
-	/**
-	 * Run the Job if it's needed according with the configuration set in the
-	 * preference page.
-	 */
-	private static void update(boolean async) {
-		boolean runJob = false;
-		// Today's date
-		Date today = new Date();
-		if (STORE.getBoolean(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD)) {
-			int period = STORE.getInt(PreferenceConstants.P_RPM_LIST_BUILD_PERIOD);
-			// each time that the plugin is loaded.
-			if (period == 1) {
-				runJob = true;
-			} else {
-				long lastBuildTime = STORE.getLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD);
-				if (lastBuildTime == 0) {
-					runJob = true;
-				} else {
-					long interval = (today.getTime() - lastBuildTime) / (1000 * 60 * 60 * 24);
-					// run the job once a week
-					if (period == 2 && interval >= 7) {
-						runJob = true;
-						// run the job once a month
-					} else if (period == 3 && interval >= 30) {
-						runJob = true;
-					}
-				}
-			}
-			if (runJob) {
-				if (job == null) {
-					job = new RpmPackageBuildProposalsJob(Messages.RpmPackageBuildProposalsJob_0);
-				} else {
-					job.cancel();
-				}
-				if (async) {
-					job.schedule();
-				} else {
-					job.run(new NullProgressMonitor());
-				}
-				STORE.setValue(PreferenceConstants.P_RPM_LIST_LAST_BUILD, today.getTime());
-			}
-		} else {
-			if (job != null) {
-				job.cancel();
-				job = null;
-			}
-		}
-	}
-
-	/**
-	 * Retrieve the package list
-	 *
-	 * @param monitor
-	 *            to update
-	 * @return a <code>IStatus</code>
-	 */
-	private IStatus retrievePackageList(IProgressMonitor monitor) {
 		String rpmListCmd = STORE.getString(PreferenceConstants.P_CURRENT_RPMTOOLS);
 		String rpmListFilepath = STORE.getString(PreferenceConstants.P_RPM_LIST_FILEPATH);
 		Path bkupFile = Paths.get(rpmListFilepath + ".bkup"); //$NON-NLS-1$
@@ -188,6 +119,63 @@ public final class RpmPackageBuildProposalsJob extends Job {
 		// Update package list
 		Activator.packagesList = new RpmPackageProposalsList();
 		return Status.OK_STATUS;
+	}
+
+	@Override
+	public boolean shouldSchedule() {
+		return equals(job);
+	}
+
+	/**
+	 * Run the Job if it's needed according with the configuration set in the
+	 * preference page.
+	 *
+	 * @param async
+	 *            Whether to run synchronously or asynchronously.
+	 */
+	public static void update(boolean async) {
+		boolean runJob = false;
+		// Today's date
+		Date today = new Date();
+		if (STORE.getBoolean(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD)) {
+			int period = STORE.getInt(PreferenceConstants.P_RPM_LIST_BUILD_PERIOD);
+			// each time that the plugin is loaded.
+			if (period == 1) {
+				runJob = true;
+			} else {
+				long lastBuildTime = STORE.getLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD);
+				if (lastBuildTime == 0) {
+					runJob = true;
+				} else {
+					long interval = (today.getTime() - lastBuildTime) / (1000 * 60 * 60 * 24);
+					// run the job once a week
+					if (period == 2 && interval >= 7) {
+						runJob = true;
+						// run the job once a month
+					} else if (period == 3 && interval >= 30) {
+						runJob = true;
+					}
+				}
+			}
+			if (runJob) {
+				if (job == null) {
+					job = new RpmPackageBuildProposalsJob(Messages.RpmPackageBuildProposalsJob_0);
+				} else {
+					job.cancel();
+				}
+				if (async) {
+					job.schedule();
+				} else {
+					job.run(new NullProgressMonitor());
+				}
+				STORE.setValue(PreferenceConstants.P_RPM_LIST_LAST_BUILD, today.getTime());
+			}
+		} else {
+			if (job != null) {
+				job.cancel();
+				job = null;
+			}
+		}
 	}
 
 	public static Set<String> getPackages() throws InterruptedException, IOException {

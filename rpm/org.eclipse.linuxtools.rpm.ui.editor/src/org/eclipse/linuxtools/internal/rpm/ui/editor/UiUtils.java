@@ -19,10 +19,14 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
+import org.osgi.framework.FrameworkUtil;
 
 /*
  * TODO Refract existing code to use the bellow methods so that we can easily
@@ -41,17 +45,16 @@ public class UiUtils {
 		}
 
 		// Check RPM tool preference.
-		String currentRpmTool = Activator.getDefault().getPreferenceStore()
-				.getString(PreferenceConstants.P_CURRENT_RPMTOOLS);
+		IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,
+				FrameworkUtil.getBundle(UiUtils.class).getSymbolicName());
+		String currentRpmTool = store.getString(PreferenceConstants.P_CURRENT_RPMTOOLS);
 		if (!Files.exists(Paths.get("/usr/bin/yum"))) { //$NON-NLS-1$
 			if (currentRpmTool.equals(PreferenceConstants.DP_RPMTOOLS_YUM)) {
-				Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.P_CURRENT_RPMTOOLS,
-						PreferenceConstants.DP_RPMTOOLS_RPM);
+				store.setValue(PreferenceConstants.P_CURRENT_RPMTOOLS, PreferenceConstants.DP_RPMTOOLS_RPM);
 			}
 		} else if (!Files.exists(Paths.get("/usr/bin/urpmq"))) { //$NON-NLS-1$
 			if (currentRpmTool.equals(PreferenceConstants.DP_RPMTOOLS_URPM)) {
-				Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.P_CURRENT_RPMTOOLS,
-						PreferenceConstants.DP_RPMTOOLS_RPM);
+				store.setValue(PreferenceConstants.P_CURRENT_RPMTOOLS, PreferenceConstants.DP_RPMTOOLS_RPM);
 			}
 		}
 	}

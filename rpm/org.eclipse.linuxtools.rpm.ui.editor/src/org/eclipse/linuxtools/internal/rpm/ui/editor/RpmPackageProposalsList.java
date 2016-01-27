@@ -25,8 +25,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
+import org.eclipse.linuxtools.rpm.core.utils.Utils;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * This class is used to retrieve and manage the RPM package proposals.
@@ -34,33 +38,29 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConst
  */
 public class RpmPackageProposalsList {
 	private final Set<String> list = new HashSet<>();
+	private IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,
+			FrameworkUtil.getBundle(RpmPackageProposalsList.class).getSymbolicName());
 
 	public RpmPackageProposalsList() {
-		setPackagesList();
-	}
-
-	private void setPackagesList() {
-		String rpmpkgsFile = Activator.getDefault().getPreferenceStore()
-				.getString(PreferenceConstants.P_RPM_LIST_FILEPATH);
+		String rpmpkgsFile = store.getString(PreferenceConstants.P_RPM_LIST_FILEPATH);
 		if (Files.exists(Paths.get(rpmpkgsFile))) {
 			try {
 				Set<String> newList = RpmPackageBuildProposalsJob.getPackages();
 				list.clear();
 				list.addAll(newList);
 			} catch (IOException e) {
-				RpmPackageBuildProposalsJob.updateAsync();
+				RpmPackageBuildProposalsJob.update(true);
 				SpecfileLog.logError(e);
 			} catch (InterruptedException e) {
 				// ignore
 			}
 		} else {
-			RpmPackageBuildProposalsJob.updateAsync();
+			RpmPackageBuildProposalsJob.update(true);
 		}
 	}
 
 	public List<String[]> getProposals(String prefix) {
-		int rpmpkgsMaxProposals = Activator.getDefault().getPreferenceStore()
-				.getInt(PreferenceConstants.P_RPM_LIST_MAX_PROPOSALS);
+		int rpmpkgsMaxProposals = store.getInt(PreferenceConstants.P_RPM_LIST_MAX_PROPOSALS);
 		List<String[]> proposalsList = new ArrayList<>(list.size());
 		for (String listValue : list) {
 			String item[] = new String[2];
@@ -100,7 +100,7 @@ public class RpmPackageProposalsList {
 	public String getRpmInfo(String pkgName) {
 		String ret = ""; //$NON-NLS-1$
 		try {
-			ret = org.eclipse.linuxtools.rpm.core.utils.Utils.runCommandToString("rpm", "-q", pkgName, "--qf", //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+			ret = Utils.runCommandToString("rpm", "-q", pkgName, "--qf", //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 					getformattedRpmInformations());
 		} catch (IOException e) {
 			SpecfileLog.logError(e);
@@ -126,7 +126,6 @@ public class RpmPackageProposalsList {
 
 	private String getformattedRpmInformations() {
 		StringBuilder formatedInfoString = new StringBuilder();
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		if (store.getBoolean(PreferenceConstants.P_RPMINFO_NAME)) {
 			formatedInfoString.append("<b>Name: </b>%{NAME}<br>"); //$NON-NLS-1$
 		}
