@@ -342,8 +342,9 @@ public class DockerConnection implements IDockerConnection, Closeable {
 
 	@Override
 	public void removeContainerListener(IDockerContainerListener listener) {
-		if (containerListeners != null)
+		if (containerListeners != null) {
 			containerListeners.remove(listener);
+		}
 	}
 
 	/**
@@ -382,6 +383,9 @@ public class DockerConnection implements IDockerConnection, Closeable {
 	 */
 	// TODO: include in IDockerConnection API
 	public List<IDockerContainerListener> getContainerListeners() {
+		if (this.containerListeners == null) {
+			return Collections.emptyList();
+		}
 		final IDockerContainerListener[] result = new IDockerContainerListener[this.containerListeners
 				.size()];
 		final Object[] listeners = containerListeners.getListeners();
@@ -679,8 +683,9 @@ public class DockerConnection implements IDockerConnection, Closeable {
 
 	@Override
 	public void removeImageListener(IDockerImageListener listener) {
-		if (imageListeners != null)
+		if (imageListeners != null) {
 			imageListeners.remove(listener);
+		}
 	}
 
 	public void notifyImageListeners(List<IDockerImage> list) {
@@ -696,6 +701,9 @@ public class DockerConnection implements IDockerConnection, Closeable {
 	 */
 	// TODO: include in IDockerConnection API
 	public List<IDockerImageListener> getImageListeners() {
+		if (this.imageListeners == null) {
+			return Collections.emptyList();
+		}
 		final IDockerImageListener[] result = new IDockerImageListener[this.imageListeners
 				.size()];
 		final Object[] listeners = imageListeners.getListeners();

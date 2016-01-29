@@ -282,7 +282,8 @@ public class DockerContainersView extends ViewPart implements
 		this.viewer.setComparator(comparator);
 		// apply search filter
 		this.viewer.addFilter(getContainersFilter());
-		IDockerConnection[] connections = DockerConnectionManager.getInstance()
+		final IDockerConnection[] connections = DockerConnectionManager
+				.getInstance()
 				.getConnections();
 		if (connections.length > 0) {
 			setConnection(connections[0]);
