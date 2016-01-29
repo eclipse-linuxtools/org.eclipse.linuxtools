@@ -68,6 +68,7 @@ public class BuildDockerImageLaunchConfigurationMainTab
 	private final String TAB_NAME = "BuildDockerImageLaunchConfigurationMainTab.name"; //$NON-NLS-1$
 	private final String CONNECTION_LABEL = "BuildDockerImageLaunchConfigurationMainTab.connection.group.label"; //$NON-NLS-1$
 	private final String CONNECTION_TOOLTIP = "BuildDockerImageLaunchConfigurationMainTab.connection.group.tooltip"; //$NON-NLS-1$
+	private final String CONNECTION_MISSING = "BuildDockerImageLaunchConfigurationMainTab.connection.missing"; //$NON-NLS-1$
 	private final String BUILD_CONTEXT_PATH_LABEL = "BuildDockerImageLaunchConfigurationMainTab.buildContextPath.group.label"; //$NON-NLS-1$
 	private final String BUILD_CONTEXT_PATH_MISSING = "BuildDockerImageLaunchConfigurationMainTab.buildContextPath.missing"; //$NON-NLS-1$
 	private final String DOCKERFILE_PATH_LABEL = "BuildDockerImageLaunchConfigurationMainTab.dockerfilePath.group.label"; //$NON-NLS-1$
@@ -419,12 +420,21 @@ public class BuildDockerImageLaunchConfigurationMainTab
 	@Override
 	public boolean isValid(final ILaunchConfiguration launchConfig) {
 		try {
+			// verify the connection
+			final String dockerConnection = launchConfig
+					.getAttribute(DOCKER_CONNECTION, ""); // $NON-NLS-1$
+			// verify the source path
 			final String sourcePathLocation = launchConfig
 					.getAttribute(SOURCE_PATH_LOCATION, ""); // $NON-NLS-1$
 			final boolean sourcePathWorkspaceRelativeLocation = launchConfig.getAttribute(SOURCE_PATH_WORKSPACE_RELATIVE_LOCATION, false);
 			final IPath sourcePath = BuildDockerImageUtils.getPath(
 					sourcePathLocation, sourcePathWorkspaceRelativeLocation);
-			if (sourcePathLocation.isEmpty() || sourcePath == null) {
+			if (dockerConnection.isEmpty() || dockerConnection == null
+					|| DockerConnectionManager.getInstance()
+							.findConnection(dockerConnection) == null) {
+				setErrorMessage(LaunchMessages.getString(CONNECTION_MISSING));
+				return false;
+			} else if (sourcePathLocation.isEmpty() || sourcePath == null) {
 				setErrorMessage(
 						LaunchMessages.getString(BUILD_CONTEXT_PATH_MISSING));
 				return false;

@@ -51,7 +51,7 @@ public class CommandUtilsSWTBotTest {
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
 	
 	@Before
-	public void lookupDockerExplorerView() throws InterruptedException {
+	public void lookupDockerExplorerView() {
 		SWTUtils.asyncExec(() -> {
 			try {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()

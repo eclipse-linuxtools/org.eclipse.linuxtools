@@ -41,7 +41,6 @@ public class DockerContainersViewSWTBotTest {
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 	private SWTBotView dockerContainersViewBot;
-	private DockerContainersView dockerContainersView;
 	private SWTBotView dockerExplorerBotView;
 
 	@ClassRule
@@ -64,7 +63,6 @@ public class DockerContainersViewSWTBotTest {
 			Assert.fail("Failed to open Docker Explorer view: " + e.getMessage());
 		}});
 		this.dockerContainersViewBot = bot.viewById(DockerContainersView.VIEW_ID);
-		this.dockerContainersView = (DockerContainersView) (dockerContainersViewBot.getViewReference().getView(true));
 		this.dockerExplorerBotView = bot.viewById(DockerExplorerView.VIEW_ID);
 	}
 	

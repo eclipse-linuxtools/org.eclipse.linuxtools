@@ -26,7 +26,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.ui.PlatformUI;
 import org.junit.Assert;
 import org.junit.Before;
@@ -44,7 +43,6 @@ public class DockerImagesViewSWTBotTest {
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 	private SWTBotView dockerImagesViewBot;
 	private DockerImagesView dockerImagesView;
-	private SWTBotTree dockerImagesViewTreeBot;
 
 	@ClassRule
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule();
@@ -56,7 +54,7 @@ public class DockerImagesViewSWTBotTest {
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
 
 	@Before
-	public void setup() throws InterruptedException {
+	public void setup() {
 		this.bot = new SWTWorkbenchBot();
 		SWTUtils.asyncExec(() -> {try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
@@ -70,7 +68,7 @@ public class DockerImagesViewSWTBotTest {
 	}
 
 	@Test
-	public void shouldShowAllImageVariants() throws InterruptedException {
+	public void shouldShowAllImageVariants() {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.image(MockDockerImageFactory.id("1a2b3c4d5e6f7g").name("foo:1.0", "foo:latest", "bar:1.0", "bar:latest").build())

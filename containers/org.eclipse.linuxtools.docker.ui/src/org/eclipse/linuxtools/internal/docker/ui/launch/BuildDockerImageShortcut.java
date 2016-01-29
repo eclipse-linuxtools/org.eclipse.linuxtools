@@ -48,7 +48,7 @@ import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 
 public class BuildDockerImageShortcut implements ILaunchShortcut {
 	private static final String LaunchShortcut_Error_Launching = "ImageBuildShortcut.error.msg"; //$NON-NLS-1$
-	private static final String LaunchShortcut_No_Connections = "NoConnection.error.msg"; //$NON-NLS-1$
+	private static final String LaunchShortcut_No_Connections = "ImageBuildShortcutMissingConnection.msg"; //$NON-NLS-1$
 	private static final String LaunchShortcut_Config_Selection = "ImageBuildShortcutConfigSelection.title"; //$NON-NLS-1$
 	private static final String LaunchShortcut_Choose_Launch = "ImageBuildShortcutChooseLaunch.msg"; //$NON-NLS-1$
 	private static final String LaunchShortcut_Connection_Selection = "ImageBuildShortcutConnectionSelection.title"; //$NON-NLS-1$
