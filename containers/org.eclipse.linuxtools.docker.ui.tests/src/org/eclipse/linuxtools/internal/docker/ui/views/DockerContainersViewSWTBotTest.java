@@ -58,6 +58,8 @@ public class DockerContainersViewSWTBotTest {
 		SWTUtils.asyncExec(() -> {try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 					.showView(DockerContainersView.VIEW_ID);
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+			.showView(DockerExplorerView.VIEW_ID);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail("Failed to open Docker Explorer view: " + e.getMessage());
@@ -76,9 +78,8 @@ public class DockerContainersViewSWTBotTest {
 		// remove the DockerContainerRefreshManager
 		dockerConnection.removeContainerListener(DockerContainerRefreshManager
 								.getInstance());
-		// DockerExplorerView inner classes
 		assertThat(dockerConnection.getContainerListeners()).hasSize(2);
-		// close the Docker Explorer View
+		// close the Docker Containers View
 		dockerContainersViewBot.close();
 		// there should be one listener left: DockerExplorerView
 		assertThat(dockerConnection.getContainerListeners()).hasSize(1);
@@ -95,9 +96,8 @@ public class DockerContainersViewSWTBotTest {
 		// remove the DockerContainerRefreshManager
 		dockerConnection.removeContainerListener(DockerContainerRefreshManager
 								.getInstance());
-		// DockerExplorerView inner classes
 		assertThat(dockerConnection.getContainerListeners()).hasSize(0);
-		// close the Docker Explorer View
+		// close the Docker Containers View
 		dockerContainersViewBot.close();
 		// there should be one listener left: DockerExplorerView
 		assertThat(dockerConnection.getContainerListeners()).hasSize(0);

@@ -91,6 +91,11 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 	
 	@Override
 	public void dispose() {
+		// remove this listener instance registered on the Docker connection
+		if (connection != null) {
+			connection.removeImageListener(this);
+		}
+
 		// stop tracking selection changes in the Docker Explorer view (only)
 		getSite().getWorkbenchWindow().getSelectionService()
 				.removeSelectionListener(DockerExplorerView.VIEW_ID, this);
@@ -271,8 +276,8 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 		viewer.setComparator(comparator);
 		// apply search filter
 		this.viewer.addFilter(getImagesFilter());
-
-		IDockerConnection[] connections = DockerConnectionManager.getInstance()
+		final IDockerConnection[] connections = DockerConnectionManager
+				.getInstance()
 				.getConnections();
 		if (connections.length > 0) {
 			setConnection(connections[0]);
@@ -367,8 +372,12 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					DockerImagesView.this.viewer.refresh();
-					refreshViewTitle();
+					if (DockerImagesView.this.viewer != null
+							&& !DockerImagesView.this.viewer.getTable()
+									.isDisposed()) {
+						DockerImagesView.this.viewer.refresh();
+						refreshViewTitle();
+					}
 				}
 			});
 		}
