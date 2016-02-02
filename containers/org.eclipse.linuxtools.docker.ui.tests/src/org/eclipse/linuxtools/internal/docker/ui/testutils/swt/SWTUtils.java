@@ -108,10 +108,26 @@ public class SWTUtils {
 	 * @throws InterruptedException
 	 */
 	public static void asyncExec(final Runnable runnable) {
+		asyncExec(runnable, true);
+	}
+	
+	/**
+	 * Executes the given {@link Runnable} <strong>asynchronously</strong> in
+	 * the default {@link Display} and waits until all jobs are done before
+	 * completing.
+	 * 
+	 * @param runnable
+	 *            the {@link Runnable} to execute
+	 * @param waitForJobsToComplete
+	 *            boolean flag to indicate if the method should wait for all
+	 *            jobs to complete before finishing
+	 * @throws InterruptedException
+	 */
+	public static void asyncExec(final Runnable runnable, final boolean waitForJobsToComplete) {
 		final Queue<ComparisonFailure> failure = new ArrayBlockingQueue<>(1);
 		final Queue<SWTException> swtException = new ArrayBlockingQueue<>(1);
 		Display.getDefault().asyncExec(new Runnable() {
-
+			
 			@Override
 			public void run() {
 				try {
@@ -123,7 +139,9 @@ public class SWTUtils {
 				}
 			}
 		});
-		waitForJobsToComplete();
+		if(waitForJobsToComplete) {
+			waitForJobsToComplete();
+		}
 		if (!failure.isEmpty()) {
 			throw failure.poll();
 		}
@@ -222,15 +240,44 @@ public class SWTUtils {
 	 * 
 	 * @param parentTreeItem
 	 *            the parent tree item
+	 * @param firstItem
+	 *            the first item to select
+	 * @param otherItems
+	 *            the other items to select
+	 */
+	public static void select(final SWTBotTreeItem parentTreeItem, final String firstItem, final String... otherItems) {
+		final String[] matchItems = new String[otherItems.length];
+		matchItems[0] = firstItem;
+		select(parentTreeItem, matchItems);
+	}
+
+	/**
+	 * Selects <strong> all child items</strong> in the given <code>parentTreeItem</code> whose
+	 * labels match the given <code>items</code>.
+	 * 
+	 * @param parentTreeItem
+	 *            the parent tree item
 	 * @param matchItems
 	 *            the items to select
 	 */
-	public static void select(SWTBotTreeItem parentTreeItem, String... matchItems) {
+	public static void select(final SWTBotTreeItem parentTreeItem, final String[] matchItems) {
 		final List<String> fullyQualifiedItems = Stream.of(parentTreeItem.getItems())
 				.filter(treeItem -> Stream.of(matchItems)
 						.anyMatch(matchItem -> treeItem.getText().startsWith(matchItem)))
 				.map(item -> item.getText()).collect(Collectors.toList());
 		parentTreeItem.select(fullyQualifiedItems.toArray(new String[0]));
+	}
+	/**
+	 * Selects the given <code>treeItem</code> whose
+	 * labels match the given <code>items</code>.
+	 * 
+	 * @param treeItem
+	 *            the parent tree item
+	 * @param matchItems
+	 *            the items to select
+	 */
+	public static void select(SWTBotTreeItem treeItem) {
+		treeItem.select();
 	}
 
 	/**

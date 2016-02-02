@@ -81,7 +81,7 @@ public class ImageRunSWTBotTest {
 	}
 	
 	@Test
-	public void shouldReportErrorIfContainerWithSameNameExists() throws InterruptedException {
+	public void shouldReportErrorIfContainerWithSameNameExists() {
 		// given
 		final DockerClient client = MockDockerClientFactory.image(MockDockerImageFactory.name("foo:latest").build())
 				.container(MockDockerContainerFactory.name("foo_bar").build()).build();
@@ -106,7 +106,7 @@ public class ImageRunSWTBotTest {
 	}
 
 	@Test
-	public void shouldNotReportErrorIfNoContainerWithSameNameExists() throws InterruptedException {
+	public void shouldNotReportErrorIfNoContainerWithSameNameExists() {
 		// given
 		final DockerClient client = MockDockerClientFactory.image(MockDockerImageFactory.name("foo:latest").build())
 				.container(MockDockerContainerFactory.name("foo_bar").build()).build();

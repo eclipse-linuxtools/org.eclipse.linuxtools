@@ -32,12 +32,15 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.debug.ui.ILaunchGroup;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.jobs.BuildDockerImageJob;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * The {@link ILaunchConfigurationDelegate} to trigger the build of a Docker
@@ -47,7 +50,7 @@ import org.eclipse.linuxtools.internal.docker.ui.jobs.BuildDockerImageJob;
 public class BuildDockerImageLaunchConfigurationDelegate
 		implements ILaunchConfigurationDelegate {
 
-	private static final String MISSING_CONNECTION_ERROR_MSG = "MissingConnectionError.msg"; //$NON-NLS-1$
+	private static final String MISSING_CONNECTION_ERROR_MSG = "ImageBuildShortcutMissingConnection.msg"; //$NON-NLS-1$
 
 	@Override
 	public void launch(final ILaunchConfiguration configuration,
@@ -75,22 +78,27 @@ public class BuildDockerImageLaunchConfigurationDelegate
 				.getAttribute(RM_INTERMEDIATE_CONTAINERS, true));
 		buildOptions.put(FORCE_RM_INTERMEDIATE_CONTAINERS, configuration
 				.getAttribute(FORCE_RM_INTERMEDIATE_CONTAINERS, false));
-		if (connection == null) {
-			Activator
-					.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-							LaunchMessages.getFormattedString(
-									MISSING_CONNECTION_ERROR_MSG,
-									connectionName)));
-		}
 		try {
 			if (connection != null && sourcePath != null) {
 				final Job buildImageJob = new BuildDockerImageJob(connection,
 						sourcePath, repoName, buildOptions);
 				buildImageJob.schedule();
 			} else {
-				Activator.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-						LaunchMessages.getString(
-								"BuildDockerImageLaunchConfiguration.error.incomplete"))); //$NON-NLS-1$
+				final ILaunchGroup launchGroup = DebugUITools
+						.getLaunchGroup(configuration, "run"); //$NON-NLS-1$
+				// prompt the user with the launch configuration editor
+				Display.getDefault().syncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						DebugUITools.openLaunchConfigurationDialog(
+								Display.getDefault().getActiveShell(),
+								configuration, launchGroup.getIdentifier(),
+								null);
+					}
+
+				});
+
 			}
 		} catch (DockerException e) {
 			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,

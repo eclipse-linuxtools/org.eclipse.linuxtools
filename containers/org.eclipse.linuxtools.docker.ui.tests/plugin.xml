@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+    <!-- this provides the "Run As" context menu when running tests with tycho. See http://insights.sigasi.com/tech/run-menu-item-strangely-disappearing-context-menu.html -->  
+	<extension point="org.eclipse.core.runtime.adapters">
+	  <factory class="org.eclipse.core.runtime.IAdaptable"
+	           adaptableType="org.eclipse.core.resources.IResource">
+	     <adapter type="org.eclipse.debug.ui.actions.ILaunchable"/>
+	  </factory>
+	</extension>
+
+
+</plugin>

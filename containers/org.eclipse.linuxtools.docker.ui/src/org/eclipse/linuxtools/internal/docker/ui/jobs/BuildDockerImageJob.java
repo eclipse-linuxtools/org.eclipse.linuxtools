@@ -81,6 +81,7 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 	 *            the optional repoName (i.e., repo[tag]) for the image to build
 	 * @param buildOptions
 	 *            build options
+	 * @throws DockerException
 	 * @throws IOException
 	 * @see {@link IBuildDockerImageLaunchConfigurationConstants} for build
 	 *      options.

@@ -36,7 +36,7 @@ public abstract class BaseSWTBotTest {
 		bot.perspectiveById("org.eclipse.linuxtools.docker.ui.perspective").activate();
 	}
 	
-	public static void configureConnectionManager(final DockerExplorerView dockerExplorerView, final IDockerConnection... connections) throws InterruptedException {
+	public static void configureConnectionManager(final DockerExplorerView dockerExplorerView, final IDockerConnection... connections) {
 		DockerConnectionManager.getInstance()
 				.setConnectionStorageManager(MockDockerConnectionStorageManagerFactory.providing(connections));
 		SWTUtils.asyncExec(() -> {
