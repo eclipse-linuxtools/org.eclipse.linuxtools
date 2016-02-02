@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -60,8 +60,8 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	private boolean boxesLoaded = false;
 	private Set<String> trackedKeys = new HashSet<>();
 
-	ListenerList vmListeners;
-	ListenerList boxListeners;
+	ListenerList<IVagrantVMListener> vmListeners;
+	ListenerList<IVagrantBoxListener> boxListeners;
 
 	public VagrantConnection() {
 		// Add the box/vm refresh manager to watch the containers list
@@ -78,7 +78,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	@Override
 	public void addVMListener(IVagrantVMListener listener) {
 		if (vmListeners == null)
-			vmListeners = new ListenerList(ListenerList.IDENTITY);
+			vmListeners = new ListenerList<>(ListenerList.IDENTITY);
 		vmListeners.add(listener);
 	}
 
@@ -90,9 +90,8 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 
 	public void notifyContainerListeners(List<IVagrantVM> list) {
 		if (vmListeners != null) {
-			Object[] listeners = vmListeners.getListeners();
-			for (int i = 0; i < listeners.length; ++i) {
-				((IVagrantVMListener) listeners[i]).listChanged(this, list);
+			for (IVagrantVMListener listener : vmListeners) {
+				listener.listChanged(this, list);
 			}
 		}
 	}
@@ -100,7 +99,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	@Override
 	public void addBoxListener(IVagrantBoxListener listener) {
 		if (boxListeners == null)
-			boxListeners = new ListenerList(ListenerList.IDENTITY);
+			boxListeners = new ListenerList<>(ListenerList.IDENTITY);
 		boxListeners.add(listener);
 	}
 
@@ -112,9 +111,8 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 
 	public void notifyBoxListeners(List<IVagrantBox> list) {
 		if (boxListeners != null) {
-			Object[] listeners = boxListeners.getListeners();
-			for (int i = 0; i < listeners.length; ++i) {
-				((IVagrantBoxListener) listeners[i]).listChanged(this, list);
+			for (IVagrantBoxListener listener : boxListeners) {
+				listener.listChanged(this, list);
 			}
 		}
 	}
