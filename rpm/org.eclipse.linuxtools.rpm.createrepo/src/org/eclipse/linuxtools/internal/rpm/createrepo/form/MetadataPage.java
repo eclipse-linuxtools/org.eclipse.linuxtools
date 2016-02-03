@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Red Hat Inc. and others.
+ * Copyright (c) 2013, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -55,13 +55,11 @@ public class MetadataPage extends FormPage {
     private IEclipsePreferences eclipsePreferences;
 
     private FormToolkit toolkit;
-    private ScrolledForm form;
 
     private Text revisionTxt;
     private Text tagTxt;
     private Tree tagsTree;
     private TreeViewer tagsTreeViewer;
-    private Composite buttonList;
 
     private static final String MENU_URI = "toolbar:formsToolbar";     //$NON-NLS-1$
     private static final String HEADER_ICON = "/icons/library_obj.gif"; //$NON-NLS-1$
@@ -79,7 +77,7 @@ public class MetadataPage extends FormPage {
         super.createFormContent(managedForm);
         GridLayout layout = new GridLayout();
         toolkit = managedForm.getToolkit();
-        form = managedForm.getForm();
+        ScrolledForm form = managedForm.getForm();
         form.setText(Messages.MetadataPage_formHeaderText);
         form.setImage(Activator.getImageDescriptor(HEADER_ICON).createImage());
         ToolBarManager toolbarManager = (ToolBarManager) form.getToolBarManager();
@@ -176,7 +174,7 @@ public class MetadataPage extends FormPage {
         tagsTree.setLayoutData(expandComposite());
 
         // everything to do with the buttons
-        buttonList = toolkit.createComposite(sectionClientTags);
+        Composite buttonList = toolkit.createComposite(sectionClientTags);
         layout = new GridLayout();
         data = new GridData(SWT.BEGINNING, SWT.FILL, false, true);
         layout.marginWidth = 0; layout.marginHeight = 0;

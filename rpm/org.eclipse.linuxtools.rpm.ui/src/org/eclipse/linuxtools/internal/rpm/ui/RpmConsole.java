@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Red Hat Inc. and others.
+ * Copyright (c) 2010, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -58,7 +58,7 @@ public class RpmConsole extends IOConsole {
     /**
      * A listener for responding to the run state of a build operation.
      */
-    public static interface RpmConsoleObserver {
+    public interface RpmConsoleObserver {
         /**
          * This method is called whenever the run state of the build operation changes.
          * @param running Whether or not the build is currently running.

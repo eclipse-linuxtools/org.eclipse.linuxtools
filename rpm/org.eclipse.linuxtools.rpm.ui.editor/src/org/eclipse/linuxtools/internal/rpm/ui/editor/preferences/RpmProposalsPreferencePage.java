@@ -74,8 +74,7 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage implem
 				PreferencesUtil.createPreferenceDialogOn(parent.getShell(), e.text, null, null);
 			}
 		});
-		Composite fieldEditorComposite = (Composite) super.createContents(parent);
-		return fieldEditorComposite;
+		return super.createContents(parent);
 	}
 
 	private FieldEditor rpmtoolsRadioGroupFieldEditor() {
