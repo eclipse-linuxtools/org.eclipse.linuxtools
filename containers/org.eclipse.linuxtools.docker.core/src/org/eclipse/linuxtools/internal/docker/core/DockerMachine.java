@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -92,20 +94,29 @@ public class DockerMachine {
 			final String[] args, final String... extraPaths) {
 		try {
 			final String[] command = new String[args.length + 1];
-			command[0] = dockerMachineInstallDir
-					+ (dockerMachineInstallDir.endsWith(File.separator) ? "" //$NON-NLS-1$
-							: File.separator)
-					+ "docker-machine";
+
+			command[0] = Paths.get(dockerMachineInstallDir, "docker-machine").toString(); //$NON-NLS-1$
+			final String envPath = System.getenv("PATH"); //$NON-NLS-1$
+			if (envPath != null) {
+				for (String dir : envPath.split(File.pathSeparator)) {
+					Path dmPath = Paths.get(dir, "docker-machine"); //$NON-NLS-1$
+					if (dmPath.toFile().exists()) {
+						command[0] = dmPath.toString();
+						break;
+					}
+				}
+			}
+
 			System.arraycopy(args, 0, command, 1, args.length);
 			final ProcessBuilder processBuilder = new ProcessBuilder(command);
 			final Map<String, String> environment = processBuilder
 					.environment();
-			final StringBuilder path = new StringBuilder(
-					dockerMachineInstallDir);
+			final StringBuilder path = new StringBuilder();
 			for (String extraPath : extraPaths) {
 				path.append(File.pathSeparator).append(extraPath);
 			}
-			environment.put("PATH", path.toString());
+			String newEnvPath = environment.get("PATH") + path.toString(); //$NON-NLS-1$
+			environment.put("PATH", newEnvPath); //$NON-NLS-1$
 			final Process p = processBuilder.start();
 			p.waitFor();
 			if (p.exitValue() == 0) {
