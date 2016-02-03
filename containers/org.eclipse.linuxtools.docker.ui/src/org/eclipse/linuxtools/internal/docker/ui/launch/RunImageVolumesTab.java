@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -461,7 +461,7 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		WritableList volumes = model.getDataVolumes();
+		WritableList<DataVolumeModel> volumes = model.getDataVolumes();
 		Set<DataVolumeModel> selectedVolumes = model.getSelectedDataVolumes();
 
 		ArrayList<String> binds = new ArrayList<>();
@@ -469,8 +469,7 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 		ArrayList<String> volumesList = new ArrayList<>();
 		Set<String> selectedVolumesSet = new TreeSet<>();
 
-		for (@SuppressWarnings("unchecked")
-		Iterator<DataVolumeModel> iterator = volumes.iterator(); iterator
+		for (Iterator<DataVolumeModel> iterator = volumes.iterator(); iterator
 				.hasNext();) {
 			DataVolumeModel volume = iterator.next();
 			StringBuffer buffer = new StringBuffer();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2015 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -88,11 +88,11 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 
 	private boolean publishAllPorts = true;
 
-	private final WritableList exposedPorts = new WritableList();
+	private final WritableList<ExposedPortModel> exposedPorts = new WritableList<>();
 
 	private Set<ExposedPortModel> selectedPorts;
 
-	private final WritableList links = new WritableList();
+	private final WritableList<ContainerLinkModel> links = new WritableList<>();
 
 	private boolean interactiveMode = false;
 
@@ -264,7 +264,7 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 		setEntrypoint(entrypointBuilder.toString());
 	}
 
-	public WritableList getExposedPorts() {
+	public WritableList<ExposedPortModel> getExposedPorts() {
 		return exposedPorts;
 	}
 
@@ -305,7 +305,7 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 				this.selectedPorts = ports);
 	}
 
-	public WritableList getLinks() {
+	public WritableList<ContainerLinkModel> getLinks() {
 		return links;
 	}
 
@@ -331,7 +331,7 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 		this.links.clear();
 	}
 
-	public void setLinks(final WritableList links) {
+	public void setLinks(final WritableList<ContainerLinkModel> links) {
 		this.links.clear();
 		this.links.addAll(links);
 	}

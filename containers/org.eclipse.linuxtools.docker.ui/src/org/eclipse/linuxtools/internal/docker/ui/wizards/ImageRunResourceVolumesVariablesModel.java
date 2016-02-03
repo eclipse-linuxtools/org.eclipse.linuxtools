@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -76,9 +76,9 @@ public class ImageRunResourceVolumesVariablesModel
 
 	private Set<DataVolumeModel> selectedDataVolumes = new HashSet<>();
 
-	private WritableList dataVolumes = new WritableList();
+	private WritableList<DataVolumeModel> dataVolumes = new WritableList<>();
 
-	private WritableList environmentVariables = new WritableList();
+	private WritableList<EnvironmentVariableModel> environmentVariables = new WritableList<>();
 
 	private IDockerImage selectedImage;
 
@@ -133,7 +133,7 @@ public class ImageRunResourceVolumesVariablesModel
 		return imageInfo;
 	}
 
-	public WritableList getDataVolumes() {
+	public WritableList<DataVolumeModel> getDataVolumes() {
 		return dataVolumes;
 	}
 
@@ -158,7 +158,7 @@ public class ImageRunResourceVolumesVariablesModel
 				this.selectedDataVolumes = selectedDataVolumes);
 	}
 
-	public WritableList getEnvironmentVariables() {
+	public WritableList<EnvironmentVariableModel> getEnvironmentVariables() {
 		return environmentVariables;
 	}
 
@@ -178,7 +178,7 @@ public class ImageRunResourceVolumesVariablesModel
 	}
 
 	public void setEnvironmentVariables(
-			final WritableList environmentVariables) {
+			final WritableList<EnvironmentVariableModel> environmentVariables) {
 		firePropertyChange(ENVIRONMENT_VARIABLES, this.environmentVariables,
 				this.environmentVariables = environmentVariables);
 	}
