@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2015 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -456,12 +456,11 @@ public class ImageRunSelectionPage extends WizardPage {
 				removeButton);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void checkAllElements(
 			final CheckboxTableViewer exposedPortsTableViewer) {
 		exposedPortsTableViewer.setAllChecked(true);
 		model.setSelectedPorts(
-				new HashSet<ExposedPortModel>(model.getExposedPorts()));
+				new HashSet<>(model.getExposedPorts()));
 	}
 
 	private ISelectionChangedListener onSelectionChanged(
@@ -977,16 +976,16 @@ public class ImageRunSelectionPage extends WizardPage {
 
 	private class ImageSelectionValidator extends MultiValidator {
 
-		private final IObservableValue imageSelectionObservable;
+		private final IObservableValue<String> imageSelectionObservable;
 
 		ImageSelectionValidator(
-				final IObservableValue imageSelectionObservable) {
+				final IObservableValue<String> imageSelectionObservable) {
 			this.imageSelectionObservable = imageSelectionObservable;
 		}
 
 		@Override
 		protected IStatus validate() {
-			final String selectedImageName = (String) imageSelectionObservable
+			final String selectedImageName = imageSelectionObservable
 					.getValue();
 			if (selectedImageName.isEmpty()) {
 				model.setSelectedImageNeedsPulling(false);
@@ -1016,18 +1015,17 @@ public class ImageRunSelectionPage extends WizardPage {
 
 		private final IDockerConnection connection;
 
-		private final IObservableValue containerNameObservable;
+		private final IObservableValue<String> containerNameObservable;
 
 		ContainerNameValidator(final IDockerConnection connection,
-				final IObservableValue containerNameObservable) {
+				final IObservableValue<String> containerNameObservable) {
 			this.connection = connection;
 			this.containerNameObservable = containerNameObservable;
 		}
 
 		@Override
 		protected IStatus validate() {
-			final String containerName = (String) containerNameObservable
-					.getValue();
+			final String containerName = containerNameObservable.getValue();
 
 			for (IDockerContainer container : connection.getContainers()) {
 				if (container.name().equals(containerName)) {
