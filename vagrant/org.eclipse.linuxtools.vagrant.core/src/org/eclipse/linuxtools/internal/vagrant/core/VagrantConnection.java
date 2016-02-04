@@ -490,18 +490,39 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	 * the PATH, or null if it could not be found.
 	 */
 	public static String findVagrantPath() {
+		final String vgName = Platform.OS_WIN32.equals(Platform.getOS())
+				? VG + ".exe" : VG; //$NON-NLS-1$
+
+		String userDefinedVagrantPath = getUserDefinedVagrantPath();
+		if (userDefinedVagrantPath != null) {
+			Path vgPath = Paths.get(userDefinedVagrantPath, vgName);
+			if (vgPath.toFile().exists()) {
+				return vgPath.toString();
+			}
+		}
+
 		final String envPath = System.getenv("PATH"); //$NON-NLS-1$
 		if (envPath != null) {
 			for (String dir : envPath.split(File.pathSeparator)) {
-				final String vgName = Platform.OS_WIN32.equals(Platform.getOS())
-						? VG + ".exe" : VG; //$NON-NLS-1$
 				Path vgPath = Paths.get(dir, vgName);
 				if (vgPath.toFile().exists()) {
 					return vgPath.toString();
 				}
 			}
 		}
+
 		return null;
+	}
+
+	public static String getUserDefinedVagrantPath() {
+		String userDefinedVagrantPath = InstanceScope.INSTANCE
+				.getNode("org.eclipse.linuxtools.vagrant.ui") //$NON-NLS-1$
+				.get("vagrantPath", null); //$NON-NLS-1$
+		String defaultDefinedVagrantPath = DefaultScope.INSTANCE
+				.getNode("org.eclipse.linuxtools.vagrant.ui") //$NON-NLS-1$
+				.get("vagrantPath", null); //$NON-NLS-1$
+		return userDefinedVagrantPath != null ? userDefinedVagrantPath
+				: defaultDefinedVagrantPath;
 	}
 
 }
