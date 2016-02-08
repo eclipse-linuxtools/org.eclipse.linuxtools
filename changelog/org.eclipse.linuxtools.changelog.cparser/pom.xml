@@ -14,7 +14,7 @@
   <parent>
     <artifactId>linuxtools-changelog-parent</artifactId>
     <groupId>org.eclipse.linuxtools.changelog</groupId>
-    <version>4.2.0</version>
+    <version>4.2.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.changelog.cparser</artifactId>

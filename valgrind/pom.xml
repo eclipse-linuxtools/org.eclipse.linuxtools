@@ -16,12 +16,12 @@
   <parent>
     <groupId>org.eclipse.linuxtools</groupId>
     <artifactId>linuxtools-parent</artifactId>
-    <version>4.2.0</version>
+    <version>4.2.1-SNAPSHOT</version>
   </parent>
 
   <groupId>org.eclipse.linuxtools.valgrind</groupId>
   <artifactId>linuxtools-valgrind-parent</artifactId>
-  <version>4.2.0</version>
+  <version>4.2.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Linux Tools Valgrind Parent</name>

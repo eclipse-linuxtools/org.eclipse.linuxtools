@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.eclipse.linuxtools</groupId>
 		<artifactId>org.eclipse.linuxtools.vagrant</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>org.eclipse.linuxtools.vagrant.ui</artifactId>
 	<packaging>eclipse-plugin</packaging>

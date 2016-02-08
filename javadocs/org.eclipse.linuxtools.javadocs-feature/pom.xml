@@ -14,11 +14,11 @@
   <parent>
     <artifactId>linuxtools-javadocs-parent</artifactId>
     <groupId>org.eclipse.linuxtools.javadocs</groupId>
-    <version>4.2.0</version>
+    <version>4.2.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.javadocs.feature</artifactId>
-  <version>4.2.0-SNAPSHOT</version>
+  <version>4.2.1-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
   <name>Linux Tools Javadocs Feature</name>
 
