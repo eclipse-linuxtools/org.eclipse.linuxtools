@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009, 2016 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.internal.valgrind.cachegrind;
 
 import java.text.DecimalFormat;
 
-import org.eclipse.cdt.core.model.util.CElementBaseLabels;
 import org.eclipse.cdt.ui.CElementLabelProvider;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.debug.ui.DebugUITools;
@@ -34,12 +33,7 @@ public class CachegrindLabelProvider extends CellLabelProvider {
 
     private static final String NAME_NOT_FOUND_SYMBOL = "???"; //$NON-NLS-1$
 
-    protected CElementLabelProvider cLabelProvider = new CElementLabelProvider(CElementLabelProvider.SHOW_SMALL_ICONS | CElementLabelProvider.SHOW_PARAMETERS | CElementLabelProvider.SHOW_RETURN_TYPE) {
-        @Override
-        public int getTextFlags() {
-            return super.getTextFlags() |CElementBaseLabels.M_FULLY_QUALIFIED;
-        }
-    };
+    protected CElementLabelProvider cLabelProvider = new CElementLabelProvider(CElementLabelProvider.SHOW_SMALL_ICONS | CElementLabelProvider.SHOW_PARAMETERS | CElementLabelProvider.SHOW_RETURN_TYPE);
 
     protected DecimalFormat df = new DecimalFormat("#,##0"); //$NON-NLS-1$
 
