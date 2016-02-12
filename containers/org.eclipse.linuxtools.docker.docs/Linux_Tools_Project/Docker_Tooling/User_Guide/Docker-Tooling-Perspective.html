@@ -390,6 +390,23 @@
 		<p>For more details, see 
 			<a href="http://docs.docker.com/reference/builder">the official Dockerfile reference</a>
 		</p>
+		<h4 id="Build_Image_Run_Configuration">Build Image Run Configuration</h4>
+		<p>A Dockerfile can also be run by right-clicking on it in an Eclipse project and choosing
+			Run as -&gt; Docker Image Build.  For the first time the file is built, you will get the following
+			dialog:</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerBuildImageFirstDialog.png"/>
+		</p>
+		<p>Here, the connection and the repository name for the new image can be supplied.  An image created
+			without a name will default to be: dockerfile:xxxxxxxxxxxx where xxxxxxxxxxx is a unique hex value.  </p>
+		<p>After building, a Run configuration will be created that can be inspected, modified, or run using
+			the Run-&gt;Run Configurations... menu option.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerBuildImageConfiguration2.png"/>
+		</p>
+		<p>Note there are additional options in the configuration that can be specified for the image build that
+			are not available by right-clicking on the Dockerfile.  A new Run configuration can be created from the
+			Run Configurations dialog by double-clicking on the Build Docker Image category.</p>
 		<h3 id="Add_Tag">Add Tag</h3>
 		<p>The Tag Image dialog can be brought up directly from the Docker Images View toolbar or using the
 			context menu by right-clicking on an Image.</p>

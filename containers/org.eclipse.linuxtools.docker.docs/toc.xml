@@ -14,6 +14,7 @@
 				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Run_Image" label="Run Image"></topic>
 				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Build_Image" label="Build Image">
 					<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Dockerfile_Editor" label="Dockerfile Editor"></topic>
+					<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Build_Image_Run_Configuration" label="Build Image Run Configuration"></topic>
 				</topic>
 				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Add_Tag" label="Add Tag"></topic>
 				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Remove_Tag" label="Remove Tag"></topic>
