@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Kalray.eu
+ * Copyright (c) 2013, 2016 Kalray.eu and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Xavier Raynaud <xavier.raynaud@kalray.eu> - initial API and implementation
+ *    Ingenico - Vincent Guignot <vincent.guignot@ingenico.com> - Add binutils strings    
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.binutils.preferences;
 
@@ -30,6 +31,9 @@ public class BinutilsPreferencePage extends FieldEditorPreferencePage implements
 
     public static final String PREFKEY_NM_CMD = "PREFKEY_NM_CMD"; //$NON-NLS-1$
     public static final String PREFKEY_NM_ARGS = "PREFKEY_NM_ARGS"; //$NON-NLS-1$
+
+    public static final String PREFKEY_STRINGS_CMD = "PREFKEY_STRINGS_CMD"; //$NON-NLS-1$
+    public static final String PREFKEY_STRINGS_ARGS = "PREFKEY_STRINGS_ARGS"; //$NON-NLS-1$
 
     public BinutilsPreferencePage() {
         super(Messages.BinutilsPreferencePage_title, FieldEditorPreferencePage.GRID);
@@ -57,6 +61,11 @@ public class BinutilsPreferencePage extends FieldEditorPreferencePage implements
         this.addField(fnm);
         StringFieldEditor fnmArgs = new StringFieldEditor(PREFKEY_NM_ARGS, Messages.BinutilsPreferencePage_nm_flags, this.getFieldEditorParent());
         this.addField(fnmArgs);
+
+        StringFieldEditor fstrings = new StringFieldEditor(PREFKEY_STRINGS_CMD, Messages.BinutilsPreferencePage_strings, this.getFieldEditorParent());
+        this.addField(fstrings);
+        StringFieldEditor fstringsArgs = new StringFieldEditor(PREFKEY_STRINGS_ARGS, Messages.BinutilsPreferencePage_strings_flags, this.getFieldEditorParent());
+        this.addField(fstringsArgs);
     }
 
     @Override

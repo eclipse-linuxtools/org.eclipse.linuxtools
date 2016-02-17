@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 STMicroelectronics.
+ * Copyright (c) 2009, 2016 STMicroelectronics and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *   Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
+ *   Ingenico  - Vincent Guignot <vincent.guignot@ingenico.com> - Add binutils strings
  *******************************************************************************/
 package org.eclipse.linuxtools.binutils.utils;
 
@@ -54,6 +55,19 @@ public class DefaultBinutilsFactory implements ISTBinutilsFactory {
         String[] args = CommandLineUtil.argumentsToArray(nmArgs);
         String nm = RuntimeProcessFactory.getFactory().whichCommand(nmCmd, project);
         return new STNM(nm, args, path, handler, project);
+    }
+
+    /**
+	 * @since 6.0
+	 */
+    @Override
+    public STStrings getSTRINGS(IProject project) throws IOException {
+        IPreferenceStore prefsStore = Activator.getDefault().getPreferenceStore();
+        String stringsCmd = prefsStore.getString(BinutilsPreferencePage.PREFKEY_STRINGS_CMD);
+        String stringsArgs = prefsStore.getString(BinutilsPreferencePage.PREFKEY_STRINGS_ARGS);
+        String[] args = CommandLineUtil.argumentsToArray(stringsArgs);
+        String strings = RuntimeProcessFactory.getFactory().whichCommand(stringsCmd, project);
+        return new STStrings(strings, args);
     }
 
     /**

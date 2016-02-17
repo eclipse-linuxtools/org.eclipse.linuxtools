@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 STMicroelectronics.
+ * Copyright (c) 2009, 2016 STMicroelectronics and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *   Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
+ *   Ingenico  - Vincent Guignot <vincent.guignot@ingenico.com> - Add binutils strings
  *******************************************************************************/
 package org.eclipse.linuxtools.binutils.utils;
 
@@ -27,6 +28,14 @@ public interface ISTBinutilsFactory {
     CPPFilt getCPPFilt(IProject project) throws IOException;
 
     STNM getNM(String path, STNMSymbolsHandler handler, IProject project) throws IOException;
+
+    /**
+	 * @param project
+     * @return an instance of strings for the given program
+     * @throws IOException
+     * @since 6.0
+	 */
+    STStrings getSTRINGS(IProject project) throws IOException;
 
     boolean testAvailability();
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2015 STMicroelectronics and others.
+ * Copyright (c) 2009-2016 STMicroelectronics and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  * Contributors:
  *    Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
  *    Red Hat Inc. - ongoing maintenance
+ *    Ingenico - Vincent Guignot <vincent.guignot@ingenico.com> - Add binutils strings
  *******************************************************************************/
 package org.eclipse.linuxtools.binutils.utils;
 
@@ -325,6 +326,24 @@ public class STSymbolManager {
     }
 
     /**
+     * Gets the strings support for the given program.
+     * @param program
+     * @param project
+     * @return an instance of Strings suitable for the given program
+     * @since 6.0
+     */
+    public synchronized STStrings getStrings(IBinaryObject program, IProject project) {
+        STStrings strings = null;
+        try {
+            strings = STBinutilsFactoryManager.getStrings(program.getCPU(), project);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return strings;
+    }
+
+	/**
      * Gets the IBinaryObject corresponding to the given path (absolute path in filesystem). If a IBinaryObject
      * corresponding to the given path has been already built by eclipse, return it. Otherwise build a new
      * IBinaryObject, according to project preferences. Note that it may return null if the path is invalid, or is not a

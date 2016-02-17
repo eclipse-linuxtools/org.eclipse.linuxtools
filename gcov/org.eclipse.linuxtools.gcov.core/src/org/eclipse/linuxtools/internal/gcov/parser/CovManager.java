@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 STMicroelectronics.
+ * Copyright (c) 2009, 2016 STMicroelectronics and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
+ *    Ingenico  - Vincent Guignot <vincent.guignot@ingenico.com> - Add binutils strings
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gcov.parser;
 
@@ -36,6 +37,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.linuxtools.binutils.utils.STStrings;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.internal.gcov.Activator;
 import org.eclipse.linuxtools.internal.gcov.model.CovFileTreeElement;
@@ -380,9 +382,10 @@ public class CovManager implements Serializable {
     public List<String> getGCDALocations() throws InterruptedException {
         IBinaryObject binaryObject = STSymbolManager.sharedInstance.getBinaryObject(new Path(binaryPath));
         String binaryPath = binaryObject.getPath().toOSString();
+        STStrings strings = STSymbolManager.sharedInstance.getStrings(binaryObject, project);
         List<String> l = new LinkedList<>();
         Process p;
-        p = getStringsProcess(Messages.CovManager_Strings, binaryPath);
+        p = getStringsProcess(strings.getName(), strings.getArgs(), binaryPath);
         if (p == null) {
             Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR,
                     Messages.CovManager_Retrieval_Error, new IOException());
@@ -396,9 +399,13 @@ public class CovManager implements Serializable {
         return l;
     }
 
-    private Process getStringsProcess(String stringsTool, String binaryPath) {
+    private Process getStringsProcess(String stringsTool, String[] stringsArgs, String binaryPath) {
+        String[] runtimeStr = new String[stringsArgs.length + 2];
+        System.arraycopy(stringsArgs, 0, runtimeStr, 1, stringsArgs.length);
+        runtimeStr[0] = stringsTool;
+        runtimeStr[runtimeStr.length-1] = binaryPath;
         try {
-            return Runtime.getRuntime().exec(new String[] { stringsTool, binaryPath });
+            return Runtime.getRuntime().exec(runtimeStr);
         } catch (IOException e) {
             return null;
         }

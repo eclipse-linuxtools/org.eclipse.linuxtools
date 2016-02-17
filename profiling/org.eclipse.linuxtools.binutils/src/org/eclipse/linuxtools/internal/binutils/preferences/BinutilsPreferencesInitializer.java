@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Kalray.eu
+ * Copyright (c) 2013, 2016 Kalray.eu and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Xavier Raynaud <xavier.raynaud@kalray.eu> - initial API and implementation
+ *    Ingenico - Vincent Guignot <vincent.guignot@ingenico.com> - Add binutils strings    
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.binutils.preferences;
 
@@ -22,6 +23,7 @@ public class BinutilsPreferencesInitializer extends AbstractPreferenceInitialize
     private static final String CPPFILT_CMD = "c++filt"; //$NON-NLS-1$
     private static final String ADDR2LINE_CMD = "addr2line"; //$NON-NLS-1$
     private static final String NM_CMD = "nm"; //$NON-NLS-1$
+    private static final String STRINGS_CMD = "strings"; //$NON-NLS-1$
 
     @Override
     public void initializeDefaultPreferences() {
@@ -32,6 +34,8 @@ public class BinutilsPreferencesInitializer extends AbstractPreferenceInitialize
         store.setDefault(BinutilsPreferencePage.PREFKEY_CPPFILT_ARGS, ""); //$NON-NLS-1$
         store.setDefault(BinutilsPreferencePage.PREFKEY_NM_CMD, NM_CMD);
         store.setDefault(BinutilsPreferencePage.PREFKEY_NM_ARGS, ""); //$NON-NLS-1$
+        store.setDefault(BinutilsPreferencePage.PREFKEY_STRINGS_CMD, STRINGS_CMD);
+        store.setDefault(BinutilsPreferencePage.PREFKEY_STRINGS_ARGS, ""); //$NON-NLS-1$
     }
 
 }
