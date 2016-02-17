@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 import java.nio.file.FileSystems;
@@ -74,6 +75,8 @@ import com.spotify.docker.client.DockerCertificateException;
 import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.DockerClient.AttachParameter;
 import com.spotify.docker.client.DockerClient.BuildParam;
+import com.spotify.docker.client.DockerClient.ExecCreateParam;
+import com.spotify.docker.client.DockerClient.ExecStartParameter;
 import com.spotify.docker.client.DockerClient.LogsParam;
 import com.spotify.docker.client.LogStream;
 import com.spotify.docker.client.messages.Container;
@@ -1495,27 +1498,7 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			final boolean isOpenStdin = info.config().openStdin();
 
 			if (isTtyEnabled) {
-				OutputStream tout = noBlockingOutputStream(HttpHijackWorkaround.getOutputStream(pty_stream, getUri()));
-				InputStream tin = HttpHijackWorkaround.getInputStream(pty_stream);
-				// org.eclipse.tm.terminal.connector.ssh.controls.SshWizardConfigurationPanel
-				Map<String, Object> properties = new HashMap<>();
-				properties.put(ITerminalsConnectorConstants.PROP_DELEGATE_ID, "org.eclipse.tm.terminal.connector.streams.launcher.streams");
-				properties.put(ITerminalsConnectorConstants.PROP_TERMINAL_CONNECTOR_ID, "org.eclipse.tm.terminal.connector.streams.StreamsConnector");
-				properties.put(ITerminalsConnectorConstants.PROP_TITLE, info.name());
-				properties.put(ITerminalsConnectorConstants.PROP_LOCAL_ECHO, false);
-				properties.put(ITerminalsConnectorConstants.PROP_FORCE_NEW, true);
-				properties.put(ITerminalsConnectorConstants.PROP_STREAMS_STDIN, tout);
-				properties.put(ITerminalsConnectorConstants.PROP_STREAMS_STDOUT, tin);
-				/*
-				 * The JVM will call finalize() on 'pty_stream' (LogStream)
-				 * since we hold no references to it (although we do hold
-				 * references to one of its heavily nested fields. The
-				 * LogStream overrides finalize() to close the stream being
-				 * used so we must preserve a reference to it.
-				 */
-				properties.put("PREVENT_JVM_GC_FINALIZE", pty_stream);
-				ITerminalService service = TerminalServiceFactory.getService();
-				service.openConsole(properties, null);
+				openTerminal(pty_stream, info.name());
 			}
 
 			// Data from the given input stream
@@ -1546,6 +1529,64 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			if (!isTtyEnabled && isOpenStdin) {
 				t_in.start();
 			}
+		} catch (Exception e) {
+			throw new DockerException(e.getMessage(), e.getCause());
+		}
+	}
+
+	public void execShell(final String id) throws DockerException {
+		try {
+			final String execId = client.execCreate(id,
+					new String[] { "/bin/sh" }, //$NON-NLS-1$
+					ExecCreateParam.attachStdout(),
+					ExecCreateParam.attachStderr(),
+					ExecCreateParam.attachStdin(),
+					ExecCreateParam.tty());
+			/*
+			 * Temporary workaround for lack of support for 'Tty'.
+			 * We do not use DETACH so modify it in this scope to
+			 * pass 'Tty' to the execStart call.
+			 * This can be removed once
+			 * https://github.com/spotify/docker-client/pull/351
+			 * is accepted.
+			 */
+			String realValue = ExecStartParameter.DETACH.getName();
+			Field fname = ExecStartParameter.class.getDeclaredField("name"); //$NON-NLS-1$
+			fname.setAccessible(true);
+			fname.set(ExecStartParameter.DETACH, "Tty"); //$NON-NLS-1$
+			final LogStream pty_stream = client.execStart(execId,
+					DockerClient.ExecStartParameter.DETACH);
+			fname.set(ExecStartParameter.DETACH, realValue);
+			final IDockerContainerInfo info = getContainerInfo(id);
+			openTerminal(pty_stream, info.name());
+		} catch (Exception e) {
+			throw new DockerException(e.getMessage(), e.getCause());
+		}
+	}
+
+	private void openTerminal(LogStream pty_stream, String name) throws DockerException {
+		try {
+			OutputStream tout = noBlockingOutputStream(HttpHijackWorkaround.getOutputStream(pty_stream, getUri()));
+			InputStream tin = HttpHijackWorkaround.getInputStream(pty_stream);
+			// org.eclipse.tm.terminal.connector.ssh.controls.SshWizardConfigurationPanel
+			Map<String, Object> properties = new HashMap<>();
+			properties.put(ITerminalsConnectorConstants.PROP_DELEGATE_ID, "org.eclipse.tm.terminal.connector.streams.launcher.streams");
+			properties.put(ITerminalsConnectorConstants.PROP_TERMINAL_CONNECTOR_ID, "org.eclipse.tm.terminal.connector.streams.StreamsConnector");
+			properties.put(ITerminalsConnectorConstants.PROP_TITLE, name);
+			properties.put(ITerminalsConnectorConstants.PROP_LOCAL_ECHO, false);
+			properties.put(ITerminalsConnectorConstants.PROP_FORCE_NEW, true);
+			properties.put(ITerminalsConnectorConstants.PROP_STREAMS_STDIN, tout);
+			properties.put(ITerminalsConnectorConstants.PROP_STREAMS_STDOUT, tin);
+			/*
+			 * The JVM will call finalize() on 'pty_stream' (LogStream)
+			 * since we hold no references to it (although we do hold
+			 * references to one of its heavily nested fields. The
+			 * LogStream overrides finalize() to close the stream being
+			 * used so we must preserve a reference to it.
+			 */
+			properties.put("PREVENT_JVM_GC_FINALIZE", pty_stream);
+			ITerminalService service = TerminalServiceFactory.getService();
+			service.openConsole(properties, null);
 		} catch (Exception e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}

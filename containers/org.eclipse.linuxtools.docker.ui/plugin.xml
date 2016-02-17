@@ -269,6 +269,11 @@
             description="%command.showInSystemExplorer.menu.description"
             id="org.eclipse.linuxtools.docker.ui.commands.showInSystemExplorer">
       	</command>
+        <command
+              description="%command.execcontainer.description"
+              id="org.eclipse.linuxtools.docker.ui.commands.execContainer"
+              name="%command.execcontainer.name">
+        </command>
 		      
 	</extension>
     <extension
@@ -526,6 +531,38 @@
               commandId="org.eclipse.linuxtools.docker.ui.commands.showInSystemExplorer"
               class="org.eclipse.linuxtools.internal.docker.ui.commands.ShowInSystemExplorerCommandHandler">
      	</handler>
+  <handler
+        class="org.eclipse.linuxtools.internal.docker.ui.commands.ExecContainerCommandHandler"
+        commandId="org.eclipse.linuxtools.docker.ui.commands.execContainer">
+     <enabledWhen>
+        <with
+              variable="selection">
+           <count
+                 value="1">
+           </count>
+           <iterate
+                 ifEmpty="false">
+              <and>
+                 <instanceof
+                       value="org.eclipse.linuxtools.docker.core.IDockerContainer">
+                 </instanceof>
+                 <or>
+                    <test
+                          forcePluginActivation="true"
+                          property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped"
+                          value="false">
+                    </test>
+                    <test
+                          forcePluginActivation="true"
+                          property="org.eclipse.linuxtools.docker.propertytesters.container.isUnknown"
+                          value="true">
+                    </test>
+                 </or>
+              </and>
+           </iterate>
+        </with>
+     </enabledWhen>
+  </handler>
      	
 	</extension>
 	<!-- property testers -->
@@ -1284,6 +1321,14 @@
 					mnemonic="A">
 				</command>
 		</menuContribution>
+  <menuContribution
+        locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+     <command
+           commandId="org.eclipse.linuxtools.docker.ui.commands.execContainer"
+           id="org.eclipse.linuxtools.docker.ui.commands.execContainer"
+           style="push">
+     </command>
+  </menuContribution>
 		
 	</extension>
 	
