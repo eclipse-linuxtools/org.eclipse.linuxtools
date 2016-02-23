@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Vagrant Tooling User Guide - Vagrant Tooling Perspective</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Vagrant Tooling Perspective</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Vagrant-Toolbar-Menu.html" title="Vagrant Toolbar Menu">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Vagrant Toolbar Menu</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table><hr class="navigation-separator"/>
+		<h1 id="Vagrant_Tooling_Perspective">Vagrant Tooling Perspective</h1>
+		<p>A new perspective known as the Vagrant Tooling Perspective is added.</p>
+		<p>
+			<img border="0" src="images/Vagrant-perspective.png"/>
+		</p>
+		<h2 id="Vagrant_Box_View">Vagrant Box View</h2>
+		<h3 id="Overview">Overview</h3>
+		<p>The Vagrant Box view is used to manage the set of existing Box files of which Vagrant is aware.</p>
+		<p>The following actions are possible from this view depending on the context :</p>
+		<ul>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerImageViewPull.png"/> - 
+				<a href="#Adding_a_Vagrant_Box">Add Vagrant Box</a>
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerContainerCreate.png"/> - 
+				<a href="#Creating_a_Virtual_Machine">Create VM</a>
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerDeleteImage.png"/> - Remove one or more boxes
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerRefreshImage.png"/> - Refresh list of boxes
+			</li>
+		</ul>
+		<h3 id="Adding_a_Vagrant_Box">Adding a Vagrant Box</h3>
+		<p>To add a Vagrant Box, simply click the "Add Box" icon. Provide a name for the box, and then specify either the system path, url, or Atlas repository for the Box file.</p>
+		<p>
+			<img border="0" src="images/Vagrant-add-box.png"/>
+		</p>
+		<h3 id="Creating_a_Virtual_Machine">Creating a Virtual Machine</h3>
+		<p>One can create a virtual machine  in 2 different ways :</p>
+		<ul>
+			<li>Using an existing Vagrant Box file</li>
+			<li>Using an existing Vagrantfile</li>
+		</ul>
+		<p>In either case, we selected the "Create VM" button, and assign some name to our virtual machine. If a Box was imported into the Vagrant Box View, we can use it to define our virtual machine. We can even specify a Box file on the local system that hasn't been imported. If on the other hand we have a Vagrantfile, we can simply select "Custom Vagrantfile" and provide the location of this file on our system.</p>
+		<p>We can optionally provide environment variables to be passed to the creation of this virtual machine.</p>
+		<p>
+			<img border="0" src="images/Vagrant-create-vm.png"/>
+		</p>
+		<h2 id="Vagrant_VM_View">Vagrant VM View</h2>
+		<h3 id="Overview_2">Overview</h3>
+		<p>The Vagrant VM view is used to manage the set of existing virtual machines managed by Vagrant.</p>
+		<p>The following actions are possible from this view depending on the context :</p>
+		<ul>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerContainerStartIcon.png"/> - Start a stopped VM
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerContainerStopIcon.png"/> - Stop a running VM
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerContainerDeleteIcon.png"/> - Delete a VM
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsVagrantSSHIcon.gif"/> - 
+				<a href="#SSH.27ing_into_a_Virtual_Machine">SSH into VM</a>
+			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerContainerRefreshIcon.png"/> - Refresh VM list
+			</li>
+		</ul>
+		<h3 id="SSH.27ing_into_a_Virtual_Machine">SSH'ing into a Virtual Machine</h3>
+		<p>If a Virtual Machine is configured with a proper SSH daemon, one can connect to it with the click of a button.</p>
+		<p>
+			<img border="0" src="images/Vagrant-ssh.png"/>
+		</p><hr class="navigation-separator"/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Vagrant-Toolbar-Menu.html" title="Vagrant Toolbar Menu">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="User-Guide.html" title="Vagrant Tooling User Guide">
+						<img alt="Vagrant Tooling User Guide" border="0" src="../../../images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Vagrant Toolbar Menu</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table>
+	</body>
+</html>
