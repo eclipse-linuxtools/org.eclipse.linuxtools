@@ -804,6 +804,9 @@ public class DockerConnection implements IDockerConnection, Closeable {
 				final List<String> repoTags = new ArrayList<>(
 						rawImage.repoTags());
 				Collections.sort(repoTags);
+				if (repoTags.isEmpty()) {
+					repoTags.add("<none>:<none>"); //$NON-NLS-1$
+				}
 				final String repo = DockerImage.extractRepo(repoTags.get(0));
 				final List<String> tags = Arrays
 						.asList(DockerImage.extractTag(repoTags.get(0)));
