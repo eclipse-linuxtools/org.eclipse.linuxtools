@@ -162,7 +162,7 @@ public class ImageSearchPage extends WizardPage {
 				SWT.CENTER,
 				70, new ImageAutomatedColumnLabelProvider());
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
-				.grab(true, false).span(COLUMNS, 1).hint(200, 100)
+				.grab(true, true).span(COLUMNS, 1).hint(200, 100)
 				.applyTo(table);
 		// description text area
 		final Group selectedImageDescriptionGroup = new Group(container,
