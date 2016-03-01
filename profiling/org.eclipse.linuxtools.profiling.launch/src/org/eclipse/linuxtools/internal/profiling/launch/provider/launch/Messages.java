@@ -28,6 +28,7 @@ public class Messages extends NLS {
     public static String ProviderProfilerMissing_title_0;
     public static String ProviderProfilerMissing_msg_0;
     public static String ProviderProfilerMissing_msg_1;
+    public static String ProviderLaunchError_msg_0;
 
     static {
         // initialize resource bundle
