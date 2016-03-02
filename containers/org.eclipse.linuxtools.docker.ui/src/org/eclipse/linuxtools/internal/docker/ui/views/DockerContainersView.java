@@ -381,7 +381,16 @@ public class DockerContainersView extends ViewPart implements
 					if (DockerContainersView.this.viewer != null
 							&& !DockerContainersView.this.viewer.getTable()
 									.isDisposed()) {
+						// following is to force Container property testers
+						// to run again after list is updated. They won't do so by
+						// default.
+						final ISelection currentSelection = DockerContainersView.this.viewer
+								.getSelection();
 						DockerContainersView.this.viewer.refresh();
+						// restore the selection
+						if (currentSelection != null) {
+							DockerContainersView.this.viewer.setSelection(currentSelection);
+						}
 						refreshViewTitle();
 					}
 				}
