@@ -75,7 +75,7 @@ public class PackageVMPage extends WizardPage {
 		scrollTop.setExpandVertical(true);
 		scrollTop.setExpandHorizontal(true);
 
-		final Composite container = new Composite(parent, SWT.NONE);
+		final Composite container = new Composite(scrollTop, SWT.NONE);
 		GridLayoutFactory.fillDefaults().numColumns(3).margins(6, 6)
 				.applyTo(container);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).span(1, 1)

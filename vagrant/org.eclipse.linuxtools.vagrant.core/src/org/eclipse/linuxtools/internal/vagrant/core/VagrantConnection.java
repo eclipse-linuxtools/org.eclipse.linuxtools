@@ -203,9 +203,10 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 				List<String> tmp = new ArrayList<>();
 				tmp.add(items[1]);
 				sshConfig = tmp;
-			} else if (items[0].equals("User") || items[0].equals("Port") //$NON-NLS-1$ //$NON-NLS-2$
-					|| items[0].equals("IdentityFile")) { //$NON-NLS-1$
+			} else if (items[0].equals("User") || items[0].equals("Port")) { //$NON-NLS-1$ //$NON-NLS-2$
 				sshConfig.add(items[1]);
+			} else if (items[0].equals("IdentityFile")) {
+				sshConfig.add(items[1].replace("\"", "")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 
