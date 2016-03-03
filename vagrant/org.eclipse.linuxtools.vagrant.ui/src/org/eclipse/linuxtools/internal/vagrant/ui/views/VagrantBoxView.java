@@ -208,10 +208,12 @@ public class VagrantBoxView extends ViewPart implements IVagrantBoxListener {
 	@Override
 	public void listChanged(final IVagrantConnection connection,
 			final List<IVagrantBox> images) {
-		Display.getDefault().asyncExec(() -> {
-			VagrantBoxView.this.viewer.refresh();
-			refreshViewTitle();
+		if (!viewer.getControl().isDisposed()) {
+			Display.getDefault().asyncExec(() -> {
+				VagrantBoxView.this.viewer.refresh();
+				refreshViewTitle();
 			});
+		}
 	}
 
 	private void refreshViewTitle() {

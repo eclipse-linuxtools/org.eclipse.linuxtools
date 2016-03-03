@@ -234,10 +234,12 @@ public class VagrantVMView extends ViewPart implements IVagrantVMListener {
 	@Override
 	public void listChanged(final IVagrantConnection connection,
 			final List<IVagrantVM> containers) {
-		Display.getDefault().asyncExec(() -> {
-			VagrantVMView.this.viewer.refresh();
-			refreshViewTitle();
-		});
+		if (!viewer.getControl().isDisposed()) {
+			Display.getDefault().asyncExec(() -> {
+				VagrantVMView.this.viewer.refresh();
+				refreshViewTitle();
+			});
+		}
 	}
 
 	/**
