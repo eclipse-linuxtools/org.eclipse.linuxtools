@@ -236,8 +236,15 @@ public class VagrantVMView extends ViewPart implements IVagrantVMListener {
 			final List<IVagrantVM> containers) {
 		if (!viewer.getControl().isDisposed()) {
 			Display.getDefault().asyncExec(() -> {
+				// remember the current selection before the viewer is refreshed
+				final ISelection currentSelection = VagrantVMView.this.viewer
+						.getSelection();
 				VagrantVMView.this.viewer.refresh();
 				refreshViewTitle();
+				// restore the selection
+				if (currentSelection != null) {
+					VagrantVMView.this.viewer.setSelection(currentSelection);
+				}
 			});
 		}
 	}
