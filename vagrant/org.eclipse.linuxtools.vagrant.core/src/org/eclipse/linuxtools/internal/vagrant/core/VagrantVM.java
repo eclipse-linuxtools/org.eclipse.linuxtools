@@ -94,14 +94,19 @@ public class VagrantVM implements IVagrantVM {
 	}
 
 	@Override
+	public String toString() {
+		return "Name: " + this.name //$NON-NLS-1$
+				+ "Provider : " + this.provider //$NON-NLS-1$
+				+ "State : " + this.state; //$NON-NLS-1$
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof VagrantVM) {
 			VagrantVM other = (VagrantVM) o;
 			return id.equals(other.id())
 					&& name.equals(other.name())
 					&& provider.equals(other.provider())
-					&& state.equals(other.state())
-					&& state_desc.equals(other.state_desc())
 					&& directory.equals(other.directory());
 		}
 		return false;

@@ -181,7 +181,7 @@ public class CreateVMPage extends WizardPage {
 		vgFilesearchButton.setEnabled(false);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).applyTo(vgFilesearchButton);
-		vgFilesearchButton.addSelectionListener(onSearchImage());
+		vgFilesearchButton.addSelectionListener(onSearchVMFile());
 
 		customVMFileButton.addSelectionListener(
 				onCheckCustomVMFile(vmNameText, boxRefText, boxLocText, vgFilesearchButton, boxSearchButton));
@@ -233,25 +233,28 @@ public class CreateVMPage extends WizardPage {
 		};
 	}
 
-	/**
-	 * Opens the {@link ImageSearch} dialog with current image name pre-filled.
-	 * 
-	 * @return
-	 */
 	private SelectionListener onSearchImage() {
 		return new SelectionAdapter() {
-
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				FileDialog fd = new FileDialog(getShell());
 				String location = fd.open();
 				if (location != null && !location.isEmpty()) {
-					if (location.endsWith("box")) { //$NON-NLS-1$
-						model.setBoxRef(location);
-					} else {
-						model.setVMFile(location);
-						vmFileChanged(location);
-					}
+					model.setBoxRef(location);
+				}
+			}
+		};
+	}
+
+	private SelectionListener onSearchVMFile() {
+		return new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				FileDialog fd = new FileDialog(getShell());
+				String location = fd.open();
+				if (location != null && !location.isEmpty()) {
+					model.setVMFile(location);
+					vmFileChanged(location);
 				}
 			}
 		};
