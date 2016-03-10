@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/eu.openanalytics.editor.docker_1.0.0.qualifier.jar" id="eu.openanalytics.editor.docker" version="1.0.0.qualifier">
+      <category name="eu.openanalytics.editor.docker"/>
+   </feature>
+   <category-def name="eu.openanalytics.editor.docker" label="Dockerfile Editor"/>
+</site>
