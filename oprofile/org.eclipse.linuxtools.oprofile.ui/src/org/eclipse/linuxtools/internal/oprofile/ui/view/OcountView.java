@@ -19,6 +19,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -30,6 +32,7 @@ public class OcountView extends ViewPart {
 
 	String text = ""; //$NON-NLS-1$
 	TextViewer viewer;
+	Composite parent;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -43,14 +46,30 @@ public class OcountView extends ViewPart {
         viewer.setDocument(d);
         viewer.refresh();
         OprofileUiPlugin.getDefault().setOcountView(this);
+        this.parent = parent;
 	}
 
 	public void setText(String text) {
         Document d = new Document(text);
         viewer.setDocument(d);
-        viewer.refresh();
 	}
-
+    /**
+     * Refresh the view or open a new instance if it was closed.
+     */
+    public void refreshView() {
+        // Need to create another view object if it was closed.
+        if(parent == null || parent.isDisposed()) {
+            try {
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(OprofileUiPlugin.ID_OCOUNT_VIEW);
+                String currentText = viewer.getDocument().get();
+                OprofileUiPlugin.getDefault().getOcountView().setText(currentText);
+                return;
+            } catch (PartInitException e2) {
+                e2.printStackTrace();
+            }
+        }
+        viewer.refresh();
+    }
 	/**
 	 * Get the Text Viewer
 	 *

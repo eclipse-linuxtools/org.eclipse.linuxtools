@@ -334,17 +334,17 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
     // if it isn't already.
     protected void refreshOcountView(String text) {
         OcountView view = OprofileUiPlugin.getDefault().getOcountView();
-        if (view != null) {
-            view.setText(text);
-        } else {
+        if (view == null) {
             try {
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(OprofileUiPlugin.ID_OCOUNT_VIEW);
-      
             } catch (PartInitException e2) {
                 e2.printStackTrace();
+                return;
             }
-            OprofileUiPlugin.getDefault().getOcountView().setText(text);
+            view = OprofileUiPlugin.getDefault().getOcountView();
         }
+        view.setText(text);
+        view.refreshView();
     }
 
     /* all these functions exist to be overridden by the test class in order to allow launch testing */
