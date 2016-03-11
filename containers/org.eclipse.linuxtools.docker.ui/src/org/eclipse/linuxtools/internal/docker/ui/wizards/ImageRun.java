@@ -16,9 +16,11 @@ import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLa
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -246,6 +248,21 @@ public class ImageRun extends Wizard {
 			environmentVariables.add(var.getName() + "=" + var.getValue()); //$NON-NLS-1$
 		}
 		config.env(environmentVariables);
+
+		if (!selectionModel.isPublishAllPorts()) {
+			final Set<String> exposedPorts = new HashSet<>();
+			for (Iterator<ExposedPortModel> iterator = selectionModel
+					.getExposedPorts().iterator(); iterator.hasNext();) {
+				final ExposedPortModel exposedPort = iterator.next();
+				// only selected Ports in the CheckboxTableViewer are exposed.
+				if (!selectionModel.getSelectedPorts().contains(exposedPort)) {
+					continue;
+				}
+				exposedPorts.add(exposedPort.getContainerPort()
+						+ exposedPort.getPortType());
+			}
+			config.exposedPorts(exposedPorts);
+		}
 		return config.build();
 	}
 
