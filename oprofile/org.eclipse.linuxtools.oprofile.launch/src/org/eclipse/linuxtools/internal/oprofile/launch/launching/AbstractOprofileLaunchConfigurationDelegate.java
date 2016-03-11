@@ -16,8 +16,9 @@ package org.eclipse.linuxtools.internal.oprofile.launch.launching;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -269,9 +270,12 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
                 	
                 	// Put the OCount data in a separate view
                 	StringBuffer buffer = new StringBuffer();
-
-                	try (BufferedReader reader = new BufferedReader(
-                			new FileReader(oprofileWorkingDirURI(config).getPath() + IPath.SEPARATOR + OCOUNT_DATA))) {
+                    IFileStore ocountDataStore = proxy.getResource(oprofileWorkingDirURI(config).getPath() +
+                            IPath.SEPARATOR + OCOUNT_DATA);
+                    try (
+                        InputStream is = ocountDataStore.openInputStream(EFS.NONE, monitor);
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(is))
+                    ) {
                 		String s = reader.readLine();
                 		String sep_char = ""; //$NON-NLS-1$
                 		while (s != null) {
