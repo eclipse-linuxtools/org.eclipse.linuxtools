@@ -21,9 +21,9 @@ import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.AbstractHyperlinkDetector;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.RPMUtils;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.UiUtils;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
-import org.eclipse.linuxtools.rpm.ui.editor.utils.RPMUtils;
 import org.eclipse.ui.part.FileEditorInput;
 
 /**
