@@ -166,7 +166,7 @@ public class TreeSettingsTest {
 
         TreeSettings.setTrees(t1, t2);
         temp = TreeSettings.getFunctionTree();
-        assertTrue("Improper data type", temp.getData() instanceof FunctionNodeData);
+        assertTrue("Improper data type - expected FunctionNodeData but was "+ temp.getData().getClass().getSimpleName(), temp.getData() instanceof FunctionNodeData);
         assertEquals("Function data not saved", t1.getData().toString(), temp.getData().toString());
         assertEquals("Funcs has children", t1.getChildCount(), temp.getChildCount());
         assertTrue("Improper data type", temp.getChildAt(0).getData() instanceof FuncparamNodeData);
