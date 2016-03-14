@@ -7,8 +7,8 @@
 <unit id="org.apache.xerces" version="2.9.0.v201101211617"/>
 <unit id="org.objectweb.asm" version="4.0.0.v201302062210"/>
 <unit id="com.fasterxml.jackson.module.jackson-module-jaxb-annotations" version="0.0.0"/>
-<unit id="com.spotify.docker.client" version="0.0.0"/>
-<unit id="com.spotify.docker.client.source" version="0.0.0"/>
+<unit id="com.spotify.docker.client" version="3.1.10.v20151113-2033"/>
+<unit id="com.spotify.docker.client.source" version="3.1.10.v20151113-2033"/>
 <unit id="org.mockito" version="1.9.5.v201311280930"/>
 <unit id="org.assertj" version="1.7.1.v20151008-2233"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150821153341/repository/"/>
