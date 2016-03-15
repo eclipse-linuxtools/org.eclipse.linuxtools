@@ -18,14 +18,22 @@ import java.util.List;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
@@ -39,6 +47,8 @@ import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerPortMapping;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
+import org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils;
+import org.eclipse.linuxtools.internal.docker.ui.propertytesters.ContainerPropertyTester;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -86,6 +96,8 @@ public class DockerContainersView extends ViewPart implements
 	private TableViewer viewer;
 	private IDockerConnection connection;
 	private final HideStoppedContainersViewerFilter hideStoppedContainersViewerFilter = new HideStoppedContainersViewerFilter();
+
+	private IAction pauseAction, unpauseAction, startAction, stopAction, killAction, removeAction;
 
 	@Override
 	public void setFocus() {
@@ -139,6 +151,7 @@ public class DockerContainersView extends ViewPart implements
 		getSite().getWorkbenchWindow().getSelectionService()
 				.addSelectionListener(DockerExplorerView.VIEW_ID, this);
 		hookContextMenu();
+		hookToolBarItems();
 
 		// Look at stored preference to determine if all containers should be
 		// shown or just running/paused containers. By default, only show
@@ -289,8 +302,56 @@ public class DockerContainersView extends ViewPart implements
 			setConnection(connections[0]);
 			connection.addContainerListener(this);
 		}
+		this.viewer.addSelectionChangedListener(onContainerSelection());
 		// get the current selection in the tableviewer
 		getSite().setSelectionProvider(this.viewer);
+	}
+
+	/**
+	 * Some ToolBar items are depend on each other's state as enablement
+	 * criteria. They must be created programmatically so the state of other
+	 * buttons may be changed.
+	 */
+	private void hookToolBarItems() {
+		IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
+		pauseAction = createAction(DVMessages.getString("DockerContainersView.pause.label"), //$NON-NLS-1$
+				"org.eclipse.linuxtools.docker.ui.commands.pauseContainers", //$NON-NLS-1$
+				SWTImagesFactory.DESC_PAUSE);
+		unpauseAction = createAction(DVMessages.getString("DockerContainersView.unpause.label"), //$NON-NLS-1$
+				"org.eclipse.linuxtools.docker.ui.commands.unpauseContainers", //$NON-NLS-1$
+				SWTImagesFactory.DESC_RESUME);
+		startAction = createAction(DVMessages.getString("DockerContainersView.start.label"), //$NON-NLS-1$
+				"org.eclipse.linuxtools.docker.ui.commands.startContainers", // $NON-NLS-1
+				SWTImagesFactory.DESC_START);
+		stopAction = createAction(DVMessages.getString("DockerContainersView.stop.label"), //$NON-NLS-1$
+				"org.eclipse.linuxtools.docker.ui.commands.stopContainers", //$NON-NLS-1$
+				SWTImagesFactory.DESC_STOP);
+		killAction = createAction(DVMessages.getString("DockerContainersView.kill.label"), //$NON-NLS-1$
+				"org.eclipse.linuxtools.docker.ui.commands.killContainers", //$NON-NLS-1$
+				SWTImagesFactory.DESC_KILL);
+		removeAction = createAction(DVMessages.getString("DockerContainersView.remove.label"), //$NON-NLS-1$
+				"org.eclipse.linuxtools.docker.ui.commands.removeContainers", //$NON-NLS-1$
+				SWTImagesFactory.DESC_REMOVE);
+		mgr.add(startAction);
+		mgr.add(stopAction);
+		mgr.add(killAction);
+		mgr.add(pauseAction);
+		mgr.add(unpauseAction);
+		mgr.add(removeAction);
+	}
+
+	private IAction createAction(String label, final String id, ImageDescriptor img) {
+		IAction ret = new Action(label, img) {
+			@Override
+			public void run() {
+				ISelection sel = getSelection();
+				if (sel instanceof StructuredSelection) {
+					CommandUtils.execute(id, (StructuredSelection) sel);
+				}
+			}
+		};
+		ret.setEnabled(false);
+		return ret;
 	}
 
 	private TableViewerColumn createColumn(final String title) {
@@ -352,7 +413,29 @@ public class DockerContainersView extends ViewPart implements
 			}
 		};
 	}
-	
+
+	private void updateToolBarItemEnablement(IStructuredSelection sel) {
+		pauseAction.setEnabled(ContainerPropertyTester.isRunning(sel));
+		unpauseAction.setEnabled(ContainerPropertyTester.isPaused(sel));
+		startAction.setEnabled(ContainerPropertyTester.isStopped(sel));
+		stopAction.setEnabled(ContainerPropertyTester.isRunning(sel));
+		killAction.setEnabled(ContainerPropertyTester.isRunning(sel));
+		removeAction.setEnabled(ContainerPropertyTester.isStopped(sel));
+	}
+
+	private ISelectionChangedListener onContainerSelection() {
+		return new ISelectionChangedListener() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				ISelection s = event.getSelection();
+				if (s instanceof StructuredSelection) {
+					StructuredSelection ss = (StructuredSelection) s;
+					updateToolBarItemEnablement(ss);
+				}
+			}
+		};
+	}
+
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		final ITreeSelection treeSelection = (ITreeSelection) selection;
@@ -381,17 +464,11 @@ public class DockerContainersView extends ViewPart implements
 					if (DockerContainersView.this.viewer != null
 							&& !DockerContainersView.this.viewer.getTable()
 									.isDisposed()) {
-						// following is to force Container property testers
-						// to run again after list is updated. They won't do so by
-						// default.
-						final ISelection currentSelection = DockerContainersView.this.viewer
-								.getSelection();
 						DockerContainersView.this.viewer.refresh();
-						// restore the selection
-						if (currentSelection != null) {
-							DockerContainersView.this.viewer.setSelection(currentSelection);
-						}
 						refreshViewTitle();
+						updateToolBarItemEnablement(
+								DockerContainersView.this.viewer
+										.getStructuredSelection());
 					}
 				}
 			});
