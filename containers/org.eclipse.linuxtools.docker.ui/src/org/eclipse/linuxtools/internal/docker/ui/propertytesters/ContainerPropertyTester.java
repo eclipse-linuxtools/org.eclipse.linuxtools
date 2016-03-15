@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.internal.docker.ui.propertytesters;
 
 import org.eclipse.core.expressions.PropertyTester;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.docker.core.EnumDockerStatus;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 
@@ -80,6 +81,39 @@ public class ContainerPropertyTester extends PropertyTester {
 		}
 		final EnumDockerStatus containerStatus = EnumDockerStatus.fromStatusMessage(container.status());
 		return expectedMatch.equals((containerStatus == expectedStatus));
+	}
+
+	/**
+	 * Check if the given IStructuredSelection containing IDockerContainer
+	 * elements are all in the specified state
+	 * @param ss an IStructuredSelection of IDockerContainer elements
+	 * @param state the state of the IDockerContainer to test
+	 * @return true if all IDockerContainer elements match the specified
+	 * and false otherwise.
+	 */
+	private static boolean checkState(IStructuredSelection ss, EnumDockerStatus state) {
+		if (ss.toList().isEmpty()) {
+			return false;
+		}
+		for (Object o : ss.toList()) {
+			IDockerContainer c = (IDockerContainer) o;
+			if (EnumDockerStatus.fromStatusMessage(c.status()) != state) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean isStopped(IStructuredSelection ss) {
+		return checkState(ss, EnumDockerStatus.STOPPED);
+	}
+
+	public static boolean isRunning(IStructuredSelection ss) {
+		return checkState(ss, EnumDockerStatus.RUNNING);
+	}
+
+	public static boolean isPaused(IStructuredSelection ss) {
+		return checkState(ss, EnumDockerStatus.PAUSED);
 	}
 
 }

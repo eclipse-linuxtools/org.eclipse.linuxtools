@@ -16,7 +16,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.core.commands.ParameterizedCommand;
+import org.eclipse.core.expressions.EvaluationContext;
+import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
@@ -43,7 +47,11 @@ import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerImagesView;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.ISources;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.handlers.IHandlerService;
 
 /**
  * Utility class for all {@link IHandler} command handlers
@@ -301,6 +309,23 @@ public class CommandUtils {
 		wizardDialog.setPageSize(width, height);
 		wizardDialog.create();
 		return wizardDialog.open() == Window.OK;
+	}
+
+	public static void execute(String id, IStructuredSelection selection) {
+		ICommandService service = PlatformUI.getWorkbench().getService(ICommandService.class);
+		Command command = service != null ? service.getCommand(id) : null;
+		if (command != null && command.isDefined()) {
+			try {
+				ParameterizedCommand pCmd = ParameterizedCommand.generateCommand(command, null);
+				IHandlerService handlerSvc = PlatformUI.getWorkbench().getService(IHandlerService.class);
+				IEvaluationContext ctx = handlerSvc.getCurrentState();
+				ctx = new EvaluationContext(ctx, selection);
+				ctx.addVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME, selection);
+				handlerSvc.executeCommandInContext(pCmd, null, ctx);
+			} catch (Exception e) {
+				Activator.log(e);
+			}
+		}
 	}
 
 }

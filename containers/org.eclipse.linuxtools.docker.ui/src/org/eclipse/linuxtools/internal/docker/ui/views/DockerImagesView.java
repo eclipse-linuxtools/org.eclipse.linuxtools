@@ -375,17 +375,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 					if (DockerImagesView.this.viewer != null
 							&& !DockerImagesView.this.viewer.getTable()
 									.isDisposed()) {
-						// following is to force Image property testers
-						// to run again after list is updated. They won't do so by
-						// default.
-						final ISelection currentSelection = DockerImagesView.this.viewer
-								.getSelection();
 						DockerImagesView.this.viewer.refresh();
-						// restore the selection
-						if (currentSelection != null) {
-							DockerImagesView.this.viewer
-									.setSelection(currentSelection);
-						}
 						refreshViewTitle();
 					}
 				}
