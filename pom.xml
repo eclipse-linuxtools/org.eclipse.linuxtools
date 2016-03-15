@@ -21,7 +21,7 @@
   </prerequisites>
   <groupId>org.eclipse.linuxtools</groupId>
   <artifactId>linuxtools-parent</artifactId>
-  <version>4.2.1</version>
+  <version>4.2.2</version>
   <packaging>pom</packaging>
 
   <name>Eclipse Linux Tools Parent</name>
@@ -49,8 +49,8 @@
   </distributionManagement>
 
   <properties>
-    <mirror-repo-name>update-4.2.1</mirror-repo-name>
-    <mirror-docker-repo-name>update-docker-1.2.1</mirror-docker-repo-name>
+    <mirror-repo-name>update-4.2.2</mirror-repo-name>
+    <mirror-docker-repo-name>update-docker-1.2.2</mirror-docker-repo-name>
     <tycho-version>0.24.0</tycho-version>
     <tycho-extras-version>0.24.0</tycho-extras-version>
     <target-platform>linuxtools-e4.5</target-platform>

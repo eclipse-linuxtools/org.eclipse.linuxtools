@@ -13,11 +13,12 @@
   <parent>
       <groupId>org.eclipse.linuxtools</groupId>
       <artifactId>org.eclipse.linuxtools.vagrant</artifactId>
-      <version>1.0.1-SNAPSHOT</version>
+      <version>1.0.2</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.vagrant.feature</artifactId>
   <packaging>eclipse-feature</packaging>
+  <version>1.0.2-SNAPSHOT</version>
 
   <name>Linux Tools Vagrant Tooling Feature</name>
 

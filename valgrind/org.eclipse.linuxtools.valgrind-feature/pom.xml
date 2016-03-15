@@ -14,11 +14,11 @@
   <parent>
     <artifactId>linuxtools-valgrind-parent</artifactId>
     <groupId>org.eclipse.linuxtools.valgrind</groupId>
-    <version>4.2.1</version>
+    <version>4.2.2</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.valgrind</artifactId>
-  <version>4.2.1-SNAPSHOT</version>
+  <version>4.2.2-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
   <name>Linux Tools Valgrind Tools Integration Feature</name>
