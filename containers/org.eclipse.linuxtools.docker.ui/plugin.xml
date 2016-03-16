@@ -453,6 +453,20 @@
 		<handler
               commandId="org.eclipse.linuxtools.docker.ui.commands.pushImage"
               class="org.eclipse.linuxtools.internal.docker.ui.commands.PushImageCommandHandler">
+              <enabledWhen>
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerImage" />
+	                </iterate>
+	               </with>
+	            </enabledWhen>
      	</handler>
 		<handler
               commandId="org.eclipse.linuxtools.docker.ui.commands.tagImage"

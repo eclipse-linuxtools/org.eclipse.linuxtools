@@ -22,21 +22,22 @@ import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerImagesView;
 import org.eclipse.linuxtools.internal.docker.ui.views.ImagePushProgressHandler;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImagePush;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+/**
+ * Command handler to push a given image to the registry
+ */
 public class PushImageCommandHandler extends AbstractHandler {
 
 	private final static String PUSH_IMAGE_JOB_TITLE = "ImagePush.title"; //$NON-NLS-1$
 	private final static String PUSH_IMAGE_JOB_TASK = "ImagePush.msg"; //$NON-NLS-1$
 	private static final String ERROR_PUSHING_IMAGE = "ImagePushError.msg"; //$NON-NLS-1$
+	private static final String NO_CONNECTION = "NoConnection.error"; //$NON-NLS-1$
 	
-	private IDockerConnection connection;
-
 	@Override
 	public Object execute(final ExecutionEvent event) {
 		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
@@ -46,16 +47,27 @@ public class PushImageCommandHandler extends AbstractHandler {
 		final boolean pushImage = CommandUtils.openWizard(wizard,
 				HandlerUtil.getActiveShell(event));
 		if (pushImage) {
-			if (activePart instanceof DockerImagesView) {
-				connection = ((DockerImagesView) activePart)
-						.getConnection();
-			}
-			performPushImage(wizard);
+			final IDockerConnection connection = CommandUtils
+					.getCurrentConnection(activePart);
+			performPushImage(wizard, connection);
 		}
 		return null;
 	}
 	
-	private void performPushImage(final ImagePush wizard) {
+	private void performPushImage(final ImagePush wizard,
+			final IDockerConnection connection) {
+		if (connection == null) {
+			Display.getDefault().syncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					MessageDialog.openError(
+							Display.getDefault().getActiveShell(), "Error",
+							DVMessages.getFormattedString(NO_CONNECTION));
+				}
+			});
+			return;
+		}
 		final Job pushImageJob = new Job(DVMessages.getFormattedString(
 				PUSH_IMAGE_JOB_TITLE, wizard.getImageTag())) {
 
@@ -64,7 +76,7 @@ public class PushImageCommandHandler extends AbstractHandler {
 				final String tag = wizard.getImageTag();
 				monitor.beginTask(DVMessages.getString(PUSH_IMAGE_JOB_TASK),
 						IProgressMonitor.UNKNOWN);
-				// pull the image and let the progress
+				// push the image and let the progress
 				// handler refresh the images when done
 				try {
 					((DockerConnection) connection).pushImage(tag,
@@ -92,9 +104,7 @@ public class PushImageCommandHandler extends AbstractHandler {
 			}
 
 		};
-
 		pushImageJob.schedule();
-
 	}
 
 

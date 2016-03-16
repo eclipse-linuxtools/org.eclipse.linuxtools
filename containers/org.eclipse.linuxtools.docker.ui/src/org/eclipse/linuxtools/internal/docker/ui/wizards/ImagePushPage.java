@@ -10,21 +10,17 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
-import java.util.List;
-
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
@@ -68,19 +64,15 @@ public class ImagePushPage extends WizardPage {
 	private void validate() {
 		boolean complete = true;
 		boolean error = false;
-
 		String name = null;
-
 		if (nameText != null) {
 			name = nameText.getText();
 		} else {
 			name = nameCombo.getText();
 		}
-
 		if (name.length() == 0) {
 			complete = false;
 		}
-
 		if (!error) {
 			setErrorMessage(null);
 			tag = name;
@@ -89,62 +81,34 @@ public class ImagePushPage extends WizardPage {
 	}
 
 	@Override
-	public void createControl(Composite parent) {
-		final Composite container = new Composite(parent, SWT.NULL);
-		FormLayout layout = new FormLayout();
-		layout.marginHeight = 5;
-		layout.marginWidth = 5;
-		container.setLayout(layout);
-
-		Label label = new Label(container, SWT.NULL);
-
-		Label nameLabel = new Label(container, SWT.NULL);
+	public void createControl(final Composite parent) {
+		parent.setLayout(new GridLayout());
+		final Composite container = new Composite(parent, SWT.NONE);
+		GridLayoutFactory.fillDefaults().numColumns(2).margins(6, 6)
+				.applyTo(container);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).span(1, 1)
+				.grab(true, false).applyTo(container);
+		final Label nameLabel = new Label(container, SWT.NULL);
 		nameLabel.setText(WizardMessages.getString(NAME_LABEL));
-
-		// If we are given an image, use its tags for choices in a combo box,
-		// otherwise,
-		// allow the user to enter an existing tag.
-		Control c = null;
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.grab(false, false).applyTo(nameLabel);
 		if (image == null || image.repoTags().size() == 0) {
 			nameText = new Text(container, SWT.BORDER | SWT.SINGLE);
 			nameText.addModifyListener(Listener);
 			nameText.setToolTipText(WizardMessages.getString(NAME_TOOLTIP));
-			c = nameText;
+			GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+					.grab(true, false).applyTo(nameText);
 		} else {
 			nameCombo = new Combo(container, SWT.DROP_DOWN | SWT.READ_ONLY);
 			nameCombo.addModifyListener(Listener);
 			nameCombo.setToolTipText(WizardMessages.getString(NAME_TOOLTIP));
-			List<String> repoTags = image.repoTags();
-			nameCombo.setItems(repoTags.toArray(new String[0]));
-			nameCombo.setText(repoTags.get(0));
-			c = nameCombo;
+			nameCombo.setItems(image.repoTags().toArray(new String[0]));
+			nameCombo.setText(image.repoTags().get(0));
+			GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+					.grab(true, false).applyTo(nameCombo);
 		}
-
-		Point p1 = label.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-		Point p2;
-		if (nameText != null)
-			p2 = nameText.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-		else
-			p2 = nameCombo.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-		int centering = (p2.y - p1.y + 1) / 2;
-
-		FormData f = new FormData();
-		f.top = new FormAttachment(0);
-		label.setLayoutData(f);
-
-		f = new FormData();
-		f.top = new FormAttachment(label, 11 + centering);
-		f.left = new FormAttachment(0, 0);
-		nameLabel.setLayoutData(f);
-
-		f = new FormData();
-		f.top = new FormAttachment(label, 11 + centering);
-		f.left = new FormAttachment(nameLabel, 5);
-		f.right = new FormAttachment(100);
-		c.setLayoutData(f);
-
 		setControl(container);
-		setPageComplete(nameText == null);
+		validate();
 	}
 
 }
