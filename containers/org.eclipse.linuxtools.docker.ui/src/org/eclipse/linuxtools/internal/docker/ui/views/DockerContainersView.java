@@ -333,10 +333,10 @@ public class DockerContainersView extends ViewPart implements
 				"org.eclipse.linuxtools.docker.ui.commands.removeContainers", //$NON-NLS-1$
 				SWTImagesFactory.DESC_REMOVE);
 		mgr.add(startAction);
-		mgr.add(stopAction);
-		mgr.add(killAction);
 		mgr.add(pauseAction);
 		mgr.add(unpauseAction);
+		mgr.add(stopAction);
+		mgr.add(killAction);
 		mgr.add(removeAction);
 	}
 
