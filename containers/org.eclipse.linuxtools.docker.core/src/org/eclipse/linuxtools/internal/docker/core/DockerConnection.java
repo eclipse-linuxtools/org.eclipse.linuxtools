@@ -757,6 +757,13 @@ public class DockerConnection implements IDockerConnection, Closeable {
 				this.imagesLoaded = true;
 			}
 		}
+		// avoid returning a 'null' list.
+		if (this.images == null) {
+			this.images = Collections.emptyList();
+		}
+		if (latestImages == null) {
+			latestImages = Collections.emptyList();
+		}
 		return latestImages;
 	}
 
@@ -1432,6 +1439,7 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			client.commitContainer(id, repo, tag, info.config(), comment,
 					author);
 			// update images list
+			// FIXME: are we refreshing the list of images twice ?
 			listImages();
 			getImages(true);
 		} catch (com.spotify.docker.client.DockerRequestException e) {
