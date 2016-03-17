@@ -15,6 +15,8 @@ import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.linuxtools.docker.ui.Activator;
+import org.eclipse.linuxtools.internal.docker.core.DockerMachine;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -78,6 +80,22 @@ public class DockerMachinePreferencePage extends FieldEditorPreferencePage
 		this.vmDriverInstallDir
 				.setValidateStrategy(StringFieldEditor.VALIDATE_ON_KEY_STROKE);
 		this.vmDriverInstallDir.load();
+	}
+
+	/**
+	 * Checks that the {@code docker-machine} command exists in the specified
+	 * directory
+	 */
+	@Override
+	public boolean isValid() {
+		if (!DockerMachine.checkPathToDockerMachine(
+				this.dockerMachineInstallDir.getStringValue())) {
+			setErrorMessage(NLS.bind(
+					org.eclipse.linuxtools.docker.core.Messages.Docker_Machine_Command_Not_Found,
+					this.dockerMachineInstallDir.getStringValue()));
+			return false;
+		}
+		return super.isValid();
 	}
 
 	/**

@@ -24,6 +24,8 @@ import java.util.Map;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.docker.core.Activator;
+import org.eclipse.linuxtools.docker.core.Messages;
+import org.eclipse.osgi.util.NLS;
 
 /**
  * Utility class to discover Docker machines using the 'docker-machine' command
@@ -88,13 +90,14 @@ public class DockerMachine {
 	 * 
 	 * @param args
 	 *            command arguments
-	 * @return the lines read in the {@link Process}' {@link InputStream}
+	 * @return the lines read in the {@link Process}' {@link InputStream} or an
+	 *         empty array if the {@code docker-machine} command could not be
+	 *         found in the {@code PATH}.
 	 */
 	private static String[] execute(final String dockerMachineInstallDir,
 			final String[] args, final String... extraPaths) {
 		try {
 			final String[] command = new String[args.length + 1];
-
 			command[0] = Paths.get(dockerMachineInstallDir, "docker-machine").toString(); //$NON-NLS-1$
 			final String envPath = System.getenv("PATH"); //$NON-NLS-1$
 			if (envPath != null) {
@@ -117,6 +120,18 @@ public class DockerMachine {
 			}
 			String newEnvPath = environment.get("PATH") + path.toString(); //$NON-NLS-1$
 			environment.put("PATH", newEnvPath); //$NON-NLS-1$
+			// check that the 'docker-machine' can be found in PATH
+			final boolean dockerMachineCommandExists = checkPathToDockerMachine(
+					newEnvPath);
+			if (!dockerMachineCommandExists) {
+				// log a warning and exit
+				Activator
+						.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
+								NLS.bind(
+										Messages.Docker_Machine_Command_Not_Found,
+										newEnvPath)));
+				return new String[0];
+			}
 			final Process p = processBuilder.start();
 			p.waitFor();
 			if (p.exitValue() == 0) {
@@ -145,6 +160,25 @@ public class DockerMachine {
 			Activator.log(e);
 		}
 		return new String[0];
+	}
+
+	/**
+	 * Checks that the 'docker-machine' command exists in the given {@code path}
+	 * 
+	 * @param path
+	 *            to path to use to look for the 'docker-machine' command
+	 * @return <code>true</code> if the command was found, <code>false</code>
+	 *         otherwise.
+	 */
+	public static boolean checkPathToDockerMachine(final String path) {
+		for (String pathFragment : path.split(File.pathSeparator)) {
+			final File pathToDockerMachine = new File(pathFragment,
+					"docker-machine"); //$NON-NLS-1$
+			if (pathToDockerMachine.exists()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
