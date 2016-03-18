@@ -8,7 +8,7 @@
  * Contributors:
  *     Wainer dos Santos Moschetta (IBM Corporation) - initial implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.remote.proxy.tests;
+package org.eclipse.linuxtools.rdt.proxy.tests;
 
 import org.junit.Test;
 
@@ -27,6 +27,7 @@ import org.eclipse.linuxtools.internal.ssh.proxy.SSHCommandLauncher;
 import org.eclipse.linuxtools.internal.ssh.proxy.SSHFileProxy;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
+import org.eclipse.linuxtools.remote.proxy.tests.AbstractProxyTest;
 import org.eclipse.ptp.rdt.sync.core.SyncConfig;
 
 @SuppressWarnings("restriction")

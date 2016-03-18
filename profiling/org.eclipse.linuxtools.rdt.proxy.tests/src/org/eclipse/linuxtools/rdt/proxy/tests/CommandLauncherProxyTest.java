@@ -8,7 +8,7 @@
  * Contributors:
  *     Wainer dos Santos Moschetta (IBM Corporation) - initial implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.remote.proxy.tests;
+package org.eclipse.linuxtools.rdt.proxy.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.profiling.launch.LocalLauncher;
 import org.eclipse.linuxtools.internal.rdt.proxy.RDTCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
+import org.eclipse.linuxtools.remote.proxy.tests.AbstractProxyTest;
 import org.eclipse.remote.core.IRemoteConnection;
 import org.junit.Test;
 

@@ -94,7 +94,7 @@ public abstract class AbstractProxyTest extends AbstractRemoteTest {
 
 
 	@Override
-	protected ILaunchConfigurationType getLaunchConfigType() {
+	public ILaunchConfigurationType getLaunchConfigType() {
 		// This testsuite does not care about LaunchConfig
 		return null;
 	}

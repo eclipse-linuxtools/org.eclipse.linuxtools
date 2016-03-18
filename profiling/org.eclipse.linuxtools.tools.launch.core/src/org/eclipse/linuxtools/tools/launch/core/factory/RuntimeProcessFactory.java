@@ -96,11 +96,10 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
             Process pProxy = launcher.execute(whichPath, new String[]{command}, envp, null, new NullProgressMonitor());
             if (pProxy != null) {
 
-                String errorLine;
                 try (BufferedReader error = new BufferedReader(
                         new InputStreamReader(pProxy.getErrorStream()))) {
-                    if ((errorLine = error.readLine()) != null) {
-                        throw new IOException(errorLine);
+                    if ((error.readLine()) != null) {
+                        return command; // Command is not found.
                     }
                 }
                 ArrayList<String> lines = new ArrayList<>();
@@ -131,7 +130,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
                 }
             }
         } catch (CoreException e) {
-            // Failed to call 'which', do nothing
+            throw new IOException(e);
         }
         return command;
     }
