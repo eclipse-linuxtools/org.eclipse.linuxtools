@@ -180,7 +180,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
             containerList.add(foundMappings);
         }
 
-        foundMappings.addMapEntry(new MapEntrySourceContainer(missingPath, newSourcePath));
+        foundMappings.addMapEntry(new MapEntrySourceContainer(missingPath.toOSString(), newSourcePath));
         director.setSourceContainers(containerList.toArray(new ISourceContainer[containerList.size()]));
     }
 
