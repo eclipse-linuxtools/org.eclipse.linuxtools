@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2015 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -109,8 +109,8 @@ public class RunImageCommandHandler extends AbstractHandler {
 						DVMessages.getString("RunImageRunningTask.msg"), 2); //$NON-NLS-1$
 				String containerId = null;
 				try {
-					final SubProgressMonitor createContainerMonitor = new SubProgressMonitor(
-							monitor, 1);
+					final SubMonitor createContainerMonitor = SubMonitor
+							.convert(monitor, 1);
 					// create the container
 					createContainerMonitor.beginTask(
 							DVMessages.getString(
@@ -126,8 +126,8 @@ public class RunImageCommandHandler extends AbstractHandler {
 						return Status.CANCEL_STATUS;
 					}
 					// start the container
-					final SubProgressMonitor startContainerMonitor = new SubProgressMonitor(
-							monitor, 1);
+					final SubMonitor startContainerMonitor = SubMonitor
+							.convert(monitor, 1);
 					startContainerMonitor.beginTask(DVMessages
 							.getString("RunImageStartingContainerTask.msg"), 1); //$NON-NLS-1$
 					final RunConsole console = getRunConsole(connection,
