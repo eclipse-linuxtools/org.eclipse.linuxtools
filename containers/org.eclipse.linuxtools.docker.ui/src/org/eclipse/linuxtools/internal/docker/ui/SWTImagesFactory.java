@@ -84,6 +84,8 @@ public class SWTImagesFactory {
 
 	public static final String IMG_REPOSITORY_MIDDLE = NAME_PREFIX
 			+ "repository-middle.gif"; //$NON-NLS-1$
+	public static final String IMG_REPOSITORY_MIDDLED = NAME_PREFIX
+			+ "repository-middled.gif"; //$NON-NLS-1$
 	public static final String IMG_DB_GROUP = NAME_PREFIX + "dbgroup_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_CONTAINER = NAME_PREFIX + "container.png"; //$NON-NLS-1$
 	public static final String IMG_CONTAINER_STARTED = NAME_PREFIX
@@ -175,6 +177,8 @@ public class SWTImagesFactory {
 			IMG_REBOOTD);
 	public static final ImageDescriptor DESC_REPOSITORY_MIDDLE = createManaged(
 			"", IMG_REPOSITORY_MIDDLE);
+	public static final ImageDescriptor DESC_REPOSITORY_MIDDLED = createManaged(
+			"", IMG_REPOSITORY_MIDDLED);
 	public static final ImageDescriptor DESC_DB_GROUP = createManaged("",
 			IMG_DB_GROUP);
 	public static final ImageDescriptor DESC_CONTAINER = createManaged("",

@@ -151,6 +151,10 @@
               name="%command.addconnection.label">
         </command>
 		<command
+			id="org.eclipse.linuxtools.docker.ui.commands.enableConnection"
+			name="%command.enableconnection.label">
+		</command>
+		<command
               id="org.eclipse.linuxtools.docker.ui.commands.removeConnection"
               name="%command.removeconnection.label">
         </command>
@@ -577,6 +581,21 @@
         </with>
      </enabledWhen>
   </handler>
+  <handler
+        class="org.eclipse.linuxtools.internal.docker.ui.commands.EnableConnectionCommandHandler"
+        commandId="org.eclipse.linuxtools.docker.ui.commands.enableConnection">
+     <enabledWhen>
+        <with
+              variable="selection">
+           <iterate
+                 ifEmpty="false">
+              <instanceof
+                    value="org.eclipse.linuxtools.docker.core.IDockerConnection">
+              </instanceof>
+           </iterate>
+        </with>
+     </enabledWhen>
+  </handler>
      	
 	</extension>
 	<!-- property testers -->
@@ -623,6 +642,16 @@
 		          style="push">
 				</command>
 		</menuContribution>
+  <menuContribution
+        locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+     <command
+           commandId="org.eclipse.linuxtools.docker.ui.commands.enableConnection"
+           icon="icons/repository-synchronize-attributes.png"
+           id="org.eclipse.linuxtools.docker.ui.commands.enableConnection"
+           mnemonic="R"
+           style="push">
+     </command>
+  </menuContribution>
 		<!-- explorer view context menu: Show In -->
 		<menuContribution
 			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu?after=group.navigate">
