@@ -27,12 +27,10 @@ public class DockerEditor extends TextEditor {
 	@Override
 	public void doSave(IProgressMonitor progressMonitor) {
 		try {
-			IResource resource = (IResource) getEditorInput().getAdapter(IResource.class);
+			IResource resource = getEditorInput().getAdapter(IResource.class);
 			IDocument document = getDocumentProvider().getDocument(getEditorInput());
 			new SyntaxProblemReporter().checkAndApply(document, 0, document.getLength(), resource);
-		} catch (CoreException e) {
-			Activator.log(IStatus.ERROR, "Failed to perform syntax check", e);
-		} catch (BadLocationException e) {
+		} catch (CoreException|BadLocationException e) {
 			Activator.log(IStatus.ERROR, "Failed to perform syntax check", e);
 		}
 		super.doSave(progressMonitor);

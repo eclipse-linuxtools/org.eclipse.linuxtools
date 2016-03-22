@@ -32,13 +32,13 @@ public class CompletionProcessor implements IContentAssistProcessor {
 	private static final char[] INFO_ACTIVATION_CHARS = {};
 	
 	private static final String ADDITIONAL_INFO_PATH = "assets/additional-info";
-	private Map<String, String> additionalInfos = new HashMap<String, String>();
+	private Map<String, String> additionalInfos = new HashMap<>();
 	
 	@Override
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int offset) {
 		try {
 			IDocument document = viewer.getDocument();
-			ArrayList<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
+			ArrayList<ICompletionProposal> result = new ArrayList<>();
 			
 			int lineNr = document.getLineOfOffset(offset);
 			int lineOffset = document.getLineOffset(lineNr);
