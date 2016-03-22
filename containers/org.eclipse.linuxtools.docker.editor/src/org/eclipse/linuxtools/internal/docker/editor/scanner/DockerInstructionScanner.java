@@ -21,13 +21,13 @@ public class DockerInstructionScanner extends RuleBasedScanner {
 		IToken instructionToken = new Token(new TextAttribute(SyntaxColors.getInstructionColor()));
 		IToken stringToken = new Token(new TextAttribute(SyntaxColors.getStringColor()));
 		IToken varToken = new Token(new TextAttribute(SyntaxColors.getVariableColor()));
-		
+
 		IRule[] rules = new IRule[4];
 		rules[0] = new InstructionWordRule(instructionToken);
 		rules[1] = new SingleLineRule("\"", "\"", stringToken, '\\');
 		rules[2] = new SingleLineRule("\'", "\'", stringToken, '\\');
 		rules[3] = new SingleLineRule("${", "}", varToken, '\\');
-		
+
 		setRules(rules);
 	}
 }

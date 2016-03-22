@@ -17,11 +17,11 @@ public class SyntaxColors {
 	private static final String COLOR_DEF_STRING = "org.eclipse.linuxtools.docker.editor.color.string";
 	private static final String COLOR_DEF_COMMENT = "org.eclipse.linuxtools.docker.editor.color.comment";
 	private static final String COLOR_DEF_VARIABLE = "org.eclipse.linuxtools.docker.editor.color.variable";
-	
+
 	public static Color getInstructionColor() {
 		return getTheme().getColorRegistry().get(COLOR_DEF_INSTRUCTION);
 	}
-	
+
 	public static Color getStringColor() {
 		return getTheme().getColorRegistry().get(COLOR_DEF_STRING);
 	}
@@ -29,11 +29,11 @@ public class SyntaxColors {
 	public static Color getCommentColor() {
 		return getTheme().getColorRegistry().get(COLOR_DEF_COMMENT);
 	}
-	
+
 	public static Color getVariableColor() {
 		return getTheme().getColorRegistry().get(COLOR_DEF_VARIABLE);
 	}
-	
+
 	private static ITheme getTheme() {
 		return PlatformUI.getWorkbench().getThemeManager().getCurrentTheme();
 	}

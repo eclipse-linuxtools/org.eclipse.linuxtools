@@ -24,9 +24,9 @@ import org.eclipse.jface.text.rules.Token;
 public class DockerPartitionScanner extends RuleBasedPartitionScanner {
 
 	public final static String TYPE_COMMENT = "__docker_comment";
-	
+
 	public final static String[] ALLOWED_CONTENT_TYPES = { TYPE_COMMENT };
-	
+
 	public DockerPartitionScanner() {
 		IToken commentToken = new Token(TYPE_COMMENT);
 		IPredicateRule[] rules = new IPredicateRule[1];

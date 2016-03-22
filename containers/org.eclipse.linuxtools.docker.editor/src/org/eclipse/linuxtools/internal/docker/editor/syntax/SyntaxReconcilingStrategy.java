@@ -24,11 +24,11 @@ public class SyntaxReconcilingStrategy implements IReconcilingStrategy, IReconci
 
 	private DockerEditor editor;
 	private IDocument document;
-	
+
 	public SyntaxReconcilingStrategy(DockerEditor editor) {
 		this.editor = editor;
 	}
-	
+
 	@Override
 	public void setDocument(IDocument document) {
 		this.document = document;
@@ -39,7 +39,7 @@ public class SyntaxReconcilingStrategy implements IReconcilingStrategy, IReconci
 		try {
 			IResource resource = editor.getEditorInput().getAdapter(IResource.class);
 			new SyntaxProblemReporter().checkAndApply(document, subRegion.getOffset(), subRegion.getLength(), resource);
-		} catch (CoreException|BadLocationException e) {
+		} catch (CoreException | BadLocationException e) {
 			Activator.log(IStatus.ERROR, "Failed to perform syntax check", e);
 		}
 	}

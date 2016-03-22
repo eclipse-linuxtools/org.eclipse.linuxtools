@@ -15,13 +15,14 @@ import org.eclipse.linuxtools.internal.docker.editor.scanner.DockerPartitionScan
 import org.eclipse.ui.editors.text.FileDocumentProvider;
 
 public class DockerDocumentProvider extends FileDocumentProvider {
-	
+
 	@Override
 	protected IDocument createDocument(Object element) throws CoreException {
 		IDocument document = super.createDocument(element);
 		if (document != null) {
 			DockerPartitionScanner scanner = new DockerPartitionScanner();
-			IDocumentPartitioner partitioner = new FastPartitioner(scanner, DockerPartitionScanner.ALLOWED_CONTENT_TYPES);
+			IDocumentPartitioner partitioner = new FastPartitioner(scanner,
+					DockerPartitionScanner.ALLOWED_CONTENT_TYPES);
 			partitioner.connect(document);
 			document.setDocumentPartitioner(partitioner);
 		}

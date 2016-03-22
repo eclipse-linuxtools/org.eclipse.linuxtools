@@ -19,7 +19,7 @@ import org.eclipse.linuxtools.internal.docker.editor.syntax.SyntaxColors;
 public class DockerCommentScanner extends RuleBasedScanner {
 
 	public static final String COMMENT_SEQUENCE = "#";
-	
+
 	public DockerCommentScanner() {
 		IToken token = new Token(new TextAttribute(SyntaxColors.getCommentColor()));
 
@@ -27,7 +27,8 @@ public class DockerCommentScanner extends RuleBasedScanner {
 		rules[0] = new EndOfLineRule(COMMENT_SEQUENCE, token) {
 			@Override
 			public IToken evaluate(ICharacterScanner scanner, boolean resume) {
-				if (getColumn() > 0) return Token.UNDEFINED;
+				if (getColumn() > 0)
+					return Token.UNDEFINED;
 				return super.evaluate(scanner, resume);
 			}
 		};

@@ -20,8 +20,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Based on {@link org.eclipse.jface.text.contentassist.CompletionProposal} with added
- * functionality for showing additional information formatted as HTML.
+ * Based on {@link org.eclipse.jface.text.contentassist.CompletionProposal} with
+ * added functionality for showing additional information formatted as HTML.
  */
 public class CompletionProposal implements ICompletionProposal, ICompletionProposalExtension3 {
 
@@ -31,7 +31,8 @@ public class CompletionProposal implements ICompletionProposal, ICompletionPropo
 
 	private String fAdditionalProposalInfo;
 
-	public CompletionProposal(String replacementString, int replacementOffset, int replacementLength, String additionalProposalInfo) {
+	public CompletionProposal(String replacementString, int replacementOffset, int replacementLength,
+			String additionalProposalInfo) {
 		this.fReplacementString = replacementString;
 		this.fReplacementOffset = replacementOffset;
 		this.fReplacementLength = replacementLength;
@@ -76,7 +77,7 @@ public class CompletionProposal implements ICompletionProposal, ICompletionPropo
 	public Image getImage() {
 		return null;
 	}
-	
+
 	@Override
 	public CharSequence getPrefixCompletionText(IDocument document, int completionOffset) {
 		return null;
@@ -86,7 +87,7 @@ public class CompletionProposal implements ICompletionProposal, ICompletionPropo
 	public int getPrefixCompletionStart(IDocument document, int completionOffset) {
 		return 0;
 	}
-	
+
 	private static class DefaultInformationControlCreator implements IInformationControlCreator {
 		@Override
 		public IInformationControl createInformationControl(Shell shell) {

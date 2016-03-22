@@ -21,7 +21,7 @@ public class Activator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static Activator plugin;
-	
+
 	/**
 	 * The constructor
 	 */
@@ -50,6 +50,6 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	public static void log(int severity, String message, Throwable cause) {
-		getDefault().getLog().log(new Status(severity, PLUGIN_ID, message, cause));	
+		getDefault().getLog().log(new Status(severity, PLUGIN_ID, message, cause));
 	}
 }

@@ -23,15 +23,15 @@ public class AssetLoader {
 		if (url == null) {
 			return null;
 		} else {
-			
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			try (InputStream input = url.openStream()){
-				
+			try (InputStream input = url.openStream()) {
+
 				byte[] buffer = new byte[4096];
 				int len = 0;
 				do {
 					len = input.read(buffer, 0, buffer.length);
-					if (len > 0) out.write(buffer, 0, len);
+					if (len > 0)
+						out.write(buffer, 0, len);
 				} while (len >= 0);
 			}
 			return out.toByteArray();

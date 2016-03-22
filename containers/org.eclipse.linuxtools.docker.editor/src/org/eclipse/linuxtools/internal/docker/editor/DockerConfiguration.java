@@ -28,11 +28,11 @@ import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 public class DockerConfiguration extends TextSourceViewerConfiguration {
 
 	private DockerEditor editor;
-	
+
 	public DockerConfiguration(DockerEditor editor) {
 		this.editor = editor;
 	}
-	
+
 	@Override
 	public IPresentationReconciler getPresentationReconciler(ISourceViewer sourceViewer) {
 		PresentationReconciler reconciler = new PresentationReconciler();
@@ -56,7 +56,7 @@ public class DockerConfiguration extends TextSourceViewerConfiguration {
 		reconciler.setReconcilingStrategy(strategy, IDocument.DEFAULT_CONTENT_TYPE);
 		return reconciler;
 	}
-	
+
 	@Override
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 		ContentAssistant ca = new ContentAssistant();
@@ -65,5 +65,5 @@ public class DockerConfiguration extends TextSourceViewerConfiguration {
 		ca.setInformationControlCreator(getInformationControlCreator(sourceViewer));
 		return ca;
 	}
-	
+
 }
