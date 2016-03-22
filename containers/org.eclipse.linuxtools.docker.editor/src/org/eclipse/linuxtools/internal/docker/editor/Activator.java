@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package eu.openanalytics.editor.docker;
+package org.eclipse.linuxtools.internal.docker.editor;
 
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -17,7 +17,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "eu.openanalytics.editor.docker"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.docker.editor"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;

@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package eu.openanalytics.editor.docker;
+package org.eclipse.linuxtools.internal.docker.editor;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
@@ -19,13 +19,12 @@ import org.eclipse.jface.text.reconciler.Reconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.linuxtools.internal.docker.editor.assist.CompletionProcessor;
+import org.eclipse.linuxtools.internal.docker.editor.scanner.DockerCommentScanner;
+import org.eclipse.linuxtools.internal.docker.editor.scanner.DockerInstructionScanner;
+import org.eclipse.linuxtools.internal.docker.editor.scanner.DockerPartitionScanner;
+import org.eclipse.linuxtools.internal.docker.editor.syntax.SyntaxReconcilingStrategy;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
-
-import eu.openanalytics.editor.docker.assist.CompletionProcessor;
-import eu.openanalytics.editor.docker.scanner.DockerCommentScanner;
-import eu.openanalytics.editor.docker.scanner.DockerInstructionScanner;
-import eu.openanalytics.editor.docker.scanner.DockerPartitionScanner;
-import eu.openanalytics.editor.docker.syntax.SyntaxReconcilingStrategy;
 
 public class DockerConfiguration extends TextSourceViewerConfiguration {
 

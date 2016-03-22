@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package eu.openanalytics.editor.docker.syntax;
+package org.eclipse.linuxtools.internal.docker.editor.syntax;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -17,9 +17,8 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.reconciler.DirtyRegion;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategyExtension;
-
-import eu.openanalytics.editor.docker.Activator;
-import eu.openanalytics.editor.docker.DockerEditor;
+import org.eclipse.linuxtools.internal.docker.editor.Activator;
+import org.eclipse.linuxtools.internal.docker.editor.DockerEditor;
 
 public class SyntaxReconcilingStrategy implements IReconcilingStrategy, IReconcilingStrategyExtension {
 

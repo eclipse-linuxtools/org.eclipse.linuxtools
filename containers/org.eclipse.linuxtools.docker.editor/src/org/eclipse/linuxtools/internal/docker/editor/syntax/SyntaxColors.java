@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package eu.openanalytics.editor.docker.syntax;
+package org.eclipse.linuxtools.internal.docker.editor.syntax;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.PlatformUI;
@@ -13,10 +13,10 @@ import org.eclipse.ui.themes.ITheme;
 
 public class SyntaxColors {
 
-	private static final String COLOR_DEF_INSTRUCTION = "eu.openanalytics.editor.docker.color.instruction";
-	private static final String COLOR_DEF_STRING = "eu.openanalytics.editor.docker.color.string";
-	private static final String COLOR_DEF_COMMENT = "eu.openanalytics.editor.docker.color.comment";
-	private static final String COLOR_DEF_VARIABLE = "eu.openanalytics.editor.docker.color.variable";
+	private static final String COLOR_DEF_INSTRUCTION = "org.eclipse.linuxtools.docker.editor.color.instruction";
+	private static final String COLOR_DEF_STRING = "org.eclipse.linuxtools.docker.editor.color.string";
+	private static final String COLOR_DEF_COMMENT = "org.eclipse.linuxtools.docker.editor.color.comment";
+	private static final String COLOR_DEF_VARIABLE = "org.eclipse.linuxtools.docker.editor.color.variable";
 	
 	public static Color getInstructionColor() {
 		return getTheme().getColorRegistry().get(COLOR_DEF_INSTRUCTION);

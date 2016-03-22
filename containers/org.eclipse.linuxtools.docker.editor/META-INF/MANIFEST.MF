@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Dockerfile Editor
 Bundle-SymbolicName: org.eclipse.linuxtools.docker.editor;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: eu.openanalytics.editor.docker.Activator
+Bundle-Activator: org.eclipse.linuxtools.internal.docker.editor.Activator
 Bundle-Vendor: Eclipse Linux Tools
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

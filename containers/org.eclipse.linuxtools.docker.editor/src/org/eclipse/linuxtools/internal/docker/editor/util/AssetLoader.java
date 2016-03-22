@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package eu.openanalytics.editor.docker.util;
+package org.eclipse.linuxtools.internal.docker.editor.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,8 +14,7 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
-
-import eu.openanalytics.editor.docker.Activator;
+import org.eclipse.linuxtools.internal.docker.editor.Activator;
 
 public class AssetLoader {
 

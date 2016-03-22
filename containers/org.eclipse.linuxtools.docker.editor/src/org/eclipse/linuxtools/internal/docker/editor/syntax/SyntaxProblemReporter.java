@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package eu.openanalytics.editor.docker.syntax;
+package org.eclipse.linuxtools.internal.docker.editor.syntax;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +15,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-
-import eu.openanalytics.editor.docker.scanner.DockerCommentScanner;
-import eu.openanalytics.editor.docker.scanner.InstructionWordRule;
+import org.eclipse.linuxtools.internal.docker.editor.scanner.DockerCommentScanner;
+import org.eclipse.linuxtools.internal.docker.editor.scanner.InstructionWordRule;
 
 public class SyntaxProblemReporter {
 

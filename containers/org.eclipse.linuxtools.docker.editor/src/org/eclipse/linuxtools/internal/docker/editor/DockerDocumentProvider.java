@@ -5,15 +5,14 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package eu.openanalytics.editor.docker;
+package org.eclipse.linuxtools.internal.docker.editor;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.rules.FastPartitioner;
+import org.eclipse.linuxtools.internal.docker.editor.scanner.DockerPartitionScanner;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
-
-import eu.openanalytics.editor.docker.scanner.DockerPartitionScanner;
 
 public class DockerDocumentProvider extends FileDocumentProvider {
 	

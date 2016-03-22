@@ -4,42 +4,42 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="eu.openanalytics.editor.docker.DockerEditor"
+            class="org.eclipse.linuxtools.internal.docker.editor.DockerEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             default="false"
             extensions="dockerfile"
             icon="icons/dockerfile.png"
-            id="eu.openanalytics.editor.docker.DockerEditor"
+            id="org.eclipse.linuxtools.DockerEditor"
             name="Dockerfile Editor">
       </editor>
    </extension>
    <extension
          point="org.eclipse.ui.themes">
       <themeElementCategory
-            id="eu.openanalytics.editor.docker.presentation"
+            id="org.eclipse.linuxtools.docker.editor.presentation"
             label="Dockerfile">
       </themeElementCategory>
       <colorDefinition
-            categoryId="eu.openanalytics.editor.docker.presentation"
-            id="eu.openanalytics.editor.docker.color.instruction"
+            categoryId="org.eclipse.linuxtools.docker.editor.presentation"
+            id="org.eclipse.linuxtools.docker.editor.color.instruction"
             label="Instruction"
             value="0,128,0">
       </colorDefinition>
       <colorDefinition
-            categoryId="eu.openanalytics.editor.docker.presentation"
-            id="eu.openanalytics.editor.docker.color.string"
+            categoryId="org.eclipse.linuxtools.docker.editor.presentation"
+            id="org.eclipse.linuxtools.docker.editor.color.string"
             label="String"
             value="0,0,255">
       </colorDefinition>
       <colorDefinition
-            categoryId="eu.openanalytics.editor.docker.presentation"
-            id="eu.openanalytics.editor.docker.color.comment"
+            categoryId="org.eclipse.linuxtools.docker.editor.presentation"
+            id="org.eclipse.linuxtools.docker.editor.color.comment"
             label="Comment"
             value="128,128,128">
       </colorDefinition>
       <colorDefinition
-            categoryId="eu.openanalytics.editor.docker.presentation"
-            id="eu.openanalytics.editor.docker.color.variable"
+            categoryId="org.eclipse.linuxtools.docker.editor.presentation"
+            id="org.eclipse.linuxtools.docker.ediotr.color.variable"
             label="Variable"
             value="255,0,0">
       </colorDefinition>
