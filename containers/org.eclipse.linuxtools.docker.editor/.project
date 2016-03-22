@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>eu.openanalytics.editor.docker</name>
+	<name>org.eclipse.linuxtools.docker.editor</name>
 	<comment></comment>
 	<projects>
 	</projects>
