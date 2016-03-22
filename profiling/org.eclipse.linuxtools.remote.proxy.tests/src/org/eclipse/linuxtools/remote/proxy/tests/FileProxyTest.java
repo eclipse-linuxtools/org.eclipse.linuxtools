@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.remote.proxy.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -19,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.internal.profiling.launch.LocalFileProxy;
@@ -63,6 +65,12 @@ public class FileProxyTest extends AbstractProxyTest {
 		assertNotNull(fs);
 		assertEquals("Remote connection and FileStore schemes diverge", connScheme, fs.toURI().getScheme());
 		//assertTrue(fs.fetchInfo().isDirectory());
+
+		fs = fileProxy.getResource("/filenotexits");
+		assertNotNull(fs);
+		IFileInfo fileInfo = fs.fetchInfo();
+		assertNotNull(fileInfo);
+		assertFalse(fileInfo.exists());
 
 		/*
 		 * Test getWorkingDir()
@@ -112,6 +120,12 @@ public class FileProxyTest extends AbstractProxyTest {
 		}
 		assertEquals("FileStore to local project folder diverge", expectedFileStore, actualFileStore);
 		assertTrue(actualFileStore.fetchInfo().isDirectory());
+
+		actualFileStore = fileProxy.getResource("/filenotexits");
+		assertNotNull(actualFileStore);
+		IFileInfo fileInfo = actualFileStore.fetchInfo();
+		assertNotNull(fileInfo);
+		assertFalse(fileInfo.exists());
 
 		/*
 		 * Test getWorkingDir()
