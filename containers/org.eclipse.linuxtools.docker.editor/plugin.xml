@@ -8,6 +8,7 @@
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             default="false"
             extensions="dockerfile"
+            filenames="Dockerfile" 
             icon="icons/dockerfile.png"
             id="org.eclipse.linuxtools.DockerEditor"
             name="Dockerfile Editor">
