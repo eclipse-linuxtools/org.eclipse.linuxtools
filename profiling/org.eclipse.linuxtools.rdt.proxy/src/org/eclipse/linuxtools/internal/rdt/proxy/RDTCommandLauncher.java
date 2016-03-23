@@ -31,6 +31,7 @@ import org.eclipse.remote.core.IRemoteProcessBuilder;
 import org.eclipse.remote.core.IRemoteProcessService;
 import org.eclipse.remote.core.IRemoteResource;
 import org.eclipse.remote.core.RemoteProcessAdapter;
+import org.eclipse.remote.core.exception.RemoteConnectionException;
 
 /**
  * @noextend This class is not intended to be subclassed by clients.
@@ -111,6 +112,17 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
             fCommandArgs = constructCommandArray(commandPath.toOSString(), args);
             fShowCommand = true;
             IRemoteConnection connection = RDTProxyManager.getConnection(uri);
+            if (connection == null) {
+                fErrorMessage = Messages.RDTCommandLauncher_connection_not_found;
+                return null;
+            } else if (!connection.isOpen()) {
+                try {
+                    connection.open(monitor);
+                } catch (RemoteConnectionException e) {
+                    fErrorMessage = e.getMessage();
+                    return null;
+                }
+            }
             IRemoteProcessService ps = connection.getService(IRemoteProcessService.class);
             IRemoteProcessBuilder builder = ps.getProcessBuilder(Arrays.asList(fCommandArgs));
 

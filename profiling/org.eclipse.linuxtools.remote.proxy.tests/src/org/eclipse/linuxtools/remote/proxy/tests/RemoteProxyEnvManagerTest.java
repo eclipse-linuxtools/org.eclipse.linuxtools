@@ -11,6 +11,8 @@
 package org.eclipse.linuxtools.remote.proxy.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 import static org.junit.Assert.assertTrue;
 
@@ -21,6 +23,7 @@ import java.util.Map.Entry;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.profiling.launch.IRemoteEnvProxyManager;
 import org.eclipse.linuxtools.profiling.launch.RemoteEnvProxyManager;
+import org.eclipse.remote.core.IRemoteConnection;
 import org.junit.Test;
 
 /**
@@ -60,6 +63,21 @@ public class RemoteProxyEnvManagerTest extends AbstractProxyTest {
 		for(Entry<String, String> entry: actualEnv.entrySet()) {
 			assertTrue("It should not hold exported functions: " + entry.getKey(), !entry.getKey().matches("BASH_FUNC_.*"));
 			assertTrue("It should not hold exported functions: " + entry.getKey(), !entry.getValue().matches("^\\("));
+		}
+
+		/*
+		 * Test it opens connection to get the env
+		 */
+		IRemoteConnection conn = getConnection();
+		assertNotNull(conn);
+		conn.close();
+		assertFalse(conn.isOpen());
+		proxy = new RemoteEnvProxyManager();
+		try {
+			actualEnv = proxy.getEnv(syncProject.getProject());
+			assertTrue(actualEnv.size() > 0);
+		} catch (CoreException e) {
+			fail("Failed to get env when connection is closed: " + e.getMessage());
 		}
 	}
 

@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.remote.proxy.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -27,6 +28,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.profiling.launch.LocalLauncher;
 import org.eclipse.linuxtools.internal.rdt.proxy.RDTCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
+import org.eclipse.remote.core.IRemoteConnection;
 import org.junit.Test;
 
 @SuppressWarnings("restriction")
@@ -65,6 +67,21 @@ public class CommandLauncherProxyTest extends AbstractProxyTest {
 		}
 		// Ensure something can be read
 		assertTrue(v != -1);
+
+		/*
+		 * Test it opens connection before execute.
+		 */
+		IRemoteConnection conn = getConnection();
+		conn.close();
+		assertFalse(conn.isOpen());
+		try {
+			p = cl.execute(new Path("ls"), new String[]{}, new String[]{}, null, new NullProgressMonitor());
+			assertNotNull(p);
+			p.waitFor();
+			assertEquals("Process exited with failure", 0, p.exitValue());
+		} catch (CoreException | InterruptedException e) {
+			fail("Failed to open connection to execute a command: " + e.getMessage());
+		}
 	}
 
 	@Test

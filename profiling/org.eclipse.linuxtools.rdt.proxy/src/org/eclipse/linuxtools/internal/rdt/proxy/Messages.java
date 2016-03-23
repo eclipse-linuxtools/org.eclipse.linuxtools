@@ -15,6 +15,7 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
     private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.rdt.proxy.messages"; //$NON-NLS-1$
     public static String RDTCommandLauncher_malformed_env_var_string;
+    public static String RDTCommandLauncher_connection_not_found;
     static {
        // initialize resource bundle
        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
