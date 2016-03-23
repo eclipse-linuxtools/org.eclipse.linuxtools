@@ -105,9 +105,7 @@ public class CompletionProcessor implements IContentAssistProcessor {
 		String additionalInfo = "";
 		String targetFile = ADDITIONAL_INFO_PATH + "/" + instruction + ".html";
 		try {
-			byte[] htmlContents = AssetLoader.loadAsset(targetFile);
-			if (htmlContents != null)
-				additionalInfo = new String(htmlContents);
+			additionalInfo = AssetLoader.loadAsset(targetFile);
 		} catch (IOException e) {
 			Activator.log(IStatus.WARNING, "Failed to load additional info file for instruction " + instruction, e);
 		}

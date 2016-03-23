@@ -18,7 +18,7 @@ import org.eclipse.linuxtools.internal.docker.editor.Activator;
 
 public class AssetLoader {
 
-	public static byte[] loadAsset(String path) throws IOException {
+	public static String loadAsset(String path) throws IOException {
 		URL url = FileLocator.find(Activator.getDefault().getBundle(), new Path(path), null);
 		if (url == null) {
 			return null;
@@ -34,7 +34,7 @@ public class AssetLoader {
 						out.write(buffer, 0, len);
 				} while (len >= 0);
 			}
-			return out.toByteArray();
+			return new String(out.toByteArray());
 		}
 	}
 }

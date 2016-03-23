@@ -27,8 +27,7 @@ public class InstructionWordRule extends WordRule {
 	static {
 		String[] loadedInstructions = new String[0];
 		try {
-			byte[] contents = AssetLoader.loadAsset(INSTRUCTION_FILE_PATH);
-			String contentsString = new String(contents);
+			String contentsString = AssetLoader.loadAsset(INSTRUCTION_FILE_PATH);
 			String lineSeparator = (contentsString.contains("\r\n")) ? "\r\n" : "\n";
 			loadedInstructions = contentsString.split(lineSeparator);
 		} catch (IOException e) {
