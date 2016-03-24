@@ -12,3 +12,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.linuxtools.internal.docker.editor;x-friends:="org.eclipse.linuxtools.docker.ui"
+Import-Package: org.eclipse.ui.ide

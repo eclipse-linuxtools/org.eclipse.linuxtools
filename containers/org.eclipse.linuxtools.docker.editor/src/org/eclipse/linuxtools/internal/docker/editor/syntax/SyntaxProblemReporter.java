@@ -24,6 +24,11 @@ public class SyntaxProblemReporter {
 
 	public void checkAndApply(IDocument document, int offset, int length, IResource resource)
 			throws CoreException, BadLocationException {
+
+		// We can't do problem report when file is external (no IResource)
+		if (resource == null) {
+			return;
+		}
 		boolean fullScan = (offset == 0 && length == document.getLength());
 
 		// Clear any existing markers in the affected region.

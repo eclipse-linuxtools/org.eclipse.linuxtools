@@ -25,6 +25,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.IWizard;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
@@ -33,7 +36,9 @@ import org.eclipse.linuxtools.internal.docker.ui.views.DockerImagesView;
 import org.eclipse.linuxtools.internal.docker.ui.views.ImageBuildProgressHandler;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageBuild;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.WizardMessages;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -49,8 +54,9 @@ public class BuildImageCommandHandler extends AbstractHandler {
 	public Object execute(final ExecutionEvent event) {
 		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		final ImageBuild wizard = new ImageBuild();
-		final boolean buildImage = CommandUtils.openWizard(wizard,
-				HandlerUtil.getActiveShell(event));
+		final WizardDialog wizardDialog = new NonModalWizardDialog(HandlerUtil.getActiveShell(event), wizard);
+		wizardDialog.create();
+		final boolean buildImage = wizardDialog.open() == Window.OK;
 		if (buildImage) {
 			if (activePart instanceof DockerImagesView) {
 				connection = ((DockerImagesView) activePart)
@@ -158,6 +164,18 @@ public class BuildImageCommandHandler extends AbstractHandler {
 
 		buildImageJob.schedule();
 
+	}
+
+	/**
+	 * We need a non-modal (omitting SWT.APPLICATION_MODAL) wizard dialog to
+	 * ensure that any detatched editor windows are brought up can be accessed.
+	 */
+	private static class NonModalWizardDialog extends WizardDialog {
+		public NonModalWizardDialog(Shell parentShell, IWizard newWizard) {
+			super(parentShell, newWizard);
+			setShellStyle(SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER
+					| SWT.RESIZE | getDefaultOrientation());
+		}
 	}
 
 }
