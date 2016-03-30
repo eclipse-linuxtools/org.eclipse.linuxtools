@@ -21,11 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -176,7 +173,8 @@ public class ImageRun extends Wizard {
 
 			switch (dataVolume.getMountType()) {
 			case HOST_FILE_SYSTEM:
-				String bind = convertToUnixPath(dataVolume.getHostPathMount())
+				String bind = LaunchConfigurationUtils
+						.convertToUnixPath(dataVolume.getHostPathMount())
 						+ ':' + dataVolume.getContainerPath() + ":Z"; //$NON-NLS-1$ //$NON-NLS-2$
 				if (dataVolume.isReadOnly()) {
 					bind += ",ro"; //$NON-NLS-1$
@@ -199,28 +197,6 @@ public class ImageRun extends Wizard {
 			hostConfigBuilder.cpuShares(resourcesModel.getCpuShareWeight());
 		}
 		return hostConfigBuilder.build();
-	}
-
-	private String convertToUnixPath(String path) {
-		String unixPath = path;
-
-		if (Platform.OS_WIN32.equals(Platform.getOS())) {
-			// replace backslashes with slashes
-			unixPath = unixPath.replaceAll("\\\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
-
-			// replace "C:/" with "/c/"
-			Matcher m = Pattern.compile("([a-zA-Z]):/").matcher(unixPath); //$NON-NLS-1$
-			if (m.find()) {
-				StringBuffer b = new StringBuffer();
-				b.append('/');
-				m.appendReplacement(b, m.group(1).toLowerCase());
-				b.append('/');
-				m.appendTail(b);
-				unixPath = b.toString();
-			}
-		}
-
-		return unixPath;
 	}
 
 	public DockerContainerConfig getDockerContainerConfig() {

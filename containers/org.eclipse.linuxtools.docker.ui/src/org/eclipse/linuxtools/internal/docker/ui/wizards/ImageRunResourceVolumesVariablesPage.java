@@ -421,7 +421,6 @@ image);
 				final List<String> launchConfigVolumes = lastLaunchConfiguration
 						.getAttribute(DATA_VOLUMES,
 								Collections.<String> emptyList());
-				// FIXME: convert host_path back to WinOS32 if necessary
 				for (String containerVolume : launchConfigVolumes) {
 					final DataVolumeModel volume = DataVolumeModel
 							.parseString(containerVolume);

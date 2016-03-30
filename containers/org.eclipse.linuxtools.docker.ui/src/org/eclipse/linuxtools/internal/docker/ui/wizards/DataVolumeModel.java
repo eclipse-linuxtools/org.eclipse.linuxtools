@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import java.util.UUID;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.internal.docker.ui.databinding.BaseDatabindingModel;
 import org.eclipse.linuxtools.internal.docker.ui.launch.LaunchConfigurationUtils;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunResourceVolumesVariablesModel.MountType;
@@ -120,9 +121,15 @@ public class DataVolumeModel extends BaseDatabindingModel
 			model.setSelected(Boolean.valueOf(items[3]));
 			break;
 		case HOST_FILE_SYSTEM:
-			model.setHostPathMount(items[2]);
-			model.setReadOnly(Boolean.valueOf(items[3]));
-			model.setSelected(Boolean.valueOf(items[4]));
+			if (Platform.OS_WIN32.equals(Platform.getOS())) {
+				model.setHostPathMount(items[2] + SEPARATOR + items[3]);
+				model.setReadOnly(Boolean.valueOf(items[4]));
+				model.setSelected(Boolean.valueOf(items[5]));
+			} else {
+				model.setHostPathMount(items[2]);
+				model.setReadOnly(Boolean.valueOf(items[3]));
+				model.setSelected(Boolean.valueOf(items[4]));
+			}
 			break;
 		case NONE:
 			model.setSelected(Boolean.valueOf(items[2]));
