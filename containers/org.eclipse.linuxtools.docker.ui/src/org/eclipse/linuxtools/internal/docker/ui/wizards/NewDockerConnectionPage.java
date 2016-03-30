@@ -809,7 +809,7 @@ public class NewDockerConnectionPage extends WizardPage {
 			final String connectionName = this.connectionNameModelObservable
 					.getValue();
 			if (connectionName == null || connectionName.isEmpty()) {
-				return ValidationStatus.cancel(WizardMessages.getString(
+				return ValidationStatus.error(WizardMessages.getString(
 						"NewDockerConnectionPage.validation.missingConnectionName.msg")); //$NON-NLS-1$
 			} else if (DockerConnectionManager.getInstance()
 					.findConnection(connectionName) != null) {
