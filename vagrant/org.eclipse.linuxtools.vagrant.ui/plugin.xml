@@ -30,7 +30,7 @@
        point="org.eclipse.ui.perspectives">
     <perspective
           class="org.eclipse.linuxtools.internal.vagrant.ui.VagrantPerspective"
-          icon="icons/repository-middle.gif"
+          icon="icons/vagrant_small.gif"
           id="org.eclipse.linuxtools.vagrant.ui.perspective"
           name="%VagrantPerspective.name">
     </perspective>
