@@ -65,13 +65,13 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
     // Events - Cache
     private static final String IR = "Ir"; //$NON-NLS-1$
     private static final String I1MR = "I1mr"; //$NON-NLS-1$
-    private static final String I2MR = "I2mr"; //$NON-NLS-1$
+    private static final String ILMR = "ILmr"; //$NON-NLS-1$
     private static final String DR = "Dr"; //$NON-NLS-1$
     private static final String D1MR = "D1mr"; //$NON-NLS-1$
-    private static final String D2MR = "D2mr"; //$NON-NLS-1$
+    private static final String DLMR = "DLmr"; //$NON-NLS-1$
     private static final String DW = "Dw"; //$NON-NLS-1$
     private static final String D1MW = "D1mw"; //$NON-NLS-1$
-    private static final String D2MW = "D2mw"; //$NON-NLS-1$
+    private static final String DLMW = "DLmw"; //$NON-NLS-1$
 
     // Events - Branch
     private static final String BC = "Bc"; //$NON-NLS-1$
@@ -278,19 +278,19 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
             result = Messages.getString("CachegrindViewPart.Ir_long"); //$NON-NLS-1$
         } else if (event.equals(I1MR)) {
             result = Messages.getString("CachegrindViewPart.I1mr_long"); //$NON-NLS-1$
-        } else if (event.equals(I2MR)) {
+        } else if (event.equals(ILMR)) {
             result = Messages.getString("CachegrindViewPart.I2mr_long"); //$NON-NLS-1$
         } else if (event.equals(DR)) {
             result = Messages.getString("CachegrindViewPart.Dr_long"); //$NON-NLS-1$
         } else if (event.equals(D1MR)) {
             result = Messages.getString("CachegrindViewPart.D1mr_long"); //$NON-NLS-1$
-        } else if (event.equals(D2MR)) {
+        } else if (event.equals(DLMR)) {
             result = Messages.getString("CachegrindViewPart.D2mr_long"); //$NON-NLS-1$
         } else if (event.equals(DW)) {
             result = Messages.getString("CachegrindViewPart.Dw_long"); //$NON-NLS-1$
         } else if (event.equals(D1MW)) {
             result = Messages.getString("CachegrindViewPart.D1mw_long"); //$NON-NLS-1$
-        } else if (event.equals(D2MW)) {
+        } else if (event.equals(DLMW)) {
             result = Messages.getString("CachegrindViewPart.D2mw_long"); //$NON-NLS-1$
         } else if (event.equals(BC)) {
             result = Messages.getString("CachegrindViewPart.Bc_long"); //$NON-NLS-1$
