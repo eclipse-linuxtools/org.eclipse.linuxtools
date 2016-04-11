@@ -35,6 +35,7 @@ import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.BuildConsole;
 import org.eclipse.linuxtools.internal.docker.ui.launch.IBuildDockerImageLaunchConfigurationConstants;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * A {@link Job} to call and progressMonitor the build of an
@@ -137,7 +138,8 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 				@Override
 				public void run() {
 					MessageDialog
-							.openError(Display.getCurrent().getActiveShell(),
+							.openError(PlatformUI.getWorkbench()
+									.getActiveWorkbenchWindow().getShell(),
 									JobMessages.getString(
 											BUILD_IMAGE_ERROR_MESSAGE),
 							e.getMessage());

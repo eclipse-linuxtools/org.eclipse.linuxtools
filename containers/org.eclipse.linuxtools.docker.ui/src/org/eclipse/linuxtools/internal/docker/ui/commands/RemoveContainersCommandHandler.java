@@ -21,6 +21,7 @@ import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.internal.docker.ui.RunConsole;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Command handler to kill all the selected {@link IDockerContainer}
@@ -92,7 +93,9 @@ public class RemoveContainersCommandHandler extends BaseContainersCommandHandler
 			@Override
 			public void run() {
 				boolean result = MessageDialog
-						.openConfirm(Display.getDefault().getActiveShell(),
+						.openConfirm(
+								PlatformUI.getWorkbench()
+										.getActiveWorkbenchWindow().getShell(),
 								DVMessages.getString(CONTAINER_REMOVE_CONFIRM),
 								DVMessages.getFormattedString(
 										CONTAINER_REMOVE_LIST,

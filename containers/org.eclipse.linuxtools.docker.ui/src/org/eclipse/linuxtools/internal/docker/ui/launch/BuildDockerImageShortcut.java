@@ -44,6 +44,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 
 public class BuildDockerImageShortcut implements ILaunchShortcut {
@@ -171,7 +172,8 @@ public class BuildDockerImageShortcut implements ILaunchShortcut {
 					@Override
 					public void run() {
 						MessageDialog.openError(
-								Display.getCurrent().getActiveShell(),
+								PlatformUI.getWorkbench()
+										.getActiveWorkbenchWindow().getShell(),
 								LaunchMessages.getString(
 										LaunchShortcut_Error_Launching),
 								LaunchMessages.getString(

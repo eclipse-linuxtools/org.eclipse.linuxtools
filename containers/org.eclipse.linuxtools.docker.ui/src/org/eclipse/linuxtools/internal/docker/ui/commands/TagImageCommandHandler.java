@@ -27,6 +27,7 @@ import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageTag;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class TagImageCommandHandler extends AbstractHandler {
@@ -75,8 +76,9 @@ public class TagImageCommandHandler extends AbstractHandler {
 					Display.getDefault().syncExec(new Runnable() {
 						@Override
 						public void run() {
-							MessageDialog.openError(Display.getCurrent()
-									.getActiveShell(), DVMessages
+							MessageDialog.openError(PlatformUI.getWorkbench()
+									.getActiveWorkbenchWindow().getShell(),
+									DVMessages
 									.getFormattedString(ERROR_TAGGING_IMAGE,
 											tag), e.getMessage());
 

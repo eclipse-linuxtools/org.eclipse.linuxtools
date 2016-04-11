@@ -26,6 +26,7 @@ import org.eclipse.linuxtools.internal.docker.ui.views.ImagePushProgressHandler;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImagePush;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
@@ -62,7 +63,10 @@ public class PushImageCommandHandler extends AbstractHandler {
 				@Override
 				public void run() {
 					MessageDialog.openError(
-							Display.getDefault().getActiveShell(), "Error",
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+									.getShell(),
+							DVMessages.getFormattedString(ERROR_PUSHING_IMAGE,
+									wizard.getImageTag()),
 							DVMessages.getFormattedString(NO_CONNECTION));
 				}
 			});
@@ -86,8 +90,9 @@ public class PushImageCommandHandler extends AbstractHandler {
 
 						@Override
 						public void run() {
-							MessageDialog.openError(Display.getCurrent()
-									.getActiveShell(), DVMessages
+							MessageDialog.openError(PlatformUI.getWorkbench()
+									.getActiveWorkbenchWindow().getShell(),
+									DVMessages
 									.getFormattedString(ERROR_PUSHING_IMAGE,
 											tag), e.getMessage());
 

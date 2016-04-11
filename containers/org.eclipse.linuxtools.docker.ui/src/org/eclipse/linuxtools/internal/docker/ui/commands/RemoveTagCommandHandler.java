@@ -27,6 +27,7 @@ import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRemoveTag;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class RemoveTagCommandHandler extends AbstractHandler {
@@ -73,8 +74,9 @@ public class RemoveTagCommandHandler extends AbstractHandler {
 
 						@Override
 						public void run() {
-							MessageDialog.openError(Display.getCurrent()
-									.getActiveShell(), DVMessages
+							MessageDialog.openError(PlatformUI.getWorkbench()
+									.getActiveWorkbenchWindow().getShell(),
+									DVMessages
 									.getFormattedString(
 											ERROR_REMOVING_TAG_IMAGE,
 											tag), e.getMessage());
