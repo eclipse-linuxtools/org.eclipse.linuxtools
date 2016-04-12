@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.docker.core;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
@@ -195,6 +196,22 @@ public interface IDockerConnection {
 	 *             if the thread was interrupted
 	 */
 	void tagImage(String name, String newTag) throws DockerException, InterruptedException;
+
+	/**
+	 * Copy a file or directory from a Container into a tar InputStream.
+	 * 
+	 * @param id
+	 *            the Container id
+	 * @param path
+	 *            the path to the file or directory in the Container
+	 * @return InputStream containing tar'd file or directory
+	 * @throws DockerException
+	 *             in case of underlying problem
+	 * @throws InterruptedException
+	 *             if the thread was interrupted
+	 */
+	InputStream copyContainer(String id, String path)
+			throws DockerException, InterruptedException;
 
 	String buildImage(IPath path, IDockerProgressHandler handler)
 			throws DockerException, InterruptedException;

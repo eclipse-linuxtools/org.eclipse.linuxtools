@@ -1450,6 +1450,18 @@ public class DockerConnection implements IDockerConnection, Closeable {
 		}
 	}
 
+	@Override
+	public InputStream copyContainer(String id, String path)
+			throws DockerException, InterruptedException {
+		InputStream stream;
+		try {
+			stream = client.copyContainer(id, path);
+		} catch (com.spotify.docker.client.DockerException e) {
+			throw new DockerException(e.getMessage(), e.getCause());
+		}
+		return stream;
+	}
+
 	public EnumDockerLoggingStatus loggingStatus(final String id) {
 		synchronized (loggingThreads) {
 			LogThread t = loggingThreads.get(id);
