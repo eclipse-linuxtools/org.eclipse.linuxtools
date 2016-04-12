@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.ui;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
@@ -37,7 +38,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
@@ -149,8 +149,9 @@ public class CoreMessagesViewer {
 					if (result.getSourceElement() != null)
 						ProfileUIUtils.openEditorAndSelect(result, frame.getLine());
 					else // if lookup failed there is good chance we can just open the file by name
-						ProfileUIUtils.openEditorAndSelect(frame.getFile(), frame.getLine());
-				} catch (PartInitException | BadLocationException e) {
+						ProfileUIUtils.openEditorAndSelect(frame.getFile(), frame.getLine(),
+								ValgrindUIPlugin.getDefault().getProfiledProject());
+				} catch (BadLocationException | CoreException e) {
 					ValgrindUIPlugin.log(e);
 				}
 			} else {
