@@ -10,6 +10,7 @@
   profile="${basedir}/target/profile"
   report="${basedir}/target/reports/"
   includelist="${basedir}/includes.txt"
+  excludelist="${basedir}/excludes.txt"
   preferences="${basedir}/org.eclipse.pde.api.tools.prefs"
 />
 <apianalysis_reportconversion
