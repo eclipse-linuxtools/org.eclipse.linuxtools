@@ -45,6 +45,10 @@ public class RPMExportOperation extends Job {
     @Override
     public IStatus run(IProgressMonitor monitor) {
         IStatus result = null;
+        if (rpmProject.getSpecFile() == null) {
+			return new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
+					Messages.getString("RPMExportOperation.No_Spec_File")); //$NON-NLS-1$
+        }
         IOConsoleOutputStream out = RpmConsole.findConsole(rpmProject).linkJob(this);
         if (out == null) {
             return Status.CANCEL_STATUS;
