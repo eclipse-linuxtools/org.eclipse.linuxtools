@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.eclipse.cdt.launch.ui.CArgumentsTab;
-import org.eclipse.cdt.launch.ui.CMainTab;
+import org.eclipse.cdt.launch.ui.CMainTab2;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.CommonTab;
@@ -27,7 +27,7 @@ public abstract class ProfileLaunchConfigurationTabGroup extends AbstractLaunchC
     @Override
     public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
         ArrayList<AbstractLaunchConfigurationTab> tabs = new ArrayList<>();
-        tabs.add(new CMainTab());
+        tabs.add(new CMainTab2());
         tabs.add(new CArgumentsTab());
 
         tabs.addAll(Arrays.asList(getProfileTabs()));
