@@ -19,7 +19,7 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.12.0",
  org.glassfish.jersey.media.jersey-media-json-jackson;bundle-version="2.14.0",
  org.glassfish.jersey.core.jersey-common;bundle-version="2.14.0",
  org.eclipse.tm.terminal.view.core;bundle-version="4.0.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.docker.core,
  org.eclipse.linuxtools.internal.docker.core;x-friends:="org.eclipse.linuxtools.docker.ui,org.eclipse.linuxtools.docker.ui.tests"
