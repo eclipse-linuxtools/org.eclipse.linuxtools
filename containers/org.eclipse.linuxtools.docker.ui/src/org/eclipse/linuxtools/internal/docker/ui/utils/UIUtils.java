@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 2010, 2016 Red Hat, Inc. and others.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -21,7 +21,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
@@ -187,13 +186,8 @@ public class UIUtils {
 		menuService.populateContributionManager(
 				(ContributionManager) contributionManager, id);
 		contributionManager.update(true);
-		control.addDisposeListener(new DisposeListener() {
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-				menuService
-						.releaseContributions((ContributionManager) contributionManager);
-			}
-		});
+		control.addDisposeListener(e -> menuService.releaseContributions(
+				(ContributionManager) contributionManager));
 	}
 
 	/**

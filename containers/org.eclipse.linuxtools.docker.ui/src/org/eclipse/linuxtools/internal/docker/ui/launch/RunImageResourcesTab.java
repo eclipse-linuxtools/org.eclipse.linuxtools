@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
-import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.CoreException;
@@ -232,14 +231,7 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 
 	private IChangeListener onEnableResourceLimitation(
 			final Composite container) {
-		return new IChangeListener() {
-
-			@Override
-			public void handleChange(ChangeEvent event) {
-				toggleResourceLimitationControls(container);
-
-			}
-		};
+		return event -> toggleResourceLimitationControls(container);
 	}
 
 	private void toggleResourceLimitationControls(Composite container) {

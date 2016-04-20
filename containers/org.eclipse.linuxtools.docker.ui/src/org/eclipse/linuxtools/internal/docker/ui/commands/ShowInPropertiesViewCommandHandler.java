@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat.
+ * Copyright (c) 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,29 +38,25 @@ public class ShowInPropertiesViewCommandHandler extends AbstractHandler {
 		if (containers == null || containers.isEmpty()) {
 			return null;
 		}
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					final PropertySheet propertySheet = (PropertySheet) PlatformUI
-							.getWorkbench().getActiveWorkbenchWindow()
-							.getActivePage()
-							.showView("org.eclipse.ui.views.PropertySheet");
-					final PropertyShowInContext showInContext = new PropertyShowInContext(
-							activePart,
-							HandlerUtil.getCurrentSelection(event));
-					propertySheet.show(showInContext);
-					// final TabbedPropertySheetPage tabbedPropertySheetPage =
-					// activePart
-					// .getAdapter(TabbedPropertySheetPage.class);
-					// tabbedPropertySheetPage.setFocus();
-				} catch (PartInitException e) {
-					Activator.logErrorMessage(
-							CommandMessages.getString(
-									"command.showIn.propertiesView.failure"), //$NON-NLS-1$
-							e);
+		Display.getDefault().asyncExec(() -> {
+			try {
+				final PropertySheet propertySheet = (PropertySheet) PlatformUI
+						.getWorkbench().getActiveWorkbenchWindow()
+						.getActivePage()
+						.showView("org.eclipse.ui.views.PropertySheet");
+				final PropertyShowInContext showInContext = new PropertyShowInContext(
+						activePart, HandlerUtil.getCurrentSelection(event));
+				propertySheet.show(showInContext);
+				// final TabbedPropertySheetPage tabbedPropertySheetPage =
+				// activePart
+				// .getAdapter(TabbedPropertySheetPage.class);
+				// tabbedPropertySheetPage.setFocus();
+			} catch (PartInitException e) {
+				Activator.logErrorMessage(
+						CommandMessages.getString(
+								"command.showIn.propertiesView.failure"), //$NON-NLS-1$
+						e);
 
-				}
 			}
 		});
 		return null;

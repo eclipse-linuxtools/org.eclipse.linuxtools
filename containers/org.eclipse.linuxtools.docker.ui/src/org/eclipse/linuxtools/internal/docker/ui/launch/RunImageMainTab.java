@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
-import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.CoreException;
@@ -311,63 +310,49 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 	 */
 	private IContentProposalProvider getImageNameContentProposalProvider(
 			final Combo imageSelectionCombo) {
-		return new IContentProposalProvider() {
-
-			@Override
-			public IContentProposal[] getProposals(final String contents,
-					final int position) {
-				final List<IContentProposal> proposals = new ArrayList<>();
-				for (String imageName : imageSelectionCombo.getItems()) {
-					if (imageName.contains(contents)) {
-						proposals.add(new ContentProposal(imageName, imageName,
-								imageName, position));
-					}
+		return (contents, position) -> {
+			final List<IContentProposal> proposals = new ArrayList<>();
+			for (String imageName : imageSelectionCombo.getItems()) {
+				if (imageName.contains(contents)) {
+					proposals.add(new ContentProposal(imageName, imageName,
+							imageName, position));
 				}
-				return proposals.toArray(new IContentProposal[0]);
 			}
+			return proposals.toArray(new IContentProposal[0]);
 		};
 	}
 
 	private IValueChangeListener onImageSelectionChange() {
-		return new IValueChangeListener() {
-
-			@Override
-			public void handleValueChange(final ValueChangeEvent event) {
-				final IDockerImage selectedImage = model.getSelectedImage();
-				// skip if the selected image does not exist in the local Docker
-				// host
-				if (selectedImage == null) {
-					model.setExposedPorts(new ArrayList<ExposedPortModel>());
-					return;
-				}
-				findImageInfo(selectedImage);
-				volumesModel.setSelectedImage(selectedImage);
+		return event -> {
+			final IDockerImage selectedImage = model.getSelectedImage();
+			// skip if the selected image does not exist in the local Docker
+			// host
+			if (selectedImage == null) {
+				model.setExposedPorts(new ArrayList<ExposedPortModel>());
+				return;
 			}
+			findImageInfo(selectedImage);
+			volumesModel.setSelectedImage(selectedImage);
 		};
 	}
 
 	private IValueChangeListener onConnectionSelectionChange() {
-		return new IValueChangeListener() {
-
-			@Override
-			public void handleValueChange(final ValueChangeEvent event) {
-				IDockerImage selectedImage = model.getSelectedImage();
-				// skip if the selected image does not exist in the local Docker
-				// host
-				if (selectedImage == null) {
-					List<String> imageNames = model.getImageNames();
-					if (imageNames.size() > 0) {
-						model.setSelectedImageName(imageNames.get(0));
-						selectedImage = model.getSelectedImage();
-					} else {
-						model.setExposedPorts(
-								new ArrayList<ExposedPortModel>());
-						return;
-					}
+		return event -> {
+			IDockerImage selectedImage = model.getSelectedImage();
+			// skip if the selected image does not exist in the local Docker
+			// host
+			if (selectedImage == null) {
+				List<String> imageNames = model.getImageNames();
+				if (imageNames.size() > 0) {
+					model.setSelectedImageName(imageNames.get(0));
+					selectedImage = model.getSelectedImage();
+				} else {
+					model.setExposedPorts(new ArrayList<ExposedPortModel>());
+					return;
 				}
-				findImageInfo(selectedImage);
-				volumesModel.setSelectedImage(selectedImage);
 			}
+			findImageInfo(selectedImage);
+			volumesModel.setSelectedImage(selectedImage);
 		};
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2015 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -65,12 +65,9 @@ public class DockerImagesContentProvider implements ITreeContentProvider{
 		final Job loadImagesJob = new Job(DVMessages.getString(LoadingImages)) {
 			@Override
 			protected IStatus run(final IProgressMonitor monitor) {
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						connection.getImages(true);
-						viewer.refresh();
-					}
+				Display.getDefault().asyncExec(() -> {
+					connection.getImages(true);
+					viewer.refresh();
 				});
 				return Status.OK_STATUS;
 			}

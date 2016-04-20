@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
-import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.dialogs.Dialog;
@@ -160,13 +159,7 @@ onContainerPortSettingsChanged());
 	}
 
 	private IValueChangeListener onContainerPortSettingsChanged() {
-		return new IValueChangeListener() {
-
-			@Override
-			public void handleValueChange(ValueChangeEvent event) {
-				validateInput();
-			}
-		};
+		return event -> validateInput();
 	}
 
 	private void validateInput() {

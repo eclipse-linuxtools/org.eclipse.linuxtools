@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2015 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -67,12 +67,9 @@ public class CommandUtils {
 	 *            - the {@link Viewer} to refresh
 	 */
 	public static void asyncRefresh(final Viewer viewer) {
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				if (viewer != null && !viewer.getControl().isDisposed()) {
-					viewer.refresh();
-				}
+		Display.getDefault().asyncExec(() -> {
+			if (viewer != null && !viewer.getControl().isDisposed()) {
+				viewer.refresh();
 			}
 		});
 	}

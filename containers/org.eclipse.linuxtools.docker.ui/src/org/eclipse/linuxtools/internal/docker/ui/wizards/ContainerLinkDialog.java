@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.List;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
-import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.dialogs.Dialog;
@@ -177,13 +176,7 @@ onContainerLinkSettingsChanged());
 	}
 
 	private IValueChangeListener onContainerLinkSettingsChanged() {
-		return new IValueChangeListener() {
-
-			@Override
-			public void handleValueChange(ValueChangeEvent event) {
-				validateInput();
-			}
-		};
+		return event -> validateInput();
 	}
 
 	public String getContainerName() {
@@ -203,21 +196,15 @@ onContainerLinkSettingsChanged());
 	 */
 	private IContentProposalProvider getContainerNameContentProposalProvider(
 			final Combo containerSelectionCombo) {
-		return new IContentProposalProvider() {
-
-			@Override
-			public IContentProposal[] getProposals(final String contents,
-					final int position) {
-				final List<IContentProposal> proposals = new ArrayList<>();
-				for (String containerName : containerSelectionCombo
-						.getItems()) {
-					if (containerName.contains(contents)) {
-						proposals.add(new ContentProposal(containerName,
-								containerName, containerName, position));
-					}
+		return (contents, position) -> {
+			final List<IContentProposal> proposals = new ArrayList<>();
+			for (String containerName : containerSelectionCombo.getItems()) {
+				if (containerName.contains(contents)) {
+					proposals.add(new ContentProposal(containerName,
+							containerName, containerName, position));
 				}
-				return proposals.toArray(new IContentProposal[0]);
 			}
+			return proposals.toArray(new IContentProposal[0]);
 		};
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2015 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,6 @@ import org.eclipse.linuxtools.docker.core.IDockerImageListener;
 import org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.NewDockerConnection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -196,21 +195,17 @@ public class DockerExplorerView extends CommonNavigator implements
 	 * @return
 	 */
 	private ModifyListener onSearch() {
-		return new ModifyListener() {
-
-			@Override
-			public void modifyText(final ModifyEvent e) {
-				final CommonViewer viewer = DockerExplorerView.this
-						.getCommonViewer();
-				final TreePath[] treePaths = viewer.getExpandedTreePaths();
-				for (TreePath treePath : treePaths) {
-					final Object lastSegment = treePath.getLastSegment();
-					if (lastSegment instanceof DockerExplorerContentProvider.DockerContainersCategory
-							|| lastSegment instanceof DockerExplorerContentProvider.DockerImagesCategory) {
-						viewer.refresh(lastSegment);
-						viewer.expandToLevel(treePath,
-								AbstractTreeViewer.ALL_LEVELS);
-					}
+		return e -> {
+			final CommonViewer viewer = DockerExplorerView.this
+					.getCommonViewer();
+			final TreePath[] treePaths = viewer.getExpandedTreePaths();
+			for (TreePath treePath : treePaths) {
+				final Object lastSegment = treePath.getLastSegment();
+				if (lastSegment instanceof DockerExplorerContentProvider.DockerContainersCategory
+						|| lastSegment instanceof DockerExplorerContentProvider.DockerImagesCategory) {
+					viewer.refresh(lastSegment);
+					viewer.expandToLevel(treePath,
+							AbstractTreeViewer.ALL_LEVELS);
 				}
 			}
 		};
@@ -277,33 +272,30 @@ public class DockerExplorerView extends CommonNavigator implements
 	@Override
 	public void changeEvent(final IDockerConnection connection,
 			final int type) {
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				showConnectionsOrExplanations();
-				switch (type) {
-				case IDockerConnectionManagerListener.ADD_EVENT:
-					registerListeners(connection);
-					getCommonViewer().refresh();
-					getCommonViewer()
-							.setSelection(new StructuredSelection(connection));
-					break;
-				case IDockerConnectionManagerListener.REMOVE_EVENT:
-					unregisterListeners(connection);
-					getCommonViewer().refresh();
-					// move viewer selection to the first connection or set to
-					// null if
-					// no other connection exists
-					final IDockerConnection[] connections = DockerConnectionManager
-							.getInstance().getConnections();
-					if (connections.length > 0) {
-						getCommonViewer().setSelection(
-								new StructuredSelection(connections[0]), true);
-					} else {
-						getCommonViewer().setSelection(null);
-					}
-					break;
+		Display.getDefault().asyncExec(() -> {
+			showConnectionsOrExplanations();
+			switch (type) {
+			case IDockerConnectionManagerListener.ADD_EVENT:
+				registerListeners(connection);
+				getCommonViewer().refresh();
+				getCommonViewer()
+						.setSelection(new StructuredSelection(connection));
+				break;
+			case IDockerConnectionManagerListener.REMOVE_EVENT:
+				unregisterListeners(connection);
+				getCommonViewer().refresh();
+				// move viewer selection to the first connection or set to
+				// null if
+				// no other connection exists
+				final IDockerConnection[] connections = DockerConnectionManager
+						.getInstance().getConnections();
+				if (connections.length > 0) {
+					getCommonViewer().setSelection(
+							new StructuredSelection(connections[0]), true);
+				} else {
+					getCommonViewer().setSelection(null);
 				}
+				break;
 			}
 		});
 	}
@@ -343,14 +335,10 @@ public class DockerExplorerView extends CommonNavigator implements
 	}
 
 	private void refresh(final IDockerConnection connection) {
-		Display.getDefault().asyncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				if (getCommonViewer().getTree() != null
-						&& !getCommonViewer().getTree().isDisposed()) {
-					getCommonViewer().refresh(connection, true);
-				}
+		Display.getDefault().asyncExec(() -> {
+			if (getCommonViewer().getTree() != null
+					&& !getCommonViewer().getTree().isDisposed()) {
+				getCommonViewer().refresh(connection, true);
 			}
 		});
 	}

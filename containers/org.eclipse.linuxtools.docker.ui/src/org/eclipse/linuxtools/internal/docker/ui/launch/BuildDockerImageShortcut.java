@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -167,20 +167,14 @@ public class BuildDockerImageShortcut implements ILaunchShortcut {
 			final IDockerConnection[] connections = DockerConnectionManager
 					.getInstance().getConnections();
 			if (connections.length == 0) {
-				Display.getDefault().syncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						MessageDialog.openError(
+				Display.getDefault()
+						.syncExec(() -> MessageDialog.openError(
 								PlatformUI.getWorkbench()
 										.getActiveWorkbenchWindow().getShell(),
 								LaunchMessages.getString(
 										LaunchShortcut_Error_Launching),
 								LaunchMessages.getString(
-										LaunchShortcut_No_Connections));
-					}
-
-				});
+										LaunchShortcut_No_Connections)));
 				return null;
 			} else {
 				final ImageBuildDialog dialog = new ImageBuildDialog(

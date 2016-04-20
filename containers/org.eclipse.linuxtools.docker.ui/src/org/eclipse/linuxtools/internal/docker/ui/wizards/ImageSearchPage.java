@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2015 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,6 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
@@ -38,7 +37,6 @@ import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
@@ -56,7 +54,6 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
@@ -237,13 +234,9 @@ public class ImageSearchPage extends WizardPage {
 	}
 
 	private TraverseListener onSearchImageTextTraverse() {
-		return new TraverseListener() {
-
-			@Override
-			public void keyTraversed(final TraverseEvent e) {
-				if (e.keyCode == SWT.CR) {
-					e.doit = false;
-				}
+		return e -> {
+			if (e.keyCode == SWT.CR) {
+				e.doit = false;
 			}
 		};
 	}
@@ -285,37 +278,29 @@ public class ImageSearchPage extends WizardPage {
 			final BlockingQueue<List<IDockerImageSearchResult>> searchResultQueue = new ArrayBlockingQueue<>(
 					1);
 			ImageSearchPage.this.getContainer().run(true, true,
-					new IRunnableWithProgress() {
-						@Override
-						public void run(IProgressMonitor monitor) {
-							monitor.beginTask(WizardMessages.getString(
-									"ImageSearchPage.searchTask"), 1); //$NON-NLS-1$
-							try {
-								final List<IDockerImageSearchResult> searchResults = ImageSearchPage.this.model
-										.getSelectedConnection()
-										.searchImages(term);
-								searchResultQueue.offer(searchResults);
-							} catch (DockerException e) {
-								Activator.log(e);
-								searchResultQueue.offer(
-										new ArrayList<IDockerImageSearchResult>());
-							}
-							monitor.done();
+					monitor -> {
+						monitor.beginTask(WizardMessages
+								.getString("ImageSearchPage.searchTask"), 1); //$NON-NLS-1$
+						try {
+							final List<IDockerImageSearchResult> searchResults = ImageSearchPage.this.model
+									.getSelectedConnection().searchImages(term);
+							searchResultQueue.offer(searchResults);
+						} catch (DockerException e) {
+							Activator.log(e);
+							searchResultQueue.offer(
+									new ArrayList<IDockerImageSearchResult>());
 						}
+						monitor.done();
 					});
 			List<IDockerImageSearchResult> res = searchResultQueue
 					.poll(10, TimeUnit.SECONDS);
 			final List<IDockerImageSearchResult> searchResult = (res == null)
-					? new ArrayList<IDockerImageSearchResult>() : res;
+					? new ArrayList<>() : res;
 
-			Display.getCurrent().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					ImageSearchPage.this.model
-							.setImageSearchResult(searchResult);
-					// refresh the wizard buttons
-					getWizard().getContainer().updateButtons();
-				}
+			Display.getCurrent().asyncExec(() -> {
+				ImageSearchPage.this.model.setImageSearchResult(searchResult);
+				// refresh the wizard buttons
+				getWizard().getContainer().updateButtons();
 			});
 			// display a warning in the title area if the search result is empty
 			if (searchResult.isEmpty()) {

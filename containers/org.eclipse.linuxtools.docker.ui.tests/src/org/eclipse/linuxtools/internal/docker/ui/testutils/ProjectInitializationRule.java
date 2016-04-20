@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat.
+ * Copyright (c) 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -127,12 +127,7 @@ public class ProjectInitializationRule extends ExternalResource {
 			final List<File> filesToImport = syncFileSystemStructureProvider.getChildren(projectSourcePath.toFile());
 			if (filesToImport != null && filesToImport.size() > 0) {
 				ImportOperation operation = new ImportOperation(project.getFullPath(), projectSourcePath.toFile(),
-						syncFileSystemStructureProvider, new IOverwriteQuery() {
-							@Override
-							public String queryOverwrite(String pathString) {
-								return IOverwriteQuery.YES;
-							}
-						}, filesToImport);
+						syncFileSystemStructureProvider, pathString -> IOverwriteQuery.YES, filesToImport);
 				operation.setContext(null);
 				// need to overwrite modified files
 				operation.setOverwriteResources(true);

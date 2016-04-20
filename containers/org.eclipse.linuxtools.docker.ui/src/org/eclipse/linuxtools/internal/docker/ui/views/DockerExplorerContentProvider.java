@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2015 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.internal.docker.ui.views;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -178,12 +177,8 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 			@Override
 			public void done(final IJobChangeEvent event) {
 				event.getResult();
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						refreshTarget(containersCategory);
-					}
-				});
+				Display.getDefault()
+						.asyncExec(() -> refreshTarget(containersCategory));
 			}
 		});
 		loadContainersJob.schedule();
@@ -212,13 +207,10 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 			@Override
 			public void done(final IJobChangeEvent event) {
 				event.getResult();
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						refreshTarget(container);
-						if (expandedTreePaths != null) {
-							viewer.setExpandedTreePaths(expandedTreePaths);
-						}
+				Display.getDefault().asyncExec(() -> {
+					refreshTarget(container);
+					if (expandedTreePaths != null) {
+						viewer.setExpandedTreePaths(expandedTreePaths);
 					}
 				});
 			}
@@ -294,14 +286,11 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 	private void refreshTarget(final Object target) {
 		// this piece of code must run in an async manner to avoid reentrant
 		// call while viewer is busy.
-		Display.getDefault().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				if (viewer != null) {
-					final TreePath[] treePaths = viewer.getExpandedTreePaths();
-					viewer.refresh(target, true);
-					viewer.setExpandedTreePaths(treePaths);
-				}
+		Display.getDefault().syncExec(() -> {
+			if (viewer != null) {
+				final TreePath[] treePaths = viewer.getExpandedTreePaths();
+				viewer.refresh(target, true);
+				viewer.setExpandedTreePaths(treePaths);
 			}
 		});
 	}
@@ -438,15 +427,9 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 				}
 			}
 			Collections.sort(portMappings,
-					new Comparator<IDockerPortMapping>() {
-
-						@Override
-						public int compare(final IDockerPortMapping portMapping,
-								final IDockerPortMapping otherPortMapping) {
-							return portMapping.getPrivatePort()
-									- otherPortMapping.getPrivatePort();
-						}
-					});
+					(portMapping,
+							otherPortMapping) -> portMapping.getPrivatePort()
+									- otherPortMapping.getPrivatePort());
 		}
 
 		public IDockerContainer getContainer() {

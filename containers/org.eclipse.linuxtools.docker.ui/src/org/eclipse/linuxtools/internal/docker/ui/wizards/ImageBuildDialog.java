@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.List;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
-import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
@@ -191,45 +190,35 @@ public class ImageBuildDialog extends Dialog {
 	private IChangeListener onBuildSettingsChanged(final Label errorMessageIcon,
 			final Label errorMessageLabel) {
 
-		return new IChangeListener() {
-
-			@Override
-			public void handleChange(ChangeEvent event) {
-				final IStatus status = validateInput();
-				if (Display.getCurrent() == null) {
-					return;
-				}
-				Display.getCurrent().syncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						if (status.isOK()) {
-							errorMessageIcon.setVisible(false);
-							errorMessageLabel.setVisible(false);
-							setOkButtonEnabled(true);
-						} else if (status.matches(IStatus.WARNING)) {
-							errorMessageIcon.setVisible(true);
-							errorMessageIcon
-									.setImage(SWTImagesFactory.DESC_WARNING
-											.createImage());
-							errorMessageLabel.setVisible(true);
-							errorMessageLabel.setText(status.getMessage());
-							setOkButtonEnabled(true);
-						} else if (status.matches(IStatus.ERROR)) {
-							if (status.getMessage() != null
-									&& !status.getMessage().isEmpty()) {
-								errorMessageIcon.setVisible(true);
-								errorMessageIcon
-										.setImage(SWTImagesFactory.DESC_ERROR
-												.createImage());
-								errorMessageLabel.setVisible(true);
-								errorMessageLabel.setText(status.getMessage());
-							}
-							setOkButtonEnabled(false);
-						}
-					}
-				});
+		return event -> {
+			final IStatus status = validateInput();
+			if (Display.getCurrent() == null) {
+				return;
 			}
+			Display.getCurrent().syncExec(() -> {
+				if (status.isOK()) {
+					errorMessageIcon.setVisible(false);
+					errorMessageLabel.setVisible(false);
+					setOkButtonEnabled(true);
+				} else if (status.matches(IStatus.WARNING)) {
+					errorMessageIcon.setVisible(true);
+					errorMessageIcon.setImage(
+							SWTImagesFactory.DESC_WARNING.createImage());
+					errorMessageLabel.setVisible(true);
+					errorMessageLabel.setText(status.getMessage());
+					setOkButtonEnabled(true);
+				} else if (status.matches(IStatus.ERROR)) {
+					if (status.getMessage() != null
+							&& !status.getMessage().isEmpty()) {
+						errorMessageIcon.setVisible(true);
+						errorMessageIcon.setImage(
+								SWTImagesFactory.DESC_ERROR.createImage());
+						errorMessageLabel.setVisible(true);
+						errorMessageLabel.setText(status.getMessage());
+					}
+					setOkButtonEnabled(false);
+				}
+			});
 		};
 	}
 
@@ -277,21 +266,16 @@ public class ImageBuildDialog extends Dialog {
 	 */
 	private IContentProposalProvider getConnectionNameContentProposalProvider(
 			final Combo connectionNamesSelectionCombo) {
-		return new IContentProposalProvider() {
-
-			@Override
-			public IContentProposal[] getProposals(final String contents,
-					final int position) {
-				final List<IContentProposal> proposals = new ArrayList<>();
-				for (String connectionName : connectionNamesSelectionCombo
-						.getItems()) {
-					if (connectionName.contains(contents)) {
-						proposals.add(new ContentProposal(connectionName,
-								connectionName, connectionName, position));
-					}
+		return (contents, position) -> {
+			final List<IContentProposal> proposals = new ArrayList<>();
+			for (String connectionName : connectionNamesSelectionCombo
+					.getItems()) {
+				if (connectionName.contains(contents)) {
+					proposals.add(new ContentProposal(connectionName,
+							connectionName, connectionName, position));
 				}
-				return proposals.toArray(new IContentProposal[0]);
 			}
+			return proposals.toArray(new IContentProposal[0]);
 		};
 	}
 

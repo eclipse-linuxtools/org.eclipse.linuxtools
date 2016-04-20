@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
@@ -68,14 +67,7 @@ public class ContainerCommitPage extends WizardPage {
 		return commentText.getText();
 	}
 
-	private ModifyListener Listener = new ModifyListener() {
-
-		@Override
-		public void modifyText(ModifyEvent e) {
-			// TODO Auto-generated method stub
-			validate();
-		}
-	};
+	private ModifyListener Listener = e -> validate();
 
 	private void validate() {
 		boolean complete = true;

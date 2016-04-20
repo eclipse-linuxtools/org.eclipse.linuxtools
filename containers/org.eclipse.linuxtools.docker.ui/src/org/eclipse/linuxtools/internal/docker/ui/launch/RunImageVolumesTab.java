@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2016 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,12 +39,10 @@ import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -184,20 +182,16 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 	}
 
 	private ICheckStateListener onCheckStateChanged() {
-		return new ICheckStateListener() {
-
-			@Override
-			public void checkStateChanged(final CheckStateChangedEvent e) {
-				DataVolumeModel element = (DataVolumeModel) e.getElement();
-				if (e.getChecked()) {
-					model.getSelectedDataVolumes().add(element);
-					element.setSelected(true);
-				} else {
-					model.getSelectedDataVolumes().remove(element);
-					element.setSelected(false);
-				}
-				updateLaunchConfigurationDialog();
+		return e -> {
+			DataVolumeModel element = (DataVolumeModel) e.getElement();
+			if (e.getChecked()) {
+				model.getSelectedDataVolumes().add(element);
+				element.setSelected(true);
+			} else {
+				model.getSelectedDataVolumes().remove(element);
+				element.setSelected(false);
 			}
+			updateLaunchConfigurationDialog();
 		};
 	}
 
@@ -229,19 +223,14 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 
 	private ISelectionChangedListener onSelectionChanged(
 			final Button... targetButtons) {
-		return new ISelectionChangedListener() {
-
-			@Override
-			public void selectionChanged(final SelectionChangedEvent e) {
-				if (e.getSelection().isEmpty()) {
-					setControlsEnabled(targetButtons, false);
-					updateLaunchConfigurationDialog();
-				} else {
-					setControlsEnabled(targetButtons, true);
-					updateLaunchConfigurationDialog();
-				}
+		return e -> {
+			if (e.getSelection().isEmpty()) {
+				setControlsEnabled(targetButtons, false);
+				updateLaunchConfigurationDialog();
+			} else {
+				setControlsEnabled(targetButtons, true);
+				updateLaunchConfigurationDialog();
 			}
-
 		};
 	}
 

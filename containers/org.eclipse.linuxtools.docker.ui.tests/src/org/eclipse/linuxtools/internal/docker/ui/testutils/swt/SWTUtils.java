@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2016 Red Hat Inc. and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat Inc. - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
 import static org.assertj.core.api.Assertions.fail;
@@ -42,12 +52,7 @@ public class SWTUtils {
 	 */
 	public static <V> V syncExec(final Supplier<V> supplier) {
 		final Queue<V> result = new ArrayBlockingQueue<>(1);
-		Display.getDefault().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				result.add(supplier.get());
-			}
-		});
+		Display.getDefault().syncExec(() -> result.add(supplier.get()));
 		return result.poll();
 	}
 
@@ -78,17 +83,13 @@ public class SWTUtils {
 	public static void syncAssert(final Runnable runnable) throws SWTException, ComparisonFailure {
 		final Queue<ComparisonFailure> failure = new ArrayBlockingQueue<>(1);
 		final Queue<SWTException> swtException = new ArrayBlockingQueue<>(1);
-		Display.getDefault().syncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					runnable.run();
-				} catch (ComparisonFailure e) {
-					failure.add(e);
-				} catch (SWTException e) {
-					swtException.add(e);
-				}
+		Display.getDefault().syncExec(() -> {
+			try {
+				runnable.run();
+			} catch (ComparisonFailure e1) {
+				failure.add(e1);
+			} catch (SWTException e2) {
+				swtException.add(e2);
 			}
 		});
 		if (!failure.isEmpty()) {
@@ -126,17 +127,13 @@ public class SWTUtils {
 	public static void asyncExec(final Runnable runnable, final boolean waitForJobsToComplete) {
 		final Queue<ComparisonFailure> failure = new ArrayBlockingQueue<>(1);
 		final Queue<SWTException> swtException = new ArrayBlockingQueue<>(1);
-		Display.getDefault().asyncExec(new Runnable() {
-			
-			@Override
-			public void run() {
-				try {
-					runnable.run();
-				} catch (ComparisonFailure e) {
-					failure.add(e);
-				} catch (SWTException e) {
-					swtException.add(e);
-				}
+		Display.getDefault().asyncExec(() -> {
+			try {
+				runnable.run();
+			} catch (ComparisonFailure e1) {
+				failure.add(e1);
+			} catch (SWTException e2) {
+				swtException.add(e2);
 			}
 		});
 		if(waitForJobsToComplete) {
@@ -303,13 +300,7 @@ public class SWTUtils {
 	 * @param tree the tree whose {@link Menu} should be hidden
 	 */
 	public static void hideMenu(final SWTBotTree tree) {
-		final Menu menu = UIThreadRunnable.syncExec(new Result<Menu>() {
-
-			@Override
-			public Menu run() {
-				return tree.widget.getMenu();
-			}
-		});
+		final Menu menu = UIThreadRunnable.syncExec((Result<Menu>) () -> tree.widget.getMenu());
 		UIThreadRunnable.syncExec(new VoidResult() {
 			
 			@Override

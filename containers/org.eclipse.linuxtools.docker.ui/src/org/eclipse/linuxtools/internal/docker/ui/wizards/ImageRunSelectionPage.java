@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2016 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,11 +34,9 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
-import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.databinding.validation.MultiValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
@@ -57,12 +55,10 @@ import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.wizard.WizardPage;
@@ -476,15 +472,11 @@ public class ImageRunSelectionPage extends WizardPage {
 
 	private ISelectionChangedListener onSelectionChanged(
 			final Button... targetButtons) {
-		return new ISelectionChangedListener() {
-
-			@Override
-			public void selectionChanged(final SelectionChangedEvent e) {
-				if (e.getSelection().isEmpty()) {
-					setControlsEnabled(targetButtons, false);
-				} else {
-					setControlsEnabled(targetButtons, true);
-				}
+		return e -> {
+			if (e.getSelection().isEmpty()) {
+				setControlsEnabled(targetButtons, false);
+			} else {
+				setControlsEnabled(targetButtons, true);
 			}
 		};
 	}
@@ -699,40 +691,31 @@ public class ImageRunSelectionPage extends WizardPage {
 	 */
 	private IContentProposalProvider getImageNameContentProposalProvider(
 			final Combo imageSelectionCombo) {
-		return new IContentProposalProvider() {
-
-			@Override
-			public IContentProposal[] getProposals(final String contents,
-					final int position) {
-				final List<IContentProposal> proposals = new ArrayList<>();
-				for (String imageName : imageSelectionCombo.getItems()) {
-					if (imageName.contains(contents)) {
-						proposals.add(new ContentProposal(imageName, imageName,
-								imageName, position));
-					}
+		return (contents, position) -> {
+			final List<IContentProposal> proposals = new ArrayList<>();
+			for (String imageName : imageSelectionCombo.getItems()) {
+				if (imageName.contains(contents)) {
+					proposals.add(new ContentProposal(imageName, imageName,
+							imageName, position));
 				}
-				return proposals.toArray(new IContentProposal[0]);
 			}
+			return proposals.toArray(new IContentProposal[0]);
 		};
 	}
 
 	private IValueChangeListener onImageSelectionChange() {
-		return new IValueChangeListener() {
-
-			@Override
-			public void handleValueChange(final ValueChangeEvent event) {
-				final IDockerImage selectedImage = model.getSelectedImage();
-				// skip if the selected image does not exist in the local Docker
-				// host
-				if (selectedImage == null) {
-					model.setExposedPorts(
-							Collections.<ExposedPortModel> emptyList());
-					return;
-				}
-				final IDockerImageInfo selectedImageInfo = getImageInfo(
-						selectedImage);
-				applyImageInfo(selectedImageInfo);
+		return event -> {
+			final IDockerImage selectedImage = model.getSelectedImage();
+			// skip if the selected image does not exist in the local Docker
+			// host
+			if (selectedImage == null) {
+				model.setExposedPorts(
+						Collections.<ExposedPortModel> emptyList());
+				return;
 			}
+			final IDockerImageInfo selectedImageInfo = getImageInfo(
+					selectedImage);
+			applyImageInfo(selectedImageInfo);
 		};
 	}
 
@@ -748,13 +731,7 @@ public class ImageRunSelectionPage extends WizardPage {
 
 	private IValueChangeListener onPublishAllPortsChange(
 			final Control... controls) {
-		return new IValueChangeListener() {
-
-			@Override
-			public void handleValueChange(final ValueChangeEvent event) {
-				togglePortMappingControls(controls);
-			}
-		};
+		return event -> togglePortMappingControls(controls);
 	}
 
 	private SelectionListener onSearchImage() {
@@ -938,40 +915,31 @@ public class ImageRunSelectionPage extends WizardPage {
 
 	private void pullSelectedImage() {
 		try {
-			getContainer().run(true, true, new IRunnableWithProgress() {
-
-				@Override
-				public void run(final IProgressMonitor monitor)
-						throws InterruptedException {
-					final IDockerConnection connection = model
-							.getSelectedConnection();
-					final String imageName = model.getSelectedImageName();
-					monitor.beginTask(WizardMessages.getFormattedString(
-							"ImageRunSelectionPage.pullingTask", imageName), 1); //$NON-NLS-1$
-					try {
-						connection.pullImage(imageName,
-								new ImagePullProgressHandler(connection,
-										imageName));
-					} catch (final DockerException e) {
-						Display.getDefault().syncExec(new Runnable() {
-							@Override
-							public void run() {
-								MessageDialog.openError(
-										PlatformUI.getWorkbench()
-												.getActiveWorkbenchWindow()
-												.getShell(),
-										DVMessages.getFormattedString(
-												ERROR_PULLING_IMAGE, imageName),
-										e.getMessage());
-							}
-						});
-					} finally {
-						monitor.done();
-						// refresh the widgets
-						model.refreshImageNames();
-						if (model.getImageNames().contains(imageName)) {
-							model.setSelectedImageName(imageName);
-						}
+			getContainer().run(true, true, monitor -> {
+				final IDockerConnection connection = model
+						.getSelectedConnection();
+				final String imageName = model.getSelectedImageName();
+				monitor.beginTask(
+						WizardMessages.getFormattedString(
+								"ImageRunSelectionPage.pullingTask", imageName), //$NON-NLS-1$
+						1);
+				try {
+					connection.pullImage(imageName,
+							new ImagePullProgressHandler(connection,
+									imageName));
+				} catch (final DockerException e) {
+					Display.getDefault().syncExec(() -> MessageDialog.openError(
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+									.getShell(),
+							DVMessages.getFormattedString(ERROR_PULLING_IMAGE,
+									imageName),
+							e.getMessage()));
+				} finally {
+					monitor.done();
+					// refresh the widgets
+					model.refreshImageNames();
+					if (model.getImageNames().contains(imageName)) {
+						model.setSelectedImageName(imageName);
 					}
 				}
 			});

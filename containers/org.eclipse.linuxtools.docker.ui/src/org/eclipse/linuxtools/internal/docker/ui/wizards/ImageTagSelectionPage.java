@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,12 +22,10 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.list.IObservableList;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -83,45 +81,42 @@ public class ImageTagSelectionPage extends WizardPage {
 			final BlockingQueue<List<DockerImageTagSearchResult>> searchResultQueue = new ArrayBlockingQueue<>(
 					1);
 			ImageTagSelectionPage.this.getContainer().run(true, true,
-					new IRunnableWithProgress() {
-						@Override
-						public void run(IProgressMonitor monitor) {
-							try {
-								monitor.beginTask(WizardMessages.getString(
-										"ImageTagSelectionPage.searchTask"), //$NON-NLS-1$
-										2);
-								final String selectedImageName = ImageTagSelectionPage.this.model
-										.getSelectedImage()
-										.getName();
-								final List<IRepositoryTag> repositoryTags = new DockerHubRegistry()
-										.getTags(
-												selectedImageName);
-								monitor.worked(1);
-								final List<DockerImageTagSearchResult> searchResults = new ArrayList<>();
-								final IDockerConnection connection = model.getSelectedConnection();
-								for (IRepositoryTag repositoryTag : repositoryTags) {
-									searchResults
-											.add(new DockerImageTagSearchResult(
-													selectedImageName,
-													repositoryTag,
-													connection.hasImage(
-															selectedImageName,
-															repositoryTag
-																	.getName())));
-								}
-								monitor.worked(1);
-								searchResultQueue.offer(searchResults);
-							} catch (DockerException | InterruptedException
-									| ExecutionException e) {
-								Activator.log(e);
+					monitor -> {
+						try {
+							monitor.beginTask(
+									WizardMessages.getString(
+											"ImageTagSelectionPage.searchTask"), //$NON-NLS-1$
+									2);
+							final String selectedImageName = ImageTagSelectionPage.this.model
+									.getSelectedImage().getName();
+							final List<IRepositoryTag> repositoryTags = new DockerHubRegistry()
+									.getTags(selectedImageName);
+							monitor.worked(1);
+							final List<DockerImageTagSearchResult> searchResults = new ArrayList<>();
+							final IDockerConnection connection = model
+									.getSelectedConnection();
+							for (IRepositoryTag repositoryTag : repositoryTags) {
+								searchResults
+										.add(new DockerImageTagSearchResult(
+												selectedImageName,
+												repositoryTag,
+												connection.hasImage(
+														selectedImageName,
+														repositoryTag
+																.getName())));
 							}
-							monitor.done();
+							monitor.worked(1);
+							searchResultQueue.offer(searchResults);
+						} catch (DockerException | InterruptedException
+								| ExecutionException e) {
+							Activator.log(e);
 						}
+						monitor.done();
 					});
 			List<DockerImageTagSearchResult> res = searchResultQueue.poll(10,
 					TimeUnit.SECONDS);
 			final List<DockerImageTagSearchResult> searchResult = (res == null)
-					? new ArrayList<DockerImageTagSearchResult>() : res;
+					? new ArrayList<>() : res;
 			Display.getCurrent().asyncExec(new Runnable() {
 				@Override
 				public void run() {

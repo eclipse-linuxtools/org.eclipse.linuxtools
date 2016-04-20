@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2016 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -143,28 +143,18 @@ public class RunImageCommandHandler extends AbstractHandler {
 					}
 					startContainerMonitor.done();
 					// create a launch configuration from the container
-					LaunchConfigurationUtils.createLaunchConfiguration(
-image,
+					LaunchConfigurationUtils.createLaunchConfiguration(image,
 							containerConfig,
 							hostConfig, containerName,
 							removeWhenExits);
 				} catch (final DockerException | InterruptedException e) {
-					Display.getDefault().syncExec(new Runnable() {
-
-						@Override
-						public void run() {
-							MessageDialog.openError(
-									PlatformUI.getWorkbench()
-											.getActiveWorkbenchWindow()
-											.getShell(),
-									DVMessages.getFormattedString(
-											ERROR_CREATING_CONTAINER,
-											containerConfig.image()),
-									e.getMessage());
-
-						}
-
-					});
+					Display.getDefault().syncExec(() -> MessageDialog.openError(
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+									.getShell(),
+							DVMessages.getFormattedString(
+									ERROR_CREATING_CONTAINER,
+									containerConfig.image()),
+							e.getMessage()));
 				} finally {
 					if (removeWhenExits) {
 						try {
@@ -193,22 +183,15 @@ image,
 										.removeContainer(containerId);
 						} catch (DockerException | InterruptedException e) {
 							final String id = containerId;
-							Display.getDefault().syncExec(new Runnable() {
-
-								@Override
-								public void run() {
-									MessageDialog.openError(
+							Display.getDefault()
+									.syncExec(() -> MessageDialog.openError(
 											PlatformUI.getWorkbench()
 													.getActiveWorkbenchWindow()
 													.getShell(),
 											DVMessages.getFormattedString(
 													ERROR_REMOVING_CONTAINER,
 													id),
-											e.getMessage());
-
-								}
-
-							});
+											e.getMessage()));
 						}
 					}
 

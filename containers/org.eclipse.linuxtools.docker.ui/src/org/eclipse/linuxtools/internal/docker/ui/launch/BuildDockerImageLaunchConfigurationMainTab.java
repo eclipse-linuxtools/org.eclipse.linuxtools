@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -53,7 +53,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
-import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.navigator.ResourceComparator;
@@ -264,18 +263,13 @@ public class BuildDockerImageLaunchConfigurationMainTab
 				dialog.setComparator(
 						new ResourceComparator(ResourceComparator.NAME));
 				dialog.setAllowMultiple(false);
-				dialog.setValidator(new ISelectionStatusValidator() {
-					// only accept a single file as the valid selection
-					@Override
-					public IStatus validate(Object[] selection) {
-						if (selection.length == 1 && expectedType
-								.isAssignableFrom(selection[0].getClass())) {
-							return new Status(IStatus.OK, Activator.PLUGIN_ID,
-									null);
-						}
-						return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+				dialog.setValidator(selection -> {
+					if (selection.length == 1 && expectedType
+							.isAssignableFrom(selection[0].getClass())) {
+						return new Status(IStatus.OK, Activator.PLUGIN_ID,
 								null);
 					}
+					return new Status(IStatus.ERROR, Activator.PLUGIN_ID, null);
 				});
 				if (dialog.open() == IDialogConstants.OK_ID) {
 					final IResource selection = (IResource) dialog

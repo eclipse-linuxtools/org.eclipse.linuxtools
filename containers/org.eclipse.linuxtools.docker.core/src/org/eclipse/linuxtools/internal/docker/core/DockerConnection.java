@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2016 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -593,16 +593,8 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			synchronized (containerLock) {
 				this.containersById = updatedContainers;
 				this.containers = sort(this.containersById.values(),
-						new Comparator<IDockerContainer>() {
-
-							@Override
-							public int compare(final IDockerContainer container,
-									final IDockerContainer otherContainer) {
-								return container.name()
-										.compareTo(otherContainer.name());
-							}
-
-						});
+						(container, otherContainer) -> container.name()
+								.compareTo(otherContainer.name()));
 
 				this.containersLoaded = true;
 			}
@@ -1563,26 +1555,23 @@ public class DockerConnection implements IDockerConnection, Closeable {
 
 			// Data from the given input stream
 			// Written to container's STDIN
-			Thread t_in = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					byte[] buff = new byte[1024];
-					int n;
-					try {
-						WritableByteChannel pty_out = HttpHijackWorkaround
-								.getOutputStream(pty_stream, getUri());
-						while ((n = in.read(buff)) != -1
-								&& getContainerInfo(id).state().running()) {
-							synchronized (prevCmd) {
-								pty_out.write(ByteBuffer.wrap(buff, 0, n));
-								for (int i = 0; i < prevCmd.length; i++) {
-									prevCmd[i] = buff[i];
-								}
+			Thread t_in = new Thread(() -> {
+				byte[] buff = new byte[1024];
+				int n;
+				try {
+					WritableByteChannel pty_out = HttpHijackWorkaround
+							.getOutputStream(pty_stream, getUri());
+					while ((n = in.read(buff)) != -1
+							&& getContainerInfo(id).state().running()) {
+						synchronized (prevCmd) {
+							pty_out.write(ByteBuffer.wrap(buff, 0, n));
+							for (int i = 0; i < prevCmd.length; i++) {
+								prevCmd[i] = buff[i];
 							}
-							buff = new byte[1024];
 						}
-					} catch (Exception e) {
+						buff = new byte[1024];
 					}
+				} catch (Exception e) {
 				}
 			});
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -113,20 +113,14 @@ public class BuildImageCommandHandler extends AbstractHandler {
 								}
 							});
 				} catch (final IOException e) {
-					Display.getDefault().syncExec(new Runnable() {
-						@Override
-						public void run() {
-							MessageDialog.openError(
-									PlatformUI.getWorkbench()
-											.getActiveWorkbenchWindow()
-											.getShell(),
-											WizardMessages.getString(
-													"ErrorInvalidDirectory.msg"),
-									WizardMessages.getFormattedString(
-											"ErrorInvalidPermissions.msg",
-											path.toString()));
-						}
-					});
+					Display.getDefault().syncExec(() -> MessageDialog.openError(
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+									.getShell(),
+							WizardMessages
+									.getString("ErrorInvalidDirectory.msg"),
+							WizardMessages.getFormattedString(
+									"ErrorInvalidPermissions.msg",
+									path.toString())));
 					return Status.OK_STATUS;
 				}
 				monitor.worked(1);
@@ -142,25 +136,16 @@ public class BuildImageCommandHandler extends AbstractHandler {
 											id, lines));
 					monitor.worked(1);
 				} catch (final DockerException e) {
-					Display.getDefault().syncExec(new Runnable() {
-
-						@Override
-						public void run() {
-							MessageDialog.openError(
-									// Use the Workbench shell so we don't find
-									// the non-modal dialog that will be
-									// destroyed shortly after a failure will be
-									// reported.
-									PlatformUI.getWorkbench()
-											.getActiveWorkbenchWindow()
-											.getShell(),
-									DVMessages
-									.getFormattedString(ERROR_BUILDING_IMAGE,
-											id), e.getMessage());
-							// shell.close();
-						}
-
-					});
+					Display.getDefault().syncExec(() -> MessageDialog.openError(
+							// Use the Workbench shell so we don't find
+							// the non-modal dialog that will be
+							// destroyed shortly after a failure will be
+							// reported.
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+									.getShell(),
+							DVMessages.getFormattedString(ERROR_BUILDING_IMAGE,
+									id),
+							e.getMessage()));
 					// for now
 				} catch (InterruptedException e) {
 					// do nothing

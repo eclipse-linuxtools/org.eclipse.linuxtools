@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -88,18 +88,15 @@ public class ShowInWebBrowserCommandHandler extends AbstractHandler {
 	}
 
 	private void openLocationInWebBrowser(final URL location) {
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					PlatformUI.getWorkbench().getBrowserSupport()
-							.getExternalBrowser().openURL(location);
-				} catch (Exception e) {
-					Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-							CommandMessages.getString(
-									"command.showIn.webBrowser.failure"), //$NON-NLS-1$
-							e));
-				}
+		Display.getDefault().asyncExec(() -> {
+			try {
+				PlatformUI.getWorkbench().getBrowserSupport()
+						.getExternalBrowser().openURL(location);
+			} catch (Exception e) {
+				Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+						CommandMessages
+								.getString("command.showIn.webBrowser.failure"), //$NON-NLS-1$
+						e));
 			}
 		});
 	}

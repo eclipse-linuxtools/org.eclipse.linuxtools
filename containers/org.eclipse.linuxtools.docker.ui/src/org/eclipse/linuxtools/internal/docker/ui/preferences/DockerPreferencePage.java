@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,8 +16,6 @@ import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.preference.StringFieldEditor;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerRefreshManager;
 import org.eclipse.swt.SWT;
@@ -102,19 +100,17 @@ public class DockerPreferencePage extends PreferencePage implements
 		refreshTimeField.load();
 		// If the preference changes, alert the Refresh Manager
 		refreshTimeField
-				.setPropertyChangeListener(new IPropertyChangeListener() {
-					@Override
-					public void propertyChange(PropertyChangeEvent event) {
-						if (event.getSource().equals(refreshTimeField)) {
-							if (refreshTimeField.isValid()) {
-								DockerContainerRefreshManager.getInstance()
-									.setRefreshTime(refreshTimeField.getIntValue());
-								setErrorMessage(null);
-							} else {
-								setErrorMessage(refreshTimeField.getErrorMessage());
-							}
-							setValid(refreshTimeField.isValid());
+				.setPropertyChangeListener(event -> {
+					if (event.getSource().equals(refreshTimeField)) {
+						if (refreshTimeField.isValid()) {
+							DockerContainerRefreshManager.getInstance()
+									.setRefreshTime(
+											refreshTimeField.getIntValue());
+							setErrorMessage(null);
+						} else {
+							setErrorMessage(refreshTimeField.getErrorMessage());
 						}
+						setValid(refreshTimeField.isValid());
 					}
 				});
 	}
