@@ -115,6 +115,15 @@ public interface IDockerConnection {
 	 */
 	public List<IDockerImage> getImages(final boolean force);
 
+	/**
+	 * Get the Docker daemon version info
+	 * 
+	 * @return an {@link IDockerVersion} instance containing the info
+	 * @throws DockerException
+	 *             generic exception
+	 */
+	public IDockerVersion getVersion() throws DockerException;
+
 	public String getName();
 
 	public String getUri();

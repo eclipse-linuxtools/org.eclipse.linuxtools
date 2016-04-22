@@ -63,6 +63,7 @@ import org.eclipse.linuxtools.docker.core.IDockerImageListener;
 import org.eclipse.linuxtools.docker.core.IDockerImageSearchResult;
 import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
 import org.eclipse.linuxtools.docker.core.IDockerProgressHandler;
+import org.eclipse.linuxtools.docker.core.IDockerVersion;
 import org.eclipse.linuxtools.docker.core.ILogger;
 import org.eclipse.linuxtools.docker.core.Messages;
 import org.eclipse.osgi.util.NLS;
@@ -335,6 +336,17 @@ public class DockerConnection implements IDockerConnection, Closeable {
 	@Override
 	public String getUsername() {
 		return username;
+	}
+
+	@Override
+	public IDockerVersion getVersion() throws DockerException {
+		try {
+			Version version = client.version();
+			return new DockerVersion(this, version);
+		} catch (com.spotify.docker.client.DockerException
+				| InterruptedException e) {
+			throw new DockerException(Messages.Docker_General_Info_Failure, e);
+		}
 	}
 
 	@Override
