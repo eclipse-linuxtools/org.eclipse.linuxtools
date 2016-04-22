@@ -41,7 +41,6 @@ import org.eclipse.linuxtools.internal.docker.ui.views.DockerImagesView;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRun;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -90,13 +89,15 @@ public class RunImageCommandHandler extends AbstractHandler {
 		final IDockerConnection connection = image.getConnection();
 		if (containerConfig.tty()) {
 			// show the console view
-			try {
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-						.getActivePage()
-						.showView(IConsoleConstants.ID_CONSOLE_VIEW);
-			} catch (PartInitException e) {
-				Activator.log(e);
-			}
+			Display.getDefault().asyncExec(() -> {
+				try {
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+							.getActivePage()
+							.showView(IConsoleConstants.ID_CONSOLE_VIEW);
+				} catch (Exception e) {
+					Activator.log(e);
+				}
+			});
 		}
 
 		// Create the container in a non-UI thread.
