@@ -18,6 +18,7 @@ import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLa
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.ENTRYPOINT;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.INTERACTIVE;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.LINKS;
+import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PRIVILEGED;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PUBLISHED_PORTS;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PUBLISH_ALL_PORTS;
 
@@ -680,6 +681,18 @@ public class ImageRunSelectionPage extends WizardPage {
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.REMOVE_WHEN_EXITS)
 						.observe(model));
+
+		// privileged
+		final Button privilegedButton = new Button(container, SWT.CHECK);
+		privilegedButton.setText(
+				WizardMessages.getString("ImageRunSelectionPage.privileged")); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.span(COLUMNS, 1).grab(true, false).applyTo(privilegedButton);
+		dbc.bindValue(WidgetProperties.selection().observe(privilegedButton),
+				BeanProperties
+						.value(ImageRunSelectionModel.class,
+								ImageRunSelectionModel.PRIVILEGED)
+						.observe(model));
 	}
 
 	/**
@@ -866,6 +879,8 @@ public class ImageRunSelectionPage extends WizardPage {
 						.getAttribute(INTERACTIVE, false));
 				this.model.setAllocatePseudoTTY(lastLaunchConfiguration
 						.getAttribute(ALLOCATE_PSEUDO_CONSOLE, false));
+				this.model.setPrivileged(lastLaunchConfiguration
+						.getAttribute(PRIVILEGED, false));
 			} catch (CoreException e) {
 				Activator.log(e);
 			}

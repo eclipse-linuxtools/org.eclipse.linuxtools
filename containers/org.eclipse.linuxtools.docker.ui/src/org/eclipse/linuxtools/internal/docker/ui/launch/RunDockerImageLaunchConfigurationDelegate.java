@@ -148,6 +148,11 @@ public class RunDockerImageLaunchConfigurationDelegate
 		}
 		hostConfigBuilder.binds(binds);
 		
+		boolean privileged = config.getAttribute(
+				IRunDockerImageLaunchConfigurationConstants.PRIVILEGED,
+				false);
+		hostConfigBuilder.privileged(privileged);
+
 		return hostConfigBuilder.build();
 	}
 
