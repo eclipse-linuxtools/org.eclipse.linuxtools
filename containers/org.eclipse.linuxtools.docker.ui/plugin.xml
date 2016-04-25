@@ -1211,6 +1211,32 @@
 		          style="push">
 				</command>
 		</menuContribution>
+		<!-- images view context menu: run image -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImagesView">
+	  		<command
+           commandId="org.eclipse.linuxtools.docker.ui.commands.runImage"
+           icon="icons/createcontainer.gif"
+           label="%command.runimage.label"
+           mnemonic="R"
+           style="push">
+	            <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerImage" />
+	                </iterate>
+	               </with>
+	         </visibleWhen>
+	      </command>
+		</menuContribution>
 		<!-- images view context menu: add tag -->
 		<menuContribution
 			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImagesView">
