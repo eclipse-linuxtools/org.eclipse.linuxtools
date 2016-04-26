@@ -45,6 +45,7 @@ import org.eclipse.equinox.security.storage.ISecurePreferences;
 import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
 import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.linuxtools.docker.core.Activator;
+import org.eclipse.linuxtools.docker.core.DockerAuthConfig;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.DockerContainerNotFoundException;
 import org.eclipse.linuxtools.docker.core.DockerException;
@@ -82,6 +83,7 @@ import com.spotify.docker.client.DockerClient.ExecCreateParam;
 import com.spotify.docker.client.DockerClient.ExecStartParameter;
 import com.spotify.docker.client.DockerClient.LogsParam;
 import com.spotify.docker.client.LogStream;
+import com.spotify.docker.client.messages.AuthConfig;
 import com.spotify.docker.client.messages.Container;
 import com.spotify.docker.client.messages.ContainerConfig;
 import com.spotify.docker.client.messages.ContainerCreation;
@@ -1491,6 +1493,21 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 		return stream;
+	}
+
+	@Override
+	public int auth(DockerAuthConfig config)
+			throws DockerException, InterruptedException {
+		try {
+			AuthConfig authConfig = AuthConfig.builder()
+					.username(new String(config.username()))
+					.password(new String(config.password()))
+					.email(new String(config.email()))
+					.serverAddress(new String(config.serverAddress())).build();
+			return client.auth(authConfig);
+		} catch (com.spotify.docker.client.DockerException e) {
+			throw new DockerException(e.getMessage(), e.getCause());
+		}
 	}
 
 	public EnumDockerLoggingStatus loggingStatus(final String id) {

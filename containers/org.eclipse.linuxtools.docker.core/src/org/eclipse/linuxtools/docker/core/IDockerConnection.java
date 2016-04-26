@@ -222,6 +222,20 @@ public interface IDockerConnection {
 	InputStream copyContainer(String id, String path)
 			throws DockerException, InterruptedException;
 
+	/**
+	 * Determine if authorization is valid.
+	 * 
+	 * @param config
+	 *            authorization credentials
+	 * @return 0 if ok, non-zero otherwise
+	 * @throws DockerException
+	 *             if an error occurs
+	 * @throws InterruptedException
+	 *             if the thread was interrupted
+	 */
+	int auth(final DockerAuthConfig config)
+			throws DockerException, InterruptedException;
+
 	String buildImage(IPath path, IDockerProgressHandler handler)
 			throws DockerException, InterruptedException;
 
