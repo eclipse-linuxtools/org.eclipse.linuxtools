@@ -10,10 +10,19 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
+import org.eclipse.linuxtools.docker.core.IRegistry;
+import org.eclipse.linuxtools.internal.docker.core.RegistryAccountInfo;
+import org.eclipse.linuxtools.internal.docker.core.RegistryAccountManager;
+import org.eclipse.linuxtools.internal.docker.core.RegistryInfo;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
@@ -32,9 +41,11 @@ public class ImagePushPage extends WizardPage {
 	private final static String NAME_TOOLTIP = "ImagePushName.toolTip"; //$NON-NLS-1$
 	private Text nameText;
 	private Combo nameCombo;
+	private Combo accountCombo;
 	private IDockerImage image;
 
 	private String tag;
+	private IRegistry info;
 
 	public ImagePushPage() {
 		this(null);
@@ -52,6 +63,10 @@ public class ImagePushPage extends WizardPage {
 		return tag;
 	}
 
+	public IRegistry getRegistry() {
+		return info;
+	}
+
 	private ModifyListener Listener = e -> validate();
 
 	private void validate() {
@@ -63,6 +78,21 @@ public class ImagePushPage extends WizardPage {
 		} else {
 			name = nameCombo.getText();
 		}
+		if (accountCombo != null) {
+			String account = accountCombo.getText();
+			final String pattern = "(.*)@(.*) \\( (.*) \\)"; //$NON-NLS-1$
+			Matcher m = Pattern.compile(pattern).matcher(account);
+			if (m.matches()) {
+				info = new RegistryAccountInfo(m.group(2), m.group(1), m.group(3), null);
+			} else {
+				info = new RegistryInfo(account);
+			}
+		} else {
+			complete = false;
+			error = true;
+			setErrorMessage("A registry is necessary to push.");
+		}
+
 		if (name.length() == 0) {
 			complete = false;
 		}
@@ -70,6 +100,7 @@ public class ImagePushPage extends WizardPage {
 			setErrorMessage(null);
 			tag = name;
 		}
+
 		setPageComplete(complete && !error);
 	}
 
@@ -100,6 +131,28 @@ public class ImagePushPage extends WizardPage {
 			GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 					.grab(true, false).applyTo(nameCombo);
 		}
+
+		final Label accountLabel = new Label(container, SWT.NULL);
+		accountLabel.setText("Registry Account");
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.grab(false, false).applyTo(accountLabel);
+
+		accountCombo = new Combo(container, SWT.DROP_DOWN);
+		accountCombo.addModifyListener(Listener);
+		accountCombo.setToolTipText("Select a specific registry account to use");
+		List<String> items = RegistryAccountManager.getInstance()
+				.getAccounts()
+				.stream()
+				.map(e -> e.getUsername() + "@" + e.getServerAddress() //$NON-NLS-1$
+						+ (e.getEmail().isEmpty() ? "" //$NON-NLS-1$
+								: " ( " + e.getEmail() + " )")) //$NON-NLS-1$ //$NON-NLS-2$
+				.collect(Collectors.toList());
+		accountCombo.setItems(items.toArray(new String[0]));
+		if (items.size() > 0) {
+			accountCombo.setText(items.get(0));
+		}
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.grab(true, false).applyTo(accountCombo);
 		setControl(container);
 		validate();
 	}

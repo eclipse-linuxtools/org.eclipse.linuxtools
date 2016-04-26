@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
+import org.eclipse.linuxtools.docker.core.IRegistry;
 
 public class ImagePush extends Wizard {
 
@@ -32,9 +33,12 @@ public class ImagePush extends Wizard {
 		return imageTag;
 	}
 
+	public IRegistry getRegistry() {
+		return mainPage.getRegistry();
+	}
+
 	@Override
 	public void addPages() {
-		// TODO Auto-generated method stub
 		mainPage = new ImagePushPage(image);
 		addPage(mainPage);
 	}
