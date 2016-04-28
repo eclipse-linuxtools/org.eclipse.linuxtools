@@ -66,6 +66,7 @@ public class BuildDockerImageLaunchConfigurationMainTab
 	private final String CONNECTION_MISSING = "BuildDockerImageLaunchConfigurationMainTab.connection.missing"; //$NON-NLS-1$
 	private final String BUILD_CONTEXT_PATH_LABEL = "BuildDockerImageLaunchConfigurationMainTab.buildContextPath.group.label"; //$NON-NLS-1$
 	private final String BUILD_CONTEXT_PATH_MISSING = "BuildDockerImageLaunchConfigurationMainTab.buildContextPath.missing"; //$NON-NLS-1$
+	private final String BUILD_CONTEXT_PATH_MISSING_DOCKERFILE = "BuildDockerImageLaunchConfigurationMainTab.buildContextPath.missingDockerfile"; //$NON-NLS-1$
 	private final String BROWSE_WORKSPACE = "BuildDockerImageLaunchConfigurationMainTab.buildContextPath.browseworkspace.button.label"; //$NON-NLS-1$
 	private final String BROWSE_WORKSPACE_DIALOG_TITLE = "BuildDockerImageLaunchConfigurationMainTab.buildContextPath.browseworkspace.dialog.title"; //$NON-NLS-1$
 	private final String BROWSE_FILESYSTEM = "BuildDockerImageLaunchConfigurationMainTab.buildContextPath.browsefilesystem.button.label"; //$NON-NLS-1$
@@ -353,6 +354,9 @@ public class BuildDockerImageLaunchConfigurationMainTab
 			} else if (sourcePathLocation.isEmpty() || sourcePath == null) {
 				setErrorMessage(
 						LaunchMessages.getString(BUILD_CONTEXT_PATH_MISSING));
+				return false;
+			} else if (!sourcePath.append("Dockerfile").toFile().exists()) {
+				setErrorMessage(LaunchMessages.getString(BUILD_CONTEXT_PATH_MISSING_DOCKERFILE));
 				return false;
 			} else {
 				setErrorMessage(null);
