@@ -276,7 +276,7 @@ public class TestCreateSystemtapScript {
         bot.perspectiveByLabel("SystemTap IDE").activate();
         bot.sleep(500);
         for (SWTBotShell sh : bot.shells()) {
-            if (sh.getText().startsWith("SystemTap IDE")) {
+            if (sh.getText().contains("SystemTap IDE")) {
                 mainShell = sh;
                 sh.activate();
                 bot.sleep(500);
