@@ -138,7 +138,7 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
             ValgrindStackFrame stackBottom = getStackBottom(wrongDeallocMessage);
             int stackBottomLine = stackBottom.getLine();
             String stackBottomFile = stackBottom.getFile();
-            if(stackBottomLine == line && file != null && file.equals(stackBottomFile)){
+            if(stackBottomLine == line && file != null && stackBottomFile.endsWith(file)){
                 allocMessage = getStackBottom(getNestedStack(wrongDeallocMessage));
             }
         }
@@ -222,7 +222,7 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
             ValgrindStackFrame stackBottom = getStackBottom(wrongDeallocMessage);
             int stackBottomLine = stackBottom.getLine();
             String stackBottomFile = stackBottom.getFile();
-            if(stackBottomLine == line && file != null && file.equals(stackBottomFile)){
+            if(stackBottomLine == line && file != null && stackBottomFile.endsWith(file)){
                 message = stackBottom;
             }
         }

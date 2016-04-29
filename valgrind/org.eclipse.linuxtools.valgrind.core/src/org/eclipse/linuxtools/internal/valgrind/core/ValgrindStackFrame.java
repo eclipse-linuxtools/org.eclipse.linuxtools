@@ -41,6 +41,10 @@ public class ValgrindStackFrame extends AbstractValgrindMessage {
 
 	/**
 	 * Source file
+	 *
+	 * Note: new Valgrind versions (e.g. 3.10) prints the full path of file,
+	 * not just the source file name.
+	 *
 	 * @return a source file string
 	 */
 	public String getFile() {
