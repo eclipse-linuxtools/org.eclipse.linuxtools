@@ -188,6 +188,10 @@ public interface IDockerConnection {
 
 	void pullImage(String id, IDockerProgressHandler handler) throws DockerException, InterruptedException;
 
+	void pullImage(String id, DockerAuthConfig authConfig,
+			IDockerProgressHandler handler)
+			throws DockerException, InterruptedException;
+
 	public List<IDockerImageSearchResult> searchImages(final String term) throws DockerException;
 	
 	void pushImage(String name, IDockerProgressHandler handler) throws DockerException, InterruptedException;

@@ -897,6 +897,27 @@ public class DockerConnection implements IDockerConnection, Closeable {
 	}
 
 	@Override
+	public void pullImage(final String id, final DockerAuthConfig config,
+			final IDockerProgressHandler handler)
+			throws DockerException, InterruptedException {
+		try {
+			AuthConfig authConfig = AuthConfig.builder()
+					.username(new String(config.username()))
+					.password(new String(config.password()))
+					.email(new String(config.email()))
+					.serverAddress(new String(config.serverAddress())).build();
+			DockerProgressHandler d = new DockerProgressHandler(handler);
+			client.pull(id, authConfig, d);
+			listImages();
+		} catch (com.spotify.docker.client.DockerRequestException e) {
+			throw new DockerException(e.message());
+		} catch (com.spotify.docker.client.DockerException e) {
+			DockerException f = new DockerException(e);
+			throw f;
+		}
+	}
+
+	@Override
 	public List<IDockerImageSearchResult> searchImages(final String term) throws DockerException {
 		try {
 			final List<ImageSearchResult> searchResults = client.searchImages(term);
