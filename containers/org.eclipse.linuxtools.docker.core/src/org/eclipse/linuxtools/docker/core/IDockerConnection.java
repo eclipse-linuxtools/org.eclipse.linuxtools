@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.linuxtools.internal.docker.core.DockerAuthConfig;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerRefreshManager;
 
 public interface IDockerConnection {
@@ -256,7 +257,7 @@ public interface IDockerConnection {
 	 * @throws InterruptedException
 	 *             if the thread was interrupted
 	 */
-	int auth(final DockerAuthConfig config)
+	int auth(final IDockerAuthConfig config)
 			throws DockerException, InterruptedException;
 
 	String buildImage(IPath path, IDockerProgressHandler handler)
@@ -314,6 +315,24 @@ public interface IDockerConnection {
 	void stopLoggingThread(String id);
 
 	void logContainer(String id, OutputStream stream)
+			throws DockerException, InterruptedException;
+
+	IDockerNetworkCreation createNetwork(IDockerNetworkConfig config)
+			throws DockerException, InterruptedException;
+
+	IDockerNetwork inspectNetwork(String networkId)
+			throws DockerException, InterruptedException;
+
+	List<IDockerNetwork> listNetworks()
+			throws DockerException, InterruptedException;
+
+	void removeNetwork(String networkId)
+			throws DockerException, InterruptedException;
+
+	void connectNetwork(String id, String networkId)
+			throws DockerException, InterruptedException;
+
+	void disconnectNetwork(String id, String networkId)
 			throws DockerException, InterruptedException;
 
 	void removeImage(String name) throws DockerException, InterruptedException;

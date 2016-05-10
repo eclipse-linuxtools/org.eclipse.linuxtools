@@ -8,9 +8,11 @@
  * Contributors:
  *     Red Hat - Initial Contribution
  *******************************************************************************/
-package org.eclipse.linuxtools.docker.core;
+package org.eclipse.linuxtools.internal.docker.core;
 
-public class DockerAuthConfig {
+import org.eclipse.linuxtools.docker.core.IDockerAuthConfig;
+
+public class DockerAuthConfig implements IDockerAuthConfig {
 
 	private char[] username;
 	private char[] password;
@@ -24,18 +26,22 @@ public class DockerAuthConfig {
 		this.serverAddress = builder.serverAddress();
 	}
 
+	@Override
 	public char[] username() {
 		return username;
 	}
 
+	@Override
 	public char[] password() {
 		return password;
 	}
 
+	@Override
 	public char[] email() {
 		return email;
 	}
 
+	@Override
 	public char[] serverAddress() {
 		return serverAddress;
 	}
