@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,19 +96,21 @@ public class DockerMachine {
 	private static String[] execute(final String dockerMachineInstallDir,
 			final String[] args, final String... extraPaths) {
 		try {
+			// check that the 'docker-machine' can be found in the given
+			// 'dockerMachineInstallDir'
+			final boolean dockerMachineCommandExists = checkPathToDockerMachine(
+					dockerMachineInstallDir);
+			if (!dockerMachineCommandExists) {
+				// log a warning and exit
+				Activator
+						.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
+								NLS.bind(
+										Messages.Docker_Machine_Command_Not_Found,
+										dockerMachineInstallDir)));
+				return new String[0];
+			}
 			final String[] command = new String[args.length + 1];
 			command[0] = Paths.get(dockerMachineInstallDir, "docker-machine").toString(); //$NON-NLS-1$
-			final String envPath = System.getenv("PATH"); //$NON-NLS-1$
-			if (envPath != null) {
-				for (String dir : envPath.split(File.pathSeparator)) {
-					Path dmPath = Paths.get(dir, "docker-machine"); //$NON-NLS-1$
-					if (dmPath.toFile().exists()) {
-						command[0] = dmPath.toString();
-						break;
-					}
-				}
-			}
-
 			System.arraycopy(args, 0, command, 1, args.length);
 			final ProcessBuilder processBuilder = new ProcessBuilder(command);
 			final Map<String, String> environment = processBuilder
@@ -120,18 +121,7 @@ public class DockerMachine {
 			}
 			String newEnvPath = environment.get("PATH") + path.toString(); //$NON-NLS-1$
 			environment.put("PATH", newEnvPath); //$NON-NLS-1$
-			// check that the 'docker-machine' can be found in PATH
-			final boolean dockerMachineCommandExists = checkPathToDockerMachine(
-					newEnvPath);
-			if (!dockerMachineCommandExists) {
-				// log a warning and exit
-				Activator
-						.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-								NLS.bind(
-										Messages.Docker_Machine_Command_Not_Found,
-										newEnvPath)));
-				return new String[0];
-			}
+
 			final Process p = processBuilder.start();
 			p.waitFor();
 			if (p.exitValue() == 0) {
