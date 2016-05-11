@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.internal.docker.core;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.equinox.security.storage.ISecurePreferences;
@@ -48,6 +49,14 @@ public class RegistryAccountManager {
 			accounts.add(account);
 		}
 		return accounts;
+	}
+
+	public IRegistryAccount getAccount(String serverAddress, String username) {
+		Iterator<IRegistryAccount> it = getAccounts().stream()
+				.filter(a -> a.getServerAddress().equals(serverAddress)
+						&& a.getUsername().equals(username))
+				.iterator();
+		return it.hasNext() ? it.next() : null;
 	}
 
 	public void add(IRegistryAccount info) {

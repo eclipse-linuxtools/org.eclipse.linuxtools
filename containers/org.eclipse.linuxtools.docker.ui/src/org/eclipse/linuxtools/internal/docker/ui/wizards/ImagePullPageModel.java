@@ -19,14 +19,24 @@ import org.eclipse.linuxtools.internal.docker.ui.databinding.BaseDatabindingMode
 public class ImagePullPageModel extends BaseDatabindingModel {
 
 	public static final String IMAGE_NAME = "imageName";
+	public static final String REGISTRY = "registry";
 
 	private String imageName;
+	private String registry;
 
 	public String getImageName() {
 		return imageName;
 	}
 
+	public String getRegistry() {
+		return registry;
+	}
+
 	public void setImageName(final String imageName) {
 		firePropertyChange(IMAGE_NAME, this.imageName, this.imageName = imageName);
+	}
+
+	public void setRegistry(final String registry) {
+		firePropertyChange(REGISTRY, this.registry, this.registry = registry);
 	}
 }

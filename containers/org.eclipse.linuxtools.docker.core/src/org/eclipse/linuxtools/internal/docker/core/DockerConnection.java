@@ -49,7 +49,6 @@ import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.DockerContainerNotFoundException;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.EnumDockerLoggingStatus;
-import org.eclipse.linuxtools.docker.core.IDockerAuthConfig;
 import org.eclipse.linuxtools.docker.core.IDockerConfParameter;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionInfo;
@@ -903,26 +902,6 @@ public class DockerConnection implements IDockerConnection, Closeable {
 	}
 
 	@Override
-	public void pullImage(final String id, final DockerAuthConfig config,
-			final IDockerProgressHandler handler)
-			throws DockerException, InterruptedException {
-		try {
-			AuthConfig authConfig = AuthConfig.builder()
-					.username(new String(config.username()))
-					.password(new String(config.password()))
-					.email(new String(config.email()))
-					.serverAddress(new String(config.serverAddress())).build();
-			DockerProgressHandler d = new DockerProgressHandler(handler);
-			client.pull(id, authConfig, d);
-		} catch (com.spotify.docker.client.DockerRequestException e) {
-			throw new DockerException(e.message());
-		} catch (com.spotify.docker.client.DockerException e) {
-			DockerException f = new DockerException(e);
-			throw f;
-		}
-	}
-
-	@Override
 	public void pullImage(final String id, final IRegistryAccount info, final IDockerProgressHandler handler)
 			throws DockerException, InterruptedException, DockerCertificateException {
 		try {
@@ -1583,15 +1562,14 @@ public class DockerConnection implements IDockerConnection, Closeable {
 	}
 
 	@Override
-	public int auth(IDockerAuthConfig cfg)
+	public int auth(IRegistryAccount cfg)
 			throws DockerException, InterruptedException {
 		try {
-			DockerAuthConfig config = (DockerAuthConfig) cfg;
 			AuthConfig authConfig = AuthConfig.builder()
-					.username(new String(config.username()))
-					.password(new String(config.password()))
-					.email(new String(config.email()))
-					.serverAddress(new String(config.serverAddress())).build();
+					.username(new String(cfg.getUsername()))
+					.password(new String(cfg.getPassword()))
+					.email(new String(cfg.getEmail()))
+					.serverAddress(new String(cfg.getServerAddress())).build();
 			return client.auth(authConfig);
 		} catch (com.spotify.docker.client.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());

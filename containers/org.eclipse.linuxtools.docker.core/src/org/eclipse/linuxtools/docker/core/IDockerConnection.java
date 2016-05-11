@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.linuxtools.internal.docker.core.DockerAuthConfig;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerRefreshManager;
 
 import com.spotify.docker.client.DockerCertificateException;
@@ -192,9 +191,6 @@ public interface IDockerConnection {
 
 	void pullImage(String id, IDockerProgressHandler handler) throws DockerException, InterruptedException;
 
-	void pullImage(String id, DockerAuthConfig authConfig,
-			IDockerProgressHandler handler)
-			throws DockerException, InterruptedException;
 	/**
 	 * @since 2.0
 	 */
@@ -268,8 +264,9 @@ public interface IDockerConnection {
 	 *             if an error occurs
 	 * @throws InterruptedException
 	 *             if the thread was interrupted
+	 * @since 2.0
 	 */
-	int auth(final IDockerAuthConfig config)
+	int auth(final IRegistryAccount config)
 			throws DockerException, InterruptedException;
 
 	String buildImage(IPath path, IDockerProgressHandler handler)
