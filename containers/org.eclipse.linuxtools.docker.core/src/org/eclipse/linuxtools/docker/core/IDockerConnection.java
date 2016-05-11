@@ -320,6 +320,9 @@ public interface IDockerConnection {
 	void startContainer(String id, String loggingId, OutputStream stream)
 			throws DockerException, InterruptedException;
 
+	void restartContainer(String id, int secondsToWait)
+			throws DockerException, InterruptedException;
+
 	void commitContainer(String id, String repo, String tag, String comment,
 			String author) throws DockerException;
 

@@ -1523,6 +1523,21 @@ public class DockerConnection implements IDockerConnection, Closeable {
 	}
 
 	@Override
+	public void restartContainer(String id, int secondsToWait)
+			throws DockerException, InterruptedException {
+		DockerClient copyClient = getClientCopy();
+		try {
+			// restart container with host config
+			copyClient.restartContainer(id, secondsToWait);
+		} catch (com.spotify.docker.client.DockerException e) {
+			throw new DockerException(e);
+		} finally {
+			if (copyClient != null)
+				copyClient.close();
+		}
+	}
+
+	@Override
 	public void commitContainer(final String id, final String repo, final String tag,
 			final String comment, final String author) throws DockerException {
 		ContainerInfo info;
