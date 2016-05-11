@@ -598,7 +598,7 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			for (Container nativeContainer : nativeContainers) {
 				// For containers that have exited, make sure we aren't tracking
 				// them with a logging thread.
-				if (nativeContainer.status()
+				if (nativeContainer.status() != null && nativeContainer.status()
 						.startsWith(Messages.Exited_specifier)) {
 					synchronized (loggingThreads) {
 						if (loggingThreads.containsKey(nativeContainer.id())) {
@@ -609,7 +609,7 @@ public class DockerConnection implements IDockerConnection, Closeable {
 					}
 				}
 				// skip containers that are being removed
-				if (nativeContainer.status()
+				if (nativeContainer.status() != null && nativeContainer.status()
 						.equals(Messages.Removal_In_Progress_specifier)) {
 					continue;
 				}
@@ -852,12 +852,10 @@ public class DockerConnection implements IDockerConnection, Closeable {
 				final boolean danglingImage = !taggedImage
 						&& !intermediateImage;
 				// return one IDockerImage per raw image
-				final List<String> repoTags = new ArrayList<>(
-						rawImage.repoTags());
+				final List<String> repoTags = rawImage.repoTags() != null
+						? new ArrayList<>(rawImage.repoTags())
+						: Arrays.asList("<none>:<none>"); //$NON-NLS-1$
 				Collections.sort(repoTags);
-				if (repoTags.isEmpty()) {
-					repoTags.add("<none>:<none>"); //$NON-NLS-1$
-				}
 				final String repo = DockerImage.extractRepo(repoTags.get(0));
 				final List<String> tags = Arrays
 						.asList(DockerImage.extractTag(repoTags.get(0)));

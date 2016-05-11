@@ -71,8 +71,11 @@ public class DockerImage implements IDockerImage {
 		this.id = id;
 		this.parentId = parentId;
 		this.created = created;
-		this.createdDate = formatter.get()
-				.format(new Date(Long.valueOf(created).longValue() * 1000));
+		this.createdDate = created != null
+				? formatter.get()
+						.format(new Date(
+								Long.valueOf(created).longValue() * 1000))
+				: null;
 		this.size = size;
 		this.virtualSize = virtualSize;
 		this.intermediateImage = intermediateImage;
