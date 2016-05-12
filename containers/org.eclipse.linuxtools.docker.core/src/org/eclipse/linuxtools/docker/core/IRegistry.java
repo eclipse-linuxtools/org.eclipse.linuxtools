@@ -10,8 +10,16 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.docker.core;
 
+import java.util.List;
+
 public interface IRegistry {
 
 	String getServerAddress();
+
+	List<IDockerImageSearchResult> getImages(String term) throws DockerException;
+
+	List<IRepositoryTag> getTags(String repository) throws DockerException;
+
+	boolean isVersion2();
 
 }
