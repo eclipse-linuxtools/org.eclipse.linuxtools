@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.core;
 
-import org.eclipse.linuxtools.docker.core.IRegistry;
+import org.eclipse.linuxtools.docker.core.AbstractRegistry;
 
-public class RegistryInfo implements IRegistry {
+public class RegistryInfo extends AbstractRegistry {
 
 	private String serverAddress;
 
