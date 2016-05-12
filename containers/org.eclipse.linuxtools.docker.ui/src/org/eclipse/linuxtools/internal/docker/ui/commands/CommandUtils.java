@@ -23,7 +23,6 @@ import org.eclipse.core.expressions.EvaluationContext;
 import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizard;
@@ -33,16 +32,11 @@ import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerPortMapping;
 import org.eclipse.linuxtools.docker.ui.Activator;
+import org.eclipse.linuxtools.internal.docker.ui.DockerConnectionWatcher;
 import org.eclipse.linuxtools.internal.docker.ui.RunConsole;
 import org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerContainersView;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainerLink;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainerLinksCategory;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainerPortMappingsCategory;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainerVolume;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainerVolumesCategory;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainersCategory;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerImagesCategory;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerImagesView;
 import org.eclipse.swt.widgets.Display;
@@ -81,51 +75,52 @@ public class CommandUtils {
 	 *            - active Workbench part
 	 */
 	public static IDockerConnection getCurrentConnection(final IWorkbenchPart activePart) {
-		if (activePart instanceof DockerContainersView) {
-			return ((DockerContainersView) activePart).getConnection();
-		} else if (activePart instanceof DockerImagesView) {
-			return ((DockerImagesView) activePart).getConnection();
-		} else if (activePart instanceof DockerExplorerView) {
-			final ITreeSelection selection = ((DockerExplorerView) activePart)
-					.getCommonViewer().getStructuredSelection();
-			final Object firstElement = selection.getFirstElement();
-			if (firstElement instanceof IDockerConnection) {
-				return (IDockerConnection) firstElement;
-			} else if (firstElement instanceof IDockerContainer) {
-				return ((IDockerContainer) firstElement).getConnection();
-			} else if (firstElement instanceof IDockerImage) {
-				return ((IDockerImage) firstElement).getConnection();
-			} else if (firstElement instanceof DockerContainersCategory) {
-				return ((DockerContainersCategory) firstElement)
-						.getConnection();
-			} else if (firstElement instanceof DockerContainersCategory) {
-				return ((DockerContainersCategory) firstElement)
-						.getConnection();
-			} else if (firstElement instanceof DockerContainerLinksCategory) {
-				return ((DockerContainerLinksCategory) firstElement)
-						.getContainer().getConnection();
-			} else if (firstElement instanceof DockerContainerLink) {
-				return ((DockerContainerLink) firstElement).getContainer()
-						.getConnection();
-			} else
-				if (firstElement instanceof DockerContainerPortMappingsCategory) {
-				return ((DockerContainerPortMappingsCategory) firstElement)
-						.getContainer().getConnection();
-			} else if (firstElement instanceof IDockerPortMapping) {
-				return ((IDockerPortMapping) firstElement)
-						.getContainer()
-						.getConnection();
-			} else if (firstElement instanceof DockerContainerVolumesCategory) {
-				return ((DockerContainerVolumesCategory) firstElement)
-						.getContainer().getConnection();
-			} else if (firstElement instanceof DockerContainerVolume) {
-				return ((DockerContainerVolume) firstElement).getContainer()
-						.getConnection();
-			} else if (firstElement instanceof DockerImagesCategory) {
-				return ((DockerImagesCategory) firstElement).getConnection();
-			}
-		}
-		return null;
+		return DockerConnectionWatcher.getInstance().getConnection();
+		// if (activePart instanceof DockerContainersView) {
+		// return ((DockerContainersView) activePart).getConnection();
+		// } else if (activePart instanceof DockerImagesView) {
+		// return ((DockerImagesView) activePart).getConnection();
+		// } else if (activePart instanceof DockerExplorerView) {
+		// final ITreeSelection selection = ((DockerExplorerView) activePart)
+		// .getCommonViewer().getStructuredSelection();
+		// final Object firstElement = selection.getFirstElement();
+		// if (firstElement instanceof IDockerConnection) {
+		// return (IDockerConnection) firstElement;
+		// } else if (firstElement instanceof IDockerContainer) {
+		// return ((IDockerContainer) firstElement).getConnection();
+		// } else if (firstElement instanceof IDockerImage) {
+		// return ((IDockerImage) firstElement).getConnection();
+		// } else if (firstElement instanceof DockerContainersCategory) {
+		// return ((DockerContainersCategory) firstElement)
+		// .getConnection();
+		// } else if (firstElement instanceof DockerContainersCategory) {
+		// return ((DockerContainersCategory) firstElement)
+		// .getConnection();
+		// } else if (firstElement instanceof DockerContainerLinksCategory) {
+		// return ((DockerContainerLinksCategory) firstElement)
+		// .getContainer().getConnection();
+		// } else if (firstElement instanceof DockerContainerLink) {
+		// return ((DockerContainerLink) firstElement).getContainer()
+		// .getConnection();
+		// } else
+		// if (firstElement instanceof DockerContainerPortMappingsCategory) {
+		// return ((DockerContainerPortMappingsCategory) firstElement)
+		// .getContainer().getConnection();
+		// } else if (firstElement instanceof IDockerPortMapping) {
+		// return ((IDockerPortMapping) firstElement)
+		// .getContainer()
+		// .getConnection();
+		// } else if (firstElement instanceof DockerContainerVolumesCategory) {
+		// return ((DockerContainerVolumesCategory) firstElement)
+		// .getContainer().getConnection();
+		// } else if (firstElement instanceof DockerContainerVolume) {
+		// return ((DockerContainerVolume) firstElement).getContainer()
+		// .getConnection();
+		// } else if (firstElement instanceof DockerImagesCategory) {
+		// return ((DockerImagesCategory) firstElement).getConnection();
+		// }
+		// }
+		// return null;
 	}
 
 	/**

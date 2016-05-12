@@ -33,6 +33,7 @@ import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerListener;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerImageListener;
+import org.eclipse.linuxtools.internal.docker.ui.DockerConnectionWatcher;
 import org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.NewDockerConnection;
 import org.eclipse.swt.SWT;
@@ -79,6 +80,13 @@ public class DockerExplorerView extends CommonNavigator implements
 	private Text search;
 
 	private ViewerFilter containersAndImagesSearchFilter;
+
+	public DockerExplorerView() {
+		super();
+		// Make sure DockerConnectionWatcher is up and running before first
+		// Connection selection
+		DockerConnectionWatcher.getInstance();
+	}
 
 	@Override
 	protected Object getInitialInput() {
