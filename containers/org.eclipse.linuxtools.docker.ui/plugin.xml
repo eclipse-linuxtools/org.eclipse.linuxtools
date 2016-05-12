@@ -1057,6 +1057,31 @@
 	            </visibleWhen>
 				</command>
 		</menuContribution>
+		<!-- explorer view context menu: exec in shell -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu?after=org.eclipse.linuxtools.docker.ui.commands.removeImages">
+	       <command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.execContainer"
+		          id="org.eclipse.linuxtools.docker.ui.commands.execContainer"
+		          icon="icons/console_view.gif"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
 		<!-- explorer view context menu: tag image -->
 		<menuContribution
 			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu?after=group.tags">
@@ -1324,15 +1349,14 @@
 					mnemonic="A">
 				</command>
 		</menuContribution>
-  <menuContribution
-        locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerContainersView">
-     <command
-           commandId="org.eclipse.linuxtools.docker.ui.commands.execContainer"
-           id="org.eclipse.linuxtools.docker.ui.commands.execContainer"
-           style="push">
-     </command>
-  </menuContribution>
-		
+		<menuContribution
+	    	locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+				<command
+					commandId="org.eclipse.linuxtools.docker.ui.commands.execContainer"
+					id="org.eclipse.linuxtools.docker.ui.commands.execContainer"
+					style="push">
+			</command>
+	    </menuContribution>
 	</extension>
 	
     <extension point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
