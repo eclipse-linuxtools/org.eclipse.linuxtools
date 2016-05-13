@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2015 STMicroelectronics and others.
+ * Copyright (c) 2009, 2016 STMicroelectronics and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -264,13 +264,10 @@ public final class STLink2SourceSupport {
                 try {
                     ISourceRoot[] roots = cproject.getAllSourceRoots();
                     for (ISourceRoot sourceRoot : roots) {
-                        IResource r = sourceRoot.getResource();
-                        if (r instanceof IContainer) {
-                            IContainer parent = (IContainer) r;
-                            IResource res = parent.findMember(path);
-                            if (res != null && res.exists() && res instanceof IFile) {
-                                return (IFile) res;
-                            }
+                        IContainer r = sourceRoot.getResource();
+                        IResource res = r.findMember(path);
+                        if (res != null && res.exists() && res instanceof IFile) {
+                            return (IFile) res;
                         }
                     }
 
