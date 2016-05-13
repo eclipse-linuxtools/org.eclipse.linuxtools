@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009, 2016 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -116,9 +116,9 @@ public class StapGraphParser extends SystemTapParser {
     private void parseEnd() {
 
         //CHECK FOR EXIT() CALL
-        for (int key : idMaps.keySet()) {
-            List<Integer> idList = idMaps.get(key);
-            int lastFunctionCalled = lastFunctionMap.get(key);
+        for (Map.Entry<Integer, List<Integer>> entry : idMaps.entrySet()) {
+            List<Integer> idList = entry.getValue();
+            int lastFunctionCalled = lastFunctionMap.get(entry.getKey());
             if (idList.size() > 1) {
                 for (int val : idList) {
                     String name = serialMap.get(val);

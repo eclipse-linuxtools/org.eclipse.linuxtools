@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006,2012 IBM Corporation.
+ * Copyright (c) 2006, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -382,14 +382,14 @@ public final class ProbeParser extends TreeTapsetParser {
             }
         }
         // Run stap on each discovered probe to obtain their variable information.
-        for (String file : fileToItemMap.keySet()) {
-            for (String newitem : fileToItemMap.get(file)) {
+        for (Map.Entry<String, ArrayList<String>> entry : fileToItemMap.entrySet()) {
+            for (String newitem : entry.getValue()) {
                 if (canceled || monitor.isCanceled()) {
                     canceled = true;
                     break;
                 }
                 addSingleProbeAlias(runStap(new String[]{"-L"}, newitem, false), //$NON-NLS-1$
-                        aliases, null, null, file);
+                        aliases, null, null, entry.getKey());
             }
         }
 

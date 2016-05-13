@@ -92,16 +92,16 @@ public final class OpControlErrorHandler {
 
 		String error = null;
 		// Determine if stdout or stderr contains an error pattern
-		for (String key : errorMap.keySet()) {
-			if (stderr.contains(key)) {
+		for (Map.Entry<String, String> entry : errorMap.entrySet()) {
+			if (stderr.contains(entry.getKey())) {
 				fullErr = stderr;
 				type = "process.log.stderr"; //$NON-NLS-1$
-				error = errorMap.get(key);
+				error = entry.getValue();
 				break;
-			} else if (stdout.contains(key)) {
+			} else if (stdout.contains(entry.getKey())) {
 				fullErr = stdout;
 				type = "process.log.stdout"; //$NON-NLS-1$
-				error = errorMap.get(key);
+				error = entry.getValue();
 				break;
 			}
 		}

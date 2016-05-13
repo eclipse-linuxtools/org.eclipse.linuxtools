@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -175,13 +175,9 @@ public class EnvironmentsManager {
 		Map<String, String> original = new HashMap<>(System.getenv());
 
 		// Add new environment on top of existing
-		Iterator<String> additonal = env.keySet().iterator();
-		String k;
-		while (additonal.hasNext()) {
-			k = additonal.next();
-			original.put(k, env.get(k));
+		for (Map.Entry<String, String> entry : env.entrySet()) {
+			original.put(entry.getKey(), entry.getValue());
 		}
-
 		// Convert the combined map into a form that can be used to launch
 		// process
 		ArrayList<String> ret = new ArrayList<>();
