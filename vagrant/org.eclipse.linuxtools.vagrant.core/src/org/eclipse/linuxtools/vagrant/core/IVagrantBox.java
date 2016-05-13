@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,9 +14,9 @@ import org.osgi.framework.Version;
 
 public interface IVagrantBox {
 
-	public String getName();
+	String getName();
 
-	public String getProvider();
+	String getProvider();
 
-	public Version getVersion();
+	Version getVersion();
 }
