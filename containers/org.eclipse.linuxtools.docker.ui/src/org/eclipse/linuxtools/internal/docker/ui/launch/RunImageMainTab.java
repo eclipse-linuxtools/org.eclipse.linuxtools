@@ -93,11 +93,6 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 	}
 
 	@Override
-	public void dispose() {
-		super.dispose();
-	}
-
-	@Override
 	public String getName() {
 		return LaunchMessages.getString(TAB_NAME);
 	}

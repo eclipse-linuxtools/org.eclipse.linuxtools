@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Red Hat, Inc.
+ * Copyright (c) 2008, 2016 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,6 @@ public interface IValgrindToolPage extends ILaunchConfigurationTab {
      * checking should not be performed.
      * @param ver - the version of Valgrind, or null
      */
-    public void setValgrindVersion(Version ver);
+    void setValgrindVersion(Version ver);
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009, 2016 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,6 @@ public interface IValgrindOutputDirectoryProvider {
      * @return the absolute path to this directory
      * @throws IOException If problem occured trying to retrieve the path.
      */
-    public IPath getOutputPath() throws IOException;
+    IPath getOutputPath() throws IOException;
 
 }

@@ -24,6 +24,6 @@ import java.lang.annotation.Target;
 public @interface RunWithProject {
 	
 	/** The name of the project to initialize. */
-	public String value();
+	String value();
 
 }

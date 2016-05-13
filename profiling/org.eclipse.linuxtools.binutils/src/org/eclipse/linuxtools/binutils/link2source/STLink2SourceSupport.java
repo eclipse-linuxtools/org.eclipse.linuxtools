@@ -298,8 +298,7 @@ public final class STLink2SourceSupport {
             project.accept(visitor, IResource.DEPTH_INFINITE);
             // If we find a match, make note of the target and the real C project.
             if (visitor.foundElement()) {
-                IResource elementResource = visitor.getResource();
-                return (IFile)elementResource;
+                return (IFile) visitor.getResource();
             }
         } catch (CoreException e) {
         }
