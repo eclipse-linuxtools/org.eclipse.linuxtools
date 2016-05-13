@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ public interface IDockerConnectionStorageManager {
 	 * 
 	 * @return {@link List} of {@link IDockerConnection}
 	 */
-	public List<IDockerConnection> loadConnections();
+	List<IDockerConnection> loadConnections();
 
 	/**
 	 * Saves the given {@link List} of {@link IDockerConnection} into a file
@@ -31,6 +31,6 @@ public interface IDockerConnectionStorageManager {
 	 * @param connections
 	 *            the connections to save
 	 */
-	public void saveConnections(List<IDockerConnection> connections);
+	void saveConnections(List<IDockerConnection> connections);
 
 }

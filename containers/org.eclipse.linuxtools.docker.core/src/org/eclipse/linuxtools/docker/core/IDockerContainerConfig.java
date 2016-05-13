@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,51 +15,51 @@ import java.util.Set;
 
 public interface IDockerContainerConfig {
 
-	public String hostname();
+	String hostname();
 
-	public String domainname();
+	String domainname();
 
-	public String user();
+	String user();
 
-	public Long memory();
+	Long memory();
 
-	public Long memorySwap();
+	Long memorySwap();
 
-	public Long cpuShares();
+	Long cpuShares();
 
-	public String cpuset();
+	String cpuset();
 
-	public boolean attachStdin();
+	boolean attachStdin();
 
-	public boolean attachStdout();
+	boolean attachStdout();
 
-	public boolean attachStderr();
+	boolean attachStderr();
 
-	public List<String> portSpecs();
+	List<String> portSpecs();
 
-	public Set<String> exposedPorts();
+	Set<String> exposedPorts();
 
-	public boolean tty();
+	boolean tty();
 
-	public boolean openStdin();
+	boolean openStdin();
 
-	public boolean stdinOnce();
+	boolean stdinOnce();
 
-	public List<String> env();
+	List<String> env();
 
-	public List<String> cmd();
+	List<String> cmd();
 
-	public String image();
+	String image();
 
-	public Set<String> volumes();
+	Set<String> volumes();
 
-	public String workingDir();
+	String workingDir();
 
-	public List<String> entrypoint();
+	List<String> entrypoint();
 
-	public boolean networkDisabled();
+	boolean networkDisabled();
 
-	public List<String> onBuild();
+	List<String> onBuild();
 
 	// FIXME: to be included in Neon
 	// public Map<String, String> labels();

@@ -25,48 +25,48 @@ public interface IDockerNetwork {
 	 * 
 	 * @return name of network
 	 */
-	public String name();
+	String name();
 
 	/**
 	 * Get id
 	 * 
 	 * @return id of network
 	 */
-	public String id();
+	String id();
 
 	/**
 	 * Get network scope
 	 * 
 	 * @return network scope
 	 */
-	public String scope();
+	String scope();
 
 	/**
 	 * Get driver
 	 * 
 	 * @return network driver
 	 */
-	public String driver();
+	String driver();
 
 	/**
 	 * Get options map
 	 * 
 	 * @return Map of option names to option values
 	 */
-	public Map<String, String> options();
+	Map<String, String> options();
 
 	/**
 	 * Get network containers
 	 * 
 	 * @return Map of container network info
 	 */
-	public Map<String, IDockerNetworkContainer> containers();
+	Map<String, IDockerNetworkContainer> containers();
 
 	/**
 	 * Get IP Address Management info
 	 * 
 	 * @return ip address management info
 	 */
-	public IDockerIpam ipam();
+	IDockerIpam ipam();
 
 }

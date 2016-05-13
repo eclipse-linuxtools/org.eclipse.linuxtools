@@ -24,7 +24,7 @@ public interface IDockerIpamConfig {
 	 * 
 	 * @return String containing subnet
 	 */
-	public String subnet();
+	String subnet();
 
 	/**
 	 * Set subnet
@@ -32,14 +32,14 @@ public interface IDockerIpamConfig {
 	 * @param subnet
 	 *            subnet string
 	 */
-	public void subnet(final String subnet);
+	void subnet(final String subnet);
 
 	/**
 	 * Get ip range
 	 * 
 	 * @return String containing ip range
 	 */
-	public String ipRange();
+	String ipRange();
 
 	/**
 	 * Set ip range
@@ -47,14 +47,14 @@ public interface IDockerIpamConfig {
 	 * @param ipRange
 	 *            ip range string
 	 */
-	public void ipRange(final String ipRange);
+	void ipRange(final String ipRange);
 
 	/**
 	 * Get gateway
 	 * 
 	 * @return String containing gateway
 	 */
-	public String gateway();
+	String gateway();
 
 	/**
 	 * Set gateway
@@ -62,5 +62,5 @@ public interface IDockerIpamConfig {
 	 * @param gateway
 	 *            string containing gateway
 	 */
-	public void gateway(final String gateway);
+	void gateway(final String gateway);
 }

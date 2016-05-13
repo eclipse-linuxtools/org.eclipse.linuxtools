@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,51 +16,51 @@ import java.util.Map;
 
 public interface IDockerContainerInfo {
 
-	public String id();
+	String id();
 
-	public Date created();
+	Date created();
 
-	public String path();
+	String path();
 
-	public List<String> args();
+	List<String> args();
 
-	public IDockerContainerConfig config();
+	IDockerContainerConfig config();
 
-	public IDockerHostConfig hostConfig();
+	IDockerHostConfig hostConfig();
 
-	public IDockerContainerState state();
+	IDockerContainerState state();
 
-	public String image();
+	String image();
 
-	public IDockerNetworkSettings networkSettings();
+	IDockerNetworkSettings networkSettings();
 
-	public String resolvConfPath();
+	String resolvConfPath();
 
-	public String hostnamePath();
+	String hostnamePath();
 
-	public String hostsPath();
+	String hostsPath();
 
-	public String name();
+	String name();
 
-	public String driver();
+	String driver();
 
-	public String execDriver();
+	String execDriver();
 
-	public String processLabel();
+	String processLabel();
 
-	public String mountLabel();
+	String mountLabel();
 
-	public Map<String, String> volumes();
+	Map<String, String> volumes();
 
-	public Map<String, Boolean> volumesRW();
-
-	@Override
-	public boolean equals(Object o);
+	Map<String, Boolean> volumesRW();
 
 	@Override
-	public int hashCode();
+	boolean equals(Object o);
 
 	@Override
-	public String toString();
+	int hashCode();
+
+	@Override
+	String toString();
 
 }

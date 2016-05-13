@@ -12,10 +12,10 @@ package org.eclipse.linuxtools.docker.core;
 
 public interface IRegistryAccount extends IRegistry {
 
-	public String getUsername();
+	String getUsername();
 
-	public String getEmail();
+	String getEmail();
 
-	public char[] getPassword();
+	char[] getPassword();
 
 }

@@ -12,6 +12,6 @@ package org.eclipse.linuxtools.docker.core;
 
 public interface IRegistry {
 
-	public String getServerAddress();
+	String getServerAddress();
 
 }

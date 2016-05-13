@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,28 +14,28 @@ import java.util.Date;
 
 public interface IDockerImageInfo {
 
-	public String id();
+	String id();
 
-	public String parent();
+	String parent();
 
-	public String comment();
+	String comment();
 
-	public Date created();
+	Date created();
 
-	public String container();
+	String container();
 
-	public IDockerContainerConfig containerConfig();
+	IDockerContainerConfig containerConfig();
 
-	public String dockerVersion();
+	String dockerVersion();
 
-	public String author();
+	String author();
 
-	public IDockerContainerConfig config();
+	IDockerContainerConfig config();
 
-	public String architecture();
+	String architecture();
 
-	public String os();
+	String os();
 
-	public Long size();
+	Long size();
 
 }

@@ -27,27 +27,27 @@ public interface IDockerNetworkConfig {
 	 * 
 	 * @return name of network
 	 */
-	public String name();
+	String name();
 
 	/**
 	 * Get network driver
 	 * 
 	 * @return network driver
 	 */
-	public String driver();
+	String driver();
 
 	/**
 	 * Get IP address management info
 	 * 
 	 * @return ip address management info
 	 */
-	public IDockerIpam ipam();
+	IDockerIpam ipam();
 
 	/**
 	 * Get network options
 	 * 
 	 * @return Map of option names to option values
 	 */
-	public Map<String, String> options();
+	Map<String, String> options();
 
 }

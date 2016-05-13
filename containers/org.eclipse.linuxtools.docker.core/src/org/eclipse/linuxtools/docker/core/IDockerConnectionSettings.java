@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,25 +16,25 @@ package org.eclipse.linuxtools.docker.core;
  */
 public interface IDockerConnectionSettings {
 
-	public enum BindingType {
+	enum BindingType {
 		UNIX_SOCKET_CONNECTION, TCP_CONNECTION;
 	}
 
 	/**
 	 * @return the type of binding
 	 */
-	public abstract BindingType getType();
+	BindingType getType();
 
 	/**
 	 * @return the name of the Docker daemon
 	 */
-	public abstract String getName();
+	String getName();
 
 	/**
 	 * @return <code>true</code> if the connection could be established and
 	 *         Docker daemon responded to a 'ping' request, <code>false</code>
 	 *         otherwise.
 	 */
-	public abstract boolean isSettingsResolved();
+	boolean isSettingsResolved();
 
 }

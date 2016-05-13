@@ -23,13 +23,13 @@ public interface IDockerNetworkCreation {
 	 * 
 	 * @return the id string for the network
 	 */
-	public String id();
+	String id();
 
 	/**
 	 * Get network creation warnings
 	 * 
 	 * @return String containing warnings
 	 */
-	public String warnings();
+	String warnings();
 
 }
