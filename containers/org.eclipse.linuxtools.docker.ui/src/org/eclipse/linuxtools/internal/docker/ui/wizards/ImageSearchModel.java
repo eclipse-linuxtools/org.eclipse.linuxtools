@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2015 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -54,8 +54,8 @@ public class ImageSearchModel extends BaseDatabindingModel {
 		// 'centos:latest')
 		if (term == null) {
 			this.term = null;
-		} else if (term.indexOf(":") != -1) { //$NON-NLS-1$
-			this.term = term.substring(0, term.lastIndexOf(":")); //$NON-NLS-1$
+		} else if (term.indexOf(':') != -1) {
+			this.term = term.substring(0, term.lastIndexOf(':'));
 		} else {
 			this.term = term;
 		}
