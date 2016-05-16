@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Red Hat Inc. and others.
+ * Copyright (c) 2012, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -102,8 +102,7 @@ public class StapNewWizardPage extends WizardPage {
      */
 
     private void initialize() {
-        if (selection != null && selection.isEmpty() == false
-                && selection instanceof IStructuredSelection) {
+		if (selection != null && !selection.isEmpty() && selection instanceof IStructuredSelection) {
             IStructuredSelection ssel = (IStructuredSelection) selection;
             if (ssel.size() > 1) {
                 return;
@@ -164,7 +163,7 @@ public class StapNewWizardPage extends WizardPage {
         int dotLoc = fileName.lastIndexOf('.');
         if (dotLoc != -1) {
             String ext = fileName.substring(dotLoc + 1);
-            if (ext.equalsIgnoreCase("stp") == false) { //$NON-NLS-1$
+            if (!ext.equalsIgnoreCase("stp")) { //$NON-NLS-1$
                 updateStatus(resourceBundle.getString("StapNewWizardPage.UpdateStatus.5")); //$NON-NLS-1$
                 return;
             }

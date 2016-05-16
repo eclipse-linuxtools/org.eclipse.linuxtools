@@ -103,8 +103,9 @@ public class GcnoRecordsParser {
                 // parse gcno data
                 if (tag == GCOV_TAG_FUNCTION) {
                     // before parse new function, add current function to functions list
-                    if (parseFirstFnctn == true)
+                    if (parseFirstFnctn) {
                         fnctns.add(fnctn);
+                    }
 
                     long fnctnIdent = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
                     long fnctnChksm = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
@@ -168,7 +169,7 @@ public class GcnoRecordsParser {
                     }
 
                     for (Arc a : arcs) {
-                        if (a.isFake() == true) {
+                        if (a.isFake()) {
                             if (a.getSrcBlock() != null) {
                                 // Exceptional exit from this function, the
                                 // source block must be a call.
@@ -182,8 +183,9 @@ public class GcnoRecordsParser {
                             }
                         }
 
-                        if (a.isOnTree() == false)
+                        if (!a.isOnTree()) {
                             fnctn.incNumCounts();
+                        }
                         // nbrCounts++;
                     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 Red Hat, Inc.
+ * Copyright (c) 2006, 2016 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -63,7 +63,7 @@ public class GNUFileEntryRule implements IPredicateRule {
     public IToken evaluate(ICharacterScanner scanner, boolean resume) {
         int c = scanner.read();
         fBuffer.setLength(0);
-        if (started == false) {
+        if (!started) {
             for (int i = 0; i < fStartingSequence.length(); i++) {
                 fBuffer.append((char) c);
                 if (fStartingSequence.charAt(i) != c) {

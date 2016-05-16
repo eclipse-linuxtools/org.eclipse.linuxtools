@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 STMicroelectronics.
+ * Copyright (c) 2009, 2016 STMicroelectronics and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,9 +15,6 @@ import java.util.ArrayList;
 
 public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = -4159055012321132651L;
 
     private final long ident;
@@ -39,10 +36,11 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
 
     @Override
     public int compareTo(GcnoFunction o) {
-        if (getFirstLineNmbr() > o.getFirstLineNmbr())
+        if (getFirstLineNmbr() > o.getFirstLineNmbr()) {
             return 1;
-        else if (getFirstLineNmbr() < o.getFirstLineNmbr())
+        } else if (getFirstLineNmbr() < o.getFirstLineNmbr()) {
             return -1;
+        }
         return 0;
     }
 
@@ -64,10 +62,12 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
                     j++;
                 } else if ((fileSrc != null) && enc[k] < fileSrc.getLines().size()) {
                     Line line = fileSrc.getLines().get((int) enc[k]);
-                    if (line.exists() == false)
+                    if (!line.exists()) {
                         cvrge.incLinesInstrumented();
-                    if ((line.getCount() == 0) && (blk.getCount() != 0))
+                    }
+                    if ((line.getCount() == 0) && (blk.getCount() != 0)) {
                         cvrge.incLinesExecuted();
+                    }
                     line.setExists(true);
                     line.setCount(line.getCount() + blk.getCount());
                 }
@@ -82,10 +82,12 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
 
         // Function should contain at least one block
         if (fnctnBlcks.size() >= 2) {
-            if (fnctnBlcks.get(0).getNumPreds() == 0)
+            if (fnctnBlcks.get(0).getNumPreds() == 0) {
                 fnctnBlcks.get(0).setNumPreds(50000);
-            if (fnctnBlcks.get(fnctnBlcks.size() - 1).getNumSuccs() == 0)
+            }
+            if (fnctnBlcks.get(fnctnBlcks.size() - 1).getNumSuccs() == 0) {
                 fnctnBlcks.get(fnctnBlcks.size() - 1).setNumSuccs(50000);
+            }
         }
 
         for (Block b: fnctnBlcks) {
@@ -93,9 +95,9 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
             invalidBlocks.add(b);
         }
 
-        while (validBlocks.isEmpty() == false || invalidBlocks.isEmpty() == false) {
+        while (!validBlocks.isEmpty() || !invalidBlocks.isEmpty()) {
 
-            if (invalidBlocks.isEmpty() == false) {
+            if (!invalidBlocks.isEmpty()) {
                 for (int i = invalidBlocks.size() - 1; i >= 0; i--) {
                     Block invb = invalidBlocks.get(i);
                     long total = 0;
@@ -121,10 +123,8 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
                     invb.setValidChain(true);
                     validBlocks.add(invb);
                 }
-            }/*
-              * else System.out.println("NO, invalid blocks = 0");
-              */
-            while (validBlocks.isEmpty() == false) {
+            }
+            while (!validBlocks.isEmpty()) {
                 int last = validBlocks.size() - 1;
                 Block vb = validBlocks.get(last);
                 Arc invarc = null;
@@ -149,13 +149,13 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
                     vb.decNumSuccs();
                     blcksdst.decNumPreds();
 
-                    if (blcksdst.isCountValid() == true) {
-                        if (blcksdst.getNumPreds() == 1 && blcksdst.isValidChain() == false) {
+                    if (blcksdst.isCountValid()) {
+                        if (blcksdst.getNumPreds() == 1 && !blcksdst.isValidChain()) {
                             blcksdst.setValidChain(true);
                             validBlocks.add(blcksdst);
                         }
                     } else {
-                        if (blcksdst.getNumPreds() == 0 && blcksdst.isInvalidChain() == false) {
+                        if (blcksdst.getNumPreds() == 0 && !blcksdst.isInvalidChain()) {
                             blcksdst.setInvalidChain(true);
                             invalidBlocks.add(blcksdst);
                         }
@@ -169,7 +169,7 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
 
                     for (Arc entrAr : vb.getEntryArcs()) {
                         total -= entrAr.getCount();
-                        if (entrAr.isCountValid() == false) {
+                        if (!entrAr.isCountValid()) {
                             invarc = entrAr;
                         }
                     }
@@ -180,12 +180,12 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
                     vb.decNumPreds();
                     blcksrc.decNumSuccs();
 
-                    if (blcksrc.isCountValid() == true) {
-                        if (blcksrc.getNumSuccs() == 1 && blcksrc.isInvalidChain() == false) {
+                    if (blcksrc.isCountValid()) {
+                        if (blcksrc.getNumSuccs() == 1 && !blcksrc.isInvalidChain()) {
                             blcksrc.setValidChain(true);
                             validBlocks.add(blcksrc);
                         }
-                    } else if (blcksrc.getNumSuccs() == 0 && blcksrc.isInvalidChain() == false) {
+                    } else if (blcksrc.getNumSuccs() == 0 && !blcksrc.isInvalidChain()) {
                         blcksrc.setInvalidChain(true);
                         invalidBlocks.add(blcksrc);
                     }

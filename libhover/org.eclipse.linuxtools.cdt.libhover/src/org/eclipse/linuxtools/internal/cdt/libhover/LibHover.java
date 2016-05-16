@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006, 2007, 2008, 2011, 2012 Red Hat, Inc.
+ * Copyright (c) 2004, 2016 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -304,7 +304,7 @@ public class LibHover implements ICHelpProvider {
             public String getArguments()        { return Prototype; }
             @Override
             public String getPrototypeString(boolean namefirst) {
-                if (true == namefirst) {
+                if (namefirst) {
                     if (prototypeHasBrackets()) {
                         return Name + " " + Prototype + " " + ReturnType; //$NON-NLS-1$ //$NON-NLS-2$
                     }
@@ -406,9 +406,6 @@ public class LibHover implements ICHelpProvider {
                         }
                     }
                 }
-            } catch (IllegalArgumentException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
