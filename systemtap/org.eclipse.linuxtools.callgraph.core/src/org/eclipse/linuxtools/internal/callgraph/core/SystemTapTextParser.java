@@ -33,11 +33,7 @@ public class SystemTapTextParser extends SystemTapParser{
 
     @Override
     public IStatus realTimeParsing() {
-        if (!(internalData instanceof BufferedReader)) {
-            return Status.CANCEL_STATUS;
-        }
-
-        BufferedReader buff = (BufferedReader) internalData;
+        BufferedReader buff = internalData;
         StringBuffer text = new StringBuffer();
 
         String line;

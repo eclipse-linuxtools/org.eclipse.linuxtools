@@ -28,7 +28,7 @@ public abstract class SystemTapParser extends Job {
     protected SystemTapView view;
     protected boolean realTime = false;
     protected Object data;
-    protected Object internalData;
+    protected BufferedReader internalData;
     private String secondaryID = ""; //$NON-NLS-1$
 
     public boolean done;
