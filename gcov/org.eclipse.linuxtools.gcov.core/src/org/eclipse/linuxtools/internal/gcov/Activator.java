@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 STMicroelectronics.
+ * Copyright (c) 2009, 2016 STMicroelectronics.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,12 +24,6 @@ public class Activator extends AbstractUIPlugin {
 
     // The shared instance
     private static Activator plugin;
-
-    /**
-     * The constructor
-     */
-    public Activator() {
-    }
 
     @Override
     public void start(BundleContext context) throws Exception {
