@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,14 +129,13 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 		if (getSelectedConnection() != null) {
 			for (IDockerImage image : getSelectedConnection().getImages()) {
 				if (!image.isIntermediateImage() && !image.isDangling()) {
-					for (String tag : image.tags()) {
-						final String imageName = ImageRunSelectionModel
-								.getImageName(image.repo(), tag);
-						images.put(imageName, image);
-						imageNames.add(imageName);
+					for (String tag : image.repoTags()) {
+						images.put(tag, image);
+						imageNames.add(tag);
 					}
 				}
 			}
+			Collections.sort(imageNames);
 		}
 	}
 
