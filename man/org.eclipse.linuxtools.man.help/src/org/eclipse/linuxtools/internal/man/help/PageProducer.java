@@ -24,32 +24,32 @@ import org.eclipse.linuxtools.internal.man.parser.ManParser;
  */
 public class PageProducer implements IHelpContentProducer {
 
-    @Override
-    public InputStream getInputStream(String pluginID, String href,
-            Locale locale) {
+	@Override
+	public InputStream getInputStream(String pluginID, String href,
+			Locale locale) {
 
-        // Strip off the extra parameters that Eclipse help system adds, that we
-        // don't care about
-        String parts[];
-        if (href.contains("?")) { //$NON-NLS-1$
-            parts = href.substring(0, href.indexOf('?')).split("/"); //$NON-NLS-1$
-        } else {
-            parts = href.split("/"); //$NON-NLS-1$
-        }
-        if (parts == null || parts.length < 2) {
-            Status status = new Status(IStatus.ERROR,
-                    Messages.ManPageProducer_ParseError, Activator.getDefault()
-                            .getPluginId());
-            Activator.getDefault().getLog().log(status);
-            return null;
-        }
+		// Strip off the extra parameters that Eclipse help system adds, that we
+		// don't care about
+		String parts[];
+		if (href.contains("?")) { //$NON-NLS-1$
+			parts = href.substring(0, href.indexOf('?')).split("/"); //$NON-NLS-1$
+		} else {
+			parts = href.split("/"); //$NON-NLS-1$
+		}
+		if (parts == null || parts.length < 2) {
+			Status status = new Status(IStatus.ERROR,
+					Messages.ManPageProducer_ParseError,
+					Activator.getDefault().getPluginId());
+			Activator.getDefault().getLog().log(status);
+			return null;
+		}
 
-        // This replacement hack is a workaround for
-        // https://bugs.eclipse.org/bugs/show_bug.cgi?id=417222
-        String page = parts[1].substring(0, parts[1].length() - 5);
-        page = page.replaceAll("LBRACKET", "["); //$NON-NLS-1$ //$NON-NLS-2$
-        page = page.replaceAll("RBRACKET", "]"); //$NON-NLS-1$ //$NON-NLS-2$
+		// This replacement hack is a workaround for
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=417222
+		String page = parts[1].substring(0, parts[1].length() - 5);
+		page = page.replaceAll("LBRACKET", "["); //$NON-NLS-1$ //$NON-NLS-2$
+		page = page.replaceAll("RBRACKET", "]"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        return new ManParser().getManPage(page, true, parts[0]);
-    }
+		return new ManParser().getManPage(page, true, parts[0]);
+	}
 }

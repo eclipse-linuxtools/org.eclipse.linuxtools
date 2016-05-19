@@ -26,68 +26,68 @@ import org.eclipse.help.IUAElement;
  */
 public class SectionTopic implements ITopic, Comparable<SectionTopic> {
 
-    private final String displaySectionId;
-    private final String label;
+	private final String displaySectionId;
+	private final String label;
 
-    private final Set<PageTopic> pages = new HashSet<>();
+	private final Set<PageTopic> pages = new HashSet<>();
 
-    /**
-     * Create a topic for the given manual section.
-     * 
-     * @param displaySectionId
-     *            a section identifier for the purpose of grouping pages
-     *            together for display to the user, e.g.: "1", "3pm" or "5x"
-     * @param label
-     *            a human readable name for the section identifier
-     */
-    public SectionTopic(String displaySectionId, String label) {
-        this.displaySectionId = displaySectionId;
-        this.label = label;
-    }
+	/**
+	 * Create a topic for the given manual section.
+	 * 
+	 * @param displaySectionId
+	 *            a section identifier for the purpose of grouping pages
+	 *            together for display to the user, e.g.: "1", "3pm" or "5x"
+	 * @param label
+	 *            a human readable name for the section identifier
+	 */
+	public SectionTopic(String displaySectionId, String label) {
+		this.displaySectionId = displaySectionId;
+		this.label = label;
+	}
 
-    /**
-     * Add a manual page to this section.
-     * 
-     * @param sectionId
-     *            a section identifier for the manual section in which the given
-     *            page lives
-     * @param pageId
-     *            the identifier of the manual page
-     */
-    public void addPage(String sectionId, String pageId) {
-        PageTopic page = new PageTopic(sectionId, pageId);
-        pages.add(page);
-    }
+	/**
+	 * Add a manual page to this section.
+	 * 
+	 * @param sectionId
+	 *            a section identifier for the manual section in which the given
+	 *            page lives
+	 * @param pageId
+	 *            the identifier of the manual page
+	 */
+	public void addPage(String sectionId, String pageId) {
+		PageTopic page = new PageTopic(sectionId, pageId);
+		pages.add(page);
+	}
 
-    @Override
-    public boolean isEnabled(IEvaluationContext context) {
-        return true;
-    }
+	@Override
+	public boolean isEnabled(IEvaluationContext context) {
+		return true;
+	}
 
-    @Override
-    public IUAElement[] getChildren() {
-        return getSubtopics();
-    }
+	@Override
+	public IUAElement[] getChildren() {
+		return getSubtopics();
+	}
 
-    @Override
-    public String getHref() {
-        return null;
-    }
+	@Override
+	public String getHref() {
+		return null;
+	}
 
-    @Override
-    public String getLabel() {
-        return label;
-    }
+	@Override
+	public String getLabel() {
+		return label;
+	}
 
-    @Override
-    public ITopic[] getSubtopics() {
-        List<PageTopic> pageList = new ArrayList<>(pages);
-        Collections.sort(pageList);
-        return pageList.toArray(new PageTopic[pageList.size()]);
-    }
+	@Override
+	public ITopic[] getSubtopics() {
+		List<PageTopic> pageList = new ArrayList<>(pages);
+		Collections.sort(pageList);
+		return pageList.toArray(new PageTopic[pageList.size()]);
+	}
 
-    @Override
-    public int compareTo(SectionTopic o) {
-        return displaySectionId.compareTo(o.displaySectionId);
-    }
+	@Override
+	public int compareTo(SectionTopic o) {
+		return displaySectionId.compareTo(o.displaySectionId);
+	}
 }

@@ -29,14 +29,14 @@ import org.eclipse.help.search.SearchParticipant;
  */
 public class SimpleSearchParticipant extends SearchParticipant {
 
-    @Override
-    public IStatus addDocument(IHelpSearchIndex index, String pluginId,
-            String path, URL url, String id, ISearchDocument doc) {
-        String file = Paths.get(path).getFileName().toString();
-        String manpage = file.substring(0, file.length() - 5);
-        doc.setTitle(manpage);
-        doc.setSummary(manpage);
-        doc.addContents(manpage);
-        return Status.OK_STATUS;
-    }
+	@Override
+	public IStatus addDocument(IHelpSearchIndex index, String pluginId,
+			String path, URL url, String id, ISearchDocument doc) {
+		String file = Paths.get(path).getFileName().toString();
+		String manpage = file.substring(0, file.length() - 5);
+		doc.setTitle(manpage);
+		doc.setSummary(manpage);
+		doc.addContents(manpage);
+		return Status.OK_STATUS;
+	}
 }
