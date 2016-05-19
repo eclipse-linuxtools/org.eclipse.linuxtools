@@ -18,40 +18,40 @@ import org.osgi.framework.BundleContext;
  */
 public class Activator extends AbstractUIPlugin {
 
-    // The shared instance
-    private static Activator plugin;
+	// The shared instance
+	private static Activator plugin;
 
-    private BundleContext context;
+	private BundleContext context;
 
-    @Override
-    public void start(BundleContext context) throws Exception {
-        super.start(context);
-        this.context = context;
-        plugin = this;
-    }
+	@Override
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
+		this.context = context;
+		plugin = this;
+	}
 
-    @Override
-    public void stop(BundleContext context) throws Exception {
-        plugin = null;
-        this.context = null;
-        super.stop(context);
-    }
+	@Override
+	public void stop(BundleContext context) throws Exception {
+		plugin = null;
+		this.context = null;
+		super.stop(context);
+	}
 
-    /**
-     * Returns the shared instance of the bundle activator.
-     *
-     * @return the shared instance
-     */
-    public static Activator getDefault() {
-        return plugin;
-    }
+	/**
+	 * Returns the shared instance of the bundle activator.
+	 *
+	 * @return the shared instance
+	 */
+	public static Activator getDefault() {
+		return plugin;
+	}
 
-    /**
-     * Returns the bundle symbolic name of the plug-in.
-     *
-     * @return an ID unique to this plug-in
-     */
-    public String getPluginId() {
-        return context.getBundle().getSymbolicName();
-    }
+	/**
+	 * Returns the bundle symbolic name of the plug-in.
+	 *
+	 * @return an ID unique to this plug-in
+	 */
+	public String getPluginId() {
+		return context.getBundle().getSymbolicName();
+	}
 }
