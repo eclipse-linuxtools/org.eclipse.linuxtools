@@ -2,12 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.man.help;singleton:=true
-Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.internal.man.Activator
+Bundle-Version: 1.1.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.help,
  org.eclipse.help.base,
  org.eclipse.linuxtools.man.core;bundle-version="1.3.0"
-Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %Bundle-Vendor

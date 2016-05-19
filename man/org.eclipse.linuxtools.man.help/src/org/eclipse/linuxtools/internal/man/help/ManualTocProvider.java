@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat Inc. and others.
+ * Copyright (c) 2015-2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.internal.man.help;
 import org.eclipse.help.AbstractTocProvider;
 import org.eclipse.help.IToc;
 import org.eclipse.help.ITocContribution;
-import org.eclipse.linuxtools.internal.man.Activator;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * Provider for help system table of contents.
@@ -62,7 +62,8 @@ public class ManualTocProvider extends AbstractTocProvider {
 
 			@Override
 			public String getContributorId() {
-				return Activator.getDefault().getPluginId();
+				return FrameworkUtil.getBundle(this.getClass())
+						.getSymbolicName();
 			}
 		};
 		return new ITocContribution[] { contribution };

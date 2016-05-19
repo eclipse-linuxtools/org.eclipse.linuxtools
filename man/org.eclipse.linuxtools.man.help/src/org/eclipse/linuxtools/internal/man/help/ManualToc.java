@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat Inc. and others.
+ * Copyright (c) 2015-2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,12 +24,14 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.help.IToc;
 import org.eclipse.help.ITopic;
 import org.eclipse.help.IUAElement;
-import org.eclipse.linuxtools.internal.man.Activator;
 import org.eclipse.linuxtools.internal.man.parser.ManParser;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * A table of contents that will have one topic for every manual section that
@@ -92,9 +94,10 @@ public class ManualToc implements IToc {
 					}
 				}
 			} catch (IOException e) {
+				Bundle bundle = FrameworkUtil.getBundle(this.getClass());
 				Status status = new Status(IStatus.ERROR, e.getMessage(),
-						Activator.getDefault().getPluginId());
-				Activator.getDefault().getLog().log(status);
+						bundle.getSymbolicName());
+				Platform.getLog(bundle).log(status);
 			}
 		}
 	}

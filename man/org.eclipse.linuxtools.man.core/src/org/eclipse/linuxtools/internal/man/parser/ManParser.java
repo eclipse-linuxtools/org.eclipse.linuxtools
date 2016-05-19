@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2015 Red Hat Inc. and others.
+ * Copyright (c) 2009, 2015-2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,10 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.internal.man.Activator;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.linuxtools.internal.man.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.tools.launch.core.factory.LinuxtoolsProcessFactory;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 import com.jcraft.jsch.JSchException;
 
@@ -62,9 +66,10 @@ public class ManParser {
 				manPaths.add(Paths.get(path));
 			}
 		} catch (IOException e) {
+			Bundle bundle = FrameworkUtil.getBundle(ManParser.class);
 			Status status = new Status(IStatus.ERROR, e.getMessage(),
-					Activator.getDefault().getPluginId());
-			Activator.getDefault().getLog().log(status);
+					bundle.getSymbolicName());
+			Platform.getLog(bundle).log(status);
 		}
 		return manPaths;
 	}
@@ -111,9 +116,10 @@ public class ManParser {
 			Process process = builder.start();
 			stdout = process.getInputStream();
 		} catch (IOException e) {
+			Bundle bundle = FrameworkUtil.getBundle(this.getClass());
 			Status status = new Status(IStatus.ERROR, e.getMessage(),
-					Activator.getDefault().getPluginId());
-			Activator.getDefault().getLog().log(status);
+					bundle.getSymbolicName());
+			Platform.getLog(bundle).log(status);
 		}
 		return stdout;
 	}
@@ -136,9 +142,10 @@ public class ManParser {
 				sb.append(line + "\n"); //$NON-NLS-1$
 			}
 		} catch (IOException e) {
+			Bundle bundle = FrameworkUtil.getBundle(this.getClass());
 			Status status = new Status(IStatus.ERROR, e.getMessage(),
-					Activator.getDefault().getPluginId());
-			Activator.getDefault().getLog().log(status);
+					bundle.getSymbolicName());
+			Platform.getLog(bundle).log(status);
 		}
 		return sb;
 	}
@@ -178,7 +185,9 @@ public class ManParser {
 	}
 
 	private static String getManExecutable() {
-		return Activator.getDefault().getPreferenceStore()
-				.getString(PreferenceConstants.P_PATH);
+		IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(
+				FrameworkUtil.getBundle(ManParser.class).getSymbolicName());
+		return prefs.get(PreferenceConstants.P_PATH,
+				PreferenceConstants.P_PATH_DEFAULT);
 	}
 }

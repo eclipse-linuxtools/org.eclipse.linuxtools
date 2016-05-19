@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat Inc. and others.
+ * Copyright (c) 2015-2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.internal.man.help;
 import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.help.ITopic;
 import org.eclipse.help.IUAElement;
-import org.eclipse.linuxtools.internal.man.Activator;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * A topic for an individual manual page.
@@ -55,8 +55,8 @@ public class PageTopic implements ITopic, Comparable<PageTopic> {
 		pageUrl = pageUrl.replaceAll("\\[", "LBRACKET"); //$NON-NLS-1$ //$NON-NLS-2$
 		pageUrl = pageUrl.replaceAll("\\]", "RBRACKET"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		return "/" + Activator.getDefault().getPluginId() + "/" //$NON-NLS-1$ //$NON-NLS-2$
-				+ sectionId + "/" + pageUrl + ".html"; //$NON-NLS-1$ //$NON-NLS-2$
+		return "/" + FrameworkUtil.getBundle(this.getClass()).getSymbolicName() //$NON-NLS-1$
+				+ "/" + sectionId + "/" + pageUrl + ".html"; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	@Override
