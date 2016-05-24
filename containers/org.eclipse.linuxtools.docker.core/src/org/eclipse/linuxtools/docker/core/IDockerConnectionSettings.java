@@ -28,6 +28,7 @@ public interface IDockerConnectionSettings {
 	/**
 	 * @return the name of the Docker daemon
 	 */
+	@Deprecated
 	String getName();
 
 	/**

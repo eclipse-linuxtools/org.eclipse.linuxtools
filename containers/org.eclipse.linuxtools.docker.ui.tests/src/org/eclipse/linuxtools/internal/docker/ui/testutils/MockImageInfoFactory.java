@@ -21,9 +21,9 @@ import com.spotify.docker.client.messages.ContainerConfig;
 import com.spotify.docker.client.messages.ImageInfo;
 
 /**
- * 
+ * A factory for mock {@link ImageInfo}s.
  */
-public class MockDockerImageInfoFactory {
+public class MockImageInfoFactory {
 
 	public static Builder volume(final String volume) {
 		return new Builder().volume(volume);

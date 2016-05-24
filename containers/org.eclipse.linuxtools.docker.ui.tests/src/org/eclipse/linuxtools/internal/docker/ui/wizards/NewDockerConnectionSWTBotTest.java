@@ -12,11 +12,10 @@
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
-import org.eclipse.linuxtools.internal.docker.core.DefaultDockerConnectionSettingsFinder;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionSettingsFinder;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CheckBoxAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWizardRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.RadioAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TextAssertion;
@@ -29,10 +28,10 @@ import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.ui.PlatformUI;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -48,6 +47,9 @@ public class NewDockerConnectionSWTBotTest {
 
 	@ClassRule
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(); 
+	
+	@Rule 
+	public CloseWizardRule closeWizard = new CloseWizardRule();
 	
 	@Before
 	public void lookupDockerExplorerView() throws Exception {
@@ -68,22 +70,14 @@ public class NewDockerConnectionSWTBotTest {
 		this.addConnectionButton = dockerExplorerViewBot.toolbarButton("&Add Connection");
 	}
 
-	@After
-	public void closeWizard() {
-		if (bot.button("Cancel") != null) {
-			bot.button("Cancel").click();
-		}
-		DockerConnectionManager.getInstance().setConnectionSettingsFinder(new DefaultDockerConnectionSettingsFinder());
-	}
-
 	@Test
 	public void shouldShowCustomUnixSocketSettingsWhenNoConnectionAvailable() {
 		// given
-		DockerConnectionManager.getInstance()
-				.setConnectionSettingsFinder(MockDockerConnectionSettingsFinder.noDockerConnectionAvailable());
+		MockDockerConnectionSettingsFinder.noDockerConnectionAvailable();
 		// when
 		// TODO: should wait until dialog appears after call to click()
 		addConnectionButton.click();
+		//bot.waitUntilWidgetAppears(waitForWidget);
 		// then
 		// Empty Connection name
 		TextAssertion.assertThat(bot.text(0)).isEnabled().isEmpty();
@@ -149,7 +143,7 @@ public class NewDockerConnectionSWTBotTest {
 		// "TCP Connection" radio should be selected but diabled
 		RadioAssertion.assertThat(bot.radio(1)).isNotEnabled().isSelected();
 		// "URI" should be disabled but not empty
-		TextAssertion.assertThat(bot.text(2)).isNotEnabled().textEquals("tcp://1.2.3.4:1234");
+		TextAssertion.assertThat(bot.text(2)).isNotEnabled().textEquals("https://1.2.3.4:1234");
 		// "Enable Auth" checkbox should be selected but disabled
 		CheckBoxAssertion.assertThat(bot.checkBox(1)).isNotEnabled().isChecked();
 		// "Path" for certs should be disabled but not empty

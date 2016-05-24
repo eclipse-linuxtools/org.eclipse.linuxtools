@@ -14,6 +14,8 @@ package org.eclipse.linuxtools.internal.docker.core;
 import java.io.File;
 import java.net.URI;
 
+import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
+import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings.BindingType;
 import org.eclipse.linuxtools.docker.core.IRegistryAccount;
 
 import com.spotify.docker.client.DefaultDockerClient;
@@ -30,75 +32,83 @@ import com.spotify.docker.client.messages.AuthConfig;
 public class DockerClientFactory {
 
 	/**
-	 * Creates a new {@link DockerClient} configured with the given parameters.
+	 * Creates a new {@link DockerClient} from the given
+	 * {@link IDockerConnectionSettings}.
 	 * 
-	 * @param socketPath
-	 *            the path to the Unix Socket
-	 * @param tcpHost
-	 *            the host name/port for if using a TCP connection
-	 * @param tcpCertPath
-	 *            the path to the certificates directory if using TLS (or
-	 *            <code>null</code> if using an unsecured connection)
-	 * @return a new instance of {@link DockerClient}
+	 * @param connectionSettings
+	 *            the connection settings
+	 * @return the {@link DockerClient}
 	 * @throws DockerCertificateException
-	 *             if the certificates could not be loaded.
+	 *             if the path to Docker certificates is invalid (missing files)
 	 */
-	public DockerClient getClient(final String socketPath, final String tcpHost,
-			final String tcpCertPath) throws DockerCertificateException {
-		Builder builder = DefaultDockerClient.builder();
-		builder = buildConnection(builder, socketPath, tcpHost, tcpCertPath);
-		if (builder != null) {
-			return builder.build();
-		} else {
-			return null;
-		}
-	}
-
-	public DockerClient getClient(final String socketPath, final String tcpHost,
-			final String tcpCertPath, final IRegistryAccount info)
+	public DockerClient getClient(
+			final IDockerConnectionSettings connectionSettings)
 			throws DockerCertificateException {
-		Builder builder = DefaultDockerClient.builder();
-		builder = buildConnection(builder, socketPath, tcpHost, tcpCertPath);
-		builder = buildAuthentication(builder, info);
-		if (builder != null) {
-			return builder.build();
-		} else {
-			return null;
-		}
+		return getClient(connectionSettings, null);
 	}
 
-	private Builder buildAuthentication(Builder builder,
-			IRegistryAccount info) {
-		AuthConfig authAccount = AuthConfig.builder()
+	/**
+	 * Creates a new {@link DockerClient} from the given
+	 * {@link IDockerConnectionSettings}.
+	 * 
+	 * @param connectionSettings
+	 *            the connection settings
+	 * @return the {@link DockerClient} or <code>null</code> if the connection
+	 *         URI (Unix socker path or TCP host) was missing (ie,
+	 *         <code>null</code> or empty)
+	 * @throws DockerCertificateException
+	 *             if the path to Docker certificates is invalid (missing files)
+	 */
+	public DockerClient getClient(
+			final IDockerConnectionSettings connectionSettings,
+			final IRegistryAccount registryAccount)
+			throws DockerCertificateException {
+		final Builder builder = DefaultDockerClient.builder();
+		if (connectionSettings
+				.getType() == BindingType.UNIX_SOCKET_CONNECTION) {
+			final UnixSocketConnectionSettings unixSocketConnectionSettings = (UnixSocketConnectionSettings) connectionSettings;
+			if (unixSocketConnectionSettings.hasPath()) {
+				builder.uri(unixSocketConnectionSettings.getPath());
+			}
+
+		} else {
+			final TCPConnectionSettings tcpConnectionSettings = (TCPConnectionSettings) connectionSettings;
+			if (tcpConnectionSettings.hasHost()) {
+				builder.uri(URI.create(tcpConnectionSettings.getHost()));
+				if (tcpConnectionSettings.getPathToCertificates() != null
+						&& !tcpConnectionSettings.getPathToCertificates()
+								.isEmpty()) {
+					builder.dockerCertificates(new DockerCertificates(new File(
+							tcpConnectionSettings.getPathToCertificates())
+									.toPath()));
+				}
+			}
+		}
+		// skip if no URI exists
+		if (builder.uri() == null) {
+			return null;
+		}
+
+		if (registryAccount != null) {
+			builder.authConfig(buildAuthentication(registryAccount));
+		} else {
+			try {
+				builder.authConfig(AuthConfig.fromDockerConfig().build());
+			} catch (Exception e) {
+				// AuthConfig can't be found, continue
+			}
+		}
+		return builder.build();
+	}
+
+	private AuthConfig buildAuthentication(IRegistryAccount info) {
+		final AuthConfig authAccount = AuthConfig.builder()
 				.serverAddress(info.getServerAddress())
 				.username(info.getUsername())
 				.email(info.getEmail())
 				.password(new String(info.getPassword()))
 				.build();
-		builder.authConfig(authAccount);
-		return builder;
+		return authAccount;
 	}
 
-	private Builder buildConnection(final Builder builder,
-			final String socketPath,
-			final String tcpHost, final String tcpCertPath)
-			throws DockerCertificateException {
-		final boolean validSocketPath = socketPath != null && !socketPath.isEmpty();
-		final boolean validTcpHost = tcpHost != null && !tcpHost.isEmpty();
-		final boolean validTcpCertPath = tcpCertPath != null && !tcpCertPath.isEmpty();
-		try {
-			builder.authConfig(AuthConfig.fromDockerConfig().build());
-		} catch (Exception e) {
-			// AuthConfig can't be found, continue
-		}
-		if (validSocketPath) {
-			return builder.uri(socketPath);
-		} else if (validTcpCertPath && validTcpHost) {
-			return builder.uri(URI.create(tcpHost)).dockerCertificates(
-					new DockerCertificates(new File(tcpCertPath).toPath()));
-		} else if (validTcpHost) {
-			return builder.uri(URI.create(tcpHost));
-		}
-		return null;
-	}
 }

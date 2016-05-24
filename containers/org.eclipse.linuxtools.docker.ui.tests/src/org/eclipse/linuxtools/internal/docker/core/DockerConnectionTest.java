@@ -20,8 +20,8 @@ import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerContainerFactory;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerImageFactory;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.junit.Test;
 
 import com.spotify.docker.client.DockerClient;
@@ -36,10 +36,10 @@ public class DockerConnectionTest {
 	@Test
 	public void shouldLoadContainers() throws DockerException {
 		// given
-		final Container fooContainer = MockDockerContainerFactory.id("foo").build();
-		final Container barContainer = MockDockerContainerFactory.id("bar").build();
+		final Container fooContainer = MockContainerFactory.id("foo").build();
+		final Container barContainer = MockContainerFactory.id("bar").build();
 		final DockerClient client = MockDockerClientFactory.container(fooContainer).container(barContainer).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		dockerConnection.open(false);
 		// when
 		final List<IDockerContainer> containers = dockerConnection.getContainers();
@@ -50,10 +50,10 @@ public class DockerConnectionTest {
 	@Test
 	public void shouldLoadImages() throws DockerException {
 		// given
-		final Image fooImage = MockDockerImageFactory.id("foo").build();
-		final Image barImage = MockDockerImageFactory.id("bar").build();
+		final Image fooImage = MockImageFactory.id("foo").build();
+		final Image barImage = MockImageFactory.id("bar").build();
 		final DockerClient client = MockDockerClientFactory.image(fooImage).image(barImage).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		dockerConnection.open(false);
 		// when
 		final List<IDockerImage> images = dockerConnection.getImages();

@@ -26,7 +26,7 @@ public class DockerClientFactoryTest {
 	@Test
 	public void shouldNotFailWithNullTcpHost() throws DockerCertificateException {
 		// when
-		final DockerClient client = new DockerClientFactory().getClient(null, null, null);
+		final DockerClient client = new DockerClientFactory().getClient(new TCPConnectionSettings(null, null));
 		// then
 		assertThat(client).isNull();
 	}
@@ -34,7 +34,7 @@ public class DockerClientFactoryTest {
 	@Test
 	public void shouldNotFailWithEmptyTcpHost() throws DockerCertificateException {
 		// when
-		final DockerClient client = new DockerClientFactory().getClient(null, "", null);
+		final DockerClient client = new DockerClientFactory().getClient(new TCPConnectionSettings("", null));
 		// then
 		assertThat(client).isNull();
 	}

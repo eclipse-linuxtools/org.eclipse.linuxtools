@@ -127,7 +127,7 @@ public class ImageSearchSWTBotTest {
 
 	private void openPullWizard(final DockerClient client) {
 		// given 
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// expand the 'Images' node
 		SWTUtils.syncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
@@ -148,7 +148,7 @@ public class ImageSearchSWTBotTest {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.onSearch("foo", MockImageSearchResultFactory.name("foo").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// expand the 'Images' node
 		SWTUtils.syncExec(() -> dockerExplorerView.getCommonViewer().expandAll());

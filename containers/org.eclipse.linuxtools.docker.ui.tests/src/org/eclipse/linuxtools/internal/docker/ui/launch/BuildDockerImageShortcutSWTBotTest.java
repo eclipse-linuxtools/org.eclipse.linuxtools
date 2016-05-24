@@ -109,7 +109,7 @@ public class BuildDockerImageShortcutSWTBotTest {
 			throws InterruptedException, com.spotify.docker.client.DockerException, IOException {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when
 		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
@@ -133,7 +133,7 @@ public class BuildDockerImageShortcutSWTBotTest {
 			throws InterruptedException, com.spotify.docker.client.DockerException, IOException {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when
 		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
@@ -163,7 +163,7 @@ public class BuildDockerImageShortcutSWTBotTest {
 			throws InterruptedException, com.spotify.docker.client.DockerException, IOException {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when
 		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
@@ -201,7 +201,7 @@ public class BuildDockerImageShortcutSWTBotTest {
 			throws InterruptedException, com.spotify.docker.client.DockerException, IOException {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when
 		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
@@ -219,7 +219,7 @@ public class BuildDockerImageShortcutSWTBotTest {
 				Matchers.anyVararg());
 		// when trying to call again after connection was replaced, there should
 		// be an error dialog
-		final DockerConnection dockerConnection2 = MockDockerConnectionFactory.from("Test 2", client).get();
+		final DockerConnection dockerConnection2 = MockDockerConnectionFactory.from("Test 2", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection2);
 		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
 		// then expect a dialog, fill the "repository" text field and click "Ok"

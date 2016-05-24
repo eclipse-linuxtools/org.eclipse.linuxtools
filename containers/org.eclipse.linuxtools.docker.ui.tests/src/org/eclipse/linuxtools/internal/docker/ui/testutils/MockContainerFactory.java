@@ -26,9 +26,9 @@ import com.google.common.collect.ImmutableList;
 import com.spotify.docker.client.messages.Container;
 
 /**
- * 
+ * A factory for mock {@link Container}s.
  */
-public class MockDockerContainerFactory {
+public class MockContainerFactory {
 	
 	public static Builder id(final String id) {
 		return new Builder().id(id);

@@ -42,6 +42,9 @@ import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettingsFinder;
 import org.eclipse.linuxtools.docker.core.Messages;
 
+import com.spotify.docker.client.DockerCertificateException;
+import com.spotify.docker.client.DockerClient;
+
 import jnr.unixsocket.UnixSocketAddress;
 import jnr.unixsocket.UnixSocketChannel;
 
@@ -58,6 +61,7 @@ public class DefaultDockerConnectionSettingsFinder
 	public static final String DOCKER_HOST = "DOCKER_HOST"; //$NON-NLS-1$
 
 	@Override
+	@Deprecated
 	public List<IDockerConnectionSettings> findConnectionSettings() {
 		final List<IDockerConnectionSettings> availableConnectionSettings = new ArrayList<>();
 		final IDockerConnectionSettings defaultsWithUnixSocket = defaultsWithUnixSocket();
@@ -78,23 +82,36 @@ public class DefaultDockerConnectionSettingsFinder
 			case UNIX_SOCKET_CONNECTION:
 				final UnixSocketConnectionSettings unixSocketConnectionSettings = (UnixSocketConnectionSettings) connectionSettings;
 				final DockerConnection unixSocketConnection = new DockerConnection.Builder()
-						.unixSocket(unixSocketConnectionSettings.getPath())
-						.build();
+						.unixSocketConnection(unixSocketConnectionSettings);
 				resolveDockerName(unixSocketConnectionSettings,
 						unixSocketConnection);
 				break;
 			case TCP_CONNECTION:
 				final TCPConnectionSettings tcpConnectionSettings = (TCPConnectionSettings) connectionSettings;
 				final DockerConnection tcpConnection = new DockerConnection.Builder()
-						.tcpHost(tcpConnectionSettings.getHost())
-						.tcpCertPath(
-								tcpConnectionSettings.getPathToCertificates())
-						.build();
+						.tcpConnection(tcpConnectionSettings);
 				resolveDockerName(tcpConnectionSettings, tcpConnection);
 				break;
 			}
 		}
 		return availableConnectionSettings;
+	}
+
+	@Override
+	public IDockerConnectionSettings findDefaultConnectionSettings() {
+		final IDockerConnectionSettings defaultsWithUnixSocket = defaultsWithUnixSocket();
+		if (defaultsWithUnixSocket != null) {
+			return defaultsWithUnixSocket;
+		}
+		final IDockerConnectionSettings defaultsWithSystemEnv = defaultsWithSystemEnv();
+		if (defaultsWithSystemEnv != null) {
+			return defaultsWithSystemEnv;
+		}
+		final IDockerConnectionSettings defaultsWithShellEnv = defaultsWithShellEnv();
+		if (defaultsWithShellEnv != null) {
+			return defaultsWithShellEnv;
+		}
+		return null;
 	}
 
 	private void resolveDockerName(
@@ -104,15 +121,33 @@ public class DefaultDockerConnectionSettingsFinder
 			connection.open(false);
 			final IDockerConnectionInfo info = connection.getInfo();
 			if (info != null) {
-				connectionSettings.setName(info.getName());
+				connection.setName(info.getName());
 				connectionSettings.setSettingsResolved(true);
 			}
 		} catch (DockerException e) {
-			// ignore and keep 'settingsResolved' to false
+			// ignore and keep 'settingsResolved' as false
 			connectionSettings.setSettingsResolved(false);
 		} finally {
 			connection.close();
 		}
+	}
+
+	@Override
+	public String resolveConnectionName(
+			final IDockerConnectionSettings connectionSettings) {
+		if (connectionSettings == null) {
+			return null;
+		}
+		try {
+			final DockerClient client = new DockerClientFactory()
+					.getClient(connectionSettings);
+			return client.info().name();
+		} catch (DockerCertificateException
+				| com.spotify.docker.client.DockerException
+				| InterruptedException e) {
+			// ignore and return null
+		}
+		return null;
 	}
 
 	/**
@@ -149,11 +184,8 @@ public class DefaultDockerConnectionSettingsFinder
 	public IDockerConnectionSettings defaultsWithSystemEnv() {
 		final String dockerHostEnv = System.getenv(DOCKER_HOST);
 		if (dockerHostEnv != null) {
-			final String tlsVerifyEnv = System.getenv(DOCKER_TLS_VERIFY);
-			final boolean useTls = tlsVerifyEnv != null
-					&& tlsVerifyEnv.equals(DOCKER_TLS_VERIFY_TRUE); // $NON-NLS-1$
 			final String pathToCertificates = System.getenv(DOCKER_CERT_PATH);
-			return new TCPConnectionSettings(dockerHostEnv, useTls,
+			return new TCPConnectionSettings(dockerHostEnv,
 					pathToCertificates);
 		}
 		return null;
@@ -210,17 +242,11 @@ public class DefaultDockerConnectionSettingsFinder
 	public IDockerConnectionSettings createDockerConnectionSettings(
 			final Properties dockerSettings) {
 		final Object dockerHostEnvVariable = dockerSettings.get(DOCKER_HOST);
-		final Object dockerTlsVerifyEnvVariable = dockerSettings
-				.get(DOCKER_TLS_VERIFY);
 		final Object dockerCertPathEnvVariable = dockerSettings
 				.get(DOCKER_CERT_PATH);
 		return new TCPConnectionSettings(
 				dockerHostEnvVariable != null
 						? dockerHostEnvVariable.toString() : null,
-				dockerTlsVerifyEnvVariable != null
-						? dockerTlsVerifyEnvVariable
-								.equals(DOCKER_TLS_VERIFY_TRUE)
- : false,
 				dockerCertPathEnvVariable != null
 						? dockerCertPathEnvVariable.toString() : null);
 	}

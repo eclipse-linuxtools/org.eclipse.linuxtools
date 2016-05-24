@@ -22,9 +22,6 @@ public class TCPConnectionSettings extends BaseConnectionSettings {
 	 */
 	private final String host;
 
-	/** flag to indicate if TLS is used. */
-	private final boolean tlsVerify;
-
 	/**
 	 * absolute path to folder containing the certificates (ca.pem, key.pem and
 	 * cert.pem).
@@ -36,16 +33,13 @@ public class TCPConnectionSettings extends BaseConnectionSettings {
 	 * 
 	 * @param host
 	 *            host to connect to
-	 * @param tlsVerify
-	 *            flag to indicate if TLS is used
 	 * @param pathToCertificates
 	 *            absolute path to folder containing the certificates
 	 */
-	public TCPConnectionSettings(final String host, final boolean tlsVerify,
+	public TCPConnectionSettings(final String host,
 			final String pathToCertificates) {
 		super();
-		this.host = host;
-		this.tlsVerify = tlsVerify;
+		this.host = new HostBuilder(host).enableTLS(pathToCertificates);
 		this.pathToCertificates = pathToCertificates;
 	}
 
@@ -61,11 +55,15 @@ public class TCPConnectionSettings extends BaseConnectionSettings {
 		return host;
 	}
 
+	public boolean hasHost() {
+		return this.host != null && !this.host.isEmpty();
+	}
+
 	/**
 	 * @return the tlsVerify
 	 */
 	public boolean isTlsVerify() {
-		return tlsVerify;
+		return this.pathToCertificates != null;
 	}
 
 	/**
@@ -74,5 +72,78 @@ public class TCPConnectionSettings extends BaseConnectionSettings {
 	public String getPathToCertificates() {
 		return pathToCertificates;
 	}
+
+	/**
+	 * A utility class to build the actual {@code host} field from the given
+	 * input by setting the correct {@code http} or {@code https} scheme.
+	 */
+	private static class HostBuilder {
+
+		private static String HTTP_SCHEME = "http://"; //$NON-NLS-1$
+
+		private static String TCP_SCHEME = "tcp://"; //$NON-NLS-1$
+
+		private static String HTTPS_SCHEME = "https://"; //$NON-NLS-1$
+
+		private final String host;
+
+		public HostBuilder(final String host) {
+			if (host == null || host.isEmpty()) {
+				this.host = "";
+			} else if (!host.matches("\\w+://.*")) { //$NON-NLS-1$
+				this.host = HTTP_SCHEME + host;
+			} else {
+				this.host = host.replace(TCP_SCHEME, HTTP_SCHEME);
+			}
+		}
+
+		public String enableTLS(final String pathToCertificates) {
+			if (pathToCertificates == null || pathToCertificates.isEmpty()) {
+				return this.host;
+			}
+			// enforce 'https'
+			return this.host.replace(HTTP_SCHEME, HTTPS_SCHEME);
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((host == null) ? 0 : host.hashCode());
+		result = prime * result + ((pathToCertificates == null) ? 0
+				: pathToCertificates.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		TCPConnectionSettings other = (TCPConnectionSettings) obj;
+		if (host == null) {
+			if (other.host != null) {
+				return false;
+			}
+		} else if (!host.equals(other.host)) {
+			return false;
+		}
+		if (pathToCertificates == null) {
+			if (other.pathToCertificates != null) {
+				return false;
+			}
+		} else if (!pathToCertificates.equals(other.pathToCertificates)) {
+			return false;
+		}
+		return true;
+	}
+
 
 }

@@ -125,7 +125,13 @@ public class DockerExplorerLabelProvider implements IStyledLabelProvider, ILabel
 					&& !connection.getName().isEmpty())
 					? connection.getName()
 					: DVMessages.getString(UNNAMED_CONNECTION);
-			final String message = connectionName + " (" + connection.getUri() + ")";
+			final StringBuilder messageBuilder = new StringBuilder();
+			messageBuilder.append(connectionName);
+			if (connection.getUri() != null && !connection.getUri().isEmpty()) {
+				messageBuilder.append(" (").append(connection.getUri()) //$NON-NLS-1$
+						.append(")"); //$NON-NLS-1$
+			}
+			final String message = messageBuilder.toString();
 			final StyledString styledString = new StyledString(message);
 			styledString.setStyle(connectionName.length(), message.length() - connectionName.length(), StyledString.QUALIFIER_STYLER);
 			return styledString;

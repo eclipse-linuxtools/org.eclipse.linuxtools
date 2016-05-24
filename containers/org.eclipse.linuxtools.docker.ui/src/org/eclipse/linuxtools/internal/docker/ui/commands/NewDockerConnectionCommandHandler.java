@@ -21,7 +21,7 @@ import org.eclipse.ui.navigator.CommonNavigator;
  * @author xcoulon
  *
  */
-public class AddConnectionCommandHandler extends AbstractHandler {
+public class NewDockerConnectionCommandHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) {

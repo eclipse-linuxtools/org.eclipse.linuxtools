@@ -19,11 +19,11 @@ import org.assertj.core.api.Assertions;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerRefreshManager;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerInfoFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerContainerFactory;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerContainerInfoFactory;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerImageFactory;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
@@ -136,7 +136,7 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldDisplayConnectionsPane() {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// then
 		DockerExplorerViewAssertion.assertThat(dockerExplorerView).isNotEmpty();
@@ -146,7 +146,7 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldRefreshImagesAndShowChanges() {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
 		final SWTBotTreeItem[] allItems = dockerExplorerViewBot.bot().tree().getAllItems();
@@ -158,7 +158,7 @@ public class DockerExplorerViewSWTBotTest {
 		Assertions.assertThat(imagesTreeItem.getItems().length).isEqualTo(0);
 		
 		// update the client 
-		final DockerClient updatedClient = MockDockerClientFactory.image(MockDockerImageFactory.name("foo/bar").build())
+		final DockerClient updatedClient = MockDockerClientFactory.image(MockImageFactory.name("foo/bar").build())
 				.build();
 		dockerConnection.setClient(updatedClient);
 		// when locating the 'Images' node and hit refresh
@@ -176,7 +176,7 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldRefreshContainersAndShowChanges() {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
 		Conditions.waitForJobs(DockerExplorerView.class, "Docker Explorer View jobs");
@@ -190,7 +190,7 @@ public class DockerExplorerViewSWTBotTest {
 		Assertions.assertThat(containersTreeItem.getItems().length).isEqualTo(0);
 		
 		// update the client 
-		final DockerClient updatedClient = MockDockerClientFactory.container(MockDockerContainerFactory.name("foo_bar").build()).build();
+		final DockerClient updatedClient = MockDockerClientFactory.container(MockContainerFactory.name("foo_bar").build()).build();
 		dockerConnection.setClient(updatedClient);
 		dockerExplorerViewBot.bot().tree().select(containersTreeItem);
 		dockerExplorerViewBot.bot().tree().contextMenu("Refresh").click();
@@ -205,10 +205,10 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldShowContainerPortMapping() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("foo_bar").build(), MockDockerContainerInfoFactory
+				.container(MockContainerFactory.name("foo_bar").build(), MockContainerInfoFactory
 						.port("8080/tcp", "0.0.0.0", "8080").port("8787/tcp", "0.0.0.0", "8787").build())
 				.build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
 		// when a second call to expand the container is done (because the first
@@ -234,10 +234,10 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldShowContainerLinks() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("foo_bar").build(), MockDockerContainerInfoFactory
+				.container(MockContainerFactory.name("foo_bar").build(), MockContainerInfoFactory
 						.link("/postgres-demo:/foo_bar/postgres1").link("/postgres-demo:/foo_bar/postgres2").build())
 				.build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
 		// when a second call to expand the container is done (because the first
@@ -260,12 +260,12 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldShowContainerVolumes() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("foo_bar").build(),
-						MockDockerContainerInfoFactory.volume("/path/to/container")
+				.container(MockContainerFactory.name("foo_bar").build(),
+						MockContainerInfoFactory.volume("/path/to/container")
 								.volume("/path/to/host:/path/to/container")
 								.volume("/path/to/host:/path/to/container:Z,ro").build())
 				.build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
 		// when a second call to expand the container is done (because the first
@@ -291,13 +291,13 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldRemainExpandedAfterRefresh() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("foo_bar").build(),
-						MockDockerContainerInfoFactory.volume("/path/to/container")
+				.container(MockContainerFactory.name("foo_bar").build(),
+						MockContainerInfoFactory.volume("/path/to/container")
 								.port("8080/tcp", "0.0.0.0", "8080")
 								.link("/foo:/bar/foo")
 								.volume("/path/to/host:/path/to/container:Z,ro").build())
 				.build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
 		final SWTBotTreeItem containersTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test",
@@ -329,9 +329,9 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideEnabledStartCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("gentle_foo").status("Stopped").build())
-				.container(MockDockerContainerFactory.name("angry_bar").status("Stopped").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.container(MockContainerFactory.name("gentle_foo").status("Stopped").build())
+				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one of the containers
 		selectContainersInTreeView("Test", "gentle_foo", "angry_bar");
@@ -345,9 +345,9 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideDisabledStartCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("gentle_foo").status("Stopped").build())
-				.container(MockDockerContainerFactory.name("angry_bar").status("Running").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.container(MockContainerFactory.name("gentle_foo").status("Stopped").build())
+				.container(MockContainerFactory.name("angry_bar").status("Running").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one of the containers
 		selectContainersInTreeView("Test", "gentle_foo", "angry_bar");
@@ -361,9 +361,9 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideEnabledStopCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("gentle_foo").status("Running").build())
-				.container(MockDockerContainerFactory.name("angry_bar").status("Running").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockContainerFactory.name("angry_bar").status("Running").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one of the containers
 		selectContainersInTreeView("Test", "gentle_foo", "angry_bar");
@@ -377,9 +377,9 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideDisabledStopCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("gentle_foo").status("Running").build())
-				.container(MockDockerContainerFactory.name("angry_bar").status("Stopped").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one of the containers
 		selectContainersInTreeView("Test", "gentle_foo", "angry_bar");
@@ -393,9 +393,9 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideEnabledPauseCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("gentle_foo").status("Running").build())
-				.container(MockDockerContainerFactory.name("angry_bar").status("Running").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockContainerFactory.name("angry_bar").status("Running").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one of the containers
 		selectContainersInTreeView("Test", "gentle_foo", "angry_bar");
@@ -409,9 +409,9 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideDisabledPauseCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("gentle_foo").status("Up (Paused)").build())
-				.container(MockDockerContainerFactory.name("angry_bar").status("Running").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.container(MockContainerFactory.name("gentle_foo").status("Up (Paused)").build())
+				.container(MockContainerFactory.name("angry_bar").status("Running").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one of the containers
 		selectContainersInTreeView("Test", "gentle_foo", "angry_bar");
@@ -425,9 +425,9 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideEnabledUnpauseCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("gentle_foo").status("Up (Paused)").build())
-				.container(MockDockerContainerFactory.name("angry_bar").status("Up (Paused)").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.container(MockContainerFactory.name("gentle_foo").status("Up (Paused)").build())
+				.container(MockContainerFactory.name("angry_bar").status("Up (Paused)").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one of the containers
 		selectContainersInTreeView("Test", "gentle_foo", "angry_bar");
@@ -441,9 +441,9 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideDisabledUnpauseCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("gentle_foo").status("Up (Paused)").build())
-				.container(MockDockerContainerFactory.name("angry_bar").status("Running").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.container(MockContainerFactory.name("gentle_foo").status("Up (Paused)").build())
+				.container(MockContainerFactory.name("angry_bar").status("Running").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one of the containers
 		selectContainersInTreeView("Test", "gentle_foo", "angry_bar");
@@ -457,9 +457,9 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideEnabledKillCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("gentle_foo").status("Running").build())
-				.container(MockDockerContainerFactory.name("angry_bar").status("Running").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockContainerFactory.name("angry_bar").status("Running").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one of the containers
 		selectContainersInTreeView("Test", "gentle_foo", "angry_bar");
@@ -473,9 +473,9 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideDisabledKillCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("gentle_foo").status("Running").build())
-				.container(MockDockerContainerFactory.name("angry_bar").status("Stopped").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one of the containers
 		selectContainersInTreeView("Test", "gentle_foo", "angry_bar");
@@ -489,9 +489,9 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideEnabledRemoveCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("gentle_foo").status("Stopped").build())
-				.container(MockDockerContainerFactory.name("angry_bar").status("Stopped").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.container(MockContainerFactory.name("gentle_foo").status("Stopped").build())
+				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one of the containers
 		selectContainersInTreeView("Test", "gentle_foo", "angry_bar");
@@ -505,9 +505,9 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideRemoveCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("gentle_foo").status("Running").build())
-				.container(MockDockerContainerFactory.name("angry_bar").status("Stopped").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one of the containers
 		selectContainersInTreeView("Test", "gentle_foo", "angry_bar");
@@ -522,7 +522,7 @@ public class DockerExplorerViewSWTBotTest {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one the container
 		selectConnectionInTreeView("Test");
@@ -536,8 +536,8 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldShowSelectedContainerInPropertiesView() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("angry_bar").status("Stopped").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one the container
 		selectContainersInTreeView("Test", "angry_bar");
@@ -551,8 +551,8 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldShowSelectedImageInPropertiesView() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.image(MockDockerImageFactory.name("angry_bar").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.image(MockImageFactory.name("angry_bar").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one the container
 		selectImagesInTreeView("Test", "angry_bar");
@@ -566,9 +566,9 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldRemoveListenersWhenClosingView() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.image(MockDockerImageFactory.name("angry_bar").build())
-				.container(MockDockerContainerFactory.name("angry_bar").status("Stopped").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.image(MockImageFactory.name("angry_bar").build())
+				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// remove the DockerContainerRefreshManager
 		dockerConnection.removeContainerListener(DockerContainerRefreshManager
@@ -586,12 +586,12 @@ public class DockerExplorerViewSWTBotTest {
 	@Test
 	public void shouldShowAllImageVariants() {
 		// given
-		final DockerClient client = MockDockerClientFactory.image(MockDockerImageFactory.id("1a2b3c4d5e6f7g")
+		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.id("1a2b3c4d5e6f7g")
 				.name("foo:1.0", "foo:latest", "bar:1.0", "bar:latest").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
-		final SWTBotTreeItem imagesTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test (null)",
+		final SWTBotTreeItem imagesTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test",
 				"Images");
 		// when
 		SWTUtils.asyncExec(() -> imagesTreeItem.expand());

@@ -25,9 +25,13 @@ public class UnixSocketConnectionSettings extends BaseConnectionSettings {
 	 * @param path
 	 *            the path to the Unix Socket
 	 */
-	public UnixSocketConnectionSettings(String path) {
+	public UnixSocketConnectionSettings(final String path) {
 		super();
-		this.path = path;
+		if (path != null && !path.isEmpty() && !path.matches("\\w+://.*")) { //$NON-NLS-1$
+			this.path = "unix://" + path; //$NON-NLS-1$
+		} else {
+			this.path = path;
+		}
 	}
 
 	@Override
@@ -41,5 +45,45 @@ public class UnixSocketConnectionSettings extends BaseConnectionSettings {
 	public String getPath() {
 		return path;
 	}
+
+	public boolean hasPath() {
+		return this.path != null && !this.path.isEmpty();
+	}
+
+	@Override
+	public String toString() {
+		return this.path;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((path == null) ? 0 : path.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		UnixSocketConnectionSettings other = (UnixSocketConnectionSettings) obj;
+		if (path == null) {
+			if (other.path != null) {
+				return false;
+			}
+		} else if (!path.equals(other.path)) {
+			return false;
+		}
+		return true;
+	}
+
 
 }

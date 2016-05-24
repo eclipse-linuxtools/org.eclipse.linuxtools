@@ -17,8 +17,8 @@ import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerRefreshManager;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerContainerFactory;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerImageFactory;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
@@ -77,9 +77,9 @@ public class DockerImagesViewSWTBotTest {
 	@Test
 	public void shouldShowAllImageVariants() {
 		// given
-		final DockerClient client = MockDockerClientFactory.image(MockDockerImageFactory.id("1a2b3c4d5e6f7g")
+		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.id("1a2b3c4d5e6f7g")
 				.name("foo:1.0", "foo:latest", "bar:1.0", "bar:latest").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// then 1 image with all repo/tags should be displayed
 		SWTUtils.syncAssert(() -> {
@@ -93,8 +93,8 @@ public class DockerImagesViewSWTBotTest {
 	public void shouldRemoveListenersWhenClosingView() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("angry_bar").status("Stopped").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// remove the DockerContainerRefreshManager
 		dockerConnection.removeContainerListener(DockerContainerRefreshManager.getInstance());
@@ -111,8 +111,8 @@ public class DockerImagesViewSWTBotTest {
 		// given
 		dockerExplorerBotView.close();
 		final DockerClient client = MockDockerClientFactory
-				.container(MockDockerContainerFactory.name("angry_bar").status("Stopped").build()).build();
-		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).get();
+				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// remove the DockerContainerRefreshManager
 		dockerConnection.removeContainerListener(DockerContainerRefreshManager.getInstance());

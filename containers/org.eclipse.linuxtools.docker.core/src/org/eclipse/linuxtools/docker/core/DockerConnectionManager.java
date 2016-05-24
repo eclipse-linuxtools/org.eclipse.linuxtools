@@ -123,6 +123,7 @@ public class DockerConnectionManager {
 	/**
 	 * Notifies that a connection was renamed.
 	 */
+	@Deprecated
 	public void notifyConnectionRename() {
 		saveConnections();
 		notifyListeners(IDockerConnectionManagerListener.RENAME_EVENT);
@@ -186,9 +187,67 @@ public class DockerConnectionManager {
 		}
 	}
 
+	@Deprecated
 	public List<IDockerConnectionSettings> findConnectionSettings() {
 		// delegate the call to a utility class.
 		return connectionSettingsFinder.findConnectionSettings();
 	}
+
+	/**
+	 * Finds the default {@link IDockerConnectionSettings}
+	 * 
+	 * @return the default {@link IDockerConnectionSettings} or
+	 *         <code>null</code> if nothing was found
+	 */
+	public IDockerConnectionSettings findDefaultConnectionSettings() {
+		// delegate the call to a utility class.
+		return connectionSettingsFinder.findDefaultConnectionSettings();
+	}
+
+	/**
+	 * Resolves the name of the Docker instance, given the
+	 * {@link IDockerConnectionSettings}
+	 * 
+	 * @param connectionSettings
+	 *            the settings to use to connect
+	 * @return the name retrieved from the Docker instance or <code>null</code>
+	 *         if something went wrong.
+	 */
+	public String resolveConnectionName(
+			IDockerConnectionSettings connectionSettings) {
+		return connectionSettingsFinder
+				.resolveConnectionName(connectionSettings);
+	}
+
+	/**
+	 * Updates the given {@link IDockerConnection} with the given {@code name}
+	 * and {@code connectionSettings}
+	 * 
+	 * @param connection
+	 *            the {@link IDockerConnection} to update
+	 * @param name
+	 *            the (new) connection name
+	 * @param connectionSettings
+	 *            the (new) connection settings
+	 * @return <code>true</code> if the connection name or settings changed,
+	 *         <code>false</code> otherwise.
+	 */
+	public boolean updateConnection(final IDockerConnection connection,
+			final String name,
+			final IDockerConnectionSettings connectionSettings) {
+		final boolean nameChanged = connection.setName(name);
+		final boolean settingsChanged = connection
+				.setSettings(connectionSettings);
+		if (nameChanged) {
+			notifyListeners(connection,
+					IDockerConnectionManagerListener.RENAME_EVENT);
+		}
+		if (nameChanged || settingsChanged) {
+			saveConnections();
+			return true;
+		}
+		return false;
+	}
+
 
 }

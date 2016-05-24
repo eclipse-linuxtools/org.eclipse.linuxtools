@@ -21,11 +21,8 @@ public abstract class BaseConnectionSettings
 	/** flag indicating if the Docker responded to a ping request. */
 	private boolean settingsResolved = false;
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	@Override
+	@Deprecated
 	public String getName() {
 		return name;
 	}
@@ -37,6 +34,36 @@ public abstract class BaseConnectionSettings
 	@Override
 	public boolean isSettingsResolved() {
 		return this.settingsResolved;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		BaseConnectionSettings other = (BaseConnectionSettings) obj;
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		return true;
 	}
 
 }

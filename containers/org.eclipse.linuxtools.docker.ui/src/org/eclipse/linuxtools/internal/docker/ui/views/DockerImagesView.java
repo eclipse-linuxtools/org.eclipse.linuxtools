@@ -33,6 +33,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
+import org.eclipse.linuxtools.docker.core.IDockerConnectionManagerListener;
+import org.eclipse.linuxtools.docker.core.IDockerConnectionManagerListener2;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerImageListener;
@@ -64,8 +66,9 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
  */
 public class DockerImagesView extends ViewPart implements IDockerImageListener,
 		ISelectionListener,
-		ITabbedPropertySheetPageContributor {
+		ITabbedPropertySheetPageContributor, IDockerConnectionManagerListener2 {
 
+	/** Id of the view. */
 	public static final String VIEW_ID = "org.eclipse.linuxtools.docker.ui.dockerImagesView";
 
 	private static final String TOGGLE_STATE = "org.eclipse.ui.commands.toggleState"; //$NON-NLS-1$
@@ -98,12 +101,21 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 		// stop tracking selection changes in the Docker Explorer view (only)
 		getSite().getWorkbenchWindow().getSelectionService()
 				.removeSelectionListener(DockerExplorerView.VIEW_ID, this);
+		DockerConnectionManager.getInstance()
+				.removeConnectionManagerListener(this);
 		super.dispose();
 	}
 
 	@Override
 	public String getContributorId() {
 		return DockerExplorerView.VIEW_ID;
+	}
+
+	/**
+	 * @return the title of the form inside the view
+	 */
+	public String getFormTitle() {
+		return this.form.getText();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -154,7 +166,8 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 		service.getCommand(SHOW_ALL_IMAGES_COMMAND_ID).getState(TOGGLE_STATE)
 				.setValue(showAll);
 		service.refreshElements(SHOW_ALL_IMAGES_COMMAND_ID, null);
-
+		DockerConnectionManager.getInstance()
+				.addConnectionManagerListener(this);
 	}
 	
 	private void createTableViewer(final Composite container) {
@@ -467,4 +480,16 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 		refreshViewTitle();
 	}
 
+	@Override
+	public void changeEvent(int type) {
+		// do nothing, this method has been deprecated
+	}
+
+	@Override
+	public void changeEvent(final IDockerConnection connection,
+			final int type) {
+		if (type == IDockerConnectionManagerListener.RENAME_EVENT) {
+			refreshViewTitle();
+		}
+	}
 }

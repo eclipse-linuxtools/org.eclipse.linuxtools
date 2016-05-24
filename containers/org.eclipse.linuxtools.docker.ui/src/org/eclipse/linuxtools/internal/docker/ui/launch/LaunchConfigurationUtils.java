@@ -43,6 +43,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -54,10 +55,12 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.PixelConverter;
+import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerConfig;
 import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
+import org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions;
 import org.eclipse.linuxtools.docker.core.IDockerImageInfo;
 import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
 import org.eclipse.linuxtools.docker.ui.Activator;
@@ -71,7 +74,7 @@ import org.eclipse.swt.widgets.Button;
 public class LaunchConfigurationUtils {
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
-			"YYYY-MM-dd HH:mm:ss");
+			"YYYY-MM-dd HH:mm:ss"); //$NON-NLS-1$
 
 	/**
 	 * Private constructor for this utility class.
@@ -79,7 +82,7 @@ public class LaunchConfigurationUtils {
 	private LaunchConfigurationUtils() {
 		// empty
 	}
-	
+
 	/**
 	 * @return the ILaunchConfigurationType for the given configuration type.
 	 * @param configType
@@ -112,7 +115,7 @@ public class LaunchConfigurationUtils {
 	 * @return the generated {@link ILaunchConfiguration}
 	 * 
 	 */
-	public static ILaunchConfiguration createLaunchConfiguration(
+	public static ILaunchConfiguration createRunImageLaunchConfiguration(
 			final IDockerImage image,
 			final IDockerContainerConfig containerConfig,
 			final IDockerHostConfig hostConfig, final String containerName,
@@ -178,7 +181,7 @@ public class LaunchConfigurationUtils {
 				}
 			}
 			// TODO: container path declaration
-			
+
 			workingCopy.setAttribute(DATA_VOLUMES, volumes);
 			// options
 			workingCopy.setAttribute(AUTO_REMOVE, removeWhenExits);
@@ -282,10 +285,17 @@ public class LaunchConfigurationUtils {
 		return serializedBindings;
 	}
 
-	public static int getButtonWidthHint(Button button) {
+	/**
+	 * Computes the size of the given {@link Button} and returns the width.
+	 * 
+	 * @param button
+	 *            the button for which the size must be computed.
+	 * @return the width hint for the given button
+	 */
+	public static int getButtonWidthHint(final Button button) {
 		/* button.setFont(JFaceResources.getDialogFont()); */
-		PixelConverter converter = new PixelConverter(button);
-		int widthHint = converter
+		final PixelConverter converter = new PixelConverter(button);
+		final int widthHint = converter
 				.convertHorizontalDLUsToPixels(IDialogConstants.BUTTON_WIDTH);
 		return Math.max(widthHint,
 				button.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x);
@@ -304,8 +314,26 @@ public class LaunchConfigurationUtils {
 	 * @throws CoreException
 	 */
 	public static ILaunchConfiguration getLaunchConfigurationByImageName(
+			final String type, final String imageName) throws CoreException {
+		return getLaunchConfigurationByImageName(getLaunchConfigType(type),
+				imageName);
+	}
+
+	/**
+	 * Looks-up the {@link ILaunchConfiguration} with the given type and
+	 * <strong>IDockerImage's name</strong>.
+	 * 
+	 * @param type
+	 *            the configuration type
+	 * @param imageName
+	 *            the associated {@link IDockerImage} name
+	 * @return the first matching {@link ILaunchConfiguration} or
+	 *         <code>null</code> if none was found.
+	 * @throws CoreException
+	 */
+	public static ILaunchConfiguration getLaunchConfigurationByImageName(
 			final ILaunchConfigurationType type, final String imageName)
-					throws CoreException {
+			throws CoreException {
 		final ILaunchManager manager = DebugPlugin.getDefault()
 				.getLaunchManager();
 		ILaunchConfiguration lastLaunchConfiguration = null;
@@ -325,7 +353,7 @@ public class LaunchConfigurationUtils {
 		}
 		return lastLaunchConfiguration;
 	}
-	
+
 	/**
 	 * Returns the {@link ILaunchConfigurationWorkingCopy} with the given type
 	 * and <strong>IDockerImage's name</strong>.
@@ -343,7 +371,7 @@ public class LaunchConfigurationUtils {
 	 */
 	private static ILaunchConfigurationWorkingCopy getLaunchConfigurationworkingCopy(
 			final ILaunchConfigurationType type, final String imageName)
-					throws CoreException {
+			throws CoreException {
 		final ILaunchConfiguration existingLaunchConfiguration = getLaunchConfigurationByImageName(
 				type, imageName);
 		if (existingLaunchConfiguration != null) {
@@ -355,7 +383,7 @@ public class LaunchConfigurationUtils {
 				.generateLaunchConfigurationName(imageName);
 		return type.newInstance(null, configurationName);
 	}
-	
+
 	/**
 	 * Looks-up the {@link ILaunchConfiguration} with the given type and
 	 * <strong>name</strong>.
@@ -369,12 +397,11 @@ public class LaunchConfigurationUtils {
 	 * @throws CoreException
 	 */
 	public static ILaunchConfiguration getLaunchConfigurationByName(
-			final ILaunchConfigurationType type, final String name)
-					throws CoreException {
+			final String type, final String name) throws CoreException {
 		final ILaunchManager manager = DebugPlugin.getDefault()
 				.getLaunchManager();
 		for (ILaunchConfiguration launchConfiguration : manager
-				.getLaunchConfigurations(type)) {
+				.getLaunchConfigurations(getLaunchConfigType(type))) {
 			final String launchConfigName = launchConfiguration.getName(); // $NON-NLS-1$
 			if (launchConfigName.equals(name)) {
 				return launchConfiguration;
@@ -392,7 +419,7 @@ public class LaunchConfigurationUtils {
 	 * @return the converted path or the given path, depending on the current
 	 *         OS.
 	 * @see <a href=
-	 *      http://docs.docker.com/v1.7/userguide/dockervolumes/#mount-a-host-directory-as-a-data-volume">
+	 *      "http://docs.docker.com/v1.7/userguide/dockervolumes/#mount-a-host-directory-as-a-data-volume">
 	 *      http://docs.docker.com/v1.7/userguide/dockervolumes/#mount-a-host-
 	 *      directory-as-a-data-volume</a>
 	 */
@@ -401,8 +428,8 @@ public class LaunchConfigurationUtils {
 	}
 
 	/**
-	 * Converts the given path to a portable form, replacing all "\" and ":
-	 * " with "/" if the given <code>os</code> is {@link Platform#OS_WIN32}.
+	 * Converts the given path to a portable form, replacing all "\" and ": "
+	 * with "/" if the given <code>os</code> is {@link Platform#OS_WIN32}.
 	 * 
 	 * @param os
 	 *            the current OS
@@ -415,8 +442,8 @@ public class LaunchConfigurationUtils {
 	public static String convertToUnixPath(final String os, final String path) {
 		if (os != null && os.equals(Platform.OS_WIN32)) {
 			// replace all "\" with "/" and then drive info (eg "C:/" to "/c/")
-			final Matcher m = Pattern.compile("([a-zA-Z]):/")
-					.matcher(path.replaceAll("\\\\", "/"));
+			final Matcher m = Pattern.compile("([a-zA-Z]):/") //$NON-NLS-1$
+					.matcher(path.replaceAll("\\\\", "/")); //$NON-NLS-1$ //$NON-NLS-2$
 			if (m.find()) {
 				final StringBuffer b = new StringBuffer();
 				b.append('/');
@@ -443,7 +470,7 @@ public class LaunchConfigurationUtils {
 	 * @return the converted path or the given path, depending on the current
 	 *         OS.
 	 * @see <a href=
-	 *      http://docs.docker.com/v1.7/userguide/dockervolumes/#mount-a-host-directory-as-a-data-volume">
+	 *      "http://docs.docker.com/v1.7/userguide/dockervolumes/#mount-a-host-directory-as-a-data-volume">
 	 *      http://docs.docker.com/v1.7/userguide/dockervolumes/#mount-a-host-
 	 *      directory-as-a-data-volume</a>
 	 */
@@ -452,8 +479,8 @@ public class LaunchConfigurationUtils {
 	}
 
 	/**
-	 * Converts the given path to a portable form, replacing all "\" and ":
-	 * " with "/" if the given <code>os</code> is {@link Platform#OS_WIN32}.
+	 * Converts the given path to a portable form, replacing all "\" and ": "
+	 * with "/" if the given <code>os</code> is {@link Platform#OS_WIN32}.
 	 * 
 	 * @param os
 	 *            the current OS
@@ -467,16 +494,138 @@ public class LaunchConfigurationUtils {
 			final String path) {
 		if (os != null && os.equals(Platform.OS_WIN32)) {
 			// replace all "/" with "\" and then drive info (eg "/c/" to "C:/")
-			final Matcher m = Pattern.compile("^/([a-zA-Z])/").matcher(path);
+			final Matcher m = Pattern.compile("^/([a-zA-Z])/").matcher(path); //$NON-NLS-1$
 			if (m.find()) {
 				final StringBuffer b = new StringBuffer();
 				m.appendReplacement(b, m.group(1).toUpperCase());
-				b.append(":\\");
+				b.append(":\\"); //$NON-NLS-1$
 				m.appendTail(b);
-				return b.toString().replace('/', '\\');
+				return b.toString().replace('/', '\\'); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		return path;
 	}
 
+	/**
+	 * Creates a Launch Configuration name from the given repoName or from the
+	 * given resource's project if the repoName was <code>null</code>.
+	 * 
+	 * @param imageName
+	 *            the full image name
+	 * @param resource
+	 *            the Dockerfile to use to build the image
+	 * @return the {@link ILaunchConfiguration} name
+	 */
+	public static String createLaunchConfigurationName(final String imageName,
+			final IResource resource) {
+		if (imageName != null) {
+			final String repository = BuildDockerImageUtils
+					.getRepository(imageName);
+			final String name = BuildDockerImageUtils.getName(imageName);
+			final String tag = BuildDockerImageUtils.getTag(imageName);
+			final StringBuilder configNameBuilder = new StringBuilder();
+			// image name is the minimum requirement
+			if (name != null) {
+				if (repository != null) {
+					configNameBuilder.append(repository).append('_'); // $NON-NLS-1$
+				}
+				if (name != null) {
+					configNameBuilder.append(name);
+				}
+				if (tag != null) {
+					configNameBuilder.append(" [").append(tag).append("]"); //$NON-NLS-1$ //$NON-NLS-2$
+				} else {
+					configNameBuilder.append(" [latest]"); //$NON-NLS-1$
+				}
+				return configNameBuilder.toString();
+			}
+		}
+		return "Dockerfile [" //$NON-NLS-1$
+				+ resource.getProject().getName() + "]"; //$NON-NLS-1$
+	}
+
+	/**
+	 * Creates a new {@link ILaunchConfiguration} to build an
+	 * {@link IDockerImage} from a Dockerfile {@link IResource}.
+	 * 
+	 * @param connection
+	 *            the connection to use to submit the build
+	 * @param repoName
+	 *            the repo/name of the {@link IDockerImage} to build
+	 * @param dockerfile
+	 *            the dockerfile to use to build the {@link IDockerImage}
+	 * @return the created {@link ILaunchConfiguration}
+	 * @throws CoreException
+	 */
+	public static ILaunchConfiguration createBuildImageLaunchConfiguration(
+			final IDockerConnection connection, final String repoName,
+			final IResource dockerfile) throws CoreException {
+		final ILaunchConfigurationType configType = LaunchConfigurationUtils
+				.getLaunchConfigType(
+						IBuildDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID);
+		final ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
+				DebugPlugin.getDefault().getLaunchManager()
+						.generateLaunchConfigurationName(
+								createLaunchConfigurationName(repoName,
+										dockerfile)));
+		wc.setAttribute(
+				IBuildDockerImageLaunchConfigurationConstants.SOURCE_PATH_LOCATION,
+				dockerfile.getFullPath().removeLastSegments(1).toString());
+		wc.setAttribute(
+				IBuildDockerImageLaunchConfigurationConstants.SOURCE_PATH_WORKSPACE_RELATIVE_LOCATION,
+				true);
+
+		wc.setAttribute(IDockerImageBuildOptions.DOCKER_CONNECTION,
+				connection.getName());
+		wc.setAttribute(IDockerImageBuildOptions.REPO_NAME, repoName);
+		return wc.doSave();
+	}
+
+	/**
+	 * Updates all {@link ILaunchConfiguration} of the given {@code type} where
+	 * there is an attribute with the given {@code attributeName} of the given
+	 * {@code oldValue}, and sets the {@code newValue} instead.
+	 * 
+	 * @param type
+	 *            the type of {@link ILaunchConfiguration} to find
+	 * @param attributeName
+	 *            the name of the attribute to look-up
+	 * @param oldValue
+	 *            the old value to match
+	 * @param newValue
+	 *            the new value to set
+	 */
+	public static void updateLaunchConfigurations(final String type,
+			final String attributeName, final String oldValue,
+			final String newValue) {
+		final ILaunchConfigurationType configType = LaunchConfigurationUtils
+				.getLaunchConfigType(type);
+		final ILaunchManager manager = DebugPlugin.getDefault()
+				.getLaunchManager();
+		try {
+			for (ILaunchConfiguration config : manager
+					.getLaunchConfigurations(configType)) {
+				try {
+					if (config.getAttribute(attributeName, "") //$NON-NLS-1$
+							.equals(oldValue)) {
+						final ILaunchConfigurationWorkingCopy workingCopy = config
+								.getWorkingCopy();
+						workingCopy.setAttribute(attributeName, newValue);
+						workingCopy.doSave();
+					}
+				} catch (CoreException e) {
+					Activator.logErrorMessage(LaunchMessages.getFormattedString(
+							"UpdateLaunchConfiguration.named.error", //$NON-NLS-1$
+							config.getName()), e);
+				}
+			}
+		} catch (CoreException e) {
+			Activator.logErrorMessage(
+					LaunchMessages.getString("UpdateLaunchConfiguration.error" //$NON-NLS-1$
+					), e);
+			Activator.logErrorMessage(
+					"Failed to retrieve launch configurations after connection name changed",
+					e);
+		}
+	}
 }

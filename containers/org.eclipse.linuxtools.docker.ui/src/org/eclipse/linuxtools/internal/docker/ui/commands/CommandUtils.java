@@ -292,6 +292,10 @@ public class CommandUtils {
 	 *            the wizard to open
 	 * @param shell
 	 *            the current {@link Shell}
+	 * @param width
+	 *            width of the wizard
+	 * @param height
+	 *            height of the wizard
 	 * @return <code>true</code> if the wizard completed, <code>false</code>
 	 *         otherwise.
 	 */
@@ -303,9 +307,20 @@ public class CommandUtils {
 		return wizardDialog.open() == Window.OK;
 	}
 
-	public static void execute(String id, IStructuredSelection selection) {
-		ICommandService service = PlatformUI.getWorkbench().getService(ICommandService.class);
-		Command command = service != null ? service.getCommand(id) : null;
+	/**
+	 * Executes the command identified by the given {@code id} on a context
+	 * based on the given selection
+	 * 
+	 * @param id
+	 *            the id of the command to execute
+	 * @param selection
+	 *            the selection to use as a context to run the command
+	 */
+	public static void execute(final String id,
+			final IStructuredSelection selection) {
+		final ICommandService service = PlatformUI.getWorkbench()
+				.getService(ICommandService.class);
+		final Command command = service != null ? service.getCommand(id) : null;
 		if (command != null && command.isDefined()) {
 			try {
 				ParameterizedCommand pCmd = ParameterizedCommand.generateCommand(command, null);
