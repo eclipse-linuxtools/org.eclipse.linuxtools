@@ -286,7 +286,7 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 	private void refreshTarget(final Object target) {
 		// this piece of code must run in an async manner to avoid reentrant
 		// call while viewer is busy.
-		Display.getDefault().syncExec(() -> {
+		Display.getDefault().asyncExec(() -> {
 			if (viewer != null) {
 				final TreePath[] treePaths = viewer.getExpandedTreePaths();
 				viewer.refresh(target, true);
