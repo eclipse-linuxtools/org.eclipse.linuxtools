@@ -42,4 +42,17 @@ public class DefaultDockerConnectionSettingsFinderSWTBotTest {
 		assertThat(((TCPConnectionSettings)connectionSettings).isTlsVerify()).isTrue();
 	}
 
+	@Test
+	public void shouldNotCreateConnectionSettingsWhenMissingHost() {
+		// given
+		final Properties properties = new Properties();
+		properties.setProperty(DefaultDockerConnectionSettingsFinder.DOCKER_CERT_PATH, "/path/to/certs");
+		// actually, the DOCKER_TLS_VERIFY is not used. If DOCKER_CERT_PATH is set, the we assume that DOCKER_TLS_VERIFY is '1'
+		//properties.setProperty(DefaultDockerConnectionSettingsFinder.DOCKER_TLS_VERIFY, "1");
+		// when
+		final IDockerConnectionSettings connectionSettings = new DefaultDockerConnectionSettingsFinder().createDockerConnectionSettings(properties);
+		// then
+		assertThat(connectionSettings).isNull();
+	}
+
 }

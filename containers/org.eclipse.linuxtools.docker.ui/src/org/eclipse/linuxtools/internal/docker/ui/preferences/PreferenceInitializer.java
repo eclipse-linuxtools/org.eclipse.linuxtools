@@ -19,7 +19,7 @@ import static org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceCo
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.docker.ui.Activator;
-import org.eclipse.linuxtools.internal.docker.ui.utils.SystemUtils;
+import org.eclipse.linuxtools.internal.docker.core.SystemUtils;
 
 /**
  * Class used to initialize default preference values.
