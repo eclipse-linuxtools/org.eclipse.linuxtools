@@ -141,7 +141,9 @@ public class DefaultDockerConnectionSettingsFinder
 		try {
 			final DockerClient client = new DockerClientFactory()
 					.getClient(connectionSettings);
-			return client.info().name();
+			if (client != null) {
+				return client.info().name();
+			}
 		} catch (DockerCertificateException
 				| com.spotify.docker.client.DockerException
 				| InterruptedException e) {
@@ -239,14 +241,27 @@ public class DefaultDockerConnectionSettingsFinder
 		return null;
 	}
 
+	/**
+	 * Creates connection settings from the given {@code docerSettings}, or
+	 * <code>null</code> if the settings did not contain a property with the
+	 * {@code DOCKER_HOST} key.
+	 * 
+	 * @param dockerSettings
+	 *            the connection settings
+	 * @return the {@link IDockerConnectionSettings} or <code>null</code> if the
+	 *         settings are invalid.
+	 */
 	public IDockerConnectionSettings createDockerConnectionSettings(
 			final Properties dockerSettings) {
 		final Object dockerHostEnvVariable = dockerSettings.get(DOCKER_HOST);
 		final Object dockerCertPathEnvVariable = dockerSettings
 				.get(DOCKER_CERT_PATH);
+		// at least 'dockerHostEnvVariable' should be not null
+		if (dockerHostEnvVariable == null) {
+			return null;
+		}
 		return new TCPConnectionSettings(
-				dockerHostEnvVariable != null
-						? dockerHostEnvVariable.toString() : null,
+				dockerHostEnvVariable.toString(),
 				dockerCertPathEnvVariable != null
 						? dockerCertPathEnvVariable.toString() : null);
 	}
@@ -308,11 +323,11 @@ public class DefaultDockerConnectionSettingsFinder
 	 *         *Nix) or <code>null</code> if the current OS is not supported.
 	 */
 	private String getConnectionSettingsDetectionScriptName() {
-		if (Platform.getOS().equals(Platform.OS_LINUX)) {
+		if (SystemUtils.isLinux()) {
 			return "script.sh";//$NON-NLS-1$
-		} else if (Platform.getOS().equals(Platform.OS_MACOSX)) {
+		} else if (SystemUtils.isMac()) {
 			return "script-macosx.sh";//$NON-NLS-1$
-		} else if (Platform.getOS().equals(Platform.OS_WIN32)) {
+		} else if (SystemUtils.isWindows()) {
 			return "script.bat"; //$NON-NLS-1$
 		}
 		return null;
