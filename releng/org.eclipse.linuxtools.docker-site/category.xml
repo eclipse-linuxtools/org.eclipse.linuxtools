@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site
-      mirrorsURL="http://www.eclipse.org/downloads/download.php?file=/linuxtools/updates-docker-nightly/site.xml&amp;format=xml">
-   <description url="http://download.eclipse.org/linuxtools/updates-docker-nightly">
+      mirrorsURL="http://www.eclipse.org/downloads/download.php?file=/linuxtools/updates-docker-nightly-neon/site.xml&amp;format=xml">
+   <description url="http://download.eclipse.org/linuxtools/updates-docker-nightly-neon">
       Nightly builds of Linux Tools Docker Tooling project.
    </description>
    <feature url="features/org.eclipse.linuxtools.docker.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.docker.feature" version="0.0.0">
