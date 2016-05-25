@@ -1151,14 +1151,19 @@ public class DockerConnection implements IDockerConnection, Closeable {
 
 	/**
 	 * Converts the given {@link Map} of build options into an array of
-	 * {@link BuildParameter} when the build options are set a value different from the default value.
+	 * {@link BuildParameter} when the build options are set a value different
+	 * from the default value.
 	 * 
 	 * @param buildOptions
 	 *            the build options
-	 * @return an array of relevant {@link BuildParameter}
+	 * @return an array of relevant {@link BuildParameter}, an empty array if
+	 *         the given {@code buildOptions} is empty or <code>null</code>.
 	 */
 	private BuildParam[] getBuildParameters(
 			final Map<String, Object> buildOptions) {
+		if (buildOptions == null) {
+			return new BuildParam[0];
+		}
 		final List<BuildParam> buildParameters = new ArrayList<>();
 		for (Entry<String, Object> entry : buildOptions.entrySet()) {
 			final Object optionName = entry.getKey();
