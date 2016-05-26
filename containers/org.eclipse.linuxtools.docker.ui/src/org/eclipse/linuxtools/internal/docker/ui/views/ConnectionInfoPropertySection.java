@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2015 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,6 @@
  *******************************************************************************/
 
 package org.eclipse.linuxtools.internal.docker.ui.views;
-
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -27,6 +23,7 @@ import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionInfo;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
@@ -36,40 +33,45 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
  */
 public class ConnectionInfoPropertySection extends BasePropertySection {
 
-	private IDockerConnection selectedConnection = null;
-	private IDockerConnectionInfo connectionInfo;
+	private final static String LoadingConnectionInfo = "PropertiesLoadingConnectionInfo.msg"; //$NON-NLS-1$
 
 	@Override
 	public void createControls(Composite parent, TabbedPropertySheetPage propertySheetPage) {
 		super.createControls(parent, propertySheetPage);
 		getTreeViewer().setContentProvider(new ConnectionInfoContentProvider());
 	}
-	
+
 	@Override
 	public void setInput(final IWorkbenchPart part, final ISelection selection) {
 		super.setInput(part, selection);
 		Assert.isTrue(selection instanceof ITreeSelection);
 		Object input = ((ITreeSelection) selection).getFirstElement();
 		Assert.isTrue(input instanceof IDockerConnection);
-		this.selectedConnection = (IDockerConnection) input;
-		this.connectionInfo = getConnectionInfo(selectedConnection);
-		if (getTreeViewer() != null) {
-			getTreeViewer().setInput(connectionInfo);
-			getTreeViewer().expandAll();
-		}
+		updateConnectionInfo((IDockerConnection) input);
 	}
 
-	private IDockerConnectionInfo getConnectionInfo(final IDockerConnection connection) {
-		final BlockingQueue<IDockerConnectionInfo> result = new ArrayBlockingQueue<>(1);
-		final Job loadConnectionInfoJob = new Job("Loading connection info...") {
+	private void updateConnectionInfo(final IDockerConnection connection) {
+		// Set the tree empty while we wait for the real data
+		if (getTreeViewer() != null) {
+			getTreeViewer().setInput(null);
+			getTreeViewer().expandAll();
+		}
+
+		final Job loadConnectionInfoJob = new Job(DVMessages.getString(LoadingConnectionInfo)) {
 			@Override
 			protected IStatus run(final IProgressMonitor monitor) {
-				monitor.beginTask("Loading connection info...", 1);
+				monitor.beginTask(DVMessages.getString(LoadingConnectionInfo), 1);
+				if (!connection.isActive()) {
+					return Status.OK_STATUS;
+				}
 				try {
 					final IDockerConnectionInfo info = connection.getInfo();
-					if (info != null) {
-						result.add(info);
-					}
+					Display.getDefault().asyncExec(() -> {
+						if (info != null && getTreeViewer() != null) {
+							getTreeViewer().setInput(info);
+							getTreeViewer().expandAll();
+						}
+					});
 				} catch (DockerException e) {
 					Activator.log(e);
 				}
@@ -78,13 +80,6 @@ public class ConnectionInfoPropertySection extends BasePropertySection {
 			}
 		};
 		loadConnectionInfoJob.schedule();
-		try {
-			return result.poll(2, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					"Failed to retrieve general info on connection '" + connection.getName() + "'", e));
-			return null;
-		}
 	}
 
 }
