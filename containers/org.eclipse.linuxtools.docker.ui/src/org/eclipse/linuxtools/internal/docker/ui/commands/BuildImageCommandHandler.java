@@ -28,10 +28,10 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
-import org.eclipse.linuxtools.internal.docker.ui.DockerConnectionWatcher;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.linuxtools.internal.docker.ui.views.ImageBuildProgressHandler;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageBuild;
@@ -39,6 +39,9 @@ import org.eclipse.linuxtools.internal.docker.ui.wizards.WizardMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -55,7 +58,23 @@ public class BuildImageCommandHandler extends AbstractHandler {
 		final ImageBuild wizard = new ImageBuild();
 		final WizardDialog wizardDialog = new NonModalWizardDialog(HandlerUtil.getActiveShell(event), wizard);
 		wizardDialog.create();
-		connection = DockerConnectionWatcher.getInstance().getConnection();
+		IWorkbenchWindow window = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow();
+		IWorkbenchPage activePage = null;
+		IWorkbenchPart activePart = null;
+		if (window != null)
+			activePage = window.getActivePage();
+		if (activePage != null)
+			activePart = activePage.getActivePart();
+		connection = CommandUtils.getCurrentConnection(activePart);
+		// if no current connection, try the first connection in the list of
+		// connections
+		if (connection == null) {
+			IDockerConnection[] connections = DockerConnectionManager
+					.getInstance().getConnections();
+			if (connections.length > 0)
+				connection = connections[0];
+		}
 		if (connection == null || !connection.isActive()) {
 			// if no active connection, issue error message dialog and return
 			Display.getDefault().syncExec(() -> MessageDialog.openError(
