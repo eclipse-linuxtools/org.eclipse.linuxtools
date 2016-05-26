@@ -75,11 +75,14 @@ public class CommandUtils {
 	 *            - active Workbench part
 	 */
 	public static IDockerConnection getCurrentConnection(final IWorkbenchPart activePart) {
-		return DockerConnectionWatcher.getInstance().getConnection();
-		// if (activePart instanceof DockerContainersView) {
-		// return ((DockerContainersView) activePart).getConnection();
-		// } else if (activePart instanceof DockerImagesView) {
-		// return ((DockerImagesView) activePart).getConnection();
+		if (DockerConnectionWatcher.getInstance().getConnection() != null)
+			return DockerConnectionWatcher.getInstance().getConnection();
+		else if (activePart instanceof DockerContainersView) {
+			return ((DockerContainersView) activePart).getConnection();
+		} else if (activePart instanceof DockerImagesView) {
+			return ((DockerImagesView) activePart).getConnection();
+		}
+		return null;
 		// } else if (activePart instanceof DockerExplorerView) {
 		// final ITreeSelection selection = ((DockerExplorerView) activePart)
 		// .getCommonViewer().getStructuredSelection();
