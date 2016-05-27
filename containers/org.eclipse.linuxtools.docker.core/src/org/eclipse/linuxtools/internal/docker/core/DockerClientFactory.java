@@ -91,12 +91,6 @@ public class DockerClientFactory {
 
 		if (registryAccount != null) {
 			builder.authConfig(buildAuthentication(registryAccount));
-		} else {
-			try {
-				builder.authConfig(AuthConfig.fromDockerConfig().build());
-			} catch (Exception e) {
-				// AuthConfig can't be found, continue
-			}
 		}
 		return builder.build();
 	}
