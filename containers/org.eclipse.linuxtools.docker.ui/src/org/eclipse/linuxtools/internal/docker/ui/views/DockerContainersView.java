@@ -447,12 +447,12 @@ public class DockerContainersView extends ViewPart implements
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		final ITreeSelection treeSelection = (ITreeSelection) selection;
-		if(treeSelection.isEmpty()) {
+		if (treeSelection.isEmpty()) {
 			setConnection(null);
 			return;
 		}
 		final Object firstSegment = treeSelection.getPaths()[0].getFirstSegment();
-		if(firstSegment instanceof IDockerConnection) {
+		if (firstSegment instanceof IDockerConnection) {
 			final IDockerConnection connection = (IDockerConnection) firstSegment;
 			setConnection(connection);
 		}
