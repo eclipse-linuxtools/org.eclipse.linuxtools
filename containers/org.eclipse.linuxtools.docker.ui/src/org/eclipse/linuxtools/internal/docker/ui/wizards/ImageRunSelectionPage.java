@@ -850,10 +850,10 @@ public class ImageRunSelectionPage extends WizardPage {
 			try {
 				this.model.setContainerName(lastLaunchConfiguration
 						.getAttribute(CONTAINER_NAME, ""));
-				this.model.setCommand(
-						lastLaunchConfiguration.getAttribute(COMMAND, ""));
 				this.model.setEntrypoint(
 						lastLaunchConfiguration.getAttribute(ENTRYPOINT, ""));
+				this.model.setCommand(
+						lastLaunchConfiguration.getAttribute(COMMAND, ""));
 				this.model.setPublishAllPorts(lastLaunchConfiguration
 						.getAttribute(PUBLISH_ALL_PORTS, false));
 				final List<String> exposedPortInfos = lastLaunchConfiguration
@@ -916,8 +916,8 @@ public class ImageRunSelectionPage extends WizardPage {
 			final List<ExposedPortModel> exposedPorts = ExposedPortModel
 					.fromStrings(selectedImageInfo.config().exposedPorts());
 			model.setExposedPorts(exposedPorts);
-			model.setCommand(selectedImageInfo.config().cmd());
 			model.setEntrypoint(selectedImageInfo.config().entrypoint());
+			model.setCommand(selectedImageInfo.config().cmd());
 		}
 	}
 
