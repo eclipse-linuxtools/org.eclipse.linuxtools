@@ -398,8 +398,8 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 				}
 			}
 			model.setExposedPorts(availablePorts);
-			model.setCommand(selectedImageInfo.config().cmd());
 			model.setEntrypoint(selectedImageInfo.config().entrypoint());
+			model.setCommand(selectedImageInfo.config().cmd());
 
 		} catch (InvocationTargetException | InterruptedException e) {
 			Activator.log(e);
@@ -512,12 +512,12 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 			String imageName = configuration.getAttribute(
 					IRunDockerImageLaunchConfigurationConstants.IMAGE_NAME, ""); //$NON-NLS-1$
 			model.setSelectedImageName(imageName);
-			String command = configuration.getAttribute(
-					IRunDockerImageLaunchConfigurationConstants.COMMAND, ""); //$NON-NLS-1$
-			model.setCommand(command);
 			String entryPoint = configuration.getAttribute(
 					IRunDockerImageLaunchConfigurationConstants.ENTRYPOINT, ""); //$NON-NLS-1$
 			model.setEntrypoint(entryPoint);
+			String command = configuration.getAttribute(
+					IRunDockerImageLaunchConfigurationConstants.COMMAND, ""); //$NON-NLS-1$
+			model.setCommand(command);
 			String containerName = configuration.getAttribute(
 					IRunDockerImageLaunchConfigurationConstants.CONTAINER_NAME,
 					""); //$NON-NLS-1$
