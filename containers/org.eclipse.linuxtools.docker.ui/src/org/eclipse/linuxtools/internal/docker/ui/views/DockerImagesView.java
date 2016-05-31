@@ -208,7 +208,11 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 			@Override
 			public String getText(final Object element) {
 				if (element instanceof IDockerImage) {
-					final String imageId = ((IDockerImage) element).id();
+					// for image id, remove any sha256 digest prefix
+					// and truncate to max of 12 characters
+					String imageId = ((IDockerImage) element).id();
+					if (imageId.startsWith("sha256:")) //$NON-NLS-1$
+						imageId = imageId.substring(7);
 					if (imageId.length() > 12) {
 						return imageId.substring(0, 12);
 					}
