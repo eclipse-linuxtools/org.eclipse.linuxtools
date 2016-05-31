@@ -90,6 +90,7 @@ import com.spotify.docker.client.DockerClient.BuildParam;
 import com.spotify.docker.client.DockerClient.ExecCreateParam;
 import com.spotify.docker.client.DockerClient.ExecStartParameter;
 import com.spotify.docker.client.DockerClient.LogsParam;
+import com.spotify.docker.client.DockerTimeoutException;
 import com.spotify.docker.client.LogStream;
 import com.spotify.docker.client.messages.AuthConfig;
 import com.spotify.docker.client.messages.Container;
@@ -687,6 +688,12 @@ public class DockerConnection implements IDockerConnection, Closeable {
 							new DockerContainer(this, nativeContainer));
 				}
 			}
+		} catch (DockerTimeoutException e) {
+			if (isOpen()) {
+				Activator.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
+						Messages.Docker_Connection_Timeout, e));
+				close();
+			}
 		} catch (com.spotify.docker.client.DockerException
 				| InterruptedException e) {
 			if (isOpen() && e.getCause() != null
@@ -889,6 +896,13 @@ public class DockerConnection implements IDockerConnection, Closeable {
 						return tempImages;
 					rawImages = client.listImages(
 							DockerClient.ListImagesParam.allImages());
+				}
+			} catch (DockerTimeoutException e) {
+				if (isOpen()) {
+					Activator.log(
+							new Status(IStatus.WARNING, Activator.PLUGIN_ID,
+									Messages.Docker_Connection_Timeout, e));
+					close();
 				}
 			} catch (com.spotify.docker.client.DockerRequestException e) {
 				throw new DockerException(e.message());
