@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.linuxtools.docker.core.DockerException;
+import org.eclipse.linuxtools.docker.core.EnumDockerConnectionState;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionInfo;
 import org.eclipse.linuxtools.docker.ui.Activator;
@@ -61,7 +62,8 @@ public class ConnectionInfoPropertySection extends BasePropertySection {
 			@Override
 			protected IStatus run(final IProgressMonitor monitor) {
 				monitor.beginTask(DVMessages.getString(LoadingConnectionInfo), 1);
-				if (!connection.isActive()) {
+				if (connection
+						.getState() != EnumDockerConnectionState.ESTABLISHED) {
 					return Status.OK_STATUS;
 				}
 				try {

@@ -65,7 +65,7 @@ public class DockerConnectionWatcher implements ISelectionListener {
 	/**
 	 * Get the current connection
 	 * 
-	 * @return the current connection or null if none is set
+	 * @return the current connection or <code>null</code> if none is set
 	 */
 	public IDockerConnection getConnection() {
 		return this.connection;

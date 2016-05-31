@@ -21,10 +21,10 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.docker.ui.launch.LaunchConfigurationUtils;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerInfoFactory;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageInfoFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
@@ -118,7 +118,7 @@ public class ImageRunSWTBotTest {
 		
 		// when opening the "Run Image..." wizard
 		final SWTBotTree dockerExplorerViewTreeBot = dockerExplorerViewBot.bot().tree();
-		dockerExplorerViewTreeBot.select(imageTreeItem);
+		SWTUtils.select(imageTreeItem);
 		dockerExplorerViewTreeBot.contextMenu("Run...").click();
 		
 		// when use an existing container name
