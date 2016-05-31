@@ -11,13 +11,9 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
-import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
-import org.eclipse.swt.SWT;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Wizard to add a Docker connection
@@ -47,25 +43,14 @@ public class NewDockerConnection extends Wizard {
 
 	@Override
 	public boolean performFinish() {
-		try {
-			dockerConnection = wizardPage.getDockerConnection();
-			DockerConnectionManager.getInstance().addConnection(dockerConnection);
-			return true;
-		} catch (DockerException e) {
-			new MessageDialog(
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-							.getShell(),
-					WizardMessages.getString("DockerConnection.failure"), //$NON-NLS-1$
-					null,
-					WizardMessages.getString("DockerConnection.failMessage"), //$NON-NLS-1$
-					SWT.ICON_ERROR,
-					new String[] { WizardMessages
-							.getString("DockerConnectionPage.ok") }, //$NON-NLS-1$
-					0).open();
-		}
-		return false;
+		dockerConnection = wizardPage.getDockerConnection();
+		DockerConnectionManager.getInstance().addConnection(dockerConnection);
+		return true;
 	}
 	
+	/**
+	 * @return the {@link IDockerConnection} that was configured
+	 */
 	public IDockerConnection getDockerConnection() {
 		return dockerConnection;
 	}

@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
+import org.eclipse.linuxtools.docker.core.EnumDockerConnectionState;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionStorageManager;
 import org.eclipse.linuxtools.docker.core.IDockerContainerConfig;
@@ -376,21 +377,8 @@ public class EditDockerConnectionSWTBotTest {
 	public void shouldRefreshDockerExplorerViewWhenConnectionNameChanged() throws CoreException {
 		// given
 		final IDockerConnection connection = configureTCPConnection("Test");
-		final String buildImageLaunchConfigurationName = configureBuildImageLaunchConfiguration(connection);
-		final ILaunchConfiguration buildDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IBuildDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, buildImageLaunchConfigurationName);
-		assertThat(buildDockerImageLaunchConfig).isNotNull();
-		assertThat(buildDockerImageLaunchConfig.getAttribute(IDockerImageBuildOptions.DOCKER_CONNECTION, ""))
-				.isEqualTo("Test");
-		final String runImageLaunchConfigurationName = configureRunImageLaunchConfiguration(connection);
-		final ILaunchConfiguration runDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, runImageLaunchConfigurationName);
-		assertThat(runDockerImageLaunchConfig).isNotNull();
-		assertThat(runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
-				"")).isEqualTo("Test");
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
-
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(0).setText("foo");
@@ -405,21 +393,8 @@ public class EditDockerConnectionSWTBotTest {
 	public void shouldRefreshDockerImagesViewWhenConnectionNameChanges() throws CoreException {
 		// given
 		final IDockerConnection connection = configureTCPConnection("Test");
-		final String buildImageLaunchConfigurationName = configureBuildImageLaunchConfiguration(connection);
-		final ILaunchConfiguration buildDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IBuildDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, buildImageLaunchConfigurationName);
-		assertThat(buildDockerImageLaunchConfig).isNotNull();
-		assertThat(buildDockerImageLaunchConfig.getAttribute(IDockerImageBuildOptions.DOCKER_CONNECTION, ""))
-				.isEqualTo("Test");
-		final String runImageLaunchConfigurationName = configureRunImageLaunchConfiguration(connection);
-		final ILaunchConfiguration runDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, runImageLaunchConfigurationName);
-		assertThat(runDockerImageLaunchConfig).isNotNull();
-		assertThat(runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
-				"")).isEqualTo("Test");
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
-
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(0).setText("foo");
@@ -427,7 +402,7 @@ public class EditDockerConnectionSWTBotTest {
 		SWTUtils.wait(2, TimeUnit.SECONDS);
 		// then
 		final DockerImagesView dockerImagesView = dockerImages.view();
-		final String formTitle = SWTUtils.syncExec(() -> dockerImagesView.getFormTitle()); 
+		final String formTitle = SWTUtils.syncExec(() -> dockerImagesView.getFormTitle());
 		assertThat(formTitle).contains("foo");
 	}
 
@@ -435,21 +410,8 @@ public class EditDockerConnectionSWTBotTest {
 	public void shouldRefreshDockerContainersViewWhenConnectionNameChanges() throws CoreException {
 		// given
 		final IDockerConnection connection = configureTCPConnection("Test");
-		final String buildImageLaunchConfigurationName = configureBuildImageLaunchConfiguration(connection);
-		final ILaunchConfiguration buildDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IBuildDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, buildImageLaunchConfigurationName);
-		assertThat(buildDockerImageLaunchConfig).isNotNull();
-		assertThat(buildDockerImageLaunchConfig.getAttribute(IDockerImageBuildOptions.DOCKER_CONNECTION, ""))
-				.isEqualTo("Test");
-		final String runImageLaunchConfigurationName = configureRunImageLaunchConfiguration(connection);
-		final ILaunchConfiguration runDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, runImageLaunchConfigurationName);
-		assertThat(runDockerImageLaunchConfig).isNotNull();
-		assertThat(runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
-				"")).isEqualTo("Test");
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
-
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(0).setText("foo");
@@ -457,7 +419,7 @@ public class EditDockerConnectionSWTBotTest {
 		SWTUtils.wait(2, TimeUnit.SECONDS);
 		// then
 		final DockerContainersView dockerContainersView = dockerContainers.view();
-		final String formTitle = SWTUtils.syncExec(() -> dockerContainersView.getFormTitle()); 
+		final String formTitle = SWTUtils.syncExec(() -> dockerContainersView.getFormTitle());
 		assertThat(formTitle).contains("foo");
 	}
 
@@ -465,108 +427,67 @@ public class EditDockerConnectionSWTBotTest {
 	public void shouldRefreshDockerExplorerViewWhenNameChangedTwice() throws CoreException {
 		// given
 		final IDockerConnection connection = configureTCPConnection("Test");
-		final String buildImageLaunchConfigurationName = configureBuildImageLaunchConfiguration(connection);
-		final ILaunchConfiguration buildDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IBuildDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, buildImageLaunchConfigurationName);
-		assertThat(buildDockerImageLaunchConfig).isNotNull();
-		assertThat(buildDockerImageLaunchConfig.getAttribute(IDockerImageBuildOptions.DOCKER_CONNECTION, ""))
-				.isEqualTo("Test");
-		final String runImageLaunchConfigurationName = configureRunImageLaunchConfiguration(connection);
-		final ILaunchConfiguration runDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, runImageLaunchConfigurationName);
-		assertThat(runDockerImageLaunchConfig).isNotNull();
-		assertThat(runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
-				"")).isEqualTo("Test");
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
-
 		// name change #1
 		openConnectionEditionWizard("Test");
 		bot.text(0).setText("foo");
 		getFinishButton().click();
 		SWTUtils.wait(2, TimeUnit.SECONDS);
-
 		// name change #2
 		openConnectionEditionWizard("foo");
 		bot.text(0).setText("bar");
 		getFinishButton().click();
 		SWTUtils.wait(2, TimeUnit.SECONDS);
-
 		// then
 		final SWTBotTreeItem updatedConnectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "bar");
 		assertThat(updatedConnectionTreeItem).isNotNull();
-
 	}
 
 	@Test
 	public void shouldRefreshDockerExplorerViewWhenUnixSockerConnectionSettingsChanged()
 			throws CoreException, IOException {
 		// given
+		dockerContainers.close();
+		dockerImages.close();
 		final IDockerConnection connection = configureUnixSocketConnection("Test");
-		final String buildImageLaunchConfigurationName = configureBuildImageLaunchConfiguration(connection);
-		final ILaunchConfiguration buildDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IBuildDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, buildImageLaunchConfigurationName);
-		assertThat(buildDockerImageLaunchConfig).isNotNull();
-		assertThat(buildDockerImageLaunchConfig.getAttribute(IDockerImageBuildOptions.DOCKER_CONNECTION, ""))
-				.isEqualTo("Test");
-		final String runImageLaunchConfigurationName = configureRunImageLaunchConfiguration(connection);
-		final ILaunchConfiguration runDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, runImageLaunchConfigurationName);
-		assertThat(runDockerImageLaunchConfig).isNotNull();
-		assertThat(runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
-				"")).isEqualTo("Test");
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
 		final File tmpDockerSocketFile = folder.newFile("docker.sock");
-
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(1).setText(tmpDockerSocketFile.getAbsolutePath());
 		getFinishButton().click();
 		SWTUtils.wait(2, TimeUnit.SECONDS);
-
 		// then
 		final SWTBotTreeItem updatedConnectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(updatedConnectionTreeItem).isNotNull();
 		assertThat(updatedConnectionTreeItem.getText()).contains(tmpDockerSocketFile.getAbsolutePath());
 		// list of containers and images should have been refreshed
-		Mockito.verify(connection, Mockito.times(2)).getContainers(true);
-		Mockito.verify(connection, Mockito.times(2)).getImages(true);
+		Mockito.verify(connection, Mockito.times(0)).getContainers(true);
+		Mockito.verify(connection, Mockito.times(0)).getImages(true);
 	}
 
 	@Test
 	public void shouldRefreshDockerExplorerViewWhenTCPConnectionSettingsChanged() throws CoreException, IOException {
 		// given
+		dockerContainers.close();
+		dockerImages.close();
 		final IDockerConnection connection = configureTCPConnection("Test");
-		final String buildImageLaunchConfigurationName = configureBuildImageLaunchConfiguration(connection);
-		final ILaunchConfiguration buildDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IBuildDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, buildImageLaunchConfigurationName);
-		assertThat(buildDockerImageLaunchConfig).isNotNull();
-		assertThat(buildDockerImageLaunchConfig.getAttribute(IDockerImageBuildOptions.DOCKER_CONNECTION, ""))
-				.isEqualTo("Test");
-		final String runImageLaunchConfigurationName = configureRunImageLaunchConfiguration(connection);
-		final ILaunchConfiguration runDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, runImageLaunchConfigurationName);
-		assertThat(runDockerImageLaunchConfig).isNotNull();
-		assertThat(runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
-				"")).isEqualTo("Test");
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
-
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(2).setText("https://foo.bar:1234");
 		getFinishButton().click();
 		SWTUtils.wait(2, TimeUnit.SECONDS);
-
 		// then
 		final SWTBotTreeItem updatedConnectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(updatedConnectionTreeItem).isNotNull();
 		assertThat(updatedConnectionTreeItem.getText()).contains("https://foo.bar:1234");
 		// list of containers and images should have been refreshed
-		Mockito.verify(connection, Mockito.times(2)).getContainers(true);
-		Mockito.verify(connection, Mockito.times(2)).getImages(true);
-
+		Mockito.verify(connection, Mockito.times(0)).getContainers(true);
+		Mockito.verify(connection, Mockito.times(0)).getImages(true);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -574,28 +495,15 @@ public class EditDockerConnectionSWTBotTest {
 	public void shouldSaveConnectionWhenNameChanged() throws CoreException {
 		// given
 		final IDockerConnection connection = configureTCPConnection("Test");
-		final IDockerConnectionStorageManager connectionStorageManager = MockDockerConnectionStorageManagerFactory.providing(connection);
+		final IDockerConnectionStorageManager connectionStorageManager = MockDockerConnectionStorageManagerFactory
+				.providing(connection);
 		DockerConnectionManagerUtils.configureConnectionManager(connectionStorageManager);
-		final String buildImageLaunchConfigurationName = configureBuildImageLaunchConfiguration(connection);
-		final ILaunchConfiguration buildDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IBuildDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, buildImageLaunchConfigurationName);
-		assertThat(buildDockerImageLaunchConfig).isNotNull();
-		assertThat(buildDockerImageLaunchConfig.getAttribute(IDockerImageBuildOptions.DOCKER_CONNECTION, ""))
-				.isEqualTo("Test");
-		final String runImageLaunchConfigurationName = configureRunImageLaunchConfiguration(connection);
-		final ILaunchConfiguration runDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, runImageLaunchConfigurationName);
-		assertThat(runDockerImageLaunchConfig).isNotNull();
-		assertThat(runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
-				"")).isEqualTo("Test");
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
-
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(0).setText("foo");
 		getFinishButton().click();
-
 		// then
 		final IDockerConnection foundConnection = DockerConnectionManager.getInstance().findConnection("foo");
 		assertThat(foundConnection).isNotNull();
@@ -606,20 +514,9 @@ public class EditDockerConnectionSWTBotTest {
 	public void shouldSaveConnectionWhenUnixSockerConnectionSettingsChanged() throws CoreException, IOException {
 		// given
 		final IDockerConnection connection = configureUnixSocketConnection("Test");
-		final IDockerConnectionStorageManager connectionStorageManager = MockDockerConnectionStorageManagerFactory.providing(connection);
+		final IDockerConnectionStorageManager connectionStorageManager = MockDockerConnectionStorageManagerFactory
+				.providing(connection);
 		DockerConnectionManagerUtils.configureConnectionManager(connectionStorageManager);
-		final String buildImageLaunchConfigurationName = configureBuildImageLaunchConfiguration(connection);
-		final ILaunchConfiguration buildDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IBuildDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, buildImageLaunchConfigurationName);
-		assertThat(buildDockerImageLaunchConfig).isNotNull();
-		assertThat(buildDockerImageLaunchConfig.getAttribute(IDockerImageBuildOptions.DOCKER_CONNECTION, ""))
-				.isEqualTo("Test");
-		final String runImageLaunchConfigurationName = configureRunImageLaunchConfiguration(connection);
-		final ILaunchConfiguration runDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, runImageLaunchConfigurationName);
-		assertThat(runDockerImageLaunchConfig).isNotNull();
-		assertThat(runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
-				"")).isEqualTo("Test");
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
 		final File tmpDockerSocketFile = folder.newFile("docker.sock");
@@ -627,7 +524,6 @@ public class EditDockerConnectionSWTBotTest {
 		openConnectionEditionWizard("Test");
 		bot.text(1).setText(tmpDockerSocketFile.getAbsolutePath());
 		getFinishButton().click();
-
 		// then
 		final IDockerConnection foundConnection = DockerConnectionManager.getInstance().findConnection("Test");
 		assertThat(foundConnection).isNotNull();
@@ -640,28 +536,15 @@ public class EditDockerConnectionSWTBotTest {
 	public void shouldSaveConnectionWhenTCPConnectionSettingsChanged() throws CoreException {
 		// given
 		final IDockerConnection connection = configureTCPConnection("Test");
-		final IDockerConnectionStorageManager connectionStorageManager = MockDockerConnectionStorageManagerFactory.providing(connection);
+		final IDockerConnectionStorageManager connectionStorageManager = MockDockerConnectionStorageManagerFactory
+				.providing(connection);
 		DockerConnectionManagerUtils.configureConnectionManager(connectionStorageManager);
-		final String buildImageLaunchConfigurationName = configureBuildImageLaunchConfiguration(connection);
-		final ILaunchConfiguration buildDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IBuildDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, buildImageLaunchConfigurationName);
-		assertThat(buildDockerImageLaunchConfig).isNotNull();
-		assertThat(buildDockerImageLaunchConfig.getAttribute(IDockerImageBuildOptions.DOCKER_CONNECTION, ""))
-				.isEqualTo("Test");
-		final String runImageLaunchConfigurationName = configureRunImageLaunchConfiguration(connection);
-		final ILaunchConfiguration runDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, runImageLaunchConfigurationName);
-		assertThat(runDockerImageLaunchConfig).isNotNull();
-		assertThat(runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
-				"")).isEqualTo("Test");
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
-
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(2).setText("https://foo.bar:1234");
 		getFinishButton().click();
-
 		// then
 		final IDockerConnection foundConnection = DockerConnectionManager.getInstance().findConnection("Test");
 		assertThat(foundConnection).isNotNull();
@@ -669,40 +552,74 @@ public class EditDockerConnectionSWTBotTest {
 				.isEqualTo(new TCPConnectionSettings("https://foo.bar:1234", PATH_TO_CERTS));
 		Mockito.verify(connectionStorageManager).saveConnections(Matchers.anyList());
 	}
-	
+
 	@Test
 	public void shouldSaveConnectionWhenNameAndTCPConnectionSettingsChanged() throws CoreException {
 		// given
 		final IDockerConnection connection = configureTCPConnection("Test");
-		final IDockerConnectionStorageManager connectionStorageManager = MockDockerConnectionStorageManagerFactory.providing(connection);
+		final IDockerConnectionStorageManager connectionStorageManager = MockDockerConnectionStorageManagerFactory
+				.providing(connection);
 		DockerConnectionManagerUtils.configureConnectionManager(connectionStorageManager);
-		final String buildImageLaunchConfigurationName = configureBuildImageLaunchConfiguration(connection);
-		final ILaunchConfiguration buildDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IBuildDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, buildImageLaunchConfigurationName);
-		assertThat(buildDockerImageLaunchConfig).isNotNull();
-		assertThat(buildDockerImageLaunchConfig.getAttribute(IDockerImageBuildOptions.DOCKER_CONNECTION, ""))
-		.isEqualTo("Test");
-		final String runImageLaunchConfigurationName = configureRunImageLaunchConfiguration(connection);
-		final ILaunchConfiguration runDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
-				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, runImageLaunchConfigurationName);
-		assertThat(runDockerImageLaunchConfig).isNotNull();
-		assertThat(runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
-				"")).isEqualTo("Test");
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
-		
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(0).setText("foo");
 		bot.text(2).setText("https://foo.bar:1234");
 		getFinishButton().click();
-		
 		// then
 		final IDockerConnection foundConnection = DockerConnectionManager.getInstance().findConnection("foo");
 		assertThat(foundConnection).isNotNull();
 		assertThat(foundConnection.getSettings()).isNotNull()
-		.isEqualTo(new TCPConnectionSettings("https://foo.bar:1234", PATH_TO_CERTS));
+				.isEqualTo(new TCPConnectionSettings("https://foo.bar:1234", PATH_TO_CERTS));
 		Mockito.verify(connectionStorageManager).saveConnections(Matchers.anyList());
+	}
+
+	@Test
+	public void shouldResetConnectionStateWhenUnixConnectionSettingsChanged() throws CoreException, IOException {
+		// given
+		dockerContainers.close();
+		dockerImages.close();
+		final IDockerConnection connection = configureUnixSocketConnection("Test");
+		final IDockerConnectionStorageManager connectionStorageManager = MockDockerConnectionStorageManagerFactory
+				.providing(connection);
+		DockerConnectionManagerUtils.configureConnectionManager(connectionStorageManager);
+		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
+		assertThat(connectionTreeItem).isNotNull();
+		final File tmpDockerSocketFile = folder.newFile("docker.sock");
+		// when
+		openConnectionEditionWizard("Test");
+		bot.text(1).setText(tmpDockerSocketFile.getAbsolutePath());
+		getFinishButton().click();
+		// then
+		final IDockerConnection foundConnection = DockerConnectionManager.getInstance().findConnection("Test");
+		assertThat(foundConnection).isNotNull();
+		assertThat(foundConnection.getSettings()).isNotNull()
+				.isEqualTo(new UnixSocketConnectionSettings(tmpDockerSocketFile.getAbsolutePath()));
+		assertThat(foundConnection.getState()).isEqualTo(EnumDockerConnectionState.UNKNOWN);
+	}
+
+	@Test
+	public void shouldResetConnectionStateWhenTCPConnectionSettingsChanged() throws CoreException {
+		// given
+		dockerContainers.close();
+		dockerImages.close();
+		final IDockerConnection connection = configureTCPConnection("Test");
+		final IDockerConnectionStorageManager connectionStorageManager = MockDockerConnectionStorageManagerFactory
+				.providing(connection);
+		DockerConnectionManagerUtils.configureConnectionManager(connectionStorageManager);
+		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
+		assertThat(connectionTreeItem).isNotNull();
+		// when
+		openConnectionEditionWizard("Test");
+		bot.text(2).setText("https://foo.bar:1234");
+		getFinishButton().click();
+		// then
+		final IDockerConnection foundConnection = DockerConnectionManager.getInstance().findConnection("Test");
+		assertThat(foundConnection).isNotNull();
+		assertThat(foundConnection.getSettings()).isNotNull()
+				.isEqualTo(new TCPConnectionSettings("https://foo.bar:1234", PATH_TO_CERTS));
+		assertThat(foundConnection.getState()).isEqualTo(EnumDockerConnectionState.UNKNOWN);
 	}
 
 }

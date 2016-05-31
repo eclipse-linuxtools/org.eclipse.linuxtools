@@ -34,6 +34,7 @@ import java.util.Set;
 import javax.ws.rs.ProcessingException;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Status;
@@ -48,6 +49,7 @@ import org.eclipse.linuxtools.docker.core.Activator;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.DockerContainerNotFoundException;
 import org.eclipse.linuxtools.docker.core.DockerException;
+import org.eclipse.linuxtools.docker.core.EnumDockerConnectionState;
 import org.eclipse.linuxtools.docker.core.EnumDockerLoggingStatus;
 import org.eclipse.linuxtools.docker.core.IDockerConfParameter;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
@@ -172,8 +174,8 @@ public class DockerConnection implements IDockerConnection, Closeable {
 	private List<IDockerContainer> containers;
 	// containers indexed by id
 	private Map<String, IDockerContainer> containersById;
-	// flag to indicate if the connection to the Docker daemon is active
-	private boolean active = true;
+	// flag to indicate if the state of the connection to the Docker daemon
+	private EnumDockerConnectionState state = EnumDockerConnectionState.UNKNOWN;
 	private boolean containersLoaded = false;
 	private List<IDockerImage> images;
 	private boolean imagesLoaded = false;
@@ -230,7 +232,8 @@ public class DockerConnection implements IDockerConnection, Closeable {
 
 	@Override
 	public boolean isOpen() {
-		return this.client != null;
+		return this.client != null
+				&& this.state == EnumDockerConnectionState.ESTABLISHED;
 	}
 
 	@Override
@@ -253,10 +256,12 @@ public class DockerConnection implements IDockerConnection, Closeable {
 					}
 				} catch (DockerCertificateException e) {
 					throw new DockerException(NLS
-							.bind(Messages.Open_Connection_Failure, this.name));
+							.bind(Messages.Open_Connection_Failure, this.name,
+									this.getUri()));
 				}
-
 			}
+			// then try to ping the Docker daemon to verify the connection
+			ping();
 		}
 	}
 
@@ -280,26 +285,29 @@ public class DockerConnection implements IDockerConnection, Closeable {
 	}
 
 	@Override
-	public boolean isActive() {
-		return active;
+	public EnumDockerConnectionState getState() {
+		return this.state;
 	}
 
-	public void setInactive() {
-		active = false;
-		images = Collections.emptyList();
-		containers = Collections.emptyList();
-		imagesLoaded = true;
-		containersLoaded = true;
-		notifyContainerListeners(containers);
-		notifyImageListeners(images);
-	}
-
-	public void setActive() {
-		active = true;
-		getContainers(true);
-		getImages(true);
-		notifyContainerListeners(containers);
-		notifyImageListeners(images);
+	public void setState(final EnumDockerConnectionState state) {
+		this.state = state;
+		switch (state) {
+		case UNKNOWN:
+		case CLOSED:
+			this.images = Collections.emptyList();
+			this.containers = Collections.emptyList();
+			this.imagesLoaded = true;
+			this.containersLoaded = true;
+			notifyContainerListeners(this.containers);
+			notifyImageListeners(this.images);
+			break;
+		case ESTABLISHED:
+			this.getContainers(true);
+			this.getImages(true);
+			notifyContainerListeners(this.containers);
+			notifyImageListeners(this.images);
+			break;
+		}
 	}
 
 	@Override
@@ -310,8 +318,10 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			} else {
 				throw new DockerException(Messages.Docker_Daemon_Ping_Failure);
 			}
+			setState(EnumDockerConnectionState.ESTABLISHED);
 		} catch (com.spotify.docker.client.DockerException
 				| InterruptedException e) {
+			setState(EnumDockerConnectionState.CLOSED);
 			throw new DockerException(Messages.Docker_Daemon_Ping_Failure, e);
 		}
 	}
@@ -323,6 +333,7 @@ public class DockerConnection implements IDockerConnection, Closeable {
 				this.client.close();
 				this.client = null;
 			}
+			setState(EnumDockerConnectionState.CLOSED);
 		}
 	}
 
@@ -380,17 +391,29 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			// while switching the connection settings.
 			synchronized (clientLock) {
 				this.connectionSettings = connectionSettings;
-				this.client.close();
-				this.client = null;
-				try {
-					// no need to register again
-					open(false);
-				} catch (DockerException e) {
-					Activator.log(e);
+				if (this.client != null) {
+					this.client.close();
 				}
+				this.state = EnumDockerConnectionState.UNKNOWN;
+				this.client = null;
+				new Job(NLS.bind(Messages.Open_Connection, this.getUri())) {
+
+					@Override
+					protected IStatus run(IProgressMonitor monitor) {
+						try {
+							open(true);
+							ping();
+						} catch (DockerException e) {
+							Activator.logErrorMessage(
+									Messages.Docker_Daemon_Ping_Failure, e);
+							return Status.CANCEL_STATUS;
+						}
+						return Status.OK_STATUS;
+					}
+				};
 			}
-			getContainers(true);
-			getImages(true);
+			// getContainers(true);
+			// getImages(true);
 			return true;
 		}
 		return false;
@@ -440,8 +463,8 @@ public class DockerConnection implements IDockerConnection, Closeable {
 		try {
 			return dockerClientFactory.getClient(this.connectionSettings);
 		} catch (DockerCertificateException e) {
-			throw new DockerException(
-					NLS.bind(Messages.Open_Connection_Failure, this.name));
+			throw new DockerException(NLS.bind(Messages.Open_Connection_Failure,
+					this.name, this.getUri()));
 		}
 	}
 
@@ -505,10 +528,17 @@ public class DockerConnection implements IDockerConnection, Closeable {
 
 	@Override
 	public List<IDockerContainer> getContainers(final boolean force) {
-		if (!isActive()) {
+		if (this.state == EnumDockerConnectionState.CLOSED) {
 			return Collections.emptyList();
-		}
-		if (!isContainersLoaded() || force) {
+		} else if (this.state == EnumDockerConnectionState.UNKNOWN) {
+			try {
+				open(true);
+				getContainers(force);
+			} catch (DockerException e) {
+				Activator.log(e);
+			}
+
+		} else if (!isContainersLoaded() || force) {
 			try {
 				return listContainers();
 			} catch (DockerException e) {
@@ -622,7 +652,6 @@ public class DockerConnection implements IDockerConnection, Closeable {
 				}
 				nativeContainers.addAll(client.listContainers(
 						DockerClient.ListContainersParam.allContainers()));
-				this.active = true;
 			}
 			// We have a list of containers. Now, we translate them to our own
 			// core format in case we decide to change the underlying engine
@@ -660,10 +689,10 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			}
 		} catch (com.spotify.docker.client.DockerException
 				| InterruptedException e) {
-			if (active && e.getCause() != null
+			if (isOpen() && e.getCause() != null
 					&& e.getCause().getCause() != null
 					&& e.getCause().getCause() instanceof ProcessingException) {
-				setInactive();
+				close();
 			} else {
 				throw new DockerException(e.getMessage());
 			}
@@ -817,10 +846,16 @@ public class DockerConnection implements IDockerConnection, Closeable {
 		synchronized (imageLock) {
 			latestImages = this.images;
 		}
-		if (!isActive()) {
+		if (this.state == EnumDockerConnectionState.CLOSED) {
 			return Collections.emptyList();
-		}
-		if (!isImagesLoaded() || force) {
+		} else if (this.state == EnumDockerConnectionState.UNKNOWN) {
+			try {
+				open(true);
+				getImages(force);
+			} catch (DockerException e) {
+				Activator.log(e);
+			}
+		} else if (!isImagesLoaded() || force) {
 			try {
 				latestImages = listImages();
 			} catch (DockerException e) {
@@ -859,10 +894,10 @@ public class DockerConnection implements IDockerConnection, Closeable {
 				throw new DockerException(e.message());
 			} catch (com.spotify.docker.client.DockerException
 					| InterruptedException e) {
-				if (active && e.getCause() != null
+				if (isOpen() && e.getCause() != null
 						&& e.getCause().getCause() != null
 						&& e.getCause().getCause() instanceof ProcessingException) {
-					setInactive();
+					close();
 				} else {
 					throw new DockerException(e.getMessage());
 				}

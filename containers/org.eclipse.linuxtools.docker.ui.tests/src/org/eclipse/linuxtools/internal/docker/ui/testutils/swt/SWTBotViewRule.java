@@ -57,4 +57,8 @@ public class SWTBotViewRule extends ExternalResource {
 	public <T> T view() {
 		return (T) view;
 	}
+	
+	public void close() {
+		this.botView.close();
+	}
 }

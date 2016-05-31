@@ -496,7 +496,7 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 			// Default to first active connection name
 			if (connections != null && connections.length > 0) {
 				for (int i = 0; i < connections.length; ++i) {
-					if (connections[i].isActive())
+					if (connections[i].isOpen())
 						defaultConnectionName = connections[i].getName();
 				}
 			}
@@ -601,7 +601,7 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 				// Verify Connection is active
 				IDockerConnection connection = DockerConnectionManager
 						.getInstance().findConnection(connectionName);
-				if (connection == null || !connection.isActive()) {
+				if (connection == null || !connection.isOpen()) {
 					setErrorMessage(WizardMessages
 							.getString("ErrorInactiveConnection.msg")); //$NON-NLS-1$
 					return false;
