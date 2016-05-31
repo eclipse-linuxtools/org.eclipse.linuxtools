@@ -39,6 +39,7 @@ import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerImageListener;
 import org.eclipse.linuxtools.docker.ui.Activator;
+import org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -288,11 +289,12 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 		viewer.setComparator(comparator);
 		// apply search filter
 		this.viewer.addFilter(getImagesFilter());
-		final IDockerConnection[] connections = DockerConnectionManager
-				.getInstance()
-				.getConnections();
-		if (connections.length > 0) {
-			setConnection(connections[0]);
+		// default to first active connection or currently selected connection
+		// in Explorer View
+		IDockerConnection firstActiveConnection = CommandUtils
+				.getCurrentConnection(null);
+		if (firstActiveConnection != null) {
+			setConnection(firstActiveConnection);
 			connection.addImageListener(this);
 		}
 		// get the current selection in the tableviewer
@@ -356,16 +358,18 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		final ITreeSelection treeSelection = (ITreeSelection) selection;
 		// empty the viewer if the selection is empty
-		if(treeSelection.isEmpty()) {
+		if (treeSelection.isEmpty()) {
 			setConnection(null);
 			return;
 		}
-		// remove this view as a container listener on the former select connection 
-		if(this.connection != null) {
+		// remove this view as a container listener on the former select
+		// connection
+		if (this.connection != null) {
 			this.connection.removeImageListener(this);
 		}
-		final Object firstSegment = treeSelection.getPaths()[0].getFirstSegment();
-		if(firstSegment instanceof IDockerConnection) {
+		final Object firstSegment = treeSelection.getPaths()[0]
+				.getFirstSegment();
+		if (firstSegment instanceof IDockerConnection) {
 			setConnection((IDockerConnection) firstSegment);
 			this.connection.addImageListener(this);
 		}
