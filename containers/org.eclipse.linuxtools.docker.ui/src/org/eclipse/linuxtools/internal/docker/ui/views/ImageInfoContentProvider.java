@@ -39,7 +39,7 @@ public class ImageInfoContentProvider implements ITreeContentProvider {
 		if (inputElement instanceof IDockerImage) {
 			final IDockerImage image = (IDockerImage) inputElement;
 			return new Object[] {
-					new Object[] { "Id", image.id().substring(0, 12) }, //$NON-NLS-1$
+					new Object[] { "Id", image.id() }, //$NON-NLS-1$
 					new Object[] { "ParentId", image.parentId() }, //$NON-NLS-1$
 					new Object[] { "Created", //$NON-NLS-1$
 							image.createdDate() != null ? image.createdDate()

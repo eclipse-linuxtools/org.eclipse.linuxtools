@@ -41,7 +41,7 @@ public class ImageInspectContentProvider implements ITreeContentProvider {
 		if (inputElement instanceof IDockerImageInfo) {
 			final IDockerImageInfo info = (IDockerImageInfo) inputElement;
 			return new Object[] {
-					new Object[] { "Id", info.id().substring(0, 12) }, //$NON-NLS-1$
+					new Object[] { "Id", info.id() }, //$NON-NLS-1$
 					new Object[] { "Parent", info.parent() }, //$NON-NLS-1$
 					new Object[] { "Comment", info.comment() }, //$NON-NLS-1$
 					new Object[] {
