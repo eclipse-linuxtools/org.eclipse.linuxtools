@@ -33,7 +33,7 @@ public class DockerImage implements IDockerImage {
 	/** the image name pattern. */
 	public static final Pattern imageNamePattern = Pattern.compile("(" //$NON-NLS-1$
 			+ REGISTRY_HOST + "\\:" + REGISTRY_PORT + "/)?" //$NON-NLS-1$ //$NON-NLS-2$
-			+ "((?<repository>" + REPOSITORY + ")/)?" //$NON-NLS-1$ //$NON-NLS-2$
+			+ "((?<repository>" + REPOSITORY + "(/" + REPOSITORY + ")?)/)?" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			+ "(?<name>" + NAME + ")" //$NON-NLS-1$ //$NON-NLS-2$
 			+ "(\\:(?<tag>" + TAG + "))?"); //$NON-NLS-1$ //$NON-NLS-2$
 
