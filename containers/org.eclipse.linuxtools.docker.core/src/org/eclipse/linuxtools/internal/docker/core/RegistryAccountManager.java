@@ -38,15 +38,17 @@ public class RegistryAccountManager {
 		ISecurePreferences preferences = SecurePreferencesFactory.getDefault();
 		ISecurePreferences dockerNode = preferences.node("org.eclipse.linuxtools.docker.ui.accounts"); //$NON-NLS-1$
 		for (String key : dockerNode.keys()) {
-			String[] tokens = key.split("_"); //$NON-NLS-1$
-			String serverAddress = tokens[0];
-			String username = tokens[1];
-			String email = ""; //$NON-NLS-1$
-			if (tokens.length > 2) {
-				email = tokens[2];
+			String[] tokens = key.split(","); //$NON-NLS-1$
+			if (tokens.length > 1) {
+				String serverAddress = tokens[0];
+				String username = tokens[1];
+				String email = ""; //$NON-NLS-1$
+				if (tokens.length > 2) {
+					email = tokens[2];
+				}
+				RegistryAccountInfo account = new RegistryAccountInfo(serverAddress, username, email, null);
+				accounts.add(account);
 			}
-			RegistryAccountInfo account = new RegistryAccountInfo(serverAddress, username, email, null);
-			accounts.add(account);
 		}
 		return accounts;
 	}
@@ -83,6 +85,6 @@ public class RegistryAccountManager {
 	}
 
 	private String getKeyFor(IRegistryAccount info) {
-		return info.getServerAddress() + "_" + info.getUsername() + "_" + info.getEmail(); //$NON-NLS-1$ //$NON-NLS-2$
+		return info.getServerAddress() + "," + info.getUsername() + "," + info.getEmail(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }
