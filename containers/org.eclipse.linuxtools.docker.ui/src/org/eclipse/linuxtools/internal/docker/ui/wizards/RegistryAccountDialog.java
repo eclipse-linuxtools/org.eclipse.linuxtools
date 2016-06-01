@@ -19,10 +19,17 @@ public class RegistryAccountDialog extends Dialog {
 	private String username;
 	private String email;
 	private char[] password;
+	private String title;
 
 	public RegistryAccountDialog(Shell parentShell, String title) {
 		super(parentShell);
-		parentShell.setText(title);
+		this.title = title;
+	}
+
+	@Override
+	protected void configureShell(Shell shell) {
+		super.configureShell(shell);
+		shell.setText(title);
 	}
 
 	@Override
