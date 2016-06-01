@@ -174,7 +174,7 @@ public class DockerConnection implements IDockerConnection, Closeable {
 	// containers sorted by name
 	private List<IDockerContainer> containers;
 	// containers indexed by id
-	private Map<String, IDockerContainer> containersById;
+	private Map<String, IDockerContainer> containersById = new HashMap<>();
 	// flag to indicate if the state of the connection to the Docker daemon
 	private EnumDockerConnectionState state = EnumDockerConnectionState.UNKNOWN;
 	private boolean containersLoaded = false;
@@ -297,6 +297,7 @@ public class DockerConnection implements IDockerConnection, Closeable {
 		case CLOSED:
 			this.images = Collections.emptyList();
 			this.containers = Collections.emptyList();
+			this.containersById = new HashMap<>();
 			this.imagesLoaded = true;
 			this.containersLoaded = true;
 			notifyContainerListeners(this.containers);
