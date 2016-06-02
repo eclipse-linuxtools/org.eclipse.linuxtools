@@ -925,19 +925,19 @@ public class DockerConnection implements IDockerConnection, Closeable {
 				imageParentIds.add(rawImage.parentId());
 			}
 			for (Image rawImage : rawImages) {
-				final boolean taggedImage = !(rawImage.repoTags() != null
-						&& rawImage.repoTags().size() == 1
-						&& rawImage
-						.repoTags().contains("<none>:<none>")); //$NON-NLS-1$
+				// return one IDockerImage per raw image
+				final List<String> repoTags = rawImage.repoTags() != null
+						&& rawImage.repoTags().size() > 0
+						? new ArrayList<>(rawImage.repoTags())
+						: Arrays.asList("<none>:<none>"); //$NON-NLS-1$
+				Collections.sort(repoTags);
+				final boolean taggedImage = !(repoTags != null
+						&& repoTags.size() == 1
+						&& repoTags.contains("<none>:<none>")); //$NON-NLS-1$
 				final boolean intermediateImage = !taggedImage
 						&& imageParentIds.contains(rawImage.id());
 				final boolean danglingImage = !taggedImage
 						&& !intermediateImage;
-				// return one IDockerImage per raw image
-				final List<String> repoTags = rawImage.repoTags() != null
-						? new ArrayList<>(rawImage.repoTags())
-						: Arrays.asList("<none>:<none>"); //$NON-NLS-1$
-				Collections.sort(repoTags);
 				final String repo = DockerImage.extractRepo(repoTags.get(0));
 				final List<String> tags = Arrays
 						.asList(DockerImage.extractTag(repoTags.get(0)));
