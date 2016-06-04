@@ -85,6 +85,51 @@ public class ContainerLauncher {
 			List<String> additionalDirs, Map<String, String> origEnv,
 			Map<String, String> envMap, List<String> ports, boolean keep,
 			boolean stdinSupport) {
+		launch(id, listener, connectionUri, image, command, commandDir,
+				workingDir, additionalDirs, origEnv, envMap, ports, keep,
+				stdinSupport, false);
+	}
+
+	/**
+	 * Perform a launch of a command in a container.
+	 * 
+	 * @param id
+	 *            - id of caller to use to distinguish console owner
+	 * @param listener
+	 *            - optional listener of the run console
+	 * @param connectionUri
+	 *            - the specified connection to use
+	 * @param image
+	 *            - the image to use
+	 * @param command
+	 *            - command to run
+	 * @param commandDir
+	 *            - directory command requires or null
+	 * @param workingDir
+	 *            - working directory or null
+	 * @param additionalDirs
+	 *            - additional directories to mount or null
+	 * @param origEnv
+	 *            - original environment if we are appending to our existing
+	 *            environment
+	 * @param envMap
+	 *            - map of environment variable settings
+	 * @param ports
+	 *            - ports to expose
+	 * @param keep
+	 *            - keep container after running
+	 * @param stdinSupport
+	 *            - true if stdin support is required, false otherwise
+	 * @param privilegedMode
+	 *            - true if privileged mode is required, false otherwise
+	 */
+	public void launch(String id, IContainerLaunchListener listener,
+			final String connectionUri, String image, String command,
+			String commandDir, String workingDir, List<String> additionalDirs,
+			Map<String, String> origEnv, Map<String, String> envMap,
+			List<String> ports, boolean keep, boolean stdinSupport,
+			boolean privilegedMode) {
+
 
 		final String LAUNCH_TITLE = "ContainerLaunch.title"; //$NON-NLS-1$
 		final String LAUNCH_EXITED_TITLE = "ContainerLaunchExited.title"; //$NON-NLS-1$
@@ -166,7 +211,7 @@ public class ContainerLauncher {
 		final DockerContainerConfig config = builder.build();
 
 		DockerHostConfig.Builder hostBuilder = new DockerHostConfig.Builder()
-				.binds(volumes);
+				.binds(volumes).privileged(privilegedMode);
 
 		// add any port bindings if specified
 		if (portBindingsMap.size() > 0)
