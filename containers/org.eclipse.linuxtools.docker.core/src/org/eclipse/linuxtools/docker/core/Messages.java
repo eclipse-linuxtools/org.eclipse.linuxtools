@@ -37,6 +37,8 @@ public class Messages extends NLS {
 	public static String Registry_Version_Mismatch;
 	public static String Docker_Machine_Command_Not_Found;
 	public static String Docker_Connection_Timeout;
+	public static String Docker_Machine_Process_Error;
+	public static String Docker_Machine_Process_Exception;
 
 	static {
 		// Initialize resource bundle.
