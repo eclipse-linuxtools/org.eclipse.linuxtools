@@ -19,6 +19,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -31,6 +33,8 @@ import org.eclipse.osgi.util.NLS;
  * line in a process.
  */
 public class DockerMachine {
+
+	private static Object lock = new Object();
 
 	/**
 	 * @param pathToDockerMachine
@@ -95,62 +99,76 @@ public class DockerMachine {
 	 */
 	private static String[] execute(final String dockerMachineInstallDir,
 			final String[] args, final String... extraPaths) {
-		try {
+		synchronized (lock) {
 			// check that the 'docker-machine' can be found in the given
 			// 'dockerMachineInstallDir'
 			final boolean dockerMachineCommandExists = checkPathToDockerMachine(
 					dockerMachineInstallDir);
 			if (!dockerMachineCommandExists) {
 				// log a warning and exit
-				Activator
-						.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-								NLS.bind(
-										Messages.Docker_Machine_Command_Not_Found,
-										dockerMachineInstallDir)));
+				Activator.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
+						NLS.bind(Messages.Docker_Machine_Command_Not_Found,
+								dockerMachineInstallDir)));
 				return new String[0];
 			}
 			final String[] command = new String[args.length + 1];
 			command[0] = Paths.get(dockerMachineInstallDir,
 					getDockerMachineExecutableName()).toString();
 			System.arraycopy(args, 0, command, 1, args.length);
-			final ProcessBuilder processBuilder = new ProcessBuilder(command);
-			final Map<String, String> environment = processBuilder
-					.environment();
-			final StringBuilder path = new StringBuilder();
-			for (String extraPath : extraPaths) {
-				path.append(File.pathSeparator).append(extraPath);
-			}
-			String newEnvPath = environment.get("PATH") + path.toString(); //$NON-NLS-1$
-			environment.put("PATH", newEnvPath); //$NON-NLS-1$
+			try {
+				final ProcessBuilder processBuilder = new ProcessBuilder(
+						command);
+				final Map<String, String> environment = processBuilder
+						.environment();
+				final StringBuilder path = new StringBuilder();
+				for (String extraPath : extraPaths) {
+					path.append(File.pathSeparator).append(extraPath);
+				}
+				final String newEnvPath = environment.get("PATH") //$NON-NLS-1$
+						+ path.toString();
+				environment.put("PATH", newEnvPath); //$NON-NLS-1$
 
-			final Process p = processBuilder.start();
-			p.waitFor();
-			if (p.exitValue() == 0) {
-				final List<String> result = new ArrayList<>();
-				try (BufferedReader buff = new BufferedReader(
-						new InputStreamReader(p.getInputStream()))) {
-					String line;
-					while ((line = buff.readLine()) != null) {
-						result.add(line);
+				final Process p = processBuilder.start();
+				p.waitFor();
+				if (p.exitValue() == 0) {
+					final List<String> result = new ArrayList<>();
+					try (final InputStream inputStream = p.getInputStream();
+							final BufferedReader buff = new BufferedReader(
+									new InputStreamReader(inputStream))) {
+						String line;
+						while ((line = buff.readLine()) != null) {
+							result.add(line);
+						}
 					}
-				}
-				return result.toArray(new String[0]);
-			} else {
-				final StringBuffer errorMessage = new StringBuffer();
-				try (BufferedReader buff = new BufferedReader(
-						new InputStreamReader(p.getErrorStream()))) {
-					String line;
-					while ((line = buff.readLine()) != null) {
-						errorMessage.append(line).append('\n'); // $NON-NLS-1$
+					return result.toArray(new String[0]);
+				} else {
+					final StringBuffer errorMessage = new StringBuffer();
+					try (final InputStream errorStream = p.getErrorStream();
+							final BufferedReader buff = new BufferedReader(
+									new InputStreamReader(errorStream))) {
+						String line;
+						while ((line = buff.readLine()) != null) {
+							errorMessage.append(line).append('\n'); // $NON-NLS-1$
+						}
 					}
+					Activator.log(new Status(IStatus.WARNING,
+							Activator.PLUGIN_ID,
+							NLS.bind(Messages.Docker_Machine_Process_Error,
+									new Object[] {
+											Stream.of(command).collect(
+													Collectors.joining(" ")),
+											p.exitValue(),
+											errorMessage.toString() })));
 				}
+			} catch (IOException | InterruptedException e) {
 				Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-						errorMessage.toString()));
+						NLS.bind(Messages.Docker_Machine_Process_Exception,
+								Stream.of(command)
+										.collect(Collectors.joining(" ")),
+								e)));
 			}
-		} catch (IOException | InterruptedException e) {
-			Activator.log(e);
+			return new String[0];
 		}
-		return new String[0];
 	}
 
 	/**
