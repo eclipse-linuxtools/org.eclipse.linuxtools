@@ -9,7 +9,7 @@
     <path id="tasks.classpath" path="bin" />
     <path id="wikitext.tasks.classpath">
         <!-- Replace dir with the dir you have wikitext installed into.-->
-        <fileset dir="/usr/lib64/eclipse/dropins/mylyn-wikitext/eclipse/plugins">
+        <fileset dir="/usr/share/eclipse/droplets/mylyn-docs/eclipse/plugins">
             <include name="org.eclipse.mylyn.wikitext.*core*.jar" />
         </fileset>
     </path>

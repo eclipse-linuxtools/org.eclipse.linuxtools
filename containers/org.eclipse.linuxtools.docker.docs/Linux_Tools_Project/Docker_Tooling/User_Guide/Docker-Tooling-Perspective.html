@@ -28,7 +28,7 @@
 				<td style="width: 60%" align="center"></td>
 				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
 			</tr>
-		</table><hr/>
+		</table><hr class="navigation-separator"/>
 		<h1 id="Docker_Tooling_Perspective">Docker Tooling Perspective</h1>
 		<p>A new perspective known as the Docker Tooling Perspective is added.</p>
 		<p>
@@ -37,13 +37,13 @@
 		<p>This perspective brings up three new views added:</p>
 		<ul>
 			<li>
-				<a href="Docker-Tooling-Perspective.html#Docker_Explorer_View">Docker Explorer View</a> - view for creating/managing connections to Docker daemons
+				<a href="#Docker_Explorer_View">Docker Explorer View</a> - view for creating/managing connections to Docker daemons
 			</li>
 			<li>
-				<a href="Docker-Tooling-Perspective.html#Docker_Images_View">Docker Images View</a> - view for managing Docker Images
+				<a href="#Docker_Images_View">Docker Images View</a> - view for managing Docker Images
 			</li>
 			<li>
-				<a href="Docker-Tooling-Perspective.html#Docker_Containers_View">Docker Containers View</a> - view for managing Docker Containers
+				<a href="#Docker_Containers_View">Docker Containers View</a> - view for managing Docker Containers
 			</li>
 		</ul>
 		<p>In addition, the Docker Tooling Perspective adds the Console View and the Properties View.</p>
@@ -65,6 +65,7 @@
 			<img border="0" src="images/LinuxToolsDockerExplorerViewInit.png"/>
 		</p>
 		<p>Clicking on the message will bring up the New Connection Wizard.</p>
+		<h3 id="New_Connection_Wizard">New Connection Wizard</h3>
 		<p>
 			<img border="0" src="images/LinuxToolsNewConnectionWizard.png"/>
 		</p>
@@ -85,7 +86,20 @@
 			has performed management outside of Eclipse using the docker command.
 		</p>
 		<p>The Explorer View shows a tree view with the main nodes being the connections.  Each connection opens up to reveal Images and
-			Containers nodes which have children nodes for Images and Containers that the connection knows about.  Filtering is provided.
+			Containers nodes which have children nodes for Images and Containers that the connection knows about.  If a connection gets dropped
+			(e.g. the daemon is stopped), it will be marked in view using a gray disabled icon.  To enable the connection,
+			use the 
+			<img border="0" src="images/LinuxToolsDockerToolingEnableConnection.png"/> icon on the toolbar to re-enable the connection.  If the connection
+			can be enabled, it will change color to denote this. 
+		</p>
+		<h3 id="Edit_Connection_Wizard">Edit Connection Wizard</h3>
+		<p>A connection can also be edited after it is created.  Simply select the connection in the Docker Explorer View and right-click for
+			the context menu to select "Edit Connection...".  This will bring up the Edit Connection Wizard:</p>
+		<p>
+			<img border="0" src="images/LinuxToolsEditConnection.png"/>
+		</p>
+		<h3 id="Filtering">Filtering</h3>
+		<p>Filtering is provided for the Docker Explorer View.
 			Simply click on the generic Menu options (down arrow) and click on "Customize View...".  This will bring up the following dialog:</p>
 		<p>
 			<img border="0" src="images/LinuxToolsExplorerFilter.png"/>
@@ -110,12 +124,14 @@
 			<li>Unpause - continue a paused Container</li>
 			<li>Stop - stop running Containers</li>
 			<li>Kill - kill running Containers</li>
+			<li>Show in - show in Properties View</li>
+			<li>Execute Shell - run a shell in the Terminal View (running Container only)</li>
 			<li>Remove - delete stopped Containers</li>
 			<li>
-				<a href="Docker-Tooling-Perspective.html#Commit_Container">Commit</a> - commit the Container to an Image
+				<a href="#Commit_Container">Commit</a> - commit the Container to an Image
 			</li>
 			<li>
-				<a href="Docker-Tooling-Perspective.html#Display_Log">Display Log</a> - display the log for the Container
+				<a href="#Display_Log">Display Log</a> - display the log for the Container
 			</li>
 			<li>Remove Log - removes the log for the Container from Eclipse Console View</li>
 		</ul>
@@ -125,17 +141,18 @@
 		<p>For Images, one can:</p>
 		<ul>
 			<li>
-				<a href="Docker-Tooling-Perspective.html#Run_Image">Run</a> - build a Container and run it
+				<a href="#Run_Image">Run</a> - build a Container and run it
 			</li>
+			<li>Show in Properties View</li>
 			<li>Remove - delete selected Images</li>
 			<li>
-				<a href="Docker-Tooling-Perspective.html#Push_Image">Push</a> - push an Image to a registry
+				<a href="#Push_Image">Push</a> - push an Image to a registry
 			</li>
 			<li>
-				<a href="Docker-Tooling-Perspective.html#Add_Tag">Add Tag</a> - add a tag to an Image
+				<a href="#Add_Tag">Add Tag</a> - add a tag to an Image
 			</li>
 			<li>
-				<a href="Docker-Tooling-Perspective.html#Remove_Tag">Remove Tag</a> - remove a tag from an Image with multiple tags
+				<a href="#Remove_Tag">Remove Tag</a> - remove a tag from an Image with multiple tags
 			</li>
 		</ul>
 		<h2 id="Docker_Images_View">Docker Images View</h2>
@@ -152,23 +169,23 @@
 		<ul>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerImageViewPull.png"/> - 
-				<a href="Docker-Tooling-Perspective.html#Pull_Image">pull an Image from the Repository</a>
+				<a href="#Pull_Image">pull an Image from the Repository</a>
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerImageViewPush.png"/> - 
-				<a href="Docker-Tooling-Perspective.html#Push_Image">push an Image to the Repository</a>
+				<a href="#Push_Image">push an Image to the Repository</a>
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerContainerCreate.png"/> - 
-				<a href="Docker-Tooling-Perspective.html#Run_Image">create a Container from an Image</a>
+				<a href="#Run_Image">create a Container from an Image</a>
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerImageBuild.png"/> - 
-				<a href="Docker-Tooling-Perspective.html#Build_Image">build an Image from a Dockerfile</a>
+				<a href="#Build_Image">build an Image from a Dockerfile</a>
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerTagImage.png"/> - 
-				<a href="Docker-Tooling-Perspective.html#Add_Tag">tag an Image</a>
+				<a href="#Add_Tag">tag an Image</a>
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerDeleteImage.png"/> - delete one or more Images (requires confirmation)
@@ -180,22 +197,29 @@
 		<p>There are also context menu actions supported:</p>
 		<ul>
 			<li>
-				<a href="Docker-Tooling-Perspective.html#Add_Tag">Add Tag</a> - same as the toolbar tag image action
+				<img border="0" src="images/LinuxToolsDockerContainerCreate.png"/> - 
+				<a href="#Run_Image">Run an Image and create a Container</a>
 			</li>
 			<li>
-				<a href="Docker-Tooling-Perspective.html#Remove_Tag">Remove Tag</a> - remove a tag from an Image with multiple repo tags
+				<a href="#Add_Tag">Add Tag</a> - same as the toolbar tag image action
+			</li>
+			<li>
+				<a href="#Remove_Tag">Remove Tag</a> - remove a tag from an Image with multiple repo tags
 			</li>
 		</ul>
 		<p>The text entry below the Connection name is used to search/filter the contents of the list.
 			Anything typed in the filter text widget is used to match items in the list (any column) and
 			any row without a match is excluded.</p>
 		<h3 id="Pull_Image">Pull Image</h3>
-		<p>Pulling a Docker Image consists of requesting a repo tag or repository specification.
-			Specifying a repository but no tag will pull all Images from that repo (for example: fedora).</p>
-		<p>The pull Wizard is used to specify the repository or repo:tag specification.</p>
+		<p>Pulling a Docker Image consists of requesting a repo tag or repository specification from
+			a registry.  Specifying a repository with no tag will pull all Images from that repo (for example: fedora).</p>
+		<p>The pull Wizard is used to specify the repository or repo:tag specification and the registry to use.</p>
 		<p>
 			<img border="0" src="images/LinuxToolsDockerPullWizard.png"/>
 		</p>
+		<p>By default, the Docker Hub registry will be used, however, a user may
+			specify an additional private registry if desired.  Additional registries are added using
+			Windows -&gt; Preferences -&gt; Docker -&gt; Registry Accounts.</p>
 		<p>The user can either fill in the complete name of the image to download or a search can be performed
 			using the Search button.  This brings up the Search Image Wizard.</p>
 		<p>
@@ -221,7 +245,10 @@
 			repo:tag, it will be pushed to the specified registry.  To specify an external or local registry,
 			use the Tag Image function to add a new tag to an existing Image which has the registry specifier and
 			then push that tag.</p>
-		<p>The push Wizard is used to specify the tag to push.</p>
+		<p>The latest version of the Push Image Wizard allows one to specify a registry/account that has been added
+			via Window -&gt; Preferences -&gt; Docker -&gt; Registry Accounts.  This is needed when authorization is required
+			by the registry for the specified repo.  Using the aforementioned tag method assumes no authorization
+			required.</p>
 		<p>
 			<img border="0" src="images/LinuxToolsDockerPushWizard.png"/>
 		</p>
@@ -256,6 +283,7 @@
 			<li>Keep Stdin Open - used to allow input from the Console</li>
 			<li>Allocate pseudo-tty - used to allocate a TTY for the Container (needed if running a shell)</li>
 			<li>Automatically remove the Container on exit - this is used to remove the Container when finished</li>
+			<li>Give extended privileges to this container - this is used to give the container additional privileges</li>
 		</ul>
 		<p>The second page of the Wizard also has a number of needed settings:</p>
 		<p>
@@ -305,7 +333,7 @@
 		<p>The directory can be specified using the "Browse" button.  Once a valid existing directory
 			is specified, the "Edit" button will be enabled, allowing creation and modification of the
 			Dockerfile using a 
-			<a href="Docker-Tooling-Perspective.html#Dockerfile_Editor">basic editor dialog</a>.
+			<a href="#Dockerfile_Editor">basic editor dialog</a>.
 		</p>
 		<p>When the Dockerfile is considered complete, hitting the "Finish" button will start the
 			Image build action.  When the build is complete, the Docker Images View will be refreshed
@@ -314,8 +342,13 @@
 		<p>
 			<img border="0" src="images/LinuxToolsDockerfileEditor.png"/>
 		</p>
-		<p>The Dockerfile editor is a rudimentary text editor with clipboard support (copy, cut, and paste).
-			The Dockerfile is used to specify how to build the new Docker Image.  The file contains
+		<p>The Dockerfile editor is a specialized text editor for Dockerfiles that was added to the
+			Neon release.  The editor supports
+			completion and offers help on the basic Dockerfile constructs.  Completion occurs using the
+			CTRL + space sequence as in any other text editor.  Reverting fixes and saving are also supported plus
+			full colorization.  The editor can be brought up from the Build Image Wizard or by double-clicking on
+			a Dockerfile file in an Eclipse View such as the Project Explorer.</p>
+		<p>A Dockerfile is used to specify how to build the new Docker Image.  The file contains
 			a set of commands used to build the Image:</p>
 		<ul>
 			<li>FROM xxxxxx - this must be the first line and specifies the Image xxxxxx to base off of (e.g. FROM fedora:20)
@@ -390,6 +423,23 @@
 		<p>For more details, see 
 			<a href="http://docs.docker.com/reference/builder">the official Dockerfile reference</a>
 		</p>
+		<h4 id="Build_Image_Run_Configuration">Build Image Run Configuration</h4>
+		<p>A Dockerfile can also be run by right-clicking on it in an Eclipse project and choosing
+			Run as -&gt; Docker Image Build.  For the first time the file is built, you will get the following
+			dialog:</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerBuildImageFirstDialog.png"/>
+		</p>
+		<p>Here, the connection and the repository name for the new image can be supplied.  An image created
+			without a name will default to be: dockerfile:xxxxxxxxxxxx where xxxxxxxxxxx is a unique hex value.  </p>
+		<p>After building, a Run configuration will be created that can be inspected, modified, or run using
+			the Run-&gt;Run Configurations... menu option.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerBuildImageConfiguration2.png"/>
+		</p>
+		<p>Note there are additional options in the configuration that can be specified for the image build that
+			are not available by right-clicking on the Dockerfile.  A new Run configuration can be created from the
+			Run Configurations dialog by double-clicking on the Build Docker Image category.</p>
 		<h3 id="Add_Tag">Add Tag</h3>
 		<p>The Tag Image dialog can be brought up directly from the Docker Images View toolbar or using the
 			context menu by right-clicking on an Image.</p>
@@ -460,10 +510,10 @@
 		<p>The following context menu actions are supported:</p>
 		<ul>
 			<li>Commit Container - 
-				<a href="Docker-Tooling-Perspective.html#Commit_Container">commit all changes of a selected Container into a new Image</a>
+				<a href="#Commit_Container">commit all changes of a selected Container into a new Image</a>
 			</li>
 			<li>Display Log - 
-				<a href="Docker-Tooling-Perspective.html#Display_Log">display the stdout/stderr logs of a selected Container in the Console View</a>
+				<a href="#Display_Log">display the stdout/stderr logs of a selected Container in the Console View</a>
 			</li>
 			<li>Remove Log - remove the stdout/stderr logs of a selected Container from the Console View</li>
 		</ul>
@@ -511,9 +561,9 @@
 		</ul>
 		<h2 id="Properties_View">Properties View</h2>
 		<p>The Properties View will respond to selections in the three Docker Tooling Views: 
-			<a href="Docker-Tooling-Perspective.html#Docker_Explorer_View">Docker Explorer View</a>, 
-			<a href="Docker-Tooling-Perspective.html#Docker_Images_View">Docker Images View</a>, and the 
-			<a href="Docker-Tooling-Perspective.html#Docker_Containers_View">Docker Containers View</a>.  The data shown will depend on what is being selected:
+			<a href="#Docker_Explorer_View">Docker Explorer View</a>, 
+			<a href="#Docker_Images_View">Docker Images View</a>, and the 
+			<a href="#Docker_Containers_View">Docker Containers View</a>.  The data shown will depend on what is being selected:
 		</p>
 		<ul>
 			<li>Docker Connection</li>
@@ -530,7 +580,7 @@
 		</ul>
 		<p>
 			<img border="0" src="images/LinuxToolsDockerPropertiesView.png"/>
-		</p><hr/>
+		</p><hr class="navigation-separator"/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
 				<td style="width: 20%" align="left">
