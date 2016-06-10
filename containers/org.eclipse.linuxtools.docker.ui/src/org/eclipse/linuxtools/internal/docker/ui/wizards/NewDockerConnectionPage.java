@@ -977,6 +977,10 @@ public class NewDockerConnectionPage extends WizardPage {
 	}
 
 	private class ConnectionSelectionLabelProvider implements ILabelProvider {
+
+		private Image CONNECTION_IMAGE = SWTImagesFactory.DESC_REPOSITORY_MIDDLE
+				.createImage();
+
 		@Override
 		public void removeListener(ILabelProviderListener listener) {
 		}
@@ -988,6 +992,7 @@ public class NewDockerConnectionPage extends WizardPage {
 
 		@Override
 		public void dispose() {
+			CONNECTION_IMAGE.dispose();
 		}
 
 		@Override
@@ -1001,7 +1006,7 @@ public class NewDockerConnectionPage extends WizardPage {
 
 		@Override
 		public Image getImage(Object element) {
-			return SWTImagesFactory.DESC_REPOSITORY_MIDDLE.createImage();
+			return CONNECTION_IMAGE;
 		}
 	}
 
