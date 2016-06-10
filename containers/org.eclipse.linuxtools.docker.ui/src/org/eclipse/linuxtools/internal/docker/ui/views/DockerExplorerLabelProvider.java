@@ -45,6 +45,26 @@ import org.eclipse.swt.graphics.Image;
 public class DockerExplorerLabelProvider implements IStyledLabelProvider, ILabelProvider {
 
 	private static final String UNNAMED_CONNECTION = "Connection.unnamed"; //$NON-NLS-1$
+	private Image OPEN_CONNECTION_IMAGE = SWTImagesFactory.DESC_REPOSITORY_MIDDLE
+			.createImage();
+	private Image UNOPEN_CONNECTION_IMAGE = SWTImagesFactory.DESC_REPOSITORY_MIDDLED
+			.createImage();
+	private Image CATEGORY_IMAGE = SWTImagesFactory.DESC_DB_GROUP.createImage();
+	private Image IMAGE_IMAGE = SWTImagesFactory.DESC_IMAGE.createImage();
+	private Image STARTED_CONTAINER_IMAGE = SWTImagesFactory.DESC_CONTAINER_STARTED
+			.createImage();
+	private Image PAUSED_CONTAINER_IMAGE = SWTImagesFactory.DESC_CONTAINER_PAUSED
+			.createImage();
+	private Image STOPPED_CONTAINER_IMAGE = SWTImagesFactory.DESC_CONTAINER_STOPPED
+			.createImage();
+	private Image CONTAINER_LINK_IMAGE = SWTImagesFactory.DESC_CONTAINER_LINK
+			.createImage();
+	private Image CONTAINER_VOLUME_IMAGE = SWTImagesFactory.DESC_CONTAINER_VOLUME
+			.createImage();
+	private Image CONTAINER_PORT_IMAGE = SWTImagesFactory.DESC_CONTAINER_PORT
+			.createImage();
+	private Image LOADING_IMAGE = SWTImagesFactory.DESC_SYSTEM_PROCESS
+			.createImage();
 
 	@Override
 	public void addListener(ILabelProviderListener listener) {
@@ -52,6 +72,17 @@ public class DockerExplorerLabelProvider implements IStyledLabelProvider, ILabel
 
 	@Override
 	public void dispose() {
+		OPEN_CONNECTION_IMAGE.dispose();
+		UNOPEN_CONNECTION_IMAGE.dispose();
+		CATEGORY_IMAGE.dispose();
+		IMAGE_IMAGE.dispose();
+		STARTED_CONTAINER_IMAGE.dispose();
+		PAUSED_CONTAINER_IMAGE.dispose();
+		STOPPED_CONTAINER_IMAGE.dispose();
+		CONTAINER_LINK_IMAGE.dispose();
+		CONTAINER_VOLUME_IMAGE.dispose();
+		CONTAINER_PORT_IMAGE.dispose();
+		LOADING_IMAGE.dispose();
 	}
 
 	@Override
@@ -67,38 +98,38 @@ public class DockerExplorerLabelProvider implements IStyledLabelProvider, ILabel
 	public Image getImage(final Object element) {
 		if(element instanceof IDockerConnection) {
 			if (((IDockerConnection) element).isOpen()) {
-				return SWTImagesFactory.DESC_REPOSITORY_MIDDLE.createImage();
+				return OPEN_CONNECTION_IMAGE;
 			} else {
-				return SWTImagesFactory.DESC_REPOSITORY_MIDDLED.createImage();
+				return UNOPEN_CONNECTION_IMAGE;
 			}
 		} else if(element instanceof DockerImagesCategory) {
-			return SWTImagesFactory.DESC_DB_GROUP.createImage();
+			return CATEGORY_IMAGE;
 		} else if(element instanceof DockerContainersCategory) {
-			return SWTImagesFactory.DESC_DB_GROUP.createImage();
+			return CATEGORY_IMAGE;
 		} else if(element instanceof IDockerImage) {
-			return SWTImagesFactory.DESC_IMAGE.createImage();
+			return IMAGE_IMAGE;
 		} else if(element instanceof IDockerContainer) {
 			final IDockerContainer container = (IDockerContainer) element;
 			final EnumDockerStatus containerStatus = EnumDockerStatus
 					.fromStatusMessage(container.status());
 			if (containerStatus == EnumDockerStatus.RUNNING) {
-				return SWTImagesFactory.DESC_CONTAINER_STARTED.createImage();
+				return STARTED_CONTAINER_IMAGE;
 			} else if (containerStatus == EnumDockerStatus.PAUSED) {
-				return SWTImagesFactory.DESC_CONTAINER_PAUSED.createImage();
+				return PAUSED_CONTAINER_IMAGE;
 			} else {
-				return SWTImagesFactory.DESC_CONTAINER_STOPPED.createImage();
+				return STOPPED_CONTAINER_IMAGE;
 			}
 		} else if (element instanceof DockerContainerLinksCategory
 				|| element instanceof DockerContainerLink) {
-			return SWTImagesFactory.DESC_CONTAINER_LINK.createImage();
+			return CONTAINER_LINK_IMAGE;
 		} else if (element instanceof DockerContainerVolumesCategory
 				|| element instanceof DockerContainerVolume) {
-			return SWTImagesFactory.DESC_CONTAINER_VOLUME.createImage();
+			return CONTAINER_VOLUME_IMAGE;
 		} else if (element instanceof DockerContainerPortMappingsCategory
 				|| element instanceof IDockerPortMapping) {
-			return SWTImagesFactory.DESC_CONTAINER_PORT.createImage();
+			return CONTAINER_PORT_IMAGE;
 		} else if(element instanceof LoadingStub) {
-			return SWTImagesFactory.DESC_SYSTEM_PROCESS.createImage();
+			return LOADING_IMAGE;
 		}
 		return null;
 	}
