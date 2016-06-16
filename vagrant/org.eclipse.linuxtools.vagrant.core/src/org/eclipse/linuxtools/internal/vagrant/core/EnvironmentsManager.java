@@ -167,25 +167,29 @@ public class EnvironmentsManager {
 	 * eclipse, as users may not know *all* environment variables that need to
 	 * be set, or to do so may be tedious.
 	 */
-	public static String[] convertEnvironment(Map<String, String> env) {
-		if (env == null || env.size() == 0)
-			return null;
-
+	public static String[] convertEnvironment(final Map<String, String> env) {
 		// Create a new map based on pre-existing environment of Eclipse
-		Map<String, String> original = new HashMap<>(System.getenv());
-
-		// Add new environment on top of existing
-		for (Map.Entry<String, String> entry : env.entrySet()) {
-			original.put(entry.getKey(), entry.getValue());
+		final Map<String, String> environment = System.getenv();
+		Map<String, String> result = new HashMap<>(environment);
+		// Add all new environments on top of existing
+		if (env != null) {
+			result.putAll(env);
 		}
+		// also update the PATH to include the path to the Vagrant executable
+		final StringBuilder path = new StringBuilder();
+		final String newEnvPath = path.append(environment.get("PATH")) //$NON-NLS-1$
+				.append(File.pathSeparator)
+				.append(VagrantConnection.getUserDefinedVagrantPath())
+				.toString();
+		result.put("PATH", newEnvPath); //$NON-NLS-1$
 		// Convert the combined map into a form that can be used to launch
 		// process
 		ArrayList<String> ret = new ArrayList<>();
-		Iterator<String> it = original.keySet().iterator();
+		Iterator<String> it = result.keySet().iterator();
 		String working = null;
 		while (it.hasNext()) {
 			working = it.next();
-			ret.add(working + "=" + original.get(working)); //$NON-NLS-1$
+			ret.add(working + "=" + result.get(working)); //$NON-NLS-1$
 		}
 		return ret.toArray(new String[ret.size()]);
 	}
