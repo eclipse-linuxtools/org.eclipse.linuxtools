@@ -69,6 +69,13 @@ public class ImageBuildPage extends WizardPage {
 	private Button editButton;
 	private Set<IEditorPart> editors = new HashSet<>();
 
+	/*
+	 * For now just hold the last directory path used here. If this page gets
+	 * more complicated (and ends up requiring a model) we should consider using
+	 * a launch configuration to store all other previous values.
+	 */
+	private static String lastDirectoryPath;
+
 	public ImageBuildPage() {
 		super(WizardMessages.getString(NAME));
 		setDescription(WizardMessages.getString(DESC));
@@ -144,6 +151,7 @@ public class ImageBuildPage extends WizardPage {
 								IMessageProvider.INFORMATION);
 					} else {
 						setMessage(null, IMessageProvider.INFORMATION);
+						lastDirectoryPath = dir;
 					}
 
 				}
@@ -271,6 +279,10 @@ public class ImageBuildPage extends WizardPage {
 		f.left = new FormAttachment(dirLabel, 5);
 		f.right = new FormAttachment(browse, -10);
 		directoryText.setLayoutData(f);
+
+		if (lastDirectoryPath != null) {
+			directoryText.setText(lastDirectoryPath);
+		}
 
 		setControl(container);
 		setPageComplete(false);
