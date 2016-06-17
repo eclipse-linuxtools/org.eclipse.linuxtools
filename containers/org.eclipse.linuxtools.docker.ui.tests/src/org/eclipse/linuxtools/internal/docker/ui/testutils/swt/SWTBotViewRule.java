@@ -19,7 +19,7 @@ import org.junit.Assert;
 import org.junit.rules.ExternalResource;
 
 /**
- * 
+ *
  */
 public class SWTBotViewRule extends ExternalResource {
 
@@ -36,7 +36,7 @@ public class SWTBotViewRule extends ExternalResource {
 	}
 
 	@Override
-	protected void before() throws Throwable {
+	protected void before() {
 		SWTUtils.asyncExec(() -> {
 			try {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(this.viewId);
@@ -54,10 +54,11 @@ public class SWTBotViewRule extends ExternalResource {
 		return this.botView;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> T view() {
 		return (T) view;
 	}
-	
+
 	public void close() {
 		this.botView.close();
 	}

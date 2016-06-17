@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettingsFinder;
 import org.eclipse.linuxtools.internal.docker.core.TCPConnectionSettings;
 import org.eclipse.linuxtools.internal.docker.core.UnixSocketConnectionSettings;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 /**
@@ -47,7 +48,9 @@ public class MockDockerConnectionSettingsFinder {
 		//unixSocketConnectionSettings.setName("mock");
 		unixSocketConnectionSettings.setSettingsResolved(true);
 		Mockito.when(validUnixSocketConnectionAvailable.findDefaultConnectionSettings()).thenReturn(unixSocketConnectionSettings);
-		Mockito.when(validUnixSocketConnectionAvailable.resolveConnectionName(Mockito.any(IDockerConnectionSettings.class))).thenReturn("mock");
+		Mockito.when(
+				validUnixSocketConnectionAvailable.resolveConnectionName(Matchers.any(IDockerConnectionSettings.class)))
+				.thenReturn("mock");
 		DockerConnectionManager.getInstance().setConnectionSettingsFinder(validUnixSocketConnectionAvailable);
 	}
 
@@ -62,7 +65,9 @@ public class MockDockerConnectionSettingsFinder {
 		//tcpConnectionSettings.setName("mock");
 		tcpConnectionSettings.setSettingsResolved(true);
 		Mockito.when(validTCPSocketConnectionAvailable.findDefaultConnectionSettings()).thenReturn(tcpConnectionSettings);
-		Mockito.when(validTCPSocketConnectionAvailable.resolveConnectionName(Mockito.any(IDockerConnectionSettings.class))).thenReturn("mock");
+		Mockito.when(
+				validTCPSocketConnectionAvailable.resolveConnectionName(Matchers.any(IDockerConnectionSettings.class)))
+				.thenReturn("mock");
 		DockerConnectionManager.getInstance().setConnectionSettingsFinder(validTCPSocketConnectionAvailable);
 	}
 
