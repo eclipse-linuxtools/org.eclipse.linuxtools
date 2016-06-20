@@ -41,6 +41,7 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 	private final boolean openStdin;
 	private final boolean stdinOnce;
 	private final List<String> env;
+	private String rawcmd;
 	private final List<String> cmd;
 	private final String image;
 	private final Set<String> volumes;
@@ -121,6 +122,7 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 		this.openStdin = builder.openStdin != null ? builder.openStdin : false;
 		this.stdinOnce = builder.stdinOnce != null ? builder.stdinOnce : false;
 		this.env = builder.env;
+		this.rawcmd = builder.rawcmd;
 		this.cmd = builder.cmd;
 		this.image = builder.image;
 		this.volumes = builder.volumes;
@@ -239,6 +241,10 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 		return cmd;
 	}
 
+	public String rawcmd() {
+		return rawcmd;
+	}
+
 	@Override
 	public String image() {
 		return image;
@@ -305,6 +311,7 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 		private Boolean openStdin;
 		private Boolean stdinOnce;
 		private List<String> env;
+		private String rawcmd;
 		private List<String> cmd;
 		private String image;
 		private Set<String> volumes;
@@ -483,9 +490,8 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 		}
 
 		public Builder cmd(final String cmd) {
-			if (cmd != null && !cmd.isEmpty()) {
-				return cmd(cmd.split(" "));
-			}
+			this.rawcmd = cmd;
+			this.cmd = getCmdList(cmd);
 			return this;
 		}
 
@@ -579,6 +585,74 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 
 		public DockerContainerConfig build() {
 			return new DockerContainerConfig(this);
+		}
+
+		/**
+		 * Create a proper command list after handling quotation.
+		 * 
+		 * @param command
+		 *            the command as a single {@link String}
+		 * @return the command splitted in a list of ars or <code>null</code> if
+		 *         the input <code>command</code> was <code>null</code>.
+		 */
+		private List<String> getCmdList(final String command) {
+			if (command == null) {
+				return null;
+			}
+			final List<String> list = new ArrayList<>();
+			int length = command.length();
+			boolean insideQuote1 = false; // single-quote
+			boolean insideQuote2 = false; // double-quote
+			boolean escaped = false;
+			StringBuffer buffer = new StringBuffer();
+			// Parse the string and break it up into chunks that are
+			// separated by white-space or are quoted. Ignore characters
+			// that have been escaped, including the escape character.
+			for (int i = 0; i < length; ++i) {
+				char c = command.charAt(i);
+				if (escaped) {
+					buffer.append(c);
+					escaped = false;
+				}
+				switch (c) {
+				case '\'':
+					if (!insideQuote2)
+						insideQuote1 = insideQuote1 ^ true;
+					else
+						buffer.append(c);
+					break;
+				case '\"':
+					if (!insideQuote1)
+						insideQuote2 = insideQuote2 ^ true;
+					else
+						buffer.append(c);
+					break;
+				case '\\':
+					escaped = true;
+					break;
+				case ' ':
+				case '\t':
+				case '\r':
+				case '\n':
+					if (insideQuote1 || insideQuote2)
+						buffer.append(c);
+					else {
+						String item = buffer.toString();
+						buffer.setLength(0);
+						if (item.length() > 0)
+							list.add(item);
+					}
+					break;
+				default:
+					buffer.append(c);
+					break;
+				}
+			}
+			// add last item of string that will be in the buffer
+			String item = buffer.toString();
+			if (item.length() > 0)
+				list.add(item);
+			return list;
 		}
 
 	}

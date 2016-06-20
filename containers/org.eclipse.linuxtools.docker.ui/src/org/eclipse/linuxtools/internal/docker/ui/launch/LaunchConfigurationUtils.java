@@ -64,6 +64,7 @@ import org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions;
 import org.eclipse.linuxtools.docker.core.IDockerImageInfo;
 import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
 import org.eclipse.linuxtools.docker.ui.Activator;
+import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.DataVolumeModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
@@ -139,7 +140,14 @@ public class LaunchConfigurationUtils {
 			if (containerName != null && !containerName.isEmpty()) {
 				workingCopy.setAttribute(CONTAINER_NAME, containerName);
 			}
-			workingCopy.setAttribute(COMMAND, toString(containerConfig.cmd()));
+			// if we know the raw command string, use it since the container
+			// config will remove quotes to split up command properly
+			DockerContainerConfig config = (DockerContainerConfig) containerConfig;
+			if (config.rawcmd() != null)
+				workingCopy.setAttribute(COMMAND, config.rawcmd());
+			else
+				workingCopy.setAttribute(COMMAND,
+						toString(containerConfig.cmd()));
 			workingCopy.setAttribute(ENTRYPOINT,
 					toString(containerConfig.entrypoint()));
 			// selected ports
