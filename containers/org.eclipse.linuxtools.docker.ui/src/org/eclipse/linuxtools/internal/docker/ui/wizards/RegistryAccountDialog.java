@@ -53,6 +53,8 @@ public class RegistryAccountDialog extends Dialog {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).applyTo(serverLabel);
 		final Text serverText = new Text(container, SWT.BORDER);
+		serverText.setToolTipText(
+				WizardMessages.getString("RegistryAccountDialog.server.desc")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).applyTo(serverText);
 		if (serverAddress != null) {
@@ -69,6 +71,8 @@ public class RegistryAccountDialog extends Dialog {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).applyTo(usernameLabel);
 		final Text usernameText = new Text(container, SWT.BORDER);
+		usernameText.setToolTipText(WizardMessages
+				.getString("RegistryAccountDialog.username.desc")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).applyTo(usernameText);
 		if (username != null) {

@@ -23,13 +23,19 @@ import org.eclipse.linuxtools.docker.core.IRegistry;
 import org.eclipse.linuxtools.internal.docker.core.RegistryAccountManager;
 import org.eclipse.linuxtools.internal.docker.core.RegistryInfo;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
+import org.eclipse.linuxtools.internal.docker.ui.preferences.DockerRegistryAccountPreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 
 public class ImagePushPage extends WizardPage {
 
@@ -107,7 +113,7 @@ public class ImagePushPage extends WizardPage {
 	public void createControl(final Composite parent) {
 		parent.setLayout(new GridLayout());
 		final Composite container = new Composite(parent, SWT.NONE);
-		GridLayoutFactory.fillDefaults().numColumns(2).margins(6, 6)
+		GridLayoutFactory.fillDefaults().numColumns(3).margins(6, 6)
 				.applyTo(container);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).span(1, 1)
 				.grab(true, false).applyTo(container);
@@ -120,7 +126,7 @@ public class ImagePushPage extends WizardPage {
 			nameText.addModifyListener(Listener);
 			nameText.setToolTipText(WizardMessages.getString(NAME_TOOLTIP));
 			GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
-					.grab(true, false).applyTo(nameText);
+					.grab(true, false).span(2, 1).applyTo(nameText);
 		} else {
 			nameCombo = new Combo(container, SWT.DROP_DOWN | SWT.READ_ONLY);
 			nameCombo.addModifyListener(Listener);
@@ -128,7 +134,7 @@ public class ImagePushPage extends WizardPage {
 			nameCombo.setItems(image.repoTags().toArray(new String[0]));
 			nameCombo.setText(image.repoTags().get(0));
 			GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
-					.grab(true, false).applyTo(nameCombo);
+					.grab(true, false).span(2, 1).applyTo(nameCombo);
 		}
 
 		final Label accountLabel = new Label(container, SWT.NULL);
@@ -139,19 +145,44 @@ public class ImagePushPage extends WizardPage {
 		accountCombo = new Combo(container, SWT.DROP_DOWN);
 		accountCombo.addModifyListener(Listener);
 		accountCombo.setToolTipText(WizardMessages.getString("ImagePushPage.registry.account.desc")); //$NON-NLS-1$
-		List<String> items = RegistryAccountManager.getInstance()
-				.getAccounts()
-				.stream()
-				.map(e -> e.getUsername() + "@" + e.getServerAddress()) //$NON-NLS-1$
-				.collect(Collectors.toList());
-		accountCombo.setItems(items.toArray(new String[0]));
-		if (items.size() > 0) {
-			accountCombo.setText(items.get(0));
+		accountCombo.setItems(getAccountComboItems());
+		if (accountCombo.getItems().length > 0) {
+			accountCombo.select(0);
 		}
+
+		// Browse
+		final Button browseButton = new Button(container, SWT.NONE);
+		browseButton.setText(WizardMessages
+				.getString("ImagePullPushPage.browse.label")); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.grab(false, false).applyTo(browseButton);
+		browseButton.addSelectionListener(onBrowse(accountCombo));
+
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).applyTo(accountCombo);
 		setControl(container);
 		validate();
+	}
+
+	private SelectionListener onBrowse(Combo combo) {
+		return new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				PreferencesUtil.createPreferenceDialogOn(getShell(),
+						DockerRegistryAccountPreferencePage.ACCOUNT_PREFERENCE_PAGE_ID,
+						new String[] { DockerRegistryAccountPreferencePage.ACCOUNT_PREFERENCE_PAGE_ID },
+						null)
+				.open();
+				combo.setItems(getAccountComboItems());
+			}
+		};
+	}
+
+	private String[] getAccountComboItems() {
+		List<String> items = RegistryAccountManager.getInstance().getAccounts()
+				.stream().map(e -> e.getUsername() + "@" + e.getServerAddress()) //$NON-NLS-1$
+				.collect(Collectors.toList());
+		return items.toArray(new String[0]);
 	}
 
 }

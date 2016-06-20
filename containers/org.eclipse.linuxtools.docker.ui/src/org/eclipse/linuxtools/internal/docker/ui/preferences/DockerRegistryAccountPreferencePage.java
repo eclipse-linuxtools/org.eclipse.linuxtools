@@ -47,6 +47,8 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class DockerRegistryAccountPreferencePage extends PreferencePage
 		implements IWorkbenchPreferencePage, Listener {
 
+	public static final String ACCOUNT_PREFERENCE_PAGE_ID = "org.eclipse.linuxtools.docker.ui.preferences.DockerRegistryAccountPreferencePage"; //$NON-NLS-1$
+
 	/**
 	 * Inner class to keep track of password modifications (without committing
 	 * them to the keyring) while the user modifies the preferences.
