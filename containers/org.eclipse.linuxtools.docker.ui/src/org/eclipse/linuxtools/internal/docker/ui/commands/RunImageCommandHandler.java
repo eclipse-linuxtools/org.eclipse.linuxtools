@@ -157,43 +157,55 @@ public class RunImageCommandHandler extends AbstractHandler {
 									containerConfig.image()),
 							e.getMessage()));
 				} finally {
+					final String tmpContainerId = containerId;
 					if (removeWhenExits) {
-						try {
-							if (containerId != null) {
-								// Wait for the container to finish
-								((DockerConnection) connection)
-										.waitForContainer(containerId);
-								// Drain the logging thread before we remove the
-								// container
-								((DockerConnection) connection)
-										.stopLoggingThread(containerId);
-								while (((DockerConnection) connection)
-										.loggingStatus(
-												containerId) == EnumDockerLoggingStatus.LOGGING_ACTIVE) {
-									Thread.sleep(1000);
+						final Job waitContainerJob = new Job(
+								CommandMessages.getString(
+										"RunImageCommandHandler.waitContainer.label")) { //$NON-NLS-1$
+							@Override
+							protected IStatus run(IProgressMonitor monitor) {
+								try {
+									if (tmpContainerId != null) {
+										// Wait for the container to finish
+										((DockerConnection) connection)
+												.waitForContainer(tmpContainerId);
+										// Drain the logging thread before we remove the
+										// container
+										((DockerConnection) connection)
+												.stopLoggingThread(tmpContainerId);
+										while (((DockerConnection) connection)
+												.loggingStatus(
+														tmpContainerId) == EnumDockerLoggingStatus.LOGGING_ACTIVE) {
+											Thread.sleep(1000);
+										}
+									}
+								} catch (DockerException | InterruptedException e) {
+									// ignore any errors in waiting for container or
+									// draining log
 								}
+								try {
+									// try and remove the container if it was created
+									if (tmpContainerId != null)
+										((DockerConnection) connection)
+												.removeContainer(tmpContainerId);
+								} catch (DockerException | InterruptedException e) {
+									final String id = tmpContainerId;
+									Display.getDefault()
+											.syncExec(() -> MessageDialog.openError(
+													PlatformUI.getWorkbench()
+															.getActiveWorkbenchWindow()
+															.getShell(),
+													DVMessages.getFormattedString(
+															ERROR_REMOVING_CONTAINER,
+															id),
+													e.getMessage()));
+								}
+								return Status.OK_STATUS;
 							}
-						} catch (DockerException | InterruptedException e) {
-							// ignore any errors in waiting for container or
-							// draining log
-						}
-						try {
-							// try and remove the container if it was created
-							if (containerId != null)
-								((DockerConnection) connection)
-										.removeContainer(containerId);
-						} catch (DockerException | InterruptedException e) {
-							final String id = containerId;
-							Display.getDefault()
-									.syncExec(() -> MessageDialog.openError(
-											PlatformUI.getWorkbench()
-													.getActiveWorkbenchWindow()
-													.getShell(),
-											DVMessages.getFormattedString(
-													ERROR_REMOVING_CONTAINER,
-													id),
-											e.getMessage()));
-						}
+						};
+						// Do not display this job in the UI
+						waitContainerJob.setSystem(true);
+						waitContainerJob.schedule();
 					}
 
 					monitor.done();
