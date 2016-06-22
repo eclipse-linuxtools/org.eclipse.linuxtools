@@ -1035,7 +1035,7 @@ public class DockerConnection implements IDockerConnection, Closeable {
 
 	@Override
 	public void pushImage(final String name, final IRegistryAccount info, final IDockerProgressHandler handler)
-			throws DockerException, InterruptedException, DockerCertificateException {
+			throws DockerException, InterruptedException {
 		try {
 			final DockerClient client = dockerClientFactory
 					.getClient(this.connectionSettings, info);
@@ -1043,7 +1043,8 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			client.push(name, d);
 		} catch (com.spotify.docker.client.DockerRequestException e) {
 			throw new DockerException(e.message());
-		} catch (com.spotify.docker.client.DockerException e) {
+		} catch (com.spotify.docker.client.DockerException
+				| DockerCertificateException e) {
 			DockerException f = new DockerException(e);
 			throw f;
 		}
