@@ -32,6 +32,8 @@ import org.eclipse.linuxtools.docker.core.IDockerPortMapping;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.browser.IWebBrowser;
+import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
@@ -90,8 +92,15 @@ public class ShowInWebBrowserCommandHandler extends AbstractHandler {
 	private void openLocationInWebBrowser(final URL location) {
 		Display.getDefault().asyncExec(() -> {
 			try {
-				PlatformUI.getWorkbench().getBrowserSupport()
-						.getExternalBrowser().openURL(location);
+				final IWebBrowser browser = PlatformUI.getWorkbench()
+						.getBrowserSupport()
+						.createBrowser(IWorkbenchBrowserSupport.AS_EDITOR
+								| IWorkbenchBrowserSupport.LOCATION_BAR
+								| IWorkbenchBrowserSupport.NAVIGATION_BAR,
+								Activator.PLUGIN_ID,
+								CommandMessages.getString("ShowInWebBrowserCommandHandler.internal.browser.label"), //$NON-NLS-1$
+								CommandMessages.getString("ShowInWebBrowserCommandHandler.internal.browser.tooltip")); //$NON-NLS-1$
+				browser.openURL(location);
 			} catch (Exception e) {
 				Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 						CommandMessages
