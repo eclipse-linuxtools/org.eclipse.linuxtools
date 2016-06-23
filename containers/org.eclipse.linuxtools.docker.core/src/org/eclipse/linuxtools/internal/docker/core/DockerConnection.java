@@ -958,11 +958,10 @@ public class DockerConnection implements IDockerConnection, Closeable {
 	@Override
 	public boolean hasImage(final String repository, final String tag) {
 		for (IDockerImage image : getImages()) {
-			if (image.repo().equals(repository)) {
-				for (String imageTag : image.tags()) {
-					if (imageTag.startsWith(tag)) {
-						return true;
-					}
+			for (String repoTag : image.repoTags()) {
+				String tagExpr = (tag != null && !tag.isEmpty()) ? ':' + tag : ""; //$NON-NLS-1$
+				if (repoTag.equals(repository + tagExpr)) {
+					return true;
 				}
 			}
 		}

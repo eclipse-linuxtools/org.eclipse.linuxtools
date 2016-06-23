@@ -12,15 +12,16 @@
 package org.eclipse.linuxtools.internal.docker.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.junit.Test;
 
@@ -60,5 +61,23 @@ public class DockerConnectionTest {
 		// then
 		assertThat(images).hasSize(2);
 
+	}
+
+	@Test
+	public void hasImageTest() throws DockerException {
+		// given
+		final Image fooImage = MockImageFactory.id("foo")
+				.name("foo", "foo:latest", "foo:1.0", "org/foo", "org/foo:1.0", "org/foo:latest").build();
+		final DockerClient client = MockDockerClientFactory.image(fooImage).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
+				.withDefaultTCPConnectionSettings();
+		dockerConnection.open(false);
+		// then
+		assertTrue(dockerConnection.hasImage("foo", null));
+		assertTrue(dockerConnection.hasImage("foo", "latest"));
+		assertTrue(dockerConnection.hasImage("foo", "1.0"));
+		assertTrue(dockerConnection.hasImage("org/foo", null));
+		assertTrue(dockerConnection.hasImage("org/foo", "latest"));
+		assertTrue(dockerConnection.hasImage("org/foo", "1.0"));
 	}
 }
