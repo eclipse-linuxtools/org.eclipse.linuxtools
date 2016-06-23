@@ -47,6 +47,9 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class DockerRegistryAccountPreferencePage extends PreferencePage
 		implements IWorkbenchPreferencePage, Listener {
 
+	/**
+	 * @since 2.1
+	 */
 	public static final String ACCOUNT_PREFERENCE_PAGE_ID = "org.eclipse.linuxtools.docker.ui.preferences.DockerRegistryAccountPreferencePage"; //$NON-NLS-1$
 
 	/**

@@ -122,6 +122,7 @@ public class ContainerLauncher {
 	 *            - true if stdin support is required, false otherwise
 	 * @param privilegedMode
 	 *            - true if privileged mode is required, false otherwise
+	 * @since 2.1
 	 */
 	public void launch(String id, IContainerLaunchListener listener,
 			final String connectionUri, String image, String command,
