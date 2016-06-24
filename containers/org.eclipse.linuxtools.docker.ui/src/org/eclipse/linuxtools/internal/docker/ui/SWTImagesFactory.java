@@ -62,6 +62,7 @@ public class SWTImagesFactory {
 	public static final String IMG_KILL = NAME_PREFIX + "kill.gif"; //$NON-NLS-1$
 	public static final String IMG_KILLD = NAME_PREFIX + "killd.gif"; //$NON-NLS-1$
 	public static final String IMG_LINKS = NAME_PREFIX + "links_obj.gif"; //$NON-NLS-1$
+	public static final String IMG_LABELS_TAB = NAME_PREFIX + "labels.gif"; //$NON-NLS-1$
 	public static final String IMG_MAIN_TAB = NAME_PREFIX + "main_tab.gif"; //$NON-NLS-1$
 	public static final String IMG_PULL = NAME_PREFIX + "pull.gif"; //$NON-NLS-1$
 	public static final String IMG_PUSH = NAME_PREFIX + "push.gif"; //$NON-NLS-1$
@@ -140,6 +141,8 @@ public class SWTImagesFactory {
 			IMG_WIZARD);
 	public static final ImageDescriptor DESC_FILTER = createManaged("",
 			IMG_FILTER);
+	public static final ImageDescriptor DESC_LABELS_TAB = createManaged("",
+			IMG_LABELS_TAB);
 	public static final ImageDescriptor DESC_MAIN_TAB = createManaged("",
 			IMG_MAIN_TAB);
 	public static final ImageDescriptor DESC_PULL = createManaged("", IMG_PULL);

@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
@@ -62,6 +63,8 @@ public class ImageRunResourceVolumesVariablesModel
 
 	public static final String ENVIRONMENT_VARIABLES = "environmentVariables"; //$NON-NLS-1$
 
+	public static final String LABEL_VARIABLES = "labelVariables"; //$NON-NLS-1$
+
 	private boolean enableResourceLimitations = false;
 
 	private final IDockerConnection connection;
@@ -79,6 +82,8 @@ public class ImageRunResourceVolumesVariablesModel
 	private WritableList<DataVolumeModel> dataVolumes = new WritableList<>();
 
 	private WritableList<EnvironmentVariableModel> environmentVariables = new WritableList<>();
+
+	private WritableList<LabelVariableModel> labelVariables = new WritableList<>();
 
 	private IDockerImage selectedImage;
 
@@ -194,6 +199,38 @@ public class ImageRunResourceVolumesVariablesModel
 	public void removeEnvironmentVariable(
 			final EnvironmentVariableModel variable) {
 		this.environmentVariables.remove(variable);
+	}
+
+	public WritableList<LabelVariableModel> getLabelVariables() {
+		return labelVariables;
+	}
+
+	public void setLabelVariables(final Map<String, String> labelVariables) {
+		this.labelVariables.clear();
+		if (labelVariables != null) {
+			for (Map.Entry<String, String> entry : labelVariables.entrySet()) {
+				this.labelVariables.add(new LabelVariableModel(entry.getKey(),
+						entry.getValue()));
+			}
+		}
+	}
+
+	public void setLabelVariables(
+			final WritableList<LabelVariableModel> labelVariables) {
+		firePropertyChange(LABEL_VARIABLES, this.labelVariables,
+				this.labelVariables = labelVariables);
+	}
+
+	public void addLabelVariable(final LabelVariableModel variable) {
+		this.labelVariables.add(variable);
+	}
+
+	public void removeLabelVariables() {
+		this.labelVariables.clear();
+	}
+
+	public void removeLabelVariable(final LabelVariableModel variable) {
+		this.labelVariables.remove(variable);
 	}
 
 	/**

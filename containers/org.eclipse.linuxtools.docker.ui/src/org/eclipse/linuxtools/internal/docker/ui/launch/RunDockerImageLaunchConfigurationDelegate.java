@@ -192,6 +192,14 @@ public class RunDockerImageLaunchConfigurationDelegate
 				IRunDockerImageLaunchConfigurationConstants.ENV_VARIABLES,
 				new ArrayList<String>());
 		config.env(environmentVariables);
+		
+		// labels
+		final Map<String, String> labelVariables = lconfig.getAttribute(
+				IRunDockerImageLaunchConfigurationConstants.LABELS,
+				(Map<String, String>) null);
+		if (labelVariables != null)
+			config.labels(labelVariables);
+
 		return config.build();
 	}
 

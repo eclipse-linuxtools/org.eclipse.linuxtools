@@ -14,6 +14,7 @@ import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLa
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.DATA_VOLUMES;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.ENABLE_LIMITS;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.ENV_VARIABLES;
+import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.LABELS;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.MEMORY_LIMIT;
 
 import java.io.File;
@@ -159,6 +160,7 @@ image);
 		createVolumeSettingsContainer(container);
 		// createSectionSeparator(container, true);
 		createEnvironmentVariablesContainer(container);
+		createLabelVariablesContainer(container);
 		createSectionSeparator(container, true);
 		createResourceSettingsContainer(container);
 		setDefaultValues();
@@ -425,6 +427,14 @@ image);
 				model.setEnvironmentVariables(
 						lastLaunchConfiguration.getAttribute(ENV_VARIABLES,
 								Collections.<String> emptyList()));
+				
+				// labels
+				Map<String, String> labels = lastLaunchConfiguration
+						.getAttribute(LABELS, (Map<String, String>) null);
+				if (labels != null) {
+					model.setLabelVariables(labels);
+				}
+
 				// resource limitations
 				model.setEnableResourceLimitations(lastLaunchConfiguration
 						.getAttribute(ENABLE_LIMITS, false));
@@ -609,6 +619,126 @@ image);
 		}
 		column.setWidth(width);
 		return viewerColumn;
+	}
+
+	private void createLabelVariablesContainer(final Composite container) {
+		final Label labelVarLabel = new Label(container, SWT.NONE);
+		labelVarLabel.setText(WizardMessages
+				.getString("ImageRunResourceVolVarPage.labelVarLabel")); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.grab(true, false).span(COLUMNS, 1).applyTo(labelVarLabel);
+		final TableViewer labelVariablesTableViewer = createEnvironmentVariablesTable(
+				container);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP)
+				.grab(true, false).hint(200, 100)
+				.applyTo(labelVariablesTableViewer.getTable());
+		// buttons
+		final Composite buttonsContainers = new Composite(container, SWT.NONE);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP)
+				.grab(false, false).applyTo(buttonsContainers);
+		GridLayoutFactory.fillDefaults().numColumns(1).margins(0, 0)
+				.spacing(SWT.DEFAULT, 0).applyTo(buttonsContainers);
+
+		final Button addButton = new Button(buttonsContainers, SWT.NONE);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP)
+				.grab(true, false).applyTo(addButton);
+		addButton.setText(WizardMessages
+				.getString("ImageRunResourceVolVarPage.addButton")); //$NON-NLS-1$
+		addButton.setEnabled(true);
+		addButton.addSelectionListener(onAddLabelVariable());
+		final Button editButton = new Button(buttonsContainers, SWT.NONE);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP)
+				.grab(true, false).applyTo(editButton);
+		editButton.setText(WizardMessages
+				.getString("ImageRunResourceVolVarPage.editButton")); //$NON-NLS-1$
+		editButton.setEnabled(true);
+		editButton.addSelectionListener(
+				onEditLabelVariable(labelVariablesTableViewer));
+		editButton.setEnabled(false);
+		final Button removeButton = new Button(buttonsContainers, SWT.NONE);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP)
+				.grab(true, false).applyTo(removeButton);
+		removeButton.setText(WizardMessages
+				.getString("ImageRunResourceVolVarPage.removeButton")); //$NON-NLS-1$
+		removeButton.addSelectionListener(
+				onRemoveLabelVariables(labelVariablesTableViewer));
+		removeButton.setEnabled(false);
+		// update table content when selected image changes
+		ViewerSupport.bind(labelVariablesTableViewer, model.getLabelVariables(),
+				BeanProperties.values(LabelVariableModel.class, new String[] {
+						LabelVariableModel.NAME, LabelVariableModel.VALUE }));
+		// disable the edit and removeButton if the table is empty
+		labelVariablesTableViewer.addSelectionChangedListener(
+				onSelectionChanged(editButton, removeButton));
+	}
+
+	private TableViewer createLabelVariablesTable(Composite container) {
+		final Table table = new Table(container,
+				SWT.BORDER | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL);
+		final TableViewer tableViewer = new TableViewer(table);
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
+		addTableViewerColum(tableViewer,
+				WizardMessages
+						.getString("ImageRunResourceVolVarPage.nameColumn"), //$NON-NLS-1$
+				200);
+		addTableViewerColum(tableViewer,
+				WizardMessages
+						.getString("ImageRunResourceVolVarPage.valueColumn"), //$NON-NLS-1$
+				200);
+		return tableViewer;
+	}
+
+	private SelectionListener onAddLabelVariable() {
+		return new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				final ContainerLabelVariableDialog dialog = new ContainerLabelVariableDialog(
+						getShell());
+				dialog.create();
+				if (dialog.open() == IDialogConstants.OK_ID) {
+					model.getLabelVariables().add(dialog.getLabelVariable());
+				}
+			}
+		};
+	}
+
+	private SelectionListener onEditLabelVariable(
+			final TableViewer LabelVariablesTableViewer) {
+		return new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				final LabelVariableModel selectedVariable = (LabelVariableModel) LabelVariablesTableViewer
+						.getStructuredSelection().getFirstElement();
+				final ContainerLabelVariableDialog dialog = new ContainerLabelVariableDialog(
+						getShell(), selectedVariable);
+				dialog.create();
+				if (dialog.open() == IDialogConstants.OK_ID) {
+					selectedVariable
+							.setName(dialog.getLabelVariable().getName());
+					selectedVariable
+							.setValue(dialog.getLabelVariable().getValue());
+					LabelVariablesTableViewer.refresh();
+				}
+			}
+		};
+	}
+
+	private SelectionListener onRemoveLabelVariables(
+			final TableViewer linksTableViewer) {
+		return new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				final IStructuredSelection selection = linksTableViewer
+						.getStructuredSelection();
+				for (@SuppressWarnings("unchecked")
+				Iterator<LabelVariableModel> iterator = selection
+						.iterator(); iterator.hasNext();) {
+					model.removeLabelVariable(iterator.next());
+				}
+			}
+		};
 	}
 
 	private void createEnvironmentVariablesContainer(

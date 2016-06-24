@@ -226,6 +226,15 @@ public class ImageRun extends Wizard {
 		}
 		config.env(environmentVariables);
 
+		// container labels
+		final Map<String, String> labelVariables = new HashMap<>();
+		for (Iterator<LabelVariableModel> iterator = resourcesModel
+				.getLabelVariables().iterator(); iterator.hasNext();) {
+			final LabelVariableModel var = iterator.next();
+			labelVariables.put(var.getName(), var.getValue()); // $NON-NLS-1$
+		}
+		config.labels(labelVariables);
+
 		if (!selectionModel.isPublishAllPorts()) {
 			final Set<String> exposedPorts = new HashSet<>();
 			for (Iterator<ExposedPortModel> iterator = selectionModel
