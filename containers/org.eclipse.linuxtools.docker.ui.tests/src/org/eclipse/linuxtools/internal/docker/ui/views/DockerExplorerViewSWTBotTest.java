@@ -333,7 +333,7 @@ public class DockerExplorerViewSWTBotTest {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
-				.container(MockContainerFactory.name("angry_bar").status("Running").build()).build();
+				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
@@ -349,7 +349,7 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideDisabledStopCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockContainerFactory.name("gentle_foo").status("Stopped").build())
 				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
@@ -435,7 +435,7 @@ public class DockerExplorerViewSWTBotTest {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
-				.container(MockContainerFactory.name("angry_bar").status("Running").build()).build();
+				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
@@ -451,7 +451,7 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideDisabledKillCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockContainerFactory.name("gentle_foo").status("Stopped").build())
 				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();

@@ -113,6 +113,27 @@ public class ContainerPropertyTester extends PropertyTester {
 		return true;
 	}
 
+	/**
+	 * Check if any of the given IStructuredSelection containing IDockerContainer
+	 * elements are in the specified state
+	 * @param ss an IStructuredSelection of IDockerContainer elements
+	 * @param state the state of the IDockerContainer to test
+	 * @return true if any IDockerContainer elements match the specified
+	 * and false otherwise.
+	 */
+	private static boolean checkAnyState(IStructuredSelection ss, EnumDockerStatus state) {
+		if (ss.toList().isEmpty()) {
+			return false;
+		}
+		for (Object o : ss.toList()) {
+			IDockerContainer c = (IDockerContainer) o;
+			if (EnumDockerStatus.fromStatusMessage(c.status()) == state) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static boolean isStopped(IStructuredSelection ss) {
 		return checkState(ss, EnumDockerStatus.STOPPED);
 	}
@@ -123,6 +144,10 @@ public class ContainerPropertyTester extends PropertyTester {
 
 	public static boolean isPaused(IStructuredSelection ss) {
 		return checkState(ss, EnumDockerStatus.PAUSED);
+	}
+
+	public static boolean isAnyRunning(IStructuredSelection ss) {
+		return checkAnyState(ss, EnumDockerStatus.RUNNING);
 	}
 
 }
