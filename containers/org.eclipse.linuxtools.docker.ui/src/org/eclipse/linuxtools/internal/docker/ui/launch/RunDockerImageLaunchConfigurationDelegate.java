@@ -159,9 +159,8 @@ public class RunDockerImageLaunchConfigurationDelegate
 	public IDockerContainerConfig getDockerContainerConfig(
 			ILaunchConfiguration lconfig) throws CoreException {
 
-		String commandAsString = lconfig.getAttribute(
+		String command = lconfig.getAttribute(
 				IRunDockerImageLaunchConfigurationConstants.COMMAND, ""); //$NON-NLS-1$
-		List<String> command = getCmdList(commandAsString);
 		String entrypoint = lconfig.getAttribute(
 				IRunDockerImageLaunchConfigurationConstants.ENTRYPOINT, ""); //$NON-NLS-1$
 		String imageName = lconfig.getAttribute(
@@ -210,63 +209,6 @@ public class RunDockerImageLaunchConfigurationDelegate
 		return connection;
 	}
 
-	// Create a proper command list after handling quotation.
-	private List<String> getCmdList(String s) {
-		ArrayList<String> list = new ArrayList<>();
-		int length = s.length();
-		boolean insideQuote1 = false; // single-quote
-		boolean insideQuote2 = false; // double-quote
-		boolean escaped = false;
-		StringBuffer buffer = new StringBuffer();
-		// Parse the string and break it up into chunks that are
-		// separated by white-space or are quoted. Ignore characters
-		// that have been escaped, including the escape character.
-		for (int i = 0; i < length; ++i) {
-			char c = s.charAt(i);
-			if (escaped) {
-				buffer.append(c);
-				escaped = false;
-			}
-			switch (c) {
-			case '\'':
-				if (!insideQuote2)
-					insideQuote1 = insideQuote1 ^ true;
-				else
-					buffer.append(c);
-				break;
-			case '\"':
-				if (!insideQuote1)
-					insideQuote2 = insideQuote2 ^ true;
-				else
-					buffer.append(c);
-				break;
-			case '\\':
-				escaped = true;
-				break;
-			case ' ':
-			case '\t':
-			case '\r':
-			case '\n':
-				if (insideQuote1 || insideQuote2)
-					buffer.append(c);
-				else {
-					String item = buffer.toString();
-					buffer.setLength(0);
-					if (item.length() > 0)
-						list.add(item);
-				}
-				break;
-			default:
-				buffer.append(c);
-				break;
-			}
-		}
-		// add last item of string that will be in the buffer
-		String item = buffer.toString();
-		if (item.length() > 0)
-			list.add(item);
-		return list;
-	}
 
 	private class ConnectionSelectionLabelProvider implements ILabelProvider {
 
