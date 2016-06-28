@@ -95,11 +95,13 @@ public class ShowInSystemExplorerCommandHandler extends AbstractHandler {
 	 */
 	private Process getLaunchProcess(final String launchCmd, final File dir)
 			throws IOException {
+		File workingDir = dir.isDirectory() ? dir : dir.getParentFile();
 		if (Util.isLinux() || Util.isMac()) {
 			return Runtime.getRuntime().exec(
-					new String[] { "/bin/sh", "-c", launchCmd }, null, dir); //$NON-NLS-1$ //$NON-NLS-2$
+					new String[] { "/bin/sh", "-c", launchCmd }, null, //$NON-NLS-1$ //$NON-NLS-2$
+					workingDir);
 		} else {
-			return Runtime.getRuntime().exec(launchCmd, null, dir);
+			return Runtime.getRuntime().exec(launchCmd, null, workingDir);
 		}
 	}
 
