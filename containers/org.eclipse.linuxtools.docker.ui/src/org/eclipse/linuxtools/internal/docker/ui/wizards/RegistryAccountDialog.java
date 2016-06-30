@@ -20,10 +20,20 @@ public class RegistryAccountDialog extends Dialog {
 	private String email;
 	private char[] password;
 	private String title;
+	private String explanation = WizardMessages
+			.getString("RegistryAccountDialog.add.edit.explanation"); //$NON-NLS-1$
 
 	public RegistryAccountDialog(Shell parentShell, String title) {
 		super(parentShell);
 		this.title = title;
+	}
+
+	public RegistryAccountDialog(Shell parentShell, String title,
+			String defaultServerAddress, String explanation) {
+		super(parentShell);
+		this.title = title;
+		this.serverAddress = defaultServerAddress;
+		this.explanation = explanation;
 	}
 
 	@Override
@@ -43,7 +53,7 @@ public class RegistryAccountDialog extends Dialog {
 				.applyTo(container);
 
 		final Label explanationLabel = new Label(container, SWT.NONE);
-		explanationLabel.setText(WizardMessages.getString("RegistryAccountDialog.add.edit.explanation")); //$NON-NLS-1$
+		explanationLabel.setText(explanation);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.span(COLUMNS, 1).grab(false, false).applyTo(explanationLabel);
 
