@@ -1,0 +1,13 @@
+<p>
+<b>ARG</b>  defines a variable that users can pass at build-time to the builder with the docker build command using the --build-arg <varname>=<value> flag. If a user specifies a build argument that was not defined in the Dockerfile, the build outputs an error.
+</p>
+<br/>
+<p>
+<pre>
+ARG user1           # Defines an build argument called 'user1' without any default values
+ARG buildno         # Defines an build argument called 'buildno' without any default values
+
+ARG user1=someuser  # Defines and declares a default value for the build argument 'user1'
+ARG buildno=123     # Defines and declares a default value for the build argument 'buildno'
+</pre>
+</p>
