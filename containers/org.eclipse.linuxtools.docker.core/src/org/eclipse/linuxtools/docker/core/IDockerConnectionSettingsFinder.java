@@ -25,5 +25,10 @@ public interface IDockerConnectionSettingsFinder {
 	IDockerConnectionSettings findDefaultConnectionSettings();
 
 	String resolveConnectionName(IDockerConnectionSettings settings);
+
+	/**
+	 * @since 2.1
+	 */
+	List<IDockerConnectionSettings> getKnownConnectionSettings();
 }
 

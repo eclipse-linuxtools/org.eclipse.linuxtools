@@ -33,7 +33,7 @@ public class DefaultDockerConnectionSettingsFinderSWTBotTest {
 		// actually, the DOCKER_TLS_VERIFY is not used. If DOCKER_CERT_PATH is set, the we assume that DOCKER_TLS_VERIFY is '1'
 		//properties.setProperty(DefaultDockerConnectionSettingsFinder.DOCKER_TLS_VERIFY, "1");
 		// when
-		final IDockerConnectionSettings connectionSettings = new DefaultDockerConnectionSettingsFinder().createDockerConnectionSettings(properties);
+		final IDockerConnectionSettings connectionSettings = ShellConnectionSettingsProvider.createDockerConnectionSettings(properties);
 		// then
 		assertThat(connectionSettings.isSettingsResolved()).isFalse();
 		assertThat(connectionSettings.getType()).isEqualTo(BindingType.TCP_CONNECTION);
@@ -50,7 +50,7 @@ public class DefaultDockerConnectionSettingsFinderSWTBotTest {
 		// actually, the DOCKER_TLS_VERIFY is not used. If DOCKER_CERT_PATH is set, the we assume that DOCKER_TLS_VERIFY is '1'
 		//properties.setProperty(DefaultDockerConnectionSettingsFinder.DOCKER_TLS_VERIFY, "1");
 		// when
-		final IDockerConnectionSettings connectionSettings = new DefaultDockerConnectionSettingsFinder().createDockerConnectionSettings(properties);
+		final IDockerConnectionSettings connectionSettings = ShellConnectionSettingsProvider.createDockerConnectionSettings(properties);
 		// then
 		assertThat(connectionSettings).isNull();
 	}

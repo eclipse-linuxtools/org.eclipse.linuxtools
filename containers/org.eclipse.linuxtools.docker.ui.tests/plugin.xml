@@ -8,6 +8,17 @@
 	     <adapter type="org.eclipse.debug.ui.actions.ILaunchable"/>
 	  </factory>
 	</extension>
+ <extension
+       point="org.eclipse.linuxtools.docker.core.connection">
+    <connection
+          provider="org.eclipse.linuxtools.docker.core.DockerConnectionManagerTest$TCPTestConnectionProvider"
+          type="tcp-test">
+    </connection>
+    <connection
+          provider="org.eclipse.linuxtools.docker.core.DockerConnectionManagerTest$UnixTestConnectionProvider"
+          type="unix-test">
+    </connection>
+ </extension>
 
 
 </plugin>

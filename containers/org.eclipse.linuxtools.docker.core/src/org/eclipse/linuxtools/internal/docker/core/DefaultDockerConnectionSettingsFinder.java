@@ -18,35 +18,25 @@ import static org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings.TC
 import static org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings.UNIX_SOCKET;
 import static org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings.UNIX_SOCKET_PATH;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
-import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.docker.core.Activator;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionInfo;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettingsFinder;
-import org.eclipse.linuxtools.docker.core.Messages;
+import org.eclipse.linuxtools.docker.core.IDockerConnectionSettingsProvider;
 
 import com.spotify.docker.client.DockerCertificateException;
 import com.spotify.docker.client.DockerClient;
-
-import jnr.unixsocket.UnixSocketAddress;
-import jnr.unixsocket.UnixSocketChannel;
 
 /**
  * A utility class that looks for candidate {@link IDockerConnection}s on the
@@ -159,19 +149,10 @@ public class DefaultDockerConnectionSettingsFinder
 	 *         is readable and writable, {@code null} otherwise.
 	 */
 	public IDockerConnectionSettings defaultsWithUnixSocket() {
-		final File unixSocketFile = new File("/var/run/docker.sock"); //$NON-NLS-1$
-		if (unixSocketFile.exists() && unixSocketFile.canRead()
-				&& unixSocketFile.canWrite()) {
-			final UnixSocketAddress address = new UnixSocketAddress(
-					unixSocketFile);
-			try (final UnixSocketChannel channel = UnixSocketChannel
-					.open(address)) {
-				// assume socket works
-				return new UnixSocketConnectionSettings(
-						unixSocketFile.getAbsolutePath());
-			} catch (IOException e) {
-				// do nothing, just assume socket did not work.
-			}
+		List<IDockerConnectionSettings> res = new DefaultUnixConnectionSettingsProvider()
+				.getConnectionSettings();
+		if (res != null) {
+			return res.get(0);
 		}
 		return null;
 	}
@@ -184,11 +165,10 @@ public class DefaultDockerConnectionSettingsFinder
 	 *         environment variables exist, {@code null} otherwise.
 	 */
 	public IDockerConnectionSettings defaultsWithSystemEnv() {
-		final String dockerHostEnv = System.getenv(DOCKER_HOST);
-		if (dockerHostEnv != null) {
-			final String pathToCertificates = System.getenv(DOCKER_CERT_PATH);
-			return new TCPConnectionSettings(dockerHostEnv,
-					pathToCertificates);
+		List<IDockerConnectionSettings> res = new SystemConnectionSettingsProvider()
+				.getConnectionSettings();
+		if (res != null) {
+			return res.get(0);
 		}
 		return null;
 	}
@@ -201,152 +181,12 @@ public class DefaultDockerConnectionSettingsFinder
 	 *         environment variables exist, {@code null} otherwise.
 	 */
 	public IDockerConnectionSettings defaultsWithShellEnv() {
-		try {
-			final String connectionSettingsDetectionScriptName = getConnectionSettingsDetectionScriptName();
-			if (connectionSettingsDetectionScriptName == null) {
-				Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-						Messages.Docker_No_Settings_Description_Script));
-				return null;
-			}
-			final File connectionSettingsDetectionScript = getConnectionSettingsDetectionScript(
-					connectionSettingsDetectionScriptName);
-			final String[] cmdArray = getConnectionSettingsDetectionCommandArray(
-					connectionSettingsDetectionScript);
-			final Process process = Runtime.getRuntime().exec(cmdArray);
-			process.waitFor();
-			final int exitValue = process.exitValue();
-			if (exitValue == 0) {
-				final InputStream processInputStream = process.getInputStream();
-				// read content from process input stream
-				final Properties dockerSettings = new Properties();
-				dockerSettings.load(processInputStream);
-				return createDockerConnectionSettings(dockerSettings);
-			} else {
-				// log what happened if the process did not end as expected
-				// an exit value of 1 should indicate no connection found
-				if (exitValue != 1) {
-					final InputStream processErrorStream = process
-							.getErrorStream();
-					final String errorMessage = streamToString(
-							processErrorStream);
-					Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-							errorMessage));
-				}
-			}
-		} catch (IOException | IllegalArgumentException
-				| InterruptedException e) {
-			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					Messages.Retrieve_Default_Settings_Failure, e));
+		List<IDockerConnectionSettings> res = new ShellConnectionSettingsProvider()
+				.getConnectionSettings();
+		if (res != null) {
+			return res.get(0);
 		}
 		return null;
-	}
-
-	/**
-	 * Creates connection settings from the given {@code docerSettings}, or
-	 * <code>null</code> if the settings did not contain a property with the
-	 * {@code DOCKER_HOST} key.
-	 * 
-	 * @param dockerSettings
-	 *            the connection settings
-	 * @return the {@link IDockerConnectionSettings} or <code>null</code> if the
-	 *         settings are invalid.
-	 */
-	public IDockerConnectionSettings createDockerConnectionSettings(
-			final Properties dockerSettings) {
-		final Object dockerHostEnvVariable = dockerSettings.get(DOCKER_HOST);
-		final Object dockerCertPathEnvVariable = dockerSettings
-				.get(DOCKER_CERT_PATH);
-		// at least 'dockerHostEnvVariable' should be not null
-		if (dockerHostEnvVariable == null) {
-			return null;
-		}
-		return new TCPConnectionSettings(
-				dockerHostEnvVariable.toString(),
-				dockerCertPathEnvVariable != null
-						? dockerCertPathEnvVariable.toString() : null);
-	}
-
-	/**
-	 * @param script
-	 *            the script to execute
-	 * @return the OS-specific command to run the connection settings detection
-	 *         script or <code>null</code> if the current OS is not supported.
-	 */
-	private String[] getConnectionSettingsDetectionCommandArray(
-			final File script) {
-		if (Platform.getOS().equals(Platform.OS_WIN32)) {
-			return new String[] { "cmd.exe", "/C", //$NON-NLS-1$ //$NON-NLS-2$
-					script.getAbsolutePath() };
-		} else {
-			return new String[] { script.getAbsolutePath() };
-		}
-	}
-
-	/**
-	 * Finds the script file in the data directory of the bundle given its
-	 * name, or creates it from the 'resources' dir in the bundle if it was
-	 * not found in the data dir.
-	 * 
-	 * @param scriptName
-	 *            the name of the script to load in the data dir or in the
-	 *            'resources' dir in the bundle
-	 * @return the script {@link File}
-	 */
-	private File getConnectionSettingsDetectionScript(
-			final String scriptName) {
-		final File script = Activator.getDefault().getBundle()
-				.getDataFile(scriptName);
-		// if the script file does not exist or is outdated.
-		if (script != null
-				&& (!script.exists() || script.lastModified() < Activator
-						.getDefault().getBundle().getLastModified())) {
-			try (final FileOutputStream output = new FileOutputStream(
-					script);
-					final InputStream is = DockerConnection.class
-							.getResourceAsStream(
-									"/resources/" + scriptName)) { //$NON-NLS-1$
-				byte[] buff = new byte[1024];
-				int n;
-				while ((n = is.read(buff)) > 0) {
-					output.write(buff, 0, n);
-				}
-				script.setExecutable(true);
-			} catch (IOException e) {
-				Activator.logErrorMessage(e.getMessage());
-			}
-		}
-		return script;
-	}
-
-	/**
-	 * @return the name of the script to run, depending on the OS (Windows, MAc,
-	 *         *Nix) or <code>null</code> if the current OS is not supported.
-	 */
-	private String getConnectionSettingsDetectionScriptName() {
-		if (SystemUtils.isLinux()) {
-			return "script.sh";//$NON-NLS-1$
-		} else if (SystemUtils.isMac()) {
-			return "script-macosx.sh";//$NON-NLS-1$
-		} else if (SystemUtils.isWindows()) {
-			return "script.bat"; //$NON-NLS-1$
-		}
-		return null;
-	}
-
-	private String streamToString(InputStream stream) {
-		BufferedReader buff = new BufferedReader(
-				new InputStreamReader(stream));
-		StringBuffer res = new StringBuffer();
-		String line = ""; //$NON-NLS-1$
-		try {
-			while ((line = buff.readLine()) != null) {
-				res.append(System.getProperty("line.separator")); //$NON-NLS-1$
-				res.append(line);
-			}
-			buff.close();
-		} catch (IOException e) {
-		}
-		return res.length() > 0 ? res.substring(1) : "";
 	}
 
 	public static class Defaults {
@@ -412,5 +252,38 @@ public class DefaultDockerConnectionSettingsFinder
 		}
 
 	}
+
+	@Override
+	public List<IDockerConnectionSettings> getKnownConnectionSettings() {
+		List<IDockerConnectionSettings> result = new ArrayList<>();
+		IConfigurationElement[] configs = getConfigurationElements();
+		for (IConfigurationElement config : configs) {
+			try {
+				Object obj = config.createExecutableExtension("provider"); //$NON-NLS-1$
+				if (obj instanceof IDockerConnectionSettingsProvider) {
+					List<IDockerConnectionSettings> settings = ((IDockerConnectionSettingsProvider) obj)
+							.getConnectionSettings();
+					if (settings != null) {
+						result.addAll(settings);
+					}
+				}
+			} catch (CoreException e) {
+				// continue, perhaps another configuration will succeed
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Helper method to return the list of extensions that contribute the the
+	 * connection registry
+	 *
+	 * @return All extensions that contribute to the connection registry.
+	 */
+	private static IConfigurationElement[] getConfigurationElements() {
+        IExtensionPoint extPoint = Platform.getExtensionRegistry()
+                .getExtensionPoint("org.eclipse.linuxtools.docker.core.connection"); //$NON-NLS-1$
+        return extPoint.getConfigurationElements();
+    }
 
 }

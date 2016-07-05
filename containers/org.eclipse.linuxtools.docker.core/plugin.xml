@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="org.eclipse.linuxtools.docker.core.connection" name="connections" schema="schema/org.eclipse.linuxtools.docker.core.connection.exsd"/>
+   <extension
+         point="org.eclipse.linuxtools.docker.core.connection">
+      <connection
+            provider="org.eclipse.linuxtools.internal.docker.core.DefaultUnixConnectionSettingsProvider"
+            type="default.unix">
+      </connection>
+      <connection
+            provider="org.eclipse.linuxtools.internal.docker.core.DefaultTCPConnectionSettingsProvider"
+            type="default.tcp">
+      </connection>
+      <connection
+            provider="org.eclipse.linuxtools.internal.docker.core.SystemConnectionSettingsProvider"
+            type="system">
+      </connection>
+      <connection
+            provider="org.eclipse.linuxtools.internal.docker.core.ShellConnectionSettingsProvider"
+            type="shell">
+      </connection>
+   </extension>
+
+</plugin>

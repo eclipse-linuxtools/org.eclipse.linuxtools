@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Docker Core Plugin
-Bundle-SymbolicName: org.eclipse.linuxtools.docker.core
-Bundle-Version: 2.0.0.qualifier
+Bundle-SymbolicName: org.eclipse.linuxtools.docker.core;singleton:=true
+Bundle-Version: 2.1.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.docker.core.Activator
 Bundle-Vendor: Eclipse Linux Tools
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.12.0",
