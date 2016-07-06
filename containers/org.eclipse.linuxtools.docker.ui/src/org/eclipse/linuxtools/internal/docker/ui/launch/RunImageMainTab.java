@@ -488,6 +488,10 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
+		// Don't attempt to continue if model is null since it means there are
+		// no connections
+		if (model == null)
+			return;
 		final IDockerConnection[] connections = DockerConnectionManager
 				.getInstance()
 				.getConnections();
@@ -553,6 +557,8 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
+		if (model == null)
+			return;
 		configuration.setAttribute(
 				IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
 				model.getSelectedConnectionName());
@@ -592,6 +598,8 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 	@Override
 	public boolean isValid(ILaunchConfiguration launchConfig) {
 		try {
+			if (model == null)
+				return false;
 			String connectionName = launchConfig.getAttribute(
 					IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
 					"");
