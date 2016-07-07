@@ -107,6 +107,7 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 			if (numberOfBuildOperations == 0) {
 				Activator.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
 						JobMessages.getString(SKIP_EMPTY_DOCKERFILE)));
+				this.progressMonitor = progressMonitor;
 			} else {
 				this.console.clearConsole();
 				this.console.activate();
