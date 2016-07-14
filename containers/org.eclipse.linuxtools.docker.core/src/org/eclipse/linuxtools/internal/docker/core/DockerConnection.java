@@ -725,6 +725,68 @@ public class DockerConnection implements IDockerConnection, Closeable {
 		return this.containers;
 	}
 
+	public Set<String> getContainerIdsWithLabels(Map<String, String> labels)
+			throws DockerException {
+		Set<String> labelSet = new HashSet<>();
+		try {
+			final List<Container> nativeContainers = new ArrayList<>();
+			synchronized (clientLock) {
+				// Check that client is not null as this connection may have
+				// been closed but there is an async request to filter the
+				// containers list left in the queue
+				if (client == null) {
+					// in that case the list becomes empty, which is fine is
+					// there's no client.
+					return Collections.emptySet();
+				}
+				DockerClient clientCopy = getClientCopy();
+				DockerClient.ListContainersParam[] parms = new DockerClient.ListContainersParam[2];
+				parms[0] = DockerClient.ListContainersParam.allContainers();
+				// DockerClient doesn't support multiple labels with its
+				// ListContainersParam so we have
+				// to do a kludge and put in control chars ourselves and pretend
+				// we have a label with no value.
+				String separator = "";
+				StringBuffer labelString = new StringBuffer();
+				for (Entry<String, String> entry : labels.entrySet()) {
+					labelString.append(separator);
+					if (entry.getValue() == null || "".equals(entry.getValue())) //$NON-NLS-1$
+						labelString.append(entry.getKey());
+					else {
+						labelString.append(
+								entry.getKey() + "=" + entry.getValue()); //$NON-NLS-1$
+					}
+					separator = "\",\""; //$NON-NLS-1$
+				}
+				parms[1] = DockerClient.ListContainersParam
+						.withLabel(labelString.toString());
+				nativeContainers.addAll(clientCopy.listContainers(parms));
+			}
+			// We have a list of containers with labels. Now, we create a Set of
+			// ids which contain those labels to use in filtering a list of
+			// Containers
+			for (Container nativeContainer : nativeContainers) {
+				labelSet.add(nativeContainer.id());
+			}
+		} catch (DockerTimeoutException e) {
+			if (isOpen()) {
+				Activator.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
+						Messages.Docker_Connection_Timeout, e));
+				close();
+			}
+		} catch (com.spotify.docker.client.DockerException
+				| InterruptedException e) {
+			if (isOpen() && e.getCause() != null
+					&& e.getCause().getCause() != null
+					&& e.getCause().getCause() instanceof ProcessingException) {
+				close();
+			} else {
+				throw new DockerException(e.getMessage());
+			}
+		}
+		return labelSet;
+	}
+
 	/**
 	 * Sorts the given values using the given comparator and returns the result
 	 * in a {@link List}

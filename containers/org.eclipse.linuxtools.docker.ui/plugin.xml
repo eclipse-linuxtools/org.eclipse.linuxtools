@@ -222,6 +222,20 @@
 		         id="org.eclipse.ui.commands.toggleState">
 		   </state>
         </command>
+  		<command
+        	description="%command.filtercontainerswithlabels.description"
+        	id="org.eclipse.linuxtools.docker.ui.commands.filterContainersWithLabels"
+        	name="%command.filtercontainerswithlabels.name">
+     		<state
+           		class="org.eclipse.ui.handlers.RegistryToggleState:true"
+           		id="org.eclipse.ui.commands.toggleState">
+     		</state>
+  		</command>
+    <command
+          description="%command.configurelabels.description"
+          id="org.eclipse.linuxtools.docker.ui.commands.configureLabels"
+          name="%command.configurelabels.name">
+    </command>
 		<command
 	        description="%command.pullimage.description"
 	        id="org.eclipse.linuxtools.docker.ui.commands.pullImage"
@@ -478,6 +492,14 @@
               commandId="org.eclipse.linuxtools.docker.ui.commands.showAllContainers"
               class="org.eclipse.linuxtools.internal.docker.ui.commands.ShowAllContainersCommandHandler">
      	</handler>
+  		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.filterContainersWithLabels"
+        	  class="org.eclipse.linuxtools.internal.docker.ui.commands.FilterContainersWithLabelsCommandHandler">
+  		</handler>
+    <handler
+          class="org.eclipse.linuxtools.internal.docker.ui.commands.ConfigureLabelsCommandHandler"
+          commandId="org.eclipse.linuxtools.docker.ui.commands.configureLabels">
+    </handler>
 		<handler
               commandId="org.eclipse.linuxtools.docker.ui.commands.pullImage"
               class="org.eclipse.linuxtools.internal.docker.ui.commands.PullImageCommandHandler">
@@ -1286,6 +1308,28 @@
 					mnemonic="A">
 				</command>
 		</menuContribution>
+ 		<!-- containers view menu: filter containers by label -->
+  		<menuContribution
+        	locationURI="menu:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+     			<command
+           			commandId="org.eclipse.linuxtools.docker.ui.commands.filterContainersWithLabels"
+           			icon="icons/filter_ps.gif"
+           			id="org.eclipse.linuxtools.docker.ui.commands.filterContainersWithLabels"
+           			style="toggle">
+     			</command>
+        <separator
+              name="org.eclipse.linuxtools.docker.ui.containers.view.separator"
+              visible="true">
+        </separator>
+  		</menuContribution>
+    <menuContribution
+          allPopups="false"
+          locationURI="menu:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+       <command
+             commandId="org.eclipse.linuxtools.docker.ui.commands.configureLabels"
+             style="push">
+       </command>
+    </menuContribution>
 		<!-- images view toolbar: pull image -->
 		<menuContribution
 			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerImagesView">

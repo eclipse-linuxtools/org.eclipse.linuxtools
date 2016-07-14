@@ -13,8 +13,11 @@ package org.eclipse.linuxtools.internal.docker.ui.views;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -44,6 +47,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
+import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.EnumDockerConnectionState;
 import org.eclipse.linuxtools.docker.core.EnumDockerStatus;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
@@ -54,6 +58,7 @@ import org.eclipse.linuxtools.docker.core.IDockerContainerListener;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerPortMapping;
 import org.eclipse.linuxtools.docker.ui.Activator;
+import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils;
 import org.eclipse.linuxtools.internal.docker.ui.propertytesters.ContainerPropertyTester;
@@ -91,6 +96,9 @@ public class DockerContainersView extends ViewPart implements
 
 	private static final String SHOW_ALL_CONTAINERS_COMMAND_ID = "org.eclipse.linuxtools.docker.ui.commands.showAllContainers"; //$NON-NLS-1$
 	private static final String SHOW_ALL_CONTAINERS_PREFERENCE = "showAllContainers"; //$NON-NLS-1$
+	private static final String FILTER_CONTAINERS_COMMAND_ID = "org.eclipse.linuxtools.docker.ui.commands.filterContainersWithLabels"; //$NON-NLS-1$
+	private static final String FILTER_WITH_LABELS_PREFERENCE = "filterWithLabels"; //$NON-NLS-1$
+	private static final String CONTAINER_FILTER_LABELS = "containerFilterLabels"; //$NON-NLS-1$
 
 	/** Id of the view. */
 	public static final String VIEW_ID = "org.eclipse.linuxtools.docker.ui.dockerContainersView";
@@ -105,6 +113,7 @@ public class DockerContainersView extends ViewPart implements
 	private TableViewer viewer;
 	private IDockerConnection connection;
 	private final HideStoppedContainersViewerFilter hideStoppedContainersViewerFilter = new HideStoppedContainersViewerFilter();
+	private final ContainersWithLabelsViewerFilter containersWithLabelsViewerFilter = new ContainersWithLabelsViewerFilter();
 
 	private final Image STARTED_IMAGE = SWTImagesFactory.DESC_CONTAINER_STARTED
 			.createImage();
@@ -194,9 +203,14 @@ public class DockerContainersView extends ViewPart implements
 		service.getCommand(SHOW_ALL_CONTAINERS_COMMAND_ID)
 				.getState(TOGGLE_STATE).setValue(showAll);
 		service.refreshElements(SHOW_ALL_CONTAINERS_COMMAND_ID, null);
+		boolean filterByLabels = preferences
+				.getBoolean(FILTER_WITH_LABELS_PREFERENCE, false);
+		showContainersWithLabels(filterByLabels);
+		service.getCommand(FILTER_CONTAINERS_COMMAND_ID).getState(TOGGLE_STATE)
+				.setValue(filterByLabels);
+		service.refreshElements(FILTER_CONTAINERS_COMMAND_ID, null);
 		DockerConnectionManager.getInstance()
 				.addConnectionManagerListener(this);
-
 	}
 	
 	private void createTableViewer(final Composite container) {
@@ -322,7 +336,7 @@ public class DockerContainersView extends ViewPart implements
 		comparator.setColumn(creationDateColumn.getColumn());
 		this.viewer.setComparator(comparator);
 		// apply search filter
-		this.viewer.addFilter(getContainersFilter());
+		this.viewer.setFilters(getContainersFilter());
 		setConnection(CommandUtils.getCurrentConnection(null));
 		this.viewer.addSelectionChangedListener(onContainerSelection());
 		// get the current selection in the tableviewer
@@ -463,9 +477,44 @@ public class DockerContainersView extends ViewPart implements
 		if (firstSegment instanceof IDockerConnection) {
 			final IDockerConnection connection = (IDockerConnection) firstSegment;
 			setConnection(connection);
+			setLabelFilterIds();
 		}
 	}
 	
+	private void setLabelFilterIds() {
+		IEclipsePreferences preferences = InstanceScope.INSTANCE
+				.getNode(Activator.PLUGIN_ID);
+		boolean filterLabels = preferences.getBoolean(FILTER_WITH_LABELS_PREFERENCE, Boolean.FALSE);
+		if (filterLabels) {
+			String filterLabelString = preferences
+					.get(CONTAINER_FILTER_LABELS, ""); //$NON-NLS-1$
+			if (filterLabelString.isEmpty()) {
+				containersWithLabelsViewerFilter.setIds(null);
+			} else {
+				String[] labels = filterLabelString.split("\u00a0"); //$NON-NLS-1$
+				LinkedHashMap<String, String> labelMap = new LinkedHashMap<>();
+				for (String label : labels) {
+					if (label.length() > 1) {
+						String[] tokens = label.split("="); //$NON-NLS-1$
+						String key = tokens[0];
+						String value = ""; //$NON-NLS-1$
+						if (tokens.length > 1)
+							value = tokens[1];
+						labelMap.put(key, value);
+					}
+				}
+				Set<String> filterIds = new HashSet<>();
+				try {
+					filterIds = ((DockerConnection) connection)
+							.getContainerIdsWithLabels(labelMap);
+				} catch (DockerException e) {
+					Activator.log(e);
+				}
+				containersWithLabelsViewerFilter.setIds(filterIds);
+			}
+		}
+	}
+
 	@Override
 	public void listChanged(final IDockerConnection connection,
 			final List<IDockerContainer> containers) {
@@ -474,6 +523,7 @@ public class DockerContainersView extends ViewPart implements
 				if (DockerContainersView.this.viewer != null
 						&& !DockerContainersView.this.viewer.getTable()
 								.isDisposed()) {
+					setLabelFilterIds();
 					DockerContainersView.this.viewer.refresh();
 					refreshViewTitle();
 					updateToolBarItemEnablement(DockerContainersView.this.viewer
@@ -512,6 +562,7 @@ public class DockerContainersView extends ViewPart implements
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					connection.getContainers(true);
+					setLabelFilterIds();
 					connection.addContainerListener(DockerContainersView.this);
 					Display.getDefault().asyncExec(() -> {
 						viewer.setInput(connection);
@@ -577,6 +628,42 @@ public class DockerContainersView extends ViewPart implements
 		refreshViewTitle();
 	}
 
+	/**
+	 * Activates {@link ContainersWithLabelsViewerFilter} if the given
+	 * {@code enabled} argument is <code>false</code>, deactivates the filter
+	 * otherwise.
+	 * 
+	 * @param enabled
+	 *            the argument to enable/disable the filter.
+	 */
+	public void showContainersWithLabels(boolean enabled) {
+		if (DockerContainersView.this.viewer == null) {
+			return;
+		}
+		if (enabled) {
+			this.viewer.addFilter(containersWithLabelsViewerFilter);
+		} else {
+			final List<ViewerFilter> filters = new ArrayList<>(
+					Arrays.asList(this.viewer.getFilters()));
+
+			// remove filters and make sure there is no duplicate in the list of
+			// filters
+			for (Iterator<ViewerFilter> iterator = filters.iterator(); iterator
+					.hasNext();) {
+				ViewerFilter viewerFilter = iterator.next();
+				if (viewerFilter.equals(containersWithLabelsViewerFilter)) {
+					iterator.remove();
+				}
+			}
+			this.viewer.setFilters(filters.toArray(new ViewerFilter[0]));
+		}
+		// Save enablement across sessions using a preference variable.
+		IEclipsePreferences preferences = InstanceScope.INSTANCE
+				.getNode(Activator.PLUGIN_ID);
+		preferences.putBoolean(FILTER_WITH_LABELS_PREFERENCE, enabled);
+		refreshViewTitle();
+	}
+
 	private void refreshViewTitle() {
 		if (this.viewer == null || this.viewer.getControl().isDisposed()
 				|| this.form == null
@@ -591,17 +678,17 @@ public class DockerContainersView extends ViewPart implements
 			this.form.setText(connection.getName());
 			this.form.setEnabled(false);
 		} else {
-			final List<ViewerFilter> filters = Arrays
-					.asList(this.viewer.getFilters());
-			if (filters.contains(hideStoppedContainersViewerFilter)) {
+			int itemCount = viewer.getTable().getItemCount();
+			int containersSize = connection.getContainers().size();
+			if (itemCount < containersSize) {
 				this.form.setText(DVMessages.getFormattedString(
 						ViewFilteredTitle, connection.getName(),
-						Integer.toString(viewer.getTable().getItemCount()),
-						Integer.toString(connection.getContainers().size())));
+						Integer.toString(itemCount),
+						Integer.toString(containersSize)));
 			} else {
 				this.form.setText(DVMessages.getFormattedString(ViewAllTitle,
 						new String[] { connection.getName(), Integer.toString(
-								connection.getContainers().size()) }));
+								containersSize) }));
 			}
 			this.form.setEnabled(true);
 		}
