@@ -58,7 +58,7 @@ public class UnixSocketConnectionSettings extends BaseConnectionSettings {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
+		int result = 1;
 		result = prime * result + ((path == null) ? 0 : path.hashCode());
 		return result;
 	}
@@ -67,9 +67,6 @@ public class UnixSocketConnectionSettings extends BaseConnectionSettings {
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
 		}
 		if (getClass() != obj.getClass()) {
 			return false;

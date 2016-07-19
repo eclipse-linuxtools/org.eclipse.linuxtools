@@ -109,7 +109,7 @@ public class TCPConnectionSettings extends BaseConnectionSettings {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
+		int result = 1;
 		result = prime * result + ((host == null) ? 0 : host.hashCode());
 		result = prime * result + ((pathToCertificates == null) ? 0
 				: pathToCertificates.hashCode());
@@ -120,9 +120,6 @@ public class TCPConnectionSettings extends BaseConnectionSettings {
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
 		}
 		if (getClass() != obj.getClass()) {
 			return false;

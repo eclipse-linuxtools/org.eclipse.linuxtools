@@ -22,9 +22,12 @@ public abstract class BaseConnectionSettings
 	private boolean settingsResolved = false;
 
 	@Override
-	@Deprecated
 	public String getName() {
 		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setSettingsResolved(boolean settingsResolved) {

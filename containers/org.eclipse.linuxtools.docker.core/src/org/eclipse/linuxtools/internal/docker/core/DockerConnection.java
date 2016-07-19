@@ -2054,5 +2054,18 @@ public class DockerConnection implements IDockerConnection, Closeable {
 		}
 	}
 
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof IDockerConnection) {
+			return getSettings()
+					.equals(((IDockerConnection) other).getSettings());
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return getSettings().hashCode();
+	}
 
 }

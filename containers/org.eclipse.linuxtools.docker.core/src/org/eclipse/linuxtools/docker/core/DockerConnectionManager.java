@@ -94,10 +94,12 @@ public class DockerConnectionManager {
 	}
 
 	public void addConnection(final IDockerConnection dockerConnection) {
-		connections.add(dockerConnection);
-		saveConnections();
-		notifyListeners(dockerConnection,
-				IDockerConnectionManagerListener.ADD_EVENT);
+		if (!connections.contains(dockerConnection)) {
+			connections.add(dockerConnection);
+			saveConnections();
+			notifyListeners(dockerConnection,
+					IDockerConnectionManagerListener.ADD_EVENT);
+		}
 	}
 
 	public void removeConnection(final IDockerConnection connection) {
