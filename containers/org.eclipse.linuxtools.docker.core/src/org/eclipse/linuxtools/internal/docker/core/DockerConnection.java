@@ -1611,8 +1611,19 @@ public class DockerConnection implements IDockerConnection, Closeable {
 		ContainerInfo info;
 		try {
 			info = client.inspectContainer(id);
+			/*
+			 * Workaround error message thrown to stderr due to lack of Guava
+			 * 18.0. Remove this when we begin using Guava 18.0.
+			 */
+			PrintStream oldErr = System.err;
+			System.setErr(new PrintStream(new OutputStream() {
+				@Override
+				public void write(int b) {
+				}
+			}));
 			client.commitContainer(id, repo, tag, info.config(), comment,
 					author);
+			System.setErr(oldErr);
 			// update images list
 			// FIXME: are we refreshing the list of images twice ?
 			listImages();
