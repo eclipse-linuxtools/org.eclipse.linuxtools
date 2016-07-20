@@ -503,6 +503,13 @@
 		<handler
               commandId="org.eclipse.linuxtools.docker.ui.commands.pullImage"
               class="org.eclipse.linuxtools.internal.docker.ui.commands.PullImageCommandHandler">
+     <enabledWhen>
+        <test
+              forcePluginActivation="true"
+              property="org.eclipse.linuxtools.docker.propertytesters.connection.existsActiveConnection"
+              value="true">
+        </test>
+     </enabledWhen>
      	</handler>
 		<handler
               commandId="org.eclipse.linuxtools.docker.ui.commands.pushImage"
@@ -559,6 +566,13 @@
 		<handler
               commandId="org.eclipse.linuxtools.docker.ui.commands.buildImage"
               class="org.eclipse.linuxtools.internal.docker.ui.commands.BuildImageCommandHandler">
+     <enabledWhen>
+        <test
+              forcePluginActivation="true"
+              property="org.eclipse.linuxtools.docker.propertytesters.connection.existsActiveConnection"
+              value="true">
+        </test>
+     </enabledWhen>
      	</handler>
 		<handler
               commandId="org.eclipse.linuxtools.docker.ui.commands.removeImages"
@@ -664,6 +678,13 @@
         namespace="org.eclipse.linuxtools.docker.propertytesters.image"
         properties="canBeTagged,hasMultipleTags"
         type="org.eclipse.linuxtools.docker.core.IDockerImage">
+  </propertyTester>
+  <propertyTester
+        class="org.eclipse.linuxtools.internal.docker.ui.propertytesters.ConnectionPropertyTester"
+        id="org.eclipse.linuxtools.docker.activeconnectionPropertyTester"
+        namespace="org.eclipse.linuxtools.docker.propertytesters.connection"
+        properties="existsActiveConnection,existsAnyConnection"
+        type="java.lang.Object">
   </propertyTester>
 	</extension>
 		

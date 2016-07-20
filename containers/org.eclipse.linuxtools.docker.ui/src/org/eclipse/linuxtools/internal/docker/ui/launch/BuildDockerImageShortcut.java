@@ -36,7 +36,10 @@ import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
+import org.eclipse.linuxtools.internal.docker.ui.commands.CommandMessages;
+import org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageBuildDialog;
+import org.eclipse.linuxtools.internal.docker.ui.wizards.NewDockerConnection;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -45,8 +48,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 
 public class BuildDockerImageShortcut implements ILaunchShortcut {
-	private static final String LaunchShortcut_Error_Launching = "ImageBuildShortcut.error.msg"; //$NON-NLS-1$
-	private static final String LaunchShortcut_No_Connections = "ImageBuildShortcutMissingConnection.msg"; //$NON-NLS-1$
 	private static final String LaunchShortcut_Config_Selection = "ImageBuildShortcutConfigSelection.title"; //$NON-NLS-1$
 	private static final String LaunchShortcut_Choose_Launch = "ImageBuildShortcutChooseLaunch.msg"; //$NON-NLS-1$
 	private static final String LaunchShortcut_Connection_Selection = "ImageBuildShortcutConnectionSelection.title"; //$NON-NLS-1$
@@ -169,14 +170,25 @@ public class BuildDockerImageShortcut implements ILaunchShortcut {
 			final IDockerConnection[] connections = DockerConnectionManager
 					.getInstance().getConnections();
 			if (connections.length == 0) {
-				Display.getDefault()
-						.syncExec(() -> MessageDialog.openError(
+				Display.getDefault().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						boolean confirm = MessageDialog.openQuestion(
 								PlatformUI.getWorkbench()
 										.getActiveWorkbenchWindow().getShell(),
-								LaunchMessages.getString(
-										LaunchShortcut_Error_Launching),
-								LaunchMessages.getString(
-										LaunchShortcut_No_Connections)));
+								CommandMessages.getString(
+										"BuildImageCommandHandler.no.connections.msg"), //$NON-NLS-1$
+								CommandMessages.getString(
+										"BuildImageCommandHandler.no.connections.desc")); //$NON-NLS-1$
+						if (confirm) {
+							NewDockerConnection newConnWizard = new NewDockerConnection();
+							CommandUtils.openWizard(newConnWizard,
+									PlatformUI.getWorkbench()
+											.getActiveWorkbenchWindow()
+											.getShell());
+						}
+					}
+				});
 				return null;
 			} else {
 				final ImageBuildDialog dialog = new ImageBuildDialog(
