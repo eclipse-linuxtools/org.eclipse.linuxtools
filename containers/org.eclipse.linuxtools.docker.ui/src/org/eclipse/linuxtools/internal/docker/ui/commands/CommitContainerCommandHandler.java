@@ -24,7 +24,6 @@ import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerContainersView;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ContainerCommit;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
@@ -36,30 +35,28 @@ public class CommitContainerCommandHandler extends AbstractHandler {
 	private final static String COMMIT_CONTAINER_MSG = "ContainerCommit.msg"; //$NON-NLS-1$
 	private static final String ERROR_COMMITTING_CONTAINER = "ContainerCommitError.msg"; //$NON-NLS-1$
 	
-	private IDockerConnection connection;
-	private IDockerContainer container;
-
 	@Override
 	public Object execute(final ExecutionEvent event) {
 		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		List<IDockerContainer> selectedContainers = CommandUtils
 				.getSelectedContainers(activePart);
-		if (activePart instanceof DockerContainersView) {
-			connection = ((DockerContainersView) activePart).getConnection();
-		}
+		final IDockerConnection connection = CommandUtils
+				.getCurrentConnection(activePart);
 		if (selectedContainers.size() != 1 || connection == null)
 			return null;
-		container = selectedContainers.get(0);
+		final IDockerContainer container = selectedContainers.get(0);
 		final ContainerCommit wizard = new ContainerCommit(container.id());
 		final boolean commitContainer = CommandUtils.openWizard(wizard,
 				HandlerUtil.getActiveShell(event));
 		if (commitContainer) {
-			performCommitContainer(wizard);
+			performCommitContainer(wizard, connection, container);
 		}
 		return null;
 	}
 	
-	private void performCommitContainer(final ContainerCommit wizard) {
+	private void performCommitContainer(final ContainerCommit wizard,
+			final IDockerConnection connection,
+			final IDockerContainer container) {
 		final Job commitContainerJob = new Job(
 				DVMessages.getString(COMMIT_CONTAINER_JOB_TITLE)) {
 
