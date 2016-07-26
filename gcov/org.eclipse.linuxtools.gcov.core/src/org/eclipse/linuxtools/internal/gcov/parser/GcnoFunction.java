@@ -104,18 +104,23 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
                     invalidBlocks.remove(i);
                     invb.setInvalidChain(false);
 
+                    if (invb.getNumPreds() != 0 && invb.getNumSuccs() != 0)
+                    	continue;
+                    
                     if (invb.getNumSuccs() == 0) {
                         ArrayList<Arc> extArcs = invb.getExitArcs();
                         for (Arc arc : extArcs) {
                             total += arc.getCount();
                         }
-                    } else if (invb.getNumPreds() == 0) {
+                    }
+                    // On Windows, we can end up with both numpreds and numsuccs 0 for
+                    // a closing brace of a function so we need to check the entry arcs
+                    // as well if we don't have a total > 0.
+                    if (invb.getNumPreds() == 0 && total == 0) {
                         ArrayList<Arc> entrArcs = invb.getEntryArcs();
                         for (Arc arc : entrArcs) {
                             total += arc.getCount();
                         }
-                    } else {
-                        continue;
                     }
 
                     invb.setCount(total);
