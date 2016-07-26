@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
+import org.eclipse.linuxtools.internal.docker.ui.commands.CommandMessages;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.ProjectInitializationRule;
@@ -95,11 +96,11 @@ public class BuildDockerImageShortcutSWTBotTest {
 		// given no connection
 		// when
 		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
-		// then expect an error dialog
-		assertThat(bot.shell(LaunchMessages.getString("ImageBuildShortcut.error.msg"))).isNotNull();
+		// then expect an error dialog because no Docker connection exists
+		assertThat(bot.shell(CommandMessages.getString("BuildImageCommandHandler.no.connections.msg"))).isNotNull();
 		// closing the wizard
 		SWTUtils.syncExec(() -> {
-			bot.button("OK").click();
+			bot.button("No").click();
 		});
 	}
 

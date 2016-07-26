@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.eclipse.linuxtools.docker.core.IDockerContainerConfig;
+import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig;
 import org.mockito.Mockito;
 
 /**
@@ -25,24 +26,25 @@ public class MockDockerContainerConfigFactory {
 	public static Builder cmd(final String cmd) {
 		return new Builder().cmd(cmd);
 	}
-	
+
 	public static class Builder {
-		
-		private final IDockerContainerConfig containerConfig;
+
+		private final DockerContainerConfig containerConfig;
 
 		private Builder() {
 			this.containerConfig = Mockito
-					.mock(IDockerContainerConfig.class, Mockito.RETURNS_DEEP_STUBS);
+					.mock(DockerContainerConfig.class, Mockito.RETURNS_DEEP_STUBS);
 		}
-		
+
 		public Builder cmd(final String cmd) {
 			Mockito.when(this.containerConfig.cmd()).thenReturn(Arrays.asList(cmd));
 			return this;
 		}
-		
+
 		public IDockerContainerConfig build() {
 			Mockito.when(this.containerConfig.exposedPorts()).thenReturn(Collections.emptySet());
 			Mockito.when(this.containerConfig.env()).thenReturn(Collections.emptyList());
+			Mockito.when(this.containerConfig.labels()).thenReturn(Collections.emptyMap());
 			return this.containerConfig;
 		}
 	}
