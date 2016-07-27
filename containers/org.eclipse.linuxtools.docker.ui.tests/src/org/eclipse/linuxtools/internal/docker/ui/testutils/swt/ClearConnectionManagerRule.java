@@ -24,10 +24,18 @@ public class ClearConnectionManagerRule extends ExternalResource {
 
 	@Override
 	protected void after() {
-		Stream.of(DockerConnectionManager.getInstance().getConnections())
-				.forEach(c -> DockerConnectionManager.getInstance().removeConnection(c));
+		removeAllConnections(DockerConnectionManager.getInstance());
 		DockerConnectionManagerUtils.configureConnectionManager();
 		DockerConnectionManager.getInstance().setConnectionSettingsFinder(new DefaultDockerConnectionSettingsFinder());
+	}
+
+	/**
+	 * Removes all connections in the given {@link DockerConnectionManager}
+	 * 
+	 * @param dockerConnectionManager
+	 */
+	public static void removeAllConnections(final DockerConnectionManager dockerConnectionManager) {
+		Stream.of(dockerConnectionManager.getConnections()).forEach(c -> dockerConnectionManager.removeConnection(c));
 	}
 
 }

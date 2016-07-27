@@ -15,9 +15,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerRefreshManager;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
@@ -44,14 +44,14 @@ public class DockerContainersViewSWTBotTest {
 	private SWTBotView dockerExplorerBotView;
 
 	@ClassRule
-	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(); 
-	
+	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule();
+
 	@Rule
 	public TestLoggerRule watcher = new TestLoggerRule();
-	
+
 	@Rule
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
-	
+
 	@Before
 	public void setup() {
 		this.bot = new SWTWorkbenchBot();
@@ -67,7 +67,7 @@ public class DockerContainersViewSWTBotTest {
 		this.dockerContainersViewBot = bot.viewById(DockerContainersView.VIEW_ID);
 		this.dockerExplorerBotView = bot.viewById(DockerExplorerView.VIEW_ID);
 	}
-	
+
 	@Test
 	public void shouldRemoveListenersWhenClosingView() {
 		// given
@@ -75,6 +75,7 @@ public class DockerContainersViewSWTBotTest {
 				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		SWTUtils.getTreeItem(dockerExplorerBotView, "Test").select();
 		// remove the DockerContainerRefreshManager
 		dockerConnection.removeContainerListener(DockerContainerRefreshManager
 								.getInstance());
@@ -84,7 +85,7 @@ public class DockerContainersViewSWTBotTest {
 		// there should be one listener left: DockerExplorerView
 		assertThat(dockerConnection.getContainerListeners()).hasSize(1);
 	}
-	
+
 	@Test
 	public void shouldNotRemoveListenersWhenNoSelectedConnectionBeforeClosingView() {
 		// given

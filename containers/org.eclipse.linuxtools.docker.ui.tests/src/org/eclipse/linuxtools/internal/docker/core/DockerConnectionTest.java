@@ -13,10 +13,12 @@ package org.eclipse.linuxtools.internal.docker.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
 import org.eclipse.linuxtools.docker.core.DockerException;
+import org.eclipse.linuxtools.docker.core.EnumDockerConnectionState;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
@@ -25,6 +27,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionF
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.junit.Test;
 
+import com.spotify.docker.client.DockerCertificateException;
 import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.messages.Container;
 import com.spotify.docker.client.messages.Image;
@@ -79,5 +82,21 @@ public class DockerConnectionTest {
 		assertTrue(dockerConnection.hasImage("org/foo", null));
 		assertTrue(dockerConnection.hasImage("org/foo", "latest"));
 		assertTrue(dockerConnection.hasImage("org/foo", "1.0"));
+	}
+
+	@Test
+	public void shouldBeClosedWhenInvalidPathToCerts() throws DockerException {
+		// given
+		final DockerConnection dockerConnection = new DockerConnection.Builder().name("foo")
+				.tcpConnection(new TCPConnectionSettings("https://1.2.3.4:1234", "/invalid/path"));
+		// when
+		try {
+			dockerConnection.open(false);
+			fail("Expected an exception since the path to certs is invalid");
+		} catch (DockerException e) {
+			assertThat(e.getCause()).isInstanceOf(DockerCertificateException.class);
+		}
+		// then connection state should be 'CLOSED' since the settings are wrong
+		assertThat(dockerConnection.getState()).isEqualTo(EnumDockerConnectionState.CLOSED);
 	}
 }

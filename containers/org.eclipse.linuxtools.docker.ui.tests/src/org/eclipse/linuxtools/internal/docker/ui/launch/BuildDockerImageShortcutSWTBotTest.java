@@ -94,6 +94,7 @@ public class BuildDockerImageShortcutSWTBotTest {
 	@RunWithProject("foo")
 	public void shouldDisableCommandOnFirstCallWhenMissingConnection() {
 		// given no connection
+		ClearConnectionManagerRule.removeAllConnections(DockerConnectionManager.getInstance());
 		// when
 		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
 		// then expect an error dialog because no Docker connection exists

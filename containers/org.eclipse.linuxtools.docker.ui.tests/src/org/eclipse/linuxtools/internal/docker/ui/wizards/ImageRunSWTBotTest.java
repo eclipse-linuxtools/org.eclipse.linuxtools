@@ -65,12 +65,12 @@ public class ImageRunSWTBotTest {
 	@ClassRule
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule();
 
-	@Rule 
+	@Rule
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
-	
-	@Rule 
+
+	@Rule
 	public CloseWizardRule closeWizard = new CloseWizardRule();
-	
+
 	@Before
 	public void lookupDockerExplorerView() {
 		dockerExplorerViewBot = bot.viewById("org.eclipse.linuxtools.docker.ui.dockerExplorerView");
@@ -78,7 +78,7 @@ public class ImageRunSWTBotTest {
 		dockerExplorerViewBot.show();
 		dockerExplorerViewBot.setFocus();
 	}
-	
+
 	@Test
 	public void shouldReportErrorIfContainerWithSameNameExists() {
 		// given
@@ -86,14 +86,11 @@ public class ImageRunSWTBotTest {
 				.container(MockContainerFactory.name("foo_bar").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		// expand the 'Images' node
-		SWTUtils.syncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
-		final SWTBotTreeItem imagesTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images");
-		final SWTBotTreeItem imageTreeItem = SWTUtils.getTreeItem(imagesTreeItem, "foo");
-		
+		// expand the 'Images' node and select the 'foo' image
+		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images", "foo").select();
+
 		// when opening the "Run Image..." wizard
 		final SWTBotTree dockerExplorerViewTreeBot = dockerExplorerViewBot.bot().tree();
-		dockerExplorerViewTreeBot.select(imageTreeItem);
 		dockerExplorerViewTreeBot.contextMenu("Run...").click();
 
 		// when use an existing container name
@@ -111,16 +108,12 @@ public class ImageRunSWTBotTest {
 				.container(MockContainerFactory.name("foo_bar").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		// expand the 'Images' node
-		SWTUtils.syncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
-		final SWTBotTreeItem imagesTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images");
-		final SWTBotTreeItem imageTreeItem = SWTUtils.getTreeItem(imagesTreeItem, "foo");
-		
+		// expand the 'Images' node and select the 'foo' image
+		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images", "foo").select();
 		// when opening the "Run Image..." wizard
 		final SWTBotTree dockerExplorerViewTreeBot = dockerExplorerViewBot.bot().tree();
-		SWTUtils.select(imageTreeItem);
 		dockerExplorerViewTreeBot.contextMenu("Run...").click();
-		
+
 		// when use an existing container name
 		bot.textWithLabel(WizardMessages.getString("ImageRunSelectionPage.containerName")).setText("foo_bar_baz");
 		// then
@@ -150,9 +143,7 @@ public class ImageRunSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		// configure the Connection Manager
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		
-		SWTUtils.syncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
-		SWTUtils.syncExec(() -> dockerExplorerView.getCommonViewer().getTree().getItems());
+		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test").expand();
 		final SWTBotTreeItem imagesTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images").expand();
 		// when select image and click on run to open the wizard
 		SWTUtils.getTreeItem(imagesTreeItem, "foo/bar").select();

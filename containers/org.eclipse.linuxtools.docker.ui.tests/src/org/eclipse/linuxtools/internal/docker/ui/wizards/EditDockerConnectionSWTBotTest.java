@@ -499,6 +499,9 @@ public class EditDockerConnectionSWTBotTest {
 		DockerConnectionManagerUtils.configureConnectionManager(connectionStorageManager);
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
+		// let's ignore the connection savings that may have occurred when
+		// adding elements from the extension points
+		Mockito.reset(connectionStorageManager);
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(0).setText("foo");
@@ -511,7 +514,7 @@ public class EditDockerConnectionSWTBotTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void shouldSaveConnectionWhenUnixSockerConnectionSettingsChanged() throws IOException {
+	public void shouldSaveConnectionWhenUnixSocketConnectionSettingsChanged() throws IOException {
 		// given
 		final IDockerConnection connection = configureUnixSocketConnection("Test");
 		final IDockerConnectionStorageManager connectionStorageManager = MockDockerConnectionStorageManagerFactory
@@ -520,6 +523,9 @@ public class EditDockerConnectionSWTBotTest {
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
 		final File tmpDockerSocketFile = folder.newFile("docker.sock");
+		// let's ignore the connection savings that may have occurred when
+		// adding elements from the extension points
+		Mockito.reset(connectionStorageManager);
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(1).setText(tmpDockerSocketFile.getAbsolutePath());
@@ -542,6 +548,9 @@ public class EditDockerConnectionSWTBotTest {
 		DockerConnectionManagerUtils.configureConnectionManager(connectionStorageManager);
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
+		// let's ignore the connection savings that may have occurred when
+		// adding elements from the extension points
+		Mockito.reset(connectionStorageManager);
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(2).setText("https://foo.bar:1234");
@@ -564,6 +573,9 @@ public class EditDockerConnectionSWTBotTest {
 		DockerConnectionManagerUtils.configureConnectionManager(connectionStorageManager);
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
+		// let's ignore the connection savings that may have occurred when
+		// adding elements from the extension points
+		Mockito.reset(connectionStorageManager);
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(0).setText("foo");

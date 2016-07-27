@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.docker.core;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -98,15 +99,19 @@ public class DockerConnectionManagerTest {
 		for (IDockerConnectionSettings s : settings) {
 			if (s instanceof TCPConnectionSettings) {
 				TCPConnectionSettings t = (TCPConnectionSettings) s;
-				assertTrue(t.getType() == BindingType.TCP_CONNECTION);
-				assertTrue(t.getHost().equals("https://1.2.3.4:5678"));
-				assertTrue(t.getPathToCertificates().equals("/foo/bar/baz/certs"));
-				assertTrue(t.getName().equals("https://1.2.3.4:5678"));
+				assertThat(t.getType()).isEqualTo(BindingType.TCP_CONNECTION);
+				assertThat(t.getHost()).isEqualTo("https://1.2.3.4:5678");
+				assertThat(t.getPathToCertificates()).isEqualTo("/foo/bar/baz/certs");
+				assertThat(t.getName()).isEqualTo("https://1.2.3.4:5678");
 			} else if (s instanceof UnixSocketConnectionSettings) {
 				UnixSocketConnectionSettings t = (UnixSocketConnectionSettings) s;
-				assertTrue(t.getType() == BindingType.UNIX_SOCKET_CONNECTION);
-				assertTrue(t.getPath().equals("unix:///foo/bar/baz/docker.sock"));
-				assertTrue(t.getName().equals("unix:///foo/bar/baz/docker.sock"));
+				// skip if this is the Linux native or Docker for Mac daemon
+				if (t.getPath().equals("unix:///var/run/docker.sock")) {
+					continue;
+				}
+				assertThat(t.getType()).isEqualTo(BindingType.UNIX_SOCKET_CONNECTION);
+				assertThat(t.getPath()).isEqualTo("unix:///foo/bar/baz/docker.sock");
+				assertThat(t.getName()).isEqualTo("unix:///foo/bar/baz/docker.sock");
 			} else {
 				fail("Docker Connection Settings does not match a known type");
 			}

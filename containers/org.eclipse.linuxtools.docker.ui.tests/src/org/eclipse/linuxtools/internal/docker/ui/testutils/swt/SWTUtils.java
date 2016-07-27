@@ -53,7 +53,7 @@ public class SWTUtils {
 	/**
 	 * Calls <strong>synchronously</strong> the given {@link Runnable} in the
 	 * default Display and returns the result
-	 * 
+	 *
 	 * @param supplier
 	 *            the Supplier to call
 	 * @return the supplier's result
@@ -67,7 +67,7 @@ public class SWTUtils {
 	/**
 	 * Executes <strong>synchronously</strong> the given {@link Runnable} in the
 	 * default Display
-	 * 
+	 *
 	 * @param runnable
 	 *            the {@link Runnable} to execute
 	 */
@@ -80,7 +80,7 @@ public class SWTUtils {
 	 * default Display. The given {@link Runnable} is ran into a rapping
 	 * {@link Runnable} that will catch the {@link ComparisonFailure} that may
 	 * be raised during an assertion.
-	 * 
+	 *
 	 * @param runnable
 	 *            the {@link Runnable} to execute
 	 * @throws ComparisonFailure
@@ -113,19 +113,19 @@ public class SWTUtils {
 	 * Executes the given {@link Runnable} <strong>asynchronously</strong> in
 	 * the default {@link Display} and waits until all jobs are done before
 	 * completing.
-	 * 
+	 *
 	 * @param runnable
 	 * @throws InterruptedException
 	 */
 	public static void asyncExec(final Runnable runnable) {
 		asyncExec(runnable, true);
 	}
-	
+
 	/**
 	 * Executes the given {@link Runnable} <strong>asynchronously</strong> in
 	 * the default {@link Display} and waits until all jobs are done before
 	 * completing.
-	 * 
+	 *
 	 * @param runnable
 	 *            the {@link Runnable} to execute
 	 * @param waitForJobsToComplete
@@ -158,7 +158,7 @@ public class SWTUtils {
 
 	/**
 	 * Waits for all {@link Job} to complete.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	public static void waitForJobsToComplete() {
@@ -170,7 +170,7 @@ public class SWTUtils {
 
 	/**
 	 * Waits for all {@link Job} to complete.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	public static void waitForJobsToComplete(Object familly) {
@@ -179,7 +179,7 @@ public class SWTUtils {
 //		}
 		Conditions.waitForJobs(DockerExplorerView.class, "Docker Explorer View jobs");
 	}
-	
+
 	/**
 	 * @param viewBot
 	 *            the {@link SWTBotView} containing the {@link Tree} to traverse
@@ -194,10 +194,10 @@ public class SWTUtils {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param parentTreeItem the parent tree item from which to start
-	 * @param paths the relative path to the item to return 
-	 * @return the {@link SWTBotTreeItem} that matches the given path from the given parent tree item 
+	 * @param paths the relative path to the item to return
+	 * @return the {@link SWTBotTreeItem} that matches the given path from the given parent tree item
 	 */
 	public static SWTBotTreeItem getTreeItem(final SWTBotTreeItem parentTreeItem, final String... paths) {
 		if (paths.length == 1) {
@@ -211,7 +211,7 @@ public class SWTUtils {
 	/**
 	 * Returns the first child node in the given parent tree item whose text
 	 * matches (ie, begins with) the given path argument.
-	 * 
+	 *
 	 * @param parentTree
 	 *            the parent tree item
 	 * @param path
@@ -231,7 +231,7 @@ public class SWTUtils {
 	/**
 	 * Returns the first child node in the given parent tree item whose text
 	 * matches (ie, begins with) the given path argument.
-	 * 
+	 *
 	 * @param parentTreeItem
 	 *            the parent tree item
 	 * @param path
@@ -250,8 +250,10 @@ public class SWTUtils {
 
 	private static SWTBotTreeItem getTreeItem(final SWTBotTreeItem[] treeItems, final String[] paths) {
 		final SWTBotTreeItem swtBotTreeItem = Stream.of(treeItems).filter(item -> item.getText().startsWith(paths[0]))
-				.findFirst().get();
+				.findFirst().orElseThrow(() -> new RuntimeException("Available items: "
+						+ Stream.of(treeItems).map(item -> item.getText()).collect(Collectors.joining(", "))));
 		if (paths.length > 1) {
+			syncExec(() -> swtBotTreeItem.expand());
 			final String[] remainingPath = new String[paths.length - 1];
 			System.arraycopy(paths, 1, remainingPath, 0, remainingPath.length);
 			return getTreeItem(swtBotTreeItem.getItems(), remainingPath);
@@ -261,7 +263,7 @@ public class SWTUtils {
 
 	/**
 	 * Waits for the given duration
-	 * @param duration the duration 
+	 * @param duration the duration
 	 * @param unit the duration unit
 	 */
 	public static void wait(final int duration, final TimeUnit unit) {
@@ -275,14 +277,14 @@ public class SWTUtils {
 	/**
 	 * Selects <strong> all child items</strong> in the given <code>parentTreeItem</code> whose
 	 * labels match the given <code>items</code>.
-	 * 
+	 *
 	 * @param parentTreeItem
 	 *            the parent tree item
 	 * @param firstItem
 	 *            the first item to select
 	 * @param otherItems
 	 *            the other items to select
-	 * @return 
+	 * @return
 	 */
 	public static SWTBotTreeItem select(final SWTBotTreeItem parentTreeItem, final String firstItem, final String... otherItems) {
 		final String[] matchItems = new String[otherItems.length];
@@ -293,12 +295,12 @@ public class SWTUtils {
 	/**
 	 * Selects <strong> all child items</strong> in the given <code>parentTreeItem</code> whose
 	 * labels match the given <code>items</code>.
-	 * 
+	 *
 	 * @param parentTreeItem
 	 *            the parent tree item
 	 * @param matchItems
 	 *            the items to select
-	 * @return 
+	 * @return
 	 */
 	public static SWTBotTreeItem select(final SWTBotTreeItem parentTreeItem, final String[] matchItems) {
 		final List<String> fullyQualifiedItems = Stream.of(parentTreeItem.getItems())
@@ -310,7 +312,7 @@ public class SWTUtils {
 	/**
 	 * Selects the given <code>treeItem</code> whose
 	 * labels match the given <code>items</code>.
-	 * 
+	 *
 	 * @param treeItem
 	 *            the parent tree item
 	 * @param matchItems
@@ -337,7 +339,7 @@ public class SWTUtils {
 		System.arraycopy(path, 1, remainingPath, 0, remainingPath.length);
 		return getSubMenu(contextMenu, remainingPath);
 	}
-	
+
 	/**
 	 * Hides the menu for the given <code>tree</code>
 	 * @param tree the tree whose {@link Menu} should be hidden
@@ -345,7 +347,7 @@ public class SWTUtils {
 	public static void hideMenu(final SWTBotTree tree) {
 		final Menu menu = UIThreadRunnable.syncExec((Result<Menu>) () -> tree.widget.getMenu());
 		UIThreadRunnable.syncExec(new VoidResult() {
-			
+
 			@Override
 			public void run() {
 				hide(menu);
@@ -377,11 +379,11 @@ public class SWTUtils {
 		System.arraycopy(path, 1, remainingPath, 0, remainingPath.length);
 		return getSubMenu(subMenu, remainingPath);
 	}
-	
+
 	public static SWTBotTreeItem expand(final SWTBotTree tree, final String... path) {
 		final SWTBotTreeItem rootItem = getTreeItem(tree, path[0]);
 		expandTreeItem(rootItem);
-		
+
 		if(path.length > 1) {
 			final String[] remainingPath = new String[path.length -1];
 			System.arraycopy(path, 1, remainingPath, 0, remainingPath.length);
@@ -400,10 +402,10 @@ public class SWTUtils {
 		}
 		return getTreeItem(treeItem, path[0]);
 	}
-	
+
 	private static SWTBotTreeItem expandTreeItem(final SWTBotTreeItem treeItem) {
 		final UIJob expandJob = new UIJob("expanding tree") {
-			
+
 			@Override
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				treeItem.expand();
@@ -419,7 +421,7 @@ public class SWTUtils {
 					SWTUtils.wait(1, TimeUnit.SECONDS);
 					currentAttempt++;
 				}
-				
+
 			}
 		});
 		expandJob.schedule();
@@ -427,5 +429,5 @@ public class SWTUtils {
 		return treeItem;
 	}
 
-	
+
 }

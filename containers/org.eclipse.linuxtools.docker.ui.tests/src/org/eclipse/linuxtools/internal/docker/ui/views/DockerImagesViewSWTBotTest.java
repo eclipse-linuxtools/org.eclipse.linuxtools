@@ -15,9 +15,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerRefreshManager;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
@@ -81,6 +81,8 @@ public class DockerImagesViewSWTBotTest {
 				.name("foo:1.0", "foo:latest", "bar:1.0", "bar:latest").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// when
+		SWTUtils.getTreeItem(dockerExplorerBotView, "Test").select();
 		// then 1 image with all repo/tags should be displayed
 		SWTUtils.syncAssert(() -> {
 			final TableItem[] images = dockerImagesView.getViewer().getTable().getItems();
@@ -96,6 +98,7 @@ public class DockerImagesViewSWTBotTest {
 				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		SWTUtils.getTreeItem(dockerExplorerBotView, "Test").select();
 		// remove the DockerContainerRefreshManager
 		dockerConnection.removeContainerListener(DockerContainerRefreshManager.getInstance());
 		// DockerExplorerView inner classes

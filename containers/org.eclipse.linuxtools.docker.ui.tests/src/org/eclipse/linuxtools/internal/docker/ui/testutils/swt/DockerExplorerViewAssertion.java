@@ -20,7 +20,7 @@ import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
  * Custom assertions on an {@link DockerExplorerView}.
  */
 public class DockerExplorerViewAssertion extends AbstractAssert<DockerExplorerViewAssertion, DockerExplorerView> {
-	
+
 	protected DockerExplorerViewAssertion(final DockerExplorerView actual) {
 		super(actual, DockerExplorerViewAssertion.class);
 	}
@@ -31,6 +31,13 @@ public class DockerExplorerViewAssertion extends AbstractAssert<DockerExplorerVi
 
 	public DockerExplorerViewAssertion isEmpty() {
 		notNullValue();
+		try {
+			// let's make sure changes in the UI were taken into account before
+			// performing assertions
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 		if(actual.isShowingConnectionsPane()) {
 			failWithMessage("Expected Docker Explorer View to show the explanation pane but it did not");
 		}

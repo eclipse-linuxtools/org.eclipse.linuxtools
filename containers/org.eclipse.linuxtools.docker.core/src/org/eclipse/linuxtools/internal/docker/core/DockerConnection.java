@@ -256,9 +256,11 @@ public class DockerConnection implements IDockerConnection, Closeable {
 						addContainerListener(dcrm);
 					}
 				} catch (DockerCertificateException e) {
+					setState(EnumDockerConnectionState.CLOSED);
 					throw new DockerException(NLS
 							.bind(Messages.Open_Connection_Failure, this.name,
-									this.getUri()));
+									this.getUri()),
+							e);
 				}
 			}
 			// then try to ping the Docker daemon to verify the connection
@@ -318,13 +320,15 @@ public class DockerConnection implements IDockerConnection, Closeable {
 			if (this.client != null) {
 				this.client.ping();
 			} else {
-				throw new DockerException(Messages.Docker_Daemon_Ping_Failure);
+				throw new DockerException(NLS.bind(
+						Messages.Docker_Daemon_Ping_Failure, this.getName()));
 			}
 			setState(EnumDockerConnectionState.ESTABLISHED);
 		} catch (com.spotify.docker.client.DockerException
 				| InterruptedException e) {
 			setState(EnumDockerConnectionState.CLOSED);
-			throw new DockerException(Messages.Docker_Daemon_Ping_Failure, e);
+			throw new DockerException(NLS.bind(
+					Messages.Docker_Daemon_Ping_Failure, this.getName()), e);
 		}
 	}
 
@@ -407,7 +411,10 @@ public class DockerConnection implements IDockerConnection, Closeable {
 							ping();
 						} catch (DockerException e) {
 							Activator.logErrorMessage(
-									Messages.Docker_Daemon_Ping_Failure, e);
+									NLS.bind(
+											Messages.Docker_Daemon_Ping_Failure,
+											this.getName()),
+									e);
 							return Status.CANCEL_STATUS;
 						}
 						return Status.OK_STATUS;
