@@ -291,8 +291,10 @@ public class DockerExplorerView extends CommonNavigator implements
 						.setSelection(new StructuredSelection(connection));
 				break;
 			case IDockerConnectionManagerListener.RENAME_EVENT:
-			case IDockerConnectionManagerListener.UPDATE_SETTINGS_EVENT:
 				getCommonViewer().refresh(connection);
+				break;
+			case IDockerConnectionManagerListener.UPDATE_SETTINGS_EVENT:
+				getCommonViewer().refresh();
 				break;
 			case IDockerConnectionManagerListener.REMOVE_EVENT:
 				unregisterListeners(connection);
