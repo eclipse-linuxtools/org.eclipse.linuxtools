@@ -12,11 +12,6 @@
 package org.eclipse.linuxtools.internal.docker.ui.views;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -183,35 +178,7 @@ public class DockerExplorerLabelProvider implements IStyledLabelProvider, ILabel
 					StyledString.QUALIFIER_STYLER);
 			return styledString;
 		} else if (element instanceof IDockerImage) {
-			final IDockerImage dockerImage = (IDockerImage) element;
-			final String imageShortId = (dockerImage.id().length() > 12)
-					? dockerImage.id().substring(0, 12) : dockerImage.id();
-			final StringBuilder messageBuilder = new StringBuilder(
-					dockerImage.repo());
-			final int startTags = messageBuilder.length();
-			if (!dockerImage.tags().isEmpty()) {
-				final List<String> tags = new ArrayList<>(dockerImage.tags());
-				Collections.sort(tags);
-				messageBuilder.append(": ");
-				for (Iterator<String> tagIterator = tags.iterator(); tagIterator
-						.hasNext();) {
-					messageBuilder.append(tagIterator.next());
-					if (tagIterator.hasNext()) {
-						messageBuilder.append(", ");
-					}
-				}
-			}
-			final int startImageId = messageBuilder.length();
-			messageBuilder.append(" (").append(imageShortId).append(')');
-			final String message = messageBuilder.toString();
-			final StyledString styledString = new StyledString(message);
-			// styled tags
-			styledString.setStyle(startTags, startImageId - startTags,
-					StyledString.COUNTER_STYLER);
-			// styled image id
-			styledString.setStyle(startImageId, message.length() - startImageId,
-					StyledString.QUALIFIER_STYLER);
-			return styledString;
+			return LabelProviderUtils.getStyleString((IDockerImage) element);
 		} else if (element instanceof DockerContainerPortMappingsCategory) {
 			return new StyledString(DVMessages
 					.getString("DockerContainerPortMappingsCategory.label")); //$NON-NLS-1$

@@ -127,7 +127,7 @@ public class DockerExplorerViewSWTBotTest {
 		final SWTBotTreeItem imagesTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, connectionName, "Images");
 		SWTUtils.asyncExec(() -> imagesTreeItem.expand());
 		// select both containers
-		SWTUtils.select(imagesTreeItem, imageNames);
+		SWTUtils.getTreeItem(imagesTreeItem, imageNames).select();
 	}
 
 	@Test
@@ -290,9 +290,9 @@ public class DockerExplorerViewSWTBotTest {
 		dockerExplorerViewBot.bot().tree().contextMenu("Refresh").click();
 		SWTUtils.asyncExec(() -> containers.expand());
 		// then all items should remain expanded (after they were reloaded)
-		SWTBotTreeItemAssertions.assertThat(SWTUtils.select(containers, "foo_bar", "Links")).isExpanded();
-		SWTBotTreeItemAssertions.assertThat(SWTUtils.select(containers, "foo_bar", "Ports")).isExpanded();
-		SWTBotTreeItemAssertions.assertThat(SWTUtils.select(containers, "foo_bar", "Volumes")).isExpanded();
+		SWTBotTreeItemAssertions.assertThat(SWTUtils.getTreeItem(containers, "foo_bar", "Links")).isExpanded();
+		SWTBotTreeItemAssertions.assertThat(SWTUtils.getTreeItem(containers, "foo_bar", "Ports")).isExpanded();
+		SWTBotTreeItemAssertions.assertThat(SWTUtils.getTreeItem(containers, "foo_bar", "Volumes")).isExpanded();
 	}
 
 	@Test

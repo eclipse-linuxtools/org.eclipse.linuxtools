@@ -43,14 +43,10 @@ public class ShowInPropertiesViewCommandHandler extends AbstractHandler {
 				final PropertySheet propertySheet = (PropertySheet) PlatformUI
 						.getWorkbench().getActiveWorkbenchWindow()
 						.getActivePage()
-						.showView("org.eclipse.ui.views.PropertySheet");
+						.showView("org.eclipse.ui.views.PropertySheet"); //$NON-NLS-1$
 				final PropertyShowInContext showInContext = new PropertyShowInContext(
 						activePart, HandlerUtil.getCurrentSelection(event));
 				propertySheet.show(showInContext);
-				// final TabbedPropertySheetPage tabbedPropertySheetPage =
-				// activePart
-				// .getAdapter(TabbedPropertySheetPage.class);
-				// tabbedPropertySheetPage.setFocus();
 			} catch (PartInitException e) {
 				Activator.logErrorMessage(
 						CommandMessages.getString(

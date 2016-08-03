@@ -64,6 +64,14 @@
              name="%DockerExplorerView.name"
              restorable="true">
        </view>
+       <view
+             category="org.eclipse.linuxtools.docker.ui"
+             class="org.eclipse.linuxtools.internal.docker.ui.views.DockerImageHierarchyView"
+             icon="icons/class_hi.png"
+             id="org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView"
+             name="%DockerImageHierarchyView.name"
+             restorable="true">
+       </view>
        
    </extension>
    <extension
@@ -143,6 +151,32 @@
             id="org.eclipse.linuxtools.docker.ui.stoppedContainersViewerFilter"
             name="%StoppedContainerViewFilter.name">
       </commonFilter>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewer
+            viewerId="org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView">
+      </viewer>
+      <viewerContentBinding
+            viewerId="org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView">
+         <includes>
+            <contentExtension
+                  isRoot="true"
+                  pattern="org.eclipse.linuxtools.docker.ui.dockerImageHierarchyContent">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <navigatorContent
+            id="org.eclipse.linuxtools.docker.ui.dockerImageHierarchyContent"
+            name="%DockerImageHierarchyContent.name"
+            contentProvider="org.eclipse.linuxtools.internal.docker.ui.views.DockerImageHierarchyContentProvider"
+            labelProvider="org.eclipse.linuxtools.internal.docker.ui.views.DockerImageHierarchyLabelProvider"
+            priority="highest">
+         <triggerPoints></triggerPoints>
+      </navigatorContent>
    </extension>
 
    <!-- Refresh View -->
@@ -301,6 +335,11 @@
               description="%command.execcontainer.description"
               id="org.eclipse.linuxtools.docker.ui.commands.execContainer"
               name="%command.execcontainer.name">
+        </command>
+        <command
+              description="%command.openImageHierarchy.description"
+              id="org.eclipse.linuxtools.docker.ui.commands.openImageHierarchyView"
+              name="%command.openImageHierarchy.name">
         </command>
 		      
 	</extension>
@@ -660,6 +699,21 @@
         </with>
      </enabledWhen>
   </handler>
+  <handler
+        class="org.eclipse.linuxtools.internal.docker.ui.commands.OpenImageHierarchyViewCommandHandler"
+        commandId="org.eclipse.linuxtools.docker.ui.commands.openImageHierarchyView">
+     <enabledWhen>
+        <with
+              variable="selection">
+           <iterate
+                 ifEmpty="false">
+              <instanceof
+                    value="org.eclipse.linuxtools.docker.core.IDockerImage">
+              </instanceof>
+           </iterate>
+        </with>
+     </enabledWhen>
+  </handler>
      	
 	</extension>
 	<!-- property testers -->
@@ -743,7 +797,7 @@
 	            </visibleWhen>
 				</command>
 		</menuContribution>
-		
+		<!-- explorer view toolbar: enable connection -->
 	    <menuContribution
 	        locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
 	       <command
@@ -1146,6 +1200,32 @@
 		            </with>
 	     		</visibleWhen>
 		     </command>
+		</menuContribution>
+		<!-- Docker Explorer View: open hierarchy -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu?after=group.edit">
+	  		<command
+           commandId="org.eclipse.linuxtools.docker.ui.commands.openImageHierarchyView"
+           icon="icons/class_hi.png"
+           label="%command.openImageHierarchy.label"
+           mnemonic="R"
+           style="push">
+	            <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerImage" />
+	                </iterate>
+	               </with>
+	         </visibleWhen>
+	      </command>
 		</menuContribution>
 		<!-- explorer view context menu: push image -->
 		<menuContribution

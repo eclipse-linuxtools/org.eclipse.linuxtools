@@ -278,7 +278,7 @@ public class DockerContainersView extends ViewPart implements
 			@Override
 			public String getText(final Object element) {
 				if (element instanceof IDockerContainer) {
-					return LabelUtils.toCreatedDate(((IDockerContainer)element).created());
+					return LabelProviderUtils.toCreatedDate(((IDockerContainer)element).created());
 				}
 				return super.getText(element);
 			}
@@ -306,7 +306,7 @@ public class DockerContainersView extends ViewPart implements
 					for (Iterator<IDockerPortMapping> iterator = ((IDockerContainer) element)
 							.ports().iterator(); iterator.hasNext();) {
 						final IDockerPortMapping portMapping = iterator.next();
-						ports.append(LabelUtils.containerPortMappingToString(portMapping));
+						ports.append(LabelProviderUtils.containerPortMappingToString(portMapping));
 						if(iterator.hasNext()) {
 							ports.append(", ");
 						}

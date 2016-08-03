@@ -45,7 +45,7 @@ public class ContainerInfoContentProvider implements ITreeContentProvider {
 					new Object[]{"Id", container.id().substring(0,  12)}, //$NON-NLS-1$
 					new Object[]{"Image", container.image()}, //$NON-NLS-1$
 					new Object[]{"Command", container.command()}, //$NON-NLS-1$
-					new Object[]{"Created", LabelUtils.toCreatedDate(container.created())}, //$NON-NLS-1$
+					new Object[]{"Created", LabelProviderUtils.toCreatedDate(container.created())}, //$NON-NLS-1$
 					new Object[]{"Status", container.status()}, //$NON-NLS-1$
 					new Object[]{"Ports", getPorts(container)}, //$NON-NLS-1$
 					new Object[]{"Names", getNames(container)}, //$NON-NLS-1$
@@ -62,11 +62,11 @@ public class ContainerInfoContentProvider implements ITreeContentProvider {
 		if(container.ports().isEmpty()) {
 			return "";
 		} else if(container.ports().size() == 1) {
-			return LabelUtils.containerPortMappingToString(container.ports().get(0));
+			return LabelProviderUtils.containerPortMappingToString(container.ports().get(0));
 		} else {
 			final List<String> ports = new ArrayList<>();
 			for (IDockerPortMapping portMapping : container.ports()) {
-				ports.add(LabelUtils.containerPortMappingToString(portMapping));
+				ports.add(LabelProviderUtils.containerPortMappingToString(portMapping));
 			}
 			return ports;
 		}
@@ -95,7 +95,7 @@ public class ContainerInfoContentProvider implements ITreeContentProvider {
 			final List<Object> propertyValues = (List<Object>)propertyValue;
 			final Object[] result = new Object[propertyValues.size()];
 			for (int i = 0; i < propertyValues.size(); i++) {
-				result[i] = new Object[]{"", LabelUtils.toString(propertyValues.get(i))};
+				result[i] = new Object[]{"", LabelProviderUtils.toString(propertyValues.get(i))};
 			}
 			return result;
 		} else if(value instanceof Object[]) {

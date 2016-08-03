@@ -45,7 +45,7 @@ public class ImageInspectContentProvider implements ITreeContentProvider {
 					new Object[] { "Parent", info.parent() }, //$NON-NLS-1$
 					new Object[] { "Comment", info.comment() }, //$NON-NLS-1$
 					new Object[] {
-							"Created", LabelUtils.toCreatedDate(info.created()) }, //$NON-NLS-1$
+							"Created", LabelProviderUtils.toCreatedDate(info.created()) }, //$NON-NLS-1$
 					new Object[] { "Container", info.container() }, //$NON-NLS-1$
 					new Object[] { "ContainerConfig", info.containerConfig() }, //$NON-NLS-1$
 					new Object[] { "DockerVersion", info.dockerVersion() }, //$NON-NLS-1$
@@ -53,7 +53,7 @@ public class ImageInspectContentProvider implements ITreeContentProvider {
 					new Object[] { "Config", info.config() }, //$NON-NLS-1$
 					new Object[] { "Architecture", info.architecture() }, //$NON-NLS-1$
 					new Object[] { "Os", info.os() }, //$NON-NLS-1$
-					new Object[] { "Size", LabelUtils.toString(info.size()) }, //$NON-NLS-1$
+					new Object[] { "Size", LabelProviderUtils.toString(info.size()) }, //$NON-NLS-1$
 			};
 		}
 		return EMPTY;
@@ -69,32 +69,32 @@ public class ImageInspectContentProvider implements ITreeContentProvider {
 					new Object[] { "Domainname", config.domainname() }, //$NON-NLS-1$
 					new Object[] { "User", config.user() }, //$NON-NLS-1$
 					new Object[] {
-							"Memory", LabelUtils.toString(config.memory()) }, //$NON-NLS-1$
+							"Memory", LabelProviderUtils.toString(config.memory()) }, //$NON-NLS-1$
 					new Object[] {
-							"MemorySwap", LabelUtils.toString(config.memorySwap()) }, //$NON-NLS-1$
+							"MemorySwap", LabelProviderUtils.toString(config.memorySwap()) }, //$NON-NLS-1$
 					new Object[] {
-							"CpuShares", LabelUtils.toString(config.cpuShares()) }, //$NON-NLS-1$
+							"CpuShares", LabelProviderUtils.toString(config.cpuShares()) }, //$NON-NLS-1$
 					new Object[] { "Cpuset", config.cpuset() }, //$NON-NLS-1$
 					new Object[] { "AttachStdin", config.attachStdin() }, //$NON-NLS-1$
 					new Object[] { "AttachStdout", config.attachStdout() }, //$NON-NLS-1$
 					new Object[] { "AttachStderr", config.attachStderr() }, //$NON-NLS-1$
 					new Object[] {
-							"PortSpecs", LabelUtils.reduce(config.portSpecs()) }, //$NON-NLS-1$
+							"PortSpecs", LabelProviderUtils.reduce(config.portSpecs()) }, //$NON-NLS-1$
 					new Object[] { "ExposedPorts", config.exposedPorts() }, //$NON-NLS-1$
 					new Object[] { "Tty", config.tty() }, //$NON-NLS-1$
 					new Object[] { "OpenStdin", config.openStdin() }, //$NON-NLS-1$
 					new Object[] { "StdinOnce", config.stdinOnce() }, //$NON-NLS-1$
-					new Object[] { "Env", LabelUtils.reduce(config.env()) }, //$NON-NLS-1$
-					new Object[] { "Cmd", LabelUtils.reduce(config.cmd()) }, //$NON-NLS-1$
+					new Object[] { "Env", LabelProviderUtils.reduce(config.env()) }, //$NON-NLS-1$
+					new Object[] { "Cmd", LabelProviderUtils.reduce(config.cmd()) }, //$NON-NLS-1$
 					new Object[] { "Image", config.image() }, //$NON-NLS-1$
 					new Object[] {
-							"Volumes", LabelUtils.reduce(config.volumes()) }, //$NON-NLS-1$
+							"Volumes", LabelProviderUtils.reduce(config.volumes()) }, //$NON-NLS-1$
 					new Object[] { "WorkingDir", config.workingDir() }, //$NON-NLS-1$
 					new Object[] {
-							"EntryPoint", LabelUtils.reduce(config.entrypoint()) }, //$NON-NLS-1$
+							"EntryPoint", LabelProviderUtils.reduce(config.entrypoint()) }, //$NON-NLS-1$
 					new Object[] { "NetworkDisabled", config.networkDisabled() }, //$NON-NLS-1$
 					new Object[] {
-							"OnBuild", LabelUtils.reduce(config.onBuild()) }, //$NON-NLS-1$
+							"OnBuild", LabelProviderUtils.reduce(config.onBuild()) }, //$NON-NLS-1$
 			};
 		} else if (propertyValue instanceof List<?>) {
 			@SuppressWarnings("unchecked")
@@ -102,7 +102,7 @@ public class ImageInspectContentProvider implements ITreeContentProvider {
 			final Object[] result = new Object[propertyValues.size()];
 			for (int i = 0; i < propertyValues.size(); i++) {
 				result[i] = new Object[] {
-						"", LabelUtils.toString(propertyValues.get(i)) }; //$NON-NLS-1$
+						"", LabelProviderUtils.toString(propertyValues.get(i)) }; //$NON-NLS-1$
 			}
 			return result;
 		} else if (propertyValue instanceof Map<?, ?>) {

@@ -380,27 +380,26 @@ public class SWTUtils {
 		return getSubMenu(subMenu, remainingPath);
 	}
 
-	public static SWTBotTreeItem expand(final SWTBotTree tree, final String... path) {
-		final SWTBotTreeItem rootItem = getTreeItem(tree, path[0]);
+	public static SWTBotTreeItem expand(final SWTBotTree tree, final String... paths) {
+		final SWTBotTreeItem rootItem = getTreeItem(tree, paths[0]);
 		expandTreeItem(rootItem);
-
-		if(path.length > 1) {
-			final String[] remainingPath = new String[path.length -1];
-			System.arraycopy(path, 1, remainingPath, 0, remainingPath.length);
+		if (paths.length > 1) {
+			final String[] remainingPath = new String[paths.length - 1];
+			System.arraycopy(paths, 1, remainingPath, 0, remainingPath.length);
 			return expand(rootItem, remainingPath);
 		}
 		return rootItem;
 	}
 
-	public static SWTBotTreeItem expand(final SWTBotTreeItem treeItem, final String... path) {
-		final SWTBotTreeItem childItem = getTreeItem(treeItem, path[0]);
+	public static SWTBotTreeItem expand(final SWTBotTreeItem treeItem, final String... paths) {
+		final SWTBotTreeItem childItem = getTreeItem(treeItem, paths[0]);
 		expandTreeItem(childItem);
-		if(path.length > 1) {
-			final String[] remainingPath = new String[path.length -1];
-			System.arraycopy(path, 1, remainingPath, 0, remainingPath.length);
+		if (paths.length > 1) {
+			final String[] remainingPath = new String[paths.length - 1];
+			System.arraycopy(paths, 1, remainingPath, 0, remainingPath.length);
 			return expand(childItem, remainingPath);
 		}
-		return getTreeItem(treeItem, path[0]);
+		return getTreeItem(treeItem, paths[0]);
 	}
 
 	private static SWTBotTreeItem expandTreeItem(final SWTBotTreeItem treeItem) {

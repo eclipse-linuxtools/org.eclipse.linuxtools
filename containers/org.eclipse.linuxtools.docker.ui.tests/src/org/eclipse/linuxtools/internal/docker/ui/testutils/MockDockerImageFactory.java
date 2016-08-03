@@ -70,7 +70,7 @@ public class MockDockerImageFactory {
 			return this;
 		}
 
-		public Builder connection(IDockerConnection connection) {
+		public Builder connection(final IDockerConnection connection) {
 			Mockito.when(this.image.getConnection()).thenReturn(connection);
 			return this;
 		}

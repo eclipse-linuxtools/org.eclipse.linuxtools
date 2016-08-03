@@ -48,9 +48,9 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 			return new Object[] {
 					new Object[]{"Id", info.id().substring(0,  12)}, //$NON-NLS-1$
 					new Object[]{"Name", info.name()}, //$NON-NLS-1$
-					new Object[]{"Created", LabelUtils.toCreatedDate(info.created())}, //$NON-NLS-1$
+					new Object[]{"Created", LabelProviderUtils.toCreatedDate(info.created())}, //$NON-NLS-1$
 					new Object[]{"State", info.state()}, //$NON-NLS-1$
-					new Object[]{"Args", LabelUtils.reduce(info.args())}, //$NON-NLS-1$
+					new Object[]{"Args", LabelProviderUtils.reduce(info.args())}, //$NON-NLS-1$
 					new Object[]{"Driver", info.driver()}, //$NON-NLS-1$
 					new Object[]{"ExecDriver", info.execDriver()}, //$NON-NLS-1$
 					new Object[] { "Config", info.config() }, //$NON-NLS-1$
@@ -76,7 +76,7 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 			final IDockerContainerState containerState = (IDockerContainerState) propertyValue;
 			return new Object[] {
 					new Object[]{"ExitCode", containerState.exitCode()}, //$NON-NLS-1$
-					new Object[]{"Finished at", LabelUtils.toFinishedDate(containerState.finishDate())}, //$NON-NLS-1$
+					new Object[]{"Finished at", LabelProviderUtils.toFinishedDate(containerState.finishDate())}, //$NON-NLS-1$
 					new Object[]{"Running", containerState.running()}, //$NON-NLS-1$
 					new Object[]{"Paused", containerState.paused()}, //$NON-NLS-1$
 					new Object[]{"Pid", containerState.pid()}, //$NON-NLS-1$
@@ -84,17 +84,17 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 		} else if(propertyValue instanceof IDockerHostConfig) {
 			final IDockerHostConfig hostConfig = (IDockerHostConfig) propertyValue;
 			return new Object[] {
-					new Object[]{"Binds", LabelUtils.reduce(hostConfig.binds())}, //$NON-NLS-1$
+					new Object[]{"Binds", LabelProviderUtils.reduce(hostConfig.binds())}, //$NON-NLS-1$
 					new Object[]{"ContainerIDFile", hostConfig.containerIDFile()}, //$NON-NLS-1$
-					new Object[]{"Dns", LabelUtils.reduce(hostConfig.dns())}, //$NON-NLS-1$
-					new Object[]{"DnsSearch", LabelUtils.reduce(hostConfig.dnsSearch())}, //$NON-NLS-1$
+					new Object[]{"Dns", LabelProviderUtils.reduce(hostConfig.dns())}, //$NON-NLS-1$
+					new Object[]{"DnsSearch", LabelProviderUtils.reduce(hostConfig.dnsSearch())}, //$NON-NLS-1$
 					new Object[]{"Links", splitLinks(hostConfig.links())}, //$NON-NLS-1$
 					new Object[]{"LxcConf", hostConfig.lxcConf()}, //$NON-NLS-1$
 					new Object[]{"NetworkMode", hostConfig.networkMode()}, //$NON-NLS-1$
-					new Object[]{"PortBindings", LabelUtils.reduce(hostConfig.portBindings())}, //$NON-NLS-1$
+					new Object[]{"PortBindings", LabelProviderUtils.reduce(hostConfig.portBindings())}, //$NON-NLS-1$
 					new Object[]{"Privileged", hostConfig.privileged()}, //$NON-NLS-1$
 					new Object[]{"PublishAllPorts", hostConfig.publishAllPorts()}, //$NON-NLS-1$
-					new Object[]{"VolumesFrom", LabelUtils.reduce(hostConfig.volumesFrom())}, //$NON-NLS-1$
+					new Object[]{"VolumesFrom", LabelProviderUtils.reduce(hostConfig.volumesFrom())}, //$NON-NLS-1$
 			};
 		} else if(propertyValue instanceof IDockerContainerConfig) {
 			final IDockerContainerConfig config = (IDockerContainerConfig) propertyValue;
@@ -102,13 +102,13 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 					new Object[]{"AttachStderr", config.attachStderr()}, //$NON-NLS-1$
 					new Object[]{"AttachStdin", config.attachStdin()}, //$NON-NLS-1$
 					new Object[]{"AttachStdout", config.attachStdout()}, //$NON-NLS-1$
-					new Object[]{"Cmd", LabelUtils.reduce(config.cmd())}, //$NON-NLS-1$
+					new Object[]{"Cmd", LabelProviderUtils.reduce(config.cmd())}, //$NON-NLS-1$
 					new Object[]{"CpuSet", config.cpuset()}, //$NON-NLS-1$
 					new Object[]{"CpuShares", config.cpuShares()}, //$NON-NLS-1$
 					new Object[]{"Domainname", config.domainname()}, //$NON-NLS-1$
-					new Object[]{"Entrypoint", LabelUtils.reduce(config.entrypoint())}, //$NON-NLS-1$
-					new Object[]{"Env", LabelUtils.reduce(config.env())}, //$NON-NLS-1$
-					new Object[]{"ExposedPorts", LabelUtils.reduce(config.exposedPorts())}, //$NON-NLS-1$
+					new Object[]{"Entrypoint", LabelProviderUtils.reduce(config.entrypoint())}, //$NON-NLS-1$
+					new Object[]{"Env", LabelProviderUtils.reduce(config.env())}, //$NON-NLS-1$
+					new Object[]{"ExposedPorts", LabelProviderUtils.reduce(config.exposedPorts())}, //$NON-NLS-1$
 					new Object[]{"Hostname", config.hostname()}, //$NON-NLS-1$
 					new Object[]{"Image", config.image()}, //$NON-NLS-1$
 					new Object[] { "Labels", //$NON-NLS-1$
@@ -118,7 +118,7 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 					new Object[]{"NetworkDisabled", config.networkDisabled()}, //$NON-NLS-1$
 					new Object[]{"OnBuild", config.onBuild()}, //$NON-NLS-1$
 					new Object[]{"OpenStdin", config.openStdin()}, //$NON-NLS-1$
-					new Object[]{"PortSpecs", LabelUtils.reduce(config.portSpecs())}, //$NON-NLS-1$
+					new Object[]{"PortSpecs", LabelProviderUtils.reduce(config.portSpecs())}, //$NON-NLS-1$
 					new Object[]{"StdinOnce", config.stdinOnce()}, //$NON-NLS-1$
 					new Object[]{"Tty", config.tty()}, //$NON-NLS-1$
 					new Object[]{"Volumes", config.volumes()}, //$NON-NLS-1$
@@ -127,7 +127,7 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 		} else if(propertyValue instanceof IDockerPortBinding) {
 			final IDockerPortBinding portBinding = (IDockerPortBinding) propertyValue;
 			return new Object[] {
-					new Object[]{"Host IP/Port", LabelUtils.toString(portBinding)} //$NON-NLS-1$
+					new Object[]{"Host IP/Port", LabelProviderUtils.toString(portBinding)} //$NON-NLS-1$
 			};
 		} else if(propertyValue instanceof IDockerNetworkSettings) {
 			final IDockerNetworkSettings networkSettings = (IDockerNetworkSettings) propertyValue;
@@ -137,14 +137,14 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 					new Object[]{"IPAddress", networkSettings.ipAddress()}, //$NON-NLS-1$
 					new Object[]{"IPPrefixLen", networkSettings.ipPrefixLen()}, //$NON-NLS-1$
 					new Object[]{"PortMapping", networkSettings.portMapping()}, //$NON-NLS-1$
-					new Object[]{"Ports", LabelUtils.reduce(networkSettings.ports())}, //$NON-NLS-1$
+					new Object[]{"Ports", LabelProviderUtils.reduce(networkSettings.ports())}, //$NON-NLS-1$
 			};
 		} else if(propertyValue instanceof List<?>) {
 			@SuppressWarnings("unchecked")
 			final List<Object> propertyValues = (List<Object>)propertyValue;
 			final Object[] result = new Object[propertyValues.size()];
 			for (int i = 0; i < propertyValues.size(); i++) {
-				result[i] = new Object[]{"", LabelUtils.toString(propertyValues.get(i))}; //$NON-NLS-1$
+				result[i] = new Object[]{"", LabelProviderUtils.toString(propertyValues.get(i))}; //$NON-NLS-1$
 			}
 			return result;
 		} else if(propertyValue instanceof Map<?,?>) {
