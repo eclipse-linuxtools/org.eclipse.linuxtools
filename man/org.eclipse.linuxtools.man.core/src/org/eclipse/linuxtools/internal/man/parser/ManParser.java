@@ -135,11 +135,14 @@ public class ManParser {
 	public StringBuilder getRawManPage(String manPage) {
 		StringBuilder sb = new StringBuilder();
 		try (InputStream manContent = getManPage(manPage, false);
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(manContent))) {
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n"); //$NON-NLS-1$
+				BufferedReader reader = manContent != null
+						? new BufferedReader(new InputStreamReader(manContent))
+						: null) {
+			if (reader != null) {
+				String line = null;
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n"); //$NON-NLS-1$
+				}
 			}
 		} catch (IOException e) {
 			Bundle bundle = FrameworkUtil.getBundle(this.getClass());
