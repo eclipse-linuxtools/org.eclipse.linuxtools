@@ -211,6 +211,13 @@ public class DockerContainersView extends ViewPart implements
 		service.refreshElements(FILTER_CONTAINERS_COMMAND_ID, null);
 		DockerConnectionManager.getInstance()
 				.addConnectionManagerListener(this);
+		// On startup, this view might get set up after the Docker Explorer View
+		// and so we won't get the notification when it chooses the connection.
+		// Find out if it has a selection and set our connection appropriately.
+		ISelection selection = getSite().getWorkbenchWindow()
+				.getSelectionService().getSelection(DockerExplorerView.VIEW_ID);
+		if (selection != null)
+			selectionChanged(null, selection);
 	}
 	
 	private void createTableViewer(final Composite container) {

@@ -59,6 +59,13 @@ public class DockerImagesViewSWTBotTest {
 	@Before
 	public void setup() {
 		this.bot = new SWTWorkbenchBot();
+		final DockerClient client = MockDockerClientFactory
+				.container(MockContainerFactory.name("angry_bar").status("Stopped").build())
+				.image(MockImageFactory.id("987654321abcde").name("default:1").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Default", client)
+				.withDefaultTCPConnectionSettings();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+
 		SWTUtils.asyncExec(() -> {
 			try {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
@@ -72,6 +79,17 @@ public class DockerImagesViewSWTBotTest {
 		this.dockerImagesBotView = bot.viewById("org.eclipse.linuxtools.docker.ui.dockerImagesView");
 		this.dockerImagesView = (DockerImagesView) (dockerImagesBotView.getViewReference().getView(true));
 		this.dockerExplorerBotView = bot.viewById(DockerExplorerView.VIEW_ID);
+	}
+
+	@Test
+	public void shouldShowDefaultImages() {
+		// then default connection with 1 image should be displayed
+		SWTUtils.syncAssert(() -> {
+			final TableItem[] images = dockerImagesView.getViewer().getTable().getItems();
+			assertThat(images).hasSize(1);
+			assertThat(images[0].getText(1)).isEqualTo("default:1");
+		});
+
 	}
 
 	@Test

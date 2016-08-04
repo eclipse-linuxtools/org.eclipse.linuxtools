@@ -18,11 +18,13 @@ import org.eclipse.linuxtools.internal.docker.core.DockerContainerRefreshManager
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TestLoggerRule;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.ui.PlatformUI;
@@ -41,6 +43,7 @@ public class DockerContainersViewSWTBotTest {
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 	private SWTBotView dockerContainersViewBot;
+	private DockerContainersView dockerContainersView;
 	private SWTBotView dockerExplorerBotView;
 
 	@ClassRule
@@ -55,6 +58,13 @@ public class DockerContainersViewSWTBotTest {
 	@Before
 	public void setup() {
 		this.bot = new SWTWorkbenchBot();
+		final DockerClient client = MockDockerClientFactory
+				.container(MockContainerFactory.name("defaultcon").status("Running").build())
+				.image(MockImageFactory.id("987654321abcde").name("default:1").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Default", client)
+				.withDefaultTCPConnectionSettings();
+		dockerConnection.removeContainerListener(DockerContainerRefreshManager.getInstance());
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		SWTUtils.asyncExec(() -> {try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 					.showView(DockerContainersView.VIEW_ID);
@@ -65,7 +75,19 @@ public class DockerContainersViewSWTBotTest {
 			Assert.fail("Failed to open Docker Explorer view: " + e.getMessage());
 		}});
 		this.dockerContainersViewBot = bot.viewById(DockerContainersView.VIEW_ID);
+		this.dockerContainersView = (DockerContainersView) (dockerContainersViewBot.getViewReference().getView(true));
 		this.dockerExplorerBotView = bot.viewById(DockerExplorerView.VIEW_ID);
+	}
+
+	@Test
+	public void defaultContainersTest() {
+		// default connection with 1 image should be displayed
+		SWTUtils.syncAssert(() -> {
+			final TableItem[] containers = dockerContainersView.getViewer().getTable().getItems();
+			assertThat(containers).hasSize(1);
+			assertThat(containers[0].getText(0)).isEqualTo("defaultcon");
+		});
+
 	}
 
 	@Test
