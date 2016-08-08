@@ -2,21 +2,36 @@ package org.eclipse.linuxtools.internal.docker.ui.views;
 
 import java.util.Collection;
 
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.views.properties.tabbed.AbstractPropertySection;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
 public abstract class BasePropertySection extends AbstractPropertySection {
 
 	private TreeViewer treeViewer;
+	private CopyValueAction copyAction;
+	private Clipboard clipboard;
+	private IPageSite pageSite;
 	
 	@Override
 	public void createControls(final Composite parent, final TabbedPropertySheetPage propertySheetPage) {
@@ -27,6 +42,11 @@ public abstract class BasePropertySection extends AbstractPropertySection {
 		GridLayoutFactory.fillDefaults().numColumns(1).margins(5, 5).applyTo(container);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).hint(400, 180).applyTo(container);
 		this.treeViewer = createTableTreeViewer(container);
+		if (this.clipboard != null)
+			this.clipboard.dispose();
+		this.clipboard = new Clipboard(Display.getCurrent());
+		this.pageSite = propertySheetPage.getSite();
+		initContextMenu(pageSite, clipboard);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(treeViewer.getControl());
 	}
 
@@ -74,4 +94,83 @@ public abstract class BasePropertySection extends AbstractPropertySection {
 		return treeViewer;
 	}
 
+	/**
+	 * Initializes the viewer context menu.
+	 * 
+	 * @param pageSite
+	 *            page
+	 * @param clipboard
+	 *            clipboard
+	 */
+	private void initContextMenu(IPageSite pageSite, Clipboard clipboard) {
+		TreeViewer treeViewer = getTreeViewer();
+		copyAction = new CopyValueAction(getTreeViewer(), clipboard);
+
+		MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
+		menuMgr.addMenuListener(new IMenuListener() {
+			@Override
+			public void menuAboutToShow(IMenuManager manager) {
+				handleMenuAboutToShow(manager);
+			}
+		});
+		pageSite.registerContextMenu(
+				"org.eclipse.linuxtools.docker.ui.BaseProperySection.menuid", //$NON-NLS-1$
+				menuMgr, treeViewer);
+		Menu menu = menuMgr.createContextMenu(treeViewer.getTree());
+		treeViewer.getTree().setMenu(menu);
+
+		menuMgr.add(copyAction);
+		configureCopy();
+	}
+
+	/**
+	 * Configures the view copy action which should be run on CTRL+C. We have to
+	 * track widget focus to select the actual action because we have a few
+	 * widgets that should provide copy action (at least tests hierarchy viewer
+	 * and messages viewer).
+	 */
+	private void configureCopy() {
+		getTreeViewer().getTree().addFocusListener(new FocusListener() {
+			IAction viewCopyHandler;
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (viewCopyHandler != null) {
+					switchTo(viewCopyHandler);
+				}
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				switchTo(copyAction);
+			}
+
+			private void switchTo(IAction copyAction) {
+				IActionBars actionBars = pageSite.getActionBars();
+				viewCopyHandler = actionBars
+						.getGlobalActionHandler(ActionFactory.COPY.getId());
+				actionBars.setGlobalActionHandler(ActionFactory.COPY.getId(),
+						copyAction);
+				actionBars.updateActionBars();
+			}
+		});
+	}
+
+	/**
+	 * Handles the context menu showing.
+	 * 
+	 * @param manager
+	 *            context menu manager
+	 */
+	private void handleMenuAboutToShow(
+			@SuppressWarnings("unused") IMenuManager manager) {
+		ISelection selection = treeViewer.getSelection();
+		copyAction.setEnabled(!selection.isEmpty());
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		this.clipboard.dispose();
+	}
 }

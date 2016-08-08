@@ -48,6 +48,15 @@ public class TCPConnectionSettings extends BaseConnectionSettings {
 		return BindingType.TCP_CONNECTION;
 	}
 
+	@Override
+	public Object[] getProperties() {
+		return new Object[] {
+				new Object[] { "Type", this.getType().toString() }, //$NON-NLS-1$
+				new Object[] { "Host", this.getHost() }, //$NON-NLS-1$
+				new Object[] { "Certificates", //$NON-NLS-1$
+						this.getPathToCertificates() }, };
+	}
+
 	/**
 	 * @return the host
 	 */

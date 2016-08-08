@@ -39,6 +39,14 @@ public class UnixSocketConnectionSettings extends BaseConnectionSettings {
 		return BindingType.UNIX_SOCKET_CONNECTION;
 	}
 
+	@Override
+	public Object[] getProperties() {
+		return new Object[] {
+				new Object[] { "Type", this.getType().toString() }, //$NON-NLS-1$
+				new Object[] { "Socket", this.getPath() }, //$NON-NLS-1$
+		};
+	}
+
 	/**
 	 * @return the path to the Unix Socket
 	 */

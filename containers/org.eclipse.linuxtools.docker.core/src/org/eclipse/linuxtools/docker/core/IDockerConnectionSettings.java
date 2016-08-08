@@ -31,6 +31,12 @@ public interface IDockerConnectionSettings {
 	String getName();
 
 	/**
+	 * @return properties array of 2-string arrays (Property/Value) to show in
+	 *         Properties view
+	 */
+	Object[] getProperties();
+
+	/**
 	 * @return <code>true</code> if the connection could be established and
 	 *         Docker daemon responded to a 'ping' request, <code>false</code>
 	 *         otherwise.

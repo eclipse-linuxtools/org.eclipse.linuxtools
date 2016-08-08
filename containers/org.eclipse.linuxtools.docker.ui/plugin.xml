@@ -1597,7 +1597,14 @@
          tab="org.eclipse.linuxtools.docker.ui.properties.connection.info">
 					<input type="org.eclipse.linuxtools.docker.core.IDockerConnection"/>
 			</propertySection>
-			<propertySection
+   		<propertySection
+         class="org.eclipse.linuxtools.internal.docker.ui.views.ConnectionSettingsPropertySection"
+         enablesFor="1"
+         id="org.eclipse.linuxtools.docker.ui.properties.connection.settings.section"
+         tab="org.eclipse.linuxtools.docker.ui.properties.connection.settings">
+         			<input type="org.eclipse.linuxtools.docker.core.IDockerConnection"/>
+   			</propertySection>
+		<propertySection
          class="org.eclipse.linuxtools.internal.docker.ui.views.ContainerInspectPropertySection"
          enablesFor="1"
          id="org.eclipse.linuxtools.docker.ui.properties.container.inspect.section"
@@ -1635,6 +1642,11 @@
              category="org.eclipse.linuxtools.docker.ui.properties.connection"
              id="org.eclipse.linuxtools.docker.ui.properties.connection.info"
              label="%Info.label">
+       </propertyTab>
+       <propertyTab
+             category="org.eclipse.linuxtools.docker.ui.properties.connection"
+             id="org.eclipse.linuxtools.docker.ui.properties.connection.settings"
+             label="%Settings.label">
        </propertyTab>
        <propertyTab
              category="org.eclipse.linuxtools.docker.ui.properties.container"

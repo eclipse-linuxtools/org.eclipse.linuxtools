@@ -35,26 +35,34 @@ public class ConnectionInfoContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getElements(final Object inputElement) {
-		if(inputElement instanceof IDockerConnectionInfo) {
+		if (inputElement instanceof IDockerConnectionInfo) {
 			final IDockerConnectionInfo connectionInfo = (IDockerConnectionInfo) inputElement;
 			return new Object[] {
-					new Object[]{"Containers", connectionInfo.getContainers()}, //$NON-NLS-1$
-					new Object[]{"Images", connectionInfo.getImages()}, //$NON-NLS-1$
-					new Object[]{"Storage driver", connectionInfo.getStorageDriver()}, //$NON-NLS-1$
-					new Object[]{"Execution driver", connectionInfo.getExecutionDriver()}, //$NON-NLS-1$
-					new Object[]{"Kernel version", connectionInfo.getKernelVersion()}, //$NON-NLS-1$
-					new Object[]{"Operating system", connectionInfo.getOs()}, //$NON-NLS-1$
+					new Object[] { "Containers", //$NON-NLS-1$
+							connectionInfo.getContainers() },
+					new Object[] { "Images", connectionInfo.getImages() }, //$NON-NLS-1$
+					new Object[] { "Storage driver", //$NON-NLS-1$
+							connectionInfo.getStorageDriver() },
+					new Object[] { "Execution driver", //$NON-NLS-1$
+							connectionInfo.getExecutionDriver() },
+					new Object[] { "Kernel version", //$NON-NLS-1$
+							connectionInfo.getKernelVersion() },
+					new Object[] { "Operating system", connectionInfo.getOs() }, //$NON-NLS-1$
 					new Object[] { "CPU number", //$NON-NLS-1$
 							connectionInfo.getCPUNumber() },
 					new Object[] { "Total memory", //$NON-NLS-1$
 							Long.toString(connectionInfo.getTotalMemory() / MB)
 									+ " MB" },
-					new Object[]{"File descriptors", connectionInfo.getFileDescriptors()}, //$NON-NLS-1$
-					new Object[]{"Go routines", connectionInfo.getGoroutines()}, //$NON-NLS-1$
-					new Object[]{"Init path", connectionInfo.getInitPath()}, //$NON-NLS-1$
-					new Object[]{"API version", connectionInfo.getApiVersion()}, //$NON-NLS-1$
-					new Object[]{"Version", connectionInfo.getVersion()}, //$NON-NLS-1$
-					new Object[]{"Git commit", connectionInfo.getGitCommit()}, //$NON-NLS-1$
+					new Object[] { "File descriptors", //$NON-NLS-1$
+							connectionInfo.getFileDescriptors() },
+					new Object[] { "Go routines", //$NON-NLS-1$
+							connectionInfo.getGoroutines() },
+					new Object[] { "Init path", connectionInfo.getInitPath() }, //$NON-NLS-1$
+					new Object[] { "API version", //$NON-NLS-1$
+							connectionInfo.getApiVersion() },
+					new Object[] { "Version", connectionInfo.getVersion() }, //$NON-NLS-1$
+					new Object[] { "Git commit", //$NON-NLS-1$
+							connectionInfo.getGitCommit() }, 
 			};
 		}
 		return EMPTY;

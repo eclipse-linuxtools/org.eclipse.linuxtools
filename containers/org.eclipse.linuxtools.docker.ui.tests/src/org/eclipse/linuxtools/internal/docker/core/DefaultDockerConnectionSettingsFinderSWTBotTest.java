@@ -39,6 +39,17 @@ public class DefaultDockerConnectionSettingsFinderSWTBotTest {
 		assertThat(connectionSettings.getType()).isEqualTo(BindingType.TCP_CONNECTION);
 		assertThat(((TCPConnectionSettings)connectionSettings).getHost()).isEqualTo("https://foo");
 		assertThat(((TCPConnectionSettings)connectionSettings).getPathToCertificates()).isEqualTo("/path/to/certs");
+		Object[] connectionProperties = ((TCPConnectionSettings)connectionSettings).getProperties();
+		assertThat(connectionProperties.length == 3);
+		Object[] firstProperty = (Object[])connectionProperties[0];
+		assertThat(((String)firstProperty[0]).equals("Type"));
+		assertThat(((String)firstProperty[1]).equals("TCP_CONNECTION"));
+		Object[] secondProperty = (Object[]) connectionProperties[1];
+		assertThat(((String) secondProperty[0]).equals("Host"));
+		assertThat(((String) secondProperty[1]).equals("https://foo"));
+		Object[] thirdProperty = (Object[]) connectionProperties[2];
+		assertThat(((String) thirdProperty[0]).equals("Certificates"));
+		assertThat(((String) thirdProperty[1]).equals("/path/to/certs"));
 		assertThat(((TCPConnectionSettings)connectionSettings).isTlsVerify()).isTrue();
 	}
 
