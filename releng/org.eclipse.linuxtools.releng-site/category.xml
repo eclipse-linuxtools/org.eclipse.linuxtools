@@ -80,6 +80,15 @@
    <iu id="org.apache.xerces" version="0.0.0">
       <category name="Linux Tools"/>
    </iu>
+   <iu id="org.apache.xml.resolver" version="0.0.0">
+      <category name="Linux Tools"/>
+   </iu>
+   <iu id="org.apache.xml.serializer" version="0.0.0">
+      <category name="Linux Tools"/>
+   </iu>
+   <iu id="javax.xml" version="0.0.0">
+      <category name="Linux Tools"/>
+   </iu>
    <feature url="features/org.eclipse.linuxtools.cdt.libhover.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.feature.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
