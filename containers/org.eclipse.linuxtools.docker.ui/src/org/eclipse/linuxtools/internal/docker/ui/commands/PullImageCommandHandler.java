@@ -23,8 +23,8 @@ import org.eclipse.linuxtools.docker.core.IRegistry;
 import org.eclipse.linuxtools.docker.core.IRegistryAccount;
 import org.eclipse.linuxtools.docker.ui.wizards.ImageSearch;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
+import org.eclipse.linuxtools.internal.docker.core.DefaultImagePullProgressHandler;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
-import org.eclipse.linuxtools.internal.docker.ui.views.ImagePullProgressHandler;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImagePull;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
@@ -84,18 +84,18 @@ public class PullImageCommandHandler extends AbstractHandler {
 				try {
 					if (registry == null) {
 						((DockerConnection) connection).pullImage(imageName,
-								new ImagePullProgressHandler(connection,
+								new DefaultImagePullProgressHandler(connection,
 										imageName));
 					} else {
 						String fullImageName = registry.getServerAddress() + '/' + imageName;
 						if (registry instanceof IRegistryAccount) {
 							IRegistryAccount account = (IRegistryAccount) registry;
 							((DockerConnection) connection).pullImage(fullImageName,
-									account, new ImagePullProgressHandler(
+									account, new DefaultImagePullProgressHandler(
 											connection, fullImageName));
 						} else {
 							((DockerConnection) connection).pullImage(fullImageName,
-									new ImagePullProgressHandler(connection,
+									new DefaultImagePullProgressHandler(connection,
 											fullImageName));
 						}
 					}

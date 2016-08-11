@@ -22,8 +22,8 @@ import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IRegistry;
 import org.eclipse.linuxtools.docker.core.IRegistryAccount;
+import org.eclipse.linuxtools.internal.docker.core.DefaultImagePushProgressHandler;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
-import org.eclipse.linuxtools.internal.docker.ui.views.ImagePushProgressHandler;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImagePush;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
@@ -92,11 +92,11 @@ public class PushImageCommandHandler extends AbstractHandler {
 					if (info instanceof IRegistryAccount) {
 						IRegistryAccount acc = (IRegistryAccount) info;
 						connection.pushImage(tmpRegistryTag, acc,
-								new ImagePushProgressHandler(connection,
+								new DefaultImagePushProgressHandler(connection,
 										tmpRegistryTag));
 					} else {
 						connection.pushImage(tmpRegistryTag,
-								new ImagePushProgressHandler(connection,
+								new DefaultImagePushProgressHandler(connection,
 										tmpRegistryTag));
 					}
 				} catch (final DockerException e) {

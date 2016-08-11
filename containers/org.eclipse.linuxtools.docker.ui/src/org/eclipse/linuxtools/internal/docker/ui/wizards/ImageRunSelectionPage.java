@@ -71,12 +71,12 @@ import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerImageInfo;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.docker.ui.wizards.ImageSearch;
+import org.eclipse.linuxtools.internal.docker.core.DefaultImagePullProgressHandler;
 import org.eclipse.linuxtools.internal.docker.core.RegistryInfo;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils;
 import org.eclipse.linuxtools.internal.docker.ui.jobs.FindImageInfoRunnable;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
-import org.eclipse.linuxtools.internal.docker.ui.views.ImagePullProgressHandler;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel.ContainerLinkModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel.ExposedPortModel;
 import org.eclipse.swt.SWT;
@@ -943,7 +943,7 @@ public class ImageRunSelectionPage extends WizardPage {
 						1);
 				try {
 					connection.pullImage(imageName,
-							new ImagePullProgressHandler(connection,
+							new DefaultImagePullProgressHandler(connection,
 									imageName));
 				} catch (final DockerException e) {
 					Display.getDefault().syncExec(() -> MessageDialog.openError(

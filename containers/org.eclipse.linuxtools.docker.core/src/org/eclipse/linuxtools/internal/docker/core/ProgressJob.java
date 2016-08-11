@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - Initial Contribution
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.docker.ui;
+package org.eclipse.linuxtools.internal.docker.core;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;

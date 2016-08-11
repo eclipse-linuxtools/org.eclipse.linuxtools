@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - Initial Contribution
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.docker.ui.views;
+package org.eclipse.linuxtools.internal.docker.core;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,10 +20,8 @@ import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerProgressDetail;
 import org.eclipse.linuxtools.docker.core.IDockerProgressHandler;
 import org.eclipse.linuxtools.docker.core.IDockerProgressMessage;
-import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
-import org.eclipse.linuxtools.internal.docker.ui.ProgressJob;
 
-public class ImagePullProgressHandler implements IDockerProgressHandler {
+public class DefaultImagePullProgressHandler implements IDockerProgressHandler {
 
 	private final static String IMAGE_DOWNLOAD_COMPLETE = "ImageDownloadComplete.msg"; //$NON-NLS-1$
 	private final static String IMAGE_DOWNLOADING_JOBNAME = "ImageDownloadingJobName.msg"; //$NON-NLS-1$
@@ -39,7 +37,7 @@ public class ImagePullProgressHandler implements IDockerProgressHandler {
 
 	private Map<String, ProgressJob> progressJobs = new HashMap<>();
 
-	public ImagePullProgressHandler(IDockerConnection connection, String image) {
+	public DefaultImagePullProgressHandler(IDockerConnection connection, String image) {
 		this.image = image;
 		this.connection = (DockerConnection) connection;
 	}
@@ -56,25 +54,25 @@ public class ImagePullProgressHandler implements IDockerProgressHandler {
 			ProgressJob p = progressJobs.get(id);
 			if (p == null) {
 				String status = message.status();
-				if (status.contains(DVMessages.getString(IMAGE_PULLING))) {
+				if (status.contains(DockerMessages.getString(IMAGE_PULLING))) {
 					// do nothing
 				} else if (status
-						.equals(DVMessages.getString(IMAGE_DOWNLOAD_COMPLETE))
-						|| status.contains(DVMessages
+						.equals(DockerMessages.getString(IMAGE_DOWNLOAD_COMPLETE))
+						|| status.contains(DockerMessages
 								.getString(IMAGE_DOWNLOADING_ALREADY_EXISTS))
-						|| status.contains(DVMessages
+						|| status.contains(DockerMessages
 								.getString(IMAGE_DOWNLOADING_VERIFIED))
 						|| status.equals(
-								DVMessages.getString(IMAGE_PULL_COMPLETE))) {
+								DockerMessages.getString(IMAGE_PULL_COMPLETE))) {
 					// an image is fully loaded, update the image list
 					connection.getImages(true);
 				} else if (status
-						.startsWith(DVMessages.getString(IMAGE_DOWNLOADING))) {
+						.startsWith(DockerMessages.getString(IMAGE_DOWNLOADING))) {
 					// we have a new download in progress, track it
 					ProgressJob newJob = new ProgressJob(
-							DVMessages.getFormattedString(
+							DockerMessages.getFormattedString(
 									IMAGE_DOWNLOADING_JOBNAME, image),
-							DVMessages.getFormattedString(
+							DockerMessages.getFormattedString(
 									IMAGE_DOWNLOADING_IMAGE, id));
 					// job.setUser(false) will show all pull job (one per image
 					// layer) in the progress
@@ -87,15 +85,15 @@ public class ImagePullProgressHandler implements IDockerProgressHandler {
 
 			} else {
 				String status = message.status();
-				if (status.equals(DVMessages.getString(IMAGE_DOWNLOAD_COMPLETE))
-						|| status.contains(DVMessages
+				if (status.equals(DockerMessages.getString(IMAGE_DOWNLOAD_COMPLETE))
+						|| status.contains(DockerMessages
 								.getString(IMAGE_DOWNLOADING_ALREADY_EXISTS))
-						|| status.contains(DVMessages
+						|| status.contains(DockerMessages
 								.getString(IMAGE_DOWNLOADING_VERIFIED))) {
 					p.setPercentageDone(100);
 					connection.getImages(true);
 				} else if (status
-						.startsWith(DVMessages.getString(IMAGE_DOWNLOADING))) {
+						.startsWith(DockerMessages.getString(IMAGE_DOWNLOADING))) {
 					IDockerProgressDetail detail = message.progressDetail();
 					if (detail != null) {
 						if (detail.current() > 0) {
