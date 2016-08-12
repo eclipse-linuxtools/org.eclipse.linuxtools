@@ -1169,8 +1169,30 @@ public class DockerConnection
 	@Override
 	public void tagImage(final String name, final String newTag) throws DockerException,
 			InterruptedException {
+		tagImage(name, newTag, false);
+	}
+
+	/**
+	 * Adds a tag to an existing image while specifying the <code>force</code>
+	 * flag.
+	 * 
+	 * @param name
+	 *            the image id
+	 * @param newTag
+	 *            the new tag to add to the given image
+	 * @param force
+	 *            the {@code force} flag to force the operation if
+	 *            <code>true</code>.
+	 * @throws DockerException
+	 *             in case of underlying problem (server error)
+	 * @throws InterruptedException
+	 *             if the thread was interrupted
+	 */
+	// TODO: add to the API in version 3.0.0
+	public void tagImage(final String name, final String newTag,
+			final boolean force) throws DockerException, InterruptedException {
 		try {
-			client.tag(name, newTag);
+			client.tag(name, newTag, force);
 		} catch (com.spotify.docker.client.DockerRequestException e) {
 			throw new DockerException(e.message());
 		} catch (com.spotify.docker.client.DockerException e) {
@@ -1760,7 +1782,8 @@ public class DockerConnection
 		try {
 			AuthConfig authConfig = AuthConfig.builder()
 					.username(new String(cfg.getUsername()))
-					.password(new String(cfg.getPassword()))
+					.password(cfg.getPassword() != null
+							? new String(cfg.getPassword()) : null)
 					.email(new String(cfg.getEmail()))
 					.serverAddress(new String(cfg.getServerAddress())).build();
 			return client.auth(authConfig);

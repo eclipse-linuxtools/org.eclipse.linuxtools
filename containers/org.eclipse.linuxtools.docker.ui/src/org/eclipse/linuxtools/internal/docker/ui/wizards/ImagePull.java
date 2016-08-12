@@ -54,12 +54,12 @@ public class ImagePull extends Wizard {
 		return true;
 	}
 
-	public String getImageName() {
-		return this.imagePullPage.getImageName();
+	public String getSelectedImageName() {
+		return this.imagePullPage.getSelectedImageName();
 	}
 
-	public IRegistry getRegistry() {
-		return this.imagePullPage.getRegistry();
+	public IRegistry getSelectedRegistryAccount() {
+		return this.imagePullPage.getSelectedRegistryAccount();
 	}
 
 }

@@ -513,7 +513,7 @@ public class DockerExplorerViewSWTBotTest {
 		// the properties view should be visible
 		assertThat(this.bot.viewById("org.eclipse.ui.views.PropertySheet").isActive()).isEqualTo(true);
 		SWTBotView propertiesViewBot = bot.viewById("org.eclipse.ui.views.PropertySheet");
-		SWTUtils.getContextMenu(propertiesViewBot.bot().tree(), "Copy").click();
+		SWTUtils.getContextMenu(propertiesViewBot.bot().tree().select(1), "Copy").click();
 		this.dockerExplorerView = (DockerExplorerView) (dockerExplorerViewBot.getViewReference().getView(true));
 	}
 

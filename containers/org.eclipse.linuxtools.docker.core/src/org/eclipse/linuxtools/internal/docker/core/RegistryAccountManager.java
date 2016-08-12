@@ -10,81 +10,81 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.core;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.equinox.security.storage.ISecurePreferences;
-import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
-import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.linuxtools.docker.core.IRegistryAccount;
 
 public class RegistryAccountManager {
 
 	private static RegistryAccountManager instance;
 
+	/** the storage manager. */
+	private RegistryAccountStorageManager storageManager = new RegistryAccountStorageManager();
+
+	/** local cache of accounts. */
+	private List<IRegistryAccount> registryAccounts;
+
+	/**
+	 * Private constructor of the singleton
+	 */
 	private RegistryAccountManager() {
+
 	}
 
 	public static RegistryAccountManager getInstance() {
 		if (instance == null) {
-			return new RegistryAccountManager();
+			instance = new RegistryAccountManager();
 		}
 		return instance;
 	}
 
-	public List<IRegistryAccount> getAccounts() {
-		List<IRegistryAccount> accounts = new ArrayList<>();
-		ISecurePreferences preferences = SecurePreferencesFactory.getDefault();
-		ISecurePreferences dockerNode = preferences.node("org.eclipse.linuxtools.docker.ui.accounts"); //$NON-NLS-1$
-		for (String key : dockerNode.keys()) {
-			String[] tokens = key.split(","); //$NON-NLS-1$
-			if (tokens.length > 1) {
-				String serverAddress = tokens[0];
-				String username = tokens[1];
-				String email = ""; //$NON-NLS-1$
-				if (tokens.length > 2) {
-					email = tokens[2];
-				}
-				RegistryAccountInfo account = new RegistryAccountInfo(serverAddress, username, email, null);
-				accounts.add(account);
-			}
-		}
-		return accounts;
+	/**
+	 * Replaces the default storage manager implementation instance,
+	 * {@link RegistryAccountStorageManager} by another one. This can be used
+	 * during tests if a mock instance is used to avoid actually storing
+	 * registry accounts.
+	 * 
+	 * @param storageManager
+	 *            the {@link RegistryAccountStorageManager} instance to use
+	 */
+	public void setStorageManager(
+			final RegistryAccountStorageManager storageManager) {
+		this.storageManager = storageManager;
+		// make sure the registry accounts are bound to the new storage manager
+		this.registryAccounts = storageManager.getAccounts();
 	}
 
-	public IRegistryAccount getAccount(String serverAddress, String username) {
-		Iterator<IRegistryAccount> it = getAccounts().stream()
+	/**
+	 * @return the underlying {@link RegistryAccountStorageManager}
+	 */
+	public RegistryAccountStorageManager getStorageManager() {
+		return this.storageManager;
+	}
+
+	public List<IRegistryAccount> getAccounts() {
+		if (this.registryAccounts == null) {
+			this.registryAccounts = storageManager.getAccounts();
+		}
+		return this.registryAccounts;
+	}
+
+	public IRegistryAccount getAccount(final String serverAddress,
+			final String username) {
+		return getAccounts().stream()
 				.filter(a -> a.getServerAddress().equals(serverAddress)
 						&& a.getUsername().equals(username))
-				.iterator();
-		return it.hasNext() ? it.next() : null;
+				.findFirst().orElse(null);
 	}
 
-	public void add(IRegistryAccount info) {
-		ISecurePreferences preferences = getDockerNode();
-		char[] password = info.getPassword();
-		String key = getKeyFor(info);
-		try {
-			preferences.put(key, new String(password), true);
-		} catch (StorageException e) {
-		}
+	public void add(final IRegistryAccount info) {
+		this.registryAccounts.add(info);
+		storageManager.add(info);
 	}
 
-	public void remove(IRegistryAccount info) {
-		ISecurePreferences preferences = getDockerNode();
-		String key = getKeyFor(info);
-		preferences.remove(key);
+	public void remove(final IRegistryAccount info) {
+		this.registryAccounts.remove(info);
+		storageManager.remove(info);
 	}
 
-	private ISecurePreferences getDockerNode() {
-		ISecurePreferences preferences = SecurePreferencesFactory.getDefault();
-		ISecurePreferences dockerNode = preferences
-				.node("org.eclipse.linuxtools.docker.ui.accounts"); //$NON-NLS-1$
-		return dockerNode;
-	}
 
-	private String getKeyFor(IRegistryAccount info) {
-		return info.getServerAddress() + "," + info.getUsername() + "," + info.getEmail(); //$NON-NLS-1$ //$NON-NLS-2$
-	}
 }

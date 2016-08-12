@@ -60,7 +60,10 @@ public class DefaultImagePushProgressHandler implements IDockerProgressHandler {
 									IMAGE_UPLOADING_JOBNAME, image),
 							DockerMessages.getFormattedString(
 									IMAGE_UPLOADING_IMAGE, id));
-					newJob.setUser(true);
+					// job.setUser(false) will show all pull job (one per image
+					// layer) in the progress
+					// view but not in multiple dialog
+					newJob.setUser(false);
 					newJob.setPriority(Job.LONG);
 					newJob.schedule();
 					progressJobs.put(id, newJob);

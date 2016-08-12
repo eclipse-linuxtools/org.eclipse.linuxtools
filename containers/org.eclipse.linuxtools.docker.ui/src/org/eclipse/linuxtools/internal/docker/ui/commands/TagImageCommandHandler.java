@@ -23,6 +23,7 @@ import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
+import org.eclipse.linuxtools.internal.docker.core.DockerImage;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageTag;
 import org.eclipse.swt.widgets.Display;
@@ -30,6 +31,9 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+/**
+ * Command handler add a tag tag on an {@link IDockerImage}
+ */
 public class TagImageCommandHandler extends AbstractHandler {
 
 	private final static String TAG_IMAGE_JOB_TITLE = "ImageTagTitle.msg"; //$NON-NLS-1$
@@ -47,7 +51,9 @@ public class TagImageCommandHandler extends AbstractHandler {
 			return null;
 		}
 		final IDockerImage image = selectedImages.get(0);
-		final ImageTag wizard = new ImageTag();
+		// TODO: remove the cast to DockerImage once the 'shortId' method has
+		// been added in the API
+		final ImageTag wizard = new ImageTag(((DockerImage) image).shortId());
 		final boolean tagImage = CommandUtils.openWizard(wizard,
 				HandlerUtil.getActiveShell(event));
 		if (tagImage) {

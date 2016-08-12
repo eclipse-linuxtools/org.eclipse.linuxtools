@@ -69,7 +69,7 @@ public class ImageSearchSWTBotTest {
 		// when opening the pull wizard...
 		openPullWizard(client);
 		// ... and specifying a term...
-		bot.textWithLabel(WizardMessages.getString("ImagePull.name.label")).setText("foo");
+		bot.textWithLabel(WizardMessages.getString("ImagePullPushPage.name.label")).setText("foo");
 		// ... and then opening the search wizard
 		openSearchWizard();
 		// then the search should have been triggered and results should be available
@@ -99,7 +99,7 @@ public class ImageSearchSWTBotTest {
 		// when opening the pull wizard...
 		openPullWizard(client);
 		// ... and specifying a term...
-		bot.textWithLabel(WizardMessages.getString("ImagePull.name.label")).setText("foo/bar");
+		bot.textWithLabel(WizardMessages.getString("ImagePullPushPage.name.label")).setText("foo/bar");
 		// ... and then opening the search wizard
 		openSearchWizard();
 		// then the search should have been triggered and a single result should be
@@ -117,7 +117,7 @@ public class ImageSearchSWTBotTest {
 		// when opening the pull wizard...
 		openPullWizard(client);
 		// ... and specifying a term...
-		bot.textWithLabel(WizardMessages.getString("ImagePull.name.label")).setText("bar");
+		bot.textWithLabel(WizardMessages.getString("ImagePullPushPage.name.label")).setText("bar");
 		// ... and then opening the search wizard
 		openSearchWizard();
 		// then the search should have been triggered and both results should be
@@ -149,17 +149,12 @@ public class ImageSearchSWTBotTest {
 				.onSearch("foo", MockImageSearchResultFactory.name("foo").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		// expand the 'Images' node
-		SWTUtils.syncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
-		final SWTBotTreeItem imagesTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images");
-
 		// when opening the "Pull..." wizard
-		final SWTBotTree dockerExplorerViewTreeBot = dockerExplorerViewBot.bot().tree();
-		dockerExplorerViewTreeBot.select(imagesTreeItem);
-		dockerExplorerViewTreeBot.contextMenu("Pull...").click();
+		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images").select();
+		dockerExplorerViewBot.bot().tree().contextMenu("Pull...").click();
 
 		// when specifying a term
-		bot.textWithLabel(WizardMessages.getString("ImagePull.name.label")).setText("foo");
+		bot.textWithLabel(WizardMessages.getString("ImagePullPushPage.name.label")).setText("foo");
 
 		// when clicking on the "Search..." button
 		bot.button(WizardMessages.getString("ImagePull.search.label")).click();
@@ -172,7 +167,7 @@ public class ImageSearchSWTBotTest {
 		bot.button("Finish").click();
 
 		// when back to Pull wizard, the Image name field should be filled
-		assertThat(bot.textWithLabel(WizardMessages.getString("ImagePull.name.label")).getText())
+		assertThat(bot.textWithLabel(WizardMessages.getString("ImagePullPushPage.name.label")).getText())
 				.isEqualTo("foo:latest");
 	}
 

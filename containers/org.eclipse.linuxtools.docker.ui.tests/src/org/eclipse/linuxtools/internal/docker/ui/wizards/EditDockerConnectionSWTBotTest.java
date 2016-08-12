@@ -26,11 +26,11 @@ import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.EnumDockerConnectionState;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionStorageManager;
-import org.eclipse.linuxtools.docker.core.IDockerContainerConfig;
 import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
+import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig;
 import org.eclipse.linuxtools.internal.docker.core.TCPConnectionSettings;
 import org.eclipse.linuxtools.internal.docker.core.UnixSocketConnectionSettings;
 import org.eclipse.linuxtools.internal.docker.ui.launch.IBuildDockerImageLaunchConfigurationConstants;
@@ -140,7 +140,7 @@ public class EditDockerConnectionSWTBotTest {
 
 	private String configureRunImageLaunchConfiguration(final IDockerConnection connection) {
 		final IDockerImage image = MockDockerImageFactory.name("image").connection(connection).build();
-		final IDockerContainerConfig containerConfig = MockDockerContainerConfigFactory.cmd("cmd").build();
+		final DockerContainerConfig containerConfig = MockDockerContainerConfigFactory.cmd("cmd").build();
 		final IDockerHostConfig hostConfig = MockDockerHostConfigFactory.publishAllPorts(true).build();
 		final ILaunchConfiguration runImageLaunchConfiguration = LaunchConfigurationUtils
 				.createRunImageLaunchConfiguration(image, containerConfig, hostConfig, "some_container", false);

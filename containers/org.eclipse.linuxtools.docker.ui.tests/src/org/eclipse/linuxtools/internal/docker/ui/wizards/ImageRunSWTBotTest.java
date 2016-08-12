@@ -37,7 +37,6 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -143,10 +142,8 @@ public class ImageRunSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		// configure the Connection Manager
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test").expand();
-		final SWTBotTreeItem imagesTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images").expand();
 		// when select image and click on run to open the wizard
-		SWTUtils.getTreeItem(imagesTreeItem, "foo/bar").select();
+		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images", "foo/bar").select();
 		dockerExplorerViewBot.bot().tree().contextMenu("Run...").click();
 		bot.waitUntil(Conditions.shellIsActive("Run a Docker Image"), TimeUnit.SECONDS.toMillis(1)); //$NON-NLS-1$
 		// configure container

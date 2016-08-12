@@ -10,189 +10,158 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
+import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.wizard.WizardPageSupport;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.window.Window;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.linuxtools.docker.core.AbstractRegistry;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IRegistry;
-import org.eclipse.linuxtools.docker.core.IRegistryAccount;
-import org.eclipse.linuxtools.internal.docker.core.RegistryAccountManager;
-import org.eclipse.linuxtools.internal.docker.core.RegistryInfo;
-import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 
-public class ImagePushPage extends WizardPage {
+/**
+ * {@link WizardPage} to push an image to a registry.
+ */
+public class ImagePushPage extends ImagePullPushPage<ImagePushPageModel> {
 
-	private final static String NAME = "ImagePush.name"; //$NON-NLS-1$
-	private final static String TITLE = "ImagePush.title"; //$NON-NLS-1$
-	private final static String DESC = "ImagePush.desc"; //$NON-NLS-1$
-	private final static String NAME_LABEL = "ImagePushName.label"; //$NON-NLS-1$
-	private final static String NAME_TOOLTIP = "ImagePushName.toolTip"; //$NON-NLS-1$
-	private Text nameText;
-	private Combo nameCombo;
-	private Combo accountCombo;
-	private IDockerImage image;
-
-	private String tag;
-	private IRegistry info;
-
-	public ImagePushPage() {
-		this(null);
+	/**
+	 * Constructor
+	 * 
+	 * @param image
+	 *            the {@link IDockerImage} to push.
+	 * @param selectedImageName
+	 *            the default image name/tag
+	 */
+	public ImagePushPage(final IDockerImage image,
+			final String selectedImageName) {
+		super(WizardMessages.getString("ImagePush.name"), //$NON-NLS-1$
+				WizardMessages.getString("ImagePush.title"), //$NON-NLS-1$
+				new ImagePushPageModel(image, selectedImageName));
 	}
 
-	public ImagePushPage(IDockerImage image) {
-		super(WizardMessages.getString(NAME));
-		this.image = image;
-		setDescription(WizardMessages.getString(DESC));
-		setTitle(WizardMessages.getString(TITLE));
-		setImageDescriptor(SWTImagesFactory.DESC_WIZARD);
+	@Override
+	public void dispose() {
+		this.dbc.dispose();
+		super.dispose();
 	}
 
-	public String getImageTag() {
-		return tag;
+	/**
+	 * @return the tag to select/apply on the image
+	 */
+	public String getSelectedImageName() {
+		return getModel().getSelectedImageName();
 	}
 
-	public IRegistry getRegistry() {
-		return info;
+	/**
+	 * @return the target {@link IRegistry} on which to push the image
+	 */
+	public IRegistry getSelectedRegistryAccount() {
+		return getModel().getSelectedRegistry();
 	}
 
-	private ModifyListener Listener = e -> validate();
-
-	private void validate() {
-		boolean complete = true;
-		boolean error = false;
-		String name = null;
-		if (nameText != null) {
-			name = nameText.getText();
-		} else {
-			name = nameCombo.getText();
-		}
-		if (accountCombo != null) {
-			String account = accountCombo.getText();
-			final String pattern = "(.*)@(.*)"; //$NON-NLS-1$
-			Matcher m = Pattern.compile(pattern).matcher(account);
-			if (m.matches()) {
-				info = RegistryAccountManager.getInstance().getAccount(m.group(2), m.group(1));
-			} else {
-				info = new RegistryInfo(account);
-			}
-		} else {
-			complete = false;
-			error = true;
-			setErrorMessage(WizardMessages.getString("ImagePushPage.empty.registry.account")); //$NON-NLS-1$
-		}
-
-		if (name.length() == 0) {
-			complete = false;
-		}
-		if (!error) {
-			setErrorMessage(null);
-			tag = name;
-		}
-
-		setPageComplete(complete && !error);
+	/**
+	 * @return flag to indicate if the 'force' option should be used when
+	 *         tagging the image.
+	 */
+	public boolean isForceTagging() {
+		return getModel().isForceTagging();
 	}
 
+	/**
+	 * @return flag to indicate if the tagged image should be kept upon
+	 *         completion.
+	 */
+	public boolean isKeepTaggedImage() {
+		return getModel().isKeepTaggedImage();
+	}
+
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void createControl(final Composite parent) {
 		parent.setLayout(new GridLayout());
 		final Composite container = new Composite(parent, SWT.NONE);
 		GridLayoutFactory.fillDefaults().numColumns(3).margins(6, 6)
 				.applyTo(container);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).span(1, 1)
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).applyTo(container);
+
+		// registry selection
+		final IObservableValue<IRegistry> registryAccountObservable = super.createRegistrySelectionControls(
+				container);
+		// image selection
+		final IObservableValue<String> imageNameObservable = createImageSelectionControls(
+				container);
+
+		// force tagging
+		final Button forceTaggingButton = new Button(container, SWT.CHECK);
+		forceTaggingButton.setText(WizardMessages
+				.getString("ImagePushPage.forcetagging.label")); //$NON-NLS-1$ );
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.grab(true, false).span(2, 1).applyTo(forceTaggingButton);
+		dbc.bindValue(WidgetProperties.selection().observe(forceTaggingButton),
+				BeanProperties.value(ImagePushPageModel.class,
+						ImagePushPageModel.FORCE_TAGGING).observe(getModel()));
+
+		// keep tagged image upon completion
+		final Button keepTaggedImageButton = new Button(container, SWT.CHECK);
+		keepTaggedImageButton.setText(WizardMessages
+				.getString("ImagePushPage.keeptaggedimage.label")); //$NON-NLS-1$ );
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.grab(true, false).span(2, 1).applyTo(keepTaggedImageButton);
+		dbc.bindValue(
+				WidgetProperties.selection().observe(keepTaggedImageButton),
+				BeanProperties
+						.value(ImagePushPageModel.class,
+								ImagePushPageModel.KEEP_TAGGED_IMAGE)
+						.observe(getModel()));
+
+		// setup validation support
+		WizardPageSupport.create(this, dbc);
+		dbc.addValidationStatusProvider(getModel().new ImagePushValidator(
+				imageNameObservable, registryAccountObservable));
+		setControl(container);
+	}
+
+	@SuppressWarnings("unchecked")
+	private IObservableValue<String> createImageSelectionControls(
+			final Composite container) {
 		final Label nameLabel = new Label(container, SWT.NULL);
-		nameLabel.setText(WizardMessages.getString(NAME_LABEL));
+		nameLabel.setText(
+				WizardMessages.getString("ImagePullPushPage.name.label")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).applyTo(nameLabel);
-		if (image == null || image.repoTags().size() == 0) {
-			nameText = new Text(container, SWT.BORDER | SWT.SINGLE);
-			nameText.addModifyListener(Listener);
-			nameText.setToolTipText(WizardMessages.getString(NAME_TOOLTIP));
-			GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
-					.grab(true, false).span(2, 1).applyTo(nameText);
-		} else {
-			nameCombo = new Combo(container, SWT.DROP_DOWN | SWT.READ_ONLY);
-			nameCombo.addModifyListener(Listener);
-			nameCombo.setToolTipText(WizardMessages.getString(NAME_TOOLTIP));
-			nameCombo.setItems(image.repoTags().toArray(new String[0]));
-			nameCombo.setText(image.repoTags().get(0));
-			GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
-					.grab(true, false).span(2, 1).applyTo(nameCombo);
-		}
-
-		final Label accountLabel = new Label(container, SWT.NULL);
-		accountLabel.setText(WizardMessages.getString("ImagePushPage.registry.account.label")); //$NON-NLS-1$
+		final Combo imageNameCombo = new Combo(container, SWT.DROP_DOWN);
+		imageNameCombo.setToolTipText(
+				WizardMessages.getString("ImagePushName.toolTip")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
-				.grab(false, false).applyTo(accountLabel);
-
-		accountCombo = new Combo(container, SWT.DROP_DOWN);
-		accountCombo.addModifyListener(Listener);
-		accountCombo.setToolTipText(WizardMessages.getString("ImagePushPage.registry.account.desc")); //$NON-NLS-1$
-		accountCombo.setItems(getAccountComboItems());
-		if (accountCombo.getItems().length > 0) {
-			accountCombo.select(0);
-		}
-
-		// Add
-		final Button addButton = new Button(container, SWT.NONE);
-		addButton.setText(
-				WizardMessages.getString("ImagePullPushPage.add.label")); //$NON-NLS-1$
+				.grab(true, false).applyTo(imageNameCombo);
+		final ComboViewer imageNameComboViewer = new ComboViewer(
+				imageNameCombo);
+		imageNameComboViewer.setContentProvider(new ArrayContentProvider());
+		imageNameComboViewer.setInput(getModel().getImage().repoTags());
+		// binding must take place after the input is set, so that default
+		// repo/name can be selected.
+		final IObservableValue<String> imageNameObservable = BeanProperties
+				.value(ImagePushPageModel.class,
+						ImagePullPushPageModel.SELECTED_IMAGE_NAME)
+				.observe(getModel());
+		dbc.bindValue(WidgetProperties.selection().observe(imageNameCombo),
+				imageNameObservable);
+		// filler for the last column
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
-				.grab(false, false).applyTo(addButton);
-		addButton.addSelectionListener(onAdd(accountCombo));
-
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
-				.grab(true, false).applyTo(accountCombo);
-		setControl(container);
-		validate();
+				.grab(false, false).applyTo(new Label(container, SWT.NONE));
+		return imageNameObservable;
 	}
 
-	private SelectionListener onAdd(Combo combo) {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				String selected = combo.getText();
-				RegistryAccountDialog dialog = new RegistryAccountDialog(
-						getShell(),
-						WizardMessages.getString(
-								"ImagePullPushPage.login.title"), //$NON-NLS-1$
-						AbstractRegistry.DOCKERHUB_REGISTRY,
-						WizardMessages.getString(
-								"RegistryAccountDialog.add.explanation")); ///$NON-NLS-1$
-				if (dialog.open() == Window.OK) {
-					IRegistryAccount acc = dialog.getSignonInformation();
-					RegistryAccountManager.getInstance().add(acc);
-					selected = acc.getUsername() + "@" + acc.getServerAddress(); //$NON-NLS-1$
-				}
-				combo.setItems(getAccountComboItems());
-				combo.setText(selected);
-			}
-		};
-	}
-
-	private String[] getAccountComboItems() {
-		List<String> items = RegistryAccountManager.getInstance().getAccounts()
-				.stream().map(e -> e.getUsername() + "@" + e.getServerAddress()) //$NON-NLS-1$
-				.collect(Collectors.toList());
-		return items.toArray(new String[0]);
-	}
 
 }

@@ -287,9 +287,9 @@ public class DockerExplorerView extends CommonNavigator implements
 			switch (type) {
 			case IDockerConnectionManagerListener.ADD_EVENT:
 				registerListeners(connection);
-				getCommonViewer().refresh();
-				getCommonViewer()
-						.setSelection(new StructuredSelection(connection));
+				// getCommonViewer().refresh();
+				// getCommonViewer()
+				// .setSelection(new StructuredSelection(connection));
 				break;
 			case IDockerConnectionManagerListener.RENAME_EVENT:
 				getCommonViewer().refresh(connection);

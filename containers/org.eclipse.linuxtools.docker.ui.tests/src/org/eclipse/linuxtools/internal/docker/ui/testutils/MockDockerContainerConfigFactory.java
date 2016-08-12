@@ -41,7 +41,7 @@ public class MockDockerContainerConfigFactory {
 			return this;
 		}
 
-		public IDockerContainerConfig build() {
+		public DockerContainerConfig build() {
 			Mockito.when(this.containerConfig.exposedPorts()).thenReturn(Collections.emptySet());
 			Mockito.when(this.containerConfig.env()).thenReturn(Collections.emptyList());
 			Mockito.when(this.containerConfig.labels()).thenReturn(Collections.emptyMap());

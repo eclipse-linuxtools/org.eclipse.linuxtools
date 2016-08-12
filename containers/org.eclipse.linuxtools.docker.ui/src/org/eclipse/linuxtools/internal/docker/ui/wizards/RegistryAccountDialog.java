@@ -1,12 +1,16 @@
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
+import java.util.stream.Stream;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.linuxtools.docker.core.AbstractRegistry;
 import org.eclipse.linuxtools.docker.core.IRegistryAccount;
 import org.eclipse.linuxtools.internal.docker.core.RegistryAccountInfo;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -22,6 +26,7 @@ public class RegistryAccountDialog extends Dialog {
 	private String title;
 	private String explanation = WizardMessages
 			.getString("RegistryAccountDialog.add.edit.explanation"); //$NON-NLS-1$
+
 
 	public RegistryAccountDialog(Shell parentShell, String title) {
 		super(parentShell);
@@ -40,6 +45,11 @@ public class RegistryAccountDialog extends Dialog {
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setText(title);
+	}
+
+	@Override
+	protected Point getInitialSize() {
+		return new Point(350, super.getInitialSize().y);
 	}
 
 	@Override
@@ -127,13 +137,17 @@ public class RegistryAccountDialog extends Dialog {
 			validate();
 		});
 
+		// status message
+
 		return container;
 	}
 
 	private void validate() {
 		if (serverAddress != null && !serverAddress.isEmpty()
-				&& username != null && !username.isEmpty()
-				&& password != null && password.length > 0) {
+		// username and password should be optional
+		// && username != null && !username.isEmpty()
+		// && password != null && password.length > 0
+		) {
 			getButton(IDialogConstants.OK_ID).setEnabled(true);
 		} else {
 			getButton(IDialogConstants.OK_ID).setEnabled(false);
@@ -148,7 +162,11 @@ public class RegistryAccountDialog extends Dialog {
 	}
 
 	public IRegistryAccount getSignonInformation() {
-		return new RegistryAccountInfo(serverAddress, username, email, password);
+		final boolean dockerHubRegistryAlias = Stream
+				.of(AbstractRegistry.DOCKERHUB_REGISTRY_ALIASES)
+				.anyMatch(alias -> serverAddress.contains(alias));
+		return new RegistryAccountInfo(serverAddress, username, email, password,
+				dockerHubRegistryAlias);
 	}
 
 }

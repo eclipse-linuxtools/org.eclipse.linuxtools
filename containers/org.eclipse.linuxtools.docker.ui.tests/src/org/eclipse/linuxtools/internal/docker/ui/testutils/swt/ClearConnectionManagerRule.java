@@ -31,7 +31,7 @@ public class ClearConnectionManagerRule extends ExternalResource {
 
 	/**
 	 * Removes all connections in the given {@link DockerConnectionManager}
-	 * 
+	 *
 	 * @param dockerConnectionManager
 	 */
 	public static void removeAllConnections(final DockerConnectionManager dockerConnectionManager) {

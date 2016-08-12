@@ -26,6 +26,7 @@ import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
 import org.eclipse.linuxtools.docker.core.IDockerPortMapping;
+import org.eclipse.linuxtools.internal.docker.core.DockerImage;
 import org.eclipse.swt.custom.StyledText;
 
 /**
@@ -150,8 +151,6 @@ public class LabelProviderUtils {
 	 * @return the {@link StyledText} for the given {@link IDockerImage}.
 	 */
 	public static StyledString getStyleString(final IDockerImage dockerImage) {
-		final String imageShortId = (dockerImage.id().length() > 12)
-				? dockerImage.id().substring(0, 12) : dockerImage.id();
 		final StringBuilder messageBuilder = new StringBuilder(
 				dockerImage.repo());
 		final int startTags = messageBuilder.length();
@@ -168,7 +167,10 @@ public class LabelProviderUtils {
 			}
 		}
 		final int startImageId = messageBuilder.length();
-		messageBuilder.append(" (").append(imageShortId).append(')');
+		// TODO: remove the cast to 'DockerImage' once the 'shortId()'
+		// method is in the public API
+		messageBuilder.append(" (")
+				.append(((DockerImage) dockerImage).shortId()).append(')');
 		final String message = messageBuilder.toString();
 		final StyledString styledString = new StyledString(message);
 		// styled tags

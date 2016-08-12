@@ -14,6 +14,9 @@ import java.util.List;
 
 public interface IRegistry {
 
+	/**
+	 * @return the server address URL, including the scheme
+	 */
 	String getServerAddress();
 
 	List<IDockerImageSearchResult> getImages(String term) throws DockerException;

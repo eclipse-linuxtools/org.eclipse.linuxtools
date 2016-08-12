@@ -70,7 +70,10 @@ public class MockDockerConnectionFactory {
 			final DockerClientFactory dockerClientFactory = Mockito.mock(DockerClientFactory.class);
 			connection.setDockerClientFactory(dockerClientFactory);
 			try {
+				// return dockerClient without auth
 				Mockito.when(dockerClientFactory.getClient(Matchers.any())).thenReturn(dockerClient);
+				// return same dockerClient with auth arg
+				Mockito.when(dockerClientFactory.getClient(Matchers.any(), Matchers.any())).thenReturn(dockerClient);
 			} catch (DockerCertificateException e) {
 				// rest assured, nothing will happen while mocking the DockerClientFactory
 			}

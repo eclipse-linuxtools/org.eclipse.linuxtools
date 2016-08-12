@@ -465,7 +465,8 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 				final ImageSearch imageSearchWizard = new ImageSearch(
 						RunImageMainTab.this.model.getSelectedConnection(),
 						RunImageMainTab.this.model.getSelectedImageName(),
-						new RegistryInfo(AbstractRegistry.DOCKERHUB_REGISTRY));
+						new RegistryInfo(AbstractRegistry.DOCKERHUB_REGISTRY,
+								true));
 				final boolean completed = CommandUtils
 						.openWizard(imageSearchWizard, getShell());
 				if (completed) {

@@ -17,9 +17,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.linuxtools.docker.core.AbstractRegistry;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
-import org.eclipse.linuxtools.docker.core.IRegistry;
 import org.eclipse.linuxtools.docker.core.IRegistryAccount;
 import org.eclipse.linuxtools.docker.ui.wizards.ImageSearch;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
@@ -63,15 +63,17 @@ public class PullImageCommandHandler extends AbstractHandler {
 			final boolean pullImage = CommandUtils.openWizard(wizard,
 					HandlerUtil.getActiveShell(event));
 			if (pullImage) {
-				performPullImage(connection, wizard.getImageName(),
-						wizard.getRegistry());
+				performPullImage(connection, wizard.getSelectedImageName(),
+						// TODO: remove cast once AbstractRegistry methods are
+						// part of the IRegistry interface
+						(AbstractRegistry) wizard.getSelectedRegistryAccount());
 			}
 		}
 		return null;
 	}
 
 	private void performPullImage(final IDockerConnection connection,
-			final String imageName, final IRegistry registry) {
+			final String imageName, final AbstractRegistry registry) {
 		final Job pullImageJob = new Job(DVMessages
 				.getFormattedString(PULL_IMAGE_JOB_TITLE, imageName)) {
 
@@ -82,12 +84,13 @@ public class PullImageCommandHandler extends AbstractHandler {
 				// pull the image and let the progress
 				// handler refresh the images when done
 				try {
-					if (registry == null) {
+					if (registry == null || registry.isDockerHubRegistry()) {
 						((DockerConnection) connection).pullImage(imageName,
 								new DefaultImagePullProgressHandler(connection,
 										imageName));
 					} else {
-						String fullImageName = registry.getServerAddress() + '/' + imageName;
+						String fullImageName = registry.getServerHost() + '/'
+								+ imageName;
 						if (registry instanceof IRegistryAccount) {
 							IRegistryAccount account = (IRegistryAccount) registry;
 							((DockerConnection) connection).pullImage(fullImageName,
