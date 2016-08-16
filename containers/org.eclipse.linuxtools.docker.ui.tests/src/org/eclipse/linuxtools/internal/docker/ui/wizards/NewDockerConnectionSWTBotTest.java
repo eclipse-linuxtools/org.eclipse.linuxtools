@@ -11,12 +11,16 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionSettingsFinder;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CheckBoxAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWizardRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.RadioAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTBotTreeItemAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TextAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerContainersView;
@@ -38,7 +42,7 @@ import org.junit.runner.RunWith;
 /**
  * Testing the {@link NewDockerConnection} {@link Wizard}
  */
-@RunWith(SWTBotJunit4ClassRunner.class) 
+@RunWith(SWTBotJunit4ClassRunner.class)
 public class NewDockerConnectionSWTBotTest {
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
@@ -46,26 +50,26 @@ public class NewDockerConnectionSWTBotTest {
 	private SWTBotView dockerExplorerViewBot;
 
 	@ClassRule
-	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(); 
-	
-	@Rule 
+	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule();
+
+	@Rule
 	public CloseWizardRule closeWizard = new CloseWizardRule();
-	
+
 	@Before
 	public void lookupDockerExplorerView() throws Exception {
-		SWTUtils.asyncExec(() -> {try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.showView(DockerExplorerView.VIEW_ID);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail("Failed to open Docker Explorer view: " + e.getMessage());
-		}});
+		SWTUtils.asyncExec(() -> {
+			try {
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+						.showView(DockerExplorerView.VIEW_ID);
+			} catch (Exception e) {
+				e.printStackTrace();
+				Assert.fail("Failed to open Docker Explorer view: " + e.getMessage());
+			}
+		});
 		dockerExplorerViewBot = bot.viewById(DockerExplorerView.VIEW_ID);
 		dockerExplorerViewBot.show();
-		bot.views().stream()
-				.filter(v -> v.getReference().getId().equals(DockerContainersView.VIEW_ID)
-						|| v.getReference().getId().equals(DockerImagesView.VIEW_ID))
-				.forEach(v -> v.close());
+		bot.views().stream().filter(v -> v.getReference().getId().equals(DockerContainersView.VIEW_ID)
+				|| v.getReference().getId().equals(DockerImagesView.VIEW_ID)).forEach(v -> v.close());
 		dockerExplorerViewBot.setFocus();
 		this.addConnectionButton = dockerExplorerViewBot.toolbarButton("&Add Connection");
 	}
@@ -75,9 +79,7 @@ public class NewDockerConnectionSWTBotTest {
 		// given
 		MockDockerConnectionSettingsFinder.noDockerConnectionAvailable();
 		// when
-		// TODO: should wait until dialog appears after call to click()
 		addConnectionButton.click();
-		//bot.waitUntilWidgetAppears(waitForWidget);
 		// then
 		// Empty Connection name
 		TextAssertion.assertThat(bot.text(0)).isEnabled().isEmpty();
@@ -98,12 +100,11 @@ public class NewDockerConnectionSWTBotTest {
 	}
 
 	@Test
-	public void shouldShowDefaultUnixSocketConnectionSettingsWithValidConnectionAvailable() {
+	public void shouldShowDefaultUnixSocketConnectionSettingsWithValidConnectionAvailable() throws IOException {
 		// given
 		MockDockerConnectionSettingsFinder.validUnixSocketConnectionAvailable();
 		// when
 		addConnectionButton.click();
-		// TODO: should wait until dialog appears.
 		// then
 		// Connection name
 		TextAssertion.assertThat(bot.text(0)).isEnabled().textEquals("mock");
@@ -112,7 +113,7 @@ public class NewDockerConnectionSWTBotTest {
 		// "Unix socket" radio should be disabled and selected
 		RadioAssertion.assertThat(bot.radio(0)).isNotEnabled().isSelected();
 		// "Unix socket path" text should be disabled and not empty
-		TextAssertion.assertThat(bot.text(1)).isNotEnabled().textEquals("unix://var/run/docker.sock");
+		TextAssertion.assertThat(bot.text(1)).isNotEnabled().textEquals("unix:///var/run/docker.sock");
 		// "TCP Connection" radio should be unselected and disabled
 		RadioAssertion.assertThat(bot.radio(1)).isNotEnabled().isNotSelected();
 		// "URI" should be disabled and empty
@@ -130,7 +131,6 @@ public class NewDockerConnectionSWTBotTest {
 		// when
 		addConnectionButton.click();
 		bot.waitUntil(Conditions.shellIsActive(WizardMessages.getString("NewDockerConnection.title"))); //$NON-NLS-1$
-		// TODO: should wait until dialog appears.
 		// then
 		// Connection name
 		TextAssertion.assertThat(bot.text(0)).isEnabled().textEquals("mock");
@@ -148,6 +148,22 @@ public class NewDockerConnectionSWTBotTest {
 		CheckBoxAssertion.assertThat(bot.checkBox(1)).isNotEnabled().isChecked();
 		// "Path" for certs should be disabled but not empty
 		TextAssertion.assertThat(bot.text(3)).isNotEnabled().textEquals("/path/to/certs");
+	}
+
+	@Test
+	public void shouldAddConnectionToDockerExplorerView() throws IOException {
+		// given
+		final File dockerSocketTmpFile = File.createTempFile("docker", ".sock");
+		MockDockerConnectionSettingsFinder.validUnixSocketConnectionAvailable("Mock",
+				"unix://" + dockerSocketTmpFile.getAbsolutePath());
+		// when open wizard
+		addConnectionButton.click();
+		bot.waitUntil(Conditions.shellIsActive(WizardMessages.getString("NewDockerConnection.title"))); //$NON-NLS-1$
+		// when click on "OK"
+		bot.button("Finish").click();
+		// then the Docker Explorer view should have a connection named "Mock"
+		SWTBotTreeItemAssertions.assertThat(SWTUtils.getTreeItem(dockerExplorerViewBot.bot().tree(), "Mock"))
+				.isNotNull();
 	}
 
 }

@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils;
 
+import java.io.IOException;
 import java.util.Collections;
 
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
@@ -38,19 +39,33 @@ public class MockDockerConnectionSettingsFinder {
 	}
 
 	/**
-	 * Configures the {@link DockerConnectionManager} singleton to being
-	 * able to detect a <strong>valid Unix Socket</strong> to a Docker daemon.
+	 * Configures the {@link DockerConnectionManager} singleton to being able to
+	 * detect a <strong>valid Unix Socket</strong> to a Docker daemon.
+	 *
+	 * @throws IOException
 	 */
-	public static void validUnixSocketConnectionAvailable() {
+	public static void validUnixSocketConnectionAvailable() throws IOException {
+		validUnixSocketConnectionAvailable("mock", "unix:///var/run/docker.sock");
+	}
+
+	/**
+	 * Configures the {@link DockerConnectionManager} singleton to being able to
+	 * detect a <strong>valid Unix Socket</strong> to a Docker daemon.
+	 *
+	 * @throws IOException
+	 */
+	public static void validUnixSocketConnectionAvailable(final String connectionName, final String unixSocketPath)
+			throws IOException {
 		final IDockerConnectionSettingsFinder validUnixSocketConnectionAvailable = Mockito
 				.mock(IDockerConnectionSettingsFinder.class);
-		final UnixSocketConnectionSettings unixSocketConnectionSettings = new UnixSocketConnectionSettings("unix://var/run/docker.sock");
+		final UnixSocketConnectionSettings unixSocketConnectionSettings = new UnixSocketConnectionSettings(
+				unixSocketPath);
 		//unixSocketConnectionSettings.setName("mock");
 		unixSocketConnectionSettings.setSettingsResolved(true);
 		Mockito.when(validUnixSocketConnectionAvailable.findDefaultConnectionSettings()).thenReturn(unixSocketConnectionSettings);
 		Mockito.when(
 				validUnixSocketConnectionAvailable.resolveConnectionName(Matchers.any(IDockerConnectionSettings.class)))
-				.thenReturn("mock");
+				.thenReturn(connectionName);
 		DockerConnectionManager.getInstance().setConnectionSettingsFinder(validUnixSocketConnectionAvailable);
 	}
 

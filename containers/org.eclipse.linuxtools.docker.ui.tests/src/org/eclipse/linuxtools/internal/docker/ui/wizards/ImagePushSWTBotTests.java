@@ -63,6 +63,7 @@ public class ImagePushSWTBotTests {
 
 	@Rule
 	public CloseWizardRule closeWizard = new CloseWizardRule();
+
 	private RegistryAccountStorageManager defaultRegistryAccountStorageManager;
 	private DockerClient client;
 
