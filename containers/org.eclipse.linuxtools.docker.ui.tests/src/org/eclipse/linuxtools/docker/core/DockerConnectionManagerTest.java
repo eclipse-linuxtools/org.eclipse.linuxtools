@@ -124,7 +124,7 @@ public class DockerConnectionManagerTest {
 			final String socketPath = "unix:///foo/bar/baz/docker.sock";
 			UnixSocketConnectionSettings unix = new UnixSocketConnectionSettings(socketPath);
 			unix.setName(socketPath);
-			return Arrays.asList(new IDockerConnectionSettings[] { unix });
+			return Arrays.asList(unix);
 		}
 	}
 
@@ -135,7 +135,7 @@ public class DockerConnectionManagerTest {
 			final String tcpCertPath = "/foo/bar/baz/certs";
 			TCPConnectionSettings tcp = new TCPConnectionSettings(tcpHost, tcpCertPath);
 			tcp.setName(tcpHost);
-			return Arrays.asList(new IDockerConnectionSettings[] { tcp });
+			return Arrays.asList(tcp);
 		}
 	}
 }

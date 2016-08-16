@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -37,7 +38,7 @@ public class ShellConnectionSettingsProvider implements IDockerConnectionSetting
 			if (connectionSettingsDetectionScriptName == null) {
 				Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 						Messages.Docker_No_Settings_Description_Script));
-				return null;
+				return Collections.emptyList();
 			}
 			final File connectionSettingsDetectionScript = getConnectionSettingsDetectionScript(
 					connectionSettingsDetectionScriptName);
@@ -52,7 +53,10 @@ public class ShellConnectionSettingsProvider implements IDockerConnectionSetting
 				final Properties dockerSettings = new Properties();
 				dockerSettings.load(processInputStream);
 				IDockerConnectionSettings setting = createDockerConnectionSettings(dockerSettings);
-				return Arrays.asList(new IDockerConnectionSettings [] { setting });
+				if (setting == null) {
+					return Collections.emptyList();
+				}
+				return Arrays.asList(setting);
 			} else {
 				// log what happened if the process did not end as expected
 				// an exit value of 1 should indicate no connection found
@@ -70,7 +74,7 @@ public class ShellConnectionSettingsProvider implements IDockerConnectionSetting
 			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					Messages.Retrieve_Default_Settings_Failure, e));
 		}
-		return null;
+		return Collections.emptyList();
 	}
 
 	/**

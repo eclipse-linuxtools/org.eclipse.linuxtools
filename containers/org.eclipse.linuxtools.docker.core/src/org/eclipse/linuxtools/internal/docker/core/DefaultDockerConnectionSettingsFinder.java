@@ -263,7 +263,7 @@ public class DefaultDockerConnectionSettingsFinder
 				if (obj instanceof IDockerConnectionSettingsProvider) {
 					List<IDockerConnectionSettings> settings = ((IDockerConnectionSettingsProvider) obj)
 							.getConnectionSettings();
-					if (settings != null) {
+					if (settings != null && !settings.isEmpty()) {
 						result.addAll(settings);
 					}
 				}

@@ -59,19 +59,21 @@ public class DockerConnectionManager {
 		List<IDockerConnectionSettings> settings = connectionSettingsFinder
 				.getKnownConnectionSettings();
 		for (IDockerConnectionSettings setting : settings) {
-			IDockerConnection conn;
-			if (setting.getType().equals(BindingType.UNIX_SOCKET_CONNECTION)) {
-				UnixSocketConnectionSettings usetting = (UnixSocketConnectionSettings) setting;
-				conn = new DockerConnection.Builder().name(usetting.getName())
-						.unixSocketConnection(usetting);
-			} else {
-				TCPConnectionSettings tsetting = (TCPConnectionSettings) setting;
-				conn = new DockerConnection.Builder().name(tsetting.getName())
-						.tcpConnection(tsetting);
+			if (setting != null) {
+				IDockerConnection conn;
+				if (setting.getType().equals(BindingType.UNIX_SOCKET_CONNECTION)) {
+					UnixSocketConnectionSettings usetting = (UnixSocketConnectionSettings) setting;
+					conn = new DockerConnection.Builder().name(usetting.getName())
+							.unixSocketConnection(usetting);
+				} else {
+					TCPConnectionSettings tsetting = (TCPConnectionSettings) setting;
+					conn = new DockerConnection.Builder().name(tsetting.getName())
+							.tcpConnection(tsetting);
+				}
+				// add the connection but do not notify the listeners to avoid
+				// flickering on the Docker Explorer view for each entry
+				addConnection(conn, false);
 			}
-			// add the connection but do not notify the listeners to avoid
-			// flickering on the Docker Explorer view for each entry
-			addConnection(conn, false);
 		}
 	}
 
