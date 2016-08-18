@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
@@ -48,6 +49,7 @@ import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.ui.Activator;
+import org.eclipse.linuxtools.internal.docker.core.DefaultDockerConnectionSettingsFinder;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerMachine;
 import org.eclipse.linuxtools.internal.docker.core.TCPConnectionSettings;
@@ -56,6 +58,9 @@ import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -115,7 +120,20 @@ public class NewDockerConnectionPage extends WizardPage {
 		createConnectionSettingsContainer(container);
 		// attach the Databinding context status to this wizard page.
 		WizardPageSupport.create(this, this.dbc);
-		retrieveDefaultConnectionSettings();
+
+		Clipboard clip = new Clipboard(Display.getCurrent());
+		String content = (String) clip.getContents(TextTransfer.getInstance(), DND.SELECTION_CLIPBOARD);
+		// DOCKER_HOST is the minimal property needed
+		if (content != null && content.contains(DefaultDockerConnectionSettingsFinder.DOCKER_HOST)) {
+			retrieveConnectionSettings(content);
+		} else {
+			content = (String) clip.getContents(TextTransfer.getInstance(), DND.CLIPBOARD);
+			if (content != null && content.contains(DefaultDockerConnectionSettingsFinder.DOCKER_HOST)) {
+				retrieveConnectionSettings(content);
+			} else {
+				retrieveDefaultConnectionSettings();
+			}
+		}
 
 		scrollTop.setContent(container);
 		Point point = container.computeSize(SWT.DEFAULT, SWT.DEFAULT);
@@ -464,6 +482,41 @@ public class NewDockerConnectionPage extends WizardPage {
 			Activator.log(e);
 		}
 
+	}
+
+	private void retrieveConnectionSettings(String content) {
+		final String EQUAL = "="; //$NON-NLS-1$
+		StringTokenizer tok = new StringTokenizer(content);
+		while (tok.hasMoreTokens()) {
+			String line = tok.nextToken();
+			String[] tokens;
+			if (line.startsWith(DefaultDockerConnectionSettingsFinder.DOCKER_HOST)) {
+				tokens = line.split(EQUAL);
+				if (tokens.length == 2) {
+					String host = tokens[1];
+					if (host.startsWith("unix")) { //$NON-NLS-1$
+						model.setUnixSocketBindingMode(true);
+						model.setUnixSocketPath(host);
+					} else {
+						model.setTcpConnectionBindingMode(true);
+						model.setTcpHost(host);
+					}
+					model.setCustomSettings(true);
+				}
+			} else if (line.startsWith(DefaultDockerConnectionSettingsFinder.DOCKER_CERT_PATH)) {
+				tokens = line.split(EQUAL);
+				if (tokens.length == 2) {
+					model.setTcpCertPath(tokens[1]);
+				}
+			} else if (line.startsWith(DefaultDockerConnectionSettingsFinder.DOCKER_TLS_VERIFY)) {
+				tokens = line.split(EQUAL);
+				if (tokens.length == 2) {
+						model.setTcpTLSVerify(
+								DefaultDockerConnectionSettingsFinder.DOCKER_TLS_VERIFY_TRUE
+										.equals(tokens[1]));
+				}
+			}
+		}
 	}
 
 	private void updateWidgetsState(

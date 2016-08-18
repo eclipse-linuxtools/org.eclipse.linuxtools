@@ -26,6 +26,11 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TextAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerContainersView;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerImagesView;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
@@ -164,6 +169,52 @@ public class NewDockerConnectionSWTBotTest {
 		// then the Docker Explorer view should have a connection named "Mock"
 		SWTBotTreeItemAssertions.assertThat(SWTUtils.getTreeItem(dockerExplorerViewBot.bot().tree(), "Mock"))
 				.isNotNull();
+	}
+
+	@Test
+	public void shouldPopulateConnectionWithClipboard() {
+		final int [] DND_TYPE = {DND.SELECTION_CLIPBOARD, DND.CLIPBOARD};
+		for (int i = 0; i < DND_TYPE.length; i++) {
+			// Clear the clipboards
+			Display.getDefault().syncExec(() -> {
+				Clipboard clip = new Clipboard(Display.getCurrent());
+				clip.clearContents(DND.CLIPBOARD);
+				clip.clearContents(DND.SELECTION_CLIPBOARD);
+			});
+
+			// given
+			final int DND_VALUE = DND_TYPE[i];
+			final String[] connectionData = new String[] {
+					"DOCKER_HOST=https://1.2.3.4:1234 DOCKER_CERT_PATH=/path/to/certs DOCKER_TLS_VERIFY=1" };
+			Display.getDefault().syncExec(() -> {
+				Clipboard clip = new Clipboard(Display.getCurrent());
+				clip.setContents(connectionData, new Transfer[] { TextTransfer.getInstance() },
+						DND_VALUE);
+			});
+			// when
+			addConnectionButton.click();
+			// then
+			// Connection name
+			TextAssertion.assertThat(bot.text(0)).isEnabled().isEmpty();
+			// "Use custom connection settings" should be enabled and checked
+			CheckBoxAssertion.assertThat(bot.checkBox(0)).isEnabled().isChecked();
+			// "Unix socket" radio should be enabled and unselected
+			RadioAssertion.assertThat(bot.radio(0)).isEnabled().isNotSelected();
+			// "Unix socket path" text should be disabled and empty
+			TextAssertion.assertThat(bot.text(1)).isNotEnabled().isEmpty();
+			// "TCP Connection" radio should be enabled and selected
+			RadioAssertion.assertThat(bot.radio(1)).isEnabled().isSelected();
+			// "URI" should be enabled and not empty
+			TextAssertion.assertThat(bot.text(2)).isEnabled().textEquals("https://1.2.3.4:1234");
+			// "Enable Auth" checkbox should be enabled and selected
+			CheckBoxAssertion.assertThat(bot.checkBox(1)).isEnabled().isChecked();
+			// "Path" for certs should be enabled and not empty
+			TextAssertion.assertThat(bot.text(3)).isEnabled().textEquals("/path/to/certs");
+
+			// Close wizard
+			bot.button("Cancel").click();
+		}
+
 	}
 
 }
