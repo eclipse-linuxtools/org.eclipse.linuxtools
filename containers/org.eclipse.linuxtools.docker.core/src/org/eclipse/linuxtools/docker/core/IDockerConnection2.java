@@ -45,4 +45,30 @@ public interface IDockerConnection2 {
 	IDockerProgressHandler getDefaultBuildImageProgressHandler(String image,
 			int lines);
 
+	/**
+	 * Retrieves the whole hierarchy for the given {@link IDockerImage}. This
+	 * includes the path to all known parent images, along with all derived
+	 * images based on the given {@code image}.
+	 * 
+	 * @param image
+	 *            the {@link IDockerImage} for which the hierarchy should be
+	 *            resolved
+	 * @return the {@link IDockerImageHierarchyNode} as a node that can be
+	 *         traversed.
+	 */
+	IDockerImageHierarchyNode resolveImageHierarchy(IDockerImage image);
+
+	/**
+	 * Retrieves the whole hierarchy for the given {@link IDockerContainer}.
+	 * This includes the path to all known parent images and their derived
+	 * {@link IDockerContainer}.
+	 * 
+	 * @param container
+	 *            the {@link IDockerContainer} for which the hierarchy should be
+	 *            resolved
+	 * @return the {@link IDockerImageHierarchyNode} as a node that can be
+	 *         traversed.
+	 */
+	IDockerImageHierarchyNode resolveImageHierarchy(IDockerContainer container);
+
 }

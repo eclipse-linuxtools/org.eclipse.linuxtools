@@ -15,7 +15,9 @@ import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelP
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.StyledString;
-import org.eclipse.linuxtools.docker.core.IDockerImageHiearchyNode;
+import org.eclipse.linuxtools.docker.core.IDockerContainer;
+import org.eclipse.linuxtools.docker.core.IDockerImage;
+import org.eclipse.linuxtools.docker.core.IDockerImageHierarchyNode;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.swt.graphics.Image;
 
@@ -28,15 +30,25 @@ public class DockerImageHierarchyLabelProvider
 
 	private Image IMAGE_IMAGE = SWTImagesFactory.DESC_IMAGE.createImage();
 
+	private Image CONTAINER_IMAGE = SWTImagesFactory.DESC_CONTAINER
+			.createImage();
+
 	@Override
 	public void dispose() {
 		IMAGE_IMAGE.dispose();
+		CONTAINER_IMAGE.dispose();
 	}
 
 	@Override
 	public Image getImage(Object element) {
-		if (element instanceof IDockerImageHiearchyNode) {
+		if (element instanceof IDockerImageHierarchyNode
+				&& (((IDockerImageHierarchyNode) element)
+						.getElement() instanceof IDockerImage)) {
 			return IMAGE_IMAGE;
+		} else if (element instanceof IDockerImageHierarchyNode
+				&& (((IDockerImageHierarchyNode) element)
+						.getElement() instanceof IDockerContainer)) {
+			return CONTAINER_IMAGE;
 		}
 		return null;
 	}
@@ -48,9 +60,9 @@ public class DockerImageHierarchyLabelProvider
 
 	@Override
 	public StyledString getStyledText(Object element) {
-		if (element instanceof IDockerImageHiearchyNode) {
-			return LabelProviderUtils.getStyleString(
-					((IDockerImageHiearchyNode) element).getImage());
+		if (element instanceof IDockerImageHierarchyNode) {
+			return LabelProviderUtils.getStyledText(
+					((IDockerImageHierarchyNode) element).getElement());
 		}
 		return null;
 	}

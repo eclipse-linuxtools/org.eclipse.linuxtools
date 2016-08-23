@@ -162,6 +162,12 @@
          point="org.eclipse.ui.navigator.viewer">
       <viewer
             viewerId="org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView">
+            <options>
+				<property
+					name="org.eclipse.ui.navigator.hideLinkWithEditorAction"
+					value="true">
+				</property>
+			</options>
       </viewer>
       <viewerContentBinding
             viewerId="org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView">
@@ -338,16 +344,15 @@
             id="org.eclipse.linuxtools.docker.ui.commands.showInSystemExplorer">
       	</command>
         <command
+            name="%command.openInHierarchyView.menu.name"
+            description="%command.openInHierarchyView.menu.description"
+            id="org.eclipse.linuxtools.docker.ui.commands.openInHierarchyView">
+      	</command>
+        <command
               description="%command.execcontainer.description"
               id="org.eclipse.linuxtools.docker.ui.commands.execContainer"
               name="%command.execcontainer.name">
         </command>
-        <command
-              description="%command.openImageHierarchy.description"
-              id="org.eclipse.linuxtools.docker.ui.commands.openImageHierarchyView"
-              name="%command.openImageHierarchy.name">
-        </command>
-		      
 	</extension>
     <extension
 		point="org.eclipse.ui.handlers">
@@ -706,16 +711,19 @@
      </enabledWhen>
   </handler>
   <handler
-        class="org.eclipse.linuxtools.internal.docker.ui.commands.OpenImageHierarchyViewCommandHandler"
-        commandId="org.eclipse.linuxtools.docker.ui.commands.openImageHierarchyView">
+        class="org.eclipse.linuxtools.internal.docker.ui.commands.OpenInHierarchyViewCommandHandler"
+        commandId="org.eclipse.linuxtools.docker.ui.commands.openInHierarchyView">
      <enabledWhen>
         <with
               variable="selection">
            <iterate
                  ifEmpty="false">
-              <instanceof
-                    value="org.eclipse.linuxtools.docker.core.IDockerImage">
-              </instanceof>
+                 <or>
+	              <instanceof
+	                    value="org.eclipse.linuxtools.docker.core.IDockerImage"/>
+	              <instanceof
+	                    value="org.eclipse.linuxtools.docker.core.IDockerContainer"/>
+                 </or>
            </iterate>
         </with>
      </enabledWhen>
@@ -1216,9 +1224,9 @@
 		<menuContribution
 			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu?after=group.edit">
 	  		<command
-           commandId="org.eclipse.linuxtools.docker.ui.commands.openImageHierarchyView"
+           commandId="org.eclipse.linuxtools.docker.ui.commands.openInHierarchyView"
            icon="icons/class_hi.png"
-           label="%command.openImageHierarchy.label"
+           label="%command.openInHierarchyView.menu.name"
            mnemonic="R"
            style="push">
 	            <visibleWhen
@@ -1229,11 +1237,14 @@
 	                      value="1">
 	                </count>
 	                <iterate
-	                      ifEmpty="false"
-	                      operator="and">
-	                 <instanceof
-	                       value="org.eclipse.linuxtools.docker.core.IDockerImage" />
-	                </iterate>
+	                      ifEmpty="false">
+	                      <or>
+			                 <instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerImage" />
+			                 <instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                      </or>
+			            </iterate>
 	               </with>
 	         </visibleWhen>
 	      </command>

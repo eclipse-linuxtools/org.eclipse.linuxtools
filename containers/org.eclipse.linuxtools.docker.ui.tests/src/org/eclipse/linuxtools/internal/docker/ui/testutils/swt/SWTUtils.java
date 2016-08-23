@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
@@ -256,7 +257,7 @@ public class SWTUtils {
 
 	private static SWTBotTreeItem getTreeItem(final SWTBotTreeItem[] treeItems, final String[] paths) {
 		final SWTBotTreeItem swtBotTreeItem = Stream.of(treeItems).filter(item -> item.getText().startsWith(paths[0]))
-				.findFirst().orElseThrow(() -> new RuntimeException("Available items: "
+				.findFirst().orElseThrow(() -> new RuntimeException("Only available items: "
 						+ Stream.of(treeItems).map(item -> item.getText()).collect(Collectors.joining(", "))));
 		if (paths.length > 1) {
 			syncExec(() -> swtBotTreeItem.expand());
@@ -342,21 +343,27 @@ public class SWTUtils {
 	 *            the tree whose {@link Menu} should be hidden
 	 */
 	public static void hideMenu(final SWTBotTree tree) {
-		final Menu menu = UIThreadRunnable.syncExec((Result<Menu>) () -> tree.widget.getMenu());
-		UIThreadRunnable.syncExec(new VoidResult() {
+		try {
+			final Menu menu = UIThreadRunnable.syncExec((Result<Menu>) () -> tree.widget.getMenu());
+			UIThreadRunnable.syncExec(new VoidResult() {
 
-			@Override
-			public void run() {
-				hide(menu);
-			}
-
-			private void hide(final Menu menu) {
-				menu.notifyListeners(SWT.Hide, new Event());
-				if (menu.getParentMenu() != null) {
-					hide(menu.getParentMenu());
+				@Override
+				public void run() {
+					hide(menu);
 				}
-			}
-		});
+
+				private void hide(final Menu menu) {
+					menu.notifyListeners(SWT.Hide, new Event());
+					if (menu.getParentMenu() != null) {
+						hide(menu.getParentMenu());
+					}
+				}
+			});
+		} catch (WidgetNotFoundException e) {
+			// ignore if widget is not found, that's probably because there's no
+			// tree in the
+			// Docker Explorer view for the test that just ran.
+		}
 	}
 
 	/**

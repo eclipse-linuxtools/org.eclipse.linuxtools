@@ -22,11 +22,22 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.linuxtools.docker.core.IDockerConnection;
+import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
 import org.eclipse.linuxtools.docker.core.IDockerPortMapping;
 import org.eclipse.linuxtools.internal.docker.core.DockerImage;
+import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainerLink;
+import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainerLinksCategory;
+import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainerPortMappingsCategory;
+import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainerVolume;
+import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainerVolumesCategory;
+import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainersCategory;
+import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerImagesCategory;
+import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.LoadingStub;
 import org.eclipse.swt.custom.StyledText;
 
 /**
@@ -34,11 +45,11 @@ import org.eclipse.swt.custom.StyledText;
  *
  */
 public class LabelProviderUtils {
-	
+
 	public static final String CREATION_DATE_PATTERN = "yyyy-MM-dd";
 
 	public static final String FINISHED_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.sssz";
-	
+
 	/**
 	 * @param elements
 	 *            the {@link List} to reduce
@@ -47,18 +58,18 @@ public class LabelProviderUtils {
 	 *         otherwise the given list itself.
 	 * 
 	 */
-	public static <K,V> Object reduce(final Map<K, List<V>> elements) {
-		if(elements == null || elements.isEmpty()) {
+	public static <K, V> Object reduce(final Map<K, List<V>> elements) {
+		if (elements == null || elements.isEmpty()) {
 			return "";
 		} else {
-			final Map<Object,Object> result = new HashMap<>();
-			for(Entry<K, List<V>> entry : elements.entrySet()) {
+			final Map<Object, Object> result = new HashMap<>();
+			for (Entry<K, List<V>> entry : elements.entrySet()) {
 				result.put(entry.getKey(), reduce(entry.getValue()));
 			}
-			return result ;
+			return result;
 		}
 	}
-	
+
 	/**
 	 * Attempts to flatten the given {@link Set}.
 	 * 
@@ -88,69 +99,227 @@ public class LabelProviderUtils {
 	 *            the {@link List} to analyze
 	 */
 	public static Object reduce(final List<?> elements) {
-		if(elements == null || elements.isEmpty()) {
+		if (elements == null || elements.isEmpty()) {
 			return "";
-		} else if(elements.size() == 1) {
+		} else if (elements.size() == 1) {
 			return elements.get(0);
 		} else {
 			return elements;
 		}
 	}
-	
+
 	public static String toCreatedDate(final long created) {
 		return toDate(created, CREATION_DATE_PATTERN);
 	}
-	
+
 	public static String toCreatedDate(final Date created) {
 		return toDate(created, CREATION_DATE_PATTERN);
 	}
-	
+
 	public static String toFinishedDate(final Date finished) {
 		return toDate(finished, FINISHED_DATE_PATTERN);
 	}
-	
+
 	public static String toDate(final Long date, final String pattern) {
 		final long millis = Long.valueOf(date).longValue() * 1000;
 		final Date d = new Date(millis);
-		final SimpleDateFormat sdf = new SimpleDateFormat(pattern); //$NON-NLS-1$
+		final SimpleDateFormat sdf = new SimpleDateFormat(pattern); // $NON-NLS-1$
 		return sdf.format(d);
 	}
 
 	public static String toDate(final Date date, final String pattern) {
-		final SimpleDateFormat sdf = new SimpleDateFormat(pattern); //$NON-NLS-1$
+		final SimpleDateFormat sdf = new SimpleDateFormat(pattern); // $NON-NLS-1$
 		return sdf.format(date);
 	}
-	
+
 	public static String containerPortMappingToString(
 			final IDockerPortMapping portMapping) {
 		final StringBuilder mappingBuffer = new StringBuilder();
-		if(portMapping.getIp() != null && portMapping.getPublicPort() != 0) {
-			mappingBuffer.append(portMapping.getIp()).append(':').append(portMapping.getPublicPort()).append("->");
+		if (portMapping.getIp() != null && portMapping.getPublicPort() != 0) {
+			mappingBuffer.append(portMapping.getIp()).append(':') // $NON-NLS-1$
+					.append(portMapping.getPublicPort()).append("->");
 		}
-		mappingBuffer.append(portMapping.getPrivatePort()).append('/').append(portMapping.getType());
+		mappingBuffer.append(portMapping.getPrivatePort()).append('/') // $NON-NLS-1$
+				.append(portMapping.getType());
 		return mappingBuffer.toString();
 	}
-	
+
 	public static String toString(final Object value) {
-		if(value == null) {
-			return "null";
+		if (value == null) {
+			return "null"; //$NON-NLS-1$
 		}
-		if(value instanceof IDockerPortBinding) {
+		if (value instanceof IDockerPortBinding) {
 			final IDockerPortBinding binding = (IDockerPortBinding) value;
-			final String hostIp = (binding.hostIp() == null || binding.hostIp().isEmpty()) ? "<unspecified>" : binding.hostIp();
-			final String hostPort = (binding.hostPort() == null || binding.hostPort().isEmpty()) ? "<unspecified>" : binding.hostPort();
-			return new StringBuilder().append(hostIp).append(':').append(hostPort).toString();
+			final String hostIp = (binding.hostIp() == null
+					|| binding.hostIp().isEmpty()) ? "<unspecified>" //$NON-NLS-1$
+							: binding.hostIp();
+			final String hostPort = (binding.hostPort() == null
+					|| binding.hostPort().isEmpty()) ? "<unspecified>" //$NON-NLS-1$
+							: binding.hostPort();
+			return new StringBuilder().append(hostIp).append(':')
+					.append(hostPort).toString();
 		}
 		return value.toString();
 	}
-	
+
+	/**
+	 * @param element
+	 *            the element whose {@link StyledText} needs to be provided
+	 * @return the {@link StyledText} for the given {@code element}, or
+	 *         <code>null</code> if the type of element is not supported.
+	 */
+	public static StyledString getStyledText(final Object element) {
+		// when the text to display is in the properties view title bar, the
+		// given element
+		// is the TreeSelection from the contributing view (the Docker Explorer
+		// View)
+		if (element instanceof IStructuredSelection) {
+			return getStyledText(
+					((IStructuredSelection) element).getFirstElement());
+		}
+		if (element instanceof IDockerConnection) {
+			return getStyledText((IDockerConnection) element);
+		} else if (element instanceof DockerImagesCategory) {
+			return new StyledString(
+					DVMessages.getString("DockerImagesCategory.label")); //$NON-NLS-1$
+		} else if (element instanceof DockerContainersCategory) {
+			return new StyledString(
+					DVMessages.getString("DockerContainersCategory.label")); //$NON-NLS-1$
+		} else if (element instanceof IDockerContainer) {
+			return getStyledText((IDockerContainer) element);
+		} else if (element instanceof IDockerImage) {
+			return LabelProviderUtils.getStyledText((IDockerImage) element);
+		} else if (element instanceof DockerContainerPortMappingsCategory) {
+			return new StyledString(DVMessages
+					.getString("DockerContainerPortMappingsCategory.label")); //$NON-NLS-1$
+		} else if (element instanceof IDockerPortMapping) {
+			return getStyledText((IDockerPortMapping) element);
+		} else if (element instanceof DockerContainerVolumesCategory) {
+			return new StyledString(DVMessages
+					.getString("DockerContainerVolumesCategory.label")); //$NON-NLS-1$
+		} else if (element instanceof DockerContainerVolume) {
+			return getStyledText((DockerContainerVolume) element);
+		} else if (element instanceof DockerContainerLinksCategory) {
+			return new StyledString(
+					DVMessages.getString("DockerContainerLinksCategory.label")); //$NON-NLS-1$
+		} else if (element instanceof DockerContainerLink) {
+			return getStyledText((DockerContainerLink) element);
+		} else if (element instanceof String) {
+			return new StyledString((String) element);
+		} else if (element instanceof LoadingStub) {
+			return new StyledString(DVMessages.getString("Loading.label")); //$NON-NLS-1$
+		}
+		return null;
+	}
+
+	/**
+	 * @param containerLink
+	 *            the {@link DockerContainerLink} to process
+	 * @return the {@link StyledString} to be displayed.
+	 */
+	public static StyledString getStyledText(
+			final DockerContainerLink containerLink) {
+		final String containerName = containerLink.getContainerName();
+		final String containerAlias = " (" + containerLink.getContainerAlias()
+				+ ")";
+		final StyledString styledString = new StyledString(
+				containerName + containerAlias);
+		styledString.setStyle(containerName.length(), containerAlias.length(),
+				StyledString.QUALIFIER_STYLER);
+		return styledString;
+	}
+
+	/**
+	 * @param containerVolume
+	 *            the {@link DockerContainerVolume} to process
+	 * @return the {@link StyledString} to be displayed.
+	 */
+	public static StyledString getStyledText(
+			final DockerContainerVolume containerVolume) {
+		final String hostPath = containerVolume.getHostPath();
+		final StyledString styledString = new StyledString();
+		if (containerVolume.getHostPath() != null
+				&& containerVolume.getContainerPath() != null) {
+			styledString.append(hostPath).append(" -> ")
+					.append(containerVolume.getContainerPath());
+		} else if (containerVolume.getHostPath() == null
+				&& containerVolume.getContainerPath() != null) {
+			styledString.append(containerVolume.getContainerPath());
+		}
+		if (containerVolume.getFlags() != null) {
+			final int offset = styledString.length();
+			styledString.append(" (" + containerVolume.getFlags() + ")");
+			styledString.setStyle(offset, styledString.length() - offset,
+					StyledString.QUALIFIER_STYLER);
+		}
+		return styledString;
+	}
+
+	/**
+	 * @param mapping
+	 *            the {@link IDockerPortMapping} to process
+	 * @return the {@link StyledString} to be displayed.
+	 */
+	public static StyledString getStyledText(final IDockerPortMapping mapping) {
+		final String hostMapping = mapping.getIp() + ":"
+				+ mapping.getPublicPort() + " -> ";
+		final String containerMapping = Integer
+				.toString(mapping.getPrivatePort());
+		final String mappingType = " (" + mapping.getType() + ")";
+		final StyledString styledString = new StyledString(
+				hostMapping + containerMapping + mappingType);
+		styledString.setStyle(hostMapping.length() + containerMapping.length(),
+				mappingType.length(), StyledString.QUALIFIER_STYLER);
+		return styledString;
+	}
+
+	/**
+	 * @param dockerContainer
+	 *            the {@link IDockerContainer} to process
+	 * @return the {@link StyledString} to be displayed.
+	 */
+	public static StyledString getStyledText(
+			final IDockerContainer dockerContainer) {
+		final String containerName = dockerContainer.name();
+		final String image = dockerContainer.image();
+		final String message = containerName + " (" + image + ")";
+		final StyledString styledString = new StyledString(message);
+		styledString.setStyle(containerName.length(),
+				message.length() - containerName.length(),
+				StyledString.QUALIFIER_STYLER);
+		return styledString;
+	}
+
+	/**
+	 * @param connection
+	 *            the {@link IDockerConnection} to process
+	 * @return the {@link StyledString} to be displayed.
+	 */
+	public static StyledString getStyledText(
+			final IDockerConnection connection) {
+		final String connectionName = (connection.getName() != null
+				&& !connection.getName().isEmpty()) ? connection.getName()
+						: DVMessages.getString("Connection.unnamed"); //$NON-NLS-1$
+		final StringBuilder messageBuilder = new StringBuilder();
+		messageBuilder.append(connectionName);
+		if (connection.getUri() != null && !connection.getUri().isEmpty()) {
+			messageBuilder.append(" (").append(connection.getUri()) //$NON-NLS-1$
+					.append(")"); //$NON-NLS-1$
+		}
+		final String message = messageBuilder.toString();
+		final StyledString styledString = new StyledString(message);
+		styledString.setStyle(connectionName.length(),
+				message.length() - connectionName.length(),
+				StyledString.QUALIFIER_STYLER);
+		return styledString;
+	}
+
 	/**
 	 * @param dockerImage
-	 *            the {@link IDockerImage} whose {@link StyledText} needs to be
-	 *            provided
-	 * @return the {@link StyledText} for the given {@link IDockerImage}.
+	 *            the {@link IDockerImage} to process
+	 * @return the {@link StyledString} to be displayed.
 	 */
-	public static StyledString getStyleString(final IDockerImage dockerImage) {
+	public static StyledString getStyledText(final IDockerImage dockerImage) {
 		final StringBuilder messageBuilder = new StringBuilder(
 				dockerImage.repo());
 		final int startTags = messageBuilder.length();
@@ -169,8 +338,8 @@ public class LabelProviderUtils {
 		final int startImageId = messageBuilder.length();
 		// TODO: remove the cast to 'DockerImage' once the 'shortId()'
 		// method is in the public API
-		messageBuilder.append(" (")
-				.append(((DockerImage) dockerImage).shortId()).append(')');
+		messageBuilder.append(" (") //$NON-NLS-1$
+				.append(((DockerImage) dockerImage).shortId()).append(')'); // $NON-NLS-1$
 		final String message = messageBuilder.toString();
 		final StyledString styledString = new StyledString(message);
 		// styled tags

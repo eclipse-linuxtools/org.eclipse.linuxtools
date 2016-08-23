@@ -29,7 +29,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.ws.rs.ProcessingException;
@@ -66,7 +65,7 @@ import org.eclipse.linuxtools.docker.core.IDockerContainerListener;
 import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions;
-import org.eclipse.linuxtools.docker.core.IDockerImageHiearchyNode;
+import org.eclipse.linuxtools.docker.core.IDockerImageHierarchyNode;
 import org.eclipse.linuxtools.docker.core.IDockerImageInfo;
 import org.eclipse.linuxtools.docker.core.IDockerImageListener;
 import org.eclipse.linuxtools.docker.core.IDockerImageSearchResult;
@@ -2120,41 +2119,18 @@ public class DockerConnection
 		return getSettings().hashCode();
 	}
 
-	/**
-	 * Retrieves the whole hierarchy for the given {@link IDockerImage}. This
-	 * includes the path to all known parent images, along with all derived
-	 * images based on the given {@code image}.
-	 * 
-	 * @param image
-	 *            the {@link IDockerImage} for which the hierarchy should be
-	 *            resolved
-	 * @return the {@link IDockerImageHiearchyNode} as a node that can be
-	 *         traversed.
-	 */
-	// @Override
-	// TODO: add this method in the IDockerConnection interface
-	public IDockerImageHiearchyNode resolveImageHierarchy(
-			final IDockerImage image) {
-		// recursively find all parents and build associated
-		// IDockerImageHiearchyNode instances
-		return new DockerImageHiearchyNode(image,
-				getImageHierarchy(image.parentId()));
+	@Override
+	public IDockerImageHierarchyNode resolveImageHierarchy(
+			final IDockerImage selectedImage) {
+		return DockerImageHierarchyNodeUtils.resolveImageHierarchy(this.images,
+				this.containers, selectedImage);
 	}
 
-	private IDockerImageHiearchyNode getImageHierarchy(final String imageId) {
-		// recursively find all parents and build associated
-		// IDockerImageHiearchyNode instances
-		final Optional<IDockerImage> optionalParentImage = this.images.stream()
-				.filter(image -> image.id().equals(imageId)).findFirst();
-		// parent image found: get its own parent image hierarchy
-		if (optionalParentImage.isPresent()) {
-			//
-			final IDockerImage parentImage = optionalParentImage.get();
-			return new DockerImageHiearchyNode(parentImage,
-					getImageHierarchy(parentImage.parentId()));
-		}
-		// no parent image found: stop here.
-		return null;
+	@Override
+	public IDockerImageHierarchyNode resolveImageHierarchy(
+			final IDockerContainer selectedContainer) {
+		return DockerImageHierarchyNodeUtils.resolveImageHierarchy(this.images,
+				selectedContainer);
 	}
 
 }

@@ -13,15 +13,21 @@ package org.eclipse.linuxtools.internal.docker.ui.views;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
-import org.eclipse.linuxtools.docker.core.IDockerImageHiearchyNode;
+import org.eclipse.linuxtools.docker.core.IDockerImageHierarchyNode;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerImageHierarchyViewAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TestLoggerRule;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -36,10 +42,12 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.spotify.docker.client.DockerClient;
+import com.spotify.docker.client.messages.Container;
 import com.spotify.docker.client.messages.Image;
 
 /**
- * Testing the {@link DockerImageHierarchyView} call from the {@link DockerExplorerView}.
+ * Testing the {@link DockerImageHierarchyView} call from the
+ * {@link DockerExplorerView}.
  */
 public class DockerImageHierarchyViewSWTBotTest {
 
@@ -56,9 +64,10 @@ public class DockerImageHierarchyViewSWTBotTest {
 
 	@Rule
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
+	private DockerConnection connection;
 
 	@Before
-	public void setup() {
+	public void setupViews() {
 		this.bot = new SWTWorkbenchBot();
 		SWTUtils.asyncExec(() -> {
 			try {
@@ -76,6 +85,45 @@ public class DockerImageHierarchyViewSWTBotTest {
 				.forEach(v -> v.close());
 	}
 
+	@Before
+	public void setupData() {
+		// data is built as follows:
+		// root_image
+		// |- foo_image1
+		// _|- foo_container1
+		// _|- foo_image2
+		// __|- foo_container21
+		// __|- foo_container22
+		// |- bar_image11
+		// _|- bar_container1
+
+		final Image rootImage = MockImageFactory.id("sha256:root_image").name("root_image").build();
+		final Image fooImage1 = MockImageFactory.id("sha256:foo_image1").name("foo_image1")
+				.parentId("sha256:root_image").build();
+		final Image fooImage2 = MockImageFactory.id("sha256:foo_image2").name("foo_image2", "foo_image2_alias")
+				.parentId("sha256:foo_image1")
+				.build();
+		final Container fooContainer1 = MockContainerFactory.id("sha256:foo_container1").name("foo_container1")
+				.imageName("foo_image1").build();
+		final Container fooContainer21 = MockContainerFactory.id("sha256:foo_container21").name("foo_container21")
+				.imageName("foo_image2").build();
+		final Container fooContainer22 = MockContainerFactory.id("sha256:foo_container22").name("foo_container22")
+				.imageName("foo_image2_alias").build();
+		final Image barImage1 = MockImageFactory.id("sha256:bar_image1").name("bar_image1")
+				.parentId("sha256:root_image")
+				.build();
+		final Container barContainer1 = MockContainerFactory.id("sha256:bar_container1").name("bar_container1")
+				.imageName("bar_image1").build();
+		final DockerClient client = MockDockerClientFactory.image(rootImage).image(fooImage1).container(fooContainer1)
+				.image(fooImage2).container(fooContainer21).container(fooContainer22).image(barImage1)
+				.container(barContainer1).build();
+		this.connection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
+		this.connection.getImages(true);
+		this.connection.getContainers(true);
+		DockerConnectionManagerUtils.configureConnectionManager(connection);
+
+	}
+
 	@After
 	public void hideMenu() {
 		try {
@@ -87,44 +135,135 @@ public class DockerImageHierarchyViewSWTBotTest {
 		}
 	}
 
-	@Test
-	public void shouldDisplayImageHierarchyView() {
-		// given
-		final Image rootImage = MockImageFactory.id("sha256:root").name("root").build();
-		final Image fooImage = MockImageFactory.id("sha256:foo").name("foo").parentId("sha256:root").build();
-		final Image barImage = MockImageFactory.id("sha256:bar").name("bar").parentId("sha256:foo").build();
-		final DockerClient client = MockDockerClientFactory
-				.image(rootImage).image(fooImage).image(barImage).build();
-		final DockerConnection connection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
-		DockerConnectionManagerUtils.configureConnectionManager(connection);
-		connection.getImages(true);
-		final IDockerImage image = connection.getImages().stream().filter(i -> i.id().equals("sha256:foo")).findFirst().get();
-		// when
-		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images", "foo").select();
-		dockerExplorerViewBot.bot().tree().contextMenu("Open Image Hierarchy").click(); //$NON-NLS-1$
-		// then
-		final SWTBotView dockerImageHierarchyView = bot.viewById(DockerImageHierarchyView.VIEW_ID);
+	private List<String> getChildrenElementIds(final IDockerImageHierarchyNode fooImageHierarchy) {
+		return fooImageHierarchy.getChildren().stream().map(e -> {
+			if (e.getElement() instanceof IDockerImage) {
+				return ((IDockerImage) e.getElement()).id();
+			}
+			return ((IDockerContainer) e.getElement()).id();
+		}).collect(Collectors.toList());
+	}
 
+	private DockerImageHierarchyView getDockerImageHierarchyView() {
+		final SWTBotView hierarchyViewBot = bot.viewById(DockerImageHierarchyView.VIEW_ID);
+		return (DockerImageHierarchyView) hierarchyViewBot.getViewReference().getView(true);
 	}
 
 	@Test
-	public void shouldRetrieveImageHierarchy() {
+	public void shouldDisplayImageHierarchyViewWhenSelectingImage() {
 		// given
-		final Image rootImage = MockImageFactory.id("sha256:root").name("root").build();
-		final Image fooImage = MockImageFactory.id("sha256:foo").name("foo").parentId("sha256:root").build();
-		final Image barImage = MockImageFactory.id("sha256:bar").name("bar").parentId("sha256:foo").build();
-		final DockerClient client = MockDockerClientFactory
-				.image(rootImage).image(fooImage).image(barImage).build();
-		final DockerConnection connection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
-		connection.getImages(true);
-		final IDockerImage image = connection.getImages().stream().filter(i -> i.id().equals("sha256:foo")).findFirst().get();
+		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images", "foo_image1").select();
 		// when
-		final IDockerImageHiearchyNode imageHierarchy = connection.resolveImageHierarchy(image);
+		dockerExplorerViewBot.bot().tree().contextMenu("Open Image Hierarchy").click(); //$NON-NLS-1$
+		// then the view should be visible and selection should be on
+		// foo_image1
+		DockerImageHierarchyViewAssertion.assertThat(getDockerImageHierarchyView())
+				.hasSelectedElement(this.connection.getImage("sha256:foo_image1"));
+	}
+
+	@Test
+	public void shouldDisplayImageHierarchyViewWhenSelectingContainer() {
+		// given
+		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Containers", "foo_container1").select();
+		// when
+		dockerExplorerViewBot.bot().tree().contextMenu("Open Image Hierarchy").click(); //$NON-NLS-1$
+		// then the view should be visible and selection should be on
+		// foo_container1
+		DockerImageHierarchyViewAssertion.assertThat(getDockerImageHierarchyView())
+				.hasSelectedElement(this.connection.getContainer("sha256:foo_container1"));
+	}
+
+	@Test
+	public void shouldRetrieveImageHierarchyFromRootImage() {
+		// given
+		final IDockerImage rootImage = this.connection.getImage("sha256:root_image");
+		// when
+		final IDockerImageHierarchyNode rootImageHierarchy = this.connection.resolveImageHierarchy(rootImage);
 		// then
-		assertThat(imageHierarchy).isNotNull();
-		assertThat(imageHierarchy.getImage().id()).isEqualTo("sha256:foo");
-		assertThat(imageHierarchy.getParent().getImage().id()).isEqualTo("sha256:root");
-		assertThat(imageHierarchy.getParent().getChildren()).containsExactly(imageHierarchy);
+		assertThat(rootImageHierarchy).isNotNull();
+		assertThat(rootImageHierarchy.getElement()).isEqualTo(rootImage);
+		// 2 direct children: foo_image1 and bar_image1
+		assertThat(rootImageHierarchy.getChildren()).hasSize(2);
+		assertThat(rootImageHierarchy.getParent()).isNull();
+		final IDockerImageHierarchyNode fooImage1Hierarchy = rootImageHierarchy.getChild("sha256:foo_image1");
+		assertThat(fooImage1Hierarchy.getParent()).isEqualTo(rootImageHierarchy);
+		// 2 direct children: foo_image2 and foo_container1
+		assertThat(fooImage1Hierarchy.getChildren()).hasSize(2);
+	}
+
+	@Test
+	public void shouldRetrieveImageHierarchyFromIntermediateImage() {
+		// given
+		final IDockerImage fooImage1 = this.connection.getImage("sha256:foo_image1");
+		// when
+		final IDockerImageHierarchyNode fooImage1Hierarchy = this.connection.resolveImageHierarchy(fooImage1);
+		// then
+		assertThat(fooImage1Hierarchy).isNotNull();
+		assertThat(fooImage1Hierarchy.getElement()).isEqualTo(fooImage1);
+		assertThat(getChildrenElementIds(fooImage1Hierarchy)).contains("sha256:foo_container1", "sha256:foo_image2");
+		final IDockerImage rootElement = (IDockerImage) fooImage1Hierarchy.getParent().getElement();
+		assertThat(rootElement.id()).isEqualTo("sha256:root_image");
+		// the parent only shows this child element, not its whole descendants
+		assertThat(fooImage1Hierarchy.getParent().getChildren()).containsExactly(fooImage1Hierarchy);
+		final IDockerImageHierarchyNode fooImage2HierarchyNode = fooImage1Hierarchy.getChild("sha256:foo_image2");
+		assertThat(fooImage2HierarchyNode).isNotNull();
+		// 2 child containers: foo_container21 and foo_container22
+		assertThat(fooImage2HierarchyNode.getChildren()).hasSize(2);
+		final IDockerImageHierarchyNode fooContainer1HierarchyNode = fooImage1Hierarchy
+				.getChild("sha256:foo_container1");
+		assertThat(fooContainer1HierarchyNode).isNotNull();
+		assertThat(fooContainer1HierarchyNode.getChildren()).isEmpty();
+	}
+
+	@Test
+	public void shouldRetrieveImageHierarchyFromLeafImage() {
+		// given
+		final IDockerImage fooImage2 = this.connection.getImage("sha256:foo_image2");
+		// when
+		final IDockerImageHierarchyNode fooImage2Hierarchy = this.connection.resolveImageHierarchy(fooImage2);
+		// then
+		assertThat(fooImage2Hierarchy).isNotNull();
+		assertThat(fooImage2Hierarchy.getElement()).isEqualTo(fooImage2);
+		// 2 containers: foo_container21 and foo_container22
+		assertThat(fooImage2Hierarchy.getChildren()).hasSize(2);
+		assertThat((IDockerContainer) fooImage2Hierarchy.getChild("sha256:foo_container21").getElement()).isNotNull();
+		final IDockerImageHierarchyNode fooImage1Hierarchy = fooImage2Hierarchy.getParent();
+		final IDockerImage fooImage = (IDockerImage) fooImage1Hierarchy.getElement();
+		assertThat(fooImage.id()).isEqualTo("sha256:foo_image1");
+		// in this case, intermediate image shows a single child
+		assertThat(fooImage1Hierarchy.getChildren()).hasSize(1);
+		assertThat(fooImage1Hierarchy.getChildren()).containsExactly(fooImage2Hierarchy);
+	}
+
+	@Test
+	public void shouldRetrieveImageHierarchyFromContainerBasedOnIntermediateImage() {
+		// given
+		final IDockerContainer fooContainer1 = this.connection.getContainer("sha256:foo_container1");
+		// when
+		final IDockerImageHierarchyNode fooContainer1Hierarchy = this.connection.resolveImageHierarchy(fooContainer1);
+		// then
+		assertThat(fooContainer1Hierarchy).isNotNull();
+		assertThat(fooContainer1Hierarchy.getElement()).isEqualTo(fooContainer1);
+		assertThat(fooContainer1Hierarchy.getChildren()).isEmpty();
+		final IDockerImage fooImage1 = (IDockerImage) fooContainer1Hierarchy.getParent().getElement();
+		assertThat(fooImage1.id()).isEqualTo("sha256:foo_image1");
+		// parent image hierarchy only shows the selected container as its
+		// child.
+		assertThat(fooContainer1Hierarchy.getParent().getChildren()).containsExactly(fooContainer1Hierarchy);
+	}
+
+	@Test
+	public void shouldRetrieveImageHierarchyFromContainerBasedOnLeafImage() {
+		// given
+		// when
+		final IDockerContainer barContainer1 = this.connection.getContainer("sha256:bar_container1");
+		final IDockerImageHierarchyNode barContainer1Hierarchy = this.connection.resolveImageHierarchy(barContainer1);
+		// then
+		assertThat(barContainer1Hierarchy).isNotNull();
+		assertThat(barContainer1Hierarchy.getElement()).isEqualTo(barContainer1);
+		assertThat(barContainer1Hierarchy.getChildren()).isEmpty();
+		final IDockerImage barImageElement = (IDockerImage) barContainer1Hierarchy.getParent().getElement();
+		assertThat(barImageElement.id()).isEqualTo("sha256:bar_image1");
 	}
 
 }

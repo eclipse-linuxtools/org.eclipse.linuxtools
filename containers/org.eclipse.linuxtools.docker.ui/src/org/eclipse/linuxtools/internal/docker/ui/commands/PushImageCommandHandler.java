@@ -44,7 +44,7 @@ public class PushImageCommandHandler extends AbstractHandler {
 	@Override
 	public Object execute(final ExecutionEvent event) {
 		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
-		final IDockerImage selectedImage = RunImageCommandHandler
+		final IDockerImage selectedImage = CommandUtils
 				.getSelectedImage(activePart);
 		final ImagePush wizard = new ImagePush(selectedImage,
 				selectedImage.repo() + ":" + selectedImage.tags().get(0));

@@ -72,7 +72,7 @@ public class MockContainerFactory {
 			return this;
 		}
 
-		public Builder imageId(final String imageId) {
+		public Builder imageName(final String imageId) {
 			Mockito.when(this.container.image()).thenReturn(imageId);
 			return this;
 		}

@@ -134,7 +134,7 @@ public class ImageRunSWTBotTest {
 		// container to be created
 		final String containerName = "foo_bar";
 		final Container createdContainer = MockContainerFactory.id("MockContainer").name(containerName)
-				.imageId("1a2b3c4d5e6f7g").status("Started 1 second ago").build();
+				.imageName("1a2b3c4d5e6f7g").status("Started 1 second ago").build();
 		final ContainerInfo containerInfo = MockContainerInfoFactory.build();
 		final DockerClient client = MockDockerClientFactory.image(image, imageInfo)
 				//.container(createdContainer, containerInfo)
