@@ -10,14 +10,20 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.commands;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
+import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.internal.docker.ui.consoles.RunConsole;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerContainersView;
+import org.eclipse.tm.terminal.view.core.TerminalServiceFactory;
+import org.eclipse.tm.terminal.view.core.interfaces.ITerminalService;
+import org.eclipse.tm.terminal.view.core.interfaces.constants.ITerminalsConnectorConstants;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -37,6 +43,20 @@ public class RemoveContainerLogCommandHandler extends AbstractHandler {
 		if (selectedContainers.size() != 1 || connection == null)
 			return null;
 		container = selectedContainers.get(0);
+		IDockerContainerInfo info = connection.getContainerInfo(container.id());
+		if (info.config().tty()) {
+			Map<String, Object> properties = new HashMap<>();
+			properties.put(ITerminalsConnectorConstants.PROP_DELEGATE_ID,
+					"org.eclipse.tm.terminal.connector.streams.launcher.streams");
+			properties.put(
+					ITerminalsConnectorConstants.PROP_TERMINAL_CONNECTOR_ID,
+					"org.eclipse.tm.terminal.connector.streams.StreamsConnector");
+			properties.put(ITerminalsConnectorConstants.PROP_TITLE,
+					info.name());
+			ITerminalService service = TerminalServiceFactory.getService();
+			service.closeConsole(properties, null);
+			return null;
+		}
 		final RunConsole rc = RunConsole.findConsole(container);
 		if (rc != null) {
 			RunConsole.removeConsole(rc);

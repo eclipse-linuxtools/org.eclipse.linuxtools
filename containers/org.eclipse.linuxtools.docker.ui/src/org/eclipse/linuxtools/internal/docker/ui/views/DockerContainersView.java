@@ -291,7 +291,8 @@ public class DockerContainersView extends ViewPart implements
 			}
 		});
 		// 'Command' column
-		final TableViewerColumn commandColumn = createColumn(DVMessages.getString("COMMAND_LINE")); //$NON-NLS-1$
+		final TableViewerColumn commandColumn = createColumn(
+				DVMessages.getString("COMMAND")); //$NON-NLS-1$
 		setLayout(commandColumn, tableLayout, 150);
 		commandColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override

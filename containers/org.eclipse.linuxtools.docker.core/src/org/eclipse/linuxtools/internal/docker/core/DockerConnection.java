@@ -1944,7 +1944,7 @@ public class DockerConnection
 					DockerClient.ExecStartParameter.DETACH);
 			fname.set(ExecStartParameter.DETACH, realValue);
 			final IDockerContainerInfo info = getContainerInfo(id);
-			openTerminal(pty_stream, info.name());
+			openTerminal(pty_stream, info.name() + " [shell]"); //$NON-NLS-1$
 		} catch (Exception e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
@@ -1963,6 +1963,7 @@ public class DockerConnection
 			properties.put(ITerminalsConnectorConstants.PROP_FORCE_NEW, true);
 			properties.put(ITerminalsConnectorConstants.PROP_STREAMS_STDIN, tout);
 			properties.put(ITerminalsConnectorConstants.PROP_STREAMS_STDOUT, tin);
+			properties.put(ITerminalsConnectorConstants.PROP_DATA, pty_stream);
 			/*
 			 * The JVM will call finalize() on 'pty_stream' (LogStream)
 			 * since we hold no references to it (although we do hold
