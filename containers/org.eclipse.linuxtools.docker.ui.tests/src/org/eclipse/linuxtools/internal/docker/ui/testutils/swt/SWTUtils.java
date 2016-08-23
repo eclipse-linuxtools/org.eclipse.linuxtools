@@ -436,7 +436,6 @@ public class SWTUtils {
 		return treeItem;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static SWTBotView getSWTBotView(final SWTWorkbenchBot bot, final String viewId) {
 		return bot.views().stream().filter(v -> v.getViewReference().getId().equals(viewId)).findFirst().orElse(null);
 	}

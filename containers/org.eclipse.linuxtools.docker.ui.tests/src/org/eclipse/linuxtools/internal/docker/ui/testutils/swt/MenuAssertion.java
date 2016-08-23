@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,6 @@ public class MenuAssertion extends AbstractSWTBotAssertion<MenuAssertion, SWTBot
 		return new MenuAssertion(actual);
 	}
 
-	@SuppressWarnings("unchecked")
 	public MenuAssertion isVisible() {
 		notNullValue();
 		if (!actual.isEnabled()) {
@@ -37,7 +36,6 @@ public class MenuAssertion extends AbstractSWTBotAssertion<MenuAssertion, SWTBot
 		return this;
 	}
 
-	@SuppressWarnings("unchecked")
 	public MenuAssertion isNotVisible() {
 		notNullValue();
 		if (actual.isEnabled()) {

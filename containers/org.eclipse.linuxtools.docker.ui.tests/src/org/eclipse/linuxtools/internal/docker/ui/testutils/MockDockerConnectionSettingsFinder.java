@@ -11,7 +11,6 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils;
 
-import java.io.IOException;
 import java.util.Collections;
 
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
@@ -41,21 +40,16 @@ public class MockDockerConnectionSettingsFinder {
 	/**
 	 * Configures the {@link DockerConnectionManager} singleton to being able to
 	 * detect a <strong>valid Unix Socket</strong> to a Docker daemon.
-	 *
-	 * @throws IOException
 	 */
-	public static void validUnixSocketConnectionAvailable() throws IOException {
+	public static void validUnixSocketConnectionAvailable() {
 		validUnixSocketConnectionAvailable("mock", "unix:///var/run/docker.sock");
 	}
 
 	/**
 	 * Configures the {@link DockerConnectionManager} singleton to being able to
 	 * detect a <strong>valid Unix Socket</strong> to a Docker daemon.
-	 *
-	 * @throws IOException
 	 */
-	public static void validUnixSocketConnectionAvailable(final String connectionName, final String unixSocketPath)
-			throws IOException {
+	public static void validUnixSocketConnectionAvailable(final String connectionName, final String unixSocketPath) {
 		final IDockerConnectionSettingsFinder validUnixSocketConnectionAvailable = Mockito
 				.mock(IDockerConnectionSettingsFinder.class);
 		final UnixSocketConnectionSettings unixSocketConnectionSettings = new UnixSocketConnectionSettings(

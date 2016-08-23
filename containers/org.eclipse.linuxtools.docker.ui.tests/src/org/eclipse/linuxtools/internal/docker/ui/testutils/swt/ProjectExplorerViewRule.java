@@ -28,7 +28,7 @@ public class ProjectExplorerViewRule extends ExternalResource {
 	public static final String PROJECT_EXPLORER_VIEW_ID = "org.eclipse.ui.navigator.ProjectExplorer";
 
 	@Override
-	protected void before() throws Throwable {
+	protected void before() {
 		final SWTWorkbenchBot bot = new SWTWorkbenchBot();
 		SWTUtils.syncExec(() -> {
 			try {

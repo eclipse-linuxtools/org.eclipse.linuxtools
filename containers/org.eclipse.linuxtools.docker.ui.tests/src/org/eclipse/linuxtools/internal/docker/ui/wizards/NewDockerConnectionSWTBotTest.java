@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2016 Red Hat Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,8 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionSettingsFinder;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CheckBoxAssertion;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseShellRule;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.RadioAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTBotTreeItemAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
@@ -107,7 +107,7 @@ public class NewDockerConnectionSWTBotTest {
 	}
 
 	@Test
-	public void shouldShowDefaultUnixSocketConnectionSettingsWithValidConnectionAvailable() throws IOException {
+	public void shouldShowDefaultUnixSocketConnectionSettingsWithValidConnectionAvailable() {
 		// given
 		MockDockerConnectionSettingsFinder.validUnixSocketConnectionAvailable();
 		// when

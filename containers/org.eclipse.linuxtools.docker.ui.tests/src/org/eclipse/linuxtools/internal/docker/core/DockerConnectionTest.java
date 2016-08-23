@@ -85,7 +85,7 @@ public class DockerConnectionTest {
 	}
 
 	@Test
-	public void shouldBeClosedWhenInvalidPathToCerts() throws DockerException {
+	public void shouldBeClosedWhenInvalidPathToCerts() {
 		// given
 		final DockerConnection dockerConnection = new DockerConnection.Builder().name("foo")
 				.tcpConnection(new TCPConnectionSettings("https://1.2.3.4:1234", "/invalid/path"));
