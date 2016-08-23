@@ -32,7 +32,7 @@ public class ClearLaunchConfigurationsRule extends ExternalResource {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param launchConfigTypeId
 	 *            the id of the {@link ILaunchConfiguration} type to remove.
 	 */

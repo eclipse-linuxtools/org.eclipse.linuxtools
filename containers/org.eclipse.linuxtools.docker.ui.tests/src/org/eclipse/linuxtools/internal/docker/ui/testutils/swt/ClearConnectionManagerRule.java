@@ -11,9 +11,11 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
+import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DefaultDockerConnectionSettingsFinder;
 import org.junit.rules.ExternalResource;
 
@@ -35,7 +37,8 @@ public class ClearConnectionManagerRule extends ExternalResource {
 	 * @param dockerConnectionManager
 	 */
 	public static void removeAllConnections(final DockerConnectionManager dockerConnectionManager) {
-		Stream.of(dockerConnectionManager.getConnections()).forEach(c -> dockerConnectionManager.removeConnection(c));
+		final List<IDockerConnection> allConnections = new ArrayList<>(dockerConnectionManager.getAllConnections());
+		allConnections.forEach(c -> dockerConnectionManager.removeConnection(c));
 	}
 
 }

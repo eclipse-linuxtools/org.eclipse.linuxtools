@@ -20,7 +20,6 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
-import org.eclipse.linuxtools.internal.docker.ui.commands.CommandMessages;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.ProjectInitializationRule;
@@ -29,14 +28,13 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionMa
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearLaunchConfigurationsRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ProjectExplorerViewRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.WizardMessages;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -65,27 +63,25 @@ public class BuildDockerImageShortcutSWTBotTest {
 	public ClearLaunchConfigurationsRule clearLaunchConfig = new ClearLaunchConfigurationsRule(
 			IBuildDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID);
 
-	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
-	private SWTBotView projectExplorerBotView;
+	@Rule
+	public ProjectExplorerViewRule projectExplorerViewRule = new ProjectExplorerViewRule();
 
-	@Before
-	public void setup() {
-		this.projectExplorerBotView = bot.viewById("org.eclipse.ui.navigator.ProjectExplorer");
-		this.projectExplorerBotView.setFocus();
-	}
+	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
 	/**
 	 * @return the {@link SWTBotMenu} for the "Run as > Docker Image Build"
 	 *         shortcut
 	 */
 	private SWTBotMenu getRunAsdockerImageBuildContextMenu(final String projectName, final String dockerFileName) {
-		final SWTBotTreeItem fooProjectTreeItem = SWTUtils.getTreeItem(this.projectExplorerBotView, projectName);
+		final SWTBotTreeItem fooProjectTreeItem = SWTUtils
+				.getTreeItem(this.projectExplorerViewRule.getProjectExplorerBotView(), projectName);
 		assertThat(fooProjectTreeItem).isNotNull();
 		SWTUtils.syncExec(() -> fooProjectTreeItem.expand());
 		final SWTBotTreeItem dockerfileTreeItem = SWTUtils.getTreeItem(fooProjectTreeItem, dockerFileName);
 		assertThat(dockerfileTreeItem).isNotNull();
 		SWTUtils.select(dockerfileTreeItem);
-		final SWTBotMenu runAsDockerImageBuildMenu = SWTUtils.getContextMenu(this.projectExplorerBotView.bot().tree(),
+		final SWTBotMenu runAsDockerImageBuildMenu = SWTUtils.getContextMenu(
+				this.projectExplorerViewRule.getProjectExplorerBotView().bot().tree(),
 				"Run As", "1 Docker Image Build");
 		return runAsDockerImageBuildMenu;
 	}
@@ -98,7 +94,8 @@ public class BuildDockerImageShortcutSWTBotTest {
 		// when
 		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
 		// then expect an error dialog because no Docker connection exists
-		assertThat(bot.shell(CommandMessages.getString("BuildImageCommandHandler.no.connections.msg"))).isNotNull();
+		assertThat(bot.shell(LaunchMessages.getString("BuildDockerImageShortcut.no.connections.msg")))
+				.isNotNull();
 		// closing the wizard
 		SWTUtils.syncExec(() -> {
 			bot.button("No").click();

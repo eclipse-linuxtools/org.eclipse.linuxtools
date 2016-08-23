@@ -32,7 +32,7 @@ import org.eclipse.linuxtools.docker.core.IDockerProgressHandler;
 import org.eclipse.linuxtools.docker.core.IDockerProgressMessage;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
-import org.eclipse.linuxtools.internal.docker.ui.BuildConsole;
+import org.eclipse.linuxtools.internal.docker.ui.consoles.BuildConsole;
 import org.eclipse.linuxtools.internal.docker.ui.launch.IBuildDockerImageLaunchConfigurationConstants;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;

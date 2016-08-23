@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2014 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,15 +8,15 @@
  * Contributors:
  *     Red Hat - Initial Contribution
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.docker.ui;
+package org.eclipse.linuxtools.internal.docker.ui.preferences;
 
 import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class ConsoleMessages {
+public class PreferenceMessages {
 
-	private static final String BUNDLE_NAME = ConsoleMessages.class.getName();
+	private static final String BUNDLE_NAME = PreferenceMessages.class.getName();
 
 	public static String getString(String key) {
 		try {
@@ -35,5 +35,4 @@ public class ConsoleMessages {
 	public static String getFormattedString(String key, String[] args) {
 		return MessageFormat.format(getString(key), (Object[]) args);
 	}
-
 }

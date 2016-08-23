@@ -10,23 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.core;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.docker.core.Activator;
-import org.eclipse.linuxtools.docker.core.Messages;
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.linuxtools.docker.core.DockerException;
 
 /**
  * Utility class to discover Docker machines using the 'docker-machine' command
@@ -34,15 +18,33 @@ import org.eclipse.osgi.util.NLS;
  */
 public class DockerMachine {
 
-	private static Object lock = new Object();
+	/**
+	 * Checks that the given {@code dockerMachineInstallDir} contains the
+	 * {@code docker-machine} command
+	 * 
+	 * @param dockerMachineInstallDir
+	 *            the directory to check
+	 * @return <code>true</code> if the system-specific command was found,
+	 *         <code>false</code> otherwise.
+	 */
+	public static boolean checkPathToDockerMachine(
+			final String dockerMachineInstallDir) {
+		return ProcessUtils.checkPathToCommand(dockerMachineInstallDir,
+				getDockerMachineExecutableName());
+	}
 
 	/**
 	 * @param pathToDockerMachine
 	 *            the path to 'docker-machine' stored in the preferences
 	 * @return the names of the existing Docker Machines
+	 * @throws DockerException
+	 *             if something went wrong
 	 */
-	public static String[] getNames(final String pathToDockerMachine) {
-		return execute(pathToDockerMachine, new String[] { "ls", "-q" }); //$NON-NLS-1$ //$NON-NLS-2$
+	public static String[] getNames(final String pathToDockerMachine)
+			throws DockerException {
+		return ProcessUtils.processBuilder(pathToDockerMachine,
+				getDockerMachineExecutableName(), new String[] { "ls", "-q" }) //$NON-NLS-1$ //$NON-NLS-2$
+				.start();
 	}
 
 	/**
@@ -54,13 +56,17 @@ public class DockerMachine {
 	 *            the installation directory for the underlying VM driver used
 	 *            by Docker Machine
 	 * @return the host URI to use to connect to it
+	 * @throws DockerException
+	 *             if something went wrong
 	 */
 	public static String getHost(final String name,
 			final String dockerMachineInstallDir,
-			final String vmDriverInstallDir) {
-		final String[] res = execute(dockerMachineInstallDir,
-				new String[] { "url", name }, //$NON-NLS-1$
-				vmDriverInstallDir);
+			final String vmDriverInstallDir) throws DockerException {
+		final String[] res = ProcessUtils
+				.processBuilder(dockerMachineInstallDir,
+				getDockerMachineExecutableName(),
+						new String[] { "url", name }) //$NON-NLS-1$
+				.extraPath(vmDriverInstallDir).start();
 		return res.length == 1 ? res[0] : null;
 	}
 
@@ -73,12 +79,16 @@ public class DockerMachine {
 	 *            the installation directory for the underlying VM driver used
 	 *            by Docker Machine
 	 * @return the path to the directory containing the certificates
+	 * @throws DockerException
+	 *             if something went wrong
 	 */
 	public static String getCertPath(final String name,
-			final String pathToDockerMachine, final String vmDriverInstallDir) {
-		final String[] envVariables = execute(pathToDockerMachine,
-				new String[] { "env", name }, //$NON-NLS-1$
-				vmDriverInstallDir);
+			final String pathToDockerMachine, final String vmDriverInstallDir)
+			throws DockerException {
+		final String[] envVariables = ProcessUtils.processBuilder(pathToDockerMachine,
+				getDockerMachineExecutableName(),
+				new String[] { "env", name }) //$NON-NLS-1$
+				.extraPath(vmDriverInstallDir).start();
 		for (String envVariable : envVariables) {
 			if (envVariable.contains("DOCKER_CERT_PATH")) { //$NON-NLS-1$
 				// DOCKER_CERT_PATH="/path/to/cert-folder"
@@ -86,108 +96,6 @@ public class DockerMachine {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * Executes the command given in parameter
-	 * 
-	 * @param args
-	 *            command arguments
-	 * @return the lines read in the {@link Process}' {@link InputStream} or an
-	 *         empty array if the {@code docker-machine} command could not be
-	 *         found in the {@code PATH}.
-	 */
-	private static String[] execute(final String dockerMachineInstallDir,
-			final String[] args, final String... extraPaths) {
-		synchronized (lock) {
-			// check that the 'docker-machine' can be found in the given
-			// 'dockerMachineInstallDir'
-			final boolean dockerMachineCommandExists = checkPathToDockerMachine(
-					dockerMachineInstallDir);
-			if (!dockerMachineCommandExists) {
-				// log a warning and exit
-				Activator.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-						NLS.bind(Messages.Docker_Machine_Command_Not_Found,
-								dockerMachineInstallDir)));
-				return new String[0];
-			}
-			final String[] command = new String[args.length + 1];
-			command[0] = Paths.get(dockerMachineInstallDir,
-					getDockerMachineExecutableName()).toString();
-			System.arraycopy(args, 0, command, 1, args.length);
-			try {
-				final ProcessBuilder processBuilder = new ProcessBuilder(
-						command);
-				final Map<String, String> environment = processBuilder
-						.environment();
-				final StringBuilder path = new StringBuilder();
-				for (String extraPath : extraPaths) {
-					path.append(File.pathSeparator).append(extraPath);
-				}
-				final String newEnvPath = environment.get("PATH") //$NON-NLS-1$
-						+ path.toString();
-				environment.put("PATH", newEnvPath); //$NON-NLS-1$
-
-				final Process p = processBuilder.start();
-				p.waitFor();
-				if (p.exitValue() == 0) {
-					final List<String> result = new ArrayList<>();
-					try (final InputStream inputStream = p.getInputStream();
-							final BufferedReader buff = new BufferedReader(
-									new InputStreamReader(inputStream))) {
-						String line;
-						while ((line = buff.readLine()) != null) {
-							result.add(line);
-						}
-					}
-					return result.toArray(new String[0]);
-				} else {
-					final StringBuffer errorMessage = new StringBuffer();
-					try (final InputStream errorStream = p.getErrorStream();
-							final BufferedReader buff = new BufferedReader(
-									new InputStreamReader(errorStream))) {
-						String line;
-						while ((line = buff.readLine()) != null) {
-							errorMessage.append(line).append('\n'); // $NON-NLS-1$
-						}
-					}
-					Activator.log(new Status(IStatus.WARNING,
-							Activator.PLUGIN_ID,
-							NLS.bind(Messages.Docker_Machine_Process_Error,
-									new Object[] {
-											Stream.of(command).collect(
-													Collectors.joining(" ")),
-											p.exitValue(),
-											errorMessage.toString() })));
-				}
-			} catch (IOException | InterruptedException e) {
-				Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-						NLS.bind(Messages.Docker_Machine_Process_Exception,
-								Stream.of(command)
-										.collect(Collectors.joining(" ")),
-								e)));
-			}
-			return new String[0];
-		}
-	}
-
-	/**
-	 * Checks that the 'docker-machine' command exists in the given {@code path}
-	 * 
-	 * @param path
-	 *            to path to use to look for the 'docker-machine' command
-	 * @return <code>true</code> if the command was found, <code>false</code>
-	 *         otherwise.
-	 */
-	public static boolean checkPathToDockerMachine(final String path) {
-		for (String pathFragment : path.split(File.pathSeparator)) {
-			final File pathToDockerMachine = new File(pathFragment,
-					getDockerMachineExecutableName());
-			if (pathToDockerMachine.exists()) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**

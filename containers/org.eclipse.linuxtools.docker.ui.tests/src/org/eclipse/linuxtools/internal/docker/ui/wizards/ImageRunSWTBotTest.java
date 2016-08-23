@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.docker.ui.launch.LaunchConfigurationUtils;
@@ -27,9 +28,10 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFacto
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageInfoFactory;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ButtonAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseShellRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWizardRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
@@ -62,13 +64,14 @@ public class ImageRunSWTBotTest {
 	private SWTBotView dockerExplorerViewBot;
 
 	@ClassRule
-	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule();
+	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
+			CloseWelcomePageRule.DOCKER_PERSPECTIVE_ID);
 
 	@Rule
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
 
 	@Rule
-	public CloseWizardRule closeWizard = new CloseWizardRule();
+	public CloseShellRule closeShell = new CloseShellRule(IDialogConstants.CANCEL_LABEL);
 
 	@Before
 	public void lookupDockerExplorerView() {
@@ -95,9 +98,10 @@ public class ImageRunSWTBotTest {
 		// when use an existing container name
 		bot.textWithLabel(WizardMessages.getString("ImageRunSelectionPage.containerName")).setText("foo_bar");
 		// then
-		// wait for https://bugs.eclipse.org/bugs/show_bug.cgi?id=482889 to be able to check the wiazard validation message
+		// wait for https://bugs.eclipse.org/bugs/show_bug.cgi?id=482889 to be
+		// able to check the wizard validation message
 		//assertThat(bot.text(WizardMessages.getString("ImageRunSelectionPage.containerWithSameName"))).isNotNull();
-		assertThat(bot.button("Finish").isEnabled()).isEqualTo(false);
+		ButtonAssertion.assertThat(bot.button("Finish")).isNotEnabled();
 	}
 
 	@Test

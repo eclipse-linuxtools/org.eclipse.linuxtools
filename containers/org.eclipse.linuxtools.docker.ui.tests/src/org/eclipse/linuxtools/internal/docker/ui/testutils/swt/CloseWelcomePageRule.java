@@ -12,8 +12,9 @@
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.WorkbenchException;
 import org.junit.rules.ExternalResource;
 
 /**
@@ -21,33 +22,36 @@ import org.junit.rules.ExternalResource;
  */
 public class CloseWelcomePageRule extends ExternalResource {
 
+	public static final String DOCKER_PERSPECTIVE_ID = "org.eclipse.linuxtools.docker.ui.perspective";
+
+	public static final String JAVA_PERSPECTIVE_ID = "org.eclipse.jdt.ui.JavaPerspective";
+
 	/** the Id of the perspective to open. */
 	private final String defaultPerspectiveId;
-	
+
 	/**
-	 * Default constructor when the "Docker tooling" perspective is going to be opened once the welcome page was closed.
-	 */
-	public CloseWelcomePageRule() {
-		this.defaultPerspectiveId = "org.eclipse.linuxtools.docker.ui.perspective";
-	}
-	
-	/**
-	 * Custom constructor with the id of the perspective to open once the welcome page was closed.
-	 * @param perspectiveId the id of the perspective to open.
+	 * Custom constructor with the id of the perspective to open once the
+	 * welcome page was closed.
+	 *
+	 * @param perspectiveId
+	 *            the id of the perspective to open.
 	 */
 	public CloseWelcomePageRule(final String perspectiveId) {
 		this.defaultPerspectiveId = perspectiveId;
 	}
-	
+
 	@Override
 	protected void before() {
 		Display.getDefault().syncExec(() -> {
-				if (PlatformUI.getWorkbench().getIntroManager().getIntro() != null) {
-					PlatformUI.getWorkbench().getIntroManager()
-							.closeIntro(PlatformUI.getWorkbench().getIntroManager().getIntro());
-				}
+			final IWorkbench workbench = PlatformUI.getWorkbench();
+			if (workbench.getIntroManager().getIntro() != null) {
+				workbench.getIntroManager().closeIntro(workbench.getIntroManager().getIntro());
+			}
+			try {
+				workbench.showPerspective(defaultPerspectiveId, workbench.getActiveWorkbenchWindow());
+			} catch (WorkbenchException e) {
+				e.printStackTrace();
+			}
 		});
-		final SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		bot.perspectiveById(defaultPerspectiveId).activate();
 	}
 }

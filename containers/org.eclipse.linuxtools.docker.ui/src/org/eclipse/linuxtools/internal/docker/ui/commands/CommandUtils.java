@@ -34,7 +34,7 @@ import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerPortMapping;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.ui.DockerConnectionWatcher;
-import org.eclipse.linuxtools.internal.docker.ui.RunConsole;
+import org.eclipse.linuxtools.internal.docker.ui.consoles.RunConsole;
 import org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerContainersView;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainerVolume;
@@ -84,13 +84,10 @@ public class CommandUtils {
 			return ((DockerImagesView) activePart).getConnection();
 		} else {
 			// fall back to first active connection in list if one exists
-			IDockerConnection connections[] = DockerConnectionManager
-					.getInstance().getConnections();
-			if (connections != null && connections.length > 0) {
-				for (int i = 0; i < connections.length; ++i) {
-					if (connections[i].isOpen())
-						return connections[i];
-				}
+			if (DockerConnectionManager.getInstance().hasConnections()) {
+				return DockerConnectionManager.getInstance().getAllConnections()
+						.stream().filter(c -> c.isOpen()).findFirst()
+						.orElse(null);
 			}
 		}
 		return null;

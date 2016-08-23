@@ -50,7 +50,6 @@ public class BuildImageCommandHandler extends AbstractHandler {
 	private static final String ERROR_BUILDING_IMAGE = "ImageBuildError.msg"; //$NON-NLS-1$
 	private static final String IMAGE_DIRECTORY_VALIDATE = "ImageDirectoryValidate.msg"; //$NON-NLS-1$
 	
-	private IDockerConnection connection;
 
 	@Override
 	public Object execute(final ExecutionEvent event) {
@@ -65,14 +64,14 @@ public class BuildImageCommandHandler extends AbstractHandler {
 			activePage = window.getActivePage();
 		if (activePage != null)
 			activePart = activePage.getActivePart();
-		connection = CommandUtils.getCurrentConnection(activePart);
+		IDockerConnection connection = CommandUtils
+				.getCurrentConnection(activePart);
 		// if no current connection, try the first connection in the list of
 		// connections
 		if (connection == null) {
-			IDockerConnection[] connections = DockerConnectionManager
-					.getInstance().getConnections();
-			if (connections.length > 0)
-				connection = connections[0];
+			connection = DockerConnectionManager.getInstance()
+					.getFirstConnection();
+
 		}
 		if (connection == null || !connection.isOpen()) {
 			// if no active connection, issue error message dialog and return
@@ -85,12 +84,13 @@ public class BuildImageCommandHandler extends AbstractHandler {
 		}
 		final boolean buildImage = wizardDialog.open() == Window.OK;
 		if (buildImage) {
-			performBuildImage(wizard);
+			performBuildImage(wizard, connection);
 		}
 		return null;
 	}
 	
-	private void performBuildImage(final ImageBuild wizard) {
+	private void performBuildImage(final ImageBuild wizard,
+			final IDockerConnection connection) {
 		final Job buildImageJob = new Job(
 				DVMessages.getString(BUILD_IMAGE_JOB_TITLE)) {
 

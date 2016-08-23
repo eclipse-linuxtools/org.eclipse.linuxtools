@@ -24,9 +24,13 @@ public class PreferenceConstants {
 
 	/** the installation directory for Docker Machine. */
 	public static final String DOCKER_MACHINE_INSTALLATION_DIRECTORY = "dockerMachineInstallDir"; //$NON-NLS-1$
+
 	/**
 	 * the installation directory for the VM driver (eg, VirtualBox).
 	 */
 	public static final String VM_DRIVER_INSTALLATION_DIRECTORY = "vmDriverInstallDir"; //$NON-NLS-1$
 	
+	/** the installation directory for Docker Compose. */
+	public static final String DOCKER_COMPOSE_INSTALLATION_DIRECTORY = "dockerComposeInstallDir"; //$NON-NLS-1$
+
 }

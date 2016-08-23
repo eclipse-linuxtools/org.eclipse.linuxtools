@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.docker.core;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings.BindingType;
@@ -91,19 +91,81 @@ public class DockerConnectionManager {
 		this.connectionStorageManager.saveConnections(this.connections);
 	}
 
-	public IDockerConnection[] getConnections() {
+	/**
+	 * @return an unmodifiable and non-null array of {@link IDockerConnection}
+	 */
+	public  IDockerConnection[] getConnections() {
+		if (this.connections == null) {
+			return new IDockerConnection[0];
+		}
 		return connections.toArray(new IDockerConnection[connections.size()]);
+	}
+
+	/**
+	 * @return an unmodifiable and non-null list of {@link IDockerConnection}
+	 */
+	public List<IDockerConnection> getAllConnections() {
+		if (this.connections == null) {
+			return Collections.emptyList();
+		}
+		return Collections.unmodifiableList(this.connections);
+	}
+
+	/**
+	 * @return the first {@link IDockerConnection} or <code>null</code> if none
+	 *         exists yet.
+	 */
+	public IDockerConnection getFirstConnection() {
+		if (!hasConnections()) {
+			return null;
+		}
+		return this.connections.get(0);
+	}
+
+	/**
+	 * @return <code>true</code> if there is at least one
+	 *         {@link IDockerConnection} in this
+	 *         {@link DockerConnectionManager}, <code>false</code> otherwise.
+	 */
+	public boolean hasConnections() {
+		return connections != null && !connections.isEmpty();
+	}
+
+	/**
+	 * Finds the {@link IDockerConnection} from the given {@code connectionName}
+	 * 
+	 * @param connectionName
+	 *            the name of the connection to find
+	 * @return the {@link IDockerConnection} or <code>null</code> if none
+	 *         matched.
+	 */
+	public IDockerConnection getConnectionByName(final String connectionName) {
+		return this.connections.stream().filter(
+				connection -> connection.getName().equals(connectionName))
+				.findFirst().orElse(null);
+	}
+
+	/**
+	 * Finds the {@link IDockerConnection} from the given {@code connectionUri}
+	 * 
+	 * @param connectionUri
+	 *            the URI of the connection to find
+	 * @return the {@link IDockerConnection} or <code>null</code> if none
+	 *         matched.
+	 */
+	public IDockerConnection getConnectionByUri(String connectionUri) {
+		return DockerConnectionManager.getInstance().getAllConnections()
+				.stream()
+				.filter(c -> c.getUri().equals(connectionUri)).findFirst()
+				.orElse(null);
 	}
 
 	/**
 	 * @return an immutable {@link List} of the {@link IDockerConnection} names
 	 */
 	public List<String> getConnectionNames() {
-		final List<String> connectionNames = new ArrayList<>();
-		for (IDockerConnection connection : this.connections) {
-			connectionNames.add(connection.getName());
-		}
-		return Collections.unmodifiableList(connectionNames);
+		return Collections.unmodifiableList(getAllConnections().stream()
+				.map(c -> c.getName()).collect(Collectors.toList()));
 	}
 
 	public IDockerConnection findConnection(final String name) {

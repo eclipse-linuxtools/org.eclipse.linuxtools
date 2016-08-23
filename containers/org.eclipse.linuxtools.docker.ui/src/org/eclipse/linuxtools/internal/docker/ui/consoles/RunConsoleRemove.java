@@ -8,11 +8,12 @@
  * Contributors:
  *     Red Hat Inc - modified to use in Docker UI
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.docker.ui;
+package org.eclipse.linuxtools.internal.docker.ui.consoles;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.console.ConsolePlugin;

@@ -33,8 +33,8 @@ import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig;
 import org.eclipse.linuxtools.internal.docker.core.DockerHostConfig;
 import org.eclipse.linuxtools.internal.docker.core.DockerPortBinding;
-import org.eclipse.linuxtools.internal.docker.ui.ConsoleOutputStream;
-import org.eclipse.linuxtools.internal.docker.ui.RunConsole;
+import org.eclipse.linuxtools.internal.docker.ui.consoles.ConsoleOutputStream;
+import org.eclipse.linuxtools.internal.docker.ui.consoles.RunConsole;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
@@ -271,9 +271,7 @@ public class ContainerLauncher {
 
 		final IDockerHostConfig hostConfig = hostBuilder.build();
 
-		final IDockerConnection[] connections = DockerConnectionManager
-				.getInstance().getConnections();
-		if (connections.length == 0) {
+		if (!DockerConnectionManager.getInstance().hasConnections()) {
 			Display.getDefault()
 					.syncExec(() -> MessageDialog.openError(
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
@@ -285,15 +283,9 @@ public class ContainerLauncher {
 
 		// Try and use the specified connection that was used before,
 		// otherwise, open an error
-		int defaultIndex = -1;
-		String[] connectionNames = new String[connections.length];
-		for (int i = 0; i < connections.length; ++i) {
-			connectionNames[i] = connections[i].getName();
-			if (connections[i].getUri().equals(connectionUri))
-				defaultIndex = i;
-		}
-
-		if (defaultIndex == -1) {
+		final IDockerConnection connection = DockerConnectionManager
+				.getInstance().getConnectionByUri(connectionUri);
+		if (connection == null) {
 			Display.getDefault()
 					.syncExec(() -> MessageDialog.openError(
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
@@ -303,9 +295,7 @@ public class ContainerLauncher {
 									ERROR_NO_CONNECTION_WITH_URI,
 									connectionUri)));
 			return;
-
 		}
-		final IDockerConnection connection = connections[defaultIndex];
 		final String imageName = image;
 		final boolean keepContainer = keep;
 		final String consoleId = id;
@@ -424,23 +414,16 @@ public class ContainerLauncher {
 	 *            the container info
 	 */
 	public void cleanup(String connectionUri, IDockerContainerInfo info) {
-		final IDockerConnection[] connections = DockerConnectionManager
-				.getInstance().getConnections();
-		if (connections.length == 0) {
+		if (!DockerConnectionManager.getInstance().hasConnections()) {
 			return;
 		}
 
 		// Try and find the specified connection
-		IDockerConnection connection = null;
-		for (int i = 0; i < connections.length; ++i) {
-			if (connections[i].getUri().equals(connectionUri))
-				connection = connections[i];
-		}
-
+		final IDockerConnection connection = DockerConnectionManager
+				.getInstance().getConnectionByUri(connectionUri);
 		if (connection == null) {
 			return;
 		}
-
 		try {
 			connection.killContainer(info.id());
 		} catch (DockerException | InterruptedException e) {

@@ -23,6 +23,12 @@
       </page>
       <page
             category="org.eclipse.linuxtools.docker.ui.preferences.DockerPreferencePage"
+            class="org.eclipse.linuxtools.internal.docker.ui.preferences.DockerComposePreferencePage"
+            id="org.eclipse.linuxtools.docker.ui.preferences.DockerComposePreferencePage"
+            name="%DockerComposePreferencePage.name">
+      </page>
+      <page
+            category="org.eclipse.linuxtools.docker.ui.preferences.DockerPreferencePage"
             class="org.eclipse.linuxtools.internal.docker.ui.preferences.DockerRegistryAccountPreferencePage"
             id="org.eclipse.linuxtools.docker.ui.preferences.DockerRegistryAccountPreferencePage"
             name="%DockerRegistryAccountPreferencePage.name">
@@ -726,6 +732,14 @@
 			properties="isRunning,isStopped,isPaused,isRemovable,isUnknown"
 			type="org.eclipse.linuxtools.docker.core.IDockerContainer">
 		</propertyTester>
+		<propertyTester
+			class="org.eclipse.linuxtools.internal.docker.ui.consoles.DockerComposeConsolePropertyTester"
+			id="org.eclipse.linuxtools.docker.dockerComposePropertyTester"
+			namespace="org.eclipse.linuxtools.docker.dockerComposePropertyTester"
+			properties="isDockerComposeConsole"
+			type="org.eclipse.linuxtools.internal.docker.ui.consoles.DockerComposeConsole">
+		</propertyTester>
+		
   <propertyTester
         class="org.eclipse.linuxtools.internal.docker.ui.propertytesters.ImagePropertyTester"
         id="org.eclipse.linuxtools.docker.ui.imagePropertyTester"
@@ -1732,10 +1746,16 @@
           public="true">
     </launchConfigurationType>
     <launchConfigurationType
-          delegate="org.eclipse.linuxtools.internal.docker.ui.launch.RunDockerImageLaunchConfigurationDelegate"
           id="org.eclipse.linuxtools.docker.ui.runDockerImageLaunchConfigurationType"
+          delegate="org.eclipse.linuxtools.internal.docker.ui.launch.RunDockerImageLaunchConfigurationDelegate"
           modes="run"
           name="%RunDockerImageLaunchConfigType.name">
+    </launchConfigurationType>
+    <launchConfigurationType
+          delegate="org.eclipse.linuxtools.internal.docker.ui.launch.DockerComposeUpLaunchConfigurationDelegate"
+          id="org.eclipse.linuxtools.docker.ui.dockerComposeUpLaunchConfigurationType"
+          modes="run"
+          name="%DockerComposeUpLaunchConfigurationType.name">
     </launchConfigurationType>
  </extension>
  <extension
@@ -1750,6 +1770,11 @@
           icon="icons/container_started.png"
           id="org.eclipse.linuxtools.docker.ui.runDockerImageLaunchConfigurationTypeImage">
     </launchConfigurationTypeImage>
+    <launchConfigurationTypeImage
+          configTypeID="org.eclipse.linuxtools.docker.ui.dockerComposeUpLaunchConfigurationType"
+          icon="icons/run_exc.png"
+          id="org.eclipse.linuxtools.docker.ui.dockerComposeUpLaunchConfigurationTypeImage">
+    </launchConfigurationTypeImage>
  </extension>
  <extension
        point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -1763,14 +1788,35 @@
     </launchConfigurationTabGroup>
  </extension>
  <extension
+       point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    <launchConfigurationTabGroup
+          class="org.eclipse.linuxtools.internal.docker.ui.launch.DockerComposeUpLaunchConfigurationTabGroup"
+          id="org.eclipse.linuxtools.docker.ui.dockerComposeUpLaunchConfigurationTypeTabGroup"
+          type="org.eclipse.linuxtools.docker.ui.dockerComposeUpLaunchConfigurationType">
+       <launchMode
+             mode="run">
+       </launchMode>
+    </launchConfigurationTabGroup>
+ </extension>
+ <extension
        point="org.eclipse.ui.console.consolePageParticipants">
     <consolePageParticipant
-          class="org.eclipse.linuxtools.internal.docker.ui.RunConsolePageParticipant"
-          id="org.eclipse.linuxtools.docker.ui.consolePageParticipant">
+          class="org.eclipse.linuxtools.internal.docker.ui.consoles.RunConsolePageParticipant"
+          id="org.eclipse.linuxtools.docker.ui.runConsolePageParticipant">
        <enablement>
           <instanceof
-                value="org.eclipse.linuxtools.internal.docker.ui.RunConsole">
+                value="org.eclipse.linuxtools.internal.docker.ui.consoles.RunConsole">
           </instanceof></enablement>
+    </consolePageParticipant>
+    <consolePageParticipant
+          class="org.eclipse.linuxtools.internal.docker.ui.consoles.DockerComposeConsolePageParticipant"
+          id="org.eclipse.linuxtools.docker.ui.dockerComposeConsolePageParticipant">
+       <enablement>
+          <test
+                forcePluginActivation="true"
+                property="org.eclipse.linuxtools.docker.dockerComposePropertyTester.isDockerComposeConsole"
+                value="true">
+          </test></enablement>
     </consolePageParticipant>
  </extension>
  <extension
@@ -1779,7 +1825,7 @@
           class="org.eclipse.linuxtools.internal.docker.ui.launch.BuildDockerImageShortcut"
           description="%DockerfileShortcut.desc"
           icon="icons/build_exec.png"
-          id="org.eclipse.linuxtools.docker.ui.dockerfile.shortcut"
+          id="org.eclipse.linuxtools.docker.ui.buildDockerfileShortcut"
           label="%DockerfileShortcut.label"
           modes="run">
        <contextualLaunch>
@@ -1796,6 +1842,35 @@
                                forcePluginActivation="true"
                                property="org.eclipse.core.resources.name"
                                value="Dockerfile">
+                         </test>
+                      </and>
+                   </adapt>
+                </iterate>
+             </with>
+          </enablement>
+       </contextualLaunch>
+    </shortcut>
+    <shortcut
+          class="org.eclipse.linuxtools.internal.docker.ui.launch.DockerComposeUpShortcut"
+          description="%DockerComposeUpShortcut.desc"
+          icon="icons/run_exc.png"
+          id="org.eclipse.linuxtools.docker.ui.dockerComposeUpShortcut"
+          label="%DockerComposeUpShortcut.label"
+          modes="run">
+       <contextualLaunch>
+          <enablement>
+             <with variable="selection">
+                <count value="1"/>
+                <iterate
+                      ifEmpty="false"
+                      operator="or">
+                   <adapt
+                         type="org.eclipse.core.resources.IResource">
+                      <and>
+                         <test
+                               forcePluginActivation="true"
+                               property="org.eclipse.core.resources.name"
+                               value="docker-compose.yml">
                          </test>
                       </and>
                    </adapt>

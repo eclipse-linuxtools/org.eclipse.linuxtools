@@ -39,6 +39,7 @@ public class Messages extends NLS {
 	public static String Docker_Connection_Timeout;
 	public static String Docker_Machine_Process_Error;
 	public static String Docker_Machine_Process_Exception;
+	public static String Docker_Compose_Command_Not_Found;
 
 	static {
 		// Initialize resource bundle.

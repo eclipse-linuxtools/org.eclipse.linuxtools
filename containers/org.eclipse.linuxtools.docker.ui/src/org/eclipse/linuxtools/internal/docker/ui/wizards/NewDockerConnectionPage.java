@@ -17,11 +17,11 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
@@ -710,17 +710,16 @@ public class NewDockerConnectionPage extends WizardPage {
 				}
 				final String dockerMachineInstallDir = getDockerMachineInstallDir();
 				final String vmDriverInstallDir = getVMDriverInstallDir();
-				
-				final String[] dmNames = DockerMachine
-						.getNames(dockerMachineInstallDir);
-				final List<String> activeNames = new ArrayList<>();
-				for (String name : dmNames) {
-					if (DockerMachine.getHost(name, dockerMachineInstallDir,
-							vmDriverInstallDir) != null) {
-						activeNames.add(name);
-					}
-				}
-				if (activeNames.size() > 0) {
+				final Map<String, Boolean> allMachineStates = retrieveDockerMachineNames(
+						dockerMachineInstallDir,
+							vmDriverInstallDir);
+				final List<String> activeMachineNames = allMachineStates
+						.entrySet().stream()
+						.filter((machineEntry) -> machineEntry.getValue()
+								.booleanValue())
+						.map((machineEntry) -> machineEntry.getKey())
+						.collect(Collectors.toList());
+				if (activeMachineNames.size() > 0) {
 					ListDialog connPrompt = new ListDialog(getShell());
 					connPrompt.setContentProvider(new ConnectionSelectionContentProvider());
 					connPrompt.setLabelProvider(new ConnectionSelectionLabelProvider());
@@ -728,49 +727,58 @@ public class NewDockerConnectionPage extends WizardPage {
 							"DockerConnectionPage.searchDialog.title")); //$NON-NLS-1$
 					connPrompt.setMessage(WizardMessages.getString(
 							"DockerConnectionPage.searchDialog.message")); //$NON-NLS-1$
-					connPrompt.setInput(activeNames.toArray(new String[0]));
+					connPrompt.setInput(
+							activeMachineNames.toArray(new String[0]));
 					if (connPrompt.open() == 0 && connPrompt.getResult().length > 0) {
-						String name = ((String) connPrompt.getResult()[0]);
-						String host = DockerMachine.getHost(name,
-								dockerMachineInstallDir, vmDriverInstallDir);
-						String certPath = DockerMachine.getCertPath(name,
-								dockerMachineInstallDir, vmDriverInstallDir);
-						model.setBindingMode(EnumDockerConnectionSettings.TCP_CONNECTION);
+						final String name = ((String) connPrompt
+								.getResult()[0]);
+						model.setBindingMode(
+								EnumDockerConnectionSettings.TCP_CONNECTION);
 						model.setConnectionName(name);
 						model.setUnixSocketPath(null);
-						model.setTcpHost(host);
-						if (certPath != null) {
-							model.setTcpTLSVerify(true);
-							model.setTcpCertPath(certPath);
-						} else {
-							model.setTcpTLSVerify(false);
-							model.setTcpCertPath(null);
+						try {
+							final String host = DockerMachine.getHost(name,
+									dockerMachineInstallDir,
+									vmDriverInstallDir);
+							model.setTcpHost(host);
+						} catch (DockerException e1) {
+							Activator.log(e1);
+						}
+						try {
+							final String certPath = DockerMachine.getCertPath(
+									name, dockerMachineInstallDir,
+									vmDriverInstallDir);
+							if (certPath != null) {
+								model.setTcpTLSVerify(true);
+								model.setTcpCertPath(certPath);
+							} else {
+								model.setTcpTLSVerify(false);
+								model.setTcpCertPath(null);
+							}
+						} catch (DockerException e1) {
+							Activator.log(e1);
 						}
 					}
 				} else {
-					if (dmNames.length == 1) {
+					if (allMachineStates.size() == 1) {
 						MessageDialog.openInformation(getShell(),
 								WizardMessages.getString(
 										"DockerConnectionPage.searchDialog.discovery.title"), //$NON-NLS-1$
 								WizardMessages.getFormattedString(
 										"DockerConnectionPage.searchDialog.discovery.innactive.single", //$NON-NLS-1$
-										dmNames[0]));
-					} else if (dmNames.length > 1) {
-						final StringBuffer connections = new StringBuffer();
-						for (Iterator<String> iterator = Arrays.asList(dmNames)
-								.iterator(); iterator.hasNext();) {
-							final String dmName = iterator.next();
-							connections.append(dmName);
-							if (iterator.hasNext()) {
-								connections.append(", "); //$NON-NLS-1$
-							}
-						}
+										allMachineStates.entrySet().iterator()
+												.next().getKey()));
+					} else if (allMachineStates.size() > 1) {
+						final String allMachineNames = allMachineStates
+								.entrySet().stream()
+								.map((machineEntry) -> machineEntry.getKey())
+								.collect(Collectors.joining(", "));
 						MessageDialog.openInformation(getShell(),
 								WizardMessages.getString(
 										"DockerConnectionPage.searchDialog.discovery.title"), //$NON-NLS-1$
 								WizardMessages.getFormattedString(
 										"DockerConnectionPage.searchDialog.discovery.innactive.multiple", //$NON-NLS-1$
-										connections.toString()));
+										allMachineNames));
 					} else {
 						MessageDialog.openInformation(getShell(),
 								WizardMessages.getString(
@@ -778,6 +786,37 @@ public class NewDockerConnectionPage extends WizardPage {
 								WizardMessages.getString(
 										"DockerConnectionPage.searchDialog.discovery.empty")); //$NON-NLS-1$
 					}
+				}
+			}
+
+			/**
+			 * Retrieves the docker machine names along with a boolean flag to
+			 * indicate if it is running or not.
+			 * 
+			 * @param dockerMachineInstallDir
+			 * @param vmDriverInstallDir
+			 * @return
+			 */
+			private Map<String, Boolean> retrieveDockerMachineNames(
+					final String dockerMachineInstallDir,
+					final String vmDriverInstallDir) {
+				try {
+					final String[] dmNames = DockerMachine
+							.getNames(dockerMachineInstallDir);
+					return java.util.stream.Stream.of(dmNames)
+							.collect(Collectors.toMap(name -> name, name -> {
+								try {
+									return DockerMachine.getHost(name,
+											dockerMachineInstallDir,
+											vmDriverInstallDir) != null;
+								} catch (DockerException e) {
+									Activator.log(e);
+									return false;
+								}
+							}));
+				} catch (DockerException e) {
+					Activator.log(e);
+					return Collections.emptyMap();
 				}
 			}
 		};

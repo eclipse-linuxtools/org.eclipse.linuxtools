@@ -47,7 +47,8 @@ public class DockerContainersViewSWTBotTest {
 	private SWTBotView dockerExplorerBotView;
 
 	@ClassRule
-	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule();
+	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
+			CloseWelcomePageRule.DOCKER_PERSPECTIVE_ID);
 
 	@Rule
 	public TestLoggerRule watcher = new TestLoggerRule();

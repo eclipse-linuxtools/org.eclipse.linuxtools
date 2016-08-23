@@ -128,27 +128,28 @@ public class LaunchConfigurationUtils {
 			final ILaunchConfigurationType type = manager
 					.getLaunchConfigurationType(
 							IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID);
-			final String imageName = image.repoTags().get(0);
+			final String imageName = createRunImageLaunchConfigurationName(image);
 			// using the image repo + first tag
-			final ILaunchConfigurationWorkingCopy workingCopy = getLaunchConfigurationworkingCopy(
+			final ILaunchConfigurationWorkingCopy workingCopy = getLaunchConfigurationWorkingCopy(
 					type, imageName);
 			workingCopy.setAttribute(CREATION_DATE,
 					DATE_FORMAT.format(new Date()));
 			workingCopy.setAttribute(CONNECTION_NAME,
 					image.getConnection().getName());
 			workingCopy.setAttribute(IMAGE_ID, image.id());
-			workingCopy.setAttribute(IMAGE_NAME, image.repoTags().get(0));
+			workingCopy.setAttribute(IMAGE_NAME, createRunImageLaunchConfigurationName(image));
 			if (containerName != null && !containerName.isEmpty()) {
 				workingCopy.setAttribute(CONTAINER_NAME, containerName);
 			}
 			// if we know the raw command string, use it since the container
 			// config will remove quotes to split up command properly
 			DockerContainerConfig config = (DockerContainerConfig) containerConfig;
-			if (config.rawcmd() != null)
+			if (config.rawcmd() != null) {
 				workingCopy.setAttribute(COMMAND, config.rawcmd());
-			else
+			} else {
 				workingCopy.setAttribute(COMMAND,
 						toString(containerConfig.cmd()));
+			}
 			workingCopy.setAttribute(ENTRYPOINT,
 					toString(containerConfig.entrypoint()));
 			// selected ports
@@ -220,6 +221,11 @@ public class LaunchConfigurationUtils {
 					e));
 		}
 		return null;
+	}
+
+	private static String createRunImageLaunchConfigurationName(
+			final IDockerImage image) {
+		return image.repoTags().get(0);
 	}
 
 	private static String toString(final List<String> input) {
@@ -380,7 +386,7 @@ public class LaunchConfigurationUtils {
 	 *         {@link ILaunchConfiguration} or a new instance if none was found.
 	 * @throws CoreException
 	 */
-	private static ILaunchConfigurationWorkingCopy getLaunchConfigurationworkingCopy(
+	private static ILaunchConfigurationWorkingCopy getLaunchConfigurationWorkingCopy(
 			final ILaunchConfigurationType type, final String imageName)
 			throws CoreException {
 		final ILaunchConfiguration existingLaunchConfiguration = getLaunchConfigurationByImageName(
@@ -527,7 +533,8 @@ public class LaunchConfigurationUtils {
 	 *            the Dockerfile to use to build the image
 	 * @return the {@link ILaunchConfiguration} name
 	 */
-	public static String createLaunchConfigurationName(final String imageName,
+	public static String createBuildImageLaunchConfigurationName(
+			final String imageName,
 			final IResource resource) {
 		if (imageName != null) {
 			final String repository = BuildDockerImageUtils
@@ -574,11 +581,9 @@ public class LaunchConfigurationUtils {
 		final ILaunchConfigurationType configType = LaunchConfigurationUtils
 				.getLaunchConfigType(
 						IBuildDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID);
-		final ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
-				DebugPlugin.getDefault().getLaunchManager()
-						.generateLaunchConfigurationName(
-								createLaunchConfigurationName(repoName,
-										dockerfile)));
+		final ILaunchConfigurationWorkingCopy wc = getLaunchConfigurationWorkingCopy(
+				configType,
+				createBuildImageLaunchConfigurationName(repoName, dockerfile));
 		wc.setAttribute(
 				IBuildDockerImageLaunchConfigurationConstants.SOURCE_PATH_LOCATION,
 				dockerfile.getFullPath().removeLastSegments(1).toString());
@@ -590,6 +595,57 @@ public class LaunchConfigurationUtils {
 				connection.getName());
 		wc.setAttribute(IDockerImageBuildOptions.REPO_NAME, repoName);
 		return wc.doSave();
+	}
+
+	/**
+	 * Creates an {@link ILaunchConfiguration} for to run the
+	 * {@code docker-compose up} command.
+	 * 
+	 * @param connection
+	 *            the Docker connection to use
+	 * @param dockerComposeScript
+	 *            the {@code docker-compose.yml} script
+	 * @return the created {@link ILaunchConfiguration}
+	 * @throws CoreException
+	 *             if something wrong happened when creating the
+	 *             {@link ILaunchConfiguration}
+	 */
+	public static ILaunchConfiguration createDockerComposeUpLaunchConfiguration(
+			final IDockerConnection connection,
+			final IResource dockerComposeScript) throws CoreException {
+		final ILaunchConfigurationType configType = LaunchConfigurationUtils
+				.getLaunchConfigType(
+						IDockerComposeLaunchConfigurationConstants.CONFIG_TYPE_ID);
+		final ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
+				DebugPlugin.getDefault().getLaunchManager()
+						.generateLaunchConfigurationName(
+								createDockerComposeLaunchConfigurationName(
+										dockerComposeScript)));
+		wc.setAttribute(IDockerComposeLaunchConfigurationConstants.WORKING_DIR,
+				dockerComposeScript.getFullPath().removeLastSegments(1)
+						.toString());
+		wc.setAttribute(
+				IDockerComposeLaunchConfigurationConstants.WORKING_DIR_WORKSPACE_RELATIVE_LOCATION,
+				true);
+
+		wc.setAttribute(
+				IDockerComposeLaunchConfigurationConstants.DOCKER_CONNECTION,
+				connection.getName());
+		return wc.doSave();
+	}
+
+	/**
+	 * Creates a Launch Configuration name from the given
+	 * {@code dockerComposeScript}.
+	 * 
+	 * @param dockerComposeScript
+	 *            the name of the {@code Docker Compose} script
+	 * @return the {@link ILaunchConfiguration} name
+	 */
+	private static String createDockerComposeLaunchConfigurationName(
+			final IResource dockerComposeScript) {
+		return "Docker Compose [" //$NON-NLS-1$
+				+ dockerComposeScript.getProject().getName() + "]"; //$NON-NLS-1$
 	}
 
 	/**
@@ -639,4 +695,5 @@ public class LaunchConfigurationUtils {
 					e);
 		}
 	}
+
 }

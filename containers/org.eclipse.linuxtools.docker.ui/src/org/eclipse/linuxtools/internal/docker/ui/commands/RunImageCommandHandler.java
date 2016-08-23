@@ -33,7 +33,7 @@ import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
-import org.eclipse.linuxtools.internal.docker.ui.RunConsole;
+import org.eclipse.linuxtools.internal.docker.ui.consoles.RunConsole;
 import org.eclipse.linuxtools.internal.docker.ui.launch.LaunchConfigurationUtils;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
@@ -82,6 +82,15 @@ public class RunImageCommandHandler extends AbstractHandler {
 		return null;
 	}
 
+	/**
+	 * Run the given {@link IDockerImage} with the given settings
+	 * 
+	 * @param image
+	 * @param containerConfig
+	 * @param hostConfig
+	 * @param containerName
+	 * @param removeWhenExits
+	 */
 	public static void runImage(final IDockerImage image,
 			final IDockerContainerConfig containerConfig,
 			final IDockerHostConfig hostConfig, final String containerName,

@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerProgressHandler;
 import org.eclipse.linuxtools.internal.docker.core.RegistryAccountInfo;
@@ -22,8 +23,8 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockRegistryAccountManagerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ButtonAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseShellRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWizardRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
@@ -51,13 +52,14 @@ public class ImagePullSWTBotTest {
 	private SWTBotView dockerExplorerViewBot;
 
 	@ClassRule
-	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule();
+	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
+			CloseWelcomePageRule.DOCKER_PERSPECTIVE_ID);
 
 	@Rule
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
 
 	@Rule
-	public CloseWizardRule closeWizard = new CloseWizardRule();
+	public CloseShellRule closeShell = new CloseShellRule(IDialogConstants.CANCEL_LABEL);
 	private RegistryAccountStorageManager defaultRegistryAccountStorageManager;
 	private DockerClient client;
 

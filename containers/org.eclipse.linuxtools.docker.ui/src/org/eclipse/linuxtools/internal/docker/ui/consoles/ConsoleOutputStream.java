@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - Initial Contribution
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.docker.ui;
+package org.eclipse.linuxtools.internal.docker.ui.consoles;
 
 import java.io.IOException;
 import java.io.OutputStream;

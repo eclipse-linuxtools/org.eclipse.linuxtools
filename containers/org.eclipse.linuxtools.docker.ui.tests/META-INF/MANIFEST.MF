@@ -29,6 +29,7 @@ Require-Bundle: org.eclipse.linuxtools.docker.ui;bundle-version="1.0.0",
  org.slf4j.api;bundle-version="1.7.2",
  org.glassfish.jersey.bundles.repackaged.jersey-guava;bundle-version="2.14.0",
  org.eclipse.ui.ide,
- org.eclipse.debug.ui
+ org.eclipse.debug.ui,
+ org.eclipse.ui.console;bundle-version="3.6.100"
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

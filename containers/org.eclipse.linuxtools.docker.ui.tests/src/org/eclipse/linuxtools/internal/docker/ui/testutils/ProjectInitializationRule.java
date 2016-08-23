@@ -45,6 +45,12 @@ public class ProjectInitializationRule extends ExternalResource {
 
 	private Description description;
 
+	private IProject project = null;
+
+	public IProject getProject() {
+		return this.project;
+	}
+
 	@Override
 	public Statement apply(final Statement base, final Description description) {
 		this.description = description;
@@ -58,7 +64,7 @@ public class ProjectInitializationRule extends ExternalResource {
 		}
 		final String projectName = getProjectName();
 		final IWorkspace junitWorkspace = ResourcesPlugin.getWorkspace();
-		getTargetWorkspaceProject(getSampleProjectPath(projectName), junitWorkspace);
+		this.project = getTargetWorkspaceProject(getSampleProjectPath(projectName), junitWorkspace);
 	}
 
 	/**
@@ -79,7 +85,7 @@ public class ProjectInitializationRule extends ExternalResource {
 		if (runWithProjectTypeAnnotation != null) {
 			return runWithProjectTypeAnnotation.value();
 		}
-		fail("No @RunWithProject found while running test " + className + "." + methodName);
+		fail("No '@RunWithProject' annotation found while running test " + className + "." + methodName);
 		return null;
 	}
 
@@ -98,7 +104,7 @@ public class ProjectInitializationRule extends ExternalResource {
 
 	/**
 	 * Creates or opens the project in the target/JUnit workspace.
-	 * 
+	 *
 	 * @param projectSourcePath
 	 *            the absolute path to the project
 	 * @param targetWorkspace
@@ -150,7 +156,7 @@ public class ProjectInitializationRule extends ExternalResource {
 	 */
 	static void createProject(final IProjectDescription description, final String projectName,
 			final IWorkspace workspace, final IProject project)
-					throws InvocationTargetException, OperationCanceledException, CoreException, InterruptedException {
+			throws InvocationTargetException, OperationCanceledException, CoreException, InterruptedException {
 		// import from file system
 
 		// import project from location copying files - use default project
@@ -174,7 +180,7 @@ public class ProjectInitializationRule extends ExternalResource {
 
 	/**
 	 * Builds the given project
-	 *  
+	 *
 	 * @param project
 	 * @throws CoreException
 	 * @throws OperationCanceledException

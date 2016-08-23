@@ -60,6 +60,11 @@ public class Activator extends AbstractUIPlugin {
 		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, message, null));
 	}
 
+	public static void logWarningMessage(final String message) {
+		log(new Status(IStatus.WARNING, PLUGIN_ID, IStatus.WARNING, message,
+				null));
+	}
+
 	public static void logErrorMessage(final String message,
 			final Throwable e) {
 		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, message, e));
@@ -85,5 +90,6 @@ public class Activator extends AbstractUIPlugin {
 		}
 		return null;
 	}
+
 
 }

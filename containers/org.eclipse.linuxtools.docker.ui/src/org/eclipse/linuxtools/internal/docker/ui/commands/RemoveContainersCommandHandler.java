@@ -18,7 +18,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
-import org.eclipse.linuxtools.internal.docker.ui.RunConsole;
+import org.eclipse.linuxtools.internal.docker.ui.consoles.RunConsole;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;

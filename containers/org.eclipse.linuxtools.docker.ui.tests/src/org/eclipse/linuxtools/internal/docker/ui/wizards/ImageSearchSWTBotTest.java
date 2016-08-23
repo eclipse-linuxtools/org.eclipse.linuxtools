@@ -13,14 +13,15 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.linuxtools.docker.ui.wizards.ImageSearch;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageSearchResultFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseShellRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWizardRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
@@ -45,13 +46,14 @@ public class ImageSearchSWTBotTest {
 	private SWTBotView dockerExplorerViewBot;
 
 	@ClassRule
-	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule();
+	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
+			CloseWelcomePageRule.DOCKER_PERSPECTIVE_ID);
 
 	@Rule
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
 
 	@Rule
-	public CloseWizardRule closeWizard = new CloseWizardRule();
+	public CloseShellRule closeShell = new CloseShellRule(IDialogConstants.CANCEL_LABEL);
 
 	@Before
 	public void lookupDockerExplorerView() {
