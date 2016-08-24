@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.rpm.core;singleton:=true
-Bundle-Version: 3.0.0.qualifier
+Bundle-Version: 3.1.0.qualifier
 Bundle-Localization: plugin
 Bundle-Vendor: %Bundle-Vendor
 Bundle-ActivationPolicy: lazy
@@ -15,6 +15,4 @@ Require-Bundle: org.eclipse.core.resources,
 Export-Package: 
  org.eclipse.linuxtools.rpm.core,
  org.eclipse.linuxtools.rpm.core.utils
-Import-Package: org.eclipse.core.filesystem,
- org.eclipse.linuxtools.profiling.launch,
- org.eclipse.ui.console
+Import-Package: org.eclipse.linuxtools.profiling.launch
