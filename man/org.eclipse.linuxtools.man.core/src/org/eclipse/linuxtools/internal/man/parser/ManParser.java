@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2015-2016 Red Hat Inc. and others.
+ * Copyright (c) 2009, 2016 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -28,16 +30,21 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.linuxtools.internal.man.preferences.PreferenceConstants;
-import org.eclipse.linuxtools.tools.launch.core.factory.LinuxtoolsProcessFactory;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
 
 /**
  * Parser for the man executable output.
  */
 public class ManParser {
+
+	private static final int DEFAULT_SSH_PORT = 22;
 
 	/**
 	 * Gets the list of paths returned when one runs "man -w" with no other
@@ -139,10 +146,7 @@ public class ManParser {
 						? new BufferedReader(new InputStreamReader(manContent))
 						: null) {
 			if (reader != null) {
-				String line = null;
-				while ((line = reader.readLine()) != null) {
-					sb.append(line + "\n"); //$NON-NLS-1$
-				}
+				sb.append(reader.lines().collect(Collectors.joining("\n"))); //$NON-NLS-1$
 			}
 		} catch (IOException e) {
 			Bundle bundle = FrameworkUtil.getBundle(this.getClass());
@@ -177,14 +181,57 @@ public class ManParser {
 			}
 		};
 		try {
-			LinuxtoolsProcessFactory.execRemoteAndWait(
-					new String[] { getManExecutable(), manPage }, out, out,
-					user, host, password);
+			execRemoteAndWait(new String[] { getManExecutable(), manPage }, out,
+					out, user, host, password);
 		} catch (JSchException e) {
 			sb.setLength(0);
 			sb.append(Messages.ManParser_RemoteAccessError);
 		}
 		return sb;
+	}
+
+	private static Channel execRemoteAndWait(String[] args, OutputStream out,
+			OutputStream err, String user, String host, String password)
+			throws JSchException {
+		Channel channel = execRemote(args, out, err, user, host, password);
+
+		while (!channel.isClosed()) {
+			try {
+				Thread.sleep(250);
+			} catch (InterruptedException e) {
+				// Thread was interrupted just return.
+				return channel;
+			}
+		}
+
+		return channel;
+	}
+
+	private static Channel execRemote(String[] args, OutputStream out,
+			OutputStream err, String user, String host, String password)
+			throws JSchException {
+		JSch jsch = new JSch();
+		Session session = jsch.getSession(user, host, DEFAULT_SSH_PORT);
+		session.setPassword(password);
+		Properties config = new Properties();
+		config.put("StrictHostKeyChecking", "no"); //$NON-NLS-1$//$NON-NLS-2$
+		session.setConfig(config);
+		session.connect();
+
+		StringBuilder command = new StringBuilder();
+		for (int i = 0; i < args.length; i++) {
+			command.append(args[i] + ' ');
+		}
+
+		ChannelExec channel = (ChannelExec) session.openChannel("exec"); //$NON-NLS-1$
+		channel.setPty(true);
+		channel.setCommand(command.toString());
+		channel.setInputStream(null, true);
+		channel.setOutputStream(out, true);
+		channel.setExtOutputStream(err, true);
+		channel.connect();
+
+		return channel;
 	}
 
 	private static String getManExecutable() {
