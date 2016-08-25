@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.consolelog;singleton:=true
-Bundle-Version: 3.1.0.qualifier
+Bundle-Version: 3.2.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin
 Bundle-Vendor: %bundleProvider
 Bundle-Localization: plugin
@@ -23,11 +23,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.eclipse.core.resources,
  org.eclipse.debug.ui,
- org.eclipse.linuxtools.systemtap.graphing.core.datasets,
- org.eclipse.linuxtools.systemtap.graphing.core.structures,
- org.eclipse.linuxtools.systemtap.graphing.ui,
- org.eclipse.linuxtools.systemtap.graphing.ui.views,
  org.eclipse.linuxtools.systemtap.graphing.ui.widgets,
- org.eclipse.linuxtools.systemtap.graphing.ui.wizards.dataset,
  org.eclipse.linuxtools.systemtap.ui.editor,
  org.eclipse.linuxtools.tools.launch.core.factory
