@@ -10,8 +10,12 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
+import org.eclipse.linuxtools.docker.core.IDockerConnection;
+import org.eclipse.linuxtools.docker.core.IDockerImageHierarchyNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.events.FocusEvent;
@@ -21,6 +25,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.views.properties.tabbed.AbstractPropertySection;
@@ -33,6 +38,48 @@ public abstract class BasePropertySection extends AbstractPropertySection {
 	private Clipboard clipboard;
 	private IPageSite pageSite;
 	
+	@Override
+	public void setInput(final IWorkbenchPart part,
+			final ISelection selection) {
+		super.setInput(part, selection);
+		final Object input = getSelection(selection);
+		if (getTreeViewer() == null) {
+			return;
+		}
+		if (input instanceof IDockerImageHierarchyNode) {
+			getTreeViewer()
+					.setInput(((IDockerImageHierarchyNode) input).getElement());
+		} else {
+			getTreeViewer().setInput(input);
+		}
+	}
+
+	IDockerConnection getConnection(final IWorkbenchPart part,
+			final ISelection selection) {
+		final Object input = getSelection(selection);
+		if (part instanceof DockerContainersView) {
+			return ((DockerContainersView) part).getConnection();
+		} else if (part instanceof DockerImagesView) {
+			return ((DockerImagesView) part).getConnection();
+		} else if (part instanceof DockerImageHierarchyView) {
+			return ((DockerImageHierarchyView) part).getConnection();
+		} else {
+			final ITreeSelection treeSelection = (ITreeSelection) selection;
+			return (IDockerConnection) treeSelection.getPathsFor(input)[0]
+					.getFirstSegment();
+		}
+
+	}
+
+	Object getSelection(final ISelection selection) {
+		if (selection instanceof ITreeSelection) {
+			return ((ITreeSelection) selection).getFirstElement();
+		} else if (selection instanceof IStructuredSelection) {
+			return ((IStructuredSelection) selection).getFirstElement();
+		}
+		return null;
+	}
+
 	@Override
 	public void createControls(final Composite parent, final TabbedPropertySheetPage propertySheetPage) {
 		GridLayoutFactory.fillDefaults().numColumns(1).applyTo(parent);

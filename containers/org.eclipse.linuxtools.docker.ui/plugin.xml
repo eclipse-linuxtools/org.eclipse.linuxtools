@@ -162,7 +162,17 @@
          point="org.eclipse.ui.navigator.viewer">
       <viewer
             viewerId="org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView">
-            <options>
+            <popupMenu
+					allowsPlatformContributions="true"
+					id="org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu">
+			<insertionPoint name="group.run" separator="true"/>
+			<insertionPoint name="group.refresh" separator="true"/>
+			<insertionPoint name="group.navigate" separator="true"/>
+			<insertionPoint name="group.edit" separator="true"/>
+			<insertionPoint name="group.logs" separator="true"/>
+			<insertionPoint name="group.tags" separator="true"/>
+			</popupMenu>
+			<options>
 				<property
 					name="org.eclipse.ui.navigator.hideLinkWithEditorAction"
 					value="true">
@@ -394,12 +404,22 @@
      		<enabledWhen>
 	     		<with variable="selection">
 	              <iterate ifEmpty="false">
-				    <and>
-	                  <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
-	                  <test
-			       	    forcePluginActivation="true"
-			       		property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="true"/>
-	                </and>
+					<or>
+					    <and>
+							<instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+		                  	<test
+				       	    	forcePluginActivation="true"
+				       			property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="true"/>
+	                	</and>
+						<and>
+			            	<adapt
+			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+		                  	<test
+				       	    	forcePluginActivation="true"
+				       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isStopped" value="true"/>
+						</and>
+				    </or>
 	            </iterate>
 	          </with>
      		</enabledWhen>
@@ -410,12 +430,22 @@
      		<enabledWhen>
 	     		<with variable="selection">
 	              <iterate ifEmpty="false">
-				    <and>
-	                  <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
-	                  <test
-			       	    forcePluginActivation="true"
-			       		property="org.eclipse.linuxtools.docker.propertytesters.container.isRunning" value="true"/>
-	                </and>
+					<or>
+					    <and>
+							<instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+		                  	<test
+				       	    	forcePluginActivation="true"
+				       			property="org.eclipse.linuxtools.docker.propertytesters.container.isRunning" value="true"/>
+	                	</and>
+						<and>
+			            	<adapt
+			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+		                  	<test
+				       	    	forcePluginActivation="true"
+				       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isRunning" value="true"/>
+						</and>
+				    </or>
 	            </iterate>
 	          </with>
      		</enabledWhen>
@@ -426,12 +456,22 @@
      		<enabledWhen>
 	     		<with variable="selection">
 	              <iterate ifEmpty="false">
-				    <and>
-	                  <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
-	                  <test
-			       	    forcePluginActivation="true"
-			       		property="org.eclipse.linuxtools.docker.propertytesters.container.isPaused" value="true"/>
-	                </and>
+					<or>
+					    <and>
+							<instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+		                  	<test
+				       	    	forcePluginActivation="true"
+				       			property="org.eclipse.linuxtools.docker.propertytesters.container.isPaused" value="true"/>
+	                	</and>
+						<and>
+			            	<adapt
+			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+		                  	<test
+				       	    	forcePluginActivation="true"
+				       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isPaused" value="true"/>
+						</and>
+				    </or>
 	            </iterate>
 	          </with>
      		</enabledWhen>
@@ -444,17 +484,32 @@
 	              <iterate
                      ifEmpty="false"
                      operator="or">
-				    <and>
-	                  <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
-	                  <or>
-		                  <test
-				       	    forcePluginActivation="true"
-				       		property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="false"/>
-				       	  <test
-				       	    forcePluginActivation="true"
-				       		property="org.eclipse.linuxtools.docker.propertytesters.container.isUnknown" value="true"/>
-				      </or>
-	                </and>
+					<or>
+					    <and>
+							<instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+			                <or>
+			                  	<test
+					       	    	forcePluginActivation="true"
+					       			property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="false"/>
+			                  	<test
+					       	    	forcePluginActivation="true"
+					       			property="org.eclipse.linuxtools.docker.propertytesters.container.isUnknown" value="true"/>
+					       	</or>
+	                	</and>
+						<and>
+			            	<adapt
+			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+			                <or>
+			                  	<test
+					       	    	forcePluginActivation="true"
+					       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isStopped" value="false"/>
+			                  	<test
+					       	    	forcePluginActivation="true"
+					       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isUnknown" value="true"/>
+					       	</or>
+						</and>
+				    </or>
 	            </iterate>
 	          </with>
      		</enabledWhen>
@@ -467,17 +522,32 @@
 	              <iterate
                      ifEmpty="false"
                      operator="or">
-				    <and>
-	                  <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
-	                  <or>
-		                  <test
-				       	    forcePluginActivation="true"
-				       		property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="false"/>
-				       	  <test
-				       	    forcePluginActivation="true"
-				       		property="org.eclipse.linuxtools.docker.propertytesters.container.isUnknown" value="true"/>
-				      </or>
-	                </and>
+					<or>
+					    <and>
+							<instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+			                <or>
+			                  	<test
+					       	    	forcePluginActivation="true"
+					       			property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="false"/>
+			                  	<test
+					       	    	forcePluginActivation="true"
+					       			property="org.eclipse.linuxtools.docker.propertytesters.container.isUnknown" value="true"/>
+					       	</or>
+	                	</and>
+						<and>
+			            	<adapt
+			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+			                <or>
+			                  	<test
+					       	    	forcePluginActivation="true"
+					       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isStopped" value="false"/>
+			                  	<test
+					       	    	forcePluginActivation="true"
+					       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isUnknown" value="true"/>
+					       	</or>
+						</and>
+				    </or>
 	            </iterate>
 	          </with>
      		</enabledWhen>
@@ -488,12 +558,22 @@
      		<enabledWhen>
 	     		<with variable="selection">
 	              <iterate ifEmpty="false">
-				    <and>
-	                  <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
-	                  <test
-			       	    forcePluginActivation="true"
-			       		property="org.eclipse.linuxtools.docker.propertytesters.container.isRemovable" value="true"/>
-	                </and>
+					<or>
+					    <and>
+							<instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+		                  	<test
+				       	    	forcePluginActivation="true"
+				       			property="org.eclipse.linuxtools.docker.propertytesters.container.isRemovable" value="true"/>
+	                	</and>
+						<and>
+			            	<adapt
+			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+		                  	<test
+				       	    	forcePluginActivation="true"
+				       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isRemovable" value="true"/>
+						</and>
+				    </or>
 	            </iterate>
 	          </with>
      		</enabledWhen>
@@ -505,7 +585,12 @@
 	     		<with variable="selection">
 	     		   <count value="1"/>
 	                  <iterate ifEmpty="false">
-	                     <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
+						<or>
+			                 <instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+			                 <adapt
+			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+						</or>
 	                  </iterate>
 	            </with>
      		</enabledWhen>
@@ -517,7 +602,12 @@
 	     		<with variable="selection">
 	     		   <count value="1"/>
 	                  <iterate ifEmpty="false">
-	                     <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
+						<or>
+			                 <instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+			                 <adapt
+			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+						</or>
 	                  </iterate>
 	            </with>
      		</enabledWhen>
@@ -529,7 +619,12 @@
 	     		<with variable="selection">
 	     		   <count value="1"/>
 	                  <iterate ifEmpty="false">
-	                     <instanceof value="org.eclipse.linuxtools.docker.core.IDockerContainer"></instanceof>
+						<or>
+			                 <instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+			                 <adapt
+			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+						</or>
 	                  </iterate>
 	            </with>
      		</enabledWhen>
@@ -573,8 +668,12 @@
 	                <iterate
 	                      ifEmpty="false"
 	                      operator="and">
-	                 <instanceof
-	                       value="org.eclipse.linuxtools.docker.core.IDockerImage" />
+	                      <or>
+			                 <instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerImage" />
+			                 <adapt
+			                       type="org.eclipse.linuxtools.docker.core.IDockerImage" />
+	                       </or>
 	                </iterate>
 	               </with>
 	            </enabledWhen>
@@ -586,12 +685,20 @@
 	     		<with variable="selection">
 	     		   <count value="1"/>
 	                  <iterate ifEmpty="false">
-	                     <and>
-	                        <instanceof value="org.eclipse.linuxtools.docker.core.IDockerImage"></instanceof>
-	                  	    <test
-			       	           forcePluginActivation="true"
-			       		       property="org.eclipse.linuxtools.docker.propertytesters.image.canBeTagged" value="true"/>
-	                     </and>
+	                     <or>
+		                     <and>
+  	                            <instanceof value="org.eclipse.linuxtools.docker.core.IDockerImage"></instanceof>
+			                    <test
+				       	           forcePluginActivation="true"
+				       		       property="org.eclipse.linuxtools.docker.propertytesters.image.canBeTagged" value="true"/>
+		                     </and>
+		                     <and>
+			                    <adapt type="org.eclipse.linuxtools.docker.core.IDockerImage"></adapt>
+			                    <test
+				       	           forcePluginActivation="true"
+				       		       property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyImageNode.canBeTagged" value="true"/>
+		                     </and>
+		                 </or>
 	                  </iterate>
 	            </with>
      		</enabledWhen>
@@ -600,15 +707,23 @@
               commandId="org.eclipse.linuxtools.docker.ui.commands.removeTag"
               class="org.eclipse.linuxtools.internal.docker.ui.commands.RemoveTagCommandHandler">
      		<enabledWhen>
-	     		<with variable="selection">
-	     		   <count value="1"/>
-	                  <iterate ifEmpty="false">
-	                     <and>
-	                        <instanceof value="org.eclipse.linuxtools.docker.core.IDockerImage"></instanceof>
-	                  	    <test
-			       	           forcePluginActivation="true"
-			       		       property="org.eclipse.linuxtools.docker.propertytesters.image.hasMultipleTags" value="true"/>
-	                     </and>
+				<with variable="selection">
+					<count value="1"/>
+						<iterate ifEmpty="false">
+							<or>
+								<and>
+									<instanceof value="org.eclipse.linuxtools.docker.core.IDockerImage"></instanceof>
+									<test
+										forcePluginActivation="true"
+										property="org.eclipse.linuxtools.docker.propertytesters.image.hasMultipleTags" value="true"/>
+								</and>
+								<and>
+									<adapt type="org.eclipse.linuxtools.docker.core.IDockerImage"></adapt>
+									<test
+										forcePluginActivation="true"
+										property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyImageNode.hasMultipleTags" value="true"/>
+								</and>
+	                        </or>
 	                  </iterate>
 	            </with>
      		</enabledWhen>
@@ -630,7 +745,12 @@
       		<enabledWhen>
 	     		<with variable="selection">
 	              <iterate ifEmpty="false">
-	                <instanceof value="org.eclipse.linuxtools.docker.core.IDockerImage"></instanceof>
+	                <or>
+		                <instanceof value="org.eclipse.linuxtools.docker.core.IDockerImage"></instanceof>
+		                <adapt
+	                        type="org.eclipse.linuxtools.docker.core.IDockerImage">
+	                    </adapt>
+	                </or>
 	            </iterate>
 	          </with>
      		</enabledWhen>
@@ -741,27 +861,40 @@
 			type="org.eclipse.linuxtools.docker.core.IDockerContainer">
 		</propertyTester>
 		<propertyTester
+			class="org.eclipse.linuxtools.internal.docker.ui.propertytesters.ContainerPropertyTester"
+			id="org.eclipse.linuxtools.docker.ui.imageHierarchyNodeContainerPropertyTester"
+			namespace="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode"
+			properties="isRunning,isStopped,isPaused,isRemovable,isUnknown"
+			type="org.eclipse.linuxtools.docker.core.IDockerImageHierarchyContainerNode">
+		</propertyTester>
+		<propertyTester
 			class="org.eclipse.linuxtools.internal.docker.ui.consoles.DockerComposeConsolePropertyTester"
 			id="org.eclipse.linuxtools.docker.dockerComposePropertyTester"
 			namespace="org.eclipse.linuxtools.docker.dockerComposePropertyTester"
 			properties="isDockerComposeConsole"
 			type="org.eclipse.linuxtools.internal.docker.ui.consoles.DockerComposeConsole">
 		</propertyTester>
-		
-  <propertyTester
-        class="org.eclipse.linuxtools.internal.docker.ui.propertytesters.ImagePropertyTester"
-        id="org.eclipse.linuxtools.docker.ui.imagePropertyTester"
-        namespace="org.eclipse.linuxtools.docker.propertytesters.image"
-        properties="canBeTagged,hasMultipleTags"
-        type="org.eclipse.linuxtools.docker.core.IDockerImage">
-  </propertyTester>
-  <propertyTester
-        class="org.eclipse.linuxtools.internal.docker.ui.propertytesters.ConnectionPropertyTester"
-        id="org.eclipse.linuxtools.docker.activeconnectionPropertyTester"
-        namespace="org.eclipse.linuxtools.docker.propertytesters.connection"
-        properties="existsActiveConnection,existsAnyConnection"
-        type="java.lang.Object">
-  </propertyTester>
+        <propertyTester
+	        class="org.eclipse.linuxtools.internal.docker.ui.propertytesters.ImagePropertyTester"
+	        id="org.eclipse.linuxtools.docker.ui.imagePropertyTester"
+	        namespace="org.eclipse.linuxtools.docker.propertytesters.image"
+	        properties="canBeTagged,hasMultipleTags"
+	        type="org.eclipse.linuxtools.docker.core.IDockerImage">
+		</propertyTester>
+		<propertyTester
+	        class="org.eclipse.linuxtools.internal.docker.ui.propertytesters.ImagePropertyTester"
+	        id="org.eclipse.linuxtools.docker.ui.imageHierarchyNodeImagePropertyTester"
+	        namespace="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyImageNode"
+	        properties="canBeTagged,hasMultipleTags"
+	        type="org.eclipse.linuxtools.docker.core.IDockerImageHierarchyImageNode">
+		</propertyTester>
+		<propertyTester
+	        class="org.eclipse.linuxtools.internal.docker.ui.propertytesters.ConnectionPropertyTester"
+	        id="org.eclipse.linuxtools.docker.activeconnectionPropertyTester"
+	        namespace="org.eclipse.linuxtools.docker.propertytesters.connection"
+	        properties="existsActiveConnection,existsAnyConnection"
+	        type="java.lang.Object">
+	    </propertyTester>
 	</extension>
 		
     <extension
@@ -1220,7 +1353,7 @@
 	     		</visibleWhen>
 		     </command>
 		</menuContribution>
-		<!-- Docker Explorer View: open hierarchy -->
+		<!-- explorer View: open hierarchy -->
 		<menuContribution
 			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu?after=group.edit">
 	  		<command
@@ -1445,14 +1578,15 @@
               visible="true">
         </separator>
   		</menuContribution>
-    <menuContribution
-          allPopups="false"
-          locationURI="menu:org.eclipse.linuxtools.docker.ui.dockerContainersView">
-       <command
-             commandId="org.eclipse.linuxtools.docker.ui.commands.configureLabels"
-             style="push">
-       </command>
-    </menuContribution>
+	  	<!-- containers View -->
+	    <menuContribution
+	          allPopups="false"
+	          locationURI="menu:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+	       <command
+	             commandId="org.eclipse.linuxtools.docker.ui.commands.configureLabels"
+	             style="push">
+	       </command>
+	    </menuContribution>
 		<!-- images view toolbar: pull image -->
 		<menuContribution
 			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerImagesView">
@@ -1596,70 +1730,361 @@
 					style="push">
 			</command>
 	    </menuContribution>
+	    
+	    <!-- hierarchy view context menu: remove images -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu?after=group.edit">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.removeImages"
+		          icon="icons/delete.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.removeImages"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+                  <adapt
+                        type="org.eclipse.linuxtools.docker.core.IDockerImage">
+                  </adapt>
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- hierarchy view context menu: Show In -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu?after=group.navigate">
+			<menu
+	           id="org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu.showIn"
+	           label="%menu.showIn">
+			</menu>
+		</menuContribution>		
+		<!-- hierarchy view context menu: Show In>Properties (on Image)-->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu.showIn">
+		     <command
+		           commandId="org.eclipse.linuxtools.docker.ui.commands.showInPropertiesView"
+		           label="%command.showInPropertiesView.menu.name"
+		           id="org.eclipse.linuxtools.docker.ui.showImageInPropertiesView"
+             	style="push">
+			     <visibleWhen>
+		     		<with variable="selection">
+		     		   <count value="1"/>
+		                  <iterate ifEmpty="false">
+		                     <adapt type="org.eclipse.linuxtools.docker.core.IDockerImage"></adapt>
+		                  </iterate>
+		            </with>
+	     		</visibleWhen>
+		     </command>
+		</menuContribution>
+		<!-- hierarchy view context menu: push image -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu?after=group.tags">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.pushImage"
+		          icon="icons/push.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.pushImage"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <adapt
+	                       type="org.eclipse.linuxtools.docker.core.IDockerImage" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- hierarchy view context menu: tag image -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu?after=org.eclipse.linuxtools.docker.ui.commands.pushImage">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.tagImage"
+		          icon="icons/tag.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.tagImage"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <adapt
+	                       type="org.eclipse.linuxtools.docker.core.IDockerImage" />
+	                 </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- hierarchy view context menu: remove tag -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu?after=org.eclipse.linuxtools.docker.ui.commands.tagImage">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.removeTag"
+		          id="org.eclipse.linuxtools.docker.ui.commands.removeTag"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <adapt
+	                       type="org.eclipse.linuxtools.docker.core.IDockerImage" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- hierarchy view context menu: start containers -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu?after=group.run">
+	  		<command
+	          commandId="org.eclipse.linuxtools.docker.ui.commands.startContainers"
+	          icon="icons/running.gif"
+	          id="org.eclipse.linuxtools.docker.ui.commands.startContainers"
+	          style="push">
+	            <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <adapt
+	                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+	      </command>
+		</menuContribution>
+		<!-- hierarchy view context menu: pause containers -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu?after=org.eclipse.linuxtools.docker.ui.commands.startContainers">
+	  			<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.pauseContainers"
+		          icon="icons/suspend.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.pauseContainers"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+						<adapt
+	                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- hierarchy view context menu: unpause containers -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu?after=org.eclipse.linuxtools.docker.ui.commands.pauseContainers">
+	  			<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.unpauseContainers"
+		          icon="icons/resume.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.unpauseContainers"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+						<adapt type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- hierarchy view context menu: stop containers -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu?after=org.eclipse.linuxtools.docker.ui.commands.unpauseContainers">
+	  			<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.stopContainers"
+		          icon="icons/stopped.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.stopContainers"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+						<adapt type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- hierarchy view context menu: kill containers -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu?after=org.eclipse.linuxtools.docker.ui.commands.stopContainers">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.killContainers"
+		          icon="icons/kill.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.killContainers"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+						<adapt type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- hierarchy view context menu: remove containers -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu?after=group.edit">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.removeContainers"
+		          icon="icons/delete.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.removeContainers"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+						<adapt type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- hierarchy view context menu: Show In>Properties (on container)-->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu.showIn">
+		     <command
+		           commandId="org.eclipse.linuxtools.docker.ui.commands.showInPropertiesView"
+		           label="%command.showInPropertiesView.menu.name"
+		           id="org.eclipse.linuxtools.docker.ui.showContainerInPropertiesView"
+             	style="push">
+			     <visibleWhen>
+		     		<with variable="selection">
+		     		   <count value="1"/>
+		                  <iterate ifEmpty="false">
+							<adapt type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+		                  </iterate>
+		            </with>
+	     		</visibleWhen>
+		     </command>
+		</menuContribution>
+		<!-- hierarchy view context menu: commit container -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu?after=org.eclipse.linuxtools.docker.ui.commands.removeContainers">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.commitContainer"
+		          id="org.eclipse.linuxtools.docker.ui.commands.commitContainer"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+						<adapt type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- hierarchy view context menu: display container log -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu?after=group.logs">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.displayContainerLog"
+		          id="org.eclipse.linuxtools.docker.ui.commands.displayContainerLog"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+						<adapt type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- hierarchy view context menu: remove container log -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu?after=org.eclipse.linuxtools.docker.ui.commands.displayContainerLog">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.removeContainerLog"
+		          id="org.eclipse.linuxtools.docker.ui.commands.removeContainerLog"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+						<adapt type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
 	</extension>
 	
     <extension point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
 		<propertyContributor
-        contributorId="org.eclipse.linuxtools.docker.ui.dockerExplorerView"
+        contributorId="org.eclipse.linuxtools.docker.ui.propertiesViewContributor"
         labelProvider="org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerLabelProvider">
 			<propertyCategory category="org.eclipse.linuxtools.docker.ui.properties.connection"/>
 			<propertyCategory category="org.eclipse.linuxtools.docker.ui.properties.container"/>
-   <propertyCategory
-         category="org.eclipse.linuxtools.docker.ui.properties.image">
-   </propertyCategory>
+   			<propertyCategory category="org.eclipse.linuxtools.docker.ui.properties.image"/>
 		</propertyContributor>
 	</extension>
-	
-	<extension point="org.eclipse.ui.views.properties.tabbed.propertySections">
-		<propertySections contributorId="org.eclipse.linuxtools.docker.ui.dockerExplorerView">
-			<propertySection
-         class="org.eclipse.linuxtools.internal.docker.ui.views.ConnectionInfoPropertySection"
-         enablesFor="1"
-         id="org.eclipse.linuxtools.docker.ui.properties.connection.info.section"
-         tab="org.eclipse.linuxtools.docker.ui.properties.connection.info">
-					<input type="org.eclipse.linuxtools.docker.core.IDockerConnection"/>
-			</propertySection>
-   		<propertySection
-         class="org.eclipse.linuxtools.internal.docker.ui.views.ConnectionSettingsPropertySection"
-         enablesFor="1"
-         id="org.eclipse.linuxtools.docker.ui.properties.connection.settings.section"
-         tab="org.eclipse.linuxtools.docker.ui.properties.connection.settings">
-         			<input type="org.eclipse.linuxtools.docker.core.IDockerConnection"/>
-   			</propertySection>
-		<propertySection
-         class="org.eclipse.linuxtools.internal.docker.ui.views.ContainerInspectPropertySection"
-         enablesFor="1"
-         id="org.eclipse.linuxtools.docker.ui.properties.container.inspect.section"
-         tab="org.eclipse.linuxtools.docker.ui.properties.container.inspect">
-					<input type="org.eclipse.linuxtools.docker.core.IDockerContainer"/>
-			</propertySection>
-			<propertySection
-         class="org.eclipse.linuxtools.internal.docker.ui.views.ContainerInfoPropertySection"
-         enablesFor="1"
-         id="org.eclipse.linuxtools.docker.ui.properties.container.info.section"
-         tab="org.eclipse.linuxtools.docker.ui.properties.container.info">
-					<input type="org.eclipse.linuxtools.docker.core.IDockerContainer"/>
-			</propertySection>
-			<propertySection
-         class="org.eclipse.linuxtools.internal.docker.ui.views.ImageInspectPropertySection"
-         enablesFor="1"
-         id="org.eclipse.linuxtools.docker.ui.properties.image.inspect.section"
-         tab="org.eclipse.linuxtools.docker.ui.properties.image.inspect">
-					<input type="org.eclipse.linuxtools.docker.core.IDockerImage"/>
-			</propertySection>
-			<propertySection
-         class="org.eclipse.linuxtools.internal.docker.ui.views.ImageInfoPropertySection"
-         enablesFor="1"
-         id="org.eclipse.linuxtools.docker.ui.properties.image.info.section"
-         tab="org.eclipse.linuxtools.docker.ui.properties.image.info">
-					<input type="org.eclipse.linuxtools.docker.core.IDockerImage"/>
-			</propertySection>
-		</propertySections>
-	</extension>
- <extension
+	<extension
        point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
     <propertyTabs
-          contributorId="org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+          contributorId="org.eclipse.linuxtools.docker.ui.propertiesViewContributor">
        <propertyTab
              category="org.eclipse.linuxtools.docker.ui.properties.connection"
              id="org.eclipse.linuxtools.docker.ui.properties.connection.info"
@@ -1693,7 +2118,58 @@
              label="%Inspect.label">
        </propertyTab>
     </propertyTabs>
- </extension>
+  </extension>
+  <extension point="org.eclipse.ui.views.properties.tabbed.propertySections">
+		<propertySections contributorId="org.eclipse.linuxtools.docker.ui.propertiesViewContributor">
+			<propertySection
+         class="org.eclipse.linuxtools.internal.docker.ui.views.ConnectionInfoPropertySection"
+         enablesFor="1"
+         id="org.eclipse.linuxtools.docker.ui.properties.connection.info.section"
+         tab="org.eclipse.linuxtools.docker.ui.properties.connection.info">
+					<input type="org.eclipse.linuxtools.docker.core.IDockerConnection"/>
+			</propertySection>
+   		<propertySection
+         class="org.eclipse.linuxtools.internal.docker.ui.views.ConnectionSettingsPropertySection"
+         enablesFor="1"
+         id="org.eclipse.linuxtools.docker.ui.properties.connection.settings.section"
+         tab="org.eclipse.linuxtools.docker.ui.properties.connection.settings">
+         			<input type="org.eclipse.linuxtools.docker.core.IDockerConnection"/>
+   			</propertySection>
+		<propertySection
+         class="org.eclipse.linuxtools.internal.docker.ui.views.ContainerInspectPropertySection"
+         enablesFor="1"
+         id="org.eclipse.linuxtools.docker.ui.properties.container.inspect.section"
+         tab="org.eclipse.linuxtools.docker.ui.properties.container.inspect">
+					<input type="org.eclipse.linuxtools.docker.core.IDockerContainer"/>
+					<input type="org.eclipse.linuxtools.docker.core.IDockerImageHierarchyContainerNode"/>
+			</propertySection>
+			<propertySection
+         class="org.eclipse.linuxtools.internal.docker.ui.views.ContainerInfoPropertySection"
+         enablesFor="1"
+         id="org.eclipse.linuxtools.docker.ui.properties.container.info.section"
+         tab="org.eclipse.linuxtools.docker.ui.properties.container.info">
+					<input type="org.eclipse.linuxtools.docker.core.IDockerContainer"/>
+					<input type="org.eclipse.linuxtools.docker.core.IDockerImageHierarchyContainerNode"/>
+			</propertySection>
+			<propertySection
+         class="org.eclipse.linuxtools.internal.docker.ui.views.ImageInspectPropertySection"
+         enablesFor="1"
+         id="org.eclipse.linuxtools.docker.ui.properties.image.inspect.section"
+         tab="org.eclipse.linuxtools.docker.ui.properties.image.inspect">
+					<input type="org.eclipse.linuxtools.docker.core.IDockerImage"/>
+					<input type="org.eclipse.linuxtools.docker.core.IDockerImageHierarchyImageNode"/>
+			</propertySection>
+			<propertySection
+         class="org.eclipse.linuxtools.internal.docker.ui.views.ImageInfoPropertySection"
+         enablesFor="1"
+         id="org.eclipse.linuxtools.docker.ui.properties.image.info.section"
+         tab="org.eclipse.linuxtools.docker.ui.properties.image.info">
+					<input type="org.eclipse.linuxtools.docker.core.IDockerImage"/>
+					<input type="org.eclipse.linuxtools.docker.core.IDockerImageHierarchyImageNode"/>
+			</propertySection>
+		</propertySections>
+	</extension>	
+	
  <extension
        point="org.eclipse.ui.perspectives">
     <perspective

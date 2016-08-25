@@ -16,6 +16,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.linuxtools.docker.core.Activator;
+import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerConnection2;
 import org.eclipse.linuxtools.internal.docker.ui.jobs.RetrieveImageHierarchyJob;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerImageHierarchyView;
@@ -51,6 +52,9 @@ public class OpenInHierarchyViewCommandHandler extends AbstractHandler {
 								.getWorkbench().getActiveWorkbenchWindow()
 								.getActivePage()
 								.showView(DockerImageHierarchyView.VIEW_ID);
+						dockerImageHierarchyView
+								.setConnection(
+										(IDockerConnection) currentConnection);
 						dockerImageHierarchyView.show(
 								retrieveImageHierarchyJob.getImageHierarchy());
 					} catch (PartInitException e) {

@@ -1010,10 +1010,11 @@ public class DockerConnection
 						&& imageParentIds.contains(rawImage.id());
 				final boolean danglingImage = !taggedImage
 						&& !intermediateImage;
-				final String repo = DockerImage.extractRepo(repoTags.get(0));
-				final List<String> tags = Arrays
-						.asList(DockerImage.extractTag(repoTags.get(0)));
-				tempImages.add(new DockerImage(this, repoTags, repo,
+				final String firstRepo = DockerImage.extractRepo(repoTags.get(0));
+				final String firstTag = DockerImage.extractTag(repoTags.get(0));
+				final List<String> tags = (firstTag != null)
+						? Arrays.asList(firstTag) : Collections.emptyList();
+				tempImages.add(new DockerImage(this, repoTags, firstRepo,
 						tags, rawImage.id(), rawImage.parentId(),
 						rawImage.created(), rawImage.size(),
 						rawImage.virtualSize(), intermediateImage,

@@ -30,7 +30,7 @@ public class MenuAssertion extends AbstractSWTBotAssertion<MenuAssertion, SWTBot
 
 	public MenuAssertion isVisible() {
 		notNullValue();
-		if (!actual.isEnabled()) {
+		if (!actual.isVisible()) {
 			failWithMessage("Expected menu with text '%s' to be visible but it was not", actual.getText());
 		}
 		return this;
@@ -38,7 +38,7 @@ public class MenuAssertion extends AbstractSWTBotAssertion<MenuAssertion, SWTBot
 
 	public MenuAssertion isNotVisible() {
 		notNullValue();
-		if (actual.isEnabled()) {
+		if (actual.isVisible()) {
 			failWithMessage("Expected menu with text '%s' to be visible but it was not", actual.getText());
 		}
 		return this;

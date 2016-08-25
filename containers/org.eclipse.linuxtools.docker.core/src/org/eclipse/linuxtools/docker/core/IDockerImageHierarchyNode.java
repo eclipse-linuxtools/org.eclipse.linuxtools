@@ -13,10 +13,12 @@ package org.eclipse.linuxtools.docker.core;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.IAdaptable;
+
 /**
- * The node in the hierarchy for a given {@link IDockerImage}
+ * The Hierarchy for a given {@link IDockerImage}
  */
-public interface IDockerImageHierarchyNode {
+public interface IDockerImageHierarchyNode extends IAdaptable {
 
 	/**
 	 * @return the selected {@link IDockerImage} or {@link IDockerContainer}.
@@ -53,5 +55,4 @@ public interface IDockerImageHierarchyNode {
 	 * @return the root node of the resolved hierarchy
 	 */
 	public IDockerImageHierarchyNode getRoot();
-
 }
