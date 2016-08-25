@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.internal.docker.ui.views;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
+import org.eclipse.linuxtools.docker.core.IDockerImageHierarchyNode;
 
 /**
  * @author xcoulon

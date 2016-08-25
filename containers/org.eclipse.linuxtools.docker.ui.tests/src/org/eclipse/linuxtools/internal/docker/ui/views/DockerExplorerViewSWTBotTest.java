@@ -128,8 +128,8 @@ public class DockerExplorerViewSWTBotTest {
 		// containers)
 		final SWTBotTreeItem imagesTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, connectionName, "Images");
 		SWTUtils.asyncExec(() -> imagesTreeItem.expand());
-		// select both containers
-		SWTUtils.getTreeItem(imagesTreeItem, imageNames).select();
+		// select both images
+		SWTUtils.select(imagesTreeItem, imageNames);
 	}
 
 	@Test
@@ -334,7 +334,7 @@ public class DockerExplorerViewSWTBotTest {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
-				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
+				.container(MockContainerFactory.name("angry_bar").status("Running").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
@@ -349,7 +349,7 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideDisabledStopCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockContainerFactory.name("gentle_foo").status("Stopped").build())
+				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
 				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
@@ -430,7 +430,7 @@ public class DockerExplorerViewSWTBotTest {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
-				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
+				.container(MockContainerFactory.name("angry_bar").status("Running").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
@@ -445,7 +445,7 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideDisabledKillCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.container(MockContainerFactory.name("gentle_foo").status("Stopped").build())
+				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
 				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
@@ -589,8 +589,8 @@ public class DockerExplorerViewSWTBotTest {
 		// then 2 images should be displayed
 		final SWTBotTreeItem[] images = imagesTreeItem.getItems();
 		assertThat(images).hasSize(2);
-		assertThat(images[0].getText()).startsWith("bar: 1.0, latest");
-		assertThat(images[1].getText()).startsWith("foo: 1.0, latest");
+		assertThat(images[0].getText()).startsWith("bar:1.0, latest");
+		assertThat(images[1].getText()).startsWith("foo:1.0, latest");
 	}
 
 	@Test

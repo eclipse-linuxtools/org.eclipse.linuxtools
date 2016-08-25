@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
+import org.eclipse.linuxtools.docker.core.IDockerImageHierarchyImageNode;
 
 /**
  * @author jjohnstn
@@ -24,6 +25,9 @@ public class ImagePropertyTester extends PropertyTester {
 
 	/** Property name to check if a given {@link IDockerImage} can be tagged. */
 	public static final String CAN_BE_TAGGED = "canBeTagged"; //$NON-NLS-1$
+	/**
+	 * Property name to check if a given {@link IDockerImage} has multiple tags.
+	 */
 	public static final String HAS_MULTIPLE_TAGS = "hasMultipleTags"; //$NON-NLS-1$
 
 	@Override
@@ -37,6 +41,10 @@ public class ImagePropertyTester extends PropertyTester {
 				List<String> repoTags = image.repoTags();
 				return repoTags != null && repoTags.size() > 1;
 			}
+		} else if (receiver instanceof IDockerImageHierarchyImageNode) {
+			final IDockerImage image = ((IDockerImageHierarchyImageNode) receiver)
+					.getElement();
+			return test(image, property, args, expectedValue);
 		}
 		return false;
 	}

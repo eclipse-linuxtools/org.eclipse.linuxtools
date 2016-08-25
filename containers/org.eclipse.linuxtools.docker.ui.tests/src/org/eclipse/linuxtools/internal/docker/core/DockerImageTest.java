@@ -14,9 +14,14 @@ package org.eclipse.linuxtools.internal.docker.core;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.assertj.core.data.MapEntry;
+import org.eclipse.linuxtools.docker.core.IDockerImage;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerImageFactory;
 import org.junit.Test;
 
 /**
@@ -114,5 +119,33 @@ public class DockerImageTest {
 		// then
 		assertThat(tagsByRepo).containsEntry("foo", Arrays.asList("1.0", "latest"));
 		assertThat(tagsByRepo).containsEntry("org/foo", Arrays.asList("1.0", "latest"));
+	}
+
+	@Test
+	public void shouldExtractEmptyTagsByRepo() {
+		// given
+		final List<String> repoTags = Arrays.asList("foo");
+		// when
+		final Map<String, List<String>> tagsByRepo = DockerImage.extractTagsByRepo(repoTags);
+		// then
+		assertThat(tagsByRepo).hasSize(1).contains(MapEntry.entry("foo", Collections.emptyList()));
+	}
+
+	@Test
+	public void shouldDuplicateImageByRepo() {
+		// given
+		final IDockerImage fooImage = MockDockerImageFactory.id("sha256:foo_image")
+				.name("foo_image", "foo_image_alias:alias").build();
+		// when
+		final List<IDockerImage> result = DockerImage.duplicateImageByRepo(fooImage).collect(Collectors.toList());
+		// then
+		assertThat(result).hasSize(2);
+		assertThat(result.get(0).id()).isEqualTo("sha256:foo_image");
+		assertThat(result.get(0).repo()).isEqualTo("foo_image");
+		assertThat(result.get(0).tags()).isEmpty();
+		assertThat(result.get(1).id()).isEqualTo("sha256:foo_image");
+		assertThat(result.get(1).repo()).isEqualTo("foo_image_alias");
+		assertThat(result.get(1).tags()).containsExactly("alias");
+
 	}
 }

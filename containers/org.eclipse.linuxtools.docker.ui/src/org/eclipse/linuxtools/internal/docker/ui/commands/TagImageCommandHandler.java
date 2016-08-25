@@ -22,6 +22,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
+import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerImage;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
@@ -48,6 +49,8 @@ public class TagImageCommandHandler extends AbstractHandler {
 		final IDockerConnection connection = CommandUtils
 				.getCurrentConnection(activePart);
 		if (selectedImages.size() != 1 || connection == null) {
+			Activator.logErrorMessage(CommandMessages
+					.getString("Command.missing.selection.failure")); //$NON-NLS-1$
 			return null;
 		}
 		final IDockerImage image = selectedImages.get(0);

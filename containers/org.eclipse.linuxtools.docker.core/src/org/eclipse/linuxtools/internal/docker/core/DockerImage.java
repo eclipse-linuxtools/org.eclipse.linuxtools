@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 
@@ -194,6 +195,26 @@ public class DockerImage implements IDockerImage {
 			return null;
 		}
 		return repoTag.substring(indexOfColonChar + 1);
+	}
+
+	/**
+	 * Duplicates the given {@code image} into as many {@link IDockerImage} has
+	 * it has distinct repoTags entries
+	 * 
+	 * @param image
+	 *            the source image
+	 * @return a {@link Stream} of duplicate {@link IDockerImage}
+	 */
+	public static Stream<IDockerImage> duplicateImageByRepo(
+			final IDockerImage image) {
+		return DockerImage.extractTagsByRepo(image.repoTags()).entrySet()
+				.stream()
+				.map(entry -> new DockerImage(
+						(DockerConnection) image.getConnection(),
+						image.repoTags(), entry.getKey(), entry.getValue(),
+						image.id(), image.parentId(), image.created(),
+						image.size(), image.virtualSize(),
+						image.isIntermediateImage(), image.isDangling()));
 	}
 
 	@Override

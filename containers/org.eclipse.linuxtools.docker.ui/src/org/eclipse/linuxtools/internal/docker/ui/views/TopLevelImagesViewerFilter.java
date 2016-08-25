@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.internal.docker.ui.views;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
+import org.eclipse.linuxtools.docker.core.IDockerImageHierarchyNode;
 
 /**
  * @author xcoulon
@@ -36,6 +37,9 @@ public class TopLevelImagesViewerFilter extends ViewerFilter {
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
 		if(element instanceof IDockerImage) {
 			return !((IDockerImage)element).isDangling() || !((IDockerImage)element).isIntermediateImage();
+		} else if (element instanceof IDockerImageHierarchyNode) {
+			return select(viewer, parentElement,
+					((IDockerImageHierarchyNode) element).getElement());
 		}
 		return true;
 	}

@@ -21,6 +21,7 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.core.expressions.EvaluationContext;
 import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
@@ -39,6 +40,7 @@ import org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceConstants
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerContainersView;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainerVolume;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
+import org.eclipse.linuxtools.internal.docker.ui.views.DockerImageHierarchyView;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerImagesView;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -128,15 +130,19 @@ public class CommandUtils {
 		if (activePart instanceof DockerContainersView) {
 			final ISelection selection = ((DockerContainersView) activePart)
 					.getSelection();
-			return convertSelectionTo(selection, targetClass);
+			return castSelectionTo(selection, targetClass);
 		} else if (activePart instanceof DockerImagesView) {
 			final ISelection selection = ((DockerImagesView) activePart)
 					.getSelection();
-			return convertSelectionTo(selection, targetClass);
+			return castSelectionTo(selection, targetClass);
 		} else if (activePart instanceof DockerExplorerView) {
 			final ISelection selection = ((DockerExplorerView) activePart)
 					.getCommonViewer().getSelection();
-			return convertSelectionTo(selection, targetClass);
+			return castSelectionTo(selection, targetClass);
+		} else if (activePart instanceof DockerImageHierarchyView) {
+			final ISelection selection = ((DockerImageHierarchyView) activePart)
+					.getCommonViewer().getSelection();
+			return adaptSelectionTo(selection, targetClass);
 		}
 		return Collections.emptyList();
 	}
@@ -148,7 +154,8 @@ public class CommandUtils {
 	 *         given active part of {@link Collections#emptyList()} if none was
 	 *         selected
 	 */
-	public static List<IDockerContainer> getSelectedContainers(final IWorkbenchPart activePart) {
+	public static List<IDockerContainer> getSelectedContainers(
+			final IWorkbenchPart activePart) {
 		return getSelectedElements(activePart, IDockerContainer.class);
 	}
 
@@ -185,16 +192,7 @@ public class CommandUtils {
 	 */
 	public static List<IDockerImage> getSelectedImages(
 			final IWorkbenchPart activePart) {
-		if (activePart instanceof DockerImagesView) {
-			final ISelection selection = ((DockerImagesView) activePart)
-					.getSelection();
-			return convertSelectionTo(selection, IDockerImage.class);
-		} else if (activePart instanceof DockerExplorerView) {
-			final ISelection selection = ((DockerExplorerView) activePart)
-					.getCommonViewer().getSelection();
-			return convertSelectionTo(selection, IDockerImage.class);
-		}
-		return Collections.emptyList();
+		return getSelectedElements(activePart, IDockerImage.class);
 	}
 
 	/**
@@ -213,15 +211,16 @@ public class CommandUtils {
 	}
 
 	/**
+	 * Returns the given {@link List} <strong>typed</strong> with the given
+	 * {@code targetClass}.
 	 * 
 	 * @param selection
 	 *            the current selection
-	 * @return the {@link List} of {@link IDockerContainer} associated with the
-	 *         given {@link ISelection}, or {@link Collections#emptyList()} if
-	 *         none was selected.
+	 * @return Returns the given {@link List} typed with the
+	 *         {@code targetClass}.
 	 */
 	@SuppressWarnings("unchecked")
-	private static <T> List<T> convertSelectionTo(final ISelection selection,
+	private static <T> List<T> castSelectionTo(final ISelection selection,
 			final Class<T> targetClass) {
 		if (selection instanceof IStructuredSelection) {
 			final IStructuredSelection structuredSelection = (IStructuredSelection) selection;
@@ -229,6 +228,34 @@ public class CommandUtils {
 					.filter(selectedElement -> targetClass
 							.isAssignableFrom(selectedElement.getClass()))
 					.map(selectedElement -> (T) selectedElement)
+					.collect(Collectors.toList());
+		}
+		return Collections.emptyList();
+	}
+
+	/**
+	 * Returns the given {@link List} <strong>adapted</strong> to the given
+	 * {@code targetClass}.
+	 * 
+	 * @param selection
+	 *            the current selection
+	 * @param targetClass
+	 *            the target class in which the elements of the given
+	 *            {@code selection} should be adapted
+	 * @return Returns the given {@link List} adapted to the
+	 *         {@code targetClass}.
+	 */
+	@SuppressWarnings("unchecked")
+	private static <T> List<T> adaptSelectionTo(final ISelection selection,
+			final Class<T> targetClass) {
+		if (selection instanceof IStructuredSelection) {
+			final IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+			return (List<T>) structuredSelection.toList().stream()
+					.filter(selectedElement -> selectedElement instanceof IAdaptable
+							&& ((IAdaptable) selectedElement)
+									.getAdapter(targetClass) != null)
+					.map(selectedElement -> ((IAdaptable) selectedElement)
+							.getAdapter(targetClass))
 					.collect(Collectors.toList());
 		}
 		return Collections.emptyList();

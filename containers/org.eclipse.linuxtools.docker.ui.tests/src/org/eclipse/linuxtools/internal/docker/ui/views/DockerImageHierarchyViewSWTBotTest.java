@@ -28,12 +28,17 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionMa
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerImageHierarchyViewAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.MenuAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TestLoggerRule;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -90,10 +95,10 @@ public class DockerImageHierarchyViewSWTBotTest {
 		// data is built as follows:
 		// root_image
 		// |- foo_image1
-		// _|- foo_container1
+		// _|- foo_container1 (Up)
 		// _|- foo_image2
-		// __|- foo_container21
-		// __|- foo_container22
+		// __|- foo_container21 (Exited)
+		// __|- foo_container22 (Paused)
 		// |- bar_image11
 		// _|- bar_container1
 
@@ -101,17 +106,15 @@ public class DockerImageHierarchyViewSWTBotTest {
 		final Image fooImage1 = MockImageFactory.id("sha256:foo_image1").name("foo_image1")
 				.parentId("sha256:root_image").build();
 		final Image fooImage2 = MockImageFactory.id("sha256:foo_image2").name("foo_image2", "foo_image2_alias")
-				.parentId("sha256:foo_image1")
-				.build();
+				.parentId("sha256:foo_image1").build();
 		final Container fooContainer1 = MockContainerFactory.id("sha256:foo_container1").name("foo_container1")
-				.imageName("foo_image1").build();
+				.imageName("foo_image1").status("Up").build();
 		final Container fooContainer21 = MockContainerFactory.id("sha256:foo_container21").name("foo_container21")
-				.imageName("foo_image2").build();
+				.imageName("foo_image2").status("Exited").build();
 		final Container fooContainer22 = MockContainerFactory.id("sha256:foo_container22").name("foo_container22")
-				.imageName("foo_image2_alias").build();
+				.imageName("foo_image2_alias").status("Up (Paused)").build();
 		final Image barImage1 = MockImageFactory.id("sha256:bar_image1").name("bar_image1")
-				.parentId("sha256:root_image")
-				.build();
+				.parentId("sha256:root_image").build();
 		final Container barContainer1 = MockContainerFactory.id("sha256:bar_container1").name("bar_container1")
 				.imageName("bar_image1").build();
 		final DockerClient client = MockDockerClientFactory.image(rootImage).image(fooImage1).container(fooContainer1)
@@ -149,6 +152,17 @@ public class DockerImageHierarchyViewSWTBotTest {
 		return (DockerImageHierarchyView) hierarchyViewBot.getViewReference().getView(true);
 	}
 
+	private static SWTBotTreeItem selectImageInTreeView(final SWTWorkbenchBot bot, final String... path) {
+		final SWTBotView dockerImageHierarchyViewBot = bot.viewById(DockerImageHierarchyView.VIEW_ID);
+		final DockerImageHierarchyView dockerImageHierarchyView = (DockerImageHierarchyView) (dockerImageHierarchyViewBot
+				.getViewReference().getView(true));
+		SWTUtils.asyncExec(() -> dockerImageHierarchyView.getCommonViewer().expandAll());
+		// when a second call to expand the container is done (because the first
+		// expandAll stopped with a "Loading..." job that retrieved the
+		// containers)
+		return SWTUtils.getTreeItem(dockerImageHierarchyViewBot, path).select();
+	}
+
 	@Test
 	public void shouldDisplayImageHierarchyViewWhenSelectingImage() {
 		// given
@@ -159,6 +173,19 @@ public class DockerImageHierarchyViewSWTBotTest {
 		// foo_image1
 		DockerImageHierarchyViewAssertion.assertThat(getDockerImageHierarchyView())
 				.hasSelectedElement(this.connection.getImage("sha256:foo_image1"));
+	}
+
+	@Test
+	public void shouldDisplayImageHierarchyViewWhenSelectingImageAlias() {
+		// given
+		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images", "foo_image2_alias").select();
+		// when
+		dockerExplorerViewBot.bot().tree().contextMenu("Open Image Hierarchy").click(); //$NON-NLS-1$
+		// then the view should be visible and selection should be on
+		// foo_image2
+		DockerImageHierarchyViewAssertion.assertThat(getDockerImageHierarchyView())
+				.hasSelectedElement(this.connection.getImage("sha256:foo_image2"));
+
 	}
 
 	@Test
@@ -187,7 +214,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		assertThat(rootImageHierarchy.getParent()).isNull();
 		final IDockerImageHierarchyNode fooImage1Hierarchy = rootImageHierarchy.getChild("sha256:foo_image1");
 		assertThat(fooImage1Hierarchy.getParent()).isEqualTo(rootImageHierarchy);
-		// 2 direct children: foo_image2 and foo_container1
+		// 2 direct children: foo_image2/foo_image2_alias and foo_container1
 		assertThat(fooImage1Hierarchy.getChildren()).hasSize(2);
 	}
 
@@ -264,6 +291,170 @@ public class DockerImageHierarchyViewSWTBotTest {
 		assertThat(barContainer1Hierarchy.getChildren()).isEmpty();
 		final IDockerImage barImageElement = (IDockerImage) barContainer1Hierarchy.getParent().getElement();
 		assertThat(barImageElement.id()).isEqualTo("sha256:bar_image1");
+	}
+
+	@Test
+	public void shouldShowSelectedImageInPropertiesView() {
+		// given
+		shouldDisplayImageHierarchyViewWhenSelectingImage();
+		// when
+		selectImageInTreeView(bot, "root");
+		// show container info in Properties view
+		SWTUtils.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Show In", "Properties")
+				.click();
+		// the properties view should be visible and filled with image details
+		final SWTBotView propertiesBotView = this.bot.viewById("org.eclipse.ui.views.PropertySheet");
+		assertThat(propertiesBotView.isActive()).isEqualTo(true);
+		final PropertySheet propertiesView = (PropertySheet) propertiesBotView.getViewReference().getView(false);
+		assertThat(((TabbedPropertySheetPage) propertiesView.getCurrentPage()).getCurrentTab()).isNotNull();
+	}
+
+	@Test
+	public void shouldShowSelectedContainerInPropertiesView() {
+		// given
+		shouldDisplayImageHierarchyViewWhenSelectingImage();
+		// when
+		selectImageInTreeView(bot, "root", "foo_image1", "foo_container1");
+		// show container info in Properties view
+		SWTUtils.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Show In", "Properties")
+				.click();
+		// the properties view should be visible and filled with image details
+		final SWTBotView propertiesBotView = this.bot.viewById("org.eclipse.ui.views.PropertySheet");
+		assertThat(propertiesBotView.isActive()).isEqualTo(true);
+		final PropertySheet propertiesView = (PropertySheet) propertiesBotView.getViewReference().getView(false);
+		assertThat(((TabbedPropertySheetPage) propertiesView.getCurrentPage()).getCurrentTab()).isNotNull();
+	}
+
+	@Test
+	public void shouldProvideEnabledRemoveCommandOnSelectedImage() {
+		// given
+		shouldDisplayImageHierarchyViewWhenSelectingImage();
+		// when
+		selectImageInTreeView(bot, "root");
+		final SWTBotMenu menu = SWTUtils
+				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Remove");
+		// then
+		MenuAssertion.assertThat(menu).isVisible().isEnabled();
+	}
+
+	@Test
+	public void shouldProvideEnabledAddTagCommandOnSelectedImage() {
+		// given
+		shouldDisplayImageHierarchyViewWhenSelectingImage();
+		// when
+		selectImageInTreeView(bot, "root");
+		final SWTBotMenu menu = SWTUtils
+				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Add Tag");
+		// then
+		MenuAssertion.assertThat(menu).isVisible().isEnabled();
+	}
+
+	@Test
+	public void shouldProvideEnabledPushCommandOnSelectedImage() {
+		// given
+		shouldDisplayImageHierarchyViewWhenSelectingImage();
+		// when
+		selectImageInTreeView(bot, "root");
+		final SWTBotMenu menu = SWTUtils
+				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Push...");
+		// then
+		MenuAssertion.assertThat(menu).isVisible().isEnabled();
+	}
+
+	@Test
+	public void shouldProvideEnabledStartCommandOnSelectedContainer() {
+		// given
+		shouldDisplayImageHierarchyViewWhenSelectingImage();
+		// when
+		selectImageInTreeView(bot, "root", "foo_image1", "foo_image2", "foo_container21");
+		final SWTBotMenu menu = SWTUtils
+				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Start");
+		// then
+		MenuAssertion.assertThat(menu).isVisible().isEnabled();
+	}
+
+	@Test
+	public void shouldProvideEnabledPauseCommandOnSelectedContainer() {
+		// given
+		shouldDisplayImageHierarchyViewWhenSelectingImage();
+		// when
+		selectImageInTreeView(bot, "root", "foo_image1", "foo_container1");
+		final SWTBotMenu menu = SWTUtils
+				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Pause");
+		// then
+		MenuAssertion.assertThat(menu).isVisible().isEnabled();
+	}
+
+	@Test
+	public void shouldProvideEnabledUnpauseCommandOnSelectedContainer() {
+		// given
+		shouldDisplayImageHierarchyViewWhenSelectingImage();
+		// when
+		selectImageInTreeView(bot, "root", "foo_image1", "foo_image2", "foo_container22");
+		final SWTBotMenu menu = SWTUtils
+				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Unpause");
+		// then
+		MenuAssertion.assertThat(menu).isVisible().isEnabled();
+	}
+
+	@Test
+	public void shouldProvideEnabledKillCommandOnSelectedContainer() {
+		// given
+		shouldDisplayImageHierarchyViewWhenSelectingImage();
+		// when
+		selectImageInTreeView(bot, "root", "foo_image1", "foo_container1");
+		final SWTBotMenu menu = SWTUtils
+				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Kill");
+		// then
+		MenuAssertion.assertThat(menu).isVisible().isEnabled();
+	}
+
+	@Test
+	public void shouldProvideEnabledRemoveCommandOnSelectedContainer() {
+		// given
+		shouldDisplayImageHierarchyViewWhenSelectingImage();
+		// when
+		selectImageInTreeView(bot, "root", "foo_image1", "foo_image2", "foo_container21");
+		final SWTBotMenu menu = SWTUtils
+				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Remove");
+		// then
+		MenuAssertion.assertThat(menu).isVisible().isEnabled();
+	}
+
+	@Test
+	public void shouldProvideEnabledCommitCommandOnSelectedContainer() {
+		// given
+		shouldDisplayImageHierarchyViewWhenSelectingImage();
+		// when
+		selectImageInTreeView(bot, "root", "foo_image1", "foo_image2", "foo_container21");
+		final SWTBotMenu menu = SWTUtils
+				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Commit");
+		// then
+		MenuAssertion.assertThat(menu).isVisible().isEnabled();
+	}
+
+	@Test
+	public void shouldProvideEnabledDisplayLogCommandOnSelectedContainer() {
+		// given
+		shouldDisplayImageHierarchyViewWhenSelectingImage();
+		// when
+		selectImageInTreeView(bot, "root", "foo_image1", "foo_image2", "foo_container21");
+		final SWTBotMenu menu = SWTUtils
+				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Display Log");
+		// then
+		MenuAssertion.assertThat(menu).isVisible().isEnabled();
+	}
+
+	@Test
+	public void shouldProvideEnabledRemoveLogCommandOnSelectedContainer() {
+		// given
+		shouldDisplayImageHierarchyViewWhenSelectingImage();
+		// when
+		selectImageInTreeView(bot, "root", "foo_image1", "foo_image2", "foo_container21");
+		final SWTBotMenu menu = SWTUtils
+				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Remove Log");
+		// then
+		MenuAssertion.assertThat(menu).isVisible().isEnabled();
 	}
 
 }

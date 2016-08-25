@@ -20,23 +20,22 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
+import org.eclipse.linuxtools.docker.core.IDockerImageHierarchyContainerNode;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
+/**
+ * Property section for the {@link IDockerContainer} detailed info.
+ */
 public class ContainerInspectPropertySection extends BasePropertySection {
 
 	private final static String PropertiesInfoError = "PropertiesInfoError.msg"; //$NON-NLS-1$
 	private final static String PropertiesLoadingContainerInfo = "PropertiesLoadingContainerInfo.msg"; //$NON-NLS-1$
-
-	private IDockerContainer selectedContainer;
-	private Object containerInfo;
 
 	@Override
 	public void createControls(Composite parent, TabbedPropertySheetPage aTabbedPropertySheetPage) {
@@ -47,25 +46,27 @@ public class ContainerInspectPropertySection extends BasePropertySection {
 	@Override
 	public void setInput(final IWorkbenchPart part, final ISelection selection) {
 		super.setInput(part, selection);
-		Object input = null;
-		if (selection instanceof ITreeSelection)
-			input = ((ITreeSelection) selection).getFirstElement();
-		else if (selection instanceof IStructuredSelection)
-			input = ((IStructuredSelection) selection).getFirstElement();
-		Assert.isTrue(input instanceof IDockerContainer);
-		this.selectedContainer = (IDockerContainer) input;
-		final IDockerConnection parentConnection;
-		if (part instanceof DockerContainersView) {
-			parentConnection = ((DockerContainersView) part).getConnection();
-		} else {
-			parentConnection = (IDockerConnection) ((ITreeSelection) selection)
-					.getPathsFor(selectedContainer)[0].getFirstSegment();
-		}
-		this.containerInfo = getContainerInfo(parentConnection, selectedContainer);
-		if (getTreeViewer() != null && this.containerInfo != null) {
+		final Object input = getSelection(selection);
+		final IDockerConnection parentConnection = getConnection(part,
+				selection);
+		final IDockerContainerInfo containerInfo = getContainerInfo(
+				parentConnection, input);
+		if (getTreeViewer() != null && containerInfo != null) {
 			getTreeViewer().setInput(containerInfo);
 			getTreeViewer().expandAll();
 		}
+	}
+
+	private IDockerContainerInfo getContainerInfo(
+			final IDockerConnection parentConnection,
+			final Object input) {
+		Assert.isTrue(input instanceof IDockerContainer
+				|| input instanceof IDockerImageHierarchyContainerNode);
+		if (input instanceof IDockerContainer) {
+			return getContainerInfo(parentConnection, (IDockerContainer) input);
+		}
+		return getContainerInfo(parentConnection,
+				((IDockerImageHierarchyContainerNode) input).getElement());
 	}
 
 	/**

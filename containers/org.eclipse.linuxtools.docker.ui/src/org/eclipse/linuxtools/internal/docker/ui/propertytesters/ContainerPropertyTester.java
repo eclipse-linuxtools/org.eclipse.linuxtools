@@ -15,6 +15,7 @@ import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.docker.core.EnumDockerStatus;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
+import org.eclipse.linuxtools.docker.core.IDockerImageHierarchyContainerNode;
 
 /**
  * @author xcoulon
@@ -72,6 +73,9 @@ public class ContainerPropertyTester extends PropertyTester {
 						|| checkIfStateMatchesExpectation(container,
 								EnumDockerStatus.UNKNOWN, expectedValue);
 			}
+		} else if (receiver instanceof IDockerImageHierarchyContainerNode) {
+			return test(((IDockerImageHierarchyContainerNode) receiver)
+					.getElement(), property, args, expectedValue);
 		}
 		return false;
 	}

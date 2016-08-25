@@ -105,7 +105,8 @@ public class DockerExplorerView extends CommonNavigator implements
 
 	@Override
 	public String getContributorId() {
-		return getSite().getId();
+		return "org.eclipse.linuxtools.docker.ui.propertiesViewContributor"; //$NON-NLS-1$
+		// return getSite().getId();
 	}
 	
 	@SuppressWarnings("unchecked")
