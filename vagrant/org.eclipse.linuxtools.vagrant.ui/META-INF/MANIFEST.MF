@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vagrant UI Plug-in
 Bundle-SymbolicName: org.eclipse.linuxtools.vagrant.ui;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 2.0.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.internal.vagrant.ui.Activator
 Bundle-Vendor: Eclipse Linux Tools
 Require-Bundle: org.eclipse.ui,
