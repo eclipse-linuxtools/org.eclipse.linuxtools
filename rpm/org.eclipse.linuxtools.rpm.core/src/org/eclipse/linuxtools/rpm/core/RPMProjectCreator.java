@@ -60,31 +60,26 @@ public class RPMProjectCreator {
      * @return The newly created project.
      * @throws CoreException If the location is wrong.
      */
-    public IProject create(String projectName, IPath projectPath,
-            IProgressMonitor monitor) throws CoreException {
-            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-            IProject project = root.getProject(projectName);
-            IProjectDescription description = ResourcesPlugin.getWorkspace()
-                    .newProjectDescription(project.getName());
-            String parsedIPathString = null;
-            if (!Platform.getLocation().equals(projectPath)) {
-                parsedIPathString = projectPath.toString().replaceFirst(
-                        ":/", "://"); //$NON-NLS-1$ //$NON-NLS-2$
-                try {
-                    description.setLocationURI(new URI(parsedIPathString));
-                } catch (URISyntaxException e) {
-                    throw new CoreException(new Status(IStatus.ERROR,
-                            IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
-                }
-            }
+	public IProject create(String projectName, IPath projectPath, IProgressMonitor monitor) throws CoreException {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IProject project = root.getProject(projectName);
+		IProjectDescription description = ResourcesPlugin.getWorkspace().newProjectDescription(project.getName());
+		String parsedIPathString = null;
+		if (!Platform.getLocation().equals(projectPath)) {
+			parsedIPathString = projectPath.toString().replaceFirst(":/", "://"); //$NON-NLS-1$ //$NON-NLS-2$
+			try {
+				description.setLocationURI(new URI(parsedIPathString));
+			} catch (URISyntaxException e) {
+				throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
+			}
+		}
 
-            description
-                    .setNatureIds(new String[] { IRPMConstants.RPM_NATURE_ID });
-            project.create(description, monitor);
+		description.setNatureIds(new String[] { IRPMConstants.RPM_NATURE_ID });
+		project.create(description, monitor);
 
-            monitor.worked(10);
-            project.open(monitor);
-            new RPMProject(project, layout);
-            return project;
-    }
+		monitor.worked(10);
+		project.open(monitor);
+		new RPMProject(project, layout);
+		return project;
+	}
 }

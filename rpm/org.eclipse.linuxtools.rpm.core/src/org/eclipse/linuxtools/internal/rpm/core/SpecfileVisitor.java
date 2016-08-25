@@ -26,11 +26,10 @@ public class SpecfileVisitor implements IResourceVisitor {
 
     @Override
     public boolean visit(IResource resource) {
-        if (resource.getType() == IResource.FILE
-                && resource.getFileExtension() != null
-                && resource.getFileExtension().equals("spec")) { //$NON-NLS-1$
-            paths.add(resource);
-        }
+		if (resource.getType() == IResource.FILE && resource.getFileExtension() != null
+				&& resource.getFileExtension().equals("spec")) { //$NON-NLS-1$
+			paths.add(resource);
+		}
         return true;
     }
 

@@ -51,14 +51,12 @@ public class DownloadJob extends Job {
 
     @Override
     public IStatus run(IProgressMonitor monitor) {
-        monitor.beginTask(NLS.bind(Messages.DownloadJob_0, file.getName()),
-                content.getContentLength());
+		monitor.beginTask(NLS.bind(Messages.DownloadJob_0, file.getName()), content.getContentLength());
         try {
             File tempFile = File.createTempFile(file.getName(), ""); //$NON-NLS-1$
             boolean canceled = false;
-            try (FileOutputStream fos = new FileOutputStream(tempFile);
-                    InputStream is = new BufferedInputStream(
-                            content.getInputStream())) {
+			try (FileOutputStream fos = new FileOutputStream(tempFile);
+					InputStream is = new BufferedInputStream(content.getInputStream())) {
                 int b;
                 byte buf[] = new byte[MULTIPLIER * KB]; // 5kB buffer
                 while ((b = is.read(buf)) != -1) {
@@ -72,19 +70,16 @@ public class DownloadJob extends Job {
             }
             if (!canceled) {
                 // override the previous file if there is one
-                if (file.exists()) {
-                    file.setContents(new FileInputStream(tempFile), true,
-                            false, monitor);
-                } else {
-                    file.create(new FileInputStream(tempFile), true, monitor);
-
-                }
+				if (file.exists()) {
+					file.setContents(new FileInputStream(tempFile), true, false, monitor);
+				} else {
+					file.create(new FileInputStream(tempFile), true, monitor);
+				}
             }
             tempFile.delete();
         } catch (CoreException | IOException e) {
-            Platform.getLog(Platform.getBundle(IRPMConstants.RPM_CORE_ID)).log(
-                    new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e
-                            .getMessage(), e));
+			Platform.getLog(Platform.getBundle(IRPMConstants.RPM_CORE_ID))
+					.log(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
             return Status.CANCEL_STATUS;
         }
         monitor.done();

@@ -91,12 +91,11 @@ public final class RPMQuery {
         command.add(rpmCmd);
         command.addAll(Arrays.asList(args));
         command.add(rpmFile.getLocation().toOSString());
-        try {
-            return Utils.runCommandToString(command.toArray(new String[command
-                                                                       .size()]));
-        } catch (IOException e) {
-            // ignore - nothing that deserves showing to the user
-        }
+		try {
+			return Utils.runCommandToString(command.toArray(new String[command.size()]));
+		} catch (IOException e) {
+			// ignore - nothing that deserves showing to the user
+		}
         return ""; //$NON-NLS-1$
     }
 
@@ -119,19 +118,17 @@ public final class RPMQuery {
      * @since 2.1
      */
     public static String eval(IProject project, String toEval) throws CoreException {
-        IEclipsePreferences node = DefaultScope.INSTANCE
-                .getNode(IRPMConstants.RPM_CORE_ID);
-        String rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
-        List<String> command = new ArrayList<>();
-        command.add(rpmCmd);
-        command.add("--eval"); //$NON-NLS-1$
-        command.add(toEval);
-        try {
-            return Utils.runCommandToString(project, command.toArray(new String[command.size()]));
-        } catch (IOException e) {
-            throw new CoreException(new Status(IStatus.ERROR,
-                    IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
-        }
+		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(IRPMConstants.RPM_CORE_ID);
+		String rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
+		List<String> command = new ArrayList<>();
+		command.add(rpmCmd);
+		command.add("--eval"); //$NON-NLS-1$
+		command.add(toEval);
+		try {
+			return Utils.runCommandToString(project, command.toArray(new String[command.size()]));
+		} catch (IOException e) {
+			throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
+		}
     }
 
 }

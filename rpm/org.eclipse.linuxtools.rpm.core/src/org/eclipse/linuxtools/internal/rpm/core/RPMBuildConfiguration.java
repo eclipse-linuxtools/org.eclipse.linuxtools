@@ -59,123 +59,106 @@ public class RPMBuildConfiguration implements IProjectConfiguration {
      * </ul>
      */
     private void initialize() throws CoreException {
-        String pluginID = IRPMConstants.RPM_CORE_ID;
+		String pluginID = IRPMConstants.RPM_CORE_ID;
 
-        String sourcesPath =
-            project.getPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SOURCES_FOLDER));
-        if(sourcesPath == null) {
-            sourcesFolder = project.getFolder(IRPMConstants.SOURCES_FOLDER);
-            if(!sourcesFolder.exists()) {
-                sourcesFolder.create(false, true, null);
-            }
-            project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SOURCES_FOLDER),
-                    sourcesFolder.getName());
-        } else {
-            sourcesFolder = project.getFolder(sourcesPath);
-            if(!sourcesFolder.exists()) {
-                sourcesFolder.create(false, true, null);
-            }
-        }
+		String sourcesPath = project.getPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SOURCES_FOLDER));
+		if (sourcesPath == null) {
+			sourcesFolder = project.getFolder(IRPMConstants.SOURCES_FOLDER);
+			if (!sourcesFolder.exists()) {
+				sourcesFolder.create(false, true, null);
+			}
+			project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SOURCES_FOLDER),
+					sourcesFolder.getName());
+		} else {
+			sourcesFolder = project.getFolder(sourcesPath);
+			if (!sourcesFolder.exists()) {
+				sourcesFolder.create(false, true, null);
+			}
+		}
 
-        String srcRpmPath =
-            project.getPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SRPMS_FOLDER));
-        if(srcRpmPath == null) {
-            srpmsFolder = project.getFolder(IRPMConstants.SRPMS_FOLDER);
-            if(!srpmsFolder.exists()) {
-                srpmsFolder.create(false, true, null);
-            }
-            srpmsFolder.setDerived(true, new NullProgressMonitor());
-            project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SRPMS_FOLDER),
-                    srpmsFolder.getName());
-        } else {
-            srpmsFolder = project.getFolder(srcRpmPath);
-            if(!srpmsFolder.exists()) {
-                srpmsFolder.create(false, true, null);
-            }
-        }
+		String srcRpmPath = project.getPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SRPMS_FOLDER));
+		if (srcRpmPath == null) {
+			srpmsFolder = project.getFolder(IRPMConstants.SRPMS_FOLDER);
+			if (!srpmsFolder.exists()) {
+				srpmsFolder.create(false, true, null);
+			}
+			srpmsFolder.setDerived(true, new NullProgressMonitor());
+			project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SRPMS_FOLDER),
+					srpmsFolder.getName());
+		} else {
+			srpmsFolder = project.getFolder(srcRpmPath);
+			if (!srpmsFolder.exists()) {
+				srpmsFolder.create(false, true, null);
+			}
+		}
 
-        String buildPath =
-            project.getPersistentProperty(new QualifiedName(pluginID, IRPMConstants.BUILD_FOLDER));
-        if(buildPath == null) {
-            buildFolder = project.getFolder(IRPMConstants.BUILD_FOLDER);
-            if(!buildFolder.exists()) {
-                buildFolder.create(false, true, null);
-            }
-            buildFolder.setDerived(true, new NullProgressMonitor());
-            project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.BUILD_FOLDER),
-                    buildFolder.getName());
-        } else {
-            buildFolder = project.getFolder(buildPath);
-            if(!buildFolder.exists()) {
-                buildFolder.create(false, true, null);
-            }
-        }
+		String buildPath = project.getPersistentProperty(new QualifiedName(pluginID, IRPMConstants.BUILD_FOLDER));
+		if (buildPath == null) {
+			buildFolder = project.getFolder(IRPMConstants.BUILD_FOLDER);
+			if (!buildFolder.exists()) {
+				buildFolder.create(false, true, null);
+			}
+			buildFolder.setDerived(true, new NullProgressMonitor());
+			project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.BUILD_FOLDER),
+					buildFolder.getName());
+		} else {
+			buildFolder = project.getFolder(buildPath);
+			if (!buildFolder.exists()) {
+				buildFolder.create(false, true, null);
+			}
+		}
 
-        String rpmPath =
-            project.getPersistentProperty(new QualifiedName(pluginID, IRPMConstants.RPMS_FOLDER));
-        if(rpmPath == null) {
-            rpmsFolder = project.getFolder(IRPMConstants.RPMS_FOLDER);
-            if(!rpmsFolder.exists()) {
-                rpmsFolder.create(false, true, null);
-            }
-            rpmsFolder.setDerived(true, new NullProgressMonitor());
-            project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.RPMS_FOLDER),
-                    rpmsFolder.getName());
-        } else {
-            rpmsFolder = project.getFolder(rpmPath);
-            if(!rpmsFolder.exists()) {
-                rpmsFolder.create(false, true, null);
-            }
-        }
+		String rpmPath = project.getPersistentProperty(new QualifiedName(pluginID, IRPMConstants.RPMS_FOLDER));
+		if (rpmPath == null) {
+			rpmsFolder = project.getFolder(IRPMConstants.RPMS_FOLDER);
+			if (!rpmsFolder.exists()) {
+				rpmsFolder.create(false, true, null);
+			}
+			rpmsFolder.setDerived(true, new NullProgressMonitor());
+			project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.RPMS_FOLDER), rpmsFolder.getName());
+		} else {
+			rpmsFolder = project.getFolder(rpmPath);
+			if (!rpmsFolder.exists()) {
+				rpmsFolder.create(false, true, null);
+			}
+		}
 
-        String specPath =
-            project.getPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SPECS_FOLDER));
-        if(specPath == null) {
-            specsFolder = project.getFolder(IRPMConstants.SPECS_FOLDER);
-            if(!specsFolder.exists()) {
-                specsFolder.create(false, true, null);
-            }
-            project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SPECS_FOLDER),
-                    specsFolder.getName());
-        } else {
-            specsFolder = project.getFolder(specPath);
-            if(!specsFolder.exists()) {
-                specsFolder.create(false, true, null);
-            }
-        }
-        configDefines.add(DEFINE);
-        if (project.getLocationURI()==null) {
-            configDefines
-            .add("_sourcedir " + sourcesFolder.getLocation().toOSString()); //$NON-NLS-1$
-            configDefines.add(DEFINE);
-            configDefines
-            .add("_srcrpmdir " + srpmsFolder.getLocation().toOSString()); //$NON-NLS-1$
-            configDefines.add(DEFINE);
-            configDefines
-            .add("_builddir " + buildFolder.getLocation().toOSString()); //$NON-NLS-1$
-            configDefines.add(DEFINE);
-            configDefines
-            .add("_rpmdir " + rpmsFolder.getLocation().toOSString()); //$NON-NLS-1$
-            configDefines.add(DEFINE);
-            configDefines
-            .add("_specdir " + specsFolder.getLocation().toOSString()); //$NON-NLS-1$
-        } else {
-            String mainFolder = project.getLocationURI().getPath();
-            configDefines
-            .add("_sourcedir " + mainFolder + IPath.SEPARATOR + IRPMConstants.SOURCES_FOLDER); //$NON-NLS-1$
-            configDefines.add(DEFINE);
-            configDefines
-            .add("_srcrpmdir " + mainFolder + IPath.SEPARATOR + IRPMConstants.SRPMS_FOLDER); //$NON-NLS-1$
-            configDefines.add(DEFINE);
-            configDefines
-            .add("_builddir " + mainFolder + IPath.SEPARATOR + IRPMConstants.BUILD_FOLDER); //$NON-NLS-1$
-            configDefines.add(DEFINE);
-            configDefines
-            .add("_rpmdir " + mainFolder + IPath.SEPARATOR + IRPMConstants.RPMS_FOLDER); //$NON-NLS-1$
-            configDefines.add(DEFINE);
-            configDefines
-            .add("_specdir " + mainFolder + IPath.SEPARATOR + IRPMConstants.SPECS_FOLDER); //$NON-NLS-1$
-
+		String specPath = project.getPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SPECS_FOLDER));
+		if (specPath == null) {
+			specsFolder = project.getFolder(IRPMConstants.SPECS_FOLDER);
+			if (!specsFolder.exists()) {
+				specsFolder.create(false, true, null);
+			}
+			project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SPECS_FOLDER),
+					specsFolder.getName());
+		} else {
+			specsFolder = project.getFolder(specPath);
+			if (!specsFolder.exists()) {
+				specsFolder.create(false, true, null);
+			}
+		}
+		configDefines.add(DEFINE);
+		if (project.getLocationURI() == null) {
+			configDefines.add("_sourcedir " + sourcesFolder.getLocation().toOSString()); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines.add("_srcrpmdir " + srpmsFolder.getLocation().toOSString()); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines.add("_builddir " + buildFolder.getLocation().toOSString()); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines.add("_rpmdir " + rpmsFolder.getLocation().toOSString()); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines.add("_specdir " + specsFolder.getLocation().toOSString()); //$NON-NLS-1$
+		} else {
+			String mainFolder = project.getLocationURI().getPath();
+			configDefines.add("_sourcedir " + mainFolder + IPath.SEPARATOR + IRPMConstants.SOURCES_FOLDER); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines.add("_srcrpmdir " + mainFolder + IPath.SEPARATOR + IRPMConstants.SRPMS_FOLDER); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines.add("_builddir " + mainFolder + IPath.SEPARATOR + IRPMConstants.BUILD_FOLDER); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines.add("_rpmdir " + mainFolder + IPath.SEPARATOR + IRPMConstants.RPMS_FOLDER); //$NON-NLS-1$
+			configDefines.add(DEFINE);
+			configDefines.add("_specdir " + mainFolder + IPath.SEPARATOR + IRPMConstants.SPECS_FOLDER); //$NON-NLS-1$
         }
     }
 

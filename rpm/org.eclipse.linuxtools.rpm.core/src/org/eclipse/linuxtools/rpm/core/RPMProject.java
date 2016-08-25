@@ -110,11 +110,9 @@ public class RPMProject {
         try {
             srpmFile.create(new FileInputStream(externalFile), false, null);
         } catch (FileNotFoundException e) {
-            String throwMessage = Messages
-                    .getString("RPMCore.Error_trying_to_copy__") + //$NON-NLS-1$
-                    rpmConfig.getSpecsFolder().getLocation().toOSString();
-            IStatus error = new Status(IStatus.ERROR, IRPMConstants.ERROR, 1,
-                    throwMessage, e);
+			String throwMessage = Messages.getString("RPMCore.Error_trying_to_copy__") + //$NON-NLS-1$
+					rpmConfig.getSpecsFolder().getLocation().toOSString();
+			IStatus error = new Status(IStatus.ERROR, IRPMConstants.ERROR, 1, throwMessage, e);
             throw new CoreException(error);
         }
 
@@ -141,8 +139,7 @@ public class RPMProject {
         try {
             content = remoteFile.openConnection();
         } catch (IOException e) {
-            Status status = new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID,
-                    e.getMessage(), e);
+			Status status = new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e);
             throw new CoreException(status);
         }
         File tempFile = new File(
@@ -166,12 +163,9 @@ public class RPMProject {
         RPMBuild rpmbuild = new RPMBuild(getConfiguration());
         IStatus result = rpmbuild.buildAll(getSpecFile(), outStream);
 
-        getConfiguration().getBuildFolder().refreshLocal(
-                IResource.DEPTH_INFINITE, null);
-        getConfiguration().getRpmsFolder().refreshLocal(
-                IResource.DEPTH_INFINITE, null);
-        getConfiguration().getSrpmsFolder().refreshLocal(
-                IResource.DEPTH_INFINITE, null);
+		getConfiguration().getBuildFolder().refreshLocal(IResource.DEPTH_INFINITE, null);
+		getConfiguration().getRpmsFolder().refreshLocal(IResource.DEPTH_INFINITE, null);
+		getConfiguration().getSrpmsFolder().refreshLocal(IResource.DEPTH_INFINITE, null);
         return result;
     }
 
@@ -185,10 +179,8 @@ public class RPMProject {
         RPMBuild rpmbuild = new RPMBuild(getConfiguration());
         IStatus result = rpmbuild.buildBinary(getSpecFile(), out);
 
-        getConfiguration().getBuildFolder().refreshLocal(
-                IResource.DEPTH_INFINITE, null);
-        getConfiguration().getRpmsFolder().refreshLocal(
-                IResource.DEPTH_INFINITE, null);
+		getConfiguration().getBuildFolder().refreshLocal(IResource.DEPTH_INFINITE, null);
+		getConfiguration().getRpmsFolder().refreshLocal(IResource.DEPTH_INFINITE, null);
         return result;
     }
 
@@ -202,10 +194,8 @@ public class RPMProject {
         RPMBuild rpmbuild = new RPMBuild(getConfiguration());
         IStatus result = rpmbuild.buildSource(getSpecFile(), out);
 
-        getConfiguration().getBuildFolder().refreshLocal(
-                IResource.DEPTH_INFINITE, null);
-        getConfiguration().getSrpmsFolder().refreshLocal(
-                IResource.DEPTH_INFINITE, null);
+		getConfiguration().getBuildFolder().refreshLocal(IResource.DEPTH_INFINITE, null);
+		getConfiguration().getSrpmsFolder().refreshLocal(IResource.DEPTH_INFINITE, null);
         return result;
     }
 
@@ -218,8 +208,7 @@ public class RPMProject {
     public IStatus buildPrep(OutputStream out) throws CoreException {
         RPMBuild rpmbuild = new RPMBuild(getConfiguration());
         IStatus result = rpmbuild.buildPrep(getSpecFile(), out);
-        getConfiguration().getBuildFolder().refreshLocal(
-                IResource.DEPTH_INFINITE, null);
+		getConfiguration().getBuildFolder().refreshLocal(IResource.DEPTH_INFINITE, null);
         return result;
     }
 

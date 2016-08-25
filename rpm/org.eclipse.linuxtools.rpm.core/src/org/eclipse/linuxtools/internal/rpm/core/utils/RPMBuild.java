@@ -52,15 +52,14 @@ public class RPMBuild {
      *            the RPM configuration to use
      */
     public RPMBuild(IProjectConfiguration config) {
-        IEclipsePreferences node = DefaultScope.INSTANCE
-                .getNode(IRPMConstants.RPM_CORE_ID);
-        if (config.getBuildFolder().getLocation() == null) {
-            mainFolder = config.getSourcesFolder().getLocationURI().toString();
-        }
-        rpmBuildCmd = node.get(IRPMConstants.RPMBUILD_CMD, ""); //$NON-NLS-1$
-        String[] tmpMacroDefines = { rpmBuildCmd, "-v" }; //$NON-NLS-1$
-        macroDefines.addAll(Arrays.asList(tmpMacroDefines));
-        macroDefines.addAll(config.getConfigDefines());
+		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(IRPMConstants.RPM_CORE_ID);
+		if (config.getBuildFolder().getLocation() == null) {
+			mainFolder = config.getSourcesFolder().getLocationURI().toString();
+		}
+		rpmBuildCmd = node.get(IRPMConstants.RPMBUILD_CMD, ""); //$NON-NLS-1$
+		String[] tmpMacroDefines = { rpmBuildCmd, "-v" }; //$NON-NLS-1$
+		macroDefines.addAll(Arrays.asList(tmpMacroDefines));
+		macroDefines.addAll(config.getConfigDefines());
     }
 
     /**
@@ -74,8 +73,7 @@ public class RPMBuild {
      * @throws CoreException
      *             If the operation fails.
      */
-    public IStatus buildPrep(IResource specFile, OutputStream outStream)
-            throws CoreException {
+	public IStatus buildPrep(IResource specFile, OutputStream outStream) throws CoreException {
         return build(specFile, outStream, "-bp"); //$NON-NLS-1$
     }
 
@@ -90,8 +88,7 @@ public class RPMBuild {
      * @throws CoreException
      *             if the operation fails
      */
-    public IStatus buildBinary(IResource specFile, OutputStream outStream)
-            throws CoreException {
+	public IStatus buildBinary(IResource specFile, OutputStream outStream) throws CoreException {
         return build(specFile, outStream, "-bb"); //$NON-NLS-1$
     }
 
@@ -106,8 +103,7 @@ public class RPMBuild {
      * @throws CoreException
      *             if the operation fails
      */
-    public IStatus buildAll(IResource specFile, OutputStream outStream)
-            throws CoreException {
+	public IStatus buildAll(IResource specFile, OutputStream outStream) throws CoreException {
         return build(specFile, outStream, "-ba"); //$NON-NLS-1$
     }
 
@@ -123,8 +119,7 @@ public class RPMBuild {
      *             if the operation fails
      */
 
-    public IStatus buildSource(IResource specFile, OutputStream outStream)
-            throws CoreException {
+	public IStatus buildSource(IResource specFile, OutputStream outStream) throws CoreException {
         return build(specFile, outStream, "-bs"); //$NON-NLS-1$
     }
 
@@ -143,49 +138,43 @@ public class RPMBuild {
      *             if the operation fails
      * @since 0.4
      */
-    public IStatus build(IResource specFile, OutputStream outStream,
-            String buildParameter) throws CoreException {
-        if (specFile == null) {
-            throw new CoreException(new Status(IStatus.ERROR,
-                    IRPMConstants.RPM_CORE_ID, Messages.Specfile_not_found));
-        }
+	public IStatus build(IResource specFile, OutputStream outStream, String buildParameter) throws CoreException {
+		if (specFile == null) {
+			throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, Messages.Specfile_not_found));
+		}
 
-        final List<String> command = new ArrayList<>();
-        command.addAll(macroDefines);
-        command.add(buildParameter);
+		final List<String> command = new ArrayList<>();
+		command.addAll(macroDefines);
+		command.add(buildParameter);
 
-        try {
-            if (specFile.getLocation() == null) {
-                return remoteBuild(specFile, outStream, command);
-            } else {
-                command.add(specFile.getLocation().toString());
-                return Utils.runCommand(outStream, specFile.getProject(),
-                        command.toArray(new String[command.size()]));
-            }
-        } catch (IOException | URISyntaxException e) {
-            throw new CoreException(new Status(IStatus.ERROR,
-                    IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
-        }
+		try {
+			if (specFile.getLocation() == null) {
+				return remoteBuild(specFile, outStream, command);
+			} else {
+				command.add(specFile.getLocation().toString());
+				return Utils.runCommand(outStream, specFile.getProject(), command.toArray(new String[command.size()]));
+			}
+		} catch (IOException | URISyntaxException e) {
+			throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
+		}
     }
 
-    private IStatus remoteBuild(IResource specFile, OutputStream outStream,
-            List<String> command) throws CoreException, URISyntaxException {
-        command.remove(0);
-        IRemoteProxyManager rmtProxyMgr = RemoteProxyManager.getInstance();
-        IRemoteCommandLauncher rmtCmdLauncher = null;
-        rmtCmdLauncher = rmtProxyMgr.getLauncher(new URI(mainFolder));
+	private IStatus remoteBuild(IResource specFile, OutputStream outStream, List<String> command)
+			throws CoreException, URISyntaxException {
+		command.remove(0);
+		IRemoteProxyManager rmtProxyMgr = RemoteProxyManager.getInstance();
+		IRemoteCommandLauncher rmtCmdLauncher = null;
+		rmtCmdLauncher = rmtProxyMgr.getLauncher(new URI(mainFolder));
 
-        command.add(specFile.getLocationURI().getPath());
-        String empty[] = new String[0];
-        Process pProxy = rmtCmdLauncher.execute(
-                Path.fromOSString(rpmBuildCmd),
-                command.toArray(new String[command.size()]), empty, null,
-                new NullProgressMonitor());
+		command.add(specFile.getLocationURI().getPath());
+		String empty[] = new String[0];
+		Process pProxy = rmtCmdLauncher.execute(Path.fromOSString(rpmBuildCmd),
+				command.toArray(new String[command.size()]), empty, null, new NullProgressMonitor());
 
-        if (pProxy != null) {
-            return Utils.watchProcess(outStream, pProxy);
-        }
-        return Status.OK_STATUS;
-    }
+		if (pProxy != null) {
+			return Utils.watchProcess(outStream, pProxy);
+		}
+		return Status.OK_STATUS;
+	}
 
 }

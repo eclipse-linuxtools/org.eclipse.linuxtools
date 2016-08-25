@@ -39,14 +39,13 @@ public class RPM {
      *            the RPM configuration to use
      */
     public RPM(IProjectConfiguration config) {
-        IEclipsePreferences node = DefaultScope.INSTANCE
-                .getNode(IRPMConstants.RPM_CORE_ID);
-        String rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
-        macroDefines = new ArrayList<>();
+		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(IRPMConstants.RPM_CORE_ID);
+		String rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
+		macroDefines = new ArrayList<>();
 
-        macroDefines.add(rpmCmd);
-        macroDefines.add("-v"); //$NON-NLS-1$
-        macroDefines.addAll(config.getConfigDefines());
+		macroDefines.add(rpmCmd);
+		macroDefines.add("-v"); //$NON-NLS-1$
+		macroDefines.addAll(config.getConfigDefines());
     }
 
     /**
@@ -59,16 +58,14 @@ public class RPM {
      *             If something fails.
      */
     public String install(IFile sourceRPM) throws CoreException {
-        List<String> command = new ArrayList<>();
-        command.addAll(macroDefines);
-        command.add("-i"); //$NON-NLS-1$
-        command.add(sourceRPM.getLocation().toOSString());
-        try {
-            return Utils.runCommandToString(command.toArray(new String[command
-                    .size()]));
-        } catch (IOException e) {
-            throw new CoreException(new Status(IStatus.ERROR,
-                    IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
-        }
+		List<String> command = new ArrayList<>();
+		command.addAll(macroDefines);
+		command.add("-i"); //$NON-NLS-1$
+		command.add(sourceRPM.getLocation().toOSString());
+		try {
+			return Utils.runCommandToString(command.toArray(new String[command.size()]));
+		} catch (IOException e) {
+			throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
+		}
     }
 }

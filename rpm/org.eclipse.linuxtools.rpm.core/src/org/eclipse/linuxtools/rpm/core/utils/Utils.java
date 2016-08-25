@@ -36,8 +36,7 @@ public class Utils {
      * @throws IOException
      *             If IOException occurs.
      */
-    public static BufferedProcessInputStream runCommandToInputStream(String... command)
-            throws IOException {
+	public static BufferedProcessInputStream runCommandToInputStream(String... command) throws IOException {
         return runCommandToInputStream(null, command);
     }
 
@@ -52,8 +51,8 @@ public class Utils {
      *             If IOException occurs.
      * @since 2.1
      */
-    private static BufferedProcessInputStream runCommandToInputStream(IProject project, String... command)
-            throws IOException {
+	private static BufferedProcessInputStream runCommandToInputStream(IProject project, String... command)
+			throws IOException {
         Process p = RuntimeProcessFactory.getFactory().exec(command, project);
         return new BufferedProcessInputStream(p);
     }
@@ -73,8 +72,8 @@ public class Utils {
      * @throws IOException If an IOException occurs.
      * @since 1.1
      */
-    public static IStatus runCommand(final OutputStream outStream, IProject project,
-            String... command) throws IOException {
+	public static IStatus runCommand(final OutputStream outStream, IProject project, String... command)
+			throws IOException {
         return watchProcess(outStream, RuntimeProcessFactory.getFactory().exec(command, project));
     }
 
@@ -90,9 +89,8 @@ public class Utils {
      * @since 2.2
      */
     public static IStatus watchProcess(final OutputStream outStream, Process child) {
-        final BufferedInputStream in = new BufferedInputStream(
-                new SequenceInputStream(child.getInputStream(),
-                        child.getErrorStream()));
+		final BufferedInputStream in = new BufferedInputStream(
+				new SequenceInputStream(child.getInputStream(), child.getErrorStream()));
 
         Thread readinJob = new Thread(() -> {
 		    try {
@@ -129,13 +127,10 @@ public class Utils {
         if (canceled) {
             return Status.CANCEL_STATUS;
         }
-        if (child.exitValue() != 0) {
-            return new Status(
-                    IStatus.ERROR,
-                    FrameworkUtil.getBundle(Utils.class).getSymbolicName(),
-                    NLS.bind(
-                            Messages.Utils_NON_ZERO_RETURN_CODE, child.exitValue()), null);
-        }
+		if (child.exitValue() != 0) {
+			return new Status(IStatus.ERROR, FrameworkUtil.getBundle(Utils.class).getSymbolicName(),
+					NLS.bind(Messages.Utils_NON_ZERO_RETURN_CODE, child.exitValue()), null);
+		}
         return Status.OK_STATUS;
     }
 
@@ -145,8 +140,7 @@ public class Utils {
      * @return The output of the executed command.
      * @throws IOException If an I/O exception occurred.
      */
-    public static String runCommandToString(String... command)
-            throws IOException {
+	public static String runCommandToString(String... command) throws IOException {
         return runCommandToString(null, command);
     }
 
@@ -158,8 +152,7 @@ public class Utils {
      * @throws IOException If an I/O exception occurred.
      * @since 2.1
      */
-    public static String runCommandToString(IProject project, String... command)
-            throws IOException {
+	public static String runCommandToString(IProject project, String... command) throws IOException {
         BufferedInputStream in = runCommandToInputStream(project, command);
         return inputStreamToString(in);
     }
@@ -172,8 +165,7 @@ public class Utils {
      * @return Textual content of the stream.
      * @throws IOException If an IOException occurs.
      */
-    private static String inputStreamToString(InputStream stream)
-            throws IOException {
+	private static String inputStreamToString(InputStream stream) throws IOException {
         StringBuilder retStr = new StringBuilder();
         int c;
         while ((c = stream.read()) != -1) {
