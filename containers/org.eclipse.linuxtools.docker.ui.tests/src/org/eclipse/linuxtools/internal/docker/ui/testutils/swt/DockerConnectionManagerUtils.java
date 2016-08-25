@@ -18,6 +18,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionS
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerContainersView;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 
 /**
  *
@@ -52,17 +53,24 @@ public class DockerConnectionManagerUtils {
 	public static void configureConnectionManager(final IDockerConnectionStorageManager connectionStorageManager) {
 		DockerConnectionManager.getInstance().setConnectionStorageManager(connectionStorageManager);
 		final SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		final DockerExplorerView dockerExplorerView = SWTUtils.getView(bot, DockerExplorerView.VIEW_ID);
-		final DockerContainersView dockerContainersView = (DockerContainersView) SWTUtils.getView(bot,
-				DockerContainersView.VIEW_ID);
+		final SWTBotView dockerExplorerBotView = SWTUtils.getSWTBotView(bot, DockerExplorerView.VIEW_ID);
+		final SWTBotView dockerContainersBotView = SWTUtils.getSWTBotView(bot, DockerContainersView.VIEW_ID);
 		SWTUtils.syncExec(() -> {
 			DockerConnectionManager.getInstance().reloadConnections();
-			if (dockerExplorerView != null) {
-				dockerExplorerView.getCommonViewer().refresh();
-				dockerExplorerView.showConnectionsOrExplanations();
+			if (dockerExplorerBotView != null) {
+				final DockerExplorerView dockerExplorerView = (DockerExplorerView) dockerExplorerBotView
+						.getViewReference().getView(false);
+				if (dockerExplorerView != null) {
+					dockerExplorerView.getCommonViewer().refresh();
+					dockerExplorerView.showConnectionsOrExplanations();
+				}
 			}
-			if (dockerContainersView != null) {
-				dockerContainersView.getViewer().refresh();
+			if (dockerContainersBotView != null) {
+				final DockerContainersView dockerContainersView = (DockerContainersView) dockerContainersBotView
+						.getViewReference().getView(false);
+				if (dockerContainersView != null) {
+					dockerContainersView.getViewer().refresh();
+				}
 			}
 		});
 	}

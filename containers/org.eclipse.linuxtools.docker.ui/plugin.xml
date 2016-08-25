@@ -429,7 +429,7 @@
               class="org.eclipse.linuxtools.internal.docker.ui.commands.PauseContainersCommandHandler">
      		<enabledWhen>
 	     		<with variable="selection">
-	              <iterate ifEmpty="false">
+	              <iterate ifEmpty="false" operator="and">
 					<or>
 					    <and>
 							<instanceof
@@ -1542,6 +1542,18 @@
 		          style="push">
 				</command>
 		</menuContribution>
+		<!-- containers view context menu: open hierarchy -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+	  		<command
+	           commandId="org.eclipse.linuxtools.docker.ui.commands.openInHierarchyView"
+	           icon="icons/class_hi.png"
+	           label="%command.openInHierarchyView.menu.name"
+	           mnemonic="R"
+	           style="push">
+		      </command>
+		</menuContribution>
+		
 		<!-- containers view toolbar: refresh view -->
 		<menuContribution
 			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerContainersView">
@@ -1687,6 +1699,17 @@
 		          id="org.eclipse.linuxtools.docker.ui.commands.removeTag"
 		          style="push">
 				</command>
+		</menuContribution>
+		<!-- image view context menu: open hierarchy -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImagesView">
+	  		<command
+	           commandId="org.eclipse.linuxtools.docker.ui.commands.openInHierarchyView"
+	           icon="icons/class_hi.png"
+	           label="%command.openInHierarchyView.menu.name"
+	           mnemonic="R"
+	           style="push">
+		      </command>
 		</menuContribution>
 		<!-- images view toolbar: remove images -->
 		<menuContribution

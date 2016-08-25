@@ -40,7 +40,8 @@ public abstract class AbstractSWTBotAssertion<Assertion extends AbstractSWTBotAs
 	public Assertion isNotEnabled() {
 		notNullValue();
 		if(actual.isEnabled()) {
-			failWithMessage("Expected widget with text '%s (%s)' to be disabled but it was not", actual.getText());
+			failWithMessage("Expected widget with text '%s (%s)' to be disabled but it was not", actual.getText(),
+					actual.getToolTipText());
 		}
 		return (Assertion) this;
 	}
