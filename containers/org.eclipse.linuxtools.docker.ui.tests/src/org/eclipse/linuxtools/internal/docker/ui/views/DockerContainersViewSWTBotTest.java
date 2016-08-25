@@ -13,6 +13,8 @@ package org.eclipse.linuxtools.internal.docker.ui.views;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.concurrent.TimeUnit;
+
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerRefreshManager;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
@@ -22,11 +24,13 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerImageHierarchyViewAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TestLoggerRule;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.ui.PlatformUI;
 import org.junit.Assert;
 import org.junit.Before;
@@ -80,6 +84,12 @@ public class DockerContainersViewSWTBotTest {
 		this.dockerExplorerBotView = bot.viewById(DockerExplorerView.VIEW_ID);
 	}
 
+	private SWTBotTableItem selectContainerInTable(final String containerName) {
+		final SWTBotTableItem tableItem = SWTUtils.getListItem(dockerContainersViewBot.bot().table(), containerName);
+		assertThat(tableItem).isNotNull();
+		return tableItem.click().select();
+	}
+
 	@Test
 	public void defaultContainersTest() {
 		// default connection with 1 image should be displayed
@@ -125,6 +135,25 @@ public class DockerContainersViewSWTBotTest {
 		dockerContainersViewBot.close();
 		// there should be one listener left: DockerExplorerView
 		assertThat(dockerConnection.getContainerListeners()).hasSize(0);
+	}
+
+	@Test
+	public void shouldOpenImageHierarchyView() {
+		// given
+		final DockerClient client = MockDockerClientFactory
+				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
+				.withDefaultTCPConnectionSettings();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// make sure the hierarchy view is closed.
+		SWTUtils.closeView(this.bot, DockerImageHierarchyView.VIEW_ID);
+		// open the context menu on one of the containers
+		selectContainerInTable("angry_bar");
+		SWTUtils.getContextMenu(dockerContainersViewBot.bot().table(), "Open Image Hierarchy").click();
+		// wait 1sec
+		SWTUtils.wait(1, TimeUnit.SECONDS);
+		DockerImageHierarchyViewAssertion.assertThat(SWTUtils.getView(bot, DockerImageHierarchyView.VIEW_ID))
+				.isNotNull();
 	}
 
 }

@@ -388,7 +388,7 @@ public class DockerExplorerViewSWTBotTest {
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one of the containers
 		selectContainersInTreeView("Test", "gentle_foo", "angry_bar");
-		final SWTBotMenu menuCommand = dockerExplorerViewBot.bot().tree().contextMenu("Pause");
+		final SWTBotMenu menuCommand = SWTUtils.getContextMenu(dockerExplorerViewBot.bot().tree(), "Pause");
 		// then
 		MenuAssertion.assertThat(menuCommand).isVisible().isNotEnabled();
 	}
