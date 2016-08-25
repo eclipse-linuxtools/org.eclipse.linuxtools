@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+ * Copyright (c) 2006, 2016 IBM Corporation.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ public class CommandTest {
 
     @Before
     public void setUp() {
-        tc = new Command(new String[] {"ls", "/home/"}, null);
+        tc = new Command(new String[] {"ls", "/home/"});
     }
 
     @Test
@@ -35,23 +35,23 @@ public class CommandTest {
         assertNotNull("Command not null", tc);
 
         tc.dispose();
-        tc = new Command(null, null);
+        tc = new Command(null);
         assertNotNull("Command not null", tc);
 
         tc.dispose();
-        tc = new Command(new String[] {}, null);
+        tc = new Command(new String[] {});
         assertNotNull("Command not null", tc);
 
         tc.dispose();
-        tc = new Command(new String[] {""}, null);
+        tc = new Command(new String[] {""});
         assertNotNull("Command not null", tc);
 
         tc.dispose();
-        tc = new Command(new String[] {"a"}, null);
+        tc = new Command(new String[] {"a"});
         assertNotNull("Command not null", tc);
 
         tc.dispose();
-        tc = new Command(new String[] {"ls", "/"}, null);
+        tc = new Command(new String[] {"ls", "/"});
         assertNotNull("Command not null", tc);
     }
 
@@ -71,7 +71,7 @@ public class CommandTest {
     public void testLoggedCommand() throws CoreException {
         tc.dispose();
 
-        tc = new Command(new String[] {"ls", "/doesnotexist/"}, null);
+        tc = new Command(new String[] {"ls", "/doesnotexist/"});
         tc.start();
         assertTrue(tc.isRunning());
         assertFalse(tc.isDisposed());
@@ -80,7 +80,7 @@ public class CommandTest {
         assertFalse(tc.isDisposed());
         tc.dispose();
 
-        tc = new Command(new String[] {"ls", "/doesnotexist/"}, null);
+        tc = new Command(new String[] {"ls", "/doesnotexist/"});
         tc.start();
         assertTrue(tc.isRunning());
         assertFalse(tc.isDisposed());
