@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.oprofile.launch;singleton:=true
-Bundle-Version: 1.0.1.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: %bundleProvider
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0",
@@ -23,12 +23,10 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.debug.ui,
  org.eclipse.linuxtools.internal.oprofile.core,
  org.eclipse.linuxtools.internal.oprofile.core.daemon,
- org.eclipse.linuxtools.internal.oprofile.core.linux,
  org.eclipse.linuxtools.internal.oprofile.ui,
  org.eclipse.linuxtools.internal.oprofile.ui.view,
  org.eclipse.linuxtools.profiling.launch,
- org.eclipse.ui,
- org.eclipse.ui.console
+ org.eclipse.ui
 Export-Package: org.eclipse.linuxtools.internal.oprofile.launch;x-friends:="org.eclipse.linuxtools.oprofile.remote.launch",
  org.eclipse.linuxtools.internal.oprofile.launch.configuration;x-friends:="org.eclipse.linuxtools.oprofile.remote.launch",
  org.eclipse.linuxtools.internal.oprofile.launch.launching;x-friends:="org.eclipse.linuxtools.oprofile.remote.launch"
