@@ -872,7 +872,7 @@
 			id="org.eclipse.linuxtools.docker.dockerComposePropertyTester"
 			namespace="org.eclipse.linuxtools.docker.dockerComposePropertyTester"
 			properties="isDockerComposeConsole"
-			type="org.eclipse.linuxtools.internal.docker.ui.consoles.DockerComposeConsole">
+			type="org.eclipse.ui.console.IConsole">
 		</propertyTester>
         <propertyTester
 	        class="org.eclipse.linuxtools.internal.docker.ui.propertytesters.ImagePropertyTester"
@@ -2295,6 +2295,9 @@
                 value="org.eclipse.linuxtools.internal.docker.ui.consoles.RunConsole">
           </instanceof></enablement>
     </consolePageParticipant>
+ </extension>
+ <extension
+       point="org.eclipse.ui.console.consolePageParticipants">
     <consolePageParticipant
           class="org.eclipse.linuxtools.internal.docker.ui.consoles.DockerComposeConsolePageParticipant"
           id="org.eclipse.linuxtools.docker.ui.dockerComposeConsolePageParticipant">
