@@ -25,11 +25,14 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionMa
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerImageHierarchyViewAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.MenuAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TestLoggerRule;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.ui.PlatformUI;
 import org.junit.Assert;
@@ -88,6 +91,12 @@ public class DockerContainersViewSWTBotTest {
 		final SWTBotTableItem tableItem = SWTUtils.getListItem(dockerContainersViewBot.bot().table(), containerName);
 		assertThat(tableItem).isNotNull();
 		return tableItem.click().select();
+	}
+
+	private void selectContainersInTable(final String... items) {
+		final SWTBotTable table = dockerContainersViewBot.bot().table();
+		assertThat(table).isNotNull();
+		table.select(items);
 	}
 
 	@Test
@@ -154,6 +163,25 @@ public class DockerContainersViewSWTBotTest {
 		SWTUtils.wait(1, TimeUnit.SECONDS);
 		DockerImageHierarchyViewAssertion.assertThat(SWTUtils.getView(bot, DockerImageHierarchyView.VIEW_ID))
 				.isNotNull();
+	}
+
+	@Test
+	public void shouldProvideEnabledRestartOnMultipleContainers() {
+		// given
+		final DockerClient client = MockDockerClientFactory
+				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockContainerFactory.name("bold_eagle").status("Stopped").build())
+				.container(MockContainerFactory.name("angry_bar").status("Running").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
+				.withDefaultTCPConnectionSettings();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// make sure the hierarchy view is closed.
+		SWTUtils.closeView(this.bot, DockerImageHierarchyView.VIEW_ID);
+		// open the context menu on one of the containers
+		selectContainersInTable("gentle_foo", "bold_eagle", "angry_bar");
+		final SWTBotMenu menuCommand = dockerContainersViewBot.bot().table().contextMenu("Restart");
+		// then
+		MenuAssertion.assertThat(menuCommand).isVisible().isEnabled();
 	}
 
 }

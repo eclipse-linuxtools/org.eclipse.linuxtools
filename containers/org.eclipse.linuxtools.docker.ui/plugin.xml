@@ -250,6 +250,11 @@
 	        name="%command.killcontainers.name">
         </command>
 		<command
+	        description="%command.restartcontainers.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.restartContainers"
+	        name="%command.restartcontainers.name">
+        </command>
+		<command
 	        description="%command.removecontainers.description"
 	        id="org.eclipse.linuxtools.docker.ui.commands.removeContainers"
 	        name="%command.removecontainers.name">
@@ -547,6 +552,24 @@
 					       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isUnknown" value="true"/>
 					       	</or>
 						</and>
+				    </or>
+	            </iterate>
+	          </with>
+     		</enabledWhen>
+     	</handler>
+		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.restartContainers"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.RestartContainersCommandHandler">
+     		<enabledWhen>
+	     		<with variable="selection">
+	              <iterate
+                     ifEmpty="false"
+                     operator="or">
+					<or>
+						<instanceof
+			                   value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+			            <adapt
+			                    type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
 				    </or>
 	            </iterate>
 	          </with>
@@ -1096,6 +1119,28 @@
 	            </visibleWhen>
 				</command>
 		</menuContribution>
+		<!-- explorer view context menu: restart containers -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu?after=org.eclipse.linuxtools.docker.ui.commands.stopContainers">
+	  		<command
+	          commandId="org.eclipse.linuxtools.docker.ui.commands.restartContainers"
+	          icon="icons/restart.gif"
+	          id="org.eclipse.linuxtools.docker.ui.commands.restartContainers"
+	          style="push">
+	            <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+	      </command>
+		</menuContribution>
 		<!-- explorer view context menu: kill containers -->
 		<menuContribution
 			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu?after=org.eclipse.linuxtools.docker.ui.commands.stopContainers">
@@ -1521,6 +1566,15 @@
 				<command
 		          commandId="org.eclipse.linuxtools.docker.ui.commands.commitContainer"
 		          id="org.eclipse.linuxtools.docker.ui.commands.commitContainer"
+		          style="push">
+				</command>
+		</menuContribution>
+		<!-- containers view context menu: restart container -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+				<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.restartContainers"
+		          id="org.eclipse.linuxtools.docker.ui.commands.restartContainers"
 		          style="push">
 				</command>
 		</menuContribution>
@@ -1964,9 +2018,30 @@
 	            </visibleWhen>
 				</command>
 		</menuContribution>
-		<!-- hierarchy view context menu: kill containers -->
+		<!-- hierarchy view context menu: restart containers -->
 		<menuContribution
 			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu?after=org.eclipse.linuxtools.docker.ui.commands.stopContainers">
+	  			<command
+		          commandId="org.eclipse.linuxtools.docker.ui.commands.restartContainers"
+		          icon="icons/restart.gif"
+		          id="org.eclipse.linuxtools.docker.ui.commands.restartContainers"
+		          style="push">
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+						<adapt type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- hierarchy view context menu: kill containers -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerImageHierarchyView#PopupMenu?after=org.eclipse.linuxtools.docker.ui.commands.restartContainers">
 				<command
 		          commandId="org.eclipse.linuxtools.docker.ui.commands.killContainers"
 		          icon="icons/kill.gif"

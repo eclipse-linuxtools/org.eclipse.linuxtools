@@ -330,17 +330,18 @@ public class DockerExplorerViewSWTBotTest {
 	}
 
 	@Test
-	public void shouldProvideEnabledStopCommandOnMultipleContainersAtOnce() {
+	public void shouldProvideEnabledRestartCommandOnMultipleContainersAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
 				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockContainerFactory.name("bold_eagle").status("Stopped").build())
 				.container(MockContainerFactory.name("angry_bar").status("Running").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one of the containers
-		selectContainersInTreeView("Test", "gentle_foo", "angry_bar");
-		final SWTBotMenu menuCommand = dockerExplorerViewBot.bot().tree().contextMenu("Stop");
+		selectContainersInTreeView("Test", "gentle_foo", "bold_eagle", "angry_bar");
+		final SWTBotMenu menuCommand = dockerExplorerViewBot.bot().tree().contextMenu("Restart");
 		// then
 		MenuAssertion.assertThat(menuCommand).isVisible().isEnabled();
 	}
