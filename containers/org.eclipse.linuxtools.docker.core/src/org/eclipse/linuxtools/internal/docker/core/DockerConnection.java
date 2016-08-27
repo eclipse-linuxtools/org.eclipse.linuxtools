@@ -1706,17 +1706,43 @@ public class DockerConnection
 	@Override
 	public void restartContainer(String id, int secondsToWait)
 			throws DockerException, InterruptedException {
-		DockerClient copyClient = getClientCopy();
+		restartContainer(id, secondsToWait, null);
+	}
+
+	public void restartContainer(final String id, int secondsToWait,
+			final OutputStream stream)
+			throws DockerException, InterruptedException {
 		try {
-			// restart container with host config
-			copyClient.restartContainer(id, secondsToWait);
+			// restart container
+			client.restartContainer(id, secondsToWait);
+			// Log the started container if a stream is provided
+			final IDockerContainerInfo containerInfo = getContainerInfo(id);
+			if (stream != null && containerInfo != null
+					&& containerInfo.config() != null
+					&& !containerInfo.config().tty()) {
+				// display logs for container
+				synchronized (loggingThreads) {
+					LogThread t = loggingThreads.get(id);
+					if (t == null || !t.isAlive()) {
+						t = new LogThread(id, getClientCopy(), true);
+						loggingThreads.put(id, t);
+						t.setOutputStream(stream);
+						t.start();
+					}
+				}
+			}
+			// list of containers needs to be refreshed once the container
+			// started, to reflect it new state.
+			listContainers();
+		} catch (ContainerNotFoundException e) {
+			throw new DockerContainerNotFoundException(e);
+		} catch (com.spotify.docker.client.DockerRequestException e) {
+			throw new DockerException(e.message());
 		} catch (com.spotify.docker.client.DockerException e) {
-			throw new DockerException(e);
-		} finally {
-			if (copyClient != null)
-				copyClient.close();
+			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
+
 
 	@Override
 	public void commitContainer(final String id, final String repo, final String tag,

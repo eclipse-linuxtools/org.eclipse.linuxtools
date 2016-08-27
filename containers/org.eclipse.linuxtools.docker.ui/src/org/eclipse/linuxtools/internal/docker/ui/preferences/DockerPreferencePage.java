@@ -28,10 +28,13 @@ public class DockerPreferencePage extends PreferencePage implements
 		IWorkbenchPreferencePage {
 
 	private static final String REFRESH_TIME_MSG = "RefreshTime.label"; //$NON-NLS-1$
+	private static final String RESTART_WAIT_TIME_MSG = "RestartWaitTime.label"; //$NON-NLS-1$
 
 	private static final String INVALID_REFRESH_TIME_MSG = "RefreshTime.invalid.label"; //$NON-NLS-1$
+	private static final String INVALID_RESTART_WAIT_TIME_MSG = "RestartWaitTime.invalid.label"; //$NON-NLS-1$
 	
 	private IntegerFieldEditor refreshTimeField;
+	private IntegerFieldEditor restartWaitTimeField;
 
 	public DockerPreferencePage() {
 		super();
@@ -48,6 +51,9 @@ public class DockerPreferencePage extends PreferencePage implements
 	private void savePreferences() {
 		if (this.refreshTimeField != null) {
 			this.refreshTimeField.store();
+		}
+		if (this.restartWaitTimeField != null) {
+			this.restartWaitTimeField.store();
 		}
 	}
 
@@ -108,6 +114,31 @@ public class DockerPreferencePage extends PreferencePage implements
 						setValid(refreshTimeField.isValid());
 					}
 				});
+		restartWaitTimeField = new IntegerFieldEditor(
+				PreferenceConstants.RESTART_WAIT_TIME,
+				PreferenceMessages.getString(RESTART_WAIT_TIME_MSG), container);
+		restartWaitTimeField.setPreferenceStore(getPreferenceStore());
+		restartWaitTimeField
+				.setValidateStrategy(StringFieldEditor.VALIDATE_ON_KEY_STROKE);
+		restartWaitTimeField.setValidRange(0, Integer.MAX_VALUE);
+		restartWaitTimeField.setPage(this);
+		restartWaitTimeField.setErrorMessage(
+				PreferenceMessages.getString(INVALID_RESTART_WAIT_TIME_MSG));
+		restartWaitTimeField.showErrorMessage();
+		restartWaitTimeField.load();
+		// If the preference changes, alert the Refresh Manager
+		restartWaitTimeField.setPropertyChangeListener(event -> {
+			if (event.getSource().equals(restartWaitTimeField)) {
+				if (restartWaitTimeField.isValid()) {
+					DockerContainerRefreshManager.getInstance()
+							.setRefreshTime(restartWaitTimeField.getIntValue());
+					setErrorMessage(null);
+				} else {
+					setErrorMessage(restartWaitTimeField.getErrorMessage());
+				}
+				setValid(restartWaitTimeField.isValid());
+			}
+		});
 	}
 	
 }

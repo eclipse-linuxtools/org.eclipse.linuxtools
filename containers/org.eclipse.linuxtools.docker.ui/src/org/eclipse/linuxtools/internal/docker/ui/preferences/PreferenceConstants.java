@@ -18,6 +18,7 @@ public class PreferenceConstants {
 	// Time in seconds to wait before automatically refreshing the Containers
 	// view (min 5)
 	public static final String REFRESH_TIME = "containerRefreshTime"; //$NON-NLS-1$
+	public static final String RESTART_WAIT_TIME = "containerRestartWaitTime"; //$NON-NLS-1$
 	
 	public static final String AUTOLOG_ON_START = "autoLogOnStart"; //$NON-NLS-1$
 	public static final String LOG_TIMESTAMP = "logTimestamp"; //$NON-NLS-1$

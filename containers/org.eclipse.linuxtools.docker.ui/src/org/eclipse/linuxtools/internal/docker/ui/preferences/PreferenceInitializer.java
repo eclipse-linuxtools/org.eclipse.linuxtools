@@ -15,6 +15,7 @@ import static org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceCo
 import static org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceConstants.DOCKER_MACHINE_INSTALLATION_DIRECTORY;
 import static org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceConstants.LOG_TIMESTAMP;
 import static org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceConstants.REFRESH_TIME;
+import static org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceConstants.RESTART_WAIT_TIME;
 import static org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceConstants.VM_DRIVER_INSTALLATION_DIRECTORY;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
@@ -32,6 +33,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	public void initializeDefaultPreferences() {
 		final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		store.setDefault(REFRESH_TIME, 15);
+		store.setDefault(RESTART_WAIT_TIME, 10);
 		store.setDefault(AUTOLOG_ON_START, true);
 		store.setDefault(LOG_TIMESTAMP, true);
 		// set docker-machine preferences based on the user's platform
