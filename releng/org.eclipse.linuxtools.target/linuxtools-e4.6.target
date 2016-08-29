@@ -9,9 +9,11 @@
 <unit id="com.fasterxml.jackson.module.jackson-module-jaxb-annotations" version="0.0.0"/>
 <unit id="com.spotify.docker.client" version="0.0.0"/>
 <unit id="com.spotify.docker.client.source" version="0.0.0"/>
+<unit id="org.bouncycastle.bcprov-jdk15on" version="0.0.0"/>
+<unit id="org.bouncycastle.bcpkix-jdk15on" version="0.0.0"/>
 <unit id="org.mockito" version="0.0.0"/>
 <unit id="org.assertj" version="0.0.0"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/S201607281920/"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/I20160829153302/repository/"/>
 <repository location="http://download.eclipse.org/linuxtools/docker-client"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
