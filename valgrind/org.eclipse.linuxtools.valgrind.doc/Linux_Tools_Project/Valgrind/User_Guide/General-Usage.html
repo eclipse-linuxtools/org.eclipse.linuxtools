@@ -28,7 +28,7 @@
 				<td style="width: 60%" align="center"></td>
 				<td style="width: 20%" align="right" valign="top">Using Memcheck</td>
 			</tr>
-		</table><hr/>
+		</table><hr class="navigation-separator"/>
 		<h1 id="General_Usage">General Usage</h1>
 		<p>You can use the Valgrind plug-in's "one-click launch" shortcut to run a default profile. Doing so is similar to running <code>valgrind ./<i>program_name</i></code> from the command line. To use the one-click launch shortcut, right-click on the 
 			<i>project</i> or 
@@ -151,6 +151,19 @@
 				<i>Export</i>
 			</b> wizard menu.
 		</p>
+		<h2 id="Error_Markers">Error Markers</h2>
+		<p>The Valgrind Eclipse plug-in uses error markers to identify specific errors, found by the underlying Valgrind tool, to the user. The sub-tools that make use of these markers are Memcheck and Helgrind; each emitting specific memory or concurrency error.</p>
+		<p>
+			<img border="0" src="images/Memcheck_error.png"/>
+		</p>
+		<p>In post 2.1 releases of Linux Tools, it is possible to clear these error markers by simply re-building or cleaning the respective project. For the older versions the 
+			<b>
+				<i>Remove Markers</i>
+			</b> toolbar action is available to manually clear the markers.
+		</p>
+		<p>
+			<img border="0" src="images/Valgrind_toolbar_action.png"/>
+		</p>
 		<h2 id="Other_Operating_Systems">Other Operating Systems</h2>
 		<p>The Valgrind Eclipse plugins were designed and tested on Linux systems only. However, the Valgrind tools are also available on Mac OS X and so too are the Linux Tools Eclipse Valgrind plugins. The plugins are not officially supported on Mac OS X, but here are instructions to get it working.</p>
 		<h3 id="Mac_OS_X_10.6">Mac OS X 10.6</h3>
@@ -161,10 +174,10 @@
 		<p>Essentially, you need to run the following script. (Ensure you have wget installed)</p>
 		<pre> svn co -r 11104 svn://svn.valgrind.org/valgrind/trunk valgrind
  cd valgrind
- wget http://bugs.kde.org/attachment.cgi?id=40091 -O snow-leopard.patch
- wget http://bugsfiles.kde.org/attachment.cgi?id=40900 -O arc4random.patch
- wget http://bugsfiles.kde.org/attachment.cgi?id=42530 -O sidt.patch 
- wget http://bugsfiles.kde.org/attachment.cgi?id=42892 -O signal.patch
+ wget <a href="http://bugs.kde.org/attachment.cgi?id=40091">http://bugs.kde.org/attachment.cgi?id=40091</a> -O snow-leopard.patch
+ wget <a href="http://bugsfiles.kde.org/attachment.cgi?id=40900">http://bugsfiles.kde.org/attachment.cgi?id=40900</a> -O arc4random.patch
+ wget <a href="http://bugsfiles.kde.org/attachment.cgi?id=42530">http://bugsfiles.kde.org/attachment.cgi?id=42530</a> -O sidt.patch 
+ wget <a href="http://bugsfiles.kde.org/attachment.cgi?id=42892">http://bugsfiles.kde.org/attachment.cgi?id=42892</a> -O signal.patch
  patch -p0 &lt; snow-leopard.patch
  patch -p0 &lt; arc4random.patch
  patch -p1 &lt; signal.patch
@@ -185,7 +198,7 @@
 		</p>
 		<p>Use <code>which valgrind</code> to find the install location of the Valgrind binary. </p>
 		<p><code>ln -s /usr/bin/valgrind /location/of/valgrind</code> will create the symlink.</p>
-		<p>After that, the Eclipse Valgrind plugin should work as specified in other parts of this wiki page.</p><hr/>
+		<p>After that, the Eclipse Valgrind plugin should work as specified in other parts of this wiki page.</p><hr class="navigation-separator"/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
 				<td style="width: 20%" align="left">

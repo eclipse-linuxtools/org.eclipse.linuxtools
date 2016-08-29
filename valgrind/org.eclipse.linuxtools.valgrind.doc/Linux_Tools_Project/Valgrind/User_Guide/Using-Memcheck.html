@@ -28,7 +28,7 @@
 				<td style="width: 60%" align="center"></td>
 				<td style="width: 20%" align="right" valign="top">Using Massif</td>
 			</tr>
-		</table><hr/>
+		</table><hr class="navigation-separator"/>
 		<h1 id="Using_Memcheck">Using Memcheck</h1>
 		<p>Memcheck is the default tool used by Valgrind and the Valgrind plug-in for Eclipse. It allows you to detect memory-related problems such as memory leaks, use of uninitialized memory, and reads from/writes to inappropriate stack areas. For more information about Memcheck, refer to 
 			<a href="http://www.valgrind.org/docs/manual/mc-manual.html">http://www.valgrind.org/docs/manual/mc-manual.html</a>.
@@ -62,15 +62,28 @@
 		<ul>
 			<li>
 				<b>
+					<i>check for memory leaks</i>
+				</b> corresponds to the Memcheck command-line option <code>--leak-check=</code> option with only the values "yes" or "no" supported.  When enabled, Memcheck will search for memory leaks when the client program finishes and will show each individual leak based on the settings of 
+				<b>
+					<i>show reachable blocks</i>
+				</b> and 
+				<b>
+					<i>show possibly lost blocks</i>
+				</b>.
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
 					<i>leak resolution</i>
-				</b> sets how tolerant Memcheck should be in considering different stack traces to be the same. The default setting is "low", which means only the first two entries need to match. The "med" setting requires four entries to declare a match. The "high" setting requires all entries to declare match. 
+				</b> corresponds to the Memcheck command-line option <code>--leak-resolution=</code> and sets how tolerant Memcheck should be in considering different stack traces to be the same. The default setting is "low", which means only the first two entries need to match. The "med" setting requires four entries to declare a match. The "high" setting requires all entries to declare match. 
 			</li>
 		</ul>
 		<ul>
 			<li>
 				<b>
 					<i>freelist size (blocks)</i>
-				</b> is identical to the Memcheck command-line option <code>--freelist-vol=</code>, which specifies the maximum total size (in bytes) of memory blocks to be marked "inaccessible" once they have been freed using <code>free</code> (as in C) or <code>delete</code> (as in C++). The default value for 
+				</b> corresponds to the Memcheck command-line option <code>--freelist-vol=</code>, which specifies the maximum total size (in bytes) of memory blocks to be marked "inaccessible" once they have been freed using <code>free</code> (as in C) or <code>delete</code> (as in C++). The default value for 
 				<b>
 					<i>freelist size (blocks)</i>
 				</b> is 10000000.
@@ -80,42 +93,86 @@
 			<li>
 				<b>
 					<i>minimum heap block alignment</i>
-				</b> is identical to the Memcheck command-line option <code>--alignment=</code>, which specifies the minimum alignment/size of heap blocks. The default value for this option is 8.
+				</b> corresponds to the Memcheck command-line option <code>--alignment=</code>, which specifies the minimum alignment/size of heap blocks. The default value for this option is 8.
 			</li>
 		</ul>
 		<ul>
 			<li>
 				<b>
 					<i>show reachable blocks</i>
-				</b> configures whether or not Memcheck should report blocks it could not find a pointer to during leak detection. This is disabled by default (i.e. do not report blocks with undetermined pointers). 
+				</b> corresponds to the Memcheck command-line option <code>--show-reachable</code> and configures whether or not Memcheck should report all types of leaks (option true) or only show definitely lost / possibly lost blocks (option false) based on the value of 
+				<b>
+					<i>show possibly lost blocks</i>
+				</b>.  The default value of this option is false.
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>show possibly lost blocks</i>
+				</b> corresponds to the Memcheck command-line option <code>--show-possibly-lost</code> and configures whether Memcheck should report 'possibly lost blocks' in addition to 'definitely lost blocks' if 
+				<b>
+					<i>show reachable blocks</i>
+				</b> is set to false.  If 
+				<b>
+					<i>show reachable blocks</i>
+				</b> is true, then this setting is ignored as all leak block types are reported.  The default value of this option is true.
 			</li>
 		</ul>
 		<ul>
 			<li>
 				<b>
 					<i>undef value errors</i>
-				</b> configures whether or not Memcheck should detect dangerous uses of undefined value errors. This is enabled by default. 
+				</b> corresponds to the Memcheck command-line option <code>--undef-value-errors</code> and specifies whether or not Memcheck should detect dangerous uses of undefined value errors. This is enabled by default. 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>track origins</i>
+				</b> corresponds to the Memcheck command-line option <code>--track-origins=</code> which specifies whether Memcheck tracks the origin of uninitialized values or not.  By default, Memcheck does not track uninitialized values.
 			</li>
 		</ul>
 		<ul>
 			<li>
 				<b>
 					<i>allow partial loads</i>
-				</b> is identical to the Memcheck command-line option <code>--partial-loads-ok=</code>, which controls how Memcheck handles word-sized, word-aligned loads from addresses from which bytes are addressable and others are not. This is disabled by default (i.e. treat loads from partially invalid and completely invalid addresses as the same). 
+				</b> corresponds to the Memcheck command-line option <code>--partial-loads-ok=</code>, which controls how Memcheck handles word-sized, word-aligned loads from addresses from which bytes are addressable and others are not. This is disabled by default (i.e. treat loads from partially invalid and completely invalid addresses as the same). 
 			</li>
 		</ul>
 		<ul>
 			<li>
 				<b>
 					<i>gcc 2.96 workarounds</i>
-				</b> is identical to the Memcheck command-line option <code>--workaround-gcc296-bugs</code>, which controls whether Memcheck should assume that small reads/writes below the stack pointer are due to bugs in 
+				</b> corresponds to the Memcheck command-line option <code>--workaround-gcc296-bugs</code>, which controls whether Memcheck should assume that small reads/writes below the stack pointer are due to bugs in 
 				<i>gcc-2.96</i>. This option is disabled by default (i.e. do not assume them to be reslting from 
-				<i>gcc-2.96</i> bugs; report such reads/writes as errors). 
+				<i>gcc-2.96</i> bugs; report such reads/writes as errors).
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>fill free'd areas</i>
+				</b> corresponds to the Memcheck command-line option <code>--freefill=</code>.  A hex byte is specified that is used by Memcheck to fill blocks freed by free, delete.  This can be used to determine obscure memory corruption problems.
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>fill malloc'd areas</i>
+				</b> corresponds to the Memcheck command-line option <code>--mallocfill=</code>.  A hex byte is specified that is used by Memcheck to fill blocks allocated by malloc, new, etc, but not by calloc.  This can be used to determine obscure memory corruption problems.
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>ignore ranges</i>
+				</b> corresponds to the Memcheck command-line option <code>--ignore-ranges=</code>.  Any ranges listed in this option will be ignored by Memcheck's addressability checking.
 			</li>
 		</ul>
 		<p>Refer to 
 			<a href="http://www.valgrind.org/docs/manual/mc-manual.html#mc-manual.suppfiles">http://www.valgrind.org/docs/manual/mc-manual.html#mc-manual.suppfiles</a> for information about Memcheck suppression files. For more information about each Memcheck option in the Valgrind plug-in for Eclipse, refer to <code>man valgrind</code>.
-		</p><hr/>
+		</p><hr class="navigation-separator"/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
 				<td style="width: 20%" align="left">

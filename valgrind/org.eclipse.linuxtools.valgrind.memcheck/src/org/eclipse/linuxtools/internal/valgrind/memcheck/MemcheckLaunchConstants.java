@@ -59,5 +59,5 @@ public final class MemcheckLaunchConstants {
     public static final boolean DEFAULT_MEMCHECK_TRACKORIGINS = false;
 
     // VG >= 3.6.0
-    public static final boolean DEFAULT_MEMCHECK_POSSIBLY_LOST_BOOL = false;
+    public static final boolean DEFAULT_MEMCHECK_POSSIBLY_LOST_BOOL = true;
 }
