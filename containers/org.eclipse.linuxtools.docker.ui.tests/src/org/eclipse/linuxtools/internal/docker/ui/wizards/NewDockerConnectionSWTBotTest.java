@@ -92,6 +92,16 @@ public class NewDockerConnectionSWTBotTest {
 		this.addConnectionButton = dockerExplorerViewBot.toolbarButton("&Add Connection");
 	}
 
+	@Before
+	public void clearClipboards() {
+		// Clear all clipboards
+		Display.getDefault().syncExec(() -> {
+			Clipboard clip = new Clipboard(Display.getCurrent());
+			clip.clearContents(DND.CLIPBOARD);
+			clip.clearContents(DND.SELECTION_CLIPBOARD);
+		});
+	}
+
 	private IDockerConnection configureUnixSocketConnection(final String connectionName, final String pathToSocket) {
 		final DockerClient client = MockDockerClientFactory.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from(connectionName, client)
@@ -204,8 +214,7 @@ public class NewDockerConnectionSWTBotTest {
 	public void shouldNotAllowNewConnectionWithDifferentNameAndSameUnixSocketSettings() throws IOException {
 		// given
 		final String dockerSocketTmpPath = File.createTempFile("docker", ".sock").getAbsolutePath();
-		MockDockerConnectionSettingsFinder.validUnixSocketConnectionAvailable("Mock",
-				"unix://" + dockerSocketTmpPath);
+		MockDockerConnectionSettingsFinder.validUnixSocketConnectionAvailable("Mock", "unix://" + dockerSocketTmpPath);
 		// add an existing connection based on the settings above
 		configureUnixSocketConnection("Mock", dockerSocketTmpPath);
 		// when open wizard
@@ -239,8 +248,7 @@ public class NewDockerConnectionSWTBotTest {
 		// given
 		final String dockerSocketTmpPath = File.createTempFile("docker", ".sock").getAbsolutePath();
 		configureUnixSocketConnection("Bar", dockerSocketTmpPath);
-		MockDockerConnectionSettingsFinder.validUnixSocketConnectionAvailable("Mock",
-				"unix://" + dockerSocketTmpPath);
+		MockDockerConnectionSettingsFinder.validUnixSocketConnectionAvailable("Mock", "unix://" + dockerSocketTmpPath);
 		final String otherDockerSocketTmpPath = File.createTempFile("docker", ".sock").getAbsolutePath();
 		// when open wizard
 		addConnectionButton.click();
@@ -287,13 +295,6 @@ public class NewDockerConnectionSWTBotTest {
 	}
 
 	private void verifyPopulateConnectionWithClipboard(final int clipboardType) {
-		// Clear all clipboards
-		Display.getDefault().syncExec(() -> {
-			Clipboard clip = new Clipboard(Display.getCurrent());
-			clip.clearContents(DND.CLIPBOARD);
-			clip.clearContents(DND.SELECTION_CLIPBOARD);
-		});
-
 		// given
 		final String[] connectionData = new String[] {
 				"DOCKER_HOST=https://1.2.3.4:1234 DOCKER_CERT_PATH=/path/to/certs DOCKER_TLS_VERIFY=1" };

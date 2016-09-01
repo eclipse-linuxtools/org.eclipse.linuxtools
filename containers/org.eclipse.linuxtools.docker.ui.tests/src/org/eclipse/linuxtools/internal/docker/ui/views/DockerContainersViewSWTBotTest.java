@@ -27,6 +27,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionM
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerImageHierarchyViewAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.MenuAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TabDescriptorAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TestLoggerRule;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -35,6 +36,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -182,6 +185,27 @@ public class DockerContainersViewSWTBotTest {
 		final SWTBotMenu menuCommand = dockerContainersViewBot.bot().table().contextMenu("Restart");
 		// then
 		MenuAssertion.assertThat(menuCommand).isVisible().isEnabled();
+	}
+
+	@Test
+	public void shouldShowSelectedContainerInPropertiesView() {
+		// given
+		final DockerClient client = MockDockerClientFactory
+				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
+				.withDefaultTCPConnectionSettings();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		final PropertySheet propertySheet = SWTUtils
+				.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
+		this.dockerContainersView.setFocus();
+		// select the container in the table
+		selectContainerInTable("angry_bar");
+		// then the properties view should have a selected tab with container
+		// info
+		assertThat(propertySheet.getCurrentPage()).isInstanceOf(TabbedPropertySheetPage.class);
+		final TabbedPropertySheetPage currentPage = (TabbedPropertySheetPage) propertySheet.getCurrentPage();
+		TabDescriptorAssertion.assertThat(currentPage.getSelectedTab()).isNotNull()
+				.hasId("org.eclipse.linuxtools.docker.ui.properties.container.info");
 	}
 
 }

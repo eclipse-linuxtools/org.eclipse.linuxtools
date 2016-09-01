@@ -32,6 +32,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerExplorerVie
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.MenuAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTBotTreeItemAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TabDescriptorAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TestLoggerRule;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
@@ -41,6 +42,8 @@ import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -537,6 +540,14 @@ public class DockerExplorerViewSWTBotTest {
 		SWTUtils.getContextMenu(dockerExplorerViewBot.bot().tree(), "Show In", "Properties").click();
 		// the properties view should be visible
 		assertThat(this.bot.viewById("org.eclipse.ui.views.PropertySheet").isActive()).isEqualTo(true);
+		// then the properties view should have a selected tab with container
+		// info
+		final PropertySheet propertySheet = SWTUtils
+				.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
+		assertThat(propertySheet.getCurrentPage()).isInstanceOf(TabbedPropertySheetPage.class);
+		final TabbedPropertySheetPage currentPage = (TabbedPropertySheetPage) propertySheet.getCurrentPage();
+		TabDescriptorAssertion.assertThat(currentPage.getSelectedTab()).isNotNull()
+				.hasId("org.eclipse.linuxtools.docker.ui.properties.container.info");
 	}
 
 	@Test
@@ -548,10 +559,18 @@ public class DockerExplorerViewSWTBotTest {
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one the container
 		selectImagesInTreeView("Test", "angry_bar");
-		// show container info in Properties view
+		// show image info in Properties view
 		SWTUtils.getContextMenu(dockerExplorerViewBot.bot().tree(), "Show In", "Properties").click();
 		// the properties view should be visible
 		assertThat(this.bot.viewById("org.eclipse.ui.views.PropertySheet").isActive()).isEqualTo(true);
+		// then the properties view should have a selected tab with container
+		// info
+		final PropertySheet propertySheet = SWTUtils
+				.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
+		assertThat(propertySheet.getCurrentPage()).isInstanceOf(TabbedPropertySheetPage.class);
+		final TabbedPropertySheetPage currentPage = (TabbedPropertySheetPage) propertySheet.getCurrentPage();
+		TabDescriptorAssertion.assertThat(currentPage.getSelectedTab()).isNotNull()
+				.hasId("org.eclipse.linuxtools.docker.ui.properties.image.info");
 	}
 
 	@Test

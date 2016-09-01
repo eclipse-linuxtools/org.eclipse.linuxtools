@@ -117,7 +117,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 
 	@Override
 	public String getContributorId() {
-		return DockerExplorerView.VIEW_ID;
+		return "org.eclipse.linuxtools.docker.ui.propertiesViewContributor"; //$NON-NLS-1$
 	}
 
 	/**

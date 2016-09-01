@@ -454,7 +454,14 @@ public class SWTUtils {
 
 	@SuppressWarnings("unchecked")
 	public static <T> T getView(final SWTWorkbenchBot bot, final String viewId) {
-		return (T) bot.viewById(viewId).getReference().getView(false);
+		return (T) getView(bot, viewId, false);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T getView(final SWTWorkbenchBot bot, final String viewId, final boolean restore) {
+		final SWTBotView viewBot = bot.viewById(viewId);
+		viewBot.setFocus();
+		return (T) viewBot.getReference().getView(restore);
 	}
 
 	/**
