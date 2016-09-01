@@ -273,9 +273,12 @@ public class LabelProviderUtils {
 	public static StyledString getStyledText(
 			final IDockerContainer dockerContainer) {
 		final StyledString styledString = new StyledString();
-		styledString.append(dockerContainer.name()).append(
-				" (" + dockerContainer.image() + ")", //$NON-NLS-1$ //$NON-NLS-2$
-				StyledString.QUALIFIER_STYLER);
+		styledString.append(dockerContainer.name());
+		if (dockerContainer.image() != null
+				&& !dockerContainer.image().isEmpty()) {
+			styledString.append(" (" + dockerContainer.image() + ")", //$NON-NLS-1$ //$NON-NLS-2$
+					StyledString.QUALIFIER_STYLER);
+		}
 		return styledString;
 	}
 

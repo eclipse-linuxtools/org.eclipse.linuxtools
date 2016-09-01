@@ -26,6 +26,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageR
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerImageHierarchyViewAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TabDescriptorAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TestLoggerRule;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -33,6 +34,8 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -172,6 +175,26 @@ public class DockerImagesViewSWTBotTest {
 		SWTUtils.wait(1, TimeUnit.SECONDS);
 		DockerImageHierarchyViewAssertion.assertThat(SWTUtils.getView(bot, DockerImageHierarchyView.VIEW_ID))
 				.isNotNull();
+	}
+
+	@Test
+	public void shouldShowSelectedImageInPropertiesView() {
+		// given
+		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("angry_bar").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
+				.withDefaultTCPConnectionSettings();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		final PropertySheet propertySheet = SWTUtils
+				.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
+		this.dockerImagesView.setFocus();
+		// select the container in the table
+		selectImageInTable("angry_bar");
+		// then the properties view should have a selected tab with container
+		// info
+		assertThat(propertySheet.getCurrentPage()).isInstanceOf(TabbedPropertySheetPage.class);
+		final TabbedPropertySheetPage currentPage = (TabbedPropertySheetPage) propertySheet.getCurrentPage();
+		TabDescriptorAssertion.assertThat(currentPage.getSelectedTab()).isNotNull()
+				.hasId("org.eclipse.linuxtools.docker.ui.properties.image.info");
 	}
 
 

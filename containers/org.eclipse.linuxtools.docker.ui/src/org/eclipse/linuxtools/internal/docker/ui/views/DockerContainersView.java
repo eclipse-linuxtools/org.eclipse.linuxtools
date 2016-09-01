@@ -147,7 +147,7 @@ public class DockerContainersView extends ViewPart implements
 
 	@Override
 	public String getContributorId() {
-		return DockerExplorerView.VIEW_ID;
+		return "org.eclipse.linuxtools.docker.ui.propertiesViewContributor"; //$NON-NLS-1$
 	}
 
 	/**
