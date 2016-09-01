@@ -25,6 +25,7 @@ import java.net.URL;
 import org.eclipse.cdt.build.core.scannerconfig.ScannerConfigNature;
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.index.IIndexManager;
+import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.managedbuilder.core.ManagedCProjectNature;
@@ -195,6 +196,12 @@ public abstract class AbstractTest {
             InvocationTargetException, InterruptedException, IOException {
         ICProject proj = createProject(bundle, projname);
         buildProject(proj);
+		IBinary[] binaries = null;
+		do {
+			Thread.sleep(500)           ;
+			binaries = proj.getBinaryContainer().getBinaries();
+		} while (binaries == null || binaries.length < 1);
+
         return proj;
     }
 
