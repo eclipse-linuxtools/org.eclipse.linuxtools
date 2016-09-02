@@ -16,6 +16,8 @@ import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IRegistry;
+import org.eclipse.linuxtools.internal.docker.core.DockerImage;
+import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageNameValidator.ImageNameStatus;
 
 /**
  * 
@@ -55,7 +57,14 @@ public class ImagePull extends Wizard {
 	}
 
 	public String getSelectedImageName() {
-		return this.imagePullPage.getSelectedImageName();
+		// append the ':latest' tag on the image name if no tag was specified
+		final String selectedImageName = this.imagePullPage
+				.getSelectedImageName();
+		if (ImageNameValidator
+				.getStatus(selectedImageName) == ImageNameStatus.TAG_MISSING) {
+			return selectedImageName + ':' + DockerImage.LATEST_TAG; // $NON-NLS-1$
+		}
+		return selectedImageName;
 	}
 
 	public IRegistry getSelectedRegistryAccount() {

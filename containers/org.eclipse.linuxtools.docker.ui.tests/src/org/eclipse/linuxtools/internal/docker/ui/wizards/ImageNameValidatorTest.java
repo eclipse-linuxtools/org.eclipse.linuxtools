@@ -18,13 +18,16 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
+/**
+ * Testing the {@link ImageNameValidator} class
+ */
 @RunWith(Parameterized.class)
-public class ImagePullPatternTest { 
-	
+public class ImageNameValidatorTest {
+
 	private static Object[] match(final String imageName, final int expectedSeverity) {
 		return new Object[]{imageName, expectedSeverity};
 	}
-	
+
 	@Parameters(name="{0} -> {1}")
 	public static Object[][] data() {
 		return new Object[][] {
@@ -53,13 +56,13 @@ public class ImagePullPatternTest {
 			match("localhost:5000/jboss/wildfly:latest", IStatus.OK),
 		};
 	}
-	
+
 	@Parameter(value=0)
 	public String imageName;
 	@Parameter(value=1)
 	public int expectedSeverity;
-	
-	
+
+
 	@Test
 	public void verifyData() {
 		final IStatus status = new ImageNameValidator().validate(imageName);
