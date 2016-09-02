@@ -125,6 +125,18 @@ public class ImagePullSWTBotTest {
 	}
 
 	@Test
+	public void shouldPullLatestImageFromDockerHub() throws DockerException, InterruptedException {
+		// given
+		openPullWizard();
+		// when
+		bot.text(0).setText("jboss/wildfly");
+		bot.button("Finish").click();
+		// then
+		Mockito.verify(client, Mockito.times(1)).pull(Matchers.eq("jboss/wildfly:latest"),
+				Matchers.any(DockerProgressHandler.class));
+	}
+
+	@Test
 	public void shouldPullImageFromOtherRegistry() throws DockerException, InterruptedException {
 		// given
 		MockRegistryAccountManagerFactory
