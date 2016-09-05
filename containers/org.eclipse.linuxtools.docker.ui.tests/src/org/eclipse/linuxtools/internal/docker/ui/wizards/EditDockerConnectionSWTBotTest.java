@@ -124,7 +124,7 @@ public class EditDockerConnectionSWTBotTest {
 	private IDockerConnection configureTCPConnection(final String connectionName) {
 		final DockerClient client = MockDockerClientFactory.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from(connectionName, client)
-				.withTCPConnectionSettings("https://foo:1234", PATH_TO_CERTS);
+				.withTCPConnectionSettings("https://foo:1234", PATH_TO_CERTS, EnumDockerConnectionState.ESTABLISHED);
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		return dockerConnection;
 	}

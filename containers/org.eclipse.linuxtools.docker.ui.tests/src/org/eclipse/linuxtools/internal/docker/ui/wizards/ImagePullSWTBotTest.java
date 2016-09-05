@@ -11,7 +11,10 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.linuxtools.docker.core.EnumDockerConnectionState;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerProgressHandler;
 import org.eclipse.linuxtools.internal.docker.core.RegistryAccountInfo;
@@ -26,6 +29,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionMa
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseShellRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.MenuAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -152,5 +156,65 @@ public class ImagePullSWTBotTest {
 		// then
 		Mockito.verify(client, Mockito.times(1)).pull(Matchers.eq("foo.com/jboss/wildfly:latest"),
 				Matchers.any(DockerProgressHandler.class));
+	}
+
+	@Test
+	public void shouldDisablePullCommandWhenConnectionStateIsUnknown() {
+		// given
+		this.client = MockDockerClientFactory.build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
+				.withState(EnumDockerConnectionState.UNKNOWN);
+		assertThat(dockerConnection.getState()).isEqualTo(EnumDockerConnectionState.UNKNOWN);
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// when
+		// when opening the "Push Image..." wizard
+		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test").select();
+		// then
+		MenuAssertion.assertThat(dockerExplorerViewBot.bot().tree().contextMenu("Pull...")).isNotEnabled();
+	}
+
+	@Test
+	public void shouldDisablePullCommandWhenConnectionIsClosed() {
+		// given
+		this.client = MockDockerClientFactory.build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
+				.withState(EnumDockerConnectionState.CLOSED);
+		assertThat(dockerConnection.getState()).isEqualTo(EnumDockerConnectionState.CLOSED);
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// when
+		// when opening the "Push Image..." wizard
+		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test").select();
+		// then
+		MenuAssertion.assertThat(dockerExplorerViewBot.bot().tree().contextMenu("Pull...")).isNotEnabled();
+	}
+
+	@Test
+	public void shouldEnablePullCommandWhenConnectionIsEstablished() {
+		// given
+		this.client = MockDockerClientFactory.build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
+				.withDefaultTCPConnectionSettings();
+		assertThat(dockerConnection.getState()).isEqualTo(EnumDockerConnectionState.ESTABLISHED);
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// when
+		// when opening the "Push Image..." wizard
+		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test").select();
+		// then
+		MenuAssertion.assertThat(dockerExplorerViewBot.bot().tree().contextMenu("Pull...")).isEnabled();
+	}
+
+	@Test
+	public void shouldEnablePullCommandWhenConnectionIsEstablishedAndExpanded() {
+		// given
+		this.client = MockDockerClientFactory.build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
+				.withDefaultTCPConnectionSettings();
+		assertThat(dockerConnection.getState()).isEqualTo(EnumDockerConnectionState.ESTABLISHED);
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// when
+		// when opening the "Push Image..." wizard
+		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images").select();
+		// then
+		MenuAssertion.assertThat(dockerExplorerViewBot.bot().tree().contextMenu("Pull...")).isEnabled();
 	}
 }
