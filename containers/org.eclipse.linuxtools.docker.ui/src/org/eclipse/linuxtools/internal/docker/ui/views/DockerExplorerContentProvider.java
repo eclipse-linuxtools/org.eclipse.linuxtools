@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -286,7 +287,7 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 	 * Wrapper node to display {@link IDockerImage} of a given
 	 * {@link IDockerConnection}
 	 */
-	public static class DockerImagesCategory {
+	public static class DockerImagesCategory implements IAdaptable {
 
 		private final IDockerConnection connection;
 
@@ -296,6 +297,15 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 		 */
 		public DockerImagesCategory(final IDockerConnection connection) {
 			this.connection = connection;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public <T> T getAdapter(final Class<T> adapter) {
+			if (adapter.equals(IDockerConnection.class)) {
+				return (T) getConnection();
+			}
+			return null;
 		}
 
 		public IDockerConnection getConnection() {
@@ -334,7 +344,7 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 	 * Wrapper node to display {@link IDockerContainer} of a given
 	 * {@link IDockerConnection}
 	 */
-	public static class DockerContainersCategory {
+	public static class DockerContainersCategory implements IAdaptable {
 
 		private final IDockerConnection connection;
 
@@ -344,6 +354,15 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 		 */
 		public DockerContainersCategory(final IDockerConnection connection) {
 			this.connection = connection;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public <T> T getAdapter(final Class<T> adapter) {
+			if (adapter.equals(IDockerConnection.class)) {
+				return (T) getConnection();
+			}
+			return null;
 		}
 
 		public IDockerConnection getConnection() {
@@ -381,7 +400,8 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 	 * Wrapper node to display {@link IDockerPortMapping} of a given
 	 * {@link IDockerContainer}
 	 */
-	public static class DockerContainerPortMappingsCategory {
+	public static class DockerContainerPortMappingsCategory
+			implements IAdaptable {
 
 		private final IDockerContainer container;
 
@@ -417,6 +437,15 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 					(portMapping,
 							otherPortMapping) -> portMapping.getPrivatePort()
 									- otherPortMapping.getPrivatePort());
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public <T> T getAdapter(final Class<T> adapter) {
+			if (adapter.equals(IDockerConnection.class)) {
+				return (T) getContainer().getConnection();
+			}
+			return null;
 		}
 
 		public IDockerContainer getContainer() {
@@ -463,7 +492,7 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 	 * Wrapper node to display the {@link DockerContainerLink} of a given
 	 * {@link IDockerContainer}
 	 */
-	public static class DockerContainerLinksCategory {
+	public static class DockerContainerLinksCategory implements IAdaptable {
 
 		private final IDockerContainer container;
 
@@ -486,6 +515,15 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 					this.links.add(new DockerContainerLink(container, link));
 				}
 			}
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public <T> T getAdapter(final Class<T> adapter) {
+			if (adapter.equals(IDockerConnection.class)) {
+				return (T) getContainer().getConnection();
+			}
+			return null;
 		}
 
 		public IDockerContainer getContainer() {
@@ -532,7 +570,7 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 
 	}
 
-	public static class DockerContainerLink {
+	public static class DockerContainerLink implements IAdaptable {
 
 		private final IDockerContainer container;
 
@@ -554,6 +592,15 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 			this.containerName = getDisplayableContainerName(args[0]);
 			this.containerAlias = args.length > 0
 					? getDisplayableContainerAlias(args[1]) : null;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public <T> T getAdapter(final Class<T> adapter) {
+			if (adapter.equals(IDockerConnection.class)) {
+				return (T) getContainer().getConnection();
+			}
+			return null;
 		}
 
 		public IDockerContainer getContainer() {
@@ -633,7 +680,7 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 	 * Wrapper node to display {@link DockerContainerVolume} of a given
 	 * {@link IDockerContainer}
 	 */
-	public static class DockerContainerVolumesCategory {
+	public static class DockerContainerVolumesCategory implements IAdaptable {
 
 		private final IDockerContainer container;
 
@@ -657,6 +704,15 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 							.add(new DockerContainerVolume(container, volume));
 				}
 			}
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public <T> T getAdapter(final Class<T> adapter) {
+			if (adapter.equals(IDockerConnection.class)) {
+				return (T) getContainer().getConnection();
+			}
+			return null;
 		}
 
 		public IDockerContainer getContainer() {
@@ -703,7 +759,7 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 
 	}
 
-	public static class DockerContainerVolume {
+	public static class DockerContainerVolume implements IAdaptable {
 
 		private final IDockerContainer container;
 
@@ -737,6 +793,15 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 			this.containerPath = args.length > 1 ? args[1] : args[0];
 			// flags exists on case (3) only
 			this.flags = args.length > 2 ? args[2] : null;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public <T> T getAdapter(final Class<T> adapter) {
+			if (adapter.equals(IDockerConnection.class)) {
+				return (T) getContainer().getConnection();
+			}
+			return null;
 		}
 
 		public IDockerContainer getContainer() {

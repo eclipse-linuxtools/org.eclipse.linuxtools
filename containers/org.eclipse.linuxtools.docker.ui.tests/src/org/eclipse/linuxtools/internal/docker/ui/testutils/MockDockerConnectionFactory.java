@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils;
 
+import org.eclipse.linuxtools.docker.core.EnumDockerConnectionState;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerImageInfo;
 import org.eclipse.linuxtools.internal.docker.core.DockerClientFactory;
@@ -46,24 +47,33 @@ public class MockDockerConnectionFactory {
 		public DockerConnection withUnixSocketConnectionSettings(final String pathToSocket) {
 			final DockerConnection connection = Mockito.spy(connectionBuilder.unixSocketConnection(new UnixSocketConnectionSettings(pathToSocket)));
 			configureDockerClientFactory(connection, this.dockerClient);
-			configureMockBehaviour(connection);
+			configureMockBehaviour(connection, EnumDockerConnectionState.ESTABLISHED);
 			return connection;
 		}
 
 		public DockerConnection withDefaultTCPConnectionSettings() {
-			return withTCPConnectionSettings(null, null);
+			return withTCPConnectionSettings(null, null, EnumDockerConnectionState.ESTABLISHED);
 		}
 
-		public DockerConnection withTCPConnectionSettings(final String host, final String pathToCerts) {
+		public DockerConnection withTCPConnectionSettings(final String host, final String pathToCerts,
+				final EnumDockerConnectionState state) {
 			final DockerConnection connection = Mockito.spy(connectionBuilder.tcpConnection(new TCPConnectionSettings(host, pathToCerts)));
 			configureDockerClientFactory(connection, this.dockerClient);
-			configureMockBehaviour(connection);
+			configureMockBehaviour(connection, state);
 			return connection;
 		}
 
-		private static void configureMockBehaviour(DockerConnection connection) {
-			IDockerImageInfo imageInfo = Mockito.mock(IDockerImageInfo.class, Mockito.RETURNS_DEEP_STUBS);
+		public DockerConnection withState(final EnumDockerConnectionState state) {
+			final DockerConnection connection = withDefaultTCPConnectionSettings();
+			Mockito.when(connection.getState()).thenReturn(state);
+			return connection;
+		}
+
+		private static void configureMockBehaviour(final DockerConnection connection,
+				final EnumDockerConnectionState state) {
+			final IDockerImageInfo imageInfo = Mockito.mock(IDockerImageInfo.class, Mockito.RETURNS_DEEP_STUBS);
 			Mockito.when(connection.getImageInfo(Matchers.anyString())).thenReturn(imageInfo);
+			Mockito.when(connection.getState()).thenReturn(state);
 		}
 
 		private static void configureDockerClientFactory(final DockerConnection connection, final DockerClient dockerClient) {
