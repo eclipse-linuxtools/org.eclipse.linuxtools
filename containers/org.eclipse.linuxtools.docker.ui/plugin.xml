@@ -757,7 +757,7 @@
      <enabledWhen>
         <test
               forcePluginActivation="true"
-              property="org.eclipse.linuxtools.docker.propertytesters.connection.existsActiveConnection"
+              property="org.eclipse.linuxtools.docker.propertytesters.connection.connectionIsEstablished"
               value="true">
         </test>
      </enabledWhen>

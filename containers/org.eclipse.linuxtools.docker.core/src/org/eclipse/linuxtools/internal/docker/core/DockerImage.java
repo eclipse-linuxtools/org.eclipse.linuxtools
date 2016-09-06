@@ -21,9 +21,11 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 
-public class DockerImage implements IDockerImage {
+public class DockerImage implements IDockerImage, IAdaptable {
 
 	/** The 'latest' tag. */
 	public static final String LATEST_TAG = "latest"; //$NON-NLS-1$
@@ -345,6 +347,14 @@ public class DockerImage implements IDockerImage {
 			return imageName + ':' + LATEST_TAG;
 		}
 		return imageName;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter.equals(IDockerConnection.class))
+			return (T) this.parent;
+		return null;
 	}
 
 }
