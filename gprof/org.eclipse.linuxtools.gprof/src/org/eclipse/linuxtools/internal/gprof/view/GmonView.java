@@ -241,8 +241,9 @@ public class GmonView extends AbstractSTDataView {
             MessageDialog.openError(PlatformUI.getWorkbench().getDisplay().getActiveShell(), "Invalid binary file", //$NON-NLS-1$
                     binaryPath + " is not a valid binary file."); //$NON-NLS-1$
             return null;
-        } else if (binary.getCPU().equals("ppc64")) //$NON-NLS-1$
+        } else if (binary.getCPU().equals("ppc64") && !binary.isLittleEndian()) { //$NON-NLS-1$
             binary = new PPC64ElfBinaryObjectWrapper(binary.getBinaryParser(), binary.getPath(), binary.getType());
+        }
 
         GmonDecoder decoder = new GmonDecoder(binary, project);
         try {
