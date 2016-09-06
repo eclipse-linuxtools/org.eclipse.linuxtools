@@ -26,6 +26,9 @@ import org.eclipse.cdt.utils.elf.Elf;
 import org.eclipse.cdt.utils.elf.parser.ElfBinaryObject;
 import org.eclipse.core.runtime.IPath;
 
+/**
+ * Represents a PowerPC64 BE (Big Endian) binary object.
+ */
 public class PPC64ElfBinaryObjectWrapper extends ElfBinaryObject {
     private Elf.Section dataSection = null;
     private ISymbol[] symbols = null;
