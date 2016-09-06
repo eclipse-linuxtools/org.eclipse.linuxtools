@@ -46,7 +46,9 @@
 				<a href="#Docker_Containers_View">Docker Containers View</a> - view for managing Docker Containers
 			</li>
 		</ul>
-		<p>In addition, the Docker Tooling Perspective adds the Console View and the Properties View.</p>
+		<p>In addition, the Docker Tooling Perspective adds the 
+			<a href="#Docker_Image_Hierarchy_View">Docker Image Hierarchy View</a>, Console View, the Terminal View, and the Properties View.
+		</p>
 		<p>The Console View is used to display logs of stdout/stderr output from Containers and in some instances, allow input to stdin.
 			The Properties View allows clicking on various elements such as Connections, Images, and Containers and getting detailed
 			info not readily shown in the various views mentioned above.</p>
@@ -124,7 +126,11 @@
 			<li>Unpause - continue a paused Container</li>
 			<li>Stop - stop running Containers</li>
 			<li>Kill - kill running Containers</li>
+			<li>Restart - restart Container</li>
 			<li>Show in - show in Properties View</li>
+			<li>
+				<a href="#Docker_Image_Hierarchy_View">Open Image Hierarchy</a> - show parent Image plus its parents in Image Hierarchy View
+			</li>
 			<li>Execute Shell - run a shell in the Terminal View (running Container only)</li>
 			<li>Remove - delete stopped Containers</li>
 			<li>
@@ -133,7 +139,7 @@
 			<li>
 				<a href="#Display_Log">Display Log</a> - display the log for the Container
 			</li>
-			<li>Remove Log - removes the log for the Container from Eclipse Console View</li>
+			<li>Remove Log - removes the log for the Container from Eclipse Console View or Terminal View (tty flag on)</li>
 		</ul>
 		<p>
 			<img border="0" src="images/LinuxToolsExplorerImageContextMenu.png"/>
@@ -144,6 +150,9 @@
 				<a href="#Run_Image">Run</a> - build a Container and run it
 			</li>
 			<li>Show in Properties View</li>
+			<li>
+				<a href="#Docker_Image_Hierarchy_View">Open Image Hierarchy</a> - show parent Image plus its parents in Image Hierarchy View
+			</li>
 			<li>Remove - delete selected Images</li>
 			<li>
 				<a href="#Push_Image">Push</a> - push an Image to a registry
@@ -206,20 +215,30 @@
 			<li>
 				<a href="#Remove_Tag">Remove Tag</a> - remove a tag from an Image with multiple repo tags
 			</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerOpenImageHierarchy.png"/> - 
+				<a href="#Docker_Image_Hierarchy_View">Open Image Hierarchy</a>
+			</li>
 		</ul>
 		<p>The text entry below the Connection name is used to search/filter the contents of the list.
 			Anything typed in the filter text widget is used to match items in the list (any column) and
 			any row without a match is excluded.</p>
 		<h3 id="Pull_Image">Pull Image</h3>
 		<p>Pulling a Docker Image consists of requesting a repo tag or repository specification from
-			a registry.  Specifying a repository with no tag will pull all Images from that repo (for example: fedora).</p>
-		<p>The pull Wizard is used to specify the repository or repo:tag specification and the registry to use.</p>
+			a registry.  Specifying a repository with no tag will pull the Image with tag: latest from that repo (for example: fedora
+			will pull fedora:latest).</p>
+		<p>The pull Wizard is used to specify the repository or repo:tag specification and the registry account to use.</p>
 		<p>
 			<img border="0" src="images/LinuxToolsDockerPullWizard.png"/>
 		</p>
 		<p>By default, the Docker Hub registry will be used, however, a user may
-			specify an additional private registry if desired.  Additional registries are added using
-			Windows -&gt; Preferences -&gt; Docker -&gt; Registry Accounts.</p>
+			specify an additional private registry if desired.  Additional registries can be added by clicking
+			on 
+			<b>
+				<i>Add a registry account...</i>
+			</b> or going to
+			Windows -&gt; Preferences -&gt; Docker -&gt; Registry Accounts.
+		</p>
 		<p>The user can either fill in the complete name of the image to download or a search can be performed
 			using the Search button.  This brings up the Search Image Wizard.</p>
 		<p>
@@ -249,6 +268,13 @@
 			via Window -&gt; Preferences -&gt; Docker -&gt; Registry Accounts.  This is needed when authorization is required
 			by the registry for the specified repo.  Using the aforementioned tag method assumes no authorization
 			required.</p>
+		<p>As well, a new tag can be specified at the time of the push.  This new tag is not retained unless
+			specified in the options.</p>
+		<p>Options are available to:</p>
+		<ul>
+			<li>force tag - instruct client to force tag (e.g. needed if replacing an image with same tag in a repository)</li>
+			<li>keep tagged image upon completion - when pushing an image with a new tag, should tag be kept</li>
+		</ul>
 		<p>
 			<img border="0" src="images/LinuxToolsDockerPushWizard.png"/>
 		</p>
@@ -512,10 +538,15 @@
 			<li>Commit Container - 
 				<a href="#Commit_Container">commit all changes of a selected Container into a new Image</a>
 			</li>
+			<li>Restart - restart a Container (will wait to stop a running Container, then will kill it before starting again)</li>
 			<li>Display Log - 
 				<a href="#Display_Log">display the stdout/stderr logs of a selected Container in the Console View</a>
 			</li>
 			<li>Remove Log - remove the stdout/stderr logs of a selected Container from the Console View</li>
+			<li>
+				<img border="0" src="images/LinuxToolsDockerOpenImageHierarchy.png"/> - 
+				<a href="#Docker_Image_Hierarchy_View">Open Image Hierarchy for Container</a>
+			</li>
 		</ul>
 		<h3 id="Commit_Container">Commit Container</h3>
 		<p>The Commit Container dialog is simple.</p>
@@ -559,11 +590,25 @@
 			</li>
 			<li>timestamps - by default they are added</li>
 		</ul>
+		<h2 id="Docker_Image_Hierarchy_View">Docker Image Hierarchy View</h2>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerImageHierarchyView.png"/>
+		</p>
+		<p>The Image Hierarchy View displays a hierarchy of Images starting at a particular Image or Container
+			back to its earliest parent Image.  A parent Image is one that is used in a Build Image action.
+			In the case where the Image Hierarchy is started from an Image, all of its existing Containers are
+			shown as children.  In the case where the Image Hierarchy is started from a Container, just the
+			selected Container is shown under the Image used to create it.</p>
+		<p>Context menu actions are available for the Docker Images and Docker Containers in the View.  These
+			match those found in the 
+			<a href="#Docker_Explorer_Context_Menu">Docker Explorer View context menu</a>.
+		</p>
 		<h2 id="Properties_View">Properties View</h2>
-		<p>The Properties View will respond to selections in the three Docker Tooling Views: 
+		<p>The Properties View will respond to selections in the four Docker Tooling Views: 
 			<a href="#Docker_Explorer_View">Docker Explorer View</a>, 
-			<a href="#Docker_Images_View">Docker Images View</a>, and the 
-			<a href="#Docker_Containers_View">Docker Containers View</a>.  The data shown will depend on what is being selected:
+			<a href="#Docker_Images_View">Docker Images View</a>, 
+			<a href="#Docker_Containers_View">Docker Containers View</a>, and the 
+			<a href="#Docker_Image_Hierarchy_View">Docker Image Hierarchy View</a>.  The data shown will depend on what is being selected:
 		</p>
 		<ul>
 			<li>Docker Connection</li>
