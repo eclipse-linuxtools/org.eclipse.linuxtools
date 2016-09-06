@@ -1031,7 +1031,7 @@ public class NewDockerConnectionPage extends WizardPage {
 							.anyMatch(s -> s.getHost().equals(tcpHost));
 					if (duplicateConnection) {
 						return ValidationStatus.error(WizardMessages.getString(
-								"DockerConnectionPage.validation.duplicateUnixSocketPath.msg")); //$NON-NLS-1$
+								"DockerConnectionPage.validation.duplicateTcpConnectionHost.msg")); //$NON-NLS-1$
 					}
 				} catch (URISyntaxException e) {
 					// URI is not valid
