@@ -1634,10 +1634,11 @@
   		<menuContribution
         	locationURI="menu:org.eclipse.linuxtools.docker.ui.dockerContainersView">
      			<command
-           			commandId="org.eclipse.linuxtools.docker.ui.commands.filterContainersWithLabels"
-           			icon="icons/filter_ps.gif"
-           			id="org.eclipse.linuxtools.docker.ui.commands.filterContainersWithLabels"
-           			style="toggle">
+              commandId="org.eclipse.linuxtools.docker.ui.commands.filterContainersWithLabels"
+              icon="icons/filter_ps.gif"
+              id="org.eclipse.linuxtools.docker.ui.commands.filterContainersWithLabels"
+              label="%command.filtercontainerswithlabels.name"
+              style="toggle">
      			</command>
         <separator
               name="org.eclipse.linuxtools.docker.ui.containers.view.separator"
