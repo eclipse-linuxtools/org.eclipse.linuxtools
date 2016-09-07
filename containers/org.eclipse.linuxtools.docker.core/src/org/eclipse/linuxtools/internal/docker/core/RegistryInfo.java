@@ -38,8 +38,10 @@ public class RegistryInfo extends AbstractRegistry {
 	public String getServerHost() {
 		try {
 			final URL serverAddress = new URL(getServerAddress());
-			return serverAddress.getHost() + (serverAddress.getPort() != -1
-					? ':' + serverAddress.getPort() : ""); //$NON-NLS-1$
+			final String serverHost = serverAddress.getHost()
+					+ (serverAddress.getPort() != -1
+					? ":" + serverAddress.getPort() : ""); //$NON-NLS-1$
+			return serverHost;
 		} catch (MalformedURLException e) {
 			// assume there was no scheme, so just use the plain
 			// server address

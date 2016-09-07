@@ -95,15 +95,17 @@ public class DockerClientFactory {
 		return builder.build();
 	}
 
-	private AuthConfig buildAuthentication(IRegistryAccount info) {
-		final AuthConfig authAccount = AuthConfig.builder()
-				.serverAddress(info.getServerAddress())
-				.username(info.getUsername())
-				.email(info.getEmail())
-				.password(info.getPassword() != null
-						? new String(info.getPassword()) : null)
-				.build();
-		return authAccount;
+	private AuthConfig buildAuthentication(final IRegistryAccount info) {
+		if (info.getUsername() != null && !info.getUsername().isEmpty()) {
+			final AuthConfig authAccount = AuthConfig.builder()
+					.serverAddress(info.getServerAddress())
+					.username(info.getUsername()).email(info.getEmail())
+					.password(info.getPassword() != null
+							? new String(info.getPassword()) : null)
+					.build();
+			return authAccount;
+		}
+		return null;
 	}
 
 }
