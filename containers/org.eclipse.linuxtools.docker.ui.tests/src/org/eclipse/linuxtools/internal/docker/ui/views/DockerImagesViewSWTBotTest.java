@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.docker.ui.views;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
@@ -33,6 +34,7 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.PropertySheet;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
@@ -93,6 +95,14 @@ public class DockerImagesViewSWTBotTest {
 		final SWTBotTableItem tableItem = SWTUtils.getListItem(dockerImagesBotView.bot().table(), imageName);
 		assertThat(tableItem).isNotNull();
 		return tableItem.click().select();
+	}
+
+	private void unselectImages() {
+		dockerImagesBotView.bot().table().unselect();
+	}
+
+	private void unselectConnections() {
+		dockerExplorerBotView.bot().tree().unselect();
 	}
 
 	@Test
@@ -195,6 +205,46 @@ public class DockerImagesViewSWTBotTest {
 		final TabbedPropertySheetPage currentPage = (TabbedPropertySheetPage) propertySheet.getCurrentPage();
 		TabDescriptorAssertion.assertThat(currentPage.getSelectedTab()).isNotNull()
 				.hasId("org.eclipse.linuxtools.docker.ui.properties.image.info");
+	}
+
+	@Test
+	public void verifyBuildAndPullActionEnablement() {
+		// given
+		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("angry_bar").build()).build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
+				.withDefaultTCPConnectionSettings();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		final PropertySheet propertySheet = SWTUtils
+				.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
+		this.dockerImagesView.setFocus();
+		// select the container in the table
+		selectImageInTable("angry_bar");
+		List<SWTBotToolbarButton> buttons = this.dockerImagesBotView.getToolbarButtons();
+		for (SWTBotToolbarButton button : buttons) {
+			if (button.getText().equals("Build Image")) {
+				assertThat(button.isEnabled());
+			} else if (button.getText().equals("Pull...")) {
+				assertThat(button.isEnabled());
+			}
+		}
+		unselectImages();
+		buttons = this.dockerImagesBotView.getToolbarButtons();
+		for (SWTBotToolbarButton button : buttons) {
+			if (button.getText().equals("Build Image")) {
+				assertThat(button.isEnabled());
+			} else if (button.getText().equals("Pull...")) {
+				assertThat(button.isEnabled());
+			}
+		}
+		unselectConnections();
+		buttons = this.dockerImagesBotView.getToolbarButtons();
+		for (SWTBotToolbarButton button : buttons) {
+			if (button.getText().equals("Build Image")) {
+				assertThat(!button.isEnabled());
+			} else if (button.getText().equals("Pull...")) {
+				assertThat(!button.isEnabled());
+			}
+		}
 	}
 
 

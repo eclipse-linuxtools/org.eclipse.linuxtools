@@ -53,10 +53,16 @@ public class ConnectionPropertyTester extends PropertyTester {
 
 	private boolean isConnectionEstablished(Object receiver, String property,
 			Object[] args, Object expectedValue) {
-		if (receiver instanceof List && !((List<?>) receiver).isEmpty()) {
-			return isConnectionEstablished(((List<?>) receiver).get(0),
-					property, args,
-					expectedValue);
+		if (receiver instanceof List) {
+			if (!((List<?>) receiver).isEmpty()) {
+				return isConnectionEstablished(((List<?>) receiver).get(0),
+						property, args, expectedValue);
+			} else {
+				return isConnectionEstablished(
+						DockerConnectionWatcher.getInstance().getConnection(),
+						property, args,
+						expectedValue);
+			}
 		}
 		if (receiver instanceof IAdaptable) {
 			final IDockerConnection connection = ((IAdaptable) receiver)

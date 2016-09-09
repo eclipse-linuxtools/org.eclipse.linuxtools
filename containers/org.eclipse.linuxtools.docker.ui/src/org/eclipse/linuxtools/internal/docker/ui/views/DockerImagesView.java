@@ -46,6 +46,7 @@ import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerImageListener;
 import org.eclipse.linuxtools.docker.ui.Activator;
+import org.eclipse.linuxtools.internal.docker.ui.DockerConnectionWatcher;
 import org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
@@ -182,8 +183,12 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 		// Find out if it has a selection and set our connection appropriately.
 		ISelection selection = getSite().getWorkbenchWindow()
 				.getSelectionService().getSelection(DockerExplorerView.VIEW_ID);
-		if (selection != null)
+		if (selection != null) {
 			selectionChanged(null, selection);
+			// also notify DockerConnectionWatcher
+			DockerConnectionWatcher.getInstance().selectionChanged(null,
+					selection);
+		}
 	}
 	
 	private void createTableViewer(final Composite container) {
