@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.core;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.linuxtools.docker.core.IRegistryAccount;
@@ -65,7 +66,7 @@ public class RegistryAccountManager {
 		if (this.registryAccounts == null) {
 			this.registryAccounts = storageManager.getAccounts();
 		}
-		return this.registryAccounts;
+		return Collections.unmodifiableList(this.registryAccounts);
 	}
 
 	public IRegistryAccount getAccount(final String serverAddress,

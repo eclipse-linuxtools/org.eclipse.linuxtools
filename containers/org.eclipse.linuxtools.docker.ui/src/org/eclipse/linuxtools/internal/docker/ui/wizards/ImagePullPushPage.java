@@ -151,6 +151,8 @@ public abstract class ImagePullPushPage<M extends ImagePullPushPageModel>
 	 *         daemon.
 	 */
 	protected List<IRegistry> getRegistryAccounts() {
+		// get a local copy an insert an entry at the first position for Docker
+		// Hub with no credentials
 		final List<IRegistry> accounts = new ArrayList<>(
 				RegistryAccountManager.getInstance().getAccounts());
 		accounts.add(0, new RegistryInfo(DOCKER_DAEMON_DEFAULT, true));
