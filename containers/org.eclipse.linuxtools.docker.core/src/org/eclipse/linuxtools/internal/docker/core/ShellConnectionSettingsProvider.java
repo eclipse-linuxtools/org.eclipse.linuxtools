@@ -120,7 +120,8 @@ public class ShellConnectionSettingsProvider implements IDockerConnectionSetting
 				}
 				script.setExecutable(true);
 			} catch (IOException e) {
-				Activator.logErrorMessage(e.getMessage());
+				Activator.logErrorMessage(ProcessMessages
+						.getString("Settings_Detection_Exception"), e); //$NON-NLS-1$
 			}
 		}
 		return script;

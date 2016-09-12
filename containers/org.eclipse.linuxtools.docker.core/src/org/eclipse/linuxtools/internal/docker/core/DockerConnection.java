@@ -222,7 +222,7 @@ public class DockerConnection
 		ISecurePreferences node = root.node(key);
 		try {
 			if (passwd != null && !passwd.equals("")) //$NON-NLS-1$
-				node.put("password", passwd, true /* encrypt */);
+				node.put("password", passwd, true /* encrypt */); //$NON-NLS-1$
 		} catch (StorageException e) {
 			Activator.log(e);
 		}
@@ -630,16 +630,19 @@ public class DockerConnection
 				} while (follow && !stop);
 				listContainers();
 			} catch (com.spotify.docker.client.DockerRequestException e) {
-				Activator.logErrorMessage(e.message());
+				Activator.logErrorMessage(
+						ProcessMessages.getString("Monitor_Logs_Exception"), e); //$NON-NLS-1$
 				throw new InterruptedException();
 			} catch (com.spotify.docker.client.DockerException | IOException e) {
-				Activator.logErrorMessage(e.getMessage());
+				Activator.logErrorMessage(
+						ProcessMessages.getString("Monitor_Logs_Exception"), e); //$NON-NLS-1$
 				throw new InterruptedException();
 			} catch (InterruptedException e) {
 				kill = true;
 				Thread.currentThread().interrupt();
 			} catch (Exception e) {
-				Activator.logErrorMessage(e.getMessage());
+				Activator.logErrorMessage(
+						ProcessMessages.getString("Monitor_Logs_Exception"), e); //$NON-NLS-1$
 			} finally {
 				follow = false;
 				copyClient.close(); // we are done with copyClient..dispose
@@ -756,7 +759,7 @@ public class DockerConnection
 				// ListContainersParam so we have
 				// to do a kludge and put in control chars ourselves and pretend
 				// we have a label with no value.
-				String separator = "";
+				String separator = ""; //$NON-NLS-1$
 				StringBuffer labelString = new StringBuffer();
 				for (Entry<String, String> entry : labels.entrySet()) {
 					labelString.append(separator);
@@ -831,11 +834,15 @@ public class DockerConnection
 			final ContainerInfo info = client.inspectContainer(id);
 			return new DockerContainerInfo(info);
 		} catch (com.spotify.docker.client.DockerRequestException e) {
-			Activator.logErrorMessage(e.message());
+			Activator.logErrorMessage(
+					ProcessMessages.getString("Container_Info_Exception"), e); //$NON-NLS-1$
 			return null;
 		} catch (com.spotify.docker.client.DockerException
 				| InterruptedException e) {
-			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed to inspect container '" + id + "'", e));
+			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+					ProcessMessages.getFormattedString(
+							"Container_Inspect_Exception", id), //$NON-NLS-1$
+					e));
 			return null;
 		}
 	}
@@ -849,12 +856,15 @@ public class DockerConnection
 			final ImageInfo info = this.client.inspectImage(id);
 			return new DockerImageInfo(info);
 		} catch (com.spotify.docker.client.DockerRequestException e) {
-			Activator.logErrorMessage(e.message());
+			Activator.logErrorMessage(
+					ProcessMessages.getString("Image_Info_Exception"), e); //$NON-NLS-1$
 			return null;
 		} catch (com.spotify.docker.client.DockerException
 				| InterruptedException e) {
 			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					"Failed to inspect container '" + id + "'", e));
+					ProcessMessages.getFormattedString(
+							"Image_Inspect_Exception", id), //$NON-NLS-1$
+					e));
 			return null;
 		}
 	}
@@ -1032,7 +1042,8 @@ public class DockerConnection
 	public boolean hasImage(final String repository, final String tag) {
 		for (IDockerImage image : getImages()) {
 			for (String repoTag : image.repoTags()) {
-				String tagExpr = (tag != null && !tag.isEmpty()) ? ':' + tag : ""; //$NON-NLS-1$
+				String tagExpr = (tag != null && !tag.isEmpty()) ? ":" + tag //$NON-NLS-1$
+						: ""; //$NON-NLS-1$
 				if (repoTag.equals(repository + tagExpr)) {
 					return true;
 				}
@@ -1983,8 +1994,11 @@ public class DockerConnection
 			InputStream tin = HttpHijackWorkaround.getInputStream(pty_stream);
 			// org.eclipse.tm.terminal.connector.ssh.controls.SshWizardConfigurationPanel
 			Map<String, Object> properties = new HashMap<>();
-			properties.put(ITerminalsConnectorConstants.PROP_DELEGATE_ID, "org.eclipse.tm.terminal.connector.streams.launcher.streams");
-			properties.put(ITerminalsConnectorConstants.PROP_TERMINAL_CONNECTOR_ID, "org.eclipse.tm.terminal.connector.streams.StreamsConnector");
+			properties.put(ITerminalsConnectorConstants.PROP_DELEGATE_ID,
+					"org.eclipse.tm.terminal.connector.streams.launcher.streams"); //$NON-NLS-1$
+			properties.put(
+					ITerminalsConnectorConstants.PROP_TERMINAL_CONNECTOR_ID,
+					"org.eclipse.tm.terminal.connector.streams.StreamsConnector"); //$NON-NLS-1$
 			properties.put(ITerminalsConnectorConstants.PROP_TITLE, name);
 			properties.put(ITerminalsConnectorConstants.PROP_LOCAL_ECHO, false);
 			properties.put(ITerminalsConnectorConstants.PROP_FORCE_NEW, true);
@@ -1998,7 +2012,7 @@ public class DockerConnection
 			 * LogStream overrides finalize() to close the stream being
 			 * used so we must preserve a reference to it.
 			 */
-			properties.put("PREVENT_JVM_GC_FINALIZE", pty_stream);
+			properties.put("PREVENT_JVM_GC_FINALIZE", pty_stream); //$NON-NLS-1$
 			ITerminalService service = TerminalServiceFactory.getService();
 			service.openConsole(properties, null);
 		} catch (Exception e) {
