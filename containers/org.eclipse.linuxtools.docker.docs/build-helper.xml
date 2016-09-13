@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="org.eclipse.linuxtools.changelog.doc" default="all">
+<project name="org.eclipse.linuxtools.docker.docs" default="all">
     <description>
             Generate Eclipse help content for the Linux Tools Docker Tooling user guide
     </description>
@@ -9,7 +9,7 @@
     <path id="tasks.classpath" path="bin" />
     <path id="wikitext.tasks.classpath">
         <!-- Replace dir with the dir you have wikitext installed into.-->
-        <fileset dir="/usr/share/eclipse/droplets/mylyn-docs/eclipse/plugins">
+        <fileset dir="/usr/lib64/eclipse/dropins/mylyn-wikitext/eclipse/plugins">
             <include name="org.eclipse.mylyn.wikitext.*core*.jar" />
         </fileset>
     </path>

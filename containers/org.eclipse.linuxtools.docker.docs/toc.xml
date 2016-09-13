@@ -24,11 +24,20 @@
 			</topic>
 			<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Docker_Containers_View" label="Docker Containers View">
 				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Overview_3" label="Overview"></topic>
+				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Filtering_Labels" label="Filtering Labels"></topic>
 				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Commit_Container" label="Commit Container"></topic>
 				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Display_Log" label="Display Log"></topic>
 			</topic>
 			<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Docker_Image_Hierarchy_View" label="Docker Image Hierarchy View"></topic>
 			<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Properties_View" label="Properties View"></topic>
+			<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Docker_Compose" label="Docker Compose"></topic>
+			<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Docker_Preferences" label="Docker Preferences">
+				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Docker_Main_Preference_Page" label="Docker Main Preference Page"></topic>
+				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Docker_Compose_Preference_Page" label="Docker Compose Preference Page"></topic>
+				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Docker_Machine_Preference_Page" label="Docker Machine Preference Page"></topic>
+				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Docker_Logging_Preference_Page" label="Docker Logging Preference Page"></topic>
+				<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Docker-Tooling-Perspective.html#Docker_Registry_Accounts_Preference_Page" label="Docker Registry Accounts Preference Page"></topic>
+			</topic>
 		</topic>
 		<topic href="Linux_Tools_Project/Docker_Tooling/User_Guide/Updating-This-Document.html" label="Updating This Document"></topic>
 	</topic>
