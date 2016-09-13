@@ -28,7 +28,7 @@
 				<td style="width: 60%" align="center"></td>
 				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
 			</tr>
-		</table><hr class="navigation-separator"/>
+		</table><hr/>
 		<h1 id="Docker_Tooling_Perspective">Docker Tooling Perspective</h1>
 		<p>A new perspective known as the Docker Tooling Perspective is added.</p>
 		<p>
@@ -37,17 +37,17 @@
 		<p>This perspective brings up three new views added:</p>
 		<ul>
 			<li>
-				<a href="#Docker_Explorer_View">Docker Explorer View</a> - view for creating/managing connections to Docker daemons
+				<a href="Docker-Tooling-Perspective.html#Docker_Explorer_View">Docker Explorer View</a> - view for creating/managing connections to Docker daemons
 			</li>
 			<li>
-				<a href="#Docker_Images_View">Docker Images View</a> - view for managing Docker Images
+				<a href="Docker-Tooling-Perspective.html#Docker_Images_View">Docker Images View</a> - view for managing Docker Images
 			</li>
 			<li>
-				<a href="#Docker_Containers_View">Docker Containers View</a> - view for managing Docker Containers
+				<a href="Docker-Tooling-Perspective.html#Docker_Containers_View">Docker Containers View</a> - view for managing Docker Containers
 			</li>
 		</ul>
 		<p>In addition, the Docker Tooling Perspective adds the 
-			<a href="#Docker_Image_Hierarchy_View">Docker Image Hierarchy View</a>, Console View, the Terminal View, and the Properties View.
+			<a href="Docker-Tooling-Perspective.html#Docker_Image_Hierarchy_View">Docker Image Hierarchy View</a>, Console View, the Terminal View, and the Properties View.
 		</p>
 		<p>The Console View is used to display logs of stdout/stderr output from Containers and in some instances, allow input to stdin.
 			The Properties View allows clicking on various elements such as Connections, Images, and Containers and getting detailed
@@ -59,10 +59,24 @@
 		<h2 id="Docker_Explorer_View">Docker Explorer View</h2>
 		<h3 id="Overview">Overview</h3>
 		<p>The first view is a tree view of the various connections to Docker daemons.  A connection to a Docker daemon
-			is needed before any management of Docker Images or Containers can be performed.  On initial start-up, there will be
-			no connections and the Docker Explorer View will display a message regarding this.  Note that the Docker Images View
+			is needed before any management of Docker Images or Containers can be performed.  On initial start-up, Docker Tooling
+			will attempt to find an existing connection.  New logic has been added to support connection settings providers which
+			provide default settings for the docker daemon.
+			By default, there are providers for the default Linux unix socket and for a default tcp server:
+			<i>127.0.0.1:2375</i>, otherwise, a search
+			will be made for special Docker environment variables: 
+			<b>
+				<i>DOCKER_HOST</i>
+			</b>
+			and 
+			<b>
+				<i>DOCKER_CERT_PATH</i>
+			</b>.  If these cannot be found, a script will be run to try and export the values so the Docker Tooling
+			can find them.
+			If no existing connection can be found using the automatic methods, the Docker Explorer View will display a message regarding this.  Note that the Docker Images View
 			and Docker Containers View are controlled by the connection selected in the Docker Explorer View.  They will also
-			note there are no connections established yet.</p>
+			note there are no connections established yet.
+		</p>
 		<p>
 			<img border="0" src="images/LinuxToolsDockerExplorerViewInit.png"/>
 		</p>
@@ -129,15 +143,15 @@
 			<li>Restart - restart Container</li>
 			<li>Show in - show in Properties View</li>
 			<li>
-				<a href="#Docker_Image_Hierarchy_View">Open Image Hierarchy</a> - show parent Image plus its parents in Image Hierarchy View
+				<a href="Docker-Tooling-Perspective.html#Docker_Image_Hierarchy_View">Open Image Hierarchy</a> - show parent Image plus its parents in Image Hierarchy View
 			</li>
 			<li>Execute Shell - run a shell in the Terminal View (running Container only)</li>
 			<li>Remove - delete stopped Containers</li>
 			<li>
-				<a href="#Commit_Container">Commit</a> - commit the Container to an Image
+				<a href="Docker-Tooling-Perspective.html#Commit_Container">Commit</a> - commit the Container to an Image
 			</li>
 			<li>
-				<a href="#Display_Log">Display Log</a> - display the log for the Container
+				<a href="Docker-Tooling-Perspective.html#Display_Log">Display Log</a> - display the log for the Container
 			</li>
 			<li>Remove Log - removes the log for the Container from Eclipse Console View or Terminal View (tty flag on)</li>
 		</ul>
@@ -147,21 +161,21 @@
 		<p>For Images, one can:</p>
 		<ul>
 			<li>
-				<a href="#Run_Image">Run</a> - build a Container and run it
+				<a href="Docker-Tooling-Perspective.html#Run_Image">Run</a> - build a Container and run it
 			</li>
 			<li>Show in Properties View</li>
 			<li>
-				<a href="#Docker_Image_Hierarchy_View">Open Image Hierarchy</a> - show parent Image plus its parents in Image Hierarchy View
+				<a href="Docker-Tooling-Perspective.html#Docker_Image_Hierarchy_View">Open Image Hierarchy</a> - show parent Image plus its parents in Image Hierarchy View
 			</li>
 			<li>Remove - delete selected Images</li>
 			<li>
-				<a href="#Push_Image">Push</a> - push an Image to a registry
+				<a href="Docker-Tooling-Perspective.html#Push_Image">Push</a> - push an Image to a registry
 			</li>
 			<li>
-				<a href="#Add_Tag">Add Tag</a> - add a tag to an Image
+				<a href="Docker-Tooling-Perspective.html#Add_Tag">Add Tag</a> - add a tag to an Image
 			</li>
 			<li>
-				<a href="#Remove_Tag">Remove Tag</a> - remove a tag from an Image with multiple tags
+				<a href="Docker-Tooling-Perspective.html#Remove_Tag">Remove Tag</a> - remove a tag from an Image with multiple tags
 			</li>
 		</ul>
 		<h2 id="Docker_Images_View">Docker Images View</h2>
@@ -178,23 +192,23 @@
 		<ul>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerImageViewPull.png"/> - 
-				<a href="#Pull_Image">pull an Image from the Repository</a>
+				<a href="Docker-Tooling-Perspective.html#Pull_Image">pull an Image from the Repository</a>
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerImageViewPush.png"/> - 
-				<a href="#Push_Image">push an Image to the Repository</a>
+				<a href="Docker-Tooling-Perspective.html#Push_Image">push an Image to the Repository</a>
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerContainerCreate.png"/> - 
-				<a href="#Run_Image">create a Container from an Image</a>
+				<a href="Docker-Tooling-Perspective.html#Run_Image">create a Container from an Image</a>
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerImageBuild.png"/> - 
-				<a href="#Build_Image">build an Image from a Dockerfile</a>
+				<a href="Docker-Tooling-Perspective.html#Build_Image">build an Image from a Dockerfile</a>
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerTagImage.png"/> - 
-				<a href="#Add_Tag">tag an Image</a>
+				<a href="Docker-Tooling-Perspective.html#Add_Tag">tag an Image</a>
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerDeleteImage.png"/> - delete one or more Images (requires confirmation)
@@ -207,17 +221,17 @@
 		<ul>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerContainerCreate.png"/> - 
-				<a href="#Run_Image">Run an Image and create a Container</a>
+				<a href="Docker-Tooling-Perspective.html#Run_Image">Run an Image and create a Container</a>
 			</li>
 			<li>
-				<a href="#Add_Tag">Add Tag</a> - same as the toolbar tag image action
+				<a href="Docker-Tooling-Perspective.html#Add_Tag">Add Tag</a> - same as the toolbar tag image action
 			</li>
 			<li>
-				<a href="#Remove_Tag">Remove Tag</a> - remove a tag from an Image with multiple repo tags
+				<a href="Docker-Tooling-Perspective.html#Remove_Tag">Remove Tag</a> - remove a tag from an Image with multiple repo tags
 			</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerOpenImageHierarchy.png"/> - 
-				<a href="#Docker_Image_Hierarchy_View">Open Image Hierarchy</a>
+				<a href="Docker-Tooling-Perspective.html#Docker_Image_Hierarchy_View">Open Image Hierarchy</a>
 			</li>
 		</ul>
 		<p>The text entry below the Connection name is used to search/filter the contents of the list.
@@ -237,7 +251,8 @@
 			<b>
 				<i>Add a registry account...</i>
 			</b> or going to
-			Windows -&gt; Preferences -&gt; Docker -&gt; Registry Accounts.
+
+			<a href="Docker-Tooling-Perspective.html#Docker_Registry_Accounts_Preference_Page">Windows -&gt; Preferences -&gt; Docker -&gt; Registry Accounts</a>.
 		</p>
 		<p>The user can either fill in the complete name of the image to download or a search can be performed
 			using the Search button.  This brings up the Search Image Wizard.</p>
@@ -265,9 +280,11 @@
 			use the Tag Image function to add a new tag to an existing Image which has the registry specifier and
 			then push that tag.</p>
 		<p>The latest version of the Push Image Wizard allows one to specify a registry/account that has been added
-			via Window -&gt; Preferences -&gt; Docker -&gt; Registry Accounts.  This is needed when authorization is required
+			via 
+			<a href="Docker-Tooling-Perspective.html#Docker_Registry_Accounts_Preference_Page">Window -&gt; Preferences -&gt; Docker -&gt; Registry Accounts</a>.  This is needed when authorization is required
 			by the registry for the specified repo.  Using the aforementioned tag method assumes no authorization
-			required.</p>
+			required.
+		</p>
 		<p>As well, a new tag can be specified at the time of the push.  This new tag is not retained unless
 			specified in the options.</p>
 		<p>Options are available to:</p>
@@ -322,6 +339,7 @@
 				</ul>
 			</li>
 			<li>Environment Variables - way of specifying Env variables to use in the Container</li>
+			<li>Labels - a user can provide labels to Containers which allows filtering them in the Containers View</li>
 			<li>Enable Resource Limits - this is used to restrict memory or CPU priority for the Container</li>
 		</ul>
 		<p>As of Docker Tools 1.2.0, the Run Image settings are stored in a Run Launch Configuration.  You can
@@ -359,7 +377,7 @@
 		<p>The directory can be specified using the "Browse" button.  Once a valid existing directory
 			is specified, the "Edit" button will be enabled, allowing creation and modification of the
 			Dockerfile using a 
-			<a href="#Dockerfile_Editor">basic editor dialog</a>.
+			<a href="Docker-Tooling-Perspective.html#Dockerfile_Editor">basic editor dialog</a>.
 		</p>
 		<p>When the Dockerfile is considered complete, hitting the "Finish" button will start the
 			Image build action.  When the build is complete, the Docker Images View will be refreshed
@@ -536,18 +554,42 @@
 		<p>The following context menu actions are supported:</p>
 		<ul>
 			<li>Commit Container - 
-				<a href="#Commit_Container">commit all changes of a selected Container into a new Image</a>
+				<a href="Docker-Tooling-Perspective.html#Commit_Container">commit all changes of a selected Container into a new Image</a>
 			</li>
 			<li>Restart - restart a Container (will wait to stop a running Container, then will kill it before starting again)</li>
 			<li>Display Log - 
-				<a href="#Display_Log">display the stdout/stderr logs of a selected Container in the Console View</a>
+				<a href="Docker-Tooling-Perspective.html#Display_Log">display the stdout/stderr logs of a selected Container in the Console View</a>
 			</li>
 			<li>Remove Log - remove the stdout/stderr logs of a selected Container from the Console View</li>
 			<li>
 				<img border="0" src="images/LinuxToolsDockerOpenImageHierarchy.png"/> - 
-				<a href="#Docker_Image_Hierarchy_View">Open Image Hierarchy for Container</a>
+				<a href="Docker-Tooling-Perspective.html#Docker_Image_Hierarchy_View">Open Image Hierarchy for Container</a>
 			</li>
 		</ul>
+		<h3 id="Filtering_Labels">Filtering Labels</h3>
+		<p>The list of Containers can also be filtered by Container labels.  Container labels
+			are added to a Container during a Run Image invocation.  The labels are useful
+			for filtering purposes (e.g. to find all the Containers created for a particular purpose
+			and then delete them at once).</p>
+		<p>To filter by labels, check the 
+			<b>
+				<i>Filter by labels</i>
+			</b> check-box in the Docker Containers
+			View view menu.  In addition, some labels need to be specified to filter for.  From the
+			view menu, click on the 
+			<b>
+				<i>Configure filter labels...</i>
+			</b> menu item.  This will bring up
+			the following dialog:
+		</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerConfigureLabelFilters.png"/>
+		</p>
+		<p>Labels can be added, edited, or removed from the list.</p>
+		<p>Containers that match the labels given in the filter are shown in the Docker Containers View.  A label specified
+			without a value means simply to match that the label is present for the Container.  If a value is specified, it
+			must match the value in the Container for it to be shown in the view.  If no labels are specified to filter against,
+			all Containers that would normally show in the Docker Containers View are displayed. </p>
 		<h3 id="Commit_Container">Commit Container</h3>
 		<p>The Commit Container dialog is simple.</p>
 		<p>
@@ -601,14 +643,14 @@
 			selected Container is shown under the Image used to create it.</p>
 		<p>Context menu actions are available for the Docker Images and Docker Containers in the View.  These
 			match those found in the 
-			<a href="#Docker_Explorer_Context_Menu">Docker Explorer View context menu</a>.
+			<a href="Docker-Tooling-Perspective.html#Docker_Explorer_Context_Menu">Docker Explorer View context menu</a>.
 		</p>
 		<h2 id="Properties_View">Properties View</h2>
 		<p>The Properties View will respond to selections in the four Docker Tooling Views: 
-			<a href="#Docker_Explorer_View">Docker Explorer View</a>, 
-			<a href="#Docker_Images_View">Docker Images View</a>, 
-			<a href="#Docker_Containers_View">Docker Containers View</a>, and the 
-			<a href="#Docker_Image_Hierarchy_View">Docker Image Hierarchy View</a>.  The data shown will depend on what is being selected:
+			<a href="Docker-Tooling-Perspective.html#Docker_Explorer_View">Docker Explorer View</a>, 
+			<a href="Docker-Tooling-Perspective.html#Docker_Images_View">Docker Images View</a>, 
+			<a href="Docker-Tooling-Perspective.html#Docker_Containers_View">Docker Containers View</a>, and the 
+			<a href="Docker-Tooling-Perspective.html#Docker_Image_Hierarchy_View">Docker Image Hierarchy View</a>.  The data shown will depend on what is being selected:
 		</p>
 		<ul>
 			<li>Docker Connection</li>
@@ -625,7 +667,70 @@
 		</ul>
 		<p>
 			<img border="0" src="images/LinuxToolsDockerPropertiesView.png"/>
-		</p><hr class="navigation-separator"/>
+		</p>
+		<h2 id="Docker_Compose">Docker Compose</h2>
+		<p>Support has been added for docker-compose.  </p>
+		<p>Users can select a docker-compose.yml file and start Docker Compose from the context menu, using the Run &gt; Docker Compose launcher shortcut.</p>
+		<p>The Docker Compose process displays it logs (with support for text coloring based on ANSI escape codes) and provides a stop button to stop the underlying process.
+			The location of the docker-compose command is specified using the 
+			<a href="Docker-Tooling-Perspective.html#Docker_Compose_Preference_Page">docker compose preferences page</a> location using
+			Window-&gt;Preferences-&gt;Docker-&gt;Docker Compose.
+		</p>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerComposeConsole.png"/>
+		</p>
+		<p>As with the support for building and running containers, a launch configuration is created after the first call to Docker Compose on the selected docker-compose.yml file.</p>
+		<h2 id="Docker_Preferences">Docker Preferences</h2>
+		<p>There are a number of Docker preferences found in the Window-&gt;Preferences-&gt;Docker section.</p>
+		<h3 id="Docker_Main_Preference_Page">Docker Main Preference Page</h3>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerPreferencesMain.png"/>
+		</p>
+		<p>This page contains settings for:</p>
+		<ul>
+			<li>Container Refresh Rate - time to wait between automatic refreshes of the Container list</li>
+			<li>Time to wait before killing restarted Container - seconds to wait between a stop attempt and killing a Container that is being restarted</li>
+		</ul>
+		<h3 id="Docker_Compose_Preference_Page">Docker Compose Preference Page</h3>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerPreferencesDockerCompose.png"/>
+		</p>
+		<p>Here you can specify the location where the docker-compose binary is installed.
+			By default, the location on Linux and Mac will be: /usr/local/bin while on Windows,
+			it will be: C:\\Program Files\\Docker Toolbox.</p>
+		<h3 id="Docker_Machine_Preference_Page">Docker Machine Preference Page</h3>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerPreferencesDockerMachine.png"/>
+		</p>
+		<p>Here a user can specify the location of the docker machine command as well as
+			the VM location it uses.  A warning will be issue if the docker-machine command
+			cannot be found at the given location.  This option is not necessary on Linux
+			machines, but is useful for Mac and Windows users using docker-machine to bring
+			up the docker daemon.</p>
+		<h3 id="Docker_Logging_Preference_Page">Docker Logging Preference Page</h3>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerPreferencesLogging.png"/>
+		</p>
+		<p>This contains settings for logging a Container.  These include:</p>
+		<ul>
+			<li>Automatically log when container starts</li>
+			<li>Request time stamp for logs (only applies to Containers with tty flag off)</li>
+		</ul>
+		<h3 id="Docker_Registry_Accounts_Preference_Page">Docker Registry Accounts Preference Page</h3>
+		<p>
+			<img border="0" src="images/LinuxToolsDockerPreferencesRegistryAccounts.png"/>
+		</p>
+		<p>Here a user may specify registry account information.  By default, a user has
+			access to the default docker hub registry using no username or password.
+			To be able to push images to the docker hub registry, a user would need
+			a registered username and the accompanying password.  This page can also
+			used to specify non-default registries such as a private registry.</p>
+		<p>The page supports adding, editing, and removing accounts.</p>
+		<p>Once a registry account entry is added, it may be used for pushing and pulling
+			images.  See the 
+			<a href="Docker-Tooling-Perspective.html#Push_Image">push image</a> and 
+			<a href="Docker-Tooling-Perspective.html#Pull_Image">pull image</a> sections for details.
+		</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
 				<td style="width: 20%" align="left">
