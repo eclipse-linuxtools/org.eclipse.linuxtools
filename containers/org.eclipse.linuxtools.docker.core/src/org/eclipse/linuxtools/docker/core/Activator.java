@@ -79,6 +79,10 @@ public class Activator extends Plugin {
 		IStatus status = null;
 		if (e instanceof CoreException) {
 			status = ((CoreException) e).getStatus();
+		} else if (e instanceof DockerPingConnectionException
+				|| e instanceof DockerOpenConnectionException) {
+			status = new Status(IStatus.INFO, PLUGIN_ID, IStatus.OK,
+					e.getMessage(), null);
 		} else {
 			status = new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK,
 					e.getMessage(), e);
