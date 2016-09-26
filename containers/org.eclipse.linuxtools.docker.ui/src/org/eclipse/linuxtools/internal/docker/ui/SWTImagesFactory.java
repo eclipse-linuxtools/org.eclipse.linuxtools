@@ -80,6 +80,7 @@ public class SWTImagesFactory {
 	public static final String IMG_STOP = NAME_PREFIX + "stopped.gif"; //$NON-NLS-1$
 	public static final String IMG_STOPD = NAME_PREFIX + "stoppedd.gif"; //$NON-NLS-1$
 	public static final String IMG_REFRESH = NAME_PREFIX + "refresh_tab.gif"; //$NON-NLS-1$
+	public static final String IMG_RESTART = NAME_PREFIX + "restart.gif"; //// $NON-NLS-1$
 	public static final String IMG_REBOOT = NAME_PREFIX + "reboot.gif"; //$NON-NLS-1$
 	public static final String IMG_REBOOTD = NAME_PREFIX + "rebootd.gif"; //$NON-NLS-1$
 
@@ -176,6 +177,8 @@ public class SWTImagesFactory {
 			IMG_REBOOT);
 	public static final ImageDescriptor DESC_REFRESH = createManaged("",
 			IMG_REFRESH);
+	public static final ImageDescriptor DESC_RESTART = createManaged("",
+			IMG_RESTART);
 	public static final ImageDescriptor DESC_REBOOTD = createManaged("",
 			IMG_REBOOTD);
 	public static final ImageDescriptor DESC_REPOSITORY_MIDDLE = createManaged(

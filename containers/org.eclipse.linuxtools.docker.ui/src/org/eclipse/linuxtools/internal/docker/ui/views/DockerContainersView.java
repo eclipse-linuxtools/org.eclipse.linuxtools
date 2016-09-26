@@ -123,7 +123,8 @@ public class DockerContainersView extends ViewPart implements
 	private final Image STOPPED_IMAGE = SWTImagesFactory.DESC_CONTAINER_STOPPED
 			.createImage();
 
-	private IAction pauseAction, unpauseAction, startAction, stopAction, killAction, removeAction;
+	private IAction pauseAction, unpauseAction, startAction, stopAction,
+			killAction, restartAction, removeAction;
 
 	@Override
 	public void setFocus() {
@@ -378,6 +379,10 @@ public class DockerContainersView extends ViewPart implements
 		killAction = createAction(DVMessages.getString("DockerContainersView.kill.label"), //$NON-NLS-1$
 				"org.eclipse.linuxtools.docker.ui.commands.killContainers", //$NON-NLS-1$
 				SWTImagesFactory.DESC_KILL);
+		restartAction = createAction(
+				DVMessages.getString("DockerContainersView.restart.label"), //$NON-NLS-1$
+				"org.eclipse.linuxtools.docker.ui.commands.restartContainers", // $NON-NLS-1
+				SWTImagesFactory.DESC_RESTART);
 		removeAction = createAction(DVMessages.getString("DockerContainersView.remove.label"), //$NON-NLS-1$
 				"org.eclipse.linuxtools.docker.ui.commands.removeContainers", //$NON-NLS-1$
 				SWTImagesFactory.DESC_REMOVE);
@@ -387,6 +392,7 @@ public class DockerContainersView extends ViewPart implements
 		mgr.add(unpauseAction);
 		mgr.add(stopAction);
 		mgr.add(killAction);
+		mgr.add(restartAction);
 		mgr.add(removeAction);
 	}
 
@@ -466,6 +472,8 @@ public class DockerContainersView extends ViewPart implements
 		startAction.setEnabled(ContainerPropertyTester.isStopped(sel));
 		stopAction.setEnabled(ContainerPropertyTester.isAnyRunning(sel));
 		killAction.setEnabled(ContainerPropertyTester.isAnyRunning(sel));
+		restartAction.setEnabled(!sel.toList().isEmpty()
+				&& !ContainerPropertyTester.isPaused(sel));
 		removeAction.setEnabled(ContainerPropertyTester.isStopped(sel));
 	}
 

@@ -494,9 +494,14 @@
 							<instanceof
 			                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
 			                <or>
-			                  	<test
-					       	    	forcePluginActivation="true"
-					       			property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="false"/>
+			                    <and>
+			                  		<test
+					       	    	  forcePluginActivation="true"
+					       			  property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="false"/>
+		                  		    <test
+					       	    	  forcePluginActivation="true"
+					       			  property="org.eclipse.linuxtools.docker.propertytesters.container.isPaused" value="false"/>
+					       	    </and>
 			                  	<test
 					       	    	forcePluginActivation="true"
 					       			property="org.eclipse.linuxtools.docker.propertytesters.container.isUnknown" value="true"/>
@@ -506,9 +511,14 @@
 			            	<adapt
 			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
 			                <or>
-			                  	<test
-					       	    	forcePluginActivation="true"
-					       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isStopped" value="false"/>
+			                    <and>
+			                  		<test
+					       	    	  forcePluginActivation="true"
+					       			  property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isStopped" value="false"/>
+		                  		    <test
+					       	    	  forcePluginActivation="true"
+					       			  property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isPaused" value="false"/>
+					       	    </and>
 			                  	<test
 					       	    	forcePluginActivation="true"
 					       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isUnknown" value="true"/>
@@ -532,9 +542,14 @@
 							<instanceof
 			                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
 			                <or>
-			                  	<test
-					       	    	forcePluginActivation="true"
-					       			property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="false"/>
+			                    <and>
+			                  		<test
+					       	    	  forcePluginActivation="true"
+					       			  property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="false"/>
+		                  		    <test
+					       	    	  forcePluginActivation="true"
+					       			  property="org.eclipse.linuxtools.docker.propertytesters.container.isPaused" value="false"/>
+					       	    </and>
 			                  	<test
 					       	    	forcePluginActivation="true"
 					       			property="org.eclipse.linuxtools.docker.propertytesters.container.isUnknown" value="true"/>
@@ -544,9 +559,14 @@
 			            	<adapt
 			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
 			                <or>
-			                  	<test
-					       	    	forcePluginActivation="true"
-					       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isStopped" value="false"/>
+			                    <and>
+			                  		<test
+					       	    	  forcePluginActivation="true"
+					       			  property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isStopped" value="false"/>
+		                  		    <test
+					       	    	  forcePluginActivation="true"
+					       			  property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isPaused" value="false"/>
+					       	    </and>
 			                  	<test
 					       	    	forcePluginActivation="true"
 					       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isUnknown" value="true"/>
@@ -563,13 +583,32 @@
      		<enabledWhen>
 	     		<with variable="selection">
 	              <iterate
-                     ifEmpty="false"
-                     operator="or">
-					<or>
-						<instanceof
-			                   value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
-			            <adapt
-			                    type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+                     ifEmpty="false">
+                    <or>
+						<and>
+							<adapt
+			                   type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+			            	<or>
+			                  	<test
+					       	    	forcePluginActivation="true"
+					       			property="org.eclipse.linuxtools.docker.propertytesters.container.isPaused" value="false"/>
+			                  	<test
+					       	    	forcePluginActivation="true"
+					       			property="org.eclipse.linuxtools.docker.propertytesters.container.isUnknown" value="true"/>
+					    	</or>
+				    	</and>
+						<and>
+							<adapt
+			                   type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+			            	<or>
+			                  	<test
+					       	    	forcePluginActivation="true"
+					       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isPaused" value="false"/>
+			                  	<test
+					       	    	forcePluginActivation="true"
+					       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isUnknown" value="true"/>
+					    	</or>
+				    	</and>
 				    </or>
 	            </iterate>
 	          </with>
@@ -1134,8 +1173,8 @@
 	                <iterate
 	                      ifEmpty="false"
 	                      operator="and">
-	                 <instanceof
-	                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                 <adapt
+	                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
 	                </iterate>
 	               </with>
 	            </visibleWhen>
