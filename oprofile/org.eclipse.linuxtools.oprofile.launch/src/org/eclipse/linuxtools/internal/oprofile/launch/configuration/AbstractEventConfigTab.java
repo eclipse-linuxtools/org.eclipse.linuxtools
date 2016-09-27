@@ -185,6 +185,10 @@ AbstractLaunchConfigurationTab {
         }
 
         if(!getOprofileTimerMode()){
+			if (counters == null) {
+				OprofileCorePlugin.showErrorDialog("countersNotFound", null); //$NON-NLS-1$
+				return;
+			}
             for (int i = 0; i < counters.length; i++) {
                 counters[i].loadConfiguration(config);
             }
