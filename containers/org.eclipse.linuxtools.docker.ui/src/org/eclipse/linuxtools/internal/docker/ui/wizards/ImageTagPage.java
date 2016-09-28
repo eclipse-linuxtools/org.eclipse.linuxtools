@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.linuxtools.internal.docker.core.DockerImage;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
@@ -56,6 +57,13 @@ public class ImageTagPage extends WizardPage {
 			complete = false;
 		}
 
+		String repo = DockerImage.extractRepo(tagField);
+
+		if (repo.matches(".*[A-Z]+.*")) { //$NON-NLS-1$
+			setErrorMessage(
+					WizardMessages.getString("ImageTagUppercaseError.msg")); //$NON-NLS-1$
+			error = true;
+		}
 		if (!error) {
 			setErrorMessage(null);
 			tag = tagField;
