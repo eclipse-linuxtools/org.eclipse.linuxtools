@@ -16,8 +16,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -83,6 +85,22 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 
     @Override
     public void initializeFrom(ILaunchConfiguration config) {
+    	String name = ""; //$NON-NLS-1$
+    	/*
+    	 * Update the global OprofileProject object. In many occasions its
+    	 * value is read, which may produce inconsistencies if it is not
+    	 * up-to-date.
+    	 */
+    	try {
+    		name = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, ""); //$NON-NLS-1$
+    		if (!name.isEmpty()) {
+    			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
+    			Oprofile.OprofileProject.setProject(project);
+    		}
+    	} catch (CoreException e) {
+    		// Nothing to do
+    	}
+
         options.loadConfiguration(config);
         try {
             if (config.getType().getIdentifier().equals("org.eclipse.linuxtools.oprofile.launch.oprofile.manual")) { //$NON-NLS-1$
@@ -152,24 +170,29 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 
         controlCombo = new CCombo(p, SWT.DROP_DOWN|SWT.READ_ONLY|SWT.BORDER);
         List<String> tools = new ArrayList<>(Arrays.asList(OprofileProject.OPERF_BINARY));
-        try {
-            Process proc = RuntimeProcessFactory.getFactory().exec(
-                    new String [] {"which", OprofileProject.OPCONTROL_BINARY }, //$NON-NLS-1$
-                    null);
-            if  (proc.waitFor() == 0) {
-                tools.add(OprofileProject.OPCONTROL_BINARY);
-            }
-        } catch (Exception e) {
-        }
-        try {
-            Process proc = RuntimeProcessFactory.getFactory().exec(
-                    new String [] {"which", OprofileProject.OCOUNT_BINARY }, //$NON-NLS-1$
-                    null);
-            if  (proc.waitFor() == 0) {
-                tools.add(OprofileProject.OCOUNT_BINARY);
-            }
-        } catch (Exception e) {
-        }
+
+        /*
+         * Check if tools are installed. Use whichComand() method from
+         * RuntimeProcessFactory as it considers the LinuxTools Path.
+         */
+        IProject project = getOprofileProject();
+		try {
+			String toolPath = RuntimeProcessFactory.getFactory().whichCommand(OprofileProject.OPCONTROL_BINARY, project);
+			// Command found
+			if (!toolPath.equals(OprofileProject.OPCONTROL_BINARY)) {
+				tools.add(OprofileProject.OPCONTROL_BINARY);
+			}
+		} catch (Exception e) {
+		}
+		try {
+			String toolPath = RuntimeProcessFactory.getFactory().whichCommand(OprofileProject.OCOUNT_BINARY, project);
+			// Command found
+			if (!toolPath.equals(OprofileProject.OCOUNT_BINARY)) {
+				tools.add(OprofileProject.OCOUNT_BINARY);
+			}
+		} catch (Exception e) {
+		}
+
         controlCombo.setItems(tools.toArray(new String [0]));
         controlCombo.select(0);
         controlCombo.addModifyListener(mev -> {

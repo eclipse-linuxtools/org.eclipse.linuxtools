@@ -152,6 +152,10 @@ public class InfoAdapter extends AbstractDataAdapter {
 							OprofileCorePlugin.createErrorStatus("ophelpRun", null)); //$NON-NLS-1$
 					OprofileCorePlugin.showErrorDialog("opxmlSAXParseException", opcontrolException); //$NON-NLS-1$
 				}
+			} else {
+				OpcontrolException opcontrolException = new OpcontrolException(
+						OprofileCorePlugin.createErrorStatus("ophelpRun", null)); //$NON-NLS-1$
+				OprofileCorePlugin.showErrorDialog("ophelpInputStream", opcontrolException); //$NON-NLS-1$
 			}
 
 			newDoc = builder.newDocument();

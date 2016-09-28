@@ -59,8 +59,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 
-public abstract class AbstractEventConfigTab extends
-AbstractLaunchConfigurationTab {
+public abstract class AbstractEventConfigTab extends AbstractLaunchConfigurationTab {
     protected Button defaultEventCheck;
     protected OprofileCounter[] counters = null;
     protected CounterSubTab[] counterSubTabs;
@@ -88,7 +87,11 @@ AbstractLaunchConfigurationTab {
         TabItem[] counterTabs = new TabItem[counters.length];
 
         // create only one counter for operf/opcontrol
-        counterSubTabs = new CounterSubTab[1];
+        if (counters.length > 0) {
+        	counterSubTabs = new CounterSubTab[1];
+        } else {
+        	counterSubTabs = new CounterSubTab[0];
+        }
 
         TabFolder tabFolder = new TabFolder(top, SWT.NONE);
         tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
