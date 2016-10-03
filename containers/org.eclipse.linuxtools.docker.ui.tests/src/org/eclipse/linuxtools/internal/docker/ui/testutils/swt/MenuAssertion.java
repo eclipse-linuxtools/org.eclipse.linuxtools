@@ -18,7 +18,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 /**
  * Custom assertions on a given {@link SWTBotButton}.
  */
-public class MenuAssertion extends AbstractSWTBotAssertion<MenuAssertion, SWTBotMenu> {
+public class MenuAssertion extends AbstractSWTBotAssertions<MenuAssertion, SWTBotMenu> {
 
 	protected MenuAssertion(final SWTBotMenu actual) {
 		super(actual, MenuAssertion.class);

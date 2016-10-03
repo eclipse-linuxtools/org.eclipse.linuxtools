@@ -28,11 +28,11 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerExplorerViewAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerExplorerViewAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.MenuAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTBotTreeItemAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TabDescriptorAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TabDescriptorAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TestLoggerRule;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
@@ -140,7 +140,7 @@ public class DockerExplorerViewSWTBotTest {
 		// when
 		ClearConnectionManagerRule.removeAllConnections(DockerConnectionManager.getInstance());
 		// then
-		DockerExplorerViewAssertion.assertThat(dockerExplorerView).isEmpty();
+		DockerExplorerViewAssertions.assertThat(dockerExplorerView).isEmpty();
 	}
 
 	@Test
@@ -151,7 +151,7 @@ public class DockerExplorerViewSWTBotTest {
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// then
-		DockerExplorerViewAssertion.assertThat(dockerExplorerView).isNotEmpty();
+		DockerExplorerViewAssertions.assertThat(dockerExplorerView).isNotEmpty();
 	}
 
 	@Test
@@ -546,7 +546,7 @@ public class DockerExplorerViewSWTBotTest {
 				.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
 		assertThat(propertySheet.getCurrentPage()).isInstanceOf(TabbedPropertySheetPage.class);
 		final TabbedPropertySheetPage currentPage = (TabbedPropertySheetPage) propertySheet.getCurrentPage();
-		TabDescriptorAssertion.assertThat(currentPage.getSelectedTab()).isNotNull()
+		TabDescriptorAssertions.assertThat(currentPage.getSelectedTab()).isNotNull()
 				.hasId("org.eclipse.linuxtools.docker.ui.properties.container.info");
 	}
 
@@ -559,7 +559,7 @@ public class DockerExplorerViewSWTBotTest {
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one the container
 		selectImagesInTreeView("Test", "angry_bar");
-		// show image info in Properties view
+		// show images info in Properties view
 		SWTUtils.getContextMenu(dockerExplorerViewBot.bot().tree(), "Show In", "Properties").click();
 		// the properties view should be visible
 		assertThat(this.bot.viewById("org.eclipse.ui.views.PropertySheet").isActive()).isEqualTo(true);
@@ -569,7 +569,7 @@ public class DockerExplorerViewSWTBotTest {
 				.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
 		assertThat(propertySheet.getCurrentPage()).isInstanceOf(TabbedPropertySheetPage.class);
 		final TabbedPropertySheetPage currentPage = (TabbedPropertySheetPage) propertySheet.getCurrentPage();
-		TabDescriptorAssertion.assertThat(currentPage.getSelectedTab()).isNotNull()
+		TabDescriptorAssertions.assertThat(currentPage.getSelectedTab()).isNotNull()
 				.hasId("org.eclipse.linuxtools.docker.ui.properties.image.info");
 	}
 

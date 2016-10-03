@@ -53,7 +53,7 @@ public class MockDockerImageFactory {
 		}
 		
 		private Builder randomId() {
-			// generate a random id for the image
+			// generate a random id for the images
 			final String id = IntStream.range(0, 12)
 					.mapToObj(i -> Character.valueOf(MockImageFactory.HEXA[new Random().nextInt(16)]).toString())
 					.collect(Collectors.joining());

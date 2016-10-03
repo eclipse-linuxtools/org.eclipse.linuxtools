@@ -28,7 +28,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFacto
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageInfoFactory;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ButtonAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ButtonAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseShellRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
@@ -88,7 +88,7 @@ public class ImageRunSWTBotTest {
 				.container(MockContainerFactory.name("foo_bar").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		// expand the 'Images' node and select the 'foo' image
+		// expand the 'Images' node and select the 'foo' images
 		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images", "foo").select();
 
 		// when opening the "Run Image..." wizard
@@ -101,7 +101,7 @@ public class ImageRunSWTBotTest {
 		// wait for https://bugs.eclipse.org/bugs/show_bug.cgi?id=482889 to be
 		// able to check the wizard validation message
 		//assertThat(bot.text(WizardMessages.getString("ImageRunSelectionPage.containerWithSameName"))).isNotNull();
-		ButtonAssertion.assertThat(bot.button("Finish")).isNotEnabled();
+		ButtonAssertions.assertThat(bot.button("Finish")).isNotEnabled();
 	}
 
 	@Test
@@ -111,7 +111,7 @@ public class ImageRunSWTBotTest {
 				.container(MockContainerFactory.name("foo_bar").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		// expand the 'Images' node and select the 'foo' image
+		// expand the 'Images' node and select the 'foo' images
 		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images", "foo").select();
 		// when opening the "Run Image..." wizard
 		final SWTBotTree dockerExplorerViewTreeBot = dockerExplorerViewBot.bot().tree();
@@ -126,7 +126,7 @@ public class ImageRunSWTBotTest {
 	@Test
 	public void shouldCreateLaunchConfigurationWhenRunningNamedContainer()
 			throws InterruptedException, DockerException, CoreException {
-		// image to use
+		// images to use
 		final String imageName = "foo/bar:latest";
 		final Image image = MockImageFactory.id("1a2b3c4d5e6f7g").name(imageName).build();
 		final ImageInfo imageInfo = MockImageInfoFactory.volume("/foo/bar")
@@ -146,7 +146,7 @@ public class ImageRunSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		// configure the Connection Manager
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		// when select image and click on run to open the wizard
+		// when select images and click on run to open the wizard
 		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images", "foo/bar").select();
 		dockerExplorerViewBot.bot().tree().contextMenu("Run...").click();
 		bot.waitUntil(Conditions.shellIsActive("Run a Docker Image"), TimeUnit.SECONDS.toMillis(1)); //$NON-NLS-1$

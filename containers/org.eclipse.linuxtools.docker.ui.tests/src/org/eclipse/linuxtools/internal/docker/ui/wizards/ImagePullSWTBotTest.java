@@ -13,6 +13,8 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.concurrent.TimeUnit;
+
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.linuxtools.docker.core.EnumDockerConnectionState;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
@@ -24,7 +26,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFacto
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockRegistryAccountManagerFactory;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ButtonAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ButtonAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseShellRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
@@ -104,16 +106,16 @@ public class ImagePullSWTBotTest {
 		// when
 		bot.text(0).setText("jboss/wildfly:latest");
 		// then
-		ButtonAssertion.assertThat(bot.button("Finish")).isNotEnabled();
+		ButtonAssertions.assertThat(bot.button("Finish")).isNotEnabled();
 	}
 
 	@Test
 	public void shouldNotAllowFinishWhenImageNameIsMissing() {
 		// given
 		openPullWizard();
-		// when no data is input for the image name
+		// when no data is input for the images name
 		// then
-		ButtonAssertion.assertThat(bot.button("Finish")).isNotEnabled();
+		ButtonAssertions.assertThat(bot.button("Finish")).isNotEnabled();
 	}
 
 	@Test
@@ -194,12 +196,13 @@ public class ImagePullSWTBotTest {
 		this.client = MockDockerClientFactory.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
-		assertThat(dockerConnection.getState()).isEqualTo(EnumDockerConnectionState.ESTABLISHED);
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when
 		// when opening the "Push Image..." wizard
 		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test").select();
 		// then
+		SWTUtils.wait(1, TimeUnit.SECONDS);
+		assertThat(dockerConnection.getState()).isEqualTo(EnumDockerConnectionState.ESTABLISHED);
 		MenuAssertion.assertThat(dockerExplorerViewBot.bot().tree().contextMenu("Pull...")).isEnabled();
 	}
 
@@ -209,12 +212,12 @@ public class ImagePullSWTBotTest {
 		this.client = MockDockerClientFactory.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
-		assertThat(dockerConnection.getState()).isEqualTo(EnumDockerConnectionState.ESTABLISHED);
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when
 		// when opening the "Push Image..." wizard
 		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images").select();
 		// then
+		assertThat(dockerConnection.getState()).isEqualTo(EnumDockerConnectionState.ESTABLISHED);
 		MenuAssertion.assertThat(dockerExplorerViewBot.bot().tree().contextMenu("Pull...")).isEnabled();
 	}
 }

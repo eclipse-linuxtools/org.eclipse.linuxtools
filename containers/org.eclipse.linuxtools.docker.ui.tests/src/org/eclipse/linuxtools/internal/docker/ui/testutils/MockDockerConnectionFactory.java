@@ -47,19 +47,18 @@ public class MockDockerConnectionFactory {
 		public DockerConnection withUnixSocketConnectionSettings(final String pathToSocket) {
 			final DockerConnection connection = Mockito.spy(connectionBuilder.unixSocketConnection(new UnixSocketConnectionSettings(pathToSocket)));
 			configureDockerClientFactory(connection, this.dockerClient);
-			configureMockBehaviour(connection, EnumDockerConnectionState.ESTABLISHED);
+			configureMockBehaviour(connection);
 			return connection;
 		}
 
 		public DockerConnection withDefaultTCPConnectionSettings() {
-			return withTCPConnectionSettings(null, null, EnumDockerConnectionState.ESTABLISHED);
+			return withTCPConnectionSettings(null, null);
 		}
 
-		public DockerConnection withTCPConnectionSettings(final String host, final String pathToCerts,
-				final EnumDockerConnectionState state) {
+		public DockerConnection withTCPConnectionSettings(final String host, final String pathToCerts) {
 			final DockerConnection connection = Mockito.spy(connectionBuilder.tcpConnection(new TCPConnectionSettings(host, pathToCerts)));
 			configureDockerClientFactory(connection, this.dockerClient);
-			configureMockBehaviour(connection, state);
+			configureMockBehaviour(connection);
 			return connection;
 		}
 
@@ -69,11 +68,11 @@ public class MockDockerConnectionFactory {
 			return connection;
 		}
 
-		private static void configureMockBehaviour(final DockerConnection connection,
-				final EnumDockerConnectionState state) {
+		private static void configureMockBehaviour(final DockerConnection connection) {
 			final IDockerImageInfo imageInfo = Mockito.mock(IDockerImageInfo.class, Mockito.RETURNS_DEEP_STUBS);
 			Mockito.when(connection.getImageInfo(Matchers.anyString())).thenReturn(imageInfo);
-			Mockito.when(connection.getState()).thenReturn(state);
+			// Mockito.when(connection.isOpen()).thenReturn(state ==
+			// EnumDockerConnectionState.ESTABLISHED);
 		}
 
 		private static void configureDockerClientFactory(final DockerConnection connection, final DockerClient dockerClient) {

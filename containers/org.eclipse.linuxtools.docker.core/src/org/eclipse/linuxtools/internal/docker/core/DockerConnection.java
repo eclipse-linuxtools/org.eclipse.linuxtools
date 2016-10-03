@@ -81,6 +81,7 @@ import org.eclipse.linuxtools.docker.core.IDockerVersion;
 import org.eclipse.linuxtools.docker.core.ILogger;
 import org.eclipse.linuxtools.docker.core.IRegistryAccount;
 import org.eclipse.linuxtools.docker.core.Messages;
+import org.eclipse.linuxtools.internal.docker.core.DockerImage.DockerImageQualifier;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.tm.terminal.view.core.TerminalServiceFactory;
 import org.eclipse.tm.terminal.view.core.interfaces.ITerminalService;
@@ -655,90 +656,95 @@ public class DockerConnection
 		}
 	}
 
-	private List<IDockerContainer> listContainers() throws DockerException {
-		final Map<String, IDockerContainer> updatedContainers = new HashMap<>();
-		try {
-			final List<Container> nativeContainers = new ArrayList<>();
-			synchronized (clientLock) {
-				// Check that client is not null as this connection may have
-				// been closed but there is an async request to update the
-				// containers list left in the queue
-				if (client == null) {
-					// in that case the list becomes empty, which is fine is
-					// there's no client.
-					return Collections.emptyList();
+	private List<IDockerContainer> listContainers()
+			throws DockerException {
+		final Map<String, IDockerContainer> updatedContainersById = new HashMap<>();
+		List<IDockerContainer> sortedContainers;
+		synchronized (containerLock) {
+			try {
+				final List<Container> nativeContainers = new ArrayList<>();
+				synchronized (clientLock) {
+					// Check that client is not null as this connection may have
+					// been closed but there is an async request to update the
+					// containers list left in the queue
+					if (client == null) {
+						// in that case the list becomes empty, which is fine is
+						// there's no client.
+						return Collections.emptyList();
+					}
+					nativeContainers.addAll(client.listContainers(
+							DockerClient.ListContainersParam.allContainers()));
 				}
-				nativeContainers.addAll(client.listContainers(
-						DockerClient.ListContainersParam.allContainers()));
-			}
-			// We have a list of containers. Now, we translate them to our own
-			// core format in case we decide to change the underlying engine
-			// in the future.
-			for (Container nativeContainer : nativeContainers) {
-				// For containers that have exited, make sure we aren't tracking
-				// them with a logging thread.
-				if (nativeContainer.status() != null && nativeContainer.status()
-						.startsWith(Messages.Exited_specifier)) {
-					synchronized (loggingThreads) {
-						if (loggingThreads.containsKey(nativeContainer.id())) {
-							loggingThreads.get(nativeContainer.id())
-									.requestStop();
-							loggingThreads.remove(nativeContainer.id());
+				// We have a list of containers. Now, we translate them to our
+				// own
+				// core format in case we decide to change the underlying engine
+				// in the future.
+				for (Container nativeContainer : nativeContainers) {
+					// For containers that have exited, make sure we aren't
+					// tracking
+					// them with a logging thread.
+					if (nativeContainer.status() != null && nativeContainer
+							.status().startsWith(Messages.Exited_specifier)) {
+						synchronized (loggingThreads) {
+							if (loggingThreads
+									.containsKey(nativeContainer.id())) {
+								loggingThreads.get(nativeContainer.id())
+										.requestStop();
+								loggingThreads.remove(nativeContainer.id());
+							}
 						}
 					}
+					// skip containers that are being removed
+					if (nativeContainer.status() != null
+							&& nativeContainer.status().equals(
+									Messages.Removal_In_Progress_specifier)) {
+						continue;
+					}
+					// re-use info from existing container with same id
+					if (this.containers != null && this.containersById
+							.containsKey(nativeContainer.id())) {
+						final IDockerContainer container = this.containersById
+								.get(nativeContainer.id());
+						updatedContainersById.put(nativeContainer.id(),
+								new DockerContainer(this, nativeContainer,
+										container.info()));
+					} else {
+						updatedContainersById.put(nativeContainer.id(),
+								new DockerContainer(this, nativeContainer));
+					}
 				}
-				// skip containers that are being removed
-				if (nativeContainer.status() != null && nativeContainer.status()
-						.equals(Messages.Removal_In_Progress_specifier)) {
-					continue;
+			} catch (DockerTimeoutException e) {
+				if (isOpen()) {
+					Activator.log(
+							new Status(IStatus.WARNING, Activator.PLUGIN_ID,
+									Messages.Docker_Connection_Timeout, e));
+					close();
 				}
-				// re-use info from existing container with same id
-				if (this.containers != null && this.containersById
-						.containsKey(nativeContainer.id())) {
-					final IDockerContainer container = this.containersById
-							.get(nativeContainer.id());
-					updatedContainers.put(nativeContainer.id(),
-							new DockerContainer(this, nativeContainer,
-									container.info()));
+			} catch (com.spotify.docker.client.DockerException
+					| InterruptedException e) {
+				if (isOpen() && e.getCause() != null
+						&& e.getCause().getCause() != null && e.getCause()
+								.getCause() instanceof ProcessingException) {
+					close();
 				} else {
-					updatedContainers.put(nativeContainer.id(),
-							new DockerContainer(this, nativeContainer));
+					throw new DockerException(e.getMessage());
 				}
-			}
-		} catch (DockerTimeoutException e) {
-			if (isOpen()) {
-				Activator.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-						Messages.Docker_Connection_Timeout, e));
-				close();
-			}
-		} catch (com.spotify.docker.client.DockerException
-				| InterruptedException e) {
-			if (isOpen() && e.getCause() != null
-					&& e.getCause().getCause() != null
-					&& e.getCause().getCause() instanceof ProcessingException) {
-				close();
-			} else {
-				throw new DockerException(e.getMessage());
-			}
-		} finally {
-			// assign the new list of containers in a locked block of code to
-			// prevent concurrent access, even if an exception was raised.
-			synchronized (containerLock) {
-				this.containersById = updatedContainers;
-				this.containers = sort(this.containersById.values(),
+			} finally {
+				this.containersById = updatedContainersById;
+				sortedContainers = sort(
+						updatedContainersById.values(),
 						(container, otherContainer) -> container.name()
 								.compareTo(otherContainer.name()));
-
+				this.containers = sortedContainers;
 				this.containersLoaded = true;
 			}
 		}
-
 		// perform notification outside of containerLock so we don't have a View
 		// causing a deadlock
 		// TODO: we should probably notify the listeners only if the containers
 		// list changed.
-		notifyContainerListeners(this.containers);
-		return this.containers;
+		notifyContainerListeners(sortedContainers);
+		return sortedContainers;
 	}
 
 	public Set<String> getContainerIdsWithLabels(Map<String, String> labels)
@@ -968,22 +974,51 @@ public class DockerConnection
 		return imagesLoaded;
 	}
 
+	// TODO: remove this method from the API
 	@Override
 	public List<IDockerImage> listImages() throws DockerException {
 		final List<IDockerImage> tempImages = new ArrayList<>();
 		synchronized (imageLock) {
-			List<Image> rawImages = new ArrayList<>();
 			try {
+				final List<Image> nativeImages = new ArrayList<>();
 				synchronized (clientLock) {
 					// Check that client is not null as this connection may have
 					// been closed but there is an async request to update the
-					// images list left in the queue
-					if (client == null)
-						return tempImages;
-					rawImages = client.listImages(
-							DockerClient.ListImagesParam.allImages());
+					// containers list left in the queue
+					if (client == null) {
+						// in that case the list becomes empty, which is fine is
+						// there's no client.
+						return Collections.emptyList();
+					}
+					nativeImages.addAll(client.listImages(
+							DockerClient.ListImagesParam.allImages()));
 				}
-			} catch (DockerTimeoutException e) {
+				// We have a list of images. Now, we translate them to our own
+				// core format in case we decide to change the underlying engine
+				// in the future. We also look for intermediate and dangling
+				// images.
+				for (Image nativeImage : nativeImages) {
+					final DockerImageQualifier imageQualifier = resolveQualifier(
+							nativeImage, nativeImages);
+					// return one IDockerImage per raw image
+					final List<String> repoTags = (nativeImage
+							.repoTags() != null)
+									? new ArrayList<>(nativeImage.repoTags())
+									: new ArrayList<>();
+					Collections.sort(repoTags);
+					if (repoTags.isEmpty()) {
+						repoTags.add("<none>:<none>"); //$NON-NLS-1$
+					}
+					final String repo = DockerImage
+							.extractRepo(repoTags.get(0));
+					final List<String> tags = Arrays
+							.asList(DockerImage.extractTag(repoTags.get(0)));
+					tempImages.add(new DockerImage(this, repoTags, repo, tags,
+							nativeImage.id(), nativeImage.parentId(),
+							nativeImage.created(), nativeImage.size(),
+							nativeImage.virtualSize(), imageQualifier));
+				}
+			} catch (com.spotify.docker.client.DockerTimeoutException e) {
 				if (isOpen()) {
 					Activator.log(
 							new Status(IStatus.WARNING, Activator.PLUGIN_ID,
@@ -995,50 +1030,52 @@ public class DockerConnection
 			} catch (com.spotify.docker.client.DockerException
 					| InterruptedException e) {
 				if (isOpen() && e.getCause() != null
-						&& e.getCause().getCause() != null
-						&& e.getCause().getCause() instanceof ProcessingException) {
+						&& e.getCause().getCause() != null && e.getCause()
+								.getCause() instanceof ProcessingException) {
 					close();
 				} else {
-					throw new DockerException(e.getMessage());
+					throw new DockerException(
+							NLS.bind(Messages.List_Docker_Images_Failure,
+									this.getName()),
+							e);
 				}
+			} finally {
+				this.images = tempImages;
+				this.imagesLoaded = true;
 			}
-			// We have a list of images. Now, we translate them to our own
-			// core format in case we decide to change the underlying engine
-			// in the future. We also look for intermediate and dangling images.
-			final Set<String> imageParentIds = new HashSet<>();
-			for (Image rawImage : rawImages) {
-				imageParentIds.add(rawImage.parentId());
-			}
-			for (Image rawImage : rawImages) {
-				// return one IDockerImage per raw image
-				final List<String> repoTags = rawImage.repoTags() != null
-						&& rawImage.repoTags().size() > 0
-						? new ArrayList<>(rawImage.repoTags())
-						: Arrays.asList("<none>:<none>"); //$NON-NLS-1$
-				Collections.sort(repoTags);
-				final boolean taggedImage = !(repoTags != null
-						&& repoTags.size() == 1
-						&& repoTags.contains("<none>:<none>")); //$NON-NLS-1$
-				final boolean intermediateImage = !taggedImage
-						&& imageParentIds.contains(rawImage.id());
-				final boolean danglingImage = !taggedImage
-						&& !intermediateImage;
-				final String firstRepo = DockerImage.extractRepo(repoTags.get(0));
-				final String firstTag = DockerImage.extractTag(repoTags.get(0));
-				final List<String> tags = (firstTag != null)
-						? Arrays.asList(firstTag) : Collections.emptyList();
-				tempImages.add(new DockerImage(this, repoTags, firstRepo,
-						tags, rawImage.id(), rawImage.parentId(),
-						rawImage.created(), rawImage.size(),
-						rawImage.virtualSize(), intermediateImage,
-						danglingImage));
-			}
-			images = tempImages;
 		}
 		// Perform notification outside of lock so that listener doesn't cause a
 		// deadlock to occur
 		notifyImageListeners(tempImages);
 		return tempImages;
+	}
+
+	/**
+	 * Resolves the {@link DockerImageQualifier} for the given
+	 * {@code nativeImage} in the context of all {@code nativeImages}
+	 * 
+	 * @param nativeImage
+	 *            the image to analyze
+	 * @param nativeImages
+	 *            all known images
+	 * @return the corresponding {@link DockerImageQualifier}
+	 */
+	private static DockerImageQualifier resolveQualifier(
+			final Image nativeImage, final List<Image> nativeImages) {
+		final boolean hasTag = !(nativeImage.repoTags() == null
+				|| (nativeImage.repoTags().size() == 1
+						&& nativeImage.repoTags().contains("<none>:<none>"))); //$NON-NLS-1$
+		final boolean hasChildImage = nativeImages.stream()
+				.anyMatch(i -> nativeImage.id().equals(i.parentId()));
+		// imtermediate image
+		if (!hasTag && hasChildImage) {
+			return DockerImageQualifier.INTERMEDIATE;
+		}
+		// dangling image
+		if (!hasTag && !hasChildImage) {
+			return DockerImageQualifier.DANGLING;
+		}
+		return DockerImageQualifier.TOP_LEVEL;
 	}
 
 	@Override

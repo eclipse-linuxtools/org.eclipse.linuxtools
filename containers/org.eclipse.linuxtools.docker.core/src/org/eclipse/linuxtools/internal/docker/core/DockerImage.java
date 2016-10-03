@@ -27,6 +27,10 @@ import org.eclipse.linuxtools.docker.core.IDockerImage;
 
 public class DockerImage implements IDockerImage, IAdaptable {
 
+	public enum DockerImageQualifier {
+		TOP_LEVEL, INTERMEDIATE, DANGLING;
+	}
+
 	/** The 'latest' tag. */
 	public static final String LATEST_TAG = "latest"; //$NON-NLS-1$
 
@@ -63,14 +67,13 @@ public class DockerImage implements IDockerImage, IAdaptable {
 	private final Long size;
 	private final Long virtualSize;
 
-	private final boolean intermediateImage;
-	private final boolean danglingImage;
+	private final DockerImageQualifier imageQualifier;
 
 	public DockerImage(final DockerConnection parent,
 			@Deprecated final List<String> repoTags, final String repo,
 			final List<String> tags, final String id, final String parentId,
 			final String created, final Long size, final Long virtualSize,
-			final boolean intermediateImage, final boolean danglingImage) {
+			final DockerImageQualifier imageQualifier) {
 		this.parent = parent;
 		this.repoTags = repoTags;
 		this.repo = repo;
@@ -86,8 +89,33 @@ public class DockerImage implements IDockerImage, IAdaptable {
 				: null;
 		this.size = size;
 		this.virtualSize = virtualSize;
-		this.intermediateImage = intermediateImage;
-		this.danglingImage = danglingImage;
+		this.imageQualifier = imageQualifier;
+	}
+
+	@Deprecated
+	public DockerImage(final DockerConnection parent,
+			@Deprecated final List<String> repoTags, final String repo,
+			final List<String> tags, final String id, final String parentId,
+			final String created, final Long size, final Long virtualSize,
+			final boolean intermediateImage, final boolean danglingImage) {
+		this.parent = parent;
+		this.repoTags = repoTags;
+		this.repo = repo;
+		this.tags = tags;
+		this.id = id;
+		this.shortId = getShortId(id);
+		this.parentId = parentId;
+		this.created = created;
+		this.createdDate = created != null
+				? formatter.get().format(
+						new Date(Long.valueOf(created).longValue() * 1000))
+				: null;
+		this.size = size;
+		this.virtualSize = virtualSize;
+		this.imageQualifier = intermediateImage
+				? DockerImageQualifier.INTERMEDIATE
+				: (danglingImage ? DockerImageQualifier.DANGLING
+						: DockerImageQualifier.TOP_LEVEL);
 	}
 
 	/**
@@ -219,6 +247,12 @@ public class DockerImage implements IDockerImage, IAdaptable {
 						image.isIntermediateImage(), image.isDangling()));
 	}
 
+	// TODO: expose this in the public API (in favor of
+	// IDockerImage#isIntermediate() and IDockerImage#isDangling() ?)
+	public DockerImageQualifier qualifier() {
+		return this.imageQualifier;
+	}
+
 	@Override
 	public DockerConnection getConnection() {
 		return parent;
@@ -280,12 +314,12 @@ public class DockerImage implements IDockerImage, IAdaptable {
 
 	@Override
 	public boolean isDangling() {
-		return danglingImage;
+		return this.imageQualifier == DockerImageQualifier.DANGLING;
 	}
 
 	@Override
 	public boolean isIntermediateImage() {
-		return intermediateImage;
+		return this.imageQualifier == DockerImageQualifier.INTERMEDIATE;
 	}
 
 	@Override

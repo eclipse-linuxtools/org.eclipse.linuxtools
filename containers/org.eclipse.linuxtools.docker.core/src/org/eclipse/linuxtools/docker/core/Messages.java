@@ -32,6 +32,7 @@ public class Messages extends NLS {
 	public static String Docker_Daemon_Ping_Failure;
 	public static String Retrieve_Docker_Certificates_Failure;
 	public static String List_Docker_Containers_Failure;
+	public static String List_Docker_Images_Failure;
 	public static String Docker_General_Info_Failure;
 	public static String Docker_No_Settings_Description_Script;
 	public static String Registry_Version_Mismatch;

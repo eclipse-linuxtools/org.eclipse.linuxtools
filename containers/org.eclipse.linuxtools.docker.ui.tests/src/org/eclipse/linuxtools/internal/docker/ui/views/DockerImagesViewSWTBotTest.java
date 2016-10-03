@@ -25,9 +25,9 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerImageHierarchyViewAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerImageHierarchyViewAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TabDescriptorAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TabDescriptorAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TestLoggerRule;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -107,7 +107,7 @@ public class DockerImagesViewSWTBotTest {
 
 	@Test
 	public void shouldShowDefaultImages() {
-		// then default connection with 1 image should be displayed
+		// then default connection with 1 images should be displayed
 		SWTUtils.syncAssert(() -> {
 			final TableItem[] images = dockerImagesView.getViewer().getTable().getItems();
 			assertThat(images).hasSize(1);
@@ -125,7 +125,7 @@ public class DockerImagesViewSWTBotTest {
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when
 		SWTUtils.getTreeItem(dockerExplorerBotView, "Test").select();
-		// then 1 image with all repo/tags should be displayed
+		// then 1 images with all repo/tags should be displayed
 		SWTUtils.syncAssert(() -> {
 			final TableItem[] images = dockerImagesView.getViewer().getTable().getItems();
 			assertThat(images).hasSize(1);
@@ -183,7 +183,7 @@ public class DockerImagesViewSWTBotTest {
 		SWTUtils.getContextMenu(dockerImagesBotView.bot().table(), "Open Image Hierarchy").click();
 		// wait 1sec
 		SWTUtils.wait(1, TimeUnit.SECONDS);
-		DockerImageHierarchyViewAssertion.assertThat(SWTUtils.getView(bot, DockerImageHierarchyView.VIEW_ID))
+		DockerImageHierarchyViewAssertions.assertThat(SWTUtils.getView(bot, DockerImageHierarchyView.VIEW_ID))
 				.isNotNull();
 	}
 
@@ -203,7 +203,7 @@ public class DockerImagesViewSWTBotTest {
 		// info
 		assertThat(propertySheet.getCurrentPage()).isInstanceOf(TabbedPropertySheetPage.class);
 		final TabbedPropertySheetPage currentPage = (TabbedPropertySheetPage) propertySheet.getCurrentPage();
-		TabDescriptorAssertion.assertThat(currentPage.getSelectedTab()).isNotNull()
+		TabDescriptorAssertions.assertThat(currentPage.getSelectedTab()).isNotNull()
 				.hasId("org.eclipse.linuxtools.docker.ui.properties.image.info");
 	}
 

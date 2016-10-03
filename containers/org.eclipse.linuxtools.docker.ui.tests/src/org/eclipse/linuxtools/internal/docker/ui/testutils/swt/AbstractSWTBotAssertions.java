@@ -19,10 +19,10 @@ import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBot;
  * Custom assertions on a given {@link AbstractSWTBot} widget
  * @param <SWTWidget>
  */
-public abstract class AbstractSWTBotAssertion<Assertion extends AbstractSWTBotAssertion<Assertion, SWTWidget>, SWTWidget extends AbstractSWTBot<?>>
+public abstract class AbstractSWTBotAssertions<Assertion extends AbstractSWTBotAssertions<Assertion, SWTWidget>, SWTWidget extends AbstractSWTBot<?>>
 		extends AbstractAssert<Assertion, SWTWidget> {
 
-	protected AbstractSWTBotAssertion(final SWTWidget actual, final Class<Assertion> clazz) {
+	protected AbstractSWTBotAssertions(final SWTWidget actual, final Class<Assertion> clazz) {
 		super(actual, clazz);
 	}
 

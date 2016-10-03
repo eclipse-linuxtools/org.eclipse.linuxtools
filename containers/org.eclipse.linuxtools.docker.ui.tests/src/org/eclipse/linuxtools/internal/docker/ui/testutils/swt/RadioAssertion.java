@@ -17,7 +17,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 /**
  * Custom assertions on a given {@link SWTBotRadio}.
  */
-public class RadioAssertion extends AbstractSWTBotAssertion<RadioAssertion, SWTBotRadio> {
+public class RadioAssertion extends AbstractSWTBotAssertions<RadioAssertion, SWTBotRadio> {
 	
 	protected RadioAssertion(final SWTBotRadio actual) {
 		super(actual, RadioAssertion.class);

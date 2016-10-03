@@ -33,18 +33,18 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFacto
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.ProjectInitializationRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.RunWithProject;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ButtonAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ButtonAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearLaunchConfigurationsRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseShellRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ComboAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ComboAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ConsoleViewRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ProjectExplorerViewRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TextAssertion;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ToolbarButtonAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TextAssertions;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ToolbarButtonAssertions;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
@@ -200,7 +200,7 @@ public class DockerComposeSWTBotTest {
 		// expect the 'stop' button to be enabled
 		final SWTBotToolbarButton consoleToolbarStopButton = SWTUtils.getConsoleToolbarButtonWithTooltipText(bot,
 				ConsoleMessages.getString("DockerComposeStopAction.tooltip"));
-		ToolbarButtonAssertion.assertThat(consoleToolbarStopButton).isEnabled();
+		ToolbarButtonAssertions.assertThat(consoleToolbarStopButton).isEnabled();
 		// verify that the launch configuration was saved
 		final ILaunchConfiguration launchConfiguration = LaunchConfigurationUtils.getLaunchConfigurationByName(
 				IDockerComposeLaunchConfigurationConstants.CONFIG_TYPE_ID, "Docker Compose [foo]");
@@ -224,7 +224,7 @@ public class DockerComposeSWTBotTest {
 		// then confirm the connection
 		final SWTBotToolbarButton consoleToolbarStopButton = SWTUtils.getConsoleToolbarButtonWithTooltipText(bot,
 				ConsoleMessages.getString("DockerComposeStopAction.tooltip"));
-		ToolbarButtonAssertion.assertThat(consoleToolbarStopButton).isEnabled();
+		ToolbarButtonAssertions.assertThat(consoleToolbarStopButton).isEnabled();
 	}
 
 	@Test
@@ -235,13 +235,13 @@ public class DockerComposeSWTBotTest {
 		// when
 		final SWTBotToolbarButton consoleToolbarStopButton = SWTUtils.getConsoleToolbarButtonWithTooltipText(bot,
 				ConsoleMessages.getString("DockerComposeStopAction.tooltip"));
-		ToolbarButtonAssertion.assertThat(consoleToolbarStopButton).isEnabled();
+		ToolbarButtonAssertions.assertThat(consoleToolbarStopButton).isEnabled();
 		consoleToolbarStopButton.click();
 		// then
 		// verify the latch is down
 		assertThat(latch.getCount()).isEqualTo(0);
 		// verify the stop button is disabled
-		ToolbarButtonAssertion.assertThat(consoleToolbarStopButton).isNotEnabled();
+		ToolbarButtonAssertions.assertThat(consoleToolbarStopButton).isNotEnabled();
 	}
 
 	@Test
@@ -260,7 +260,7 @@ public class DockerComposeSWTBotTest {
 		// when stopping
 		final SWTBotToolbarButton consoleToolbarStopButton = SWTUtils.getConsoleToolbarButtonWithTooltipText(bot,
 				ConsoleMessages.getString("DockerComposeStopAction.tooltip"));
-		ToolbarButtonAssertion.assertThat(consoleToolbarStopButton).isEnabled();
+		ToolbarButtonAssertions.assertThat(consoleToolbarStopButton).isEnabled();
 		consoleToolbarStopButton.click();
 		// redo the setup to get a new mock process
 		setupMockedProcessLauncher();
@@ -269,7 +269,7 @@ public class DockerComposeSWTBotTest {
 		// wait for the job to run
 		SWTUtils.waitForJobsToComplete();
 		// then
-		ToolbarButtonAssertion.assertThat(consoleToolbarStopButton).isEnabled();
+		ToolbarButtonAssertions.assertThat(consoleToolbarStopButton).isEnabled();
 	}
 
 	@Test
@@ -292,9 +292,9 @@ public class DockerComposeSWTBotTest {
 		SWTUtils.select(dockerComposeTreeItem, "Docker Compose [foo]");
 		// verify that the config is set and the form can be closed with the
 		// "OK" button
-		ComboAssertion.assertThat(bot.comboBox(0)).isEnabled().itemSelected("Test");
-		TextAssertion.assertThat(bot.text(2)).isEnabled().textEquals("/foo");
-		ButtonAssertion.assertThat(bot.button("Run")).isEnabled();
+		ComboAssertions.assertThat(bot.comboBox(0)).isEnabled().itemSelected("Test");
+		TextAssertions.assertThat(bot.text(2)).isEnabled().textEquals("/foo");
+		ButtonAssertions.assertThat(bot.button("Run")).isEnabled();
 
 	}
 }

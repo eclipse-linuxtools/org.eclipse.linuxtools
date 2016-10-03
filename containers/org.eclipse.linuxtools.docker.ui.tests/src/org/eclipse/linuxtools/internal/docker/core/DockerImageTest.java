@@ -146,6 +146,6 @@ public class DockerImageTest {
 		assertThat(result.get(1).id()).isEqualTo("sha256:foo_image");
 		assertThat(result.get(1).repo()).isEqualTo("foo_image_alias");
 		assertThat(result.get(1).tags()).containsExactly("alias");
-
 	}
+
 }

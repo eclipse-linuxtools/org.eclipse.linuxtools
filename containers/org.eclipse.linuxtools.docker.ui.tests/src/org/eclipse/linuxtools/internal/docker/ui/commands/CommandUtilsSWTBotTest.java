@@ -222,7 +222,7 @@ public class CommandUtilsSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		final SWTBotTreeItem image = SWTUtils.expand(dockerExplorerViewBot.bot().tree(), "Test", "Images", "foo");
-		// when selecting the image
+		// when selecting the images
 		image.select();
 		// then current connection should be found
 		Assertions.assertThat(CommandUtils.getCurrentConnection(dockerExplorerView)).isEqualTo(dockerConnection);

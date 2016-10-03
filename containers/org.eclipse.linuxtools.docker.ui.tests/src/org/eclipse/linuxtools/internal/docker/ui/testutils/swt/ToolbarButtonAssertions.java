@@ -11,18 +11,19 @@
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 
 /**
  * Custom assertions on a given {@link SWTBotButton}.
  */
-public class ButtonAssertion extends AbstractSWTBotAssertion<ButtonAssertion, SWTBotButton> {
-	
-	protected ButtonAssertion(final SWTBotButton actual) {
-		super(actual, ButtonAssertion.class);
+public class ToolbarButtonAssertions extends AbstractSWTBotAssertions<ToolbarButtonAssertions, SWTBotToolbarButton> {
+
+	protected ToolbarButtonAssertions(final SWTBotToolbarButton actual) {
+		super(actual, ToolbarButtonAssertions.class);
 	}
 
-	public static ButtonAssertion assertThat(final SWTBotButton actual) {
-		return new ButtonAssertion(actual);
+	public static ToolbarButtonAssertions assertThat(final SWTBotToolbarButton actual) {
+		return new ToolbarButtonAssertions(actual);
 	}
 
 }

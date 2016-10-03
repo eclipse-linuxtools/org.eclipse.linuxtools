@@ -28,7 +28,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockRegistryAccountMa
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseShellRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ComboAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ComboAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
@@ -111,9 +111,9 @@ public class ImagePushSWTBotTests {
 		// expand the 'Images' node
 		openPushWizard();
 		// then the registry should be set with the first element available, too
-		ComboAssertion.assertThat(bot.comboBox(0)).itemSelected(AbstractRegistry.DOCKERHUB_REGISTRY);
+		ComboAssertions.assertThat(bot.comboBox(0)).itemSelected(AbstractRegistry.DOCKERHUB_REGISTRY);
 		// and the "Image Name" combo should have a selection
-		ComboAssertion.assertThat(bot.comboBox(1)).itemSelected("foo/bar:latest");
+		ComboAssertions.assertThat(bot.comboBox(1)).itemSelected("foo/bar:latest");
 	}
 
 	@Test
@@ -175,7 +175,7 @@ public class ImagePushSWTBotTests {
 				.build();
 		// when
 		openPushWizard();
-		// when tagging image with '--force'
+		// when tagging images with '--force'
 		bot.checkBox(0).select();
 		// when selecting other registry
 		bot.comboBox(0).setSelection(1);
@@ -198,7 +198,7 @@ public class ImagePushSWTBotTests {
 		openPushWizard();
 		// when selecting other registry
 		bot.comboBox(0).setSelection(1);
-		// when keeping tagged image
+		// when keeping tagged images
 		bot.checkBox(1).select();
 		// when click on Finish
 		bot.button("Finish").click();
@@ -215,7 +215,7 @@ public class ImagePushSWTBotTests {
 	public void shouldPushImageWithNewTagToDockerHub() throws DockerException, InterruptedException {
 		// given
 		openPushWizard();
-		// when providing a new name to the image
+		// when providing a new name to the images
 		bot.comboBox(1).setText("another/name");
 		// when click on Finish
 		bot.button("Finish").click();
@@ -237,7 +237,7 @@ public class ImagePushSWTBotTests {
 		openPushWizard();
 		// when selecting other registry
 		bot.comboBox(0).setSelection(1);
-		// when providing a new name to the image
+		// when providing a new name to the images
 		bot.comboBox(1).setText("another/name");
 		// when click on Finish
 		bot.button("Finish").click();

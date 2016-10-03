@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Stream;
 
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
@@ -47,7 +48,8 @@ public class MockDockerClientFactory {
 	}
 
 	/**
-	 * @param image the first {@link Image} to use to build the {@link DockerClient}
+	 * @param images
+	 *            the {@link Image} to use to build the {@link DockerClient}
 	 * @return a {@link Builder} to build a {@link DockerClient}
 	 */
 	public static Builder image(final Image image) {
@@ -55,10 +57,24 @@ public class MockDockerClientFactory {
 		builder.image(image);
 		return builder;
 	}
-	
+
 	/**
-	 * @param image the first {@link Image} to use to build the {@link DockerClient}
-	 * @param imageInfo the associated {@link ImageInfo}
+	 * @param images
+	 *            the {@link Image} to use to build the {@link DockerClient}
+	 * @return a {@link Builder} to build a {@link DockerClient}
+	 */
+	public static Builder images(final Image[] images) {
+		final Builder builder = new Builder();
+		Stream.of(images).forEach(i -> builder.image(i));
+		return builder;
+	}
+
+	/**
+	 * @param images
+	 *            the first {@link Image} to use to build the
+	 *            {@link DockerClient}
+	 * @param imageInfo
+	 *            the associated {@link ImageInfo}
 	 * @return a {@link Builder} to build a {@link DockerClient}
 	 */
 	public static Builder image(final Image image, final ImageInfo imageInfo) {
@@ -68,7 +84,7 @@ public class MockDockerClientFactory {
 	}
 
 	/**
-	 * @param image the first {@link Container} to use to build the {@link DockerClient}
+	 * @param images the first {@link Container} to use to build the {@link DockerClient}
 	 * @return a {@link Builder} to build a {@link DockerClient}
 	 */
 	public static Builder container(final Container container) {
@@ -76,7 +92,7 @@ public class MockDockerClientFactory {
 		builder.container(container);
 		return builder;
 	}
-	
+
 	/**
 	 * @param container the first {@link Container} to use to build the {@link DockerClient}
 	 * @param containerInfo the associated {@link ContainerInfo}
@@ -87,7 +103,7 @@ public class MockDockerClientFactory {
 		builder.container(container, containerInfo);
 		return builder;
 	}
-	
+
 	public static Builder onSearch(final String term, final ImageSearchResult... results) {
 		final Builder builder = new Builder();
 		builder.onSearch(term, Arrays.asList(results));
@@ -95,15 +111,15 @@ public class MockDockerClientFactory {
 	}
 
 	public static class Builder {
-		
+
 		private final DockerClient dockerClient;
-		
+
 		private final List<Image> images = new ArrayList<>();
 
 		private final List<Container> containers = new ArrayList<>();
-		
+
 		private final Map<String, List<ImageSearchResult>> searchResults = new HashMap<>();
-		
+
 		private Builder() {
 			this.dockerClient = Mockito.mock(DockerClient.class);
 			try {
@@ -114,14 +130,14 @@ public class MockDockerClientFactory {
 				// ignore while setting-up the mock instance
 			}
 		}
-		
+
 		public Builder image(final Image image) {
 			if(image != null) {
 				this.images.add(image);
 			}
 			return this;
 		}
-		
+
 		public Builder image(final Image image, final ImageInfo imageInfo) {
 			if(image != null ) {
 				this.images.add(image);
@@ -133,7 +149,7 @@ public class MockDockerClientFactory {
 			}
 			return this;
 		}
-		
+
 		public Builder container(final Container container) {
 			if(container != null) {
 				this.containers.add(container);
@@ -152,12 +168,12 @@ public class MockDockerClientFactory {
 			}
 			return this;
 		}
-		
+
 		public Builder onSearch(final String term, final List<ImageSearchResult> results) {
 			this.searchResults.put(term, results);
 			return this;
 		}
-		
+
 		public DockerClient build() {
 			try {
 				Mockito.when(this.dockerClient.listImages(Matchers.any())).thenReturn(this.images);
@@ -166,7 +182,7 @@ public class MockDockerClientFactory {
 					Mockito.when(this.dockerClient.searchImages(searchResult.getKey())).thenReturn(searchResult.getValue());
 				}
 			} catch (DockerException | InterruptedException e) {
-				// nothing may happen when mocking the method call 
+				// nothing may happen when mocking the method call
 			}
 			return this.dockerClient;
 		}
@@ -185,8 +201,8 @@ public class MockDockerClientFactory {
 		Mockito.when(dockerClient.inspectContainer(container.id())).thenReturn(containerInfo);
 		Mockito.when(dockerClient.listContainers(Matchers.any())).thenReturn(containers);
 		} catch (DockerException | InterruptedException e) {
-			// nothing may happen when mocking the method call 
+			// nothing may happen when mocking the method call
 		}
 	}
-	
+
 }

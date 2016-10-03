@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.internal.docker.ui.views;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
-import org.eclipse.linuxtools.docker.core.IDockerImageHierarchyNode;
 
 /**
  * @author xcoulon
@@ -30,10 +29,12 @@ public class IntermediateImagesViewerFilter extends ViewerFilter {
 	}
 
 	/**
-	 * @return {@code false} when the given element is an {@link IDockerImage} and it is an intermediate image. Returns {@code true} otherwise.
+	 * @return {@code false} when the given element is an {@link IDockerImage}
+	 *         and it is an intermediate image. Returns {@code true} otherwise.
 	 * 
-	 * @see IDockerImage#isTopLevel()
-	 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+	 * @see IDockerImage#isIntermediateImage()
+	 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer,
+	 *      java.lang.Object, java.lang.Object)
 	 */
 	@Override
 	public boolean select(Viewer viewer, Object parentElement, Object element) {

@@ -19,17 +19,17 @@ import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
 /**
  * Custom assertions on an {@link DockerExplorerView}.
  */
-public class DockerExplorerViewAssertion extends AbstractAssert<DockerExplorerViewAssertion, DockerExplorerView> {
+public class DockerExplorerViewAssertions extends AbstractAssert<DockerExplorerViewAssertions, DockerExplorerView> {
 
-	protected DockerExplorerViewAssertion(final DockerExplorerView actual) {
-		super(actual, DockerExplorerViewAssertion.class);
+	protected DockerExplorerViewAssertions(final DockerExplorerView actual) {
+		super(actual, DockerExplorerViewAssertions.class);
 	}
 
-	public static DockerExplorerViewAssertion assertThat(final DockerExplorerView actual) {
-		return new DockerExplorerViewAssertion(actual);
+	public static DockerExplorerViewAssertions assertThat(final DockerExplorerView actual) {
+		return new DockerExplorerViewAssertions(actual);
 	}
 
-	public DockerExplorerViewAssertion isEmpty() {
+	public DockerExplorerViewAssertions isEmpty() {
 		notNullValue();
 		try {
 			// let's make sure changes in the UI were taken into account before
@@ -44,7 +44,7 @@ public class DockerExplorerViewAssertion extends AbstractAssert<DockerExplorerVi
 		return this;
 	}
 
-	public DockerExplorerViewAssertion isNotEmpty() {
+	public DockerExplorerViewAssertions isNotEmpty() {
 		notNullValue();
 		if(!actual.isShowingConnectionsPane()) {
 			failWithMessage("Expected Docker Explorer View to show the connections pane but it did not");

@@ -27,10 +27,10 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerImageHierarchyViewAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerImageHierarchyViewAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.MenuAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TabDescriptorAssertion;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TabDescriptorAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TestLoggerRule;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
@@ -172,7 +172,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		dockerExplorerViewBot.bot().tree().contextMenu("Open Image Hierarchy").click(); //$NON-NLS-1$
 		// then the view should be visible and selection should be on
 		// foo_image1
-		DockerImageHierarchyViewAssertion.assertThat(getDockerImageHierarchyView())
+		DockerImageHierarchyViewAssertions.assertThat(getDockerImageHierarchyView())
 				.hasSelectedElement(this.connection.getImage("sha256:foo_image1"));
 	}
 
@@ -184,7 +184,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		dockerExplorerViewBot.bot().tree().contextMenu("Open Image Hierarchy").click(); //$NON-NLS-1$
 		// then the view should be visible and selection should be on
 		// foo_image2
-		DockerImageHierarchyViewAssertion.assertThat(getDockerImageHierarchyView())
+		DockerImageHierarchyViewAssertions.assertThat(getDockerImageHierarchyView())
 				.hasSelectedElement(this.connection.getImage("sha256:foo_image2"));
 
 	}
@@ -198,7 +198,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		// then the view should be visible and selection should be on
 		// foo_container1
 
-		DockerImageHierarchyViewAssertion.assertThat(SWTUtils.getView(this.bot, DockerImageHierarchyView.VIEW_ID))
+		DockerImageHierarchyViewAssertions.assertThat(SWTUtils.getView(this.bot, DockerImageHierarchyView.VIEW_ID))
 				.hasSelectedElement(this.connection.getContainer("sha256:foo_container1"));
 	}
 
@@ -259,7 +259,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		final IDockerImageHierarchyNode fooImage1Hierarchy = fooImage2Hierarchy.getParent();
 		final IDockerImage fooImage = (IDockerImage) fooImage1Hierarchy.getElement();
 		assertThat(fooImage.id()).isEqualTo("sha256:foo_image1");
-		// in this case, intermediate image shows a single child
+		// in this case, intermediate images shows a single child
 		assertThat(fooImage1Hierarchy.getChildren()).hasSize(1);
 		assertThat(fooImage1Hierarchy.getChildren()).containsExactly(fooImage2Hierarchy);
 	}
@@ -276,7 +276,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		assertThat(fooContainer1Hierarchy.getChildren()).isEmpty();
 		final IDockerImage fooImage1 = (IDockerImage) fooContainer1Hierarchy.getParent().getElement();
 		assertThat(fooImage1.id()).isEqualTo("sha256:foo_image1");
-		// parent image hierarchy only shows the selected container as its
+		// parent images hierarchy only shows the selected container as its
 		// child.
 		assertThat(fooContainer1Hierarchy.getParent().getChildren()).containsExactly(fooContainer1Hierarchy);
 	}
@@ -306,10 +306,10 @@ public class DockerImageHierarchyViewSWTBotTest {
 		// show container info in Properties view
 		SWTUtils.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Show In", "Properties")
 				.click();
-		// the properties view should be visible and filled with image details
+		// the properties view should be visible and filled with images details
 		assertThat(propertySheet.getCurrentPage()).isInstanceOf(TabbedPropertySheetPage.class);
 		final TabbedPropertySheetPage currentPage = (TabbedPropertySheetPage) propertySheet.getCurrentPage();
-		TabDescriptorAssertion.assertThat(currentPage.getSelectedTab()).isNotNull()
+		TabDescriptorAssertions.assertThat(currentPage.getSelectedTab()).isNotNull()
 				.hasId("org.eclipse.linuxtools.docker.ui.properties.image.info");
 	}
 
@@ -326,7 +326,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 				.click();
 		assertThat(propertySheet.getCurrentPage()).isInstanceOf(TabbedPropertySheetPage.class);
 		final TabbedPropertySheetPage currentPage = (TabbedPropertySheetPage) propertySheet.getCurrentPage();
-		TabDescriptorAssertion.assertThat(currentPage.getSelectedTab()).isNotNull()
+		TabDescriptorAssertions.assertThat(currentPage.getSelectedTab()).isNotNull()
 				.hasId("org.eclipse.linuxtools.docker.ui.properties.container.info");
 	}
 

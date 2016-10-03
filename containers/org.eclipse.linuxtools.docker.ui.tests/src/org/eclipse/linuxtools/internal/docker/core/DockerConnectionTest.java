@@ -74,6 +74,7 @@ public class DockerConnectionTest {
 		final DockerClient client = MockDockerClientFactory.image(fooImage).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
+		// when
 		dockerConnection.open(false);
 		// then
 		assertTrue(dockerConnection.hasImage("foo", null));
@@ -99,4 +100,5 @@ public class DockerConnectionTest {
 		// then connection state should be 'CLOSED' since the settings are wrong
 		assertThat(dockerConnection.getState()).isEqualTo(EnumDockerConnectionState.CLOSED);
 	}
+
 }

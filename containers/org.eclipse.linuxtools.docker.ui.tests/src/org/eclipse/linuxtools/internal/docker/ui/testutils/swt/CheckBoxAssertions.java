@@ -17,17 +17,17 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 /**
  * Custom assertions on a given {@link SWTBotCheckBox}.
  */
-public class CheckBoxAssertion extends AbstractSWTBotAssertion<CheckBoxAssertion, SWTBotCheckBox> {
+public class CheckBoxAssertions extends AbstractSWTBotAssertions<CheckBoxAssertions, SWTBotCheckBox> {
 	
-	protected CheckBoxAssertion(final SWTBotCheckBox actual) {
-		super(actual, CheckBoxAssertion.class);
+	protected CheckBoxAssertions(final SWTBotCheckBox actual) {
+		super(actual, CheckBoxAssertions.class);
 	}
 
-	public static CheckBoxAssertion assertThat(final SWTBotCheckBox actual) {
-		return new CheckBoxAssertion(actual);
+	public static CheckBoxAssertions assertThat(final SWTBotCheckBox actual) {
+		return new CheckBoxAssertions(actual);
 	}
 
-	public CheckBoxAssertion isChecked() {
+	public CheckBoxAssertions isChecked() {
 		notNullValue();
 		if(!actual.isChecked()) {
 			failWithMessage("Expected checkbox with text '%s' to be checked but it was not", actual.getText());
@@ -35,7 +35,7 @@ public class CheckBoxAssertion extends AbstractSWTBotAssertion<CheckBoxAssertion
 		return this;
 	}
 
-	public CheckBoxAssertion isNotChecked() {
+	public CheckBoxAssertions isNotChecked() {
 		notNullValue();
 		if(actual.isChecked()) {
 			failWithMessage("Expected checkbox with text '%s' to be unchecked but it was not", actual.getText());

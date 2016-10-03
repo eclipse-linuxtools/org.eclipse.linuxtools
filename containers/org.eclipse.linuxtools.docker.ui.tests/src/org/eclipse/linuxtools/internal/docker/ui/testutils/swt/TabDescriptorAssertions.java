@@ -18,17 +18,17 @@ import org.eclipse.ui.views.properties.tabbed.ITabDescriptor;
 /**
  * Custom assertions on a given {@link ITabDescriptor}.
  */
-public class TabDescriptorAssertion extends AbstractAssert<TabDescriptorAssertion, ITabDescriptor> {
+public class TabDescriptorAssertions extends AbstractAssert<TabDescriptorAssertions, ITabDescriptor> {
 
-	protected TabDescriptorAssertion(final ITabDescriptor actual) {
-		super(actual, TabDescriptorAssertion.class);
+	protected TabDescriptorAssertions(final ITabDescriptor actual) {
+		super(actual, TabDescriptorAssertions.class);
 	}
 
-	public static TabDescriptorAssertion assertThat(final ITabDescriptor actual) {
-		return new TabDescriptorAssertion(actual);
+	public static TabDescriptorAssertions assertThat(final ITabDescriptor actual) {
+		return new TabDescriptorAssertions(actual);
 	}
 
-	public TabDescriptorAssertion hasId(final String id) {
+	public TabDescriptorAssertions hasId(final String id) {
 		notNullValue();
 		if (!actual.getId().equals(id)) {
 			failWithMessage("Expected tab section with id '%s' to be selected but it was '%s'", id, actual.getId());
