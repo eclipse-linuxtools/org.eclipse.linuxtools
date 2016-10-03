@@ -49,16 +49,21 @@ public class ImageInspectPropertySection extends BasePropertySection {
 		final Object input = getSelection(selection);
 		final IDockerConnection parentConnection = getConnection(part,
 				selection);
-		final IDockerImageInfo containerInfo = getImageInfo(parentConnection,
+		final IDockerImageInfo imageInfo = getImageInfo(parentConnection,
 				input);
-		if (getTreeViewer() != null && containerInfo != null) {
-			getTreeViewer().setInput(containerInfo);
+		if (getTreeViewer() != null && imageInfo != null) {
+			getTreeViewer().setInput(imageInfo);
 			getTreeViewer().expandAll();
 		}
 	}
 
 	private IDockerImageInfo getImageInfo(
 			final IDockerConnection parentConnection, final Object input) {
+		if (parentConnection == null) {
+			Activator.logWarningMessage(DVMessages.getString(
+					"ImageInspectPropertySection.noconnection.error")); //$NON-NLS-1$
+			return null;
+		}
 		Assert.isTrue(input instanceof IDockerImage
 				|| input instanceof IDockerImageHierarchyImageNode);
 		if (input instanceof IDockerImage) {
