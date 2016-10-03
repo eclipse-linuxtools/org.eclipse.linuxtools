@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -53,5 +54,17 @@ public class CloseWelcomePageRule extends ExternalResource {
 				e.printStackTrace();
 			}
 		});
+		final String PREF_ENABLE_LAUNCHBAR = "enableLaunchBar"; //$NON-NLS-1$
+		final String PREF_ENABLE_TARGETSELECTOR = "enableTargetSelector"; //$NON-NLS-1$
+		final String PREF_ENABLE_BUILDBUTTON = "enableBuildButton"; //$NON-NLS-1$
+
+		Display.getDefault().asyncExec(() -> {
+			final IPreferenceStore store = org.eclipse.launchbar.ui.controls.internal.Activator.getDefault()
+					.getPreferenceStore();
+			store.setValue(PREF_ENABLE_LAUNCHBAR, false);
+			store.setValue(PREF_ENABLE_TARGETSELECTOR, false);
+			store.setValue(PREF_ENABLE_BUILDBUTTON, false);
+		});
 	}
+
 }

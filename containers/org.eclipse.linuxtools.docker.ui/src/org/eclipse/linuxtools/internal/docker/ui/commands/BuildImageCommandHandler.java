@@ -29,7 +29,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
-import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.jobs.BuildDockerImageJob;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
@@ -44,10 +43,12 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+/**
+ * Command handler to build a Docker Image from a Dockerfile.
+ */
 public class BuildImageCommandHandler extends AbstractHandler {
 
 	private final static String BUILD_IMAGE_JOB_TITLE = "ImageBuild.msg"; //$NON-NLS-1$
-	private static final String ERROR_BUILDING_IMAGE = "ImageBuildError.msg"; //$NON-NLS-1$
 	private static final String IMAGE_DIRECTORY_VALIDATE = "ImageDirectoryValidate.msg"; //$NON-NLS-1$
 	
 
@@ -157,18 +158,6 @@ public class BuildImageCommandHandler extends AbstractHandler {
 							connection, path, id, null);
 					buildImageJob.schedule();
 					monitor.worked(1);
-				} catch (final DockerException e) {
-					Display.getDefault().syncExec(() -> MessageDialog.openError(
-							// Use the Workbench shell so we don't find
-							// the non-modal dialog that will be
-							// destroyed shortly after a failure will be
-							// reported.
-							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-									.getShell(),
-							DVMessages.getFormattedString(ERROR_BUILDING_IMAGE,
-									id),
-							e.getMessage()));
-					// for now
 				} finally {
 					monitor.done();
 				}

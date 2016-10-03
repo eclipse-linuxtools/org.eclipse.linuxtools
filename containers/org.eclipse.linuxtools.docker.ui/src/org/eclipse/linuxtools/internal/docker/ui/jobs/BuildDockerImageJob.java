@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.internal.docker.ui.jobs;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,9 +62,6 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 	/** the optional repoName (i.e., repo[tag]) for the image to build */
 	private final String repoName;
 
-	/** The number of steps to build the image. */
-	private final int numberOfBuildOperations;
-
 	/** The console used to display build output messages. */
 	private final BuildConsole console;
 
@@ -89,50 +87,79 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 	 */
 	public BuildDockerImageJob(final IDockerConnection connection,
 			final IPath path, final String repoName,
-			final Map<String, Object> buildOptions)
-					throws DockerException {
+			final Map<String, Object> buildOptions) {
 		super(JobMessages.getString(BUILD_IMAGE_JOB_TITLE));
 		this.connection = connection;
 		this.path = path;
 		this.repoName = repoName;
 		this.buildOptions = buildOptions;
 		this.console = BuildConsole.findConsole();
-		this.numberOfBuildOperations = countLines(
-				path.addTrailingSeparator().append("Dockerfile").toOSString()); //$NON-NLS-1$
+
+	}
+
+	/**
+	 * Verifies that the file located at the given {@code pathToDockerfile}
+	 * exists and is readable.
+	 * 
+	 * @param pathToDockerfile
+	 *            the path to the Docker file
+	 * @return
+	 */
+	private static boolean verifyPathToDockerfile(
+			final IPath pathToDockerfile) {
+		final File dockerfile = pathToDockerfile.toFile();
+		if (!dockerfile.exists() || !dockerfile.canRead()) {
+			Display.getDefault().asyncExec(() -> {
+				MessageDialog.openError(Display.getDefault().getActiveShell(),
+						JobMessages.getString("BuildImageJob.title"), //$NON-NLS-1$
+						JobMessages.getFormattedString(
+								"BuildImageError.missing.dockerfile.msg", //$NON-NLS-1$
+								dockerfile.getAbsolutePath()));
+			});
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	protected IStatus run(final IProgressMonitor progressMonitor) {
 		try {
-			if (numberOfBuildOperations == 0) {
-				Activator.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-						JobMessages.getString(SKIP_EMPTY_DOCKERFILE)));
-				this.progressMonitor = progressMonitor;
-			} else {
-				this.console.clearConsole();
-				this.console.activate();
-				this.progressMonitor = progressMonitor;
-				this.progressMonitor.beginTask(
-						JobMessages.getString(BUILD_IMAGE_JOB_TITLE),
-						numberOfBuildOperations + 1);
-				if (repoName == null) {
-					// Give the Image a default name so it can be tagged later.
-					// Otherwise, the Image will be treated as an intermediate
-					// Image
-					// by the view filters and Tag Image action will be
-					// disabled.
-					// Use the current time in milliseconds to make it unique.
-					final String name = "dockerfile:" //$NON-NLS-1$
-							+ Long.toHexString(System.currentTimeMillis());
-					((DockerConnection) connection).buildImage(this.path, name,
-							this,
-							this.buildOptions);
+			this.progressMonitor = progressMonitor;
+			final IPath pathToDockerfile = path.addTrailingSeparator()
+					.append("Dockerfile"); //$NON-NLS-1$
+			if (verifyPathToDockerfile(pathToDockerfile)) {
+				final int numberOfBuildOperations = countLines(
+						pathToDockerfile.toOSString()); // $NON-NLS-1$
+				if (numberOfBuildOperations == 0) {
+					Activator.log(new Status(IStatus.WARNING,
+							Activator.PLUGIN_ID,
+							JobMessages.getString(SKIP_EMPTY_DOCKERFILE)));
 				} else {
-					((DockerConnection) connection).buildImage(this.path,
-							this.repoName, this,
-							this.buildOptions);
+					this.console.clearConsole();
+					this.console.activate();
+					this.progressMonitor.beginTask(
+							JobMessages.getString(BUILD_IMAGE_JOB_TITLE),
+							numberOfBuildOperations + 1);
+					if (repoName == null) {
+						// Give the Image a default name so it can be tagged
+						// later.
+						// Otherwise, the Image will be treated as an
+						// intermediate
+						// Image
+						// by the view filters and Tag Image action will be
+						// disabled.
+						// Use the current time in milliseconds to make it
+						// unique.
+						final String name = "dockerfile:" //$NON-NLS-1$
+								+ Long.toHexString(System.currentTimeMillis());
+						((DockerConnection) connection).buildImage(this.path,
+								name, this, this.buildOptions);
+					} else {
+						((DockerConnection) connection).buildImage(this.path,
+								this.repoName, this, this.buildOptions);
+					}
+					connection.getImages(true);
 				}
-				connection.getImages(true);
 			}
 		} catch (DockerException | InterruptedException e) {
 			Display.getDefault()
@@ -141,10 +168,12 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 									.getShell(),
 							JobMessages.getString(BUILD_IMAGE_ERROR_MESSAGE),
 							e.getMessage()));
+		} finally {
+			// make sure the progress monitor is 'done' even if the build failed
+			// or
+			// timed out.
+			this.progressMonitor.done();
 		}
-		// make sure the progress monitor is 'done' even if the build failed or
-		// timed out.
-		this.progressMonitor.done();
 		return Status.OK_STATUS;
 	}
 

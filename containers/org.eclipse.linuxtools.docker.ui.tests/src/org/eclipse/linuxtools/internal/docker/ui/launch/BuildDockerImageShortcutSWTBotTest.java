@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
+import org.eclipse.linuxtools.internal.docker.ui.jobs.JobMessages;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.ProjectInitializationRule;
@@ -51,7 +54,7 @@ public class BuildDockerImageShortcutSWTBotTest {
 
 	@ClassRule
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
-			"org.eclipse.ui.resourcePerspective");
+			"org.eclipse.linuxtools.docker.ui.perspective");
 
 	@Rule
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
@@ -234,4 +237,40 @@ public class BuildDockerImageShortcutSWTBotTest {
 				Matchers.any(Path.class), Matchers.any(String.class), Matchers.any(ProgressHandler.class),
 				Matchers.anyVararg());
 	}
+
+	@Test
+	@RunWithProject("foo")
+	public void shouldNotBuildDockerImageOnSecondCallWhenDockerfileWasRemoved()
+			throws InterruptedException, com.spotify.docker.client.DockerException, IOException, CoreException {
+		// given
+		final DockerClient client = MockDockerClientFactory.build();
+		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
+				.withDefaultTCPConnectionSettings();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
+		// when
+		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
+		// then expect a dialog, fill the "repository" text field and click "Ok"
+		assertThat(bot.shell(WizardMessages.getString("ImageBuildDialog.title"))).isNotNull();
+		bot.textWithLabel(WizardMessages.getString("ImageBuildDialog.repoNameLabel")).setText("foo/bar:latest");
+		// when launching the build
+		SWTUtils.syncExec(() -> {
+			bot.button("OK").click();
+		});
+		// then the 'DockerConnection#buildImage(...) method should have been
+		// called within the specified timeout
+		Mockito.verify(client, Mockito.timeout((int) TimeUnit.SECONDS.toMillis(30)).times(1)).build(
+				Matchers.any(Path.class), Matchers.any(String.class), Matchers.any(ProgressHandler.class),
+				Matchers.anyVararg());
+		// when trying to call again after file was removed, there should
+		// be an error dialog
+		projectInit.getProject().findMember("Dockerfile").delete(true, new NullProgressMonitor());
+		bot.toolbarDropDownButtonWithTooltip("Run").menuItem("1 foo_bar [latest]").click();
+		final SWTBotShell shell = bot.shell(JobMessages.getString("BuildImageJob.title")); //$NON-NLS-1$
+		assertThat(shell).isNotNull();
+		// closing the dialog
+		SWTUtils.syncExec(() -> {
+			shell.bot().button(IDialogConstants.OK_LABEL).click();
+		});
+	}
+
 }
