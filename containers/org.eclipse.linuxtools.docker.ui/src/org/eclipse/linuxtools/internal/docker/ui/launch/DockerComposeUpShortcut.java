@@ -22,6 +22,7 @@ import org.eclipse.debug.ui.ILaunchShortcut;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
+import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.DockerComposeUpDialog;
@@ -64,8 +65,8 @@ public class DockerComposeUpShortcut extends BaseResourceAwareLaunchShortcut {
 		if (config != null) {
 			DebugUITools.launch(config, mode);
 		} else {
-			Activator.logErrorMessage(LaunchMessages
-					.getString("DockerComposeUpShortcut.launchconfig.error")); //$NON-NLS-1$
+			Activator.log(new DockerException(LaunchMessages
+					.getString("DockerComposeUpShortcut.launchconfig.error"))); //$NON-NLS-1$
 		}
 	}
 

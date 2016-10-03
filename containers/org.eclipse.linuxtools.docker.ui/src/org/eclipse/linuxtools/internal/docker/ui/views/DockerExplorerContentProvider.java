@@ -182,8 +182,9 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 					connection.ping();
 					return Status.OK_STATUS;
 				} catch (DockerException e) {
-					Activator.logErrorMessage(DVMessages.getFormattedString(
-							"PingJobError.msg", connection.getUri())); //$NON-NLS-1$
+					Activator.log(
+							new DockerException(DVMessages.getFormattedString(
+									"PingJobError.msg", connection.getUri()))); //$NON-NLS-1$
 					return Status.CANCEL_STATUS;
 				}
 			}

@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.ui.Activator;
@@ -45,8 +46,8 @@ public abstract class BaseImagesCommandHandler extends AbstractHandler {
 		final List<IDockerImage> selectedImages = getSelectedImages(activePart);
 		final IDockerConnection connection = getCurrentConnection(activePart);
 		if (connection == null || selectedImages.isEmpty()) {
-			Activator.logErrorMessage(CommandMessages
-					.getString("Command.missing.selection.failure")); //$NON-NLS-1$
+			Activator.log(new DockerException(CommandMessages
+					.getString("Command.missing.selection.failure"))); //$NON-NLS-1$
 			return null;
 		}
 		final Job job = new Job(getJobName(selectedImages)) {

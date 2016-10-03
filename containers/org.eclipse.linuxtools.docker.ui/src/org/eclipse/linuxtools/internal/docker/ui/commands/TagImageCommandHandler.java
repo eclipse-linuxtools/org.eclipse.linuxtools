@@ -49,8 +49,8 @@ public class TagImageCommandHandler extends AbstractHandler {
 		final IDockerConnection connection = CommandUtils
 				.getCurrentConnection(activePart);
 		if (selectedImages.size() != 1 || connection == null) {
-			Activator.logErrorMessage(CommandMessages
-					.getString("Command.missing.selection.failure")); //$NON-NLS-1$
+			Activator.log(new DockerException(CommandMessages
+					.getString("Command.missing.selection.failure"))); //$NON-NLS-1$
 			return null;
 		}
 		final IDockerImage image = selectedImages.get(0);

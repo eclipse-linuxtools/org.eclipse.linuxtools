@@ -56,8 +56,8 @@ public class RunImageCommandHandler extends AbstractHandler {
 		final IDockerImage selectedImage = CommandUtils
 				.getSelectedImage(activePart);
 		if (selectedImage == null) {
-			Activator.logErrorMessage(
-					DVMessages.getString("RunImageUnableToRetrieveError.msg")); //$NON-NLS-1$
+			Activator.log(new DockerException(
+					DVMessages.getString("RunImageUnableToRetrieveError.msg"))); //$NON-NLS-1$
 		} else {
 			try {
 				final ImageRun wizard = new ImageRun(selectedImage);

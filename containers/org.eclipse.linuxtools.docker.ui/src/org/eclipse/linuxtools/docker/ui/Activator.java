@@ -56,6 +56,10 @@ public class Activator extends AbstractUIPlugin {
 		Activator.getDefault().getLog().log(status);
 	}
 
+	/**
+	 * @deprecated see https://bugs.eclipse.org/bugs/show_bug.cgi?id=503040
+	 */
+	@Deprecated
 	public static void logErrorMessage(final String message) {
 		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, message, null));
 	}

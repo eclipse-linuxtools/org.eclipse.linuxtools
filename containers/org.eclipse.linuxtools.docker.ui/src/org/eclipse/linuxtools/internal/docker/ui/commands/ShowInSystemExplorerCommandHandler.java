@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.util.Util;
+import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainerVolume;
 import org.eclipse.ui.IWorkbenchPart;
@@ -65,10 +66,10 @@ public class ShowInSystemExplorerCommandHandler extends AbstractHandler {
 					final Process p = getLaunchProcess(launchCmd, hostFile);
 					final int retCode = p.waitFor();
 					if (retCode != 0 && !Util.isWindows()) {
-						Activator.logErrorMessage(
+						Activator.log(new DockerException(
 								CommandMessages.getFormattedString(
 										"command.showIn.systemExplorer.failure.command.execute", //$NON-NLS-1$
-										launchCmd, Integer.toString(retCode)));
+										launchCmd, Integer.toString(retCode))));
 					}
 				} catch (IOException | InterruptedException e) {
 					Activator
@@ -115,9 +116,9 @@ public class ShowInSystemExplorerCommandHandler extends AbstractHandler {
 	 */
 	private String getShowInSystemExplorerCommand(final File path) {
 		String command = ShowInSystemExplorerHandler.getDefaultCommand();
-		if ("".equals(command)) {
-			Activator.logErrorMessage(CommandMessages.getString(
-					"command.showIn.systemExplorer.failure.command_unavailable"));
+		if ("".equals(command)) { //$NON-NLS-1$
+			Activator.log(new DockerException(CommandMessages.getString(
+					"command.showIn.systemExplorer.failure.command_unavailable"))); //$NON-NLS-1$
 			return null;
 		}
 		try {
