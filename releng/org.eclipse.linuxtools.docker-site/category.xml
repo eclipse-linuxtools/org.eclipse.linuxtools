@@ -63,10 +63,10 @@
    <iu id="jnr.x86asm" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="org.bouncycastle.bcprov-jdk15on" version="0.0.0">
+   <iu id="org.bouncycastle.bcprov" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="org.bouncycastle.bcpkix-jdk15on" version="0.0.0">
+   <iu id="org.bouncycastle.bcpkix" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="org.glassfish.hk2.api" version="0.0.0">
