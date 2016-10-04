@@ -37,6 +37,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -165,6 +166,7 @@ public class DockerConnection
 
 	private String name;
 	private IDockerConnectionSettings connectionSettings;
+	private IDockerConnectionInfo connectionInfo;
 	private final String username;
 	private final Object imageLock = new Object();
 	private final Object containerLock = new Object();
@@ -281,6 +283,12 @@ public class DockerConnection
 
 	public void setClient(final DockerClient client) {
 		this.client = client;
+		try {
+			this.connectionInfo = getInfo();
+		} catch (Exception e) {
+			// ignore for now as this seems to occur too often and we always
+			// check the value of connectioninfo before using
+		}
 	}
 	/**
 	 * Change the default {@link DockerClientFactory}
@@ -1831,7 +1839,28 @@ public class DockerConnection
 			throws DockerException, InterruptedException {
 		InputStream stream;
 		try {
-			stream = client.copyContainer(id, path);
+			if (this.connectionInfo != null) {
+				String apiversion = connectionInfo.getApiVersion();
+				if (apiversion != null) {
+					String[] tokens = apiversion.split("\\."); //$NON-NLS-1$
+					if (tokens.length > 1) {
+						try {
+							int major = Integer.valueOf(tokens[0]);
+							int minor = Integer.valueOf(tokens[1]);
+							if (major > 1 || minor >= 24) {
+								throw new DockerException(
+										DockerMessages.getFormattedString(
+												"DockerClientVersionTooLow.error", //$NON-NLS-1$
+												"copyContainer", "1.24")); //$NON-NLS-1$ //$NON-NLS-2$
+							}
+						} catch (NumberFormatException e) {
+							// ignore for now and let things occur
+						}
+					}
+				}
+			}
+			DockerClient copy = getClientCopy();
+			stream = copy.copyContainer(id, path);
 		} catch (com.spotify.docker.client.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
@@ -1996,6 +2025,68 @@ public class DockerConnection
 		} catch (Exception e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
+	}
+
+	@SuppressWarnings("unused")
+	public List<ContainerFileProxy> readContainerDirectory(final String id,
+			final String path) throws DockerException {
+		List<ContainerFileProxy> childList = new ArrayList<>();
+		try {
+			DockerClient copyClient = getClientCopy();
+			final String execId = copyClient.execCreate(id,
+					new String[] { "/bin/sh", "-c", "ls -l -F -L -Q " + path }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					ExecCreateParam.attachStdout(),
+					ExecCreateParam.attachStderr());
+			final LogStream pty_stream = copyClient.execStart(execId);
+			try {
+				while (pty_stream.hasNext()) {
+					ByteBuffer b = pty_stream.next().content();
+					byte[] buffer = new byte[b.remaining()];
+					b.get(buffer);
+					String s = new String(buffer);
+					String[] lines = s.split("\\r?\\n"); //$NON-NLS-1$
+					for (String line : lines) {
+						if (line.trim().startsWith("total")) //$NON-NLS-1$
+							continue; // ignore the total line
+						String[] token = line.split("\\s+"); //$NON-NLS-1$
+						boolean isDirectory = token[0].startsWith("d"); //$NON-NLS-1$
+						boolean isLink = token[0].startsWith("l"); //$NON-NLS-1$
+						if (token.length > 8) {
+							// last token depends on whether we have a link or not
+							String link = null;
+							if (isLink) {
+								String linkname = token[token.length - 1];
+								if (linkname.endsWith("/")) { //$NON-NLS-1$
+									linkname = linkname.substring(0, linkname.length() - 1);
+									isDirectory = true;
+								}
+								IPath linkPath = new Path(path);
+								linkPath = linkPath.append(linkname);
+								link = linkPath.toString();
+								String name = token[token.length - 3];
+								childList.add(new ContainerFileProxy(path, name,
+										isDirectory, isLink, link));
+							} else {
+								String name = token[token.length - 1];
+								// remove quotes and any indicator char
+								name = name.substring(1, name.length()
+										- (name.endsWith("\"") ? 1 : 2));
+								childList.add(new ContainerFileProxy(path, name,
+										isDirectory));
+							}
+						}
+					}
+				}
+			} finally {
+				if (pty_stream != null)
+					pty_stream.close();
+				if (copyClient != null)
+					copyClient.close();
+			}
+		} catch (Exception e) {
+			// e.printStackTrace();
+		}
+		return childList;
 	}
 
 	public void execShell(final String id) throws DockerException {

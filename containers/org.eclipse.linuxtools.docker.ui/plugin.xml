@@ -265,6 +265,11 @@
 	        name="%command.commitcontainer.name">
         </command>
 		<command
+	        description="%command.copyfromcontainer.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.copyfromcontainer"
+	        name="%command.copyfromcontainer.name">
+        </command>
+		<command
 	        description="%command.displaycontainerlog.description"
 	        id="org.eclipse.linuxtools.docker.ui.commands.displayContainerLog"
 	        name="%command.displaycontainerlog.name">
@@ -657,6 +662,38 @@
 	            </with>
      		</enabledWhen>
      	</handler>
+     	<handler
+        	class="org.eclipse.linuxtools.internal.docker.ui.commands.CopyFromContainerCommandHandler"
+        	commandId="org.eclipse.linuxtools.docker.ui.commands.copyfromcontainer">
+     		<enabledWhen>
+        		<with
+              		variable="selection">
+           			<count
+                 		value="1">
+           			</count>
+           			<iterate
+                 		ifEmpty="false">
+              			<and>
+                 			<instanceof
+                       			value="org.eclipse.linuxtools.docker.core.IDockerContainer">
+                 			</instanceof>
+                 			<or>
+                    			<test
+                          			forcePluginActivation="true"
+                          			property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped"
+                          			value="false">
+                    			</test>
+                    			<test
+                          			forcePluginActivation="true"
+                          			property="org.eclipse.linuxtools.docker.propertytesters.container.isUnknown"
+                          			value="true">
+                    			</test>
+                 			</or>
+              			</and>
+           			</iterate>
+        		</with>
+     		</enabledWhen>
+  		</handler>
 		<handler
               commandId="org.eclipse.linuxtools.docker.ui.commands.displayContainerLog"
               class="org.eclipse.linuxtools.internal.docker.ui.commands.DisplayContainerLogCommandHandler">
@@ -1643,6 +1680,15 @@
 	           icon="icons/class_hi.png"
 	           label="%command.openInHierarchyView.menu.name"
 	           mnemonic="R"
+	           style="push">
+		      </command>
+		</menuContribution>
+		<!-- containers view context menu: copy from containers -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+	  		<command
+	           commandId="org.eclipse.linuxtools.docker.ui.commands.copyfromcontainer"
+	           id="org.eclipse.linuxtools.docker.ui.commands.copyfromcontainer"
 	           style="push">
 		      </command>
 		</menuContribution>
