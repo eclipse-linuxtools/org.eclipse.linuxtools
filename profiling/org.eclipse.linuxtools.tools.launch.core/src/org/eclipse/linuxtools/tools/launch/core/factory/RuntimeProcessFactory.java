@@ -95,13 +95,6 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
             IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(project);
             Process pProxy = launcher.execute(whichPath, new String[]{command}, envp, null, new NullProgressMonitor());
             if (pProxy != null) {
-
-                try (BufferedReader error = new BufferedReader(
-                        new InputStreamReader(pProxy.getErrorStream()))) {
-                    if ((error.readLine()) != null) {
-                        return command; // Command is not found.
-                    }
-                }
                 ArrayList<String> lines = new ArrayList<>();
                 try (BufferedReader reader = new BufferedReader(
                         new InputStreamReader(pProxy.getInputStream()))) {
@@ -120,7 +113,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
                                 command = lines.get(lines.size() - 2);
                             }
                         } else {
-                            // Remotetools output
+                            // Remotetools or o.e.Remote output
                             command = lines.get(0);
                         }
                     } else {
@@ -132,6 +125,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
         } catch (CoreException e) {
             throw new IOException(e);
         }
+        // Command is not found
         return command;
     }
 
