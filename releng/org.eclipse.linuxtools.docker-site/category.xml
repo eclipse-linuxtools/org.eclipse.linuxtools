@@ -10,6 +10,12 @@
    <feature url="features/org.eclipse.linuxtools.vagrant.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.vagrant.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
+   <feature url="features/org.eclipse.linuxtools.docker.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.docker.feature.source" version="0.0.0">
+      <category name="Linux Tools Sources"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.vagrant.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.vagrant.feature.source" version="0.0.0">
+      <category name="Linux Tools Sources"/>
+   </feature>
    <!-- Orbit Dependencies -->
    <iu id="com.spotify.docker.client" version="0.0.0">
         <category name="Docker Client Dependencies"/>
@@ -117,6 +123,11 @@
    <category-def name="Linux Tools" label="Linux Tools">
       <description>
          Eclipse Linux Tools Docker Tooling
+      </description>
+   </category-def>
+   <category-def name="Linux Tools Sources" label="Linux Tools Sources">
+      <description>
+         Eclipse Linux Tools Docker Tooling Sources
       </description>
    </category-def>
    <category-def name="Docker Client Dependencies" label="Docker Client Dependencies">
