@@ -69,7 +69,7 @@ public class ImageRunResourceVolumesVariablesModel
 
 	private final IDockerConnection connection;
 
-	private final IDockerConnectionInfo info;
+	private IDockerConnectionInfo info;
 
 	private IDockerImageInfo imageInfo = null;
 
@@ -90,7 +90,8 @@ public class ImageRunResourceVolumesVariablesModel
 	public ImageRunResourceVolumesVariablesModel(
 			final IDockerConnection connection) throws DockerException {
 		this.connection = connection;
-		this.info = connection.getInfo();
+		if (this.connection != null)
+			this.info = connection.getInfo();
 	}
 
 	public ImageRunResourceVolumesVariablesModel(
