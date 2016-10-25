@@ -198,7 +198,7 @@ public class NewDockerConnectionPage extends WizardPage {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).indent(0, 10).span(COLUMNS, 1)
 				.applyTo(customConnectionSettingsButton);
-		final Group customSettingsGroup = new Group(container, SWT.BORDER);
+		final Group customSettingsGroup = new Group(container, SWT.NONE);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
 				.span(COLUMNS, 1).grab(true, false)
 				.applyTo(customSettingsGroup);

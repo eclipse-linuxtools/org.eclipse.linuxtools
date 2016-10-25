@@ -97,14 +97,14 @@ public class BuildDockerImageLaunchConfigurationMainTab
 
 	@Override
 	public void createControl(final Composite parent) {
-		final Composite container = new Composite(parent, SWT.BORDER);
+		final Composite container = new Composite(parent, SWT.NONE);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
 				.grab(true, false).applyTo(container);
 		GridLayoutFactory.fillDefaults().margins(6, 6).applyTo(container);
 		setControl(container);
 
 		// connection selection
-		final Group connectionGroup = new Group(container, SWT.BORDER);
+		final Group connectionGroup = new Group(container, SWT.NONE);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
 				.grab(true, false).applyTo(connectionGroup);
 		GridLayoutFactory.fillDefaults().numColumns(2).margins(6, 6)
@@ -172,7 +172,7 @@ public class BuildDockerImageLaunchConfigurationMainTab
 	}
 
 	private void createRepoNameGroup(final Composite container) {
-		final Group repoNameGroup = new Group(container, SWT.BORDER);
+		final Group repoNameGroup = new Group(container, SWT.NONE);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
 				.grab(true, false).applyTo(repoNameGroup);
 		GridLayoutFactory.fillDefaults().margins(6, 6).numColumns(1)
@@ -187,7 +187,7 @@ public class BuildDockerImageLaunchConfigurationMainTab
 	}
 
 	private void createBuildOptionsGroup(final Composite container) {
-		final Group optionsGroup = new Group(container, SWT.BORDER);
+		final Group optionsGroup = new Group(container, SWT.NONE);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
 				.grab(true, false).applyTo(optionsGroup);
 		GridLayoutFactory.fillDefaults().margins(6, 6).numColumns(2)

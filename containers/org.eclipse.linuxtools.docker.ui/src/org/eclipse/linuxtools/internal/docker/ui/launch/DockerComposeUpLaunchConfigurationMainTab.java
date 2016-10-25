@@ -77,7 +77,7 @@ public class DockerComposeUpLaunchConfigurationMainTab
 		setControl(container);
 
 		// connection selection
-		final Group connectionGroup = new Group(container, SWT.BORDER);
+		final Group connectionGroup = new Group(container, SWT.NONE);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
 				.grab(true, false).applyTo(connectionGroup);
 		GridLayoutFactory.fillDefaults().numColumns(2).margins(6, 6)

@@ -167,7 +167,7 @@ public class ImageSearchPage extends WizardPage {
 				.applyTo(table);
 		// description text area
 		final Group selectedImageDescriptionGroup = new Group(container,
-				SWT.BORDER);
+				SWT.NONE);
 		selectedImageDescriptionGroup.setText(WizardMessages.getString("ImageSearchPage.descriptionGroup")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, true).span(COLUMNS, 1)
