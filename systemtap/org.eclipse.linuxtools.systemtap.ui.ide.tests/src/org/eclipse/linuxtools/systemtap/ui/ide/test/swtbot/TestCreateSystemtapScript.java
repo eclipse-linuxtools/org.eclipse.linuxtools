@@ -77,6 +77,7 @@ import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.swtchart.Chart;
@@ -1249,7 +1250,7 @@ public class TestCreateSystemtapScript {
         assertTrue(range2.upper - range2.lower == range.upper - range.lower && range2.upper > range.upper && getAxisScroll(cb, isXAxis) > scroll);
     }
 
-    @Test
+    @Test @Ignore
     public void testGraphTooltips() {
         createAndViewDummyData(new String[]{"Column 1"}, new Integer[]{1,2,3,4,5});
 

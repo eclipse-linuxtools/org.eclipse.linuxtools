@@ -36,6 +36,7 @@ import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 
@@ -128,7 +129,7 @@ public class RPMProjectTest {
         testProject.delete(true, true, monitor);
     }
 
-    @Test
+    @Test @Ignore
     public void testBuildPrepHelloWorld() throws Exception {
         // Create a project for the test
         IProject testProject = root.getProject("testBuildPrepHelloWorld");
@@ -146,7 +147,7 @@ public class RPMProjectTest {
         testProject.delete(true, true, monitor);
     }
 
-    @Test
+    @Test @Ignore
     public void testBuildSourceRPMHelloWorld() throws Exception {
         // Create a project for the test
         IProject testProject = root.getProject("testBuildSourceRPMHelloWorld1");
@@ -161,7 +162,7 @@ public class RPMProjectTest {
         testProject.delete(true, true, null);
     }
 
-    @Test
+    @Test @Ignore
     public void testBuildBinaryRPMHelloWorld() throws Exception {
         // Create a project for the test
         IProject testProject = root.getProject("testBuildBinaryRPMHelloWorld1");
@@ -180,7 +181,7 @@ public class RPMProjectTest {
         testProject.delete(true, true, null);
     }
 
-    @Test
+    @Test @Ignore
     public void testBuildAllRPMHelloWorld() throws Exception {
         // Create a project for the test
         IProject testProject = root.getProject("testBuildAllRPMHelloWorld1");
@@ -218,7 +219,7 @@ public class RPMProjectTest {
         return rpmProject;
     }
 
-    @Test
+    @Test @Ignore
     public void testGetSourcesFolder() throws Exception {
 
         // Create a project for the test

@@ -42,6 +42,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -191,7 +192,7 @@ public class ContentAssistTests extends BaseUITestCase {
         assertEquals( "veryLongName : int", results[0].getDisplayString() ); //$NON-NLS-1$
     }
 
-    @Test
+    @Test @Ignore
     public void testBug428037() throws Exception {
         StringWriter writer = new StringWriter();
         writer.write( "class Strategy {                             \n"); //$NON-NLS-1$
