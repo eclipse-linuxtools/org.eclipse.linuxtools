@@ -113,7 +113,7 @@ public abstract class ImagePullPushPage<M extends ImagePullPushPageModel>
 		addRegistryLink.setText(
 				WizardMessages.getString("ImagePullPushPage.add.link")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.RIGHT, SWT.CENTER)
-				.grab(true, false).applyTo(addRegistryLink);
+				.grab(false, false).applyTo(addRegistryLink);
 		addRegistryLink.addSelectionListener(
 				onAddRegistry(registryAccountComboViewer));
 		return registryAccountObservable;

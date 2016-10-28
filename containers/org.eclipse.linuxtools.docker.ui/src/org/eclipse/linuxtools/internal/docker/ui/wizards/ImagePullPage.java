@@ -112,7 +112,7 @@ public class ImagePullPage extends ImagePullPushPage<ImagePullPageModel> {
 		final Button searchButton = new Button(parent, SWT.NONE);
 		searchButton
 				.setText(WizardMessages.getString("ImagePull.search.label")); //$NON-NLS-1$
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+		GridDataFactory.fillDefaults().align(SWT.CENTER, SWT.CENTER)
 				.grab(false, false).applyTo(searchButton);
 		searchButton.addSelectionListener(onSearchImage());
 
