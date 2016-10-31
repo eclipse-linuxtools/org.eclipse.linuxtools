@@ -11,9 +11,11 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.views;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -103,6 +105,16 @@ public class ImageInspectContentProvider implements ITreeContentProvider {
 			for (int i = 0; i < propertyValues.size(); i++) {
 				result[i] = new Object[] {
 						"", LabelProviderUtils.toString(propertyValues.get(i)) }; //$NON-NLS-1$
+			}
+			return result;
+		} else if (propertyValue instanceof Set<?>) {
+			@SuppressWarnings("unchecked")
+			final Set<Object> propertyValues = (Set<Object>) propertyValue;
+			final Object[] result = new Object[propertyValues.size()];
+			Iterator<Object> iterator = propertyValues.iterator();
+			for (int i = 0; i < propertyValues.size(); i++) {
+				result[i] = new Object[] { "", //$NON-NLS-1$
+						LabelProviderUtils.toString(iterator.next()) };
 			}
 			return result;
 		} else if (propertyValue instanceof Map<?, ?>) {

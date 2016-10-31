@@ -11,9 +11,11 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.views;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -121,7 +123,8 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 					new Object[]{"PortSpecs", LabelProviderUtils.reduce(config.portSpecs())}, //$NON-NLS-1$
 					new Object[]{"StdinOnce", config.stdinOnce()}, //$NON-NLS-1$
 					new Object[]{"Tty", config.tty()}, //$NON-NLS-1$
-					new Object[]{"Volumes", config.volumes()}, //$NON-NLS-1$
+					new Object[] { "Volumes", //$NON-NLS-1$
+							LabelProviderUtils.reduce(config.volumes()) },
 					new Object[]{"WorkingDir", config.workingDir()}, //$NON-NLS-1$
 			};
 		} else if(propertyValue instanceof IDockerPortBinding) {
@@ -145,6 +148,16 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 			final Object[] result = new Object[propertyValues.size()];
 			for (int i = 0; i < propertyValues.size(); i++) {
 				result[i] = new Object[]{"", LabelProviderUtils.toString(propertyValues.get(i))}; //$NON-NLS-1$
+			}
+			return result;
+		} else if (propertyValue instanceof Set<?>) {
+			@SuppressWarnings("unchecked")
+			final Set<Object> propertyValues = (Set<Object>) propertyValue;
+			final Object[] result = new Object[propertyValues.size()];
+			Iterator<Object> iterator = propertyValues.iterator();
+			for (int i = 0; i < propertyValues.size(); i++) {
+				result[i] = new Object[] { "", //$NON-NLS-1$
+						LabelProviderUtils.toString(iterator.next()) };
 			}
 			return result;
 		} else if(propertyValue instanceof Map<?,?>) {

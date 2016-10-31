@@ -10,16 +10,23 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.docker.ui.launch;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.DockerException;
@@ -29,6 +36,7 @@ import org.eclipse.linuxtools.docker.core.IDockerContainerExit;
 import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
 import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
+import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig;
 import org.eclipse.linuxtools.internal.docker.core.DockerHostConfig;
@@ -47,6 +55,70 @@ public class ContainerLauncher {
 	private static final String ERROR_NO_CONNECTION_WITH_URI = "ContainerNoConnectionWithURI.msg"; //$NON-NLS-1$
 
 	private static RunConsole console;
+
+	private class CopyVolumesJob extends Job {
+
+		private static final String COPY_VOLUMES_JOB_TITLE = "ContainerLaunch.copyVolumesJob.title"; //$NON-NLS-1$
+		private static final String COPY_VOLUMES_DESC = "ContainerLaunch.copyVolumesJob.desc"; //$NON-NLS-1$
+		private static final String COPY_VOLUMES_TASK = "ContainerLaunch.copyVolumesJob.task"; //$NON-NLS-1$
+		private static final String ERROR_COPYING_VOLUME = "ContainerLaunch.copyVolumesJob.error"; //$NON-NLS-1$
+
+		private final Set<String> volumes;
+		private final IDockerConnection connection;
+		private final String containerId;
+
+		public CopyVolumesJob(Set<String> volumes,
+				IDockerConnection connection,
+				String containerId) {
+			super(Messages.getString(COPY_VOLUMES_JOB_TITLE));
+			this.volumes = volumes;
+			this.connection = connection;
+			this.containerId = containerId;
+		}
+
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			monitor.beginTask(
+					Messages.getFormattedString(COPY_VOLUMES_DESC, containerId),
+					volumes.size());
+			Iterator<String> iterator = volumes.iterator();
+			IStatus status = Status.OK_STATUS;
+			// for each remote volume, copy from host to Container volume
+			while (iterator.hasNext()) {
+				if (monitor.isCanceled()) {
+					monitor.done();
+					return Status.CANCEL_STATUS;
+				}
+				String directory = iterator.next();
+				if (!directory.endsWith("/")) { //$NON-NLS-1$
+					directory = directory + "/"; //$NON-NLS-1$
+				}
+				monitor.setTaskName(Messages
+						.getFormattedString(COPY_VOLUMES_TASK, directory));
+				try {
+					((DockerConnection) connection).copyToContainer(directory,
+							containerId, directory);
+					monitor.worked(1);
+				} catch (DockerException | InterruptedException
+						| IOException e) {
+					monitor.done();
+					final String dir = directory;
+					Display.getDefault().syncExec(() -> MessageDialog.openError(
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+									.getShell(),
+							Messages.getFormattedString(ERROR_COPYING_VOLUME,
+									new String[] { dir, containerId }),
+							e.getMessage()));
+					status = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+							e.getMessage());
+				} finally {
+					monitor.done();
+				}
+			}
+			return status;
+		}
+
+	}
 
 	/**
 	 * Perform a launch of a command in a container.
@@ -185,22 +257,6 @@ public class ContainerLauncher {
 		env.addAll(toList(origEnv));
 		env.addAll(toList(envMap));
 
-		// Add mounts for any directories we need to run the executable.
-		// When we add mount points, we need entries of the form:
-		// hostname:mountname.
-		// In our case, we want all directories mounted as-is so the executable
-		// will
-		// run as the user expects.
-		final List<String> volumes = new ArrayList<>();
-		if (additionalDirs != null) {
-			for (String dir : additionalDirs) {
-				volumes.add(dir + ":" + dir + ":Z"); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-		}
-		if (workingDir != null)
-			volumes.add(workingDir + ":" + workingDir + ":Z"); //$NON-NLS-1$ //$NON-NLS-2$
-		if (commandDir != null)
-			volumes.add(commandDir + ":" + commandDir + ":Z"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		final List<String> cmdList = getCmdList(command);
 
@@ -245,12 +301,14 @@ public class ContainerLauncher {
 
 		}
 
-		// Note we don't pass volumes to the config, but instead we pass them to
-		// the
-		// HostConfig binds setting
+		// Note we only pass volumes to the config if we have a
+		// remote daemon. Local mounted volumes are passed
+		// via the HostConfig binds setting
 
 		DockerContainerConfig.Builder builder = new DockerContainerConfig.Builder()
-				.openStdin(stdinSupport).env(env).cmd(cmdList).image(image)
+				.openStdin(stdinSupport)
+				.cmd(cmdList)
+				.image(image)
 				.workingDir(workingDir);
 		// add any exposed ports as needed
 		if (exposedPorts.size() > 0)
@@ -259,17 +317,6 @@ public class ContainerLauncher {
 		// add any labels if specified
 		if (labels != null)
 			builder = builder.labels(labels);
-
-		final DockerContainerConfig config = builder.build();
-
-		DockerHostConfig.Builder hostBuilder = new DockerHostConfig.Builder()
-				.binds(volumes).privileged(privilegedMode);
-
-		// add any port bindings if specified
-		if (portBindingsMap.size() > 0)
-			hostBuilder = hostBuilder.portBindings(portBindingsMap);
-
-		final IDockerHostConfig hostConfig = hostBuilder.build();
 
 		if (!DockerConnectionManager.getInstance().hasConnections()) {
 			Display.getDefault()
@@ -296,6 +343,57 @@ public class ContainerLauncher {
 									connectionUri)));
 			return;
 		}
+
+		DockerHostConfig.Builder hostBuilder = new DockerHostConfig.Builder()
+				.privileged(privilegedMode);
+
+
+		final Set<String> remoteVolumes = new TreeSet<>();
+		if (!((DockerConnection) connection).isLocal()) {
+			// if using remote daemon, we have to
+			// handle volume mounting differently.
+			// Instead we mount empty volumes and copy
+			// the host data over before starting.
+			if (additionalDirs != null) {
+				for (String dir : additionalDirs) {
+					remoteVolumes.add(dir); // $NON-NLS-1$
+				}
+			}
+			if (workingDir != null)
+				remoteVolumes.add(workingDir); // $NON-NLS-1$
+			if (commandDir != null)
+				remoteVolumes.add(commandDir); // $NON-NLS-1$
+			builder = builder.volumes(remoteVolumes);
+		} else {
+			// Running daemon on local host.
+			// Add mounts for any directories we need to run the executable.
+			// When we add mount points, we need entries of the form:
+			// hostname:mountname:Z.
+			// In our case, we want all directories mounted as-is so the
+			// executable will run as the user expects.
+			final List<String> volumes = new ArrayList<>();
+			if (additionalDirs != null) {
+				for (String dir : additionalDirs) {
+					volumes.add(dir + ":" + dir + ":Z"); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+			}
+			if (workingDir != null) {
+				volumes.add(workingDir + ":" + workingDir + ":Z"); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			if (commandDir != null) {
+				volumes.add(commandDir + ":" + commandDir + ":Z"); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			hostBuilder = hostBuilder.binds(volumes);
+		}
+
+		final DockerContainerConfig config = builder.build();
+
+		// add any port bindings if specified
+		if (portBindingsMap.size() > 0)
+			hostBuilder = hostBuilder.portBindings(portBindingsMap);
+
+		final IDockerHostConfig hostConfig = hostBuilder.build();
+
 		final String imageName = image;
 		final boolean keepContainer = keep;
 		final String consoleId = id;
@@ -307,6 +405,18 @@ public class ContainerLauncher {
 			try {
 				containerId = ((DockerConnection) connection)
 						.createContainer(config, hostConfig, null);
+				if (!((DockerConnection) connection).isLocal()) {
+					// if daemon is remote, we need to copy
+					// data over from the host.
+					if (!remoteVolumes.isEmpty()) {
+						CopyVolumesJob job = new CopyVolumesJob(remoteVolumes,
+								connection, containerId);
+						job.schedule();
+						job.join();
+						if (job.getResult() != Status.OK_STATUS)
+							return;
+					}
+				}
 				OutputStream stream = null;
 				RunConsole oldConsole = getConsole();
 				final RunConsole rc = RunConsole.findConsole(containerId,

@@ -11,6 +11,9 @@
 
 package org.eclipse.linuxtools.internal.docker.core;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * TCP Connection settings
  */
@@ -21,6 +24,10 @@ public class TCPConnectionSettings extends BaseConnectionSettings {
 	 * port number).
 	 */
 	private final String host;
+	private String ipaddr;
+
+	public final Pattern ipaddrPattern = Pattern
+			.compile("[a-z]*://([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)[:]*[0-9]*");
 
 	/**
 	 * absolute path to folder containing the certificates (ca.pem, key.pem and
@@ -55,6 +62,21 @@ public class TCPConnectionSettings extends BaseConnectionSettings {
 				new Object[] { "Host", this.getHost() }, //$NON-NLS-1$
 				new Object[] { "Certificates", //$NON-NLS-1$
 						this.getPathToCertificates() }, };
+	}
+
+	/**
+	 * @return the ip address for the host
+	 */
+	public String getAddr() {
+		if (ipaddr == null) {
+			Matcher m = ipaddrPattern.matcher(host);
+			if (m.matches()) {
+				ipaddr = m.group(1);
+			} else {
+				ipaddr = "";
+			}
+		}
+		return ipaddr;
 	}
 
 	/**
