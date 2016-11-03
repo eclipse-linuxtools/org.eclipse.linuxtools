@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Red Hat.
+ * Copyright (c) 2014, 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -68,19 +68,39 @@ public class DefaultImagePullProgressHandler implements IDockerProgressHandler {
 					connection.getImages(true);
 				} else if (status
 						.startsWith(DockerMessages.getString(IMAGE_DOWNLOADING))) {
-					// we have a new download in progress, track it
-					ProgressJob newJob = new ProgressJob(
-							DockerMessages.getFormattedString(
-									IMAGE_DOWNLOADING_JOBNAME, image),
-							DockerMessages.getFormattedString(
-									IMAGE_DOWNLOADING_IMAGE, id));
-					// job.setUser(false) will show all pull job (one per image
-					// layer) in the progress
-					// view but not in multiple dialog
-					newJob.setUser(false);
-					newJob.setPriority(Job.LONG);
-					newJob.schedule();
-					progressJobs.put(id, newJob);
+					IDockerProgressDetail detail = message.progressDetail();
+					if (detail == null || detail.total() == 0) {
+						// we have a new download in progress, track it
+						ProgressJob2 newJob = new ProgressJob2(
+								DockerMessages.getFormattedString(
+										IMAGE_DOWNLOADING_JOBNAME, image),
+								DockerMessages.getFormattedString(
+										IMAGE_DOWNLOADING_IMAGE, id));
+						// job.setUser(false) will show all pull job (one per
+						// image
+						// layer) in the progress
+						// view but not in multiple dialog
+						newJob.setUser(false);
+						newJob.setPriority(Job.LONG);
+						newJob.schedule();
+						progressJobs.put(id, newJob);
+
+					} else {
+						// we have a new download in progress, track it
+						ProgressJob newJob = new ProgressJob(
+								DockerMessages.getFormattedString(
+										IMAGE_DOWNLOADING_JOBNAME, image),
+								DockerMessages.getFormattedString(
+										IMAGE_DOWNLOADING_IMAGE, id));
+						// job.setUser(false) will show all pull job (one per
+						// image
+						// layer) in the progress
+						// view but not in multiple dialog
+						newJob.setUser(false);
+						newJob.setPriority(Job.LONG);
+						newJob.schedule();
+						progressJobs.put(id, newJob);
+					}
 				}
 
 			} else {
@@ -96,7 +116,10 @@ public class DefaultImagePullProgressHandler implements IDockerProgressHandler {
 						.startsWith(DockerMessages.getString(IMAGE_DOWNLOADING))) {
 					IDockerProgressDetail detail = message.progressDetail();
 					if (detail != null) {
-						if (detail.current() > 0) {
+						if (p instanceof ProgressJob2) {
+							((ProgressJob2) p)
+									.setStatusMessage(message.progress());
+						} else if (detail.current() > 0 && detail.total() > 0) {
 							long percentage = (detail.current() * 100)
 									/ detail.total();
 							p.setPercentageDone((int) percentage);
