@@ -94,4 +94,9 @@ public class RegistryInfo extends AbstractRegistry {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return serverAddress;
+	}
+
 }

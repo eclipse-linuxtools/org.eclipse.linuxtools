@@ -11,11 +11,12 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
-import java.util.regex.Pattern;
-
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IRegistry;
+import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.ui.databinding.BaseDatabindingModel;
+import org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceConstants;
 
 /**
  * Base {@link BaseDatabindingModel} for Push and Pull models.
@@ -27,8 +28,6 @@ public abstract class ImagePullPushPageModel extends BaseDatabindingModel {
 	public static final String SELECTED_REGISTRY = "selectedRegistry"; //$NON-NLS-1$
 
 	public static final String TAG = "tag"; //$NON-NLS-1$
-
-	private static final Pattern PATTERN = Pattern.compile("(.*)@(.*)"); //$NON-NLS-1$
 
 	private IRegistry selectedRegistry;
 
@@ -57,6 +56,11 @@ public abstract class ImagePullPushPageModel extends BaseDatabindingModel {
 	public void setSelectedRegistry(final IRegistry selectedRegistry) {
 		firePropertyChange(SELECTED_REGISTRY, this.selectedRegistry,
 				this.selectedRegistry = selectedRegistry);
+		// store the last registry used for future actions
+		final IPreferenceStore store = Activator.getDefault()
+				.getPreferenceStore();
+		store.putValue(PreferenceConstants.LAST_REGISTRY_ACCOUNT,
+				selectedRegistry.toString());
 	}
 
 	public String getSelectedImageName() {

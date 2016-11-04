@@ -26,6 +26,9 @@ public class PreferenceConstants {
 	/** the installation directory for Docker Machine. */
 	public static final String DOCKER_MACHINE_INSTALLATION_DIRECTORY = "dockerMachineInstallDir"; //$NON-NLS-1$
 
+	/** last registry account used for pushing/pulling images. **/
+	public static final String LAST_REGISTRY_ACCOUNT = "lastRegistryAccount"; //$NON-NLS-1$
+
 	/**
 	 * the installation directory for the VM driver (eg, VirtualBox).
 	 */

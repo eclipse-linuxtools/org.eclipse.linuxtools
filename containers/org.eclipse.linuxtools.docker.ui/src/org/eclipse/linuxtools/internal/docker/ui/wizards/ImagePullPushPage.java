@@ -19,6 +19,7 @@ import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -27,9 +28,11 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.docker.core.AbstractRegistry;
 import org.eclipse.linuxtools.docker.core.IRegistry;
 import org.eclipse.linuxtools.docker.core.IRegistryAccount;
+import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.RegistryAccountManager;
 import org.eclipse.linuxtools.internal.docker.core.RegistryInfo;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
+import org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -98,9 +101,22 @@ public abstract class ImagePullPushPage<M extends ImagePullPushPageModel>
 		registryAccountComboViewer
 				.setLabelProvider(new RegistryAccountLabelProvider());
 		final List<IRegistry> allRegistryAccounts = getRegistryAccounts();
-		registryAccountComboViewer.setInput(allRegistryAccounts);
+		final IPreferenceStore store = Activator.getDefault()
+				.getPreferenceStore();
+		// Calculate selected registry account to be the last one used
+		// or else default to the first in the list
+		IRegistry defaultRegistry = null;
+		String lastRegistry = store
+				.getString(PreferenceConstants.LAST_REGISTRY_ACCOUNT);
 		if (!allRegistryAccounts.isEmpty()) {
-			getModel().setSelectedRegistry(allRegistryAccounts.get(0));
+			defaultRegistry = allRegistryAccounts.get(0);
+		}
+		IRegistry selectedRegistry = allRegistryAccounts.stream()
+				.filter(x -> x.toString().equals(lastRegistry)).findFirst()
+				.orElse(defaultRegistry);
+		registryAccountComboViewer.setInput(allRegistryAccounts);
+		if (selectedRegistry != null) {
+			getModel().setSelectedRegistry(selectedRegistry);
 		}
 		final IObservableValue<IRegistry> registryAccountObservable = BeanProperties
 				.value(ImagePushPageModel.class,
