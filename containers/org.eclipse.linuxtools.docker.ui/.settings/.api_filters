@@ -8,4 +8,12 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/org/eclipse/linuxtools/internal/docker/ui/DynamicTreeViewer.java" type="org.eclipse.linuxtools.internal.docker.ui.DynamicTreeViewer">
+        <filter id="571473929">
+            <message_arguments>
+                <message_argument value="TreeViewer"/>
+                <message_argument value="DynamicTreeViewer"/>
+            </message_arguments>
+        </filter>
+    </resource>
 </component>
