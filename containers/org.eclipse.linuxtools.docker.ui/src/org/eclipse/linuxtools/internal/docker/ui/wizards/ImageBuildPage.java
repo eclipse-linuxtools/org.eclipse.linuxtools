@@ -255,7 +255,7 @@ public class ImageBuildPage extends WizardPage {
 
 		f = new FormData();
 		f.top = new FormAttachment(label, 11 + centering2);
-		f.left = new FormAttachment(dirLabel, 5);
+		f.left = new FormAttachment(nameLabel, 5);
 		f.right = new FormAttachment(browse, -10);
 		nameText.setLayoutData(f);
 
@@ -276,7 +276,7 @@ public class ImageBuildPage extends WizardPage {
 
 		f = new FormData();
 		f.top = new FormAttachment(nameLabel, 11 + centering2);
-		f.left = new FormAttachment(dirLabel, 5);
+		f.left = new FormAttachment(nameLabel, 5);
 		f.right = new FormAttachment(browse, -10);
 		directoryText.setLayoutData(f);
 

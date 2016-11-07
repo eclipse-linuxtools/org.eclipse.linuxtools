@@ -132,11 +132,14 @@ public class ImageBuildDialog extends Dialog {
 						containerSelectionCombo),
 				null, null);
 		final Label repoNameLabel = new Label(container, SWT.NONE);
-		repoNameLabel.setText(
-				WizardMessages.getString("ImageBuildDialog.repoNameLabel")); //$NON-NLS-1$
+		repoNameLabel.setToolTipText(
+				WizardMessages.getString("ImageBuildName.toolTip")); //$NON-NLS-1$
+		repoNameLabel.setText(WizardMessages.getString("ImageBuildName.label")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).applyTo(repoNameLabel);
 		final Text repoNameText = new Text(container, SWT.BORDER);
+		repoNameText.setToolTipText(
+				WizardMessages.getString("ImageBuildName.toolTip")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).applyTo(repoNameText);
 		final ISWTObservableValue connnectionNameObservable = WidgetProperties
