@@ -11,12 +11,36 @@
 package org.eclipse.linuxtools.internal.docker.core;
 
 import org.eclipse.linuxtools.docker.core.DockerException;
+import org.eclipse.linuxtools.internal.docker.core.ProcessLauncher.FluentProcessBuilder;
 
 /**
  * Utility class to discover Docker machines using the 'docker-machine' command
  * line in a process.
  */
 public class DockerMachine {
+
+	private static DockerMachine instance = new DockerMachine();
+
+	public static DockerMachine getInstance() {
+		return instance;
+	}
+
+	private ProcessLauncher processLauncher = new ProcessLauncher();
+
+	private DockerMachine() {
+
+	}
+
+	/**
+	 * Replace the default {@link ProcessLauncher} with another instance. Used
+	 * to testing by injecting a mock instance here.
+	 * 
+	 * @param processLauncher
+	 *            the new {@link ProcessLauncher}.
+	 */
+	public void setProcessLauncher(final ProcessLauncher processLauncher) {
+		this.processLauncher = processLauncher;
+	}
 
 	/**
 	 * Checks that the given {@code dockerMachineInstallDir} contains the
@@ -27,9 +51,9 @@ public class DockerMachine {
 	 * @return <code>true</code> if the system-specific command was found,
 	 *         <code>false</code> otherwise.
 	 */
-	public static boolean checkPathToDockerMachine(
+	public boolean checkPathToDockerMachine(
 			final String dockerMachineInstallDir) {
-		return ProcessUtils.checkPathToCommand(dockerMachineInstallDir,
+		return processLauncher.checkPathToCommand(dockerMachineInstallDir,
 				getDockerMachineExecutableName());
 	}
 
@@ -40,11 +64,11 @@ public class DockerMachine {
 	 * @throws DockerException
 	 *             if something went wrong
 	 */
-	public static String[] getNames(final String pathToDockerMachine)
+	public String[] getNames(final String pathToDockerMachine)
 			throws DockerException {
-		return ProcessUtils.processBuilder(pathToDockerMachine,
+		return processLauncher.processBuilder(pathToDockerMachine,
 				getDockerMachineExecutableName(), new String[] { "ls", "-q" }) //$NON-NLS-1$ //$NON-NLS-2$
-				.start();
+				.startAndGetResult();
 	}
 
 	/**
@@ -59,14 +83,14 @@ public class DockerMachine {
 	 * @throws DockerException
 	 *             if something went wrong
 	 */
-	public static String getHost(final String name,
+	public String getHost(final String name,
 			final String dockerMachineInstallDir,
 			final String vmDriverInstallDir) throws DockerException {
-		final String[] res = ProcessUtils
+		final String[] res = processLauncher
 				.processBuilder(dockerMachineInstallDir,
-				getDockerMachineExecutableName(),
+						getDockerMachineExecutableName(),
 						new String[] { "url", name }) //$NON-NLS-1$
-				.extraPath(vmDriverInstallDir).start();
+				.extraPath(vmDriverInstallDir).startAndGetResult();
 		return res.length == 1 ? res[0] : null;
 	}
 
@@ -82,13 +106,15 @@ public class DockerMachine {
 	 * @throws DockerException
 	 *             if something went wrong
 	 */
-	public static String getCertPath(final String name,
+	public String getCertPath(final String name,
 			final String pathToDockerMachine, final String vmDriverInstallDir)
 			throws DockerException {
-		final String[] envVariables = ProcessUtils.processBuilder(pathToDockerMachine,
-				getDockerMachineExecutableName(),
-				new String[] { "env", name }) //$NON-NLS-1$
-				.extraPath(vmDriverInstallDir).start();
+		final FluentProcessBuilder processBuilder = processLauncher
+				.processBuilder(pathToDockerMachine,
+						getDockerMachineExecutableName(),
+						new String[] { "env", name }) //$NON-NLS-1$
+				.extraPath(vmDriverInstallDir);
+		final String[] envVariables = processBuilder.startAndGetResult();
 		for (String envVariable : envVariables) {
 			if (envVariable.contains("DOCKER_CERT_PATH")) { //$NON-NLS-1$
 				// DOCKER_CERT_PATH="/path/to/cert-folder"
@@ -97,6 +123,8 @@ public class DockerMachine {
 		}
 		return null;
 	}
+
+
 
 	/**
 	 * @return the name of the Docker Machine executable, depending on the

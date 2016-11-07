@@ -92,7 +92,7 @@ public class NewDockerConnectionPage extends WizardPage {
 	private static final String DOCKER_MACHINE_PREFERENCE_PAGE_ID = "org.eclipse.linuxtools.docker.ui.preferences.DockerMachinePreferencePage"; //$NON-NLS-1$
 
 	private final DataBindingContext dbc;
-	
+
 	private final NewDockerConnectionPageModel model;
 
 	/**
@@ -123,13 +123,17 @@ public class NewDockerConnectionPage extends WizardPage {
 		WizardPageSupport.create(this, this.dbc);
 
 		Clipboard clip = new Clipboard(Display.getCurrent());
-		String content = (String) clip.getContents(TextTransfer.getInstance(), DND.SELECTION_CLIPBOARD);
+		String content = (String) clip.getContents(TextTransfer.getInstance(),
+				DND.SELECTION_CLIPBOARD);
 		// DOCKER_HOST is the minimal property needed
-		if (content != null && content.contains(DefaultDockerConnectionSettingsFinder.DOCKER_HOST)) {
+		if (content != null && content
+				.contains(DefaultDockerConnectionSettingsFinder.DOCKER_HOST)) {
 			retrieveConnectionSettings(content);
 		} else {
-			content = (String) clip.getContents(TextTransfer.getInstance(), DND.CLIPBOARD);
-			if (content != null && content.contains(DefaultDockerConnectionSettingsFinder.DOCKER_HOST)) {
+			content = (String) clip.getContents(TextTransfer.getInstance(),
+					DND.CLIPBOARD);
+			if (content != null && content.contains(
+					DefaultDockerConnectionSettingsFinder.DOCKER_HOST)) {
 				retrieveConnectionSettings(content);
 			} else {
 				retrieveDefaultConnectionSettings();
@@ -175,26 +179,25 @@ public class NewDockerConnectionPage extends WizardPage {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.applyTo(connectionNameLabel);
 		final Text connectionNameText = new Text(container, SWT.BORDER);
-		connectionNameText.setToolTipText(WizardMessages
-				.getString("DockerConnectionPage.nameTooltip")); //$NON-NLS-1$
+		connectionNameText.setToolTipText(
+				WizardMessages.getString("DockerConnectionPage.nameTooltip")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).span(1, 1).applyTo(connectionNameText);
 
 		// the 'Search' button
 		final Button searchButton = new Button(container, SWT.NONE);
-		searchButton.setText(WizardMessages
-				.getString("DockerConnectionPage.searchButton")); //$NON-NLS-1$
+		searchButton.setText(
+				WizardMessages.getString("DockerConnectionPage.searchButton")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).span(1, 1)
 				.align(SWT.BEGINNING, SWT.CENTER).grab(false, false)
 				.applyTo(searchButton);
 		searchButton.addSelectionListener(onSearchButtonSelection());
 
-
 		// custom settings checkbox
 		final Button customConnectionSettingsButton = new Button(container,
 				SWT.CHECK);
-		customConnectionSettingsButton.setText(WizardMessages
-				.getString("DockerConnectionPage.customLabel")); //$NON-NLS-1$
+		customConnectionSettingsButton.setText(
+				WizardMessages.getString("DockerConnectionPage.customLabel")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).indent(0, 10).span(COLUMNS, 1)
 				.applyTo(customConnectionSettingsButton);
@@ -228,8 +231,8 @@ public class NewDockerConnectionPage extends WizardPage {
 
 		final Button unixSocketPathBrowseButton = new Button(
 				customSettingsGroup, SWT.BUTTON1);
-		unixSocketPathBrowseButton.setText(WizardMessages
-				.getString("DockerConnectionPage.browseButton")); //$NON-NLS-1$
+		unixSocketPathBrowseButton.setText(
+				WizardMessages.getString("DockerConnectionPage.browseButton")); //$NON-NLS-1$
 		unixSocketPathBrowseButton
 				.addSelectionListener(onBrowseUnixSocketPath());
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
@@ -238,8 +241,8 @@ public class NewDockerConnectionPage extends WizardPage {
 		// TCP connection
 		final Button tcpConnectionBindingModeButton = new Button(
 				customSettingsGroup, SWT.RADIO);
-		tcpConnectionBindingModeButton.setText(WizardMessages
-				.getString("DockerConnectionPage.tcpConnection")); //$NON-NLS-1$
+		tcpConnectionBindingModeButton.setText(
+				WizardMessages.getString("DockerConnectionPage.tcpConnection")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.span(COLUMNS, 1).applyTo(tcpConnectionBindingModeButton);
 
@@ -254,14 +257,14 @@ public class NewDockerConnectionPage extends WizardPage {
 				.grab(true, false).applyTo(tcpHostText);
 
 		final Button tcpAuthButton = new Button(customSettingsGroup, SWT.CHECK);
-		tcpAuthButton.setText(WizardMessages
-				.getString("DockerConnectionPage.tcpAuthButton")); //$NON-NLS-1$
+		tcpAuthButton.setText(
+				WizardMessages.getString("DockerConnectionPage.tcpAuthButton")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.indent(INDENT, 0).span(3, 1).applyTo(tcpAuthButton);
 
 		final Label tcpCertPathLabel = new Label(customSettingsGroup, SWT.NONE);
-		tcpCertPathLabel.setText(WizardMessages
-				.getString("DockerConnectionPage.tcpPathLabel")); //$NON-NLS-1$
+		tcpCertPathLabel.setText(
+				WizardMessages.getString("DockerConnectionPage.tcpPathLabel")); //$NON-NLS-1$
 		tcpCertPathLabel.setToolTipText(WizardMessages
 				.getString("DockerConnectionPage.tcpPathTooltip")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
@@ -271,8 +274,8 @@ public class NewDockerConnectionPage extends WizardPage {
 				.grab(true, false).applyTo(tcpCertPathText);
 		final Button tcpCertPathBrowseButton = new Button(customSettingsGroup,
 				SWT.BUTTON1);
-		tcpCertPathBrowseButton.setText(WizardMessages
-				.getString("DockerConnectionPage.browseButton")); //$NON-NLS-1$
+		tcpCertPathBrowseButton.setText(
+				WizardMessages.getString("DockerConnectionPage.browseButton")); //$NON-NLS-1$
 		tcpCertPathBrowseButton.addSelectionListener(onBrowseTcpCertPath());
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.applyTo(tcpCertPathBrowseButton);
@@ -435,50 +438,47 @@ public class NewDockerConnectionPage extends WizardPage {
 		// let's run this in a job and show the progress in the wizard
 		// progressbar
 		try {
-			getWizard().getContainer().run(true, true,
-					monitor -> {
-						monitor.beginTask(
-								WizardMessages.getString(
-										"DockerConnectionPage.retrieveTask"), //$NON-NLS-1$
-								1);
-						final DockerConnectionManager dockerConnectionManager = DockerConnectionManager
-								.getInstance();
-						final IDockerConnectionSettings defaultConnectionSettings = dockerConnectionManager
-								.findDefaultConnectionSettings();
-						if (defaultConnectionSettings != null) {
+			getWizard().getContainer().run(true, true, monitor -> {
+				monitor.beginTask(
+						WizardMessages
+								.getString("DockerConnectionPage.retrieveTask"), //$NON-NLS-1$
+						1);
+				final DockerConnectionManager dockerConnectionManager = DockerConnectionManager
+						.getInstance();
+				final IDockerConnectionSettings defaultConnectionSettings = dockerConnectionManager
+						.findDefaultConnectionSettings();
+				if (defaultConnectionSettings != null) {
 
-							model.setCustomSettings(!defaultConnectionSettings
-									.isSettingsResolved());
-							model.setConnectionName(dockerConnectionManager
-									.resolveConnectionName(
-											defaultConnectionSettings));
-							switch (defaultConnectionSettings.getType()) {
-							case TCP_CONNECTION:
-								final TCPConnectionSettings tcpConnectionSettings = (TCPConnectionSettings) defaultConnectionSettings;
-								model.setTcpConnectionBindingMode(true);
-								model.setTcpCertPath(tcpConnectionSettings
-										.getPathToCertificates());
-								model.setTcpTLSVerify(
-										tcpConnectionSettings.isTlsVerify());
-								model.setTcpHost(
-										tcpConnectionSettings.getHost());
-								break;
-							case UNIX_SOCKET_CONNECTION:
-								model.setUnixSocketBindingMode(true);
-								final UnixSocketConnectionSettings unixSocketConnectionSettings = (UnixSocketConnectionSettings) defaultConnectionSettings;
-								model.setUnixSocketPath(
-										unixSocketConnectionSettings.getPath());
-								break;
-							}
-						} else {
-							// fall-back to custom settings, suggesting a
-							// Unix Socket connection to the user.
-							model.setCustomSettings(true);
-							model.setUnixSocketBindingMode(true);
-						}
+					model.setCustomSettings(
+							!defaultConnectionSettings.isSettingsResolved());
+					model.setConnectionName(dockerConnectionManager
+							.resolveConnectionName(defaultConnectionSettings));
+					switch (defaultConnectionSettings.getType()) {
+					case TCP_CONNECTION:
+						final TCPConnectionSettings tcpConnectionSettings = (TCPConnectionSettings) defaultConnectionSettings;
+						model.setTcpConnectionBindingMode(true);
+						model.setTcpCertPath(
+								tcpConnectionSettings.getPathToCertificates());
+						model.setTcpTLSVerify(
+								tcpConnectionSettings.isTlsVerify());
+						model.setTcpHost(tcpConnectionSettings.getHost());
+						break;
+					case UNIX_SOCKET_CONNECTION:
+						model.setUnixSocketBindingMode(true);
+						final UnixSocketConnectionSettings unixSocketConnectionSettings = (UnixSocketConnectionSettings) defaultConnectionSettings;
+						model.setUnixSocketPath(
+								unixSocketConnectionSettings.getPath());
+						break;
+					}
+				} else {
+					// fall-back to custom settings, suggesting a
+					// Unix Socket connection to the user.
+					model.setCustomSettings(true);
+					model.setUnixSocketBindingMode(true);
+				}
 
-						monitor.done();
-					});
+				monitor.done();
+			});
 		} catch (InvocationTargetException | InterruptedException e) {
 			Activator.log(e);
 		}
@@ -491,7 +491,8 @@ public class NewDockerConnectionPage extends WizardPage {
 		while (tok.hasMoreTokens()) {
 			String line = tok.nextToken();
 			String[] tokens;
-			if (line.startsWith(DefaultDockerConnectionSettingsFinder.DOCKER_HOST)) {
+			if (line.startsWith(
+					DefaultDockerConnectionSettingsFinder.DOCKER_HOST)) {
 				tokens = line.split(EQUAL);
 				if (tokens.length == 2) {
 					String host = tokens[1];
@@ -504,17 +505,19 @@ public class NewDockerConnectionPage extends WizardPage {
 					}
 					model.setCustomSettings(true);
 				}
-			} else if (line.startsWith(DefaultDockerConnectionSettingsFinder.DOCKER_CERT_PATH)) {
+			} else if (line.startsWith(
+					DefaultDockerConnectionSettingsFinder.DOCKER_CERT_PATH)) {
 				tokens = line.split(EQUAL);
 				if (tokens.length == 2) {
 					model.setTcpCertPath(tokens[1]);
 				}
-			} else if (line.startsWith(DefaultDockerConnectionSettingsFinder.DOCKER_TLS_VERIFY)) {
+			} else if (line.startsWith(
+					DefaultDockerConnectionSettingsFinder.DOCKER_TLS_VERIFY)) {
 				tokens = line.split(EQUAL);
 				if (tokens.length == 2) {
-						model.setTcpTLSVerify(
-								DefaultDockerConnectionSettingsFinder.DOCKER_TLS_VERIFY_TRUE
-										.equals(tokens[1]));
+					model.setTcpTLSVerify(
+							DefaultDockerConnectionSettingsFinder.DOCKER_TLS_VERIFY_TRUE
+									.equals(tokens[1]));
 				}
 			}
 		}
@@ -604,26 +607,25 @@ public class NewDockerConnectionPage extends WizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
-					getWizard().getContainer().run(true, false,
-							monitor -> {
-								monitor.beginTask(WizardMessages.getString(
+					getWizard().getContainer().run(true, false, monitor -> {
+						monitor.beginTask(WizardMessages.getString(
 										"DockerConnectionPage.pingTask"), //$NON-NLS-1$
-										IProgressMonitor.UNKNOWN);
-								try {
-									final DockerConnection dockerConnection = getDockerConnection();
-									dockerConnection.open(false);
-									dockerConnection.ping();
-									dockerConnection.close();
-									// ping succeeded
-									displaySuccessDialog();
-								} catch (DockerException e1) {
-									// only log if there's an underlying cause.
-									if (e1.getCause() != null) {
-										Activator.log(e1);
-									}
-									displayErrorDialog();
-								}
-							});
+								IProgressMonitor.UNKNOWN);
+						try {
+							final DockerConnection dockerConnection = getDockerConnection();
+							dockerConnection.open(false);
+							dockerConnection.ping();
+							dockerConnection.close();
+							// ping succeeded
+							displaySuccessDialog();
+						} catch (DockerException e1) {
+							// only log if there's an underlying cause.
+							if (e1.getCause() != null) {
+								Activator.log(e1);
+							}
+							displayErrorDialog();
+						}
+					});
 				} catch (InvocationTargetException | InterruptedException o_O) {
 					Activator.log(o_O);
 				}
@@ -634,26 +636,24 @@ public class NewDockerConnectionPage extends WizardPage {
 				displayDialog(
 						WizardMessages
 								.getString("DockerConnectionPage.success"), //$NON-NLS-1$
-						WizardMessages.getString(
-								"DockerConnectionPage.pingSuccess"), //$NON-NLS-1$
-						SWT.ICON_INFORMATION,
-						new String[] { WizardMessages
+						WizardMessages
+								.getString("DockerConnectionPage.pingSuccess"), //$NON-NLS-1$
+						SWT.ICON_INFORMATION, new String[] { WizardMessages
 								.getString("DockerConnectionPage.ok") } //$NON-NLS-1$
-						);
+				);
 			}
 
 			private void displayErrorDialog() {
 				displayDialog(
 						WizardMessages
 								.getString("DockerConnectionPage.failure"), //$NON-NLS-1$
-						WizardMessages.getString(
-								"DockerConnectionPage.pingFailure"), //$NON-NLS-1$
-						SWT.ICON_ERROR,
-						new String[] { WizardMessages
+						WizardMessages
+								.getString("DockerConnectionPage.pingFailure"), //$NON-NLS-1$
+						SWT.ICON_ERROR, new String[] { WizardMessages
 								.getString("DockerConnectionPage.ok") } //$NON-NLS-1$
-						);
+				);
 			}
-			
+
 			private void displayDialog(final String dialogTitle,
 					final String dialogMessage, final int icon,
 					final String[] buttonLabels) {
@@ -670,50 +670,26 @@ public class NewDockerConnectionPage extends WizardPage {
 
 	private SelectionListener onSearchButtonSelection() {
 		return new SelectionAdapter() {
-			
+
 			private String getVMDriverInstallDir() {
-				return Activator.getDefault()
-						.getPreferenceStore().getString(
-								PreferenceConstants.VM_DRIVER_INSTALLATION_DIRECTORY);
+				return Activator.getDefault().getPreferenceStore().getString(
+						PreferenceConstants.VM_DRIVER_INSTALLATION_DIRECTORY);
 			}
 
 			private String getDockerMachineInstallDir() {
-				return Activator.getDefault()
-						.getPreferenceStore()
-						.getString(PreferenceConstants.DOCKER_MACHINE_INSTALLATION_DIRECTORY);
+				return Activator.getDefault().getPreferenceStore().getString(
+						PreferenceConstants.DOCKER_MACHINE_INSTALLATION_DIRECTORY);
 			}
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (!DockerMachine
-						.checkPathToDockerMachine(getDockerMachineInstallDir())
-						|| getVMDriverInstallDir().equals("")) { //$NON-NLS-1$
-					final boolean confirm = MessageDialog.openConfirm(
-							getShell(),
-									WizardMessages.getString(
-											"DockerMachineSupport.title"), //$NON-NLS-1$
-							WizardMessages
-									.getString("DockerMachineSupport.message")); //$NON-NLS-1$
-					if (confirm) {
-						PreferencesUtil.createPreferenceDialogOn(getShell(),
-								DOCKER_MACHINE_PREFERENCE_PAGE_ID,
-								new String[] {
-										DOCKER_MACHINE_PREFERENCE_PAGE_ID },
-								null).open();
-						// after user input data, check again
-						if (getDockerMachineInstallDir().equals("") //$NON-NLS-1$
-								|| getVMDriverInstallDir().equals("")) { //$NON-NLS-1$
-							return;
-						}
-					} else {
-						return;
-					}
+				if (!checkDockerMachineInstallDirs()) {
+					return;
 				}
 				final String dockerMachineInstallDir = getDockerMachineInstallDir();
 				final String vmDriverInstallDir = getVMDriverInstallDir();
 				final Map<String, Boolean> allMachineStates = retrieveDockerMachineNames(
-						dockerMachineInstallDir,
-							vmDriverInstallDir);
+						dockerMachineInstallDir, vmDriverInstallDir);
 				final List<String> activeMachineNames = allMachineStates
 						.entrySet().stream()
 						.filter((machineEntry) -> machineEntry.getValue()
@@ -722,15 +698,18 @@ public class NewDockerConnectionPage extends WizardPage {
 						.collect(Collectors.toList());
 				if (activeMachineNames.size() > 0) {
 					ListDialog connPrompt = new ListDialog(getShell());
-					connPrompt.setContentProvider(new ConnectionSelectionContentProvider());
-					connPrompt.setLabelProvider(new ConnectionSelectionLabelProvider());
+					connPrompt.setContentProvider(
+							new ConnectionSelectionContentProvider());
+					connPrompt.setLabelProvider(
+							new ConnectionSelectionLabelProvider());
 					connPrompt.setTitle(WizardMessages.getString(
 							"DockerConnectionPage.searchDialog.title")); //$NON-NLS-1$
 					connPrompt.setMessage(WizardMessages.getString(
 							"DockerConnectionPage.searchDialog.message")); //$NON-NLS-1$
 					connPrompt.setInput(
 							activeMachineNames.toArray(new String[0]));
-					if (connPrompt.open() == 0 && connPrompt.getResult().length > 0) {
+					if (connPrompt.open() == 0
+							&& connPrompt.getResult().length > 0) {
 						final String name = ((String) connPrompt
 								.getResult()[0]);
 						model.setBindingMode(
@@ -738,17 +717,17 @@ public class NewDockerConnectionPage extends WizardPage {
 						model.setConnectionName(name);
 						model.setUnixSocketPath(null);
 						try {
-							final String host = DockerMachine.getHost(name,
-									dockerMachineInstallDir,
-									vmDriverInstallDir);
+							final String host = DockerMachine.getInstance()
+									.getHost(name, dockerMachineInstallDir,
+											vmDriverInstallDir);
 							model.setTcpHost(host);
 						} catch (DockerException e1) {
 							Activator.log(e1);
 						}
 						try {
-							final String certPath = DockerMachine.getCertPath(
-									name, dockerMachineInstallDir,
-									vmDriverInstallDir);
+							final String certPath = DockerMachine.getInstance()
+									.getCertPath(name, dockerMachineInstallDir,
+											vmDriverInstallDir);
 							if (certPath != null) {
 								model.setTcpTLSVerify(true);
 								model.setTcpCertPath(certPath);
@@ -791,6 +770,54 @@ public class NewDockerConnectionPage extends WizardPage {
 			}
 
 			/**
+			 * Verifies that the install dirs for Docker Machine and its driver
+			 * are valid, otherwise offers to open the preference page to fix
+			 * the settings.
+			 * 
+			 * @return <code>true</code> if the settings are valid,
+			 *         <code>false</code> otherwise.
+			 */
+			private boolean checkDockerMachineInstallDirs() {
+				if (!validDockerMachineInstallDirs()) {
+					final boolean confirm = MessageDialog.openConfirm(
+							getShell(),
+							WizardMessages
+									.getString("DockerMachineSupport.title"), //$NON-NLS-1$
+							WizardMessages
+									.getString("DockerMachineSupport.message")); //$NON-NLS-1$
+					if (confirm) {
+						PreferencesUtil.createPreferenceDialogOn(getShell(),
+								DOCKER_MACHINE_PREFERENCE_PAGE_ID,
+								new String[] {
+										DOCKER_MACHINE_PREFERENCE_PAGE_ID },
+								null).open();
+						// after user input data, check again
+						if (!validDockerMachineInstallDirs()) {
+							MessageDialog.openError(getShell(),
+									WizardMessages.getString(
+											"DockerMachineSupport.title"), //$NON-NLS-1$
+									WizardMessages.getString(
+											"DockerMachineSupport.message.invalid")); //$NON-NLS-1$
+							return false;
+						}
+					} else {
+						return false;
+					}
+				}
+				return true;
+			}
+
+			/**
+			 * @return <code>true</code> if the install dirs for Docker Machine
+			 *         and its drivers are valid, <code>false</code> otherwise.
+			 */
+			private boolean validDockerMachineInstallDirs() {
+				return DockerMachine.getInstance()
+						.checkPathToDockerMachine(getDockerMachineInstallDir())
+						&& !getVMDriverInstallDir().equals(""); //$NON-NLS-1$
+			}
+
+			/**
 			 * Retrieves the docker machine names along with a boolean flag to
 			 * indicate if it is running or not.
 			 * 
@@ -802,13 +829,13 @@ public class NewDockerConnectionPage extends WizardPage {
 					final String dockerMachineInstallDir,
 					final String vmDriverInstallDir) {
 				try {
-					final String[] dmNames = DockerMachine
+					final String[] dmNames = DockerMachine.getInstance()
 							.getNames(dockerMachineInstallDir);
 					return java.util.stream.Stream.of(dmNames)
 							.collect(Collectors.toMap(name -> name, name -> {
 								try {
-									return DockerMachine.getHost(name,
-											dockerMachineInstallDir,
+									return DockerMachine.getInstance().getHost(
+											name, dockerMachineInstallDir,
 											vmDriverInstallDir) != null;
 								} catch (DockerException e) {
 									Activator.log(e);
@@ -822,7 +849,6 @@ public class NewDockerConnectionPage extends WizardPage {
 			}
 		};
 
-			
 	}
 
 	/**
