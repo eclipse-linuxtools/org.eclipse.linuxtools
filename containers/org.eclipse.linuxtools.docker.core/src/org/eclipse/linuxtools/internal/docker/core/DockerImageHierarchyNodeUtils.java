@@ -38,9 +38,9 @@ public class DockerImageHierarchyNodeUtils {
 			final IDockerContainer container) {
 		final IDockerImageHierarchyNode parentImageNode = getContainerParentImageNode(
 				images, container.image());
-		final DockerImageHierarchyNode dockerImageHiearchyNode = getDockerImageHierarchyNode(
+		final DockerImageHierarchyNode dockerImageHierarchyNode = getDockerImageHierarchyNode(
 				container, parentImageNode);
-		return dockerImageHiearchyNode;
+		return dockerImageHierarchyNode;
 	}
 
 	/**

@@ -46,6 +46,11 @@ public class OpenInHierarchyViewCommandHandler extends AbstractHandler {
 				// open the Image Hierarchy View and set the selected image as
 				// the new
 				// input
+				if (retrieveImageHierarchyJob.getImageHierarchy() == null) {
+					Activator.logWarningMessage(CommandMessages.getString(
+							"command.showIn.imageHierarchyView.failure.missingHierarchy") //$NON-NLS-1$
+					);
+				}
 				Display.getDefault().asyncExec(() -> {
 					try {
 						final DockerImageHierarchyView dockerImageHierarchyView = (DockerImageHierarchyView) PlatformUI
@@ -59,9 +64,8 @@ public class OpenInHierarchyViewCommandHandler extends AbstractHandler {
 								retrieveImageHierarchyJob.getImageHierarchy());
 					} catch (PartInitException e) {
 						Activator.logErrorMessage(CommandMessages.getString(
-								"command.showIn.propertiesView.failure"), //$NON-NLS-1$
+								"command.showIn.imageHierarchyView.failure"), //$NON-NLS-1$
 								e);
-
 					}
 				});
 			}
