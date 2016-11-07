@@ -96,9 +96,14 @@ public class DockerComposeUpJob extends Job {
 						.setDockerComposeProcess(dockerComposeProcess); // $NON-NLS-1$
 				final int exitCode = dockerComposeSystemProcess.waitFor();
 				if (exitCode != 0) {
-					Activator.log(new DockerException(JobMessages
-							.getFormattedString("DockerComposeUp.exit", //$NON-NLS-1$
-									Integer.toString(exitCode))));
+					Display.getDefault()
+							.asyncExec(() -> MessageDialog.openError(
+									Display.getDefault().getActiveShell(),
+									JobMessages.getString(
+											"DockerCompose.dialog.title"), //$NON-NLS-1$
+									JobMessages.getString(
+											"DockerComposeUp.start.error")) //$NON-NLS-1$
+					);
 				}
 			} catch (DockerException | InterruptedException e) {
 				Display.getDefault()

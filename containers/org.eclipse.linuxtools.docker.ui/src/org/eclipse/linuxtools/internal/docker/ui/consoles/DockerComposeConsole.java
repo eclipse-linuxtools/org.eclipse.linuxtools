@@ -77,15 +77,15 @@ public class DockerComposeConsole extends IOConsole {
 
 					}
 				});
-		// dockerComposeProcess.getStreamsProxy().getErrorStreamMonitor()
-		// .addListener(new IStreamListener() {
-		// @Override
-		// public void streamAppended(final String text,
-		// final IStreamMonitor monitor) {
-		// writeContentInConsole(text);
-		//
-		// }
-		// });
+		dockerComposeProcess.getStreamsProxy().getErrorStreamMonitor()
+				.addListener(new IStreamListener() {
+					@Override
+					public void streamAppended(final String text,
+							final IStreamMonitor monitor) {
+						writeContentInConsole(text);
+
+					}
+				});
 	}
 
 	private void writeContentInConsole(final String text) {
