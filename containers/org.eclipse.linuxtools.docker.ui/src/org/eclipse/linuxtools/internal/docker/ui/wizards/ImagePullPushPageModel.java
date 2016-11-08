@@ -15,6 +15,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IRegistry;
 import org.eclipse.linuxtools.docker.ui.Activator;
+import org.eclipse.linuxtools.internal.docker.core.RegistryInfo;
 import org.eclipse.linuxtools.internal.docker.ui.databinding.BaseDatabindingModel;
 import org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceConstants;
 
@@ -60,7 +61,7 @@ public abstract class ImagePullPushPageModel extends BaseDatabindingModel {
 		final IPreferenceStore store = Activator.getDefault()
 				.getPreferenceStore();
 		store.putValue(PreferenceConstants.LAST_REGISTRY_ACCOUNT,
-				selectedRegistry.toString());
+				((RegistryInfo) selectedRegistry).getRegistryId());
 	}
 
 	public String getSelectedImageName() {

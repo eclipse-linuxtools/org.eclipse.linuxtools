@@ -34,6 +34,12 @@ public class RegistryAccountInfo extends RegistryInfo
 	}
 
 	@Override
+	public String getRegistryId() {
+		return "[username=" + username + ", email=" + email //$NON-NLS-1$ //$NON-NLS-2$
+				+ ", getServerAddress()=" + getServerAddress() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Override
 	public boolean isAuthProvided() {
 		return this.username != null && this.password != null;
 	}
