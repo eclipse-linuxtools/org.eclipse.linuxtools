@@ -65,6 +65,10 @@
       <id>repo.eclipse.org</id>
       <url>https://repo.eclipse.org/content/groups/releases/</url>
     </pluginRepository>
+    <pluginRepository>
+      <id>Maven Central Proxy</id>
+      <url>https://repo.eclipse.org/content/repositories/maven_central/</url>
+    </pluginRepository>
   </pluginRepositories>
 
   <profiles>
