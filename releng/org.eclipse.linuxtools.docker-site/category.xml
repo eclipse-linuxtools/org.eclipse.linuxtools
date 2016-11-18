@@ -24,6 +24,12 @@
         <category name="Docker Client Dependencies"/>
    </iu>
 
+   <iu id="org.apache.httpcomponents.httpcore" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
+   <iu id="org.apache.httpcomponents.httpclient" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
    <iu id="com.fasterxml.jackson.core.jackson-annotations" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
@@ -42,28 +48,28 @@
    <iu id="com.fasterxml.jackson.jaxrs.jackson-jaxrs-json-provider" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="com.fasterxml.jackson.module.jackson-module-jaxb-annotations" version="0.0.0">
-        <category name="Docker Client Dependencies"/>
-   </iu>
    <iu id="javax.ws.rs" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="com.kenai.jffi" version="0.0.0">
+   <iu id="com.github.jnr.jffi" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="jnr.constants" version="0.0.0">
+   <iu id="com.github.jnr.jffi.native" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="jnr.enxio" version="0.0.0">
+   <iu id="com.github.jnr.constants" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="jnr.ffi" version="0.0.0">
+   <iu id="com.github.jnr.enxio" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="jnr.posix" version="0.0.0">
+   <iu id="com.github.jnr.ffi" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="jnr.unixsocket" version="0.0.0">
+   <iu id="com.github.jnr.posix" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
+   <iu id="com.github.jnr.unixsocket" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="jnr.x86asm" version="0.0.0">
@@ -102,6 +108,12 @@
    <iu id="org.glassfish.jersey.media.jersey-media-json-jackson" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
+   <iu id="org.glassfish.jersey.ext.entityfiltering" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
+   <iu id="org.glassfish.jersey.core.jersey-server" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
    <iu id="javassist" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
@@ -115,6 +127,15 @@
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="org.objectweb.asm" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
+   <iu id="org.objectweb.asm.tree" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
+   <iu id="org.objectweb.asm.util" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
+   <iu id="org.objectweb.asm.analysis" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="org.apache.commons.compress" version="0.0.0">

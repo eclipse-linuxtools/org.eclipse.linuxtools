@@ -14,8 +14,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintStream;
-import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -98,7 +96,6 @@ import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.DockerClient.AttachParameter;
 import com.spotify.docker.client.DockerClient.BuildParam;
 import com.spotify.docker.client.DockerClient.ExecCreateParam;
-import com.spotify.docker.client.DockerClient.ExecStartParameter;
 import com.spotify.docker.client.DockerClient.LogsParam;
 import com.spotify.docker.client.DockerTimeoutException;
 import com.spotify.docker.client.LogStream;
@@ -1265,20 +1262,8 @@ public class DockerConnection
 			final DockerProgressHandler d = new DockerProgressHandler(handler);
 			final java.nio.file.Path p = FileSystems.getDefault()
 					.getPath(path.makeAbsolute().toOSString());
-			/*
-			 * Workaround error message thrown to stderr due to
-			 * lack of Guava 18.0. Remove this when we begin
-			 * using Guava 18.0.
-			 */
-			PrintStream oldErr = System.err;
-			System.setErr(new PrintStream(new OutputStream() {
-				@Override
-				public void write(int b) {
-				}
-			}));
 			String res = getClientCopy().build(p, d,
 					BuildParam.create("forcerm", "true")); //$NON-NLS-1$ //$NON-NLS-2$
-			System.setErr(oldErr);
 			return res;
 		} catch (com.spotify.docker.client.DockerRequestException e) {
 			throw new DockerException(e.message());
@@ -1296,20 +1281,8 @@ public class DockerConnection
 			DockerProgressHandler d = new DockerProgressHandler(handler);
 			java.nio.file.Path p = FileSystems.getDefault().getPath(
 					path.makeAbsolute().toOSString());
-			/*
-			 * Workaround error message thrown to stderr due to
-			 * lack of Guava 18.0. Remove this when we begin
-			 * using Guava 18.0.
-			 */
-			PrintStream oldErr = System.err;
-			System.setErr(new PrintStream(new OutputStream() {
-				@Override
-				public void write(int b) {
-				}
-			}));
 			String res = getClientCopy().build(p, name, d,
 					BuildParam.create("forcerm", "true")); //$NON-NLS-1$ $NON-NLS-2$
-			System.setErr(oldErr);
 			return res;
 		} catch (com.spotify.docker.client.DockerRequestException e) {
 			throw new DockerException(e.message());
@@ -1345,20 +1318,8 @@ public class DockerConnection
 			final DockerProgressHandler d = new DockerProgressHandler(handler);
 			final java.nio.file.Path p = FileSystems.getDefault()
 					.getPath(path.makeAbsolute().toOSString());
-			/*
-			 * Workaround error message thrown to stderr due to
-			 * lack of Guava 18.0. Remove this when we begin
-			 * using Guava 18.0.
-			 */
-			PrintStream oldErr = System.err;
-			System.setErr(new PrintStream(new OutputStream() {
-				@Override
-				public void write(int b) {
-				}
-			}));
 			String res = getClientCopy().build(p, name, d,
 					getBuildParameters(buildOptions));
-			System.setErr(oldErr);
 			return res;
 		} catch (com.spotify.docker.client.DockerRequestException e) {
 			throw new DockerException(e.message());
@@ -1532,24 +1493,12 @@ public class DockerConnection
 				builder = builder.onBuild(c.onBuild());
 			}
 
-			/*
-			 * Workaround error message thrown to stderr due to
-			 * lack of Guava 18.0. Remove this when we begin
-			 * using Guava 18.0.
-			 */
-			PrintStream oldErr = System.err;
-			System.setErr(new PrintStream(new OutputStream() {
-				@Override
-				public void write(int b) {
-				}
-			}));
 			// create container with default random name if an empty/null
 			// containerName argument was passed
 			final ContainerCreation creation = client
 					.createContainer(builder.build(),
 					(containerName != null && !containerName.isEmpty())
 							? containerName : null);
-			System.setErr(oldErr);
 			final String id = creation.id();
 			// force a refresh of the current containers to include the new one
 			listContainers();
@@ -1806,19 +1755,8 @@ public class DockerConnection
 		ContainerInfo info;
 		try {
 			info = client.inspectContainer(id);
-			/*
-			 * Workaround error message thrown to stderr due to lack of Guava
-			 * 18.0. Remove this when we begin using Guava 18.0.
-			 */
-			PrintStream oldErr = System.err;
-			System.setErr(new PrintStream(new OutputStream() {
-				@Override
-				public void write(int b) {
-				}
-			}));
 			client.commitContainer(id, repo, tag, info.config(), comment,
 					author);
-			System.setErr(oldErr);
 			// update images list
 			// FIXME: are we refreshing the list of images twice ?
 			listImages();
@@ -2124,21 +2062,9 @@ public class DockerConnection
 					ExecCreateParam.attachStderr(),
 					ExecCreateParam.attachStdin(),
 					ExecCreateParam.tty());
-			/*
-			 * Temporary workaround for lack of support for 'Tty'.
-			 * We do not use DETACH so modify it in this scope to
-			 * pass 'Tty' to the execStart call.
-			 * This can be removed once
-			 * https://github.com/spotify/docker-client/pull/351
-			 * is accepted.
-			 */
-			String realValue = ExecStartParameter.DETACH.getName();
-			Field fname = ExecStartParameter.class.getDeclaredField("name"); //$NON-NLS-1$
-			fname.setAccessible(true);
-			fname.set(ExecStartParameter.DETACH, "Tty"); //$NON-NLS-1$
+
 			final LogStream pty_stream = client.execStart(execId,
-					DockerClient.ExecStartParameter.DETACH);
-			fname.set(ExecStartParameter.DETACH, realValue);
+					DockerClient.ExecStartParameter.TTY);
 			final IDockerContainerInfo info = getContainerInfo(id);
 			openTerminal(pty_stream, info.name() + " [shell]"); //$NON-NLS-1$
 		} catch (Exception e) {

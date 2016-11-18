@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="linuxtools-e4.6" sequenceNumber="4">
+<?pde version="3.8"?><target name="linuxtools-e4.6" sequenceNumber="5">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.swtchart" version="0.0.0"/>
 <unit id="org.cyberneko.html" version="0.0.0"/>
 <unit id="org.apache.xerces" version="0.0.0"/>
 <unit id="org.objectweb.asm" version="0.0.0"/>
-<unit id="com.fasterxml.jackson.module.jackson-module-jaxb-annotations" version="0.0.0"/>
 <unit id="com.spotify.docker.client" version="0.0.0"/>
 <unit id="com.spotify.docker.client.source" version="0.0.0"/>
 <unit id="org.bouncycastle.bcprov" version="0.0.0"/>
 <unit id="org.bouncycastle.bcpkix" version="0.0.0"/>
 <unit id="org.mockito" version="0.0.0"/>
 <unit id="org.assertj" version="0.0.0"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/S20160916162009/repository/"/>
-<repository location="http://download.eclipse.org/linuxtools/docker-client"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/S20161205183421/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.cdt.feature.group" version="0.0.0"/>
