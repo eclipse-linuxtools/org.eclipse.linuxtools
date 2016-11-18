@@ -57,7 +57,8 @@ public class RunImageLaunchConfigurationTabGroup
 				new RunImageLinksTab(runSelectionModel),
 				new RunImageEnvironmentTab(runVolumesModel),
 				new RunImageLabelsTab(runVolumesModel),
-				new RunImageResourcesTab(runVolumesModel) });
+				new RunImageResourcesTab(runVolumesModel),
+				new org.eclipse.debug.ui.CommonTab() });
 	}
 
 }
