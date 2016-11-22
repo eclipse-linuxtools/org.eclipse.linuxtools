@@ -270,6 +270,11 @@
 	        name="%command.copyfromcontainer.name">
         </command>
 		<command
+	        description="%command.copytocontainer.description"
+	        id="org.eclipse.linuxtools.docker.ui.commands.copytocontainer"
+	        name="%command.copytocontainer.name">
+        </command>
+		<command
 	        description="%command.displaycontainerlog.description"
 	        id="org.eclipse.linuxtools.docker.ui.commands.displayContainerLog"
 	        name="%command.displaycontainerlog.name">
@@ -665,6 +670,38 @@
      	<handler
         	class="org.eclipse.linuxtools.internal.docker.ui.commands.CopyFromContainerCommandHandler"
         	commandId="org.eclipse.linuxtools.docker.ui.commands.copyfromcontainer">
+     		<enabledWhen>
+        		<with
+              		variable="selection">
+           			<count
+                 		value="1">
+           			</count>
+           			<iterate
+                 		ifEmpty="false">
+              			<and>
+                 			<instanceof
+                       			value="org.eclipse.linuxtools.docker.core.IDockerContainer">
+                 			</instanceof>
+                 			<or>
+                    			<test
+                          			forcePluginActivation="true"
+                          			property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped"
+                          			value="false">
+                    			</test>
+                    			<test
+                          			forcePluginActivation="true"
+                          			property="org.eclipse.linuxtools.docker.propertytesters.container.isUnknown"
+                          			value="true">
+                    			</test>
+                 			</or>
+              			</and>
+           			</iterate>
+        		</with>
+     		</enabledWhen>
+  		</handler>
+     	<handler
+        	class="org.eclipse.linuxtools.internal.docker.ui.commands.CopyToContainerCommandHandler"
+        	commandId="org.eclipse.linuxtools.docker.ui.commands.copytocontainer">
      		<enabledWhen>
         		<with
               		variable="selection">
@@ -1611,6 +1648,32 @@
 	            </visibleWhen>
 		</menuContribution>
 		
+		<!-- explorer view context menu: copy to container -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu?after=org.eclipse.linuxtools.docker.ui.commands.copyfromcontainer">
+	  		<command
+	           commandId="org.eclipse.linuxtools.docker.ui.commands.copytocontainer"
+	           id="org.eclipse.linuxtools.docker.ui.commands.copytocontainer"
+	           icon="icons/copy_to_container.gif"
+	           style="push">
+		      </command>
+		          <visibleWhen
+	               checkEnabled="false">
+	               <with
+	                   variable="selection">
+	               <count
+	                      value="1">
+	                </count>
+	                <iterate
+	                      ifEmpty="false"
+	                      operator="and">
+	                 <instanceof
+	                       value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+	                </iterate>
+	               </with>
+	            </visibleWhen>
+		</menuContribution>
+		
 		
 		<!-- explorer view context menu: tag image -->
 		<menuContribution
@@ -1753,6 +1816,16 @@
 	           commandId="org.eclipse.linuxtools.docker.ui.commands.copyfromcontainer"
 	           id="org.eclipse.linuxtools.docker.ui.commands.copyfromcontainer"
 	           icon="icons/copy_from_container.gif"
+	           style="push">
+		      </command>
+		</menuContribution>
+		<!-- containers view context menu: copy to container -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerContainersView">
+	  		<command
+	           commandId="org.eclipse.linuxtools.docker.ui.commands.copytocontainer"
+	           id="org.eclipse.linuxtools.docker.ui.commands.copytocontainer"
+	           icon="icons/copy_to_container.gif"
 	           style="push">
 		      </command>
 		</menuContribution>
