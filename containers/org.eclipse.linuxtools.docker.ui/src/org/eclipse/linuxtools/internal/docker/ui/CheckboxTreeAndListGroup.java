@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.internal.docker.ui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -202,6 +203,11 @@ public class CheckboxTreeAndListGroup extends EventManager implements
 			treeViewer.setChecked(currentElement, checked);
 			treeViewer.setGrayed(currentElement,
 					checked && !whiteCheckedTreeItems.contains(currentElement));
+			// New - if in white list, make sure all descendent elements are
+			// checked
+			if (whiteCheckedTreeItems.contains(currentElement)) {
+				setTreeChecked(currentElement, true);
+			}
 		}
 	}
 
@@ -387,6 +393,55 @@ public class CheckboxTreeAndListGroup extends EventManager implements
 		}
 
 		return result.iterator();
+	}
+
+	/**
+	 * Returns a list of all of the items that are white checked. Any folders
+	 * that are white checked are added and then any files from white checked
+	 * folders are added.
+	 *
+	 * @return the list of all of the items that are white checked
+	 */
+	public Iterator getAllWhiteCheckedItems() {
+		List result = new ArrayList();
+		// Iterate through the children of the root as the root is not in the
+		// store
+		Object[] children = treeContentProvider.getChildren(root);
+		for (int i = 0; i < children.length; ++i) {
+			findAllWhiteCheckedItems(children[i], result);
+		}
+		return result.iterator();
+	}
+
+	/**
+	 * Find all of the white checked children of the treeElement and add them to
+	 * the collection. If the element itself is white select add it. If not then
+	 * add any selected list elements and recurse down to the children.
+	 * 
+	 * @param treeElement
+	 *            java.lang.Object
+	 * @param result
+	 *            java.util.Collection
+	 */
+	@SuppressWarnings("unchecked")
+	private void findAllWhiteCheckedItems(Object treeElement,
+			Collection result) {
+		if (whiteCheckedTreeItems.contains(treeElement)) {
+			result.add(treeElement);
+		} else {
+			Collection listChildren = (Collection) checkedStateStore
+					.get(treeElement);
+			// if it is not in the store then it and it's children are not
+			// interesting
+			if (listChildren == null) {
+				return;
+			}
+			result.addAll(listChildren);
+			Object[] children = treeContentProvider.getChildren(treeElement);
+			for (int i = 0; i < children.length; ++i) {
+				findAllWhiteCheckedItems(children[i], result);
+			}
+		}
 	}
 
 	/**
@@ -744,11 +799,11 @@ public class CheckboxTreeAndListGroup extends EventManager implements
 		// already been realized then this won't be necessary
 		if (!expandedTreeNodes.contains(item)) {
 			expandedTreeNodes.add(item);
-			checkNewTreeElements(dynamicTreeContentProvider.getChildren(item));
-			Object[] children = treeContentProvider.getElements(item);
+			Object[] children = treeContentProvider.getChildren(item);
 			for (int i = 0; i < children.length; ++i) {
 				dynamicTreeContentProvider.getElements(children[i]);
 			}
+			checkNewTreeElements(dynamicTreeContentProvider.getChildren(item));
 		}
 	}
 
