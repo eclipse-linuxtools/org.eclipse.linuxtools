@@ -199,8 +199,8 @@ public class CopyToContainerCommandHandler extends AbstractHandler {
 												.getShell(),
 										CommandMessages.getFormattedString(
 												ERROR_COPYING_TO_CONTAINER,
-												tmpDirName, container.name()),
-										e.getMessage()));
+												target, container.name()),
+										e.getCause().getMessage()));
 
 					}
 				} catch (InterruptedException e) {

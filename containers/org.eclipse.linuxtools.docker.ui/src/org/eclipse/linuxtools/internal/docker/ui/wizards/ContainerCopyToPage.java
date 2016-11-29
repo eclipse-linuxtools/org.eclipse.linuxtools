@@ -58,6 +58,7 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.FileSystemElement;
 import org.eclipse.ui.dialogs.WizardResourceImportPage;
@@ -109,11 +110,19 @@ public class ContainerCopyToPage
 
 	protected static final String DESTINATION_EMPTY_MESSAGE = CopyToContainerMessages.ContainerCopyTo_destinationEmpty;
 
+	protected static final String INTO_FOLDER_LABEL = CopyToContainerMessages.ContainerCopyTo_intoFolder;
+
+	protected static final String CONTAINER_DIRECTORY_MSG = CopyToContainerMessages.ContainerCopyTo_containerDirectoryMsg;
+
 	private FileSystemElement root;
+
+	private boolean isRunning;
 
 	private ContainerFileSystemProvider provider;
 
 	private String containerName;
+
+	private Text containerNameField;
 
 	private List<Object> fileSystemObjects = new ArrayList<>();
 
@@ -126,11 +135,13 @@ public class ContainerCopyToPage
      * @param selection IStructuredSelection
      */
 	public ContainerCopyToPage(FileSystemElement root,
-			ContainerFileSystemProvider provider, String containerName) {
+			ContainerFileSystemProvider provider, String containerName,
+			boolean isRunning) {
 		super("ContainerCopyToPage1", StructuredSelection.EMPTY);//$NON-NLS-1$
 		this.root = root;
 		this.provider = provider;
 		this.containerName = containerName;
+		this.isRunning = isRunning;
 		setTitle(NLS.bind(CopyToContainerMessages.ContainerCopyTo_title,
 				this.containerName));
 		setDescription(
@@ -158,8 +169,8 @@ public class ContainerCopyToPage
 	 * @param label
 	 *            the label from the button
 	 * @param defaultButton
-	 *            <code>true</code> if the button is to be the default button,
-	 *            and <code>false</code> otherwise
+	 *            <code>true</code> if thdocker stop vs pausee button is to be
+	 *            the default button, and <code>false</code> otherwise
 	 */
 	protected Button createButton(Composite parent, int id, String label,
 			boolean defaultButton) {
@@ -257,6 +268,41 @@ public class ContainerCopyToPage
 		// do nothing
 	}
 
+	@Override
+	protected void createDestinationGroup(Composite parent) {
+		if (isRunning) {
+			super.createDestinationGroup(parent);
+		} else {
+			// container specification group
+			Composite containerGroup = new Composite(parent, SWT.NONE);
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 3;
+			containerGroup.setLayout(layout);
+			containerGroup.setLayoutData(new GridData(
+					GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL));
+			containerGroup.setFont(parent.getFont());
+
+			// container label
+			Label resourcesLabel = new Label(containerGroup, SWT.NONE);
+			resourcesLabel.setText(INTO_FOLDER_LABEL);
+			resourcesLabel.setFont(parent.getFont());
+
+			// container name entry field
+			containerNameField = new Text(containerGroup,
+					SWT.SINGLE | SWT.BORDER);
+			BidiUtils.applyBidiProcessing(containerNameField, "file"); //$NON-NLS-1$
+
+			containerNameField.addListener(SWT.Modify, this);
+			GridData data = new GridData(
+					GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+			data.widthHint = SIZING_TEXT_FIELD_WIDTH;
+			containerNameField.setLayoutData(data);
+			containerNameField.setFont(parent.getFont());
+
+			Label dummyLabel = new Label(containerGroup, SWT.NONE);
+			dummyLabel.setText(" "); //$NON-NLS-1$
+		}
+	}
 	/**
 	 * Create the group for creating the root directory
 	 */
@@ -449,6 +495,14 @@ public class ContainerCopyToPage
 				CopyToContainerMessages.ContainerCopyTo_noneSelected);
 
 		return false;
+	}
+
+	@Override
+	protected IPath getResourcePath() {
+		if (isRunning) {
+			return super.getResourcePath();
+		}
+		return new Path(containerNameField.getText());
 	}
 
 	/**
@@ -651,7 +705,8 @@ public class ContainerCopyToPage
 	@Override
 	protected void handleContainerBrowseButtonPressed() {
 		ContainerDirectorySelectionDialog dialog = new ContainerDirectorySelectionDialog(
-				sourceNameField.getShell(), this.root, this.provider, null);
+				sourceNameField.getShell(), this.root, this.provider,
+				NLS.bind(CONTAINER_DIRECTORY_MSG, containerName));
 
 		if (dialog.open() == IStatus.OK) {
 			Object[] result = dialog.getResult();

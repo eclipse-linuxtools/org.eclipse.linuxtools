@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.linuxtools.docker.core.EnumDockerStatus;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.ui.Activator;
@@ -61,8 +62,12 @@ public class ContainerCopyTo extends Wizard {
 			e.printStackTrace();
 		}
 
+		boolean isRunning = EnumDockerStatus.fromStatusMessage(
+				container.status()) == EnumDockerStatus.RUNNING;
+
+
 		mainPage = new ContainerCopyToPage(sfo.getResult(), provider,
-				container.name());
+				container.name(), isRunning);
 		addPage(mainPage);
 	}
 
