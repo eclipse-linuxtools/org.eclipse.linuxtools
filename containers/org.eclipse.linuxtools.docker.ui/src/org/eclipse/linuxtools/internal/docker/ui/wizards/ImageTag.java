@@ -20,6 +20,7 @@ public class ImageTag extends Wizard {
 
 	public ImageTag(final String imageName) {
 		super();
+		setWindowTitle(WizardMessages.getString("ImageTag.title")); //$NON-NLS-1$
 		this.imageName = imageName;
 	}
 
