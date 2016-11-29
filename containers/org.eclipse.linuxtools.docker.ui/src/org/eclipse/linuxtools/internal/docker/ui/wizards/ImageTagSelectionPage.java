@@ -13,10 +13,12 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
@@ -35,6 +37,8 @@ import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IRegistry;
 import org.eclipse.linuxtools.docker.core.IRepositoryTag;
 import org.eclipse.linuxtools.docker.ui.Activator;
+import org.eclipse.linuxtools.internal.docker.core.RepositoryTag;
+import org.eclipse.linuxtools.internal.docker.core.RepositoryTagV2;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageSearchPage.IconColumnLabelProvider;
 import org.eclipse.swt.SWT;
@@ -59,6 +63,8 @@ public class ImageTagSelectionPage extends WizardPage {
 	 * 
 	 * @param model
 	 *            the model associated to this page
+	 * @param registry
+	 *            the registry on which the search is performed
 	 */
 	public ImageTagSelectionPage(final ImageSearchModel model, final IRegistry registry) {
 		super("ImageTagSelectionPage", //$NON-NLS-1$
@@ -89,19 +95,27 @@ public class ImageTagSelectionPage extends WizardPage {
 								2);
 						final String selectedImageName = ImageTagSelectionPage.this.model
 								.getSelectedImage().getName();
-						List<IRepositoryTag> repositoryTags;
 						try {
-							repositoryTags = registry
+							final List<IRepositoryTag> repositoryTags = registry
 									.getTags(selectedImageName);
+							// we have to convert to list of RepositoryTag which
+							// can be sorted
+							final List<RepositoryTag> tags = repositoryTags
+									.stream()
+									.map(c -> (RepositoryTag) c)
+									.collect(Collectors.toList());
+							Collections.sort(tags);
 							monitor.worked(1);
-							final List<DockerImageTagSearchResult> searchResults = new ArrayList<>();
 							final IDockerConnection connection = model
 									.getSelectedConnection();
-							for (IRepositoryTag repositoryTag : repositoryTags) {
-								searchResults.add(new DockerImageTagSearchResult(
-										selectedImageName, repositoryTag,
-										connection.hasImage(selectedImageName, repositoryTag.getName())));
-							}
+							final List<DockerImageTagSearchResult> searchResults = repositoryTags
+									.stream()
+									.map(t -> new DockerImageTagSearchResult(
+											selectedImageName, t,
+											connection.hasImage(
+													selectedImageName,
+													t.getName())))
+									.collect(Collectors.toList());
 							monitor.worked(1);
 							searchResultQueue.offer(searchResults);
 						} catch (DockerException e) {
@@ -163,6 +177,7 @@ public class ImageTagSelectionPage extends WizardPage {
 		super.dispose();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void createControl(final Composite parent) {
 		final int COLUMNS = 1;
@@ -195,7 +210,7 @@ public class ImageTagSelectionPage extends WizardPage {
 				SWT.NONE, SWT.LEFT, 75, new ImagePulledColumnLabelProvider());
 		tableViewer.setContentProvider(new ObservableListContentProvider());
 		// observe the viewer content
-		final IObservableList observableSearchResultModel = BeanProperties
+		final IObservableList<?> observableSearchResultModel = BeanProperties
 				.list(ImageSearchModel.class,
 						ImageSearchModel.IMAGE_TAG_SEARCH_RESULT)
 				.observe(model);
@@ -239,7 +254,12 @@ public class ImageTagSelectionPage extends WizardPage {
 		@Override
 		public String getText(final Object element) {
 			if (element instanceof DockerImageTagSearchResult) {
-				return ((DockerImageTagSearchResult) element).getLayer();
+				final String layer = ((DockerImageTagSearchResult) element).getLayer();
+				if (layer == null
+						|| layer.equals(RepositoryTagV2.UNKNOWN_LAYER)) {
+					return ""; //$NON-NLS-1$
+				}
+				return layer;
 			}
 			return super.getText(element);
 		}
