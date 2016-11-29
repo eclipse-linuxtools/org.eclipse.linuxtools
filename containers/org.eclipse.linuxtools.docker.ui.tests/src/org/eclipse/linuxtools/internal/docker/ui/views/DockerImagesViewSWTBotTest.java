@@ -214,8 +214,7 @@ public class DockerImagesViewSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		final PropertySheet propertySheet = SWTUtils
-				.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
+		SWTUtils.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
 		this.dockerImagesView.setFocus();
 		// select the container in the table
 		selectImageInTable("angry_bar");

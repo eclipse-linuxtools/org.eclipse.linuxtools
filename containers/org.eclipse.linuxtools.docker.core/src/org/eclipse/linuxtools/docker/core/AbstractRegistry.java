@@ -14,11 +14,12 @@ import static javax.ws.rs.HttpMethod.GET;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 import javax.ws.rs.client.Client;
@@ -31,8 +32,11 @@ import javax.ws.rs.core.Response.Status;
 import org.eclipse.linuxtools.internal.docker.core.DockerImageSearchResult;
 import org.eclipse.linuxtools.internal.docker.core.ImageSearchResultV1;
 import org.eclipse.linuxtools.internal.docker.core.ImageSearchResultV2;
+import org.eclipse.linuxtools.internal.docker.core.OAuth2Utils;
+import org.eclipse.linuxtools.internal.docker.core.OAuth2Utils.BearerTokenResponse;
 import org.eclipse.linuxtools.internal.docker.core.RepositoryTag;
 import org.eclipse.linuxtools.internal.docker.core.RepositoryTagV2;
+import org.eclipse.osgi.util.NLS;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
@@ -49,6 +53,10 @@ public abstract class AbstractRegistry implements IRegistry {
 			"registry.hub.docker.com", //$NON-NLS-1$
 			"index.docker.io" //$NON-NLS-1$
 	};
+
+	private static final ClientConfig DEFAULT_CONFIG = new ClientConfig(
+			ObjectMapperProvider.class, JacksonFeature.class);
+
 	public static final String DOCKERHUB_REGISTRY = "https://index.docker.io"; //$NON-NLS-1$
 	// Cache the URL for searches to avoid excessive calls
 	private String cachedHTTPServerAddress;
@@ -118,9 +126,9 @@ public abstract class AbstractRegistry implements IRegistry {
 	}
 
 	@Override
-	public List<IDockerImageSearchResult> getImages(String term) throws DockerException {
-		final ClientConfig DEFAULT_CONFIG = new ClientConfig(
-				ObjectMapperProvider.class, JacksonFeature.class);
+	public List<IDockerImageSearchResult> getImages(String term)
+			throws DockerException {
+
 		final Client client = ClientBuilder.newClient(DEFAULT_CONFIG);
 		List<IDockerImageSearchResult> result = new ArrayList<>();
 		WebTarget queryImagesResource;
@@ -178,62 +186,170 @@ public abstract class AbstractRegistry implements IRegistry {
 	}
 
 	@Override
-	public List<IRepositoryTag> getTags(String repository) throws DockerException {
-		final ClientConfig DEFAULT_CONFIG = new ClientConfig(
-				ObjectMapperProvider.class, JacksonFeature.class);
+	public List<IRepositoryTag> getTags(String repository)
+			throws DockerException {
 		final Client client = ClientBuilder.newClient(DEFAULT_CONFIG);
-		WebTarget queryTagsResource;
-		List<IRepositoryTag> result = new ArrayList<>();
-
-		if (isVersion2()) {
-			RepositoryTagV2 crts;
-			queryTagsResource = client.target(getHTTPServerAddress()).path("v2") //$NON-NLS-1$
-					.path(repository).path("tags").path("list"); //$NON-NLS-1$ //$NON-NLS-2$
-			GenericType<RepositoryTagV2> REPOSITORY_TAGS_RESULT_LIST = new GenericType<RepositoryTagV2>() {
-			};
-			try {
-				crts = queryTagsResource.request(APPLICATION_JSON_TYPE).async()
-						.method(GET, REPOSITORY_TAGS_RESULT_LIST).get();
-				result.addAll(crts.getTags());
-			} catch (InterruptedException | ExecutionException e) {
-				throw new DockerException(e);
+		try {
+			if (isVersion2()) {
+				return retrieveTagsFromRegistryV2(client, repository);
+			} else if (isDockerHubRegistry()) {
+				return retrieveTagsFromDockerHub(client, repository);
+			} else {
+				return retrieveTagsFromRegistryV1(client, repository);
 			}
-
-			// Docker Hub Registry format is actually different from an actual
-			// registry
-		} else if (isDockerHubRegistry()) {
-			queryTagsResource = client.target(getHTTPServerAddress()).path("v1") //$NON-NLS-1$
-					.path("repositories").path(repository).path("tags"); //$NON-NLS-1$ //$NON-NLS-2$
-			GenericType<List<RepositoryTag>> REPOSITORY_TAGS_RESULT_LIST = new GenericType<List<RepositoryTag>>() {
-			};
-			try {
-				result.addAll(queryTagsResource.request(APPLICATION_JSON_TYPE)
-						.async().method(GET, REPOSITORY_TAGS_RESULT_LIST)
-						.get());
-			} catch (InterruptedException | ExecutionException e) {
-				e.printStackTrace();
-				// Do nothing
-			}
-		} else {
-			queryTagsResource = client.target(getHTTPServerAddress()).path("v1") //$NON-NLS-1$
-					.path("repositories").path(repository).path("tags"); //$NON-NLS-1$ //$NON-NLS-2$
-			GenericType<Map<String, String>> REPOSITORY_TAGS_RESULT_LIST = new GenericType<Map<String, String>>() {
-			};
-			Map<String, String> ret = new HashMap<>();
-			try {
-				ret = queryTagsResource.request(APPLICATION_JSON_TYPE).async()
-						.method(GET, REPOSITORY_TAGS_RESULT_LIST).get();
-				for (Entry<String, String> e : ret.entrySet()) {
-					RepositoryTag tag = new RepositoryTag();
-					tag.setName(e.getKey());
-					tag.setLayer(e.getValue());
-					result.add(tag);
-				}
-			} catch (InterruptedException | ExecutionException e) {
-				throw new DockerException(e);
-			}
+		} catch (InterruptedException | ExecutionException e) {
+			throw new DockerException(e);
 		}
-		return result;
+
+	}
+
+	/**
+	 * Retrieves the list of tags for a given repository, assuming that the
+	 * target registry is Docker Hub.
+	 * 
+	 * @param client
+	 *            the client to use
+	 * @param repository
+	 *            the repository to look-up
+	 * @return the list of tags for the given repository
+	 * @throws CancellationException
+	 *             if the computation was cancelled
+	 */
+	private List<IRepositoryTag> retrieveTagsFromDockerHub(final Client client,
+			final String repository)
+			throws DockerException {
+		try {
+			// if the given repository is an official repository, we need to
+			// prepend
+			// with 'library'
+			final String repoName = repository.contains("/") ? repository //$NON-NLS-1$
+					: "library/" + repository; //$NON-NLS-1$
+			// Docker Hub Registry may require a Bearer token which needs to be
+			// retrieved if the initial request returned a 401/Forbidden
+			// response.
+			// In that case, the "Www-Authenticate" response header provides the
+			// information needed to obtain a token.
+			// attempt to query the registry without a bearer token
+			final WebTarget queryTagsResource = client
+					.target(getHTTPServerAddress()).path("v2") //$NON-NLS-1$
+					.path(repoName).path("tags").path("list"); //$NON-NLS-1$ //$NON-NLS-2$
+			// return queryTagsResource.request(APPLICATION_JSON_TYPE).async()
+			// .method(GET, REPOSITORY_TAGS_RESULT_LIST).get();
+			final Response response = queryTagsResource
+					.request(APPLICATION_JSON_TYPE).async().get()
+					.get(10, TimeUnit.SECONDS);
+			if (response.getStatus() == 200) {
+				return response.readEntity(RepositoryTagV2.class).getTags();
+			} else if (response.getStatus() != 401) { // anything but
+														// "Unauthorized"
+				throw new DockerException(
+						NLS.bind(Messages.ImageTagsList_failure, repository,
+								response.readEntity(String.class)));
+			}
+			// for "Unauthorized response, let's get a Bearer token and try
+			// again
+			final String wwwAuthenticateResponseHeader = response
+					.getHeaderString("Www-Authenticate"); //$NON-NLS-1$
+			// parse the header which should have the following form:
+			// Bearer
+			// realm="https://auth.docker.io/token",service="registry.docker.io",scope="repository:jboss/wildfly:pull
+			final Map<String, String> authenticateInfo = OAuth2Utils
+					.parseWwwAuthenticateHeader(wwwAuthenticateResponseHeader);
+			if (authenticateInfo == null
+					|| !authenticateInfo.containsKey("realm") //$NON-NLS-1$
+					|| !authenticateInfo.containsKey("service") //$NON-NLS-1$
+					|| !authenticateInfo.containsKey("scope")) { //$NON-NLS-1$
+				throw new DockerException(NLS.bind(
+						Messages.ImageTagsList_failure_invalidWwwAuthenticateFormat,
+						repository));
+			}
+			// now, call the auth service to obtain a Bearer token:
+			final String realm = authenticateInfo.get("realm"); //$NON-NLS-1$
+			final String service = authenticateInfo.get("service"); //$NON-NLS-1$
+			final String scope = authenticateInfo.get("scope"); //$NON-NLS-1$
+			final WebTarget bearerTokenRetrievalTarget = client.target(realm)
+					.queryParam("service", service) //$NON-NLS-1$
+					.queryParam("scope", scope); //$NON-NLS-1$
+			final BearerTokenResponse bearerTokenRetrievalResponse = bearerTokenRetrievalTarget
+					.request(APPLICATION_JSON_TYPE).async()
+					.get(BearerTokenResponse.class).get(10, TimeUnit.SECONDS);
+			// finally, perform the same request, using the Bearer token:
+			final WebTarget queryTagsResourceWithBearerTokenTarget = client
+					.target(getHTTPServerAddress()).path("v2") //$NON-NLS-1$
+					.path(repoName).path("tags").path("list"); //$NON-NLS-1$ //$NON-NLS-2$
+			return queryTagsResourceWithBearerTokenTarget
+					.request(APPLICATION_JSON_TYPE)
+					.header("Authorization", //$NON-NLS-1$
+							"Bearer " + bearerTokenRetrievalResponse.getToken()) //$NON-NLS-1$
+					.async().get(RepositoryTagV2.class)
+					.get(10, TimeUnit.SECONDS)
+					.getTags();
+		} catch (TimeoutException | ExecutionException
+				| InterruptedException e) {
+			throw new DockerException(NLS.bind(Messages.ImageTagsList_failure,
+					repository, e.getMessage()), e);
+		}
+
+	}
+
+	/**
+	 * Retrieves the list of tags for a given repository, assuming that the
+	 * target registry is a registry v2 instance.
+	 * 
+	 * @param client
+	 *            the client to use
+	 * @param repository
+	 *            the repository to look-up
+	 * @return the list of tags for the given repository
+	 * @throws CancellationException
+	 *             - if the computation was cancelled
+	 * @throws ExecutionException
+	 *             - if the computation threw an exception
+	 * @throws InterruptedException
+	 *             - if the current thread was interrupted while waiting
+	 */
+	private List<IRepositoryTag> retrieveTagsFromRegistryV1(final Client client,
+			final String repository)
+			throws InterruptedException, ExecutionException {
+		final GenericType<Map<String, String>> REPOSITORY_TAGS_RESULT_LIST = new GenericType<Map<String, String>>() {
+		};
+		final WebTarget queryTagsResource = client
+				.target(getHTTPServerAddress()).path("v1") //$NON-NLS-1$
+				.path("repositories").path(repository).path("tags"); //$NON-NLS-1$ //$NON-NLS-2$
+		return queryTagsResource.request(APPLICATION_JSON_TYPE).async()
+				.method(GET, REPOSITORY_TAGS_RESULT_LIST).get().entrySet()
+				.stream().map(e -> new RepositoryTag(e.getKey(), e.getValue()))
+				.collect(Collectors.toList());
+	}
+
+	/**
+	 * Retrieves the list of tags for a given repository, assuming that the
+	 * target registry is a registry v1 instance.
+	 * 
+	 * @param client
+	 *            the client to use
+	 * @param repository
+	 *            the repository to look-up
+	 * @return the list of tags for the given repository
+	 * @throws CancellationException
+	 *             - if the computation was cancelled
+	 * @throws ExecutionException
+	 *             - if the computation threw an exception
+	 * @throws InterruptedException
+	 *             - if the current thread was interrupted while waiting
+	 */
+	private List<IRepositoryTag> retrieveTagsFromRegistryV2(final Client client,
+			final String repository)
+			throws InterruptedException, ExecutionException {
+		final GenericType<RepositoryTagV2> REPOSITORY_TAGS_RESULT_LIST = new GenericType<RepositoryTagV2>() {
+		};
+		final WebTarget queryTagsResource = client
+				.target(getHTTPServerAddress()).path("v2") //$NON-NLS-1$
+				.path(repository).path("tags").path("list"); //$NON-NLS-1$ //$NON-NLS-2$
+		final RepositoryTagV2 crts = queryTagsResource
+				.request(APPLICATION_JSON_TYPE).async()
+				.method(GET, REPOSITORY_TAGS_RESULT_LIST).get();
+		return crts.getTags();
 	}
 
 	@Override

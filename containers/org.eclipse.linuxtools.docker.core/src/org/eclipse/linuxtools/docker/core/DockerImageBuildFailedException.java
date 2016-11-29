@@ -42,7 +42,7 @@ public class DockerImageBuildFailedException extends DockerException {
 
 	public DockerImageBuildFailedException(final String image,
 			final String message) {
-		super(Messages.Image_Build_Failed_Header + image + ": " + message);
+		super(Messages.Image_Build_Failed_Header + image + ": " + message); //$NON-NLS-1$
 		this.image = image;
 	}
 
