@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -17,10 +18,12 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.ILaunchShortcut;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.ui.Activator;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
@@ -34,12 +37,40 @@ import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 public abstract class BaseResourceAwareLaunchShortcut implements ILaunchShortcut {
 
 	@Override
-	public void launch(ISelection selection, String mode) {
+	public void launch(final ISelection selection, final String mode) {
 		if (selection instanceof IStructuredSelection) {
-			IResource resource = (IResource) ((IStructuredSelection) selection)
-					.toArray()[0];
-			launch(resource, mode);
+			final IResource resource = getResourceFromSelection(selection);
+			if (resource != null) {
+				launch(resource, mode);
+			} else {
+				MessageDialog.openError(Display.getDefault().getActiveShell(),
+						LaunchMessages.getString("LaunchShortcut.error.msg"), //$NON-NLS-1$
+						LaunchMessages.getString("LaunchShortcut.error.msg")); //$NON-NLS-1$
+			}
 		}
+	}
+
+	/**
+	 * Retrieves the {@link IResource} associated with the first element in the
+	 * given {@code selection}.
+	 * 
+	 * @param selection
+	 *            the {@link ISelection} to process
+	 * @return the corresponding {@link IResource} or <code>null</code> if none
+	 *         was found
+	 */
+	private static IResource getResourceFromSelection(
+			final ISelection selection) {
+		final Object selectedElement = ((IStructuredSelection) selection)
+				.toArray()[0];
+		if (selectedElement instanceof IResource) {
+			return (IResource) selectedElement;
+		} else if (selectedElement instanceof IAdaptable) {
+			// may return null, which will be dealt with in the caller method
+			return ((IAdaptable) selection).getAdapter(IResource.class);
+		}
+		// if the selected element is neither a resource nor an 'adaptable'
+		return null;
 	}
 
 	@Override
