@@ -58,6 +58,8 @@ public class CopyToContainerMessages extends NLS {
 	public static String ContainerCopyTo_importProblems;
 	public static String ContainerCopyTo_showAdvanced;
 	public static String ContainerCopyTo_hideAdvanced;
+	public static String ContainerCopyTo_intoFolder;
+	public static String ContainerCopyTo_containerDirectoryMsg;
 
 	static {
 		// load message values from bundle file
