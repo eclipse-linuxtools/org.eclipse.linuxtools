@@ -26,8 +26,8 @@ import java.util.stream.Stream;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.docker.core.Activator;
+import org.eclipse.linuxtools.docker.core.DockerCommandNotFoundException;
 import org.eclipse.linuxtools.docker.core.DockerException;
-import org.eclipse.linuxtools.docker.core.DockerProcessException;
 
 /**
  * A utility class to run Java {@link Process} such as {@code docker-machine} or
@@ -93,7 +93,7 @@ public class ProcessLauncher {
 			final boolean commandExists = new ProcessLauncher()
 					.checkPathToCommand(baseCmdDir, cmdName);
 			if (!commandExists) {
-				throw new DockerProcessException(
+				throw new DockerCommandNotFoundException(
 						ProcessMessages.getFormattedString("Command_Not_Found", //$NON-NLS-1$
 								baseCmdDir, cmdName));
 			}

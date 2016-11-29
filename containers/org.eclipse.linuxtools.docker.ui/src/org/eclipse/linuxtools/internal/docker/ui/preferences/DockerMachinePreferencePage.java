@@ -76,7 +76,7 @@ public class DockerMachinePreferencePage extends FieldEditorPreferencePage
 						return true;
 					}
 				}
-				setMessage("");
+				setMessage(null);
 				return true;
 			}
 		};

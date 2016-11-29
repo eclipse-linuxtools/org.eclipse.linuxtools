@@ -22,6 +22,7 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.linuxtools.docker.core.DockerCommandNotFoundException;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerProgressHandler;
@@ -105,6 +106,15 @@ public class DockerComposeUpJob extends Job {
 											"DockerComposeUp.start.error")) //$NON-NLS-1$
 					);
 				}
+			} catch (DockerCommandNotFoundException e) {
+				// just display the error to the user, there's no need to report
+				// an error in the log and in AERI for that.
+				Display.getDefault()
+						.asyncExec(() -> MessageDialog.openError(
+								Display.getCurrent().getActiveShell(),
+								JobMessages.getString(
+										"DockerCompose.dialog.title"), //$NON-NLS-1$
+								e.getMessage()));
 			} catch (DockerException | InterruptedException e) {
 				Display.getDefault()
 						.asyncExec(() -> MessageDialog.openError(
