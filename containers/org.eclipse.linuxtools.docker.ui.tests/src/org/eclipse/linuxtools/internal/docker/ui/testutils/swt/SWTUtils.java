@@ -315,6 +315,24 @@ public class SWTUtils {
 	}
 
 	/**
+	 * Selects <strong> all child items</strong> in the given
+	 * <code>parentTreeItem</code> whose labels match the given
+	 * <code>items</code>.
+	 *
+	 * @param parentTree
+	 *            the parent tree
+	 * @param matchItems
+	 *            the items to select
+	 * @return
+	 */
+	public static SWTBotTree select(final SWTBotTree parentTree, final String... matchItems) {
+		final List<String> fullyQualifiedItems = Stream.of(parentTree.getAllItems()).filter(
+				treeItem -> Stream.of(matchItems).anyMatch(matchItem -> treeItem.getText().startsWith(matchItem)))
+				.map(item -> item.getText()).collect(Collectors.toList());
+		return parentTree.select(fullyQualifiedItems.toArray(new String[0]));
+	}
+
+	/**
 	 * Selects the given <code>treeItem</code> whose labels match the given
 	 * <code>items</code>.
 	 *

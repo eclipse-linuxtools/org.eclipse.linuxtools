@@ -13,7 +13,10 @@ package org.eclipse.linuxtools.internal.docker.ui.views;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.assertj.core.api.Assertions;
 import org.eclipse.jface.viewers.Viewer;
@@ -625,7 +628,27 @@ public class DockerExplorerViewSWTBotTest {
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.expand(dockerExplorerViewBot.bot().tree(), "Test");
 		// then
 		assertThat(connectionTreeItem.getItems()).isEmpty();
+	}
 
+	@Test
+	public void shouldRemoveAllConnectionsSimultaneously() throws DockerException, InterruptedException {
+		// given
+		final DockerClient client = MockDockerClientFactory.build();
+		final DockerConnection dockerConnection1 = MockDockerConnectionFactory.from("Test1", client)
+				.withDefaultTCPConnectionSettings();
+		final DockerConnection dockerConnection2 = MockDockerConnectionFactory.from("Test2", client)
+				.withDefaultTCPConnectionSettings();
+		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection1, dockerConnection2);
+		final List<String> initialConnections = Stream.of(dockerExplorerViewBot.bot().tree().getAllItems())
+				.map(item -> item.getText()).collect(Collectors.toList());
+		assertThat(initialConnections).contains("Test1", "Test2");
+		// when
+		SWTUtils.select(dockerExplorerViewBot.bot().tree(), "Test1", "Test2");
+		SWTUtils.getContextMenu(dockerExplorerViewBot.bot().tree(), "Remove").click();
+		// then
+		final List<String> remainingConnections = Stream.of(dockerExplorerViewBot.bot().tree().getAllItems())
+				.map(item -> item.getText()).collect(Collectors.toList());
+		assertThat(remainingConnections).doesNotContain("Test1", "Test2");
 	}
 
 }

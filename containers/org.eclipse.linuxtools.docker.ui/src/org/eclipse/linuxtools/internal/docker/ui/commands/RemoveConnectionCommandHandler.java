@@ -11,10 +11,11 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.commands;
 
+import java.util.stream.Stream;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jface.viewers.ITreeSelection;
-import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.ui.IWorkbenchPart;
@@ -33,9 +34,9 @@ public class RemoveConnectionCommandHandler extends AbstractHandler {
 		if(activePart instanceof CommonNavigator) {
 			final CommonViewer viewer = ((CommonNavigator)activePart).getCommonViewer();
 			final ITreeSelection selection = (ITreeSelection) viewer.getSelection();
-			for (TreePath treePath : selection.getPaths()) {
-				DockerConnectionManager.getInstance().removeConnection((IDockerConnection) treePath.getLastSegment());
-			}
+			Stream.of(selection.getPaths()).forEach(
+					p -> DockerConnectionManager.getInstance().removeConnection(
+							(IDockerConnection) p.getLastSegment()));
 		}
 		return null;
 	}
