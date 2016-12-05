@@ -406,7 +406,7 @@ public class EditDockerConnectionPage extends WizardPage {
 		return new SelectionAdapter() {
 
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(final SelectionEvent event) {
 				try {
 					getWizard().getContainer().run(true, false, monitor -> {
 						monitor.beginTask(WizardMessages.getString(
@@ -418,12 +418,13 @@ public class EditDockerConnectionPage extends WizardPage {
 							dockerConnection.close();
 							// ping succeeded
 							displaySuccessDialog();
-						} catch (DockerException e1) {
+						} catch (DockerException e) {
 							// only log if there's an underlying cause.
-							if (e1.getCause() != null) {
-								Activator.log(e1);
+							if (e.getCause() != null) {
+								displayErrorDialog(e.getCause());
+							} else {
+								displayErrorDialog(e);
 							}
-							displayErrorDialog();
 						}
 					});
 				} catch (InvocationTargetException | InterruptedException o_O) {
@@ -443,12 +444,14 @@ public class EditDockerConnectionPage extends WizardPage {
 				);
 			}
 
-			private void displayErrorDialog() {
+			private void displayErrorDialog(final Throwable cause) {
 				displayDialog(
 						WizardMessages
 								.getString("DockerConnectionPage.failure"), //$NON-NLS-1$
 						WizardMessages
-								.getString("DockerConnectionPage.pingFailure"), //$NON-NLS-1$
+								.getFormattedString(
+										"DockerConnectionPage.pingFailure", //$NON-NLS-1$
+										cause.getMessage()),
 						SWT.ICON_ERROR, new String[] { WizardMessages
 								.getString("DockerConnectionPage.ok") } //$NON-NLS-1$
 				);
