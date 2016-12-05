@@ -116,7 +116,7 @@ public class ContainerCopyToPage
 
 	private FileSystemElement root;
 
-	private boolean isRunning;
+	private boolean canBrowseContainer;
 
 	private ContainerFileSystemProvider provider;
 
@@ -129,19 +129,26 @@ public class ContainerCopyToPage
 	private IPath destination;
 
 	/**
-     *	Creates an instance of this class
-     *
-     * @param aWorkbench IWorkbench
-     * @param selection IStructuredSelection
-     */
+	 * Constructor
+	 * 
+	 * @param root
+	 *            - file system element root of the Container file system ("/")
+	 * @param provider
+	 *            - file system provider that can dynamically traverse Container
+	 *            directories
+	 * @param containerName
+	 *            - name of Container
+	 * @param canBrowseContainer
+	 *            - whether we can browse Container's file system or not
+	 */
 	public ContainerCopyToPage(FileSystemElement root,
 			ContainerFileSystemProvider provider, String containerName,
-			boolean isRunning) {
+			boolean canBrowseContainer) {
 		super("ContainerCopyToPage1", StructuredSelection.EMPTY);//$NON-NLS-1$
 		this.root = root;
 		this.provider = provider;
 		this.containerName = containerName;
-		this.isRunning = isRunning;
+		this.canBrowseContainer = canBrowseContainer;
 		setTitle(NLS.bind(CopyToContainerMessages.ContainerCopyTo_title,
 				this.containerName));
 		setDescription(
@@ -270,7 +277,7 @@ public class ContainerCopyToPage
 
 	@Override
 	protected void createDestinationGroup(Composite parent) {
-		if (isRunning) {
+		if (canBrowseContainer) {
 			super.createDestinationGroup(parent);
 		} else {
 			// container specification group
@@ -499,7 +506,7 @@ public class ContainerCopyToPage
 
 	@Override
 	protected IPath getResourcePath() {
-		if (isRunning) {
+		if (canBrowseContainer) {
 			return super.getResourcePath();
 		}
 		return new Path(containerNameField.getText());
