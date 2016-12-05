@@ -65,9 +65,15 @@ public class ContainerCopyTo extends Wizard {
 		boolean isRunning = EnumDockerStatus.fromStatusMessage(
 				container.status()) == EnumDockerStatus.RUNNING;
 
+		// we only want to browse a Container's file system if
+		// it is running and it has specified to use a tty
+		boolean usingTTY = false;
+		if (isRunning) {
+			usingTTY = container.info().config().tty();
+		}
 
 		mainPage = new ContainerCopyToPage(sfo.getResult(), provider,
-				container.name(), isRunning);
+				container.name(), isRunning && usingTTY);
 		addPage(mainPage);
 	}
 

@@ -20,6 +20,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.linuxtools.docker.core.EnumDockerStatus;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
+import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.ContainerFileProxy;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
@@ -68,8 +69,19 @@ public class ContainerCopyFrom extends Wizard {
 		boolean isRunning = EnumDockerStatus.fromStatusMessage(
 				container.status()) == EnumDockerStatus.RUNNING;
 
+		// we only want to browse a Container's file system if
+		// it is running and it has specified to use a tty
+		boolean usingTTY = false;
+		if (isRunning) {
+			IDockerContainerInfo info = connection
+					.getContainerInfo(container.id());
+			if (info != null) {
+				usingTTY = info.config().tty();
+			}
+		}
+
 		mainPage = new ContainerCopyFromPage(sfo.getResult(), provider,
-				container.name(), isRunning);
+				container.name(), isRunning && usingTTY);
 		addPage(mainPage);
 	}
 

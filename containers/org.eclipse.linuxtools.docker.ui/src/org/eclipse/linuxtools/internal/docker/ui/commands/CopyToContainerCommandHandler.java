@@ -191,7 +191,6 @@ public class CopyToContainerCommandHandler extends AbstractHandler {
 								tmpDir.toString(), container.id(), target);
 						deleteTmpDir(tmpDir);
 					} catch (final DockerException | IOException e) {
-						final String tmpDirName = tmpDir.toString();
 						Display.getDefault()
 								.syncExec(() -> MessageDialog.openError(
 										PlatformUI.getWorkbench()
@@ -200,7 +199,9 @@ public class CopyToContainerCommandHandler extends AbstractHandler {
 										CommandMessages.getFormattedString(
 												ERROR_COPYING_TO_CONTAINER,
 												target, container.name()),
-										e.getCause().getMessage()));
+										e.getCause() != null
+												? e.getCause().getMessage()
+												: e.getMessage()));
 
 					}
 				} catch (InterruptedException e) {
