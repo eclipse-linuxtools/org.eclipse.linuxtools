@@ -35,6 +35,8 @@ import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLa
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -43,6 +45,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -66,6 +69,7 @@ import org.eclipse.linuxtools.docker.core.IDockerImageInfo;
 import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig;
+import org.eclipse.linuxtools.internal.docker.core.DockerPortBinding;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.DataVolumeModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
@@ -128,7 +132,8 @@ public class LaunchConfigurationUtils {
 			final ILaunchConfigurationType type = manager
 					.getLaunchConfigurationType(
 							IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID);
-			final String imageName = createRunImageLaunchConfigurationName(image);
+			final String imageName = createRunImageLaunchConfigurationName(
+					image);
 			// using the image repo + first tag
 			final ILaunchConfigurationWorkingCopy workingCopy = getLaunchConfigurationWorkingCopy(
 					type, imageName);
@@ -137,7 +142,8 @@ public class LaunchConfigurationUtils {
 			workingCopy.setAttribute(CONNECTION_NAME,
 					image.getConnection().getName());
 			workingCopy.setAttribute(IMAGE_ID, image.id());
-			workingCopy.setAttribute(IMAGE_NAME, createRunImageLaunchConfigurationName(image));
+			workingCopy.setAttribute(IMAGE_NAME,
+					createRunImageLaunchConfigurationName(image));
 			if (containerName != null && !containerName.isEmpty()) {
 				workingCopy.setAttribute(CONTAINER_NAME, containerName);
 			}
@@ -284,6 +290,10 @@ public class LaunchConfigurationUtils {
 	 *         <code>&lt;containerPort&gt;:&lt;type&gt;:&lt;hostIP&gt;:&lt;hostPort&gt;</code>
 	 *         Note that the <code>&lt;hostIP&gt;</code> part may be empty if
 	 *         undefined by the user.
+	 *         <p>
+	 *         For example: <code>8080/tcp:1.2.3.4:8080</code> or
+	 *         <code>8080/tcp::8080</code>
+	 *         </p>
 	 */
 	public static List<String> serializePortBindings(
 			final Set<String> bindings) {
@@ -300,6 +310,39 @@ public class LaunchConfigurationUtils {
 			}
 		}
 		return serializedBindings;
+	}
+
+	/**
+	 * Deserializes the given Port Bindings to use them in an
+	 * {@link ILaunchConfiguration}
+	 * 
+	 * @param bindings
+	 *            a {@link List} of serialized bindings
+	 * @return a {@link Map} of {@link List} of {@link IDockerPortBinding}
+	 *         indexed by their associated container port
+	 * @see LaunchConfigurationUtils#serializePortBindings(Map)
+	 */
+	public static Map<String, List<IDockerPortBinding>> deserializePortBindings(
+			final List<String> bindings) {
+		if (bindings == null) {
+			return Collections.emptyMap();
+		}
+		return bindings.stream().map(b -> b.split(":"))
+				.collect(Collectors.toMap(
+						// the key in the result map
+						split -> split[0],
+						// the list with a new element as the value in the
+						// result map,
+						split -> Arrays.asList(
+								new DockerPortBinding(split[1], split[2])),
+						// the merge function, to be used if 2 elements exist
+						// for the same key
+						(e1, e2) -> {
+							final List<IDockerPortBinding> merges = new ArrayList<>();
+							merges.addAll(e1);
+							merges.addAll(e2);
+							return merges;
+						}));
 	}
 
 	/**
@@ -534,8 +577,7 @@ public class LaunchConfigurationUtils {
 	 * @return the {@link ILaunchConfiguration} name
 	 */
 	public static String createBuildImageLaunchConfigurationName(
-			final String imageName,
-			final IResource resource) {
+			final String imageName, final IResource resource) {
 		if (imageName != null) {
 			final String repository = BuildDockerImageUtils
 					.getRepository(imageName);
