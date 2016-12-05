@@ -108,8 +108,9 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 	public ImageRunSelectionModel(
 			final IDockerConnection selectedConnection) {
 		refreshConnectionNames();
-		if (selectedConnection != null)
+		if (selectedConnection != null) {
 			setSelectedConnectionName(selectedConnection.getName());
+		}
 		refreshImageNames();
 	}
 
@@ -125,19 +126,23 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 	}
 
 	public void refreshImageNames() {
-		this.imageNames = new ArrayList<>();
-		this.images = new HashMap<>();
-		if (getSelectedConnection() != null) {
-			for (IDockerImage image : getSelectedConnection().getImages()) {
-				if (!image.isIntermediateImage() && !image.isDangling()) {
-					for (String tag : image.repoTags()) {
-						images.put(tag, image);
-						imageNames.add(tag);
-					}
-				}
-			}
-			Collections.sort(imageNames);
+		final List<String> refreshedImageNames = new ArrayList<>();
+		final Map<String, IDockerImage> refreshedImages = new HashMap<>();
+		final IDockerConnection connection = getSelectedConnection();
+		if (connection != null && connection.isOpen()) {
+			connection.getImages().stream()
+					.filter(image -> !image.isIntermediateImage()
+							&& !image.isDangling())
+					.forEach(image -> {
+						image.repoTags().stream().forEach(repoTag -> {
+							refreshedImages.put(repoTag, image);
+							refreshedImageNames.add(repoTag);
+						});
+					});
+			Collections.sort(refreshedImageNames);
 		}
+		this.images = refreshedImages;
+		setImageNames(refreshedImageNames);
 	}
 
 	public ImageRunSelectionModel(final IDockerImage selectedImage) {
