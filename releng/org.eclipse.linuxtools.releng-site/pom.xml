@@ -148,7 +148,7 @@
               <repositories>
                 <repository>
                   <id>cbi-reports</id>
-                  <url>https://hudson.eclipse.org/cbi/job/cbi.p2repo.analyzers.build/lastSuccessfulBuild/artifact/output/p2repo/</url>
+                  <url>http://download.eclipse.org/cbi/updates/analyzers/4.6/I20161201-1633/</url>
                   <layout>p2</layout>
                 </repository>
                 <repository>
