@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Red Hat Inc.
+ * Copyright (c) 2013, 2016 Red Hat Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,8 @@ public class BarChart extends Chart {
     private IAxis xAxis = null;
 
     private boolean updateSuspended = false;
-    public void suspendUpdate(boolean suspend) {
+    @Override
+	public void suspendUpdate(boolean suspend) {
         if (updateSuspended == suspend) {
             return;
         }
