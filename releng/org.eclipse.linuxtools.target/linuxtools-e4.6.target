@@ -31,7 +31,7 @@
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.dstore.core" version="0.0.0"/>
-<repository location="http://download.eclipse.org/tm/updates/3.6"/>
+<repository location="http://download.eclipse.org/tm/updates/3.7"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.ptp.rdt.sync.feature.group" version="0.0.0"/>
@@ -57,7 +57,7 @@
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.tm.terminal.feature.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/tm/terminal/updates/4.0"/>
+<repository location="http://download.eclipse.org/tm/terminal/updates/4.1"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.launchbar.feature.group" version="0.0.0"/>
