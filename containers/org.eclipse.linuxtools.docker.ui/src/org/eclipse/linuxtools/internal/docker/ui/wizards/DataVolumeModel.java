@@ -121,7 +121,12 @@ public class DataVolumeModel extends BaseDatabindingModel
 			model.setSelected(Boolean.valueOf(items[3]));
 			break;
 		case HOST_FILE_SYSTEM:
-			if (Platform.OS_WIN32.equals(Platform.getOS())) {
+			// For Windows, there are multiple formats. If a user has specified
+			// a windows drive using the : separator, we have to form the
+			// host path by merging the path back together. If the user
+			// has specified an alternate format, we don't do this.
+			if (Platform.OS_WIN32.equals(Platform.getOS())
+					&& items.length > 5) {
 				model.setHostPathMount(items[2] + SEPARATOR + items[3]);
 				model.setReadOnly(Boolean.valueOf(items[4]));
 				model.setSelected(Boolean.valueOf(items[5]));
