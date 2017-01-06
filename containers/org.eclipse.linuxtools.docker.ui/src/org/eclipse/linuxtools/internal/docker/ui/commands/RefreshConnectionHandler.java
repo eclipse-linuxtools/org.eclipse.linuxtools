@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2016 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,32 +21,23 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.viewers.ITreeSelection;
-import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerContainersView;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerContainersCategory;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerContentProvider.DockerImagesCategory;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerImagesView;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
- * The command handler that manages the refreshing of all
- * {@link IDockerContainer}s and {@link IDockerImage}s. In the
- * DockerExplorerView, this is done for all {@link IDockerConnection}s and all
- * Connections are opened if not currently open.
+ * The command handler that manages the refreshing of a single
+ * {@link IDockerConnection} and its corresponding {@link IDockerContainer}s and
+ * {@link IDockerImage}s.
  */
-public class RefreshCommandHandler extends AbstractHandler {
+public class RefreshConnectionHandler extends AbstractHandler {
 
 	public final static String CONTAINERS_REFRESH_MSG = "ContainersRefresh.msg"; //$NON-NLS-1$
 	public final static String IMAGES_REFRESH_MSG = "ImagesRefresh.msg"; //$NON-NLS-1$
-	public final static String TOOLBAR_TYPE = "toolbar"; //$NON-NLS-1$
 
 	@Override
 	public Object execute(ExecutionEvent event) {
@@ -63,37 +54,16 @@ public class RefreshCommandHandler extends AbstractHandler {
 	private List<Job> getRefreshJobs(final IWorkbenchPart activePart) {
 		final IDockerConnection connection = getCurrentConnection(activePart);
 		final ArrayList<Job> jobs = new ArrayList<>();
-		if (activePart instanceof DockerImagesView) {
-			jobs.add(getRefreshImagesJob(connection));
-		} else if (activePart instanceof DockerContainersView) {
-			jobs.add(getRefreshContainersJob(connection));
-		} else if (activePart instanceof DockerExplorerView) {
-			DockerExplorerView dockerExplorerView = (DockerExplorerView) activePart;
-			final ITreeSelection selection = dockerExplorerView
-					.getCommonViewer().getStructuredSelection();
-			if (selection
-					.getFirstElement() instanceof DockerContainersCategory) {
-				jobs.add(getRefreshContainersJob(connection));
-			} else if (selection
-					.getFirstElement() instanceof DockerImagesCategory) {
-				jobs.add(getRefreshImagesJob(connection));
-			} else {
-				final IDockerConnection connections[] = DockerConnectionManager
-						.getInstance().getConnections();
-				for (IDockerConnection selectedConnection : connections) {
-					if (!selectedConnection.isOpen()) {
-						try {
-							selectedConnection.open(true);
-						} catch (DockerException e) {
-							// do nothing
-						}
-					}
-					if (selectedConnection.isOpen()) {
-						jobs.add(getRefreshContainersJob(selectedConnection));
-						jobs.add(getRefreshImagesJob(selectedConnection));
-					}
-				}
+		if (!connection.isOpen()) {
+			try {
+				connection.open(true);
+			} catch (DockerException e) {
+				// do nothing
 			}
+		}
+		if (connection.isOpen()) {
+			jobs.add(getRefreshContainersJob(connection));
+			jobs.add(getRefreshImagesJob(connection));
 		}
 		return jobs;
 	}

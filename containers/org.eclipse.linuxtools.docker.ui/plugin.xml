@@ -212,6 +212,10 @@
               id="org.eclipse.linuxtools.docker.ui.commands.addConnection"
               name="%command.addconnection.label">
         </command>
+        <command
+        	  id="org.eclipse.linuxtools.docker.ui.commands.refreshConnection"
+        	  name="%command.refreshConnection.label">
+        </command>
 		<command
 			id="org.eclipse.linuxtools.docker.ui.commands.enableConnection"
 			name="%command.enableconnection.label">
@@ -756,6 +760,10 @@
               class="org.eclipse.linuxtools.internal.docker.ui.commands.RefreshCommandHandler">
      	</handler>
 		<handler
+              commandId="org.eclipse.linuxtools.docker.ui.commands.refreshConnection"
+              class="org.eclipse.linuxtools.internal.docker.ui.commands.RefreshConnectionHandler">
+     	</handler>
+		<handler
               commandId="org.eclipse.linuxtools.docker.ui.commands.showAllContainers"
               class="org.eclipse.linuxtools.internal.docker.ui.commands.ShowAllContainersCommandHandler">
      	</handler>
@@ -1045,6 +1053,17 @@
 		          style="push">
 				</command>
 		</menuContribution>
+		<!-- explorer view toolbar: refresh connection -->
+		<menuContribution
+			locationURI="toolbar:org.eclipse.linuxtools.docker.ui.dockerExplorerView">
+				<command
+					commandId="org.eclipse.ui.file.refresh"
+					icon="icons/refresh_tab.gif"
+					id="org.eclipse.ui.file.refresh"
+					style="push"
+					mnemonic="R">
+				</command>
+		</menuContribution>
 		<!-- explorer view context menu: enable connection -->
 		<menuContribution
 			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu?after=?after=group.edit">
@@ -1071,6 +1090,33 @@
 	                </iterate>
 	               </with>
 	            </visibleWhen>
+				</command>
+		</menuContribution>
+		<!-- explorer view context menu: refresh connection -->
+		<menuContribution
+			locationURI="popup:org.eclipse.linuxtools.docker.ui.dockerExplorerView#PopupMenu?after=?after=group.edit">
+				<command
+					commandId="org.eclipse.linuxtools.docker.ui.commands.refreshConnection"
+					icon="icons/refresh_tab.gif"
+					id="org.eclipse.linuxtools.docker.ui.commands.refreshConnection"
+                    style="push">
+		              <visibleWhen
+	                    checkEnabled="false">
+	                    <with
+	                       variable="selection">
+	                       <count
+	                         value="1">
+	                       </count>
+	                    <iterate
+	                      ifEmpty="false"
+	                      operator="or">
+	                      <or>
+			                 <instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerConnection" />
+	                      </or>
+	                    </iterate>
+	                  </with>
+	                </visibleWhen>
 				</command>
 		</menuContribution>
 		<!-- explorer view context menu: remove connection -->
