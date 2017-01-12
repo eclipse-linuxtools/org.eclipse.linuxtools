@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?><target name="linuxtools-baseline" sequenceNumber="1">
+<locations>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.linuxtools.callgraph.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.cdt.libhover.devhelp.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.cdt.libhover.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.cdt.libhover.newlib.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.changelog.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.changelog.c.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.changelog.java.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.dataviewers.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.gcov.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.gprof.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.javadocs.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.man.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.oprofile.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.oprofile.remote.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.perf.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.perf.remote.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.profiling.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.profiling.remote.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.rpm.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.systemtap.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.valgrind.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.valgrind.remote.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/linuxtools/update-5.2.0"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.linuxtools.docker.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.linuxtools.vagrant.feature.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/linuxtools/update-docker-2.2.0"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<repository location="http://download.eclipse.org/releases/neon"/>
+</location>
+</locations>
+</target>
