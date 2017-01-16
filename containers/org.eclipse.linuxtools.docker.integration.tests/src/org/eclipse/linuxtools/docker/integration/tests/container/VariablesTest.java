@@ -33,7 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.DockerException;
+import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.Container;
 import com.spotify.docker.client.messages.ContainerInfo;
 import com.spotify.docker.client.messages.Image;

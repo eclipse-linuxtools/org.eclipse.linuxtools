@@ -20,7 +20,7 @@ import org.eclipse.linuxtools.internal.docker.core.UnixSocketConnectionSettings;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
-import com.spotify.docker.client.DockerCertificateException;
+import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.DockerClient;
 
 public class MockDockerConnection {

@@ -88,8 +88,18 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 		this.env = containerConfig != null ? containerConfig.env() : null;
 		this.cmd = containerConfig != null ? containerConfig.cmd() : null;
 		this.image = containerConfig != null ? containerConfig.image() : null;
-		this.volumes = containerConfig != null ? containerConfig.volumes()
-				: null;
+		/*
+		 * This is a bug in spotify/docker-client 6.1.1.
+		 * com.spotify.docker.client.ContainerConfig.volumes() tries
+		 * volumes.keySet() which might be null. For now we need to guard
+		 * against this.
+		 */
+		Set<String> res = null;
+		try {
+			res = containerConfig != null ? containerConfig.volumes() : null;
+		} catch (NullPointerException e) {
+		}
+		this.volumes = res;
 		this.workingDir = containerConfig != null ? containerConfig.workingDir()
 				: null;
 		this.entrypoint = containerConfig != null ? containerConfig.entrypoint()
