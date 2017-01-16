@@ -12,8 +12,8 @@ package org.eclipse.linuxtools.internal.docker.core;
 
 import org.eclipse.linuxtools.docker.core.IDockerProgressHandler;
 
-import com.spotify.docker.client.DockerException;
 import com.spotify.docker.client.ProgressHandler;
+import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.ProgressDetail;
 import com.spotify.docker.client.messages.ProgressMessage;
 

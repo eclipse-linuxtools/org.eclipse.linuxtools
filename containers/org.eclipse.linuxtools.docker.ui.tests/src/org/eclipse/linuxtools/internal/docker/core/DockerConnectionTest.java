@@ -27,7 +27,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionF
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.junit.Test;
 
-import com.spotify.docker.client.DockerCertificateException;
+import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.messages.Container;
 import com.spotify.docker.client.messages.Image;
