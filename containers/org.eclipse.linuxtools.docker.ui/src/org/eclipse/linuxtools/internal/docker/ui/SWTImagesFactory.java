@@ -67,6 +67,8 @@ public class SWTImagesFactory {
 	public static final String IMG_PULL = NAME_PREFIX + "pull.gif"; //$NON-NLS-1$
 	public static final String IMG_PUSH = NAME_PREFIX + "push.gif"; //$NON-NLS-1$
 	public static final String IMG_BUILD = NAME_PREFIX + "build_exec.png"; //$NON-NLS-1$
+	public static final String IMG_NETWORK_TAB = NAME_PREFIX
+			+ "network_tab.gif"; //$NON-NLS-1$
 	public static final String IMG_PAUSE = NAME_PREFIX + "suspend.gif"; //$NON-NLS-1$
 	public static final String IMG_PAUSE_D = NAME_PREFIX + "suspendd.gif"; //$NON-NLS-1$
 	public static final String IMG_PORTS_TAB = NAME_PREFIX + "ports_tab.gif"; //$NON-NLS-1$
@@ -150,6 +152,8 @@ public class SWTImagesFactory {
 	public static final ImageDescriptor DESC_PUSH = createManaged("", IMG_PUSH);
 	public static final ImageDescriptor DESC_BUILD = createManaged("",
 			IMG_BUILD);
+	public static final ImageDescriptor DESC_NETWORK_TAB = createManaged("",
+			IMG_NETWORK_TAB);
 	public static final ImageDescriptor DESC_PAUSE = createManaged("",
 			IMG_PAUSE);
 	public static final ImageDescriptor DESC_PAUSE_D = createManaged("",

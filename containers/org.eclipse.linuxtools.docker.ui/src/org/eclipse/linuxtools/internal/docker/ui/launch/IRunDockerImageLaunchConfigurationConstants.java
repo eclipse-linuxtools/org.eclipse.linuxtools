@@ -66,6 +66,8 @@ public interface IRunDockerImageLaunchConfigurationConstants {
 
 	String MEMORY_LIMIT = "memoryLimit"; //$NON-NLS-1$
 
+	String NETWORK_MODE = "networkMode"; //$NON-NLS-1$
+
 	String CONNECTION_NAME = "connectionName"; //$NON-NLS-1$
 
 	long MB = 1024l * 1024l;

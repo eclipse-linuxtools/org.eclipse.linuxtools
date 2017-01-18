@@ -22,21 +22,30 @@ public class MockDockerHostConfigFactory {
 	public static Builder publishAllPorts(final boolean publishAllPorts) {
 		return new Builder().publishAllPorts(publishAllPorts);
 	}
-	
+
+	public static Builder networkMode(final String networkMode) {
+		return new Builder().networkMode(networkMode);
+	}
+
 	public static class Builder {
-		
+
 		private final IDockerHostConfig hostConfig;
 
 		private Builder() {
 			this.hostConfig = Mockito
 					.mock(IDockerHostConfig.class, Mockito.RETURNS_DEEP_STUBS);
 		}
-		
+
 		public Builder publishAllPorts(final boolean publishAllPorts) {
 			Mockito.when(this.hostConfig.publishAllPorts()).thenReturn(publishAllPorts);
 			return this;
 		}
-		
+
+		public Builder networkMode(final String networkMode) {
+			Mockito.when(this.hostConfig.networkMode()).thenReturn(networkMode);
+			return this;
+		}
+
 		public IDockerHostConfig build() {
 			return this.hostConfig;
 		}

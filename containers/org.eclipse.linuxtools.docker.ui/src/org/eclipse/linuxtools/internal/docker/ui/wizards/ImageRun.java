@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2016 Red Hat.
+ * Copyright (c) 2014, 2016, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,7 @@ public class ImageRun extends Wizard {
 
 	private final ImageRunSelectionPage imageRunSelectionPage;
 	private final ImageRunResourceVolumesVariablesPage imageRunResourceVolumesPage;
+	private final ImageRunNetworkPage imageRunNetworkPage;
 
 	/**
 	 * Constructor when an {@link IDockerConnection} has been selected to run an
@@ -67,6 +68,7 @@ public class ImageRun extends Wizard {
 		this.imageRunSelectionPage = new ImageRunSelectionPage(connection);
 		this.imageRunResourceVolumesPage = new ImageRunResourceVolumesVariablesPage(
 				connection);
+		this.imageRunNetworkPage = new ImageRunNetworkPage(connection);
 	}
 
 	/**
@@ -92,12 +94,15 @@ public class ImageRun extends Wizard {
 				lastLaunchConfiguration);
 		this.imageRunResourceVolumesPage = new ImageRunResourceVolumesVariablesPage(
 				selectedImage, lastLaunchConfiguration);
+		this.imageRunNetworkPage = new ImageRunNetworkPage(selectedImage,
+				lastLaunchConfiguration);
 	}
 
 	@Override
 	public void addPages() {
 		addPage(imageRunSelectionPage);
 		addPage(imageRunResourceVolumesPage);
+		addPage(imageRunNetworkPage);
 	}
 
 	@Override
@@ -126,6 +131,8 @@ public class ImageRun extends Wizard {
 		final ImageRunSelectionModel selectionModel = this.imageRunSelectionPage
 				.getModel();
 		final ImageRunResourceVolumesVariablesModel resourcesModel = this.imageRunResourceVolumesPage
+				.getModel();
+		final ImageRunNetworkModel networkModel = this.imageRunNetworkPage
 				.getModel();
 
 		final DockerHostConfig.Builder hostConfigBuilder = new DockerHostConfig.Builder();
@@ -192,6 +199,11 @@ public class ImageRun extends Wizard {
 		hostConfigBuilder.binds(binds);
 		hostConfigBuilder.volumesFrom(volumesFrom);
 		hostConfigBuilder.privileged(selectionModel.isPrivileged());
+		String networkMode = networkModel.getNetworkModeString();
+		// if network mode is not default, set it in host config
+		if (networkMode != null
+				&& !networkMode.equals(ImageRunNetworkModel.DEFAULT_MODE))
+			hostConfigBuilder.networkMode(networkMode);
 		// memory constraints (in bytes)
 		if (resourcesModel.isEnableResourceLimitations()) {
 			hostConfigBuilder.memory(resourcesModel.getMemoryLimit() * MB);

@@ -55,6 +55,7 @@ import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils;
 import org.eclipse.linuxtools.internal.docker.ui.utils.IRunnableWithResult;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageNameValidator;
+import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunNetworkModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunResourceVolumesVariablesModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel.ExposedPortModel;
@@ -83,11 +84,14 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 	private final DataBindingContext dbc = new DataBindingContext();
 	private final ImageRunSelectionModel model;
 	private final ImageRunResourceVolumesVariablesModel volumesModel;
+	private final ImageRunNetworkModel networkModel;
 
 	public RunImageMainTab(ImageRunSelectionModel model,
-			ImageRunResourceVolumesVariablesModel volumesModel) {
+			ImageRunResourceVolumesVariablesModel volumesModel,
+			ImageRunNetworkModel networkModel) {
 		this.model = model;
 		this.volumesModel = volumesModel;
+		this.networkModel = networkModel;
 	}
 
 	public ImageRunSelectionModel getModel() {
@@ -328,6 +332,8 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 
 	private IValueChangeListener onConnectionSelectionChange() {
 		return event -> {
+			// do this first as we might return and not reset connection
+			networkModel.setConnection(model.getSelectedConnection());
 			IDockerImage selectedImage = model.getSelectedImage();
 			// skip if the selected image does not exist in the local Docker
 			// host
@@ -591,7 +597,7 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 				return false;
 			String connectionName = launchConfig.getAttribute(
 					IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
-					"");
+					""); //$NON-NLS-1$
 			if (connectionName.isEmpty()) {
 				return false;
 			} else {

@@ -135,6 +135,12 @@ public class RunDockerImageLaunchConfigurationDelegate
 				false);
 		hostConfigBuilder.privileged(privileged);
 
+		final String networkMode = config.getAttribute(
+				IRunDockerImageLaunchConfigurationConstants.NETWORK_MODE, ""); //$NON-NLS-1$
+		if (!networkMode.isEmpty()) {
+			hostConfigBuilder.networkMode(networkMode);
+		}
+
 		return hostConfigBuilder.build();
 	}
 

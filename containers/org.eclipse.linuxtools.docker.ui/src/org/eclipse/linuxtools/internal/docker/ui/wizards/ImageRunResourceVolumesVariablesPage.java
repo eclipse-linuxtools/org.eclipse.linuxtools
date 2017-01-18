@@ -106,7 +106,7 @@ public class ImageRunResourceVolumesVariablesPage extends WizardPage {
 	 */
 	public ImageRunResourceVolumesVariablesPage(
 			final IDockerConnection connection) throws DockerException {
-		super("ImageSelectionPage", //$NON-NLS-1$
+		super("ImageSelectionPage2", //$NON-NLS-1$
 				WizardMessages.getString("ImageRunResourceVolVarPage.title"), //$NON-NLS-1$
 				SWTImagesFactory.DESC_BANNER_REPOSITORY);
 		setPageComplete(true);
@@ -133,7 +133,7 @@ public class ImageRunResourceVolumesVariablesPage extends WizardPage {
 	public ImageRunResourceVolumesVariablesPage(final IDockerImage image,
 			final ILaunchConfiguration lastLaunchConfiguration)
 					throws DockerException {
-		super("ImageSelectionPage", //$NON-NLS-1$
+		super("ImageSelectionPage2", //$NON-NLS-1$
 				WizardMessages.getString("ImageRunResourceVolVarPage.title"), //$NON-NLS-1$
 				SWTImagesFactory.DESC_BANNER_REPOSITORY);
 		setPageComplete(true);
@@ -170,7 +170,7 @@ image);
 		scrollTop.setSize(point);
 		scrollTop.setMinSize(point);
 		// TODO: Workaround https://bugs.eclipse.org/bugs/show_bug.cgi?id=487160
-		setControl(container);
+		setControl(scrollTop);
 	}
 
 	private void createSectionSeparator(final Composite container,

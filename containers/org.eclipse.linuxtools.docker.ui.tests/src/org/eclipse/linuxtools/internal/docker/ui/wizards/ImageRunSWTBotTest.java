@@ -19,13 +19,20 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.linuxtools.docker.core.IDockerConnection;
+import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
+import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
+import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig;
 import org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.docker.ui.launch.LaunchConfigurationUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerInfoFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerContainerConfigFactory;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerHostConfigFactory;
+import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageInfoFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ButtonAssertions;
@@ -62,6 +69,25 @@ public class ImageRunSWTBotTest {
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 	private DockerExplorerView dockerExplorerView;
 	private SWTBotView dockerExplorerViewBot;
+
+	private String configureRunImageLaunchConfiguration(final IDockerConnection connection, final String networkMode) {
+		final IDockerImage image = MockDockerImageFactory.name("images").connection(connection).build();
+		final DockerContainerConfig containerConfig = MockDockerContainerConfigFactory.cmd("cmd").build();
+		final IDockerHostConfig hostConfig = MockDockerHostConfigFactory.publishAllPorts(true).networkMode(networkMode)
+				.build();
+		final ILaunchConfiguration runImageLaunchConfiguration = LaunchConfigurationUtils
+				.createRunImageLaunchConfiguration(image, containerConfig, hostConfig, "some_container", false);
+		return runImageLaunchConfiguration.getName();
+	}
+
+	private String configureRunImageLaunchConfiguration(final IDockerConnection connection) {
+		final IDockerImage image = MockDockerImageFactory.name("images").connection(connection).build();
+		final DockerContainerConfig containerConfig = MockDockerContainerConfigFactory.cmd("cmd").build();
+		final IDockerHostConfig hostConfig = MockDockerHostConfigFactory.publishAllPorts(true).build();
+		final ILaunchConfiguration runImageLaunchConfiguration = LaunchConfigurationUtils
+				.createRunImageLaunchConfiguration(image, containerConfig, hostConfig, "some_container", false);
+		return runImageLaunchConfiguration.getName();
+	}
 
 	@ClassRule
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
@@ -102,6 +128,92 @@ public class ImageRunSWTBotTest {
 		// able to check the wizard validation message
 		//assertThat(bot.text(WizardMessages.getString("ImageRunSelectionPage.containerWithSameName"))).isNotNull();
 		ButtonAssertions.assertThat(bot.button("Finish")).isNotEnabled();
+	}
+
+	@Test
+	public void testNetworkModeBridge() throws CoreException {
+		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("foo:latest").build())
+				.container(MockContainerFactory.name("foo_bar").build()).build();
+		final DockerConnection connection = MockDockerConnectionFactory.from("Test", client)
+				.withDefaultTCPConnectionSettings();
+		final String runImageLaunchConfigurationName = configureRunImageLaunchConfiguration(connection, "bridge");
+		final ILaunchConfiguration runDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
+				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, runImageLaunchConfigurationName);
+		assertThat(runDockerImageLaunchConfig).isNotNull();
+		assertThat(runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
+				"")).isEqualTo("Test");
+		assertThat(
+				runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.NETWORK_MODE, ""))
+						.isEqualTo("bridge");
+	}
+
+	@Test
+	public void testNetworkModeHost() throws CoreException {
+		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("foo:latest").build())
+				.container(MockContainerFactory.name("foo_bar").build()).build();
+		final DockerConnection connection = MockDockerConnectionFactory.from("Test", client)
+				.withDefaultTCPConnectionSettings();
+		final String runImageLaunchConfigurationName = configureRunImageLaunchConfiguration(connection, "host");
+		final ILaunchConfiguration runDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
+				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, runImageLaunchConfigurationName);
+		assertThat(runDockerImageLaunchConfig).isNotNull();
+		assertThat(runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
+				"")).isEqualTo("Test");
+		assertThat(
+				runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.NETWORK_MODE, ""))
+						.isEqualTo("host");
+	}
+
+	@Test
+	public void testNetworkModeDefault() throws CoreException {
+		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("foo:latest").build())
+				.container(MockContainerFactory.name("foo_bar").build()).build();
+		final DockerConnection connection = MockDockerConnectionFactory.from("Test", client)
+				.withDefaultTCPConnectionSettings();
+		final String runImageLaunchConfigurationName = configureRunImageLaunchConfiguration(connection, "");
+		final ILaunchConfiguration runDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
+				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, runImageLaunchConfigurationName);
+		assertThat(runDockerImageLaunchConfig).isNotNull();
+		assertThat(runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
+				"")).isEqualTo("Test");
+		assertThat(
+				runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.NETWORK_MODE, ""))
+						.isEqualTo("");
+	}
+
+	@Test
+	public void testNetworkModeContainer() throws CoreException {
+		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("foo:latest").build())
+				.container(MockContainerFactory.name("foo_bar").build()).build();
+		final DockerConnection connection = MockDockerConnectionFactory.from("Test", client)
+				.withDefaultTCPConnectionSettings();
+		final String runImageLaunchConfigurationName = configureRunImageLaunchConfiguration(connection,
+				"container:angry_bird");
+		final ILaunchConfiguration runDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
+				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, runImageLaunchConfigurationName);
+		assertThat(runDockerImageLaunchConfig).isNotNull();
+		assertThat(runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
+				"")).isEqualTo("Test");
+		assertThat(
+				runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.NETWORK_MODE, ""))
+						.isEqualTo("container:angry_bird");
+	}
+
+	@Test
+	public void testNetworkModeOther() throws CoreException {
+		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("foo:latest").build())
+				.container(MockContainerFactory.name("foo_bar").build()).build();
+		final DockerConnection connection = MockDockerConnectionFactory.from("Test", client)
+				.withDefaultTCPConnectionSettings();
+		final String runImageLaunchConfigurationName = configureRunImageLaunchConfiguration(connection, "jeffnet");
+		final ILaunchConfiguration runDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
+				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, runImageLaunchConfigurationName);
+		assertThat(runDockerImageLaunchConfig).isNotNull();
+		assertThat(runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.CONNECTION_NAME,
+				"")).isEqualTo("Test");
+		assertThat(
+				runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.NETWORK_MODE, ""))
+						.isEqualTo("jeffnet");
 	}
 
 	@Test

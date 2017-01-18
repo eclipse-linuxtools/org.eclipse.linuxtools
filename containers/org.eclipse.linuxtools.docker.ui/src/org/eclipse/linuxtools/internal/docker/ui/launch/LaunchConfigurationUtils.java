@@ -29,6 +29,7 @@ import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLa
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.LINKS;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.MB;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.MEMORY_LIMIT;
+import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.NETWORK_MODE;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PRIVILEGED;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PUBLISHED_PORTS;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PUBLISH_ALL_PORTS;
@@ -207,6 +208,10 @@ public class LaunchConfigurationUtils {
 					containerConfig.tty());
 			workingCopy.setAttribute(INTERACTIVE, containerConfig.openStdin());
 			workingCopy.setAttribute(PRIVILEGED, hostConfig.privileged());
+			if (hostConfig.networkMode() != null)
+				workingCopy.setAttribute(NETWORK_MODE,
+						hostConfig.networkMode());
+				
 			// resources limitations
 			if (containerConfig.memory() != null) {
 				workingCopy.setAttribute(ENABLE_LIMITS, true);

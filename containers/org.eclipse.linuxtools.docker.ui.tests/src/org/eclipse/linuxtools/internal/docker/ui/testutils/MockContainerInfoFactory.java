@@ -31,7 +31,7 @@ public class MockContainerInfoFactory {
 	public static Builder port(final String privatePort, final String hostIp, final String hostPort) {
 		return new Builder().port(privatePort, hostIp, hostPort);
 	}
-	
+
 	public static Builder link(final String link) {
 		return new Builder().link(link);
 	}
@@ -39,21 +39,27 @@ public class MockContainerInfoFactory {
 	public static Builder volume(final String volume) {
 		return new Builder().volume(volume);
 	}
-	
+
+	public static Builder networkMode(final String networkMode) {
+		return new Builder().networkMode(networkMode);
+	}
+
 	public static ContainerInfo build() {
 		return new Builder().build();
 	}
 
 	public static class Builder {
-		
+
 		private final ContainerInfo containerInfo;
 
 		private Map<String, List<PortBinding>> ports;
-		
+
 		private List<String> links;
 
 		private List<String> volumes;
-		
+
+		private String networkMode;
+
 		private Builder() {
 			this.containerInfo = Mockito
 					.mock(ContainerInfo.class, Mockito.RETURNS_DEEP_STUBS);
@@ -77,9 +83,9 @@ public class MockContainerInfoFactory {
 			Mockito.when(this.containerInfo.mountLabel()).thenReturn(null);
 			Mockito.when(this.containerInfo.volumes()).thenReturn(null);
 			Mockito.when(this.containerInfo.volumesRW()).thenReturn(null);
-			
+
 		}
-		
+
 		public Builder link(final String link) {
 			if(this.links == null) {
 				this.links = new ArrayList<>();
@@ -95,7 +101,12 @@ public class MockContainerInfoFactory {
 			this.volumes.add(volume);
 			return this;
 		}
-		
+
+		public Builder networkMode(final String networkMode) {
+			this.networkMode = networkMode;
+			return this;
+		}
+
 		public Builder port(final String privatePort, final String hostIp, final String hostPort) {
 			if(this.ports == null) {
 				this.ports = new HashMap<>();
@@ -107,7 +118,7 @@ public class MockContainerInfoFactory {
 			ports.get(privatePort).add(binding);
 			return this;
 		}
-		
+
 		public ContainerInfo build() {
 			final NetworkSettings networkSettings = Mockito.mock(NetworkSettings.class);
 			Mockito.when(this.containerInfo.networkSettings()).thenReturn(networkSettings);
@@ -116,6 +127,7 @@ public class MockContainerInfoFactory {
 			Mockito.when(this.containerInfo.hostConfig()).thenReturn(hostConfig);
 			Mockito.when(hostConfig.links()).thenReturn(this.links);
 			Mockito.when(hostConfig.binds()).thenReturn(this.volumes);
+			Mockito.when(hostConfig.networkMode()).thenReturn(this.networkMode);
 			return containerInfo;
 		}
 	}
