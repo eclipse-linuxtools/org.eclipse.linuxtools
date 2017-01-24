@@ -5415,7 +5415,8 @@ can be found at: http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz
     <function returntype="int">
       <prototype>
         <parameter content="int socket"/>
-        <parameter content="void *buffer. size_t size"/>
+        <parameter content="void *buffer"/>
+        <parameter content="size_t size"/>
         <parameter content="int flags"/>
         <parameter content="struct sockaddr *addr"/>
         <parameter content="socklen_t length"/>
