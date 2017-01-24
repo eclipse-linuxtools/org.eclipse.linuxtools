@@ -28,9 +28,9 @@ public class MockImageInfoFactory {
 	public static Builder volume(final String volume) {
 		return new Builder().volume(volume);
 	}
-	
+
 	public static class Builder {
-		
+
 		private final ImageInfo imageInfo;
 
 		private Set<String> volumes;
@@ -38,14 +38,15 @@ public class MockImageInfoFactory {
 		private List<String> command;
 
 		private List<String> entrypoint;
-		
+
+		private List<String> env;
+
 		private Builder() {
-			this.imageInfo = Mockito
-					.mock(ImageInfo.class, Mockito.RETURNS_DEEP_STUBS);
+			this.imageInfo = Mockito.mock(ImageInfo.class, Mockito.RETURNS_DEEP_STUBS);
 		}
-		
+
 		public Builder volume(final String volume) {
-			if(this.volumes == null) {
+			if (this.volumes == null) {
 				this.volumes = new HashSet<>();
 			}
 			this.volumes.add(volume);
@@ -56,12 +57,17 @@ public class MockImageInfoFactory {
 			this.command = command;
 			return this;
 		}
-		
+
 		public Builder entrypoint(final List<String> entrypoint) {
 			this.entrypoint = entrypoint;
 			return this;
 		}
-		
+
+		public Builder env(final List<String> env) {
+			this.env = env;
+			return this;
+		}
+
 		public ImageInfo build() {
 			final ContainerConfig config = Mockito.mock(ContainerConfig.class);
 			final ContainerConfig containerConfig = Mockito.mock(ContainerConfig.class);
@@ -70,9 +76,9 @@ public class MockImageInfoFactory {
 			Mockito.when(config.cmd()).thenReturn(this.command);
 			Mockito.when(config.entrypoint()).thenReturn(this.entrypoint);
 			Mockito.when(config.volumes()).thenReturn(this.volumes);
+			Mockito.when(config.env()).thenReturn(this.env);
 			return imageInfo;
 		}
 	}
-
 
 }

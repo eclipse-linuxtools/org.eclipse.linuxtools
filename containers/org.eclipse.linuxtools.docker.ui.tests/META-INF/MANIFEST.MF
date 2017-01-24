@@ -22,7 +22,6 @@ Require-Bundle: org.eclipse.linuxtools.docker.ui;bundle-version="1.0.0",
  org.mockito;bundle-version="1.9.5",
  org.eclipse.linuxtools.docker.tests.hamcrest-wrap;bundle-version="1.2.0",
  com.google.guava;bundle-version="15.0.0",
- org.eclipse.debug.core;bundle-version="3.10.0",
  org.glassfish.hk2.api;bundle-version="2.3.0",
  com.fasterxml.jackson.core.jackson-core;bundle-version="2.5.0",
  com.fasterxml.jackson.core.jackson-databind;bundle-version="2.5.0",
@@ -35,3 +34,4 @@ Require-Bundle: org.eclipse.linuxtools.docker.ui;bundle-version="1.0.0",
  org.eclipse.launchbar.ui.controls;bundle-version="1.0.0"
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.linuxtools.internal.docker.ui.testutils;x-friends:="org.eclipse.linuxtools.docker.reddeer,org.eclipse.linuxtools.docker.integration.tests"

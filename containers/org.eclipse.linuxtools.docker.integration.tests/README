@@ -1,0 +1,96 @@
+Running in Eclipse
+------------------
+* Launch configuration: 
+ ** use a Red Deer launcher
+ ** "Red Deer" Tab:
+ rd.closeWelcomeScreen = true
+ ** "Arguments" Tab:
+   -Dusage_reporting_enabled=false
+   -DdockerServerURI=
+   -DunixSocket=unix:///var/run/docker.sock 
+   -DdockerMachineName=
+   -DdockerHubUsername=<username>
+   -DdockerHubEmail=<email>
+   -DdockerHubPassword=<password>
+   -DdockerComposePath=/usr/bin
+   -DskipTests=false
+
+Running in Command Line
+-----------------------
+mvn clean verify
+-Dusage_reporting_enabled=false \
+-DdockerServerURI= \
+-DunixSocket=unix:///var/run/docker.sock \ 
+-DdockerMachineName=
+-DdockerHubUsername=<username> \
+-DdockerHubEmail=<email> \
+-DdockerHubPassword=<password> \
+-DskipTests=false
+-DdockerComposePath=/usr/bin
+
+Parameters:
+-----------
+
+dockerMockito
+-------------
+Mock docker - to run tests without installed Docker daemon. Its by default set to true.
+If should be set to false (e.g. "-DdockerMockito=false"), when tests are run with Docker daemon.
+
+dockerServerURI*
+---------------
+Docker server uri (e.g. "tcp://localhost:2375"). Typically used in Windows.
+
+dockerMachineName
+-----------------
+The docker-machine name that the tests should use to connect to (e.g. "default").   
+
+dockerHubUsername
+-----------------
+Username for the Docker hub account.
+
+dockerHubEmail
+--------------
+Email for the Docker hub account.
+
+dockerHubPassword
+-----------------
+Password for the Docker hub account.
+
+dockerComposePath
+-----------------
+Path to Docker Compose (e.g. "/usr/bin").
+
+
+How to run tests
+----------------
+Integration tests for Docker Tooling can be run with Mockito or with Docker Daemon.
+When running with Docker daemon, user should specify only one connection type: Unix socket or Docker server URI or Docker machine name.
+When running with Docker daemon, user should also have correctly setup Docker daemon.
+
+Running tests with Mockito (by default)
+---------------------------------------
+User can use just basic maven command: "mvn clean verify".
+Docker Daemon is mocked.
+
+Running tests with Docker Daemon
+--------------------------------
+You can also use Docker daemon to run tests. In this case, you can specify whether you are using a Unix socket, TCP connection, or Docker Machine.
+Do not forget to set Mockito to false be adding "-DdockerMockito=false" in command.
+
+Running tests with Unix Socket
+------------------------------
+Docker server Unix socket (e.r. "unix:///var/run/docker.sock"). Typically used in Linux or MacOS (on Windows use dockerServerURI).
+Example: "mvn clean verify -DunixSocket=unix:///var/run/docker.sock -DdockerMockito=false -DdockerHubUsername=user -DdockerHubEmail=user@server.com -DdockerHubPassword=password -DdockerComposePath=/path/to/docker/compose"
+
+Running tests with Docker Server URI
+------------------------------------
+Docker server uri (e.g. "tcp://localhost:2375"). Typically used in Windows.
+Example: "mvn clean verify -DdockerServerURI=tcp://localhost:2375 -DdockerMockito=false -DdockerHubUsername=user -DdockerHubEmail=user@server.com -DdockerHubPassword=password -DdockerComposePath=/path/to/docker/compose"
+
+Running tests with Docker Machine
+---------------------------------
+The docker-machine name that the tests should use to connect to (e.g. "default").   
+This only works if you have docker-machine set up and running. 
+Example: "mvn clean verify -DdockerMachineName=default -DdockerMockito=false -DdockerHubUsername=user -DdockerHubEmail=user@server.com -DdockerHubPassword=password -DdockerComposePath=/path/to/docker/compose"
+
+
