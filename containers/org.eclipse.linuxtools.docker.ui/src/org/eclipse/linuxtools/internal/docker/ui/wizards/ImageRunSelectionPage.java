@@ -422,7 +422,8 @@ public class ImageRunSelectionPage extends WizardPage {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP)
 				.grab(true, false).applyTo(addButton);
 		addButton
-				.setText(WizardMessages.getString("ImageRunSelectionPage.add")); //$NON-NLS-1$
+				.setText(WizardMessages
+						.getString("ImageRunSelectionPage.addButton")); //$NON-NLS-1$
 		addButton.addSelectionListener(onAddPort(exposedPortsTableViewer));
 		final Button editButton = new Button(buttonsContainers, SWT.NONE);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP)
