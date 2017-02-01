@@ -20,6 +20,7 @@ import java.util.Map.Entry;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
+import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -365,7 +366,20 @@ public class DockerExplorerView extends CommonNavigator implements
 		Display.getDefault().asyncExec(() -> {
 			if (getCommonViewer().getTree() != null
 					&& !getCommonViewer().getTree().isDisposed()) {
+				ITreeSelection old = (ITreeSelection) getCommonViewer()
+						.getSelection();
 				getCommonViewer().refresh(connection, true);
+				// Bug 499919 - Deselected connection after deleted tag
+				// if we had an old selection and now we don't, assume that
+				// operation in another view removed the item we had selected
+				// so reset the connection so the Images and Containers views
+				// don't reset to no connection.
+				ITreeSelection current = (ITreeSelection) getCommonViewer()
+						.getSelection();
+				if (!old.isEmpty() && current.isEmpty()) {
+					getCommonViewer()
+							.setSelection(new StructuredSelection(connection));
+				}
 			}
 		});
 	}
