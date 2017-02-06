@@ -387,8 +387,8 @@ public class LibHover implements ICHelpProvider {
                     try {
                         job.join();
                     } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        // Bug: 470309
+                        return null; // just return
                     }
                     if (job.getResult() == Status.OK_STATUS) {
                         result[0] = job.getASTName();
@@ -407,8 +407,8 @@ public class LibHover implements ICHelpProvider {
                     }
                 }
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
+                return null;
             }
         }
 
