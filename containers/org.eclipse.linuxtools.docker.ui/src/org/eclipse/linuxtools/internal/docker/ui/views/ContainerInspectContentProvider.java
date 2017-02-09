@@ -96,6 +96,7 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 					new Object[]{"PortBindings", LabelProviderUtils.reduce(hostConfig.portBindings())}, //$NON-NLS-1$
 					new Object[]{"Privileged", hostConfig.privileged()}, //$NON-NLS-1$
 					new Object[]{"PublishAllPorts", hostConfig.publishAllPorts()}, //$NON-NLS-1$
+					new Object[] { "SecurityOpt", hostConfig.securityOpt() }, //$NON-NLS-1$
 					new Object[]{"VolumesFrom", LabelProviderUtils.reduce(hostConfig.volumesFrom())}, //$NON-NLS-1$
 			};
 		} else if(propertyValue instanceof IDockerContainerConfig) {

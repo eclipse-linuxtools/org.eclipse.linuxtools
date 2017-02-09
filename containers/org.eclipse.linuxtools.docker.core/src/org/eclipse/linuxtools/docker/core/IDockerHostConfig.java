@@ -35,6 +35,11 @@ public interface IDockerHostConfig {
 
 	List<String> volumesFrom();
 
+	/**
+	 * @since 3.0
+	 */
+	List<String> securityOpt();
+
 	String networkMode();
 
 }

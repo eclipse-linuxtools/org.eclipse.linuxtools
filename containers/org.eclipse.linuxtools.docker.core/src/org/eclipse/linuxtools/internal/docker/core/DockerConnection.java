@@ -168,6 +168,7 @@ public class DockerConnection
 
 	private String name;
 	private IDockerConnectionSettings connectionSettings;
+	@SuppressWarnings("unused")
 	private IDockerConnectionInfo connectionInfo;
 	private final String username;
 	private final Object imageLock = new Object();
@@ -648,7 +649,7 @@ public class DockerConnection
 					Thread.sleep(delayTime);
 					// Second time in loop and following, pause a second to
 					// allow other threads to do meaningful work
-					delayTime = 1000;
+					delayTime = 500;
 					while (stream.hasNext()) {
 						ByteBuffer b = stream.next().content();
 						byte[] bytes = new byte[b.remaining()];
@@ -676,6 +677,8 @@ public class DockerConnection
 			} finally {
 				follow = false;
 				copyClient.close(); // we are done with copyClient..dispose
+				if (stream != null)
+					stream.close();
 				if (outputStream != null)
 					outputStream.close();
 			}
@@ -1114,6 +1117,17 @@ public class DockerConnection
 		return false;
 	}
 
+	public IDockerImage getImageByTag(final String tag) {
+		for (IDockerImage image : getImages()) {
+			for (String repoTag : image.repoTags()) {
+				if (repoTag.equals(tag)) {
+					return image;
+				}
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public IDockerProgressHandler getDefaultBuildImageProgressHandler(
 			String image, int lines) {
@@ -1451,6 +1465,9 @@ public class DockerConnection
 			}
 			if (hc.volumesFrom() != null) {
 				hbuilder.volumesFrom(hc.volumesFrom());
+			}
+			if (hc.securityOpt() != null) {
+				hbuilder.securityOpt(hc.securityOpt());
 			}
 			// FIXME: add the 'memory()' method in the IDockerHostConfig
 			// interface
@@ -1922,6 +1939,23 @@ public class DockerConnection
 		}
 	}
 
+	@Override
+	public void attachLog(final String id, final OutputStream out,
+			final OutputStream err)
+			throws DockerException, InterruptedException, IOException {
+		DockerClient copyClient;
+		try {
+			copyClient = getClientCopy();
+			LogStream stream = copyClient.logs(id, LogsParam.follow(),
+					LogsParam.stdout(), LogsParam.stderr());
+			stream.attach(out, err);
+			stream.close();
+		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+			throw new DockerException(e.getMessage(), e.getCause());
+		}
+	}
+
+	@Override
 	public IDockerContainerExit waitForContainer(final String id)
 			throws DockerException, InterruptedException {
 		try {
