@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Red Hat.
+ * Copyright (c) 2014, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@ import org.eclipse.linuxtools.docker.core.IRepositoryTag;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 
 /**
  * Repository tag retrieved from Docker Registry version 0.6.3
@@ -84,7 +84,7 @@ public class RepositoryTag
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("name", getName()) //$NON-NLS-1$
+		return MoreObjects.toStringHelper(this).add("name", getName()) //$NON-NLS-1$
 				.add("layer", getLayer()).toString(); //$NON-NLS-1$
 	}
 
