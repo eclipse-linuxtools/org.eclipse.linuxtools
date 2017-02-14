@@ -51,8 +51,8 @@
   <properties>
     <mirror-repo-name>updates-nightly</mirror-repo-name>
     <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
-    <tycho-version>0.26.0</tycho-version>
-    <tycho-extras-version>0.26.0</tycho-extras-version>
+    <tycho-version>1.0.0</tycho-version>
+    <tycho-extras-version>1.0.0</tycho-extras-version>
     <target-platform>linuxtools-e4.6</target-platform>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
@@ -320,7 +320,7 @@
        <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.7.8</version>
+        <version>0.7.9</version>
         <executions>
           <execution>
            <id>pre-test</id>
