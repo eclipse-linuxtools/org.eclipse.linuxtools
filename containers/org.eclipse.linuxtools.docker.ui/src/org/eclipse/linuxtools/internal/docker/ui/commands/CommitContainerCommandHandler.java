@@ -25,6 +25,7 @@ import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ContainerCommit;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -73,11 +74,12 @@ public class CommitContainerCommandHandler extends AbstractHandler {
 							container.id(), repo, tag, comment, author);
 					monitor.worked(1);
 				} catch (DockerException e) {
-					MessageDialog.openError(
+					Display.getDefault().syncExec(() -> MessageDialog.openError(
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 									.getShell(),
 							DVMessages.getFormattedString(
-							ERROR_COMMITTING_CONTAINER, tag), e.getMessage());
+									ERROR_COMMITTING_CONTAINER, tag),
+							e.getMessage()));
 				} finally {
 					monitor.done();
 				}
