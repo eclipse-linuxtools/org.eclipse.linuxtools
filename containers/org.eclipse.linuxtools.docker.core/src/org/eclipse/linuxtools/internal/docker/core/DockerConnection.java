@@ -374,7 +374,10 @@ public class DockerConnection
 	
 	@Override
 	public String getName() {
-		return name;
+		if (name != null && !name.isEmpty()) {
+			return name;
+		}
+		return Messages.Unnamed;
 	}
 
 	@Override

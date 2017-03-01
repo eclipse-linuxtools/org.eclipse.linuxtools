@@ -15,6 +15,7 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 
 	public static String Default_Name;
+	public static String Unnamed;
 	public static String Image_Not_Found_Header;
 	public static String Image_Pull_Failed_Header;
 	public static String Image_Push_Failed_Header;
