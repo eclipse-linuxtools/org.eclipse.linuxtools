@@ -128,8 +128,24 @@
 			<li>Top-level Images (only show the first repo tag for an Image with multiple tags)</li>
 		</ul>
 		<h3 id="Docker_Explorer_Context_Menu">Docker Explorer Context Menu</h3>
-		<p>For both Containers and Images in the Docker Explorer View, right-clicking on a selection brings up the context menu with tasks to
+		<p>For Connections, Containers, and Images in the Docker Explorer View, right-clicking on a selection brings up the context menu with tasks to
 			perform on the selected item(s).  Actions applying to multiple items are only enabled if the action can be performed on all selected items.</p>
+		<p>
+			<img border="0" src="images/LinuxToolsExplorerConnectionContextMenu.png"/>
+		</p>
+		<p>For Connections, one can:</p>
+		<ul>
+			<li>Show in Properties View</li>
+			<li>
+				<a href="#Edit_Connection_Wizard">Edit</a> - edit Connection properties
+			</li>
+			<li>Enable - enable a Connection that is no longer established</li>
+			<li>Refresh - refresh a Connection (update Containers and Images)</li>
+			<li>Remove - remove the Connection</li>
+			<li>
+				<a href="#Pull_Image">Pull</a> - pull an Image
+			</li>
+		</ul>
 		<p>
 			<img border="0" src="images/LinuxToolsExplorerContainerContextMenu.png"/>
 		</p>
@@ -350,6 +366,19 @@
 			<li>Labels - a user can provide labels to Containers which allows filtering them in the Containers View</li>
 			<li>Enable Resource Limits - this is used to restrict memory or CPU priority for the Container</li>
 		</ul>
+		<p>The third page of the Wizard (as of Docker Tools 2.3.0) adds the ability to set the network type:</p>
+		<p>
+			<img border="0" src="images/LinuxToolsRunImageWizard3.png"/>
+		</p>
+		<ul>
+			<li>Default - this is the standard Docker default and is the same as Bridge</li>
+			<li>Bridge - use the docker0 bridge network</li>
+			<li>Host - use the host's network stack (Container will have host network configuration)</li>
+			<li>None - use no network stack</li>
+			<li>Container - specify a running Container and use it's network stack</li>
+			<li>Other - specify a named network (see docker command's network option)</li>
+		</ul>
+		<h4 id="Run_Image_Launch_Configuration">Run Image Launch Configuration</h4>
 		<p>As of Docker Tools 1.2.0, the Run Image settings are stored in a Run Launch Configuration.  You can
 			optionally use the Run Configurations Dialog (Run -&gt; Run Configurations...) to edit or create a
 			Run Image configuration.  The same data that appears in the Run Image Wizard is broken up into
@@ -362,6 +391,7 @@
 			<li>Volumes - this tab allows a user to mount Host volumes in the Container or mount other Container volumes</li>
 			<li>Ports - this tab allows a user to expose ports from the Container</li>
 			<li>Links - this tab allows links to other Containers</li>
+			<li>Network - this tab allows setting the network type for the Container</li>
 			<li>Environment - this tab allows specification of environment variables for the Container</li>
 			<li>Resources - this tab allows the user to restrict memory or CPU priority for the Container</li>
 		</ul>
