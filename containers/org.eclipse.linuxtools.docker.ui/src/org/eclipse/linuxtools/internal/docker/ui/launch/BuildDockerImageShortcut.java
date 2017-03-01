@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2016 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -83,23 +83,19 @@ public class BuildDockerImageShortcut
 			final IResource dockerfile) {
 		try {
 			if (!DockerConnectionManager.getInstance().hasConnections()) {
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						boolean confirm = MessageDialog.openQuestion(
+				Display.getDefault().asyncExec(() -> {
+					boolean confirm = MessageDialog.openQuestion(
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+									.getShell(),
+							LaunchMessages.getString(
+									"BuildDockerImageShortcut.no.connections.msg"), //$NON-NLS-1$
+							LaunchMessages.getString(
+									"BuildDockerImageShortcut.no.connections.desc")); //$NON-NLS-1$
+					if (confirm) {
+						final NewDockerConnection newConnWizard = new NewDockerConnection();
+						CommandUtils.openWizard(newConnWizard,
 								PlatformUI.getWorkbench()
-										.getActiveWorkbenchWindow().getShell(),
-								LaunchMessages.getString(
-										"BuildDockerImageShortcut.no.connections.msg"), //$NON-NLS-1$
-								LaunchMessages.getString(
-										"BuildDockerImageShortcut.no.connections.desc")); //$NON-NLS-1$
-						if (confirm) {
-							final NewDockerConnection newConnWizard = new NewDockerConnection();
-							CommandUtils.openWizard(newConnWizard,
-									PlatformUI.getWorkbench()
-											.getActiveWorkbenchWindow()
-											.getShell());
-						}
+										.getActiveWorkbenchWindow().getShell());
 					}
 				});
 				return null;

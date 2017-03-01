@@ -3,7 +3,6 @@ package org.eclipse.linuxtools.internal.docker.ui.views;
 import java.util.Collection;
 
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -154,12 +153,7 @@ public abstract class BasePropertySection extends AbstractPropertySection {
 		copyAction = new CopyValueAction(getTreeViewer(), clipboard);
 
 		MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
-		menuMgr.addMenuListener(new IMenuListener() {
-			@Override
-			public void menuAboutToShow(IMenuManager manager) {
-				handleMenuAboutToShow(manager);
-			}
-		});
+		menuMgr.addMenuListener(manager -> handleMenuAboutToShow(manager));
 		pageSite.registerContextMenu(
 				"org.eclipse.linuxtools.docker.ui.BaseProperySection.menuid", //$NON-NLS-1$
 				menuMgr, treeViewer);

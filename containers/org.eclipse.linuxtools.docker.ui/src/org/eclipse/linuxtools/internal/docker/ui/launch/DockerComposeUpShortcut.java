@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat.
+ * Copyright (c) 2016, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -85,23 +85,19 @@ public class DockerComposeUpShortcut extends BaseResourceAwareLaunchShortcut {
 			final IResource dockerComposeScript) {
 		try {
 			if (!DockerConnectionManager.getInstance().hasConnections()) {
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						final boolean confirm = MessageDialog.openQuestion(
+				Display.getDefault().asyncExec(() -> {
+					final boolean confirm = MessageDialog.openQuestion(
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+									.getShell(),
+							LaunchMessages.getString(
+									"DockerComposeUpShortcut.no.connections.msg"), //$NON-NLS-1$
+							LaunchMessages.getString(
+									"DockerComposeUpShortcut.no.connections.desc")); //$NON-NLS-1$
+					if (confirm) {
+						final NewDockerConnection newConnWizard = new NewDockerConnection();
+						CommandUtils.openWizard(newConnWizard,
 								PlatformUI.getWorkbench()
-										.getActiveWorkbenchWindow().getShell(),
-								LaunchMessages.getString(
-										"DockerComposeUpShortcut.no.connections.msg"), //$NON-NLS-1$
-								LaunchMessages.getString(
-										"DockerComposeUpShortcut.no.connections.desc")); //$NON-NLS-1$
-						if (confirm) {
-							final NewDockerConnection newConnWizard = new NewDockerConnection();
-							CommandUtils.openWizard(newConnWizard,
-									PlatformUI.getWorkbench()
-											.getActiveWorkbenchWindow()
-											.getShell());
-						}
+										.getActiveWorkbenchWindow().getShell());
 					}
 				});
 				return null;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2016 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -127,14 +127,11 @@ public class ImageTagSelectionPage extends WizardPage {
 					TimeUnit.SECONDS);
 			final List<DockerImageTagSearchResult> searchResult = (res == null)
 					? new ArrayList<>() : res;
-			Display.getCurrent().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					ImageTagSelectionPage.this.model
-							.setImageTagSearchResult(searchResult);
-					// refresh the wizard buttons
-					getWizard().getContainer().updateButtons();
-				}
+			Display.getCurrent().asyncExec(() -> {
+				ImageTagSelectionPage.this.model
+						.setImageTagSearchResult(searchResult);
+				// refresh the wizard buttons
+				getWizard().getContainer().updateButtons();
 			});
 			// display a warning in the title area if the search result is empty
 			if (searchResult.isEmpty()) {
