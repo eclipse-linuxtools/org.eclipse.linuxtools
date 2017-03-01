@@ -30,6 +30,7 @@ import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.linuxtools.docker.core.Activator;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionStorageManager;
+import org.eclipse.linuxtools.docker.core.Messages;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -125,7 +126,11 @@ public class DefaultDockerConnectionStorageManager
 				p.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"); //$NON-NLS-1$
 				p.println("<connections>"); // $NON-NLS-1$
 				for (IDockerConnection d : connections) {
-					p.print("<connection name=\"" + d.getName() + //$NON-NLS-1$
+					String name = d.getName();
+					if (name.equals(Messages.Unnamed)) {
+						name = "";
+					}
+					p.print("<connection name=\"" + name + //$NON-NLS-1$
 							"\" uri=\"" + d.getUri()); //$NON-NLS-1$
 					if (d.getUsername() != null) {
 						p.print("\" username=\"" + d.getUsername()); //$NON-NLS-1$
