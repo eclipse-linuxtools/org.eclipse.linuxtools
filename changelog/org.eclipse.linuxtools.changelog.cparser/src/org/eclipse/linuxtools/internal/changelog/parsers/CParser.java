@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Phil Muldoon <pkmuldoon@picobot.org>.
+ * Copyright (c) 2006, 2017 Phil Muldoon and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -157,12 +157,11 @@ public class CParser implements IParserChangeLogContrib {
             FileContent content = FileContent.create("<text>", data.toCharArray()); //$NON-NLS-1$
 
             // determine the language
-            boolean isSource[]= {false};
             ILanguage language= GPPLanguage.getDefault();
 
             try {
                 IASTTranslationUnit ast;
-                int options= isSource[0] ? ILanguage.OPTION_IS_SOURCE_UNIT : 0;
+                int options= 0;
                 ast= language.getASTTranslationUnit(content, scanInfo, contentProvider, null, options, ParserUtil.getParserLogService());
                 IASTNodeSelector n = ast.getNodeSelector(null);
                 IASTNode node = n.findFirstContainedNode(offset, 100);

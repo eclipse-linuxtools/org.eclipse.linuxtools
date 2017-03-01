@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2013 Red Hat, Inc.
+ * Copyright (c) 2009, 2017 Red Hat, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -66,25 +66,6 @@ public abstract class SystemTapView extends ViewPart {
      */
     public abstract IStatus initializeView(Display targetDisplay,
             IProgressMonitor monitor);
-
-    /**
-     * @param doMaximize
-     *            : true && view minimized will maximize the view, otherwise it
-     *            will just 'refresh'
-     */
-    public void maximizeOrRefresh(boolean doMaximize) {
-        IWorkbenchPage page = this.getViewSite()
-                .getWorkbenchWindow().getActivePage();
-
-        if (doMaximize
-                && page.getPartState(page.getActivePartReference()) != IWorkbenchPage.STATE_MAXIMIZED) {
-            IWorkbenchAction action = ActionFactory.MAXIMIZE.create(this
-                    .getViewSite().getWorkbenchWindow());
-            action.run();
-        } else {
-            this.layout();
-        }
-    }
 
     public void layout() {
         masterComposite.layout();
