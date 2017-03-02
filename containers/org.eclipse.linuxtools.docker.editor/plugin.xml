@@ -2,16 +2,55 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-extensions="dockerfile"
+            file-names="Dockerfile"
+            id="org.eclipse.linuxtools.dockerfile.content-type"
+            name="Dockerfile"
+            priority="high">
+      </content-type>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.documentProviders">
+      <provider
+            class="org.eclipse.linuxtools.internal.docker.editor.DockerDocumentProvider"
+            extensions="dockerfile"
+            id="org.eclipse.linuxtools.docker.editor.documentProvider">
+      </provider>
+   </extension>
+    <extension
+         point="org.eclipse.ui.genericeditor.presentationReconcilers">
+      <presentationReconciler
+            class="org.eclipse.linuxtools.internal.docker.editor.DockerPresentationReconciler"
+            contentType="org.eclipse.linuxtools.dockerfile.content-type">
+      </presentationReconciler>
+   </extension>
+   <extension point="org.eclipse.ui.genericeditor.contentAssistProcessors">
+      <contentAssistProcessor
+            class="org.eclipse.linuxtools.internal.docker.editor.assist.CompletionProcessor"
+            contentType="org.eclipse.linuxtools.dockerfile.content-type">
+      </contentAssistProcessor>
+   </extension>
+   <extension point="org.eclipse.ui.genericeditor.hoverProviders">
+      <hoverProvider
+     		class="org.eclipse.linuxtools.internal.docker.editor.DockerHover"
+     		contentType="org.eclipse.linuxtools.dockerfile.content-type">
+  	  </hoverProvider>
+   </extension>
+   <extension
          point="org.eclipse.ui.editors">
       <editor
             class="org.eclipse.linuxtools.internal.docker.editor.DockerEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             default="false"
-            extensions="dockerfile"
-            filenames="Dockerfile" 
             icon="icons/dockerfile.png"
             id="org.eclipse.linuxtools.DockerEditor"
             name="Dockerfile Editor">
+         <contentTypeBinding
+               contentTypeId="org.eclipse.linuxtools.dockerfile.content-type">
+         </contentTypeBinding>
       </editor>
    </extension>
    <extension

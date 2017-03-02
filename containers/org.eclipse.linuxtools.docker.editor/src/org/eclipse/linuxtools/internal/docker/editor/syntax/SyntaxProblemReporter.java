@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015-2016 Open Analytics NV and others.
+ * Copyright (c) 2015, 2017 Open Analytics NV and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,7 +44,7 @@ public class SyntaxProblemReporter {
 			marker.delete();
 
 		// Apply new problems as needed.
-		SyntaxProblem[] problems = check(document, offset, length);
+		List<SyntaxProblem> problems = check(document, offset, length);
 		for (SyntaxProblem problem : problems) {
 			IMarker marker = resource.createMarker(IMarker.PROBLEM);
 			marker.setAttribute(IMarker.SEVERITY, problem.severity);
@@ -55,7 +55,7 @@ public class SyntaxProblemReporter {
 		}
 	}
 
-	public SyntaxProblem[] check(IDocument document, int offset, int length) throws BadLocationException {
+	public List<SyntaxProblem> check(IDocument document, int offset, int length) throws BadLocationException {
 		String region = document.get(offset, length);
 		int lineCount = region.split(LINE_SEP).length;
 		int startingLineNr = document.getLineOfOffset(offset);
@@ -99,7 +99,7 @@ public class SyntaxProblemReporter {
 			}
 		}
 
-		return problems.toArray(new SyntaxProblem[problems.size()]);
+		return problems;
 	}
 
 	public static class SyntaxProblem {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015-2016 Open Analytics NV and others.
+ * Copyright (c) 2015, 2017 Open Analytics NV and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,12 @@ package org.eclipse.linuxtools.internal.docker.editor.assist;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposalExtension3;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Based on {@link org.eclipse.jface.text.contentassist.CompletionProposal} with
@@ -65,7 +63,7 @@ public class CompletionProposal implements ICompletionProposal, ICompletionPropo
 
 	@Override
 	public IInformationControlCreator getInformationControlCreator() {
-		return new DefaultInformationControlCreator();
+		return shell -> new DefaultInformationControl(shell, true);
 	}
 
 	@Override
@@ -88,10 +86,4 @@ public class CompletionProposal implements ICompletionProposal, ICompletionPropo
 		return 0;
 	}
 
-	private static class DefaultInformationControlCreator implements IInformationControlCreator {
-		@Override
-		public IInformationControl createInformationControl(Shell shell) {
-			return new DefaultInformationControl(shell, true);
-		}
-	}
 }
