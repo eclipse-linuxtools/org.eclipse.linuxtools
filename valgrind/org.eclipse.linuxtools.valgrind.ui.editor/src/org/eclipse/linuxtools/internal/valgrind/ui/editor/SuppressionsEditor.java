@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Phil Muldoon <pkmuldoon@picobot.org>.
+ * Copyright (c) 2008, 2017 Phil Muldoon and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -33,7 +33,7 @@ public class SuppressionsEditor extends TextEditor {
 
     public SuppressionsEditor() {
         this.colorManager = new ColorManager();
-        setSourceViewerConfiguration(new SuppressionsConfiguration(colorManager, this));
+        setSourceViewerConfiguration(new SuppressionsConfiguration(this));
         setDocumentProvider(new SuppressionsDocumentProvider());
         oldAnnotations = null;
     }

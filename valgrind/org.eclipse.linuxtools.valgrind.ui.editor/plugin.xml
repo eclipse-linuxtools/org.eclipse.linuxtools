@@ -27,6 +27,19 @@
       </content-type>
    </extension>
    <extension
+         point="org.eclipse.ui.genericeditor.presentationReconcilers">
+      <presentationReconciler
+            class="org.eclipse.linuxtools.internal.valgrind.ui.editor.SuppPresentationReconciler"
+            contentType="org.eclipse.linuxtools.valgrind.editor.content-type">
+      </presentationReconciler>
+   </extension>
+   <extension point="org.eclipse.ui.genericeditor.contentAssistProcessors">
+   <contentAssistProcessor
+            class="org.eclipse.linuxtools.internal.valgrind.ui.editor.SuppressionsContentAssistProcessor"
+            contentType="org.eclipse.linuxtools.valgrind.editor.content-type">
+   </contentAssistProcessor>
+</extension>
+   <extension
          point="org.eclipse.ui.newWizards">
       <wizard
             category="org.eclipse.linuxtools.valgrind.ui.editor.wizards.category"

@@ -18,4 +18,5 @@ Import-Package: org.eclipse.jface.text,
  org.eclipse.jface.text.source,
  org.eclipse.jface.text.source.projection,
  org.eclipse.ui.editors.text,
- org.eclipse.ui.texteditor
+ org.eclipse.ui.texteditor,
+ org.eclipse.core.filebuffers
