@@ -62,6 +62,17 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 
 	@Override
 	public void dispose() {
+		for (Job job : openRetryJobs.values()) {
+			LoadingJob loadingJob = (LoadingJob) job;
+			IProgressMonitor monitor = loadingJob.getMonitor();
+			monitor.setCanceled(true);
+			job.cancel();
+			try {
+				job.join();
+			} catch (InterruptedException e) {
+				// ignore
+			}
+		}
 	}
 
 	@Override
@@ -94,7 +105,12 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 				return new Object[] { new LoadingStub(connection) };
 			} else if (connection
 					.getState() == EnumDockerConnectionState.CLOSED) {
-				openRetry(connection);
+				synchronized (openRetryJobs) {
+					Job job = openRetryJobs.get(connection);
+					if (job == null) {
+						openRetry(connection);
+					}
+				}
 				return new Object[] { new LoadingStub(connection) };
 			}
 			return new Object[0];
@@ -209,14 +225,26 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 	 */
 	private void openRetry(final IDockerConnection connection) {
 		final Job openRetryJob = new LoadingJob(
-				DVMessages.getString("PingJob.msg"), //$NON-NLS-1$
+				DVMessages.getFormattedString("PingJob2.msg", //$NON-NLS-1$
+						connection.getName(), connection.getUri()),
 				connection) {
 			@Override
 			protected IStatus run(final IProgressMonitor monitor) {
+				setMonitor(monitor);
 				long totalSleep = 0;
 				long sleepTime = 3000; // 3 second default
 				for (;;) {
 					try {
+						// check if Connection is removed or cancelled
+						if (monitor.isCanceled() || DockerConnectionManager
+								.getInstance()
+								.getConnectionByUri(
+										connection.getUri()) == null) {
+							synchronized (openRetryJobs) {
+								openRetryJobs.remove(connection);
+							}
+							return Status.CANCEL_STATUS;
+						}
 						connection.open(true);
 						connection.ping();
 						synchronized (openRetryJobs) {
@@ -241,6 +269,9 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 											null);
 						}
 					} catch (InterruptedException e) {
+						synchronized (openRetryJobs) {
+							openRetryJobs.remove(connection);
+						}
 						return Status.CANCEL_STATUS;
 					}
 				}
@@ -249,6 +280,7 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 		synchronized (openRetryJobs) {
 			openRetryJobs.put(connection, openRetryJob);
 		}
+		openRetryJob.setSystem(true);
 		openRetryJob.schedule();
 	}
 
@@ -953,6 +985,8 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 
 	private abstract class LoadingJob extends Job {
 
+		private IProgressMonitor monitor;
+
 		public LoadingJob(final String name, final Object target) {
 			super(name);
 			this.addJobChangeListener(new JobChangeAdapter() {
@@ -962,6 +996,14 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 					refreshTarget(target);
 				}
 			});
+		}
+
+		public IProgressMonitor getMonitor() {
+			return monitor;
+		}
+
+		public void setMonitor(IProgressMonitor monitor) {
+			this.monitor = monitor;
 		}
 
 		@Override
