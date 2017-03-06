@@ -67,11 +67,15 @@ public class DockerImageHierarchyView extends CommonNavigator
 	 */
 	public void show(final IDockerImageHierarchyNode selectedImageHierarchy) {
 		this.selectedImageHierarchy = selectedImageHierarchy;
-		this.getCommonViewer().setInput(
-				new DockerImageHiearchy(this.selectedImageHierarchy.getRoot()));
-		this.getCommonViewer().expandAll();
-		this.getCommonViewer()
-				.setSelection(new StructuredSelection(selectedImageHierarchy));
+		if (this.selectedImageHierarchy != null) {
+			this.getCommonViewer().setInput(new DockerImageHiearchy(
+					this.selectedImageHierarchy.getRoot()));
+			if (this.getCommonViewer() == null)
+				System.out.println("null viewer");
+			this.getCommonViewer().expandAll();
+			this.getCommonViewer().setSelection(
+					new StructuredSelection(selectedImageHierarchy));
+		}
 		showHierarchyOrExplanations();
 	}
 

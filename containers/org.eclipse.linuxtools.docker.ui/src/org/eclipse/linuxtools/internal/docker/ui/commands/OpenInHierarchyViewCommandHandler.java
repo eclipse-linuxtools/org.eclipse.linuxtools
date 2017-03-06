@@ -21,6 +21,7 @@ import org.eclipse.linuxtools.docker.core.IDockerConnection2;
 import org.eclipse.linuxtools.internal.docker.ui.jobs.RetrieveImageHierarchyJob;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerImageHierarchyView;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -56,7 +57,8 @@ public class OpenInHierarchyViewCommandHandler extends AbstractHandler {
 						final DockerImageHierarchyView dockerImageHierarchyView = (DockerImageHierarchyView) PlatformUI
 								.getWorkbench().getActiveWorkbenchWindow()
 								.getActivePage()
-								.showView(DockerImageHierarchyView.VIEW_ID);
+								.showView(DockerImageHierarchyView.VIEW_ID,
+										null, IWorkbenchPage.VIEW_VISIBLE);
 						dockerImageHierarchyView
 								.setConnection(
 										(IDockerConnection) currentConnection);
