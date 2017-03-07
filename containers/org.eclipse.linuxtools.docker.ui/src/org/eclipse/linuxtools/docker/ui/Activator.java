@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2015 Red Hat Inc.
+ * Copyright (c) 2014, 2017 Red Hat Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -54,14 +54,6 @@ public class Activator extends AbstractUIPlugin {
 
 	public static void log(IStatus status) {
 		Activator.getDefault().getLog().log(status);
-	}
-
-	/**
-	 * @deprecated see https://bugs.eclipse.org/bugs/show_bug.cgi?id=503040
-	 */
-	@Deprecated
-	public static void logErrorMessage(final String message) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, message, null));
 	}
 
 	public static void logWarningMessage(final String message) {

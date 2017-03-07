@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Red Hat.
+ * Copyright (c) 2014, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -58,14 +58,6 @@ public class Activator extends Plugin {
 	public static void logWarningMessage(final String message) {
 		log(new Status(IStatus.WARNING, PLUGIN_ID, IStatus.WARNING, message,
 				null));
-	}
-
-	/**
-	 * @deprecated see https://bugs.eclipse.org/bugs/show_bug.cgi?id=489111
-	 */
-	@Deprecated
-	public static void logErrorMessage(final String message) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, message, null));
 	}
 
 	public static void logErrorMessage(final String message,

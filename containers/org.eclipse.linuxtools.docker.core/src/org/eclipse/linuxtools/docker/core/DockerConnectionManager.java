@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2016 Red Hat.
+ * Copyright (c) 2014, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,12 +24,6 @@ import org.eclipse.linuxtools.internal.docker.core.TCPConnectionSettings;
 import org.eclipse.linuxtools.internal.docker.core.UnixSocketConnectionSettings;
 
 public class DockerConnectionManager {
-
-	/**
-	 * @deprecated see the {@link IDockerConnectionStorageManager} implementation instead.
-	 */
-	@Deprecated
-	public final static String CONNECTIONS_FILE_NAME = "dockerconnections.xml"; //$NON-NLS-1$
 
 	private static DockerConnectionManager instance;
 
@@ -226,15 +220,6 @@ public class DockerConnectionManager {
 				.removeContainerRefreshThread(connection);
 	}
 
-	/**
-	 * Notifies that a connection was renamed.
-	 */
-	@Deprecated
-	public void notifyConnectionRename() {
-		saveConnections();
-		notifyListeners(IDockerConnectionManagerListener.RENAME_EVENT);
-	}
-
 	public void addConnectionManagerListener(
 			IDockerConnectionManagerListener listener) {
 		if (connectionManagerListeners == null)
@@ -250,24 +235,6 @@ public class DockerConnectionManager {
 	}
 
 	/**
-	 * Notifies all listeners that a change occurred on a connection
-	 * 
-	 * @param type
-	 *            the type of change
-	 * @deprecated use
-	 *             {@link DockerConnectionManager#notifyListeners(IDockerConnection, int)}
-	 *             instead
-	 */
-	@Deprecated
-	public void notifyListeners(int type) {
-		if (connectionManagerListeners != null) {
-			for (IDockerConnectionManagerListener listener : connectionManagerListeners) {
-				listener.changeEvent(type);
-			}
-		}
-	}
-
-	/**
 	 * Notifies all listeners that a change occurred on the given connection
 	 * 
 	 * @param connection
@@ -275,28 +242,13 @@ public class DockerConnectionManager {
 	 * @param type
 	 *            the type of change
 	 */
-	@SuppressWarnings("deprecation")
 	public void notifyListeners(final IDockerConnection connection,
 			final int type) {
 		if (connectionManagerListeners != null) {
 			for (IDockerConnectionManagerListener listener : connectionManagerListeners) {
-				if (listener instanceof IDockerConnectionManagerListener2) {
-					((IDockerConnectionManagerListener2) listener)
-							.changeEvent(connection, type);
-				} else {
-					// keeping the call to the old method for the listeners that
-					// are
-					// interested
-					listener.changeEvent(type);
-				}
+				listener.changeEvent(connection, type);
 			}
 		}
-	}
-
-	@Deprecated
-	public List<IDockerConnectionSettings> findConnectionSettings() {
-		// delegate the call to a utility class.
-		return connectionSettingsFinder.findConnectionSettings();
 	}
 
 	/**

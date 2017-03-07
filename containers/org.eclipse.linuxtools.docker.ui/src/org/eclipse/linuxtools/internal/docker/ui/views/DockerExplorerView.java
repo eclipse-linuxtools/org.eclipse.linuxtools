@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2016 Red Hat Inc. and others.
+ * Copyright (c) 2014, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,6 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionManagerListener;
-import org.eclipse.linuxtools.docker.core.IDockerConnectionManagerListener2;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerListener;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
@@ -63,7 +62,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
  *
  */
 public class DockerExplorerView extends CommonNavigator implements
-		IDockerConnectionManagerListener2, ITabbedPropertySheetPageContributor {
+		IDockerConnectionManagerListener, ITabbedPropertySheetPageContributor {
 
 	private static final String NO_CONNECTION_LABEL = "NoConnection.label"; //$NON-NLS-1$
 
@@ -282,12 +281,6 @@ public class DockerExplorerView extends CommonNavigator implements
 	 */
 	public boolean isShowingConnectionsPane() {
 		return this.currentPane == connectionsPane;
-	}
-
-	@Override
-	@Deprecated
-	public void changeEvent(final int type) {
-		// method kept for backward compatibility
 	}
 
 	@Override

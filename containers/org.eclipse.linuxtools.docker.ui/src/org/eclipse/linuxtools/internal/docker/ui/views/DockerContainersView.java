@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2016 Red Hat Inc. and others.
+ * Copyright (c) 2014, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -52,7 +52,6 @@ import org.eclipse.linuxtools.docker.core.EnumDockerConnectionState;
 import org.eclipse.linuxtools.docker.core.EnumDockerStatus;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionManagerListener;
-import org.eclipse.linuxtools.docker.core.IDockerConnectionManagerListener2;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerListener;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
@@ -91,7 +90,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
  */
 public class DockerContainersView extends ViewPart implements
 		IDockerContainerListener, ISelectionListener,
-		ITabbedPropertySheetPageContributor, IDockerConnectionManagerListener2 {
+		ITabbedPropertySheetPageContributor, IDockerConnectionManagerListener {
 
 	private static final String TOGGLE_STATE = "org.eclipse.ui.commands.toggleState"; //$NON-NLS-1$
 
@@ -713,11 +712,6 @@ public class DockerContainersView extends ViewPart implements
 			}
 			this.form.setEnabled(true);
 		}
-	}
-
-	@Override
-	public void changeEvent(int type) {
-		// do nothing, this method has been deprecated
 	}
 
 	@Override

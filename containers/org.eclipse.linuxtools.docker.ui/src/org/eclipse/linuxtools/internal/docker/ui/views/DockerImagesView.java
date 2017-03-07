@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2016 Red Hat Inc. and others.
+ * Copyright (c) 2014, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,7 +41,6 @@ import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.EnumDockerConnectionState;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionManagerListener;
-import org.eclipse.linuxtools.docker.core.IDockerConnectionManagerListener2;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerImageListener;
@@ -75,7 +74,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
  */
 public class DockerImagesView extends ViewPart implements IDockerImageListener,
 		ISelectionListener,
-		ITabbedPropertySheetPageContributor, IDockerConnectionManagerListener2 {
+		ITabbedPropertySheetPageContributor, IDockerConnectionManagerListener {
 
 	/** Id of the view. */
 	public static final String VIEW_ID = "org.eclipse.linuxtools.docker.ui.dockerImagesView";
@@ -520,11 +519,6 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 				.getNode(Activator.PLUGIN_ID);
 		preferences.putBoolean(SHOW_ALL_IMAGES_PREFERENCE, enabled);
 		refreshViewTitle();
-	}
-
-	@Override
-	public void changeEvent(int type) {
-		// do nothing, this method has been deprecated
 	}
 
 	@Override

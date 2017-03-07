@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2016 Red Hat Inc. and others.
+ * Copyright (c) 2014, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -1377,25 +1377,6 @@ public class DockerConnection
 	}
 	
 	@Override
-	@Deprecated
-	public String createContainer(IDockerContainerConfig c)
-			throws DockerException, InterruptedException {
-		IDockerHostConfig hc = new DockerHostConfig(HostConfig.builder()
-				.build());
-		return createContainer(c, hc);
-	}
-
-	@Override
-	@Deprecated
-	public String createContainer(final IDockerContainerConfig c,
-			final String containerName)
-			throws DockerException, InterruptedException {
-		IDockerHostConfig hc = new DockerHostConfig(HostConfig.builder()
-				.build());
-		return createContainer(c, hc, containerName);
-	}
-
-	@Override
 	public String createContainer(final IDockerContainerConfig c,
 			final IDockerHostConfig hc) throws DockerException,
 			InterruptedException {
@@ -1624,22 +1605,6 @@ public class DockerConnection
 		} catch (com.spotify.docker.client.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
-	}
-
-	@Override
-	@Deprecated
-	public void startContainer(String id, IDockerHostConfig config,
-			OutputStream stream)
-			throws DockerException, InterruptedException {
-		startContainer(id, stream);
-	}
-
-	@Override
-	@Deprecated
-	public void startContainer(String id, String loggingId,
-			IDockerHostConfig config, OutputStream stream)
-			throws DockerException, InterruptedException {
-		startContainer(id, loggingId, stream);
 	}
 
 	@Override
