@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,6 @@ import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.linuxtools.changelog.core.IEditorChangeLogContrib;
-import org.eclipse.linuxtools.changelog.core.IEditorChangeLogContrib2;
 import org.eclipse.linuxtools.internal.changelog.core.ChangelogPlugin;
 
 public class ChangeLogDocumentSetupParticipant implements
@@ -55,8 +54,7 @@ public class ChangeLogDocumentSetupParticipant implements
                         editorContrib = (IEditorChangeLogContrib) bob
                                 .createExecutableExtension("class"); // $NON-NLS-1$
 
-                        if (editorContrib instanceof IEditorChangeLogContrib2)
-                            ((IEditorChangeLogContrib2)editorContrib).setup(document);
+                        editorContrib.setup(document);
                     } catch (CoreException e) {
                         ChangelogPlugin.getDefault().getLog().log(
                                 new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID,

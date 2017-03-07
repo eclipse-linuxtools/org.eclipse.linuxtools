@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006-2009 Red Hat Inc. and others.
+ * Copyright (c) 2006, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,6 @@ import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.linuxtools.changelog.core.IEditorChangeLogContrib;
-import org.eclipse.linuxtools.changelog.core.IEditorChangeLogContrib2;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 
@@ -37,7 +36,7 @@ import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
  * @author klee (Kyu Lee)
  */
 public class GNUEditorConfiguration extends TextSourceViewerConfiguration implements
-        IEditorChangeLogContrib, IEditorChangeLogContrib2 {
+        IEditorChangeLogContrib {
 
     public static final String CHANGELOG_PARTITIONING= "gnu_changelog_partitioning";  //$NON-NLS-1$
 

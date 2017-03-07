@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 Red Hat Inc. and others.
+ * Copyright (c) 2006, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core;
 
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.jface.text.hyperlink.IHyperlinkPresenter;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
@@ -60,4 +61,13 @@ public interface IEditorChangeLogContrib {
      */
     IPresentationReconciler getPresentationReconciler(
             ISourceViewer sourceViewer);
+
+    /**
+     * Perform documentation setup.  Use this to specify partitioning.
+     *
+     * @param document to set up.
+     * 
+     * @since 3.0.0
+     */
+    void setup(IDocument document);
 }
