@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,10 +27,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.EnumDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
-import org.eclipse.linuxtools.docker.core.IDockerConnectionInfo;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettingsFinder;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettingsProvider;
@@ -51,43 +49,6 @@ public class DefaultDockerConnectionSettingsFinder
 	public static final String DOCKER_HOST = "DOCKER_HOST"; //$NON-NLS-1$
 
 	@Override
-	@Deprecated
-	public List<IDockerConnectionSettings> findConnectionSettings() {
-		final List<IDockerConnectionSettings> availableConnectionSettings = new ArrayList<>();
-		final IDockerConnectionSettings defaultsWithUnixSocket = defaultsWithUnixSocket();
-		if (defaultsWithUnixSocket != null) {
-			availableConnectionSettings.add(defaultsWithUnixSocket);
-		}
-		final IDockerConnectionSettings defaultsWithSystemEnv = defaultsWithSystemEnv();
-		if (defaultsWithSystemEnv != null) {
-			availableConnectionSettings.add(defaultsWithSystemEnv);
-		}
-		final IDockerConnectionSettings defaultsWithShellEnv = defaultsWithShellEnv();
-		if (defaultsWithShellEnv != null) {
-			availableConnectionSettings.add(defaultsWithShellEnv);
-		}
-		// now that we have connection settings, let's ping them and retrieve the connection info.
-		for (IDockerConnectionSettings connectionSettings : availableConnectionSettings) {
-			switch(connectionSettings.getType()) {
-			case UNIX_SOCKET_CONNECTION:
-				final UnixSocketConnectionSettings unixSocketConnectionSettings = (UnixSocketConnectionSettings) connectionSettings;
-				final DockerConnection unixSocketConnection = new DockerConnection.Builder()
-						.unixSocketConnection(unixSocketConnectionSettings);
-				resolveDockerName(unixSocketConnectionSettings,
-						unixSocketConnection);
-				break;
-			case TCP_CONNECTION:
-				final TCPConnectionSettings tcpConnectionSettings = (TCPConnectionSettings) connectionSettings;
-				final DockerConnection tcpConnection = new DockerConnection.Builder()
-						.tcpConnection(tcpConnectionSettings);
-				resolveDockerName(tcpConnectionSettings, tcpConnection);
-				break;
-			}
-		}
-		return availableConnectionSettings;
-	}
-
-	@Override
 	public IDockerConnectionSettings findDefaultConnectionSettings() {
 		final IDockerConnectionSettings defaultsWithUnixSocket = defaultsWithUnixSocket();
 		if (defaultsWithUnixSocket != null) {
@@ -102,24 +63,6 @@ public class DefaultDockerConnectionSettingsFinder
 			return defaultsWithShellEnv;
 		}
 		return null;
-	}
-
-	private void resolveDockerName(
-			final BaseConnectionSettings connectionSettings,
-			final DockerConnection connection) {
-		try {
-			connection.open(false);
-			final IDockerConnectionInfo info = connection.getInfo();
-			if (info != null) {
-				connection.setName(info.getName());
-				connectionSettings.setSettingsResolved(true);
-			}
-		} catch (DockerException e) {
-			// ignore and keep 'settingsResolved' as false
-			connectionSettings.setSettingsResolved(false);
-		} finally {
-			connection.close();
-		}
 	}
 
 	@Override

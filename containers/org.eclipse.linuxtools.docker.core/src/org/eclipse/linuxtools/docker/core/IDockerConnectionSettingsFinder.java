@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2016 Red Hat.
+ * Copyright (c) 2015, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,9 +18,6 @@ import java.util.List;
  * testing purposes)
  */
 public interface IDockerConnectionSettingsFinder {
-
-	@Deprecated
-	List<IDockerConnectionSettings> findConnectionSettings();
 
 	IDockerConnectionSettings findDefaultConnectionSettings();
 
