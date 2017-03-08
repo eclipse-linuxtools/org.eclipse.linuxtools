@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Phil Muldoon <pkmuldoon@picobot.org>.
+ * Copyright (c) 2008, 2017 Phil Muldoon and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,30 +16,22 @@ import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.ITextHover;
-import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
-import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
-import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
-import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
-import org.eclipse.linuxtools.systemtap.ui.editor.ColorManager;
 import org.eclipse.linuxtools.systemtap.ui.editor.DoubleClickStrategy;
 
 public class STPConfiguration extends SourceViewerConfiguration {
 
-    private STPElementScanner scanner;
-    private ColorManager colorManager;
     private STPEditor editor;
     private DoubleClickStrategy doubleClickStrategy;
     private STPCompletionProcessor processor;
 
-    public STPConfiguration(ColorManager colorManager, STPEditor editor) {
-        this.colorManager = colorManager;
+    public STPConfiguration(STPEditor editor) {
         this.editor = editor;
         this.processor = new STPCompletionProcessor();
     }
@@ -70,20 +62,6 @@ public class STPConfiguration extends SourceViewerConfiguration {
         return assistant;
     }
 
-    /**
-     * Return the default Element scanner.
-     *
-     * @return default element scanner.
-     */
-    private STPElementScanner getSTPScanner() {
-        if (scanner == null) {
-            scanner = new STPElementScanner(colorManager);
-            scanner.setDefaultReturnToken(new Token(new TextAttribute(
-                    colorManager.getColor(STPColorConstants.DEFAULT))));
-        }
-        return scanner;
-    }
-
     @Override
     public IReconciler getReconciler(ISourceViewer sourceViewer)
     {
@@ -107,22 +85,7 @@ public class STPConfiguration extends SourceViewerConfiguration {
     @Override
     public IPresentationReconciler getPresentationReconciler(
             ISourceViewer sourceViewer) {
-
-        PresentationReconciler reconciler = new PresentationReconciler();
-
-        DefaultDamagerRepairer dr = new DefaultDamagerRepairer(getSTPScanner());
-        reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
-        reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
-
-        dr = new DefaultDamagerRepairer(getSTPScanner());
-        reconciler.setDamager(dr, STPPartitionScanner.STP_COMMENT);
-        reconciler.setRepairer(dr, STPPartitionScanner.STP_COMMENT);
-
-        dr = new DefaultDamagerRepairer(getSTPScanner());
-        reconciler.setDamager(dr, STPPartitionScanner.STP_CONDITIONAL);
-        reconciler.setRepairer(dr, STPPartitionScanner.STP_CONDITIONAL);
-
-        return reconciler;
+       return new STPPresentationReconciler();
     }
 
     @Override
