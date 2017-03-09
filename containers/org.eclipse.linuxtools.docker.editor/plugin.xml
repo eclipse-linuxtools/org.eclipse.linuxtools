@@ -79,7 +79,7 @@
       </colorDefinition>
       <colorDefinition
             categoryId="org.eclipse.linuxtools.docker.editor.presentation"
-            id="org.eclipse.linuxtools.docker.ediotr.color.variable"
+            id="org.eclipse.linuxtools.docker.editor.color.variable"
             label="Variable"
             value="255,0,0">
       </colorDefinition>
