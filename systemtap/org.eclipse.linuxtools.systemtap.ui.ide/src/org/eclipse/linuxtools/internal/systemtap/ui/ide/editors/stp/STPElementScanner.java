@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Phil Muldoon <pkmuldoon@picobot.org>.
+ * Copyright (c) 2008, 2017 Phil Muldoon and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp;
 
 
+import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.BufferedRuleBasedScanner;
 import org.eclipse.jface.text.rules.EndOfLineRule;
@@ -23,8 +24,8 @@ import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WhitespaceRule;
 import org.eclipse.jface.text.rules.WordRule;
-import org.eclipse.linuxtools.systemtap.ui.editor.ColorManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.ui.PlatformUI;
 
 public class STPElementScanner extends BufferedRuleBasedScanner {
 
@@ -40,21 +41,16 @@ public class STPElementScanner extends BufferedRuleBasedScanner {
      *
      * Build Element scanner for Syntax Highlighting for Systemtap Editor
      *
-     * @param manager ColorManager to source highlighting.
-     *
      */
-    public STPElementScanner(ColorManager manager) {
-        IToken defaultToken = new Token(new TextAttribute(manager
-                .getColor(STPColorConstants.DEFAULT)));
+    public STPElementScanner() {
+		ColorRegistry colorRegistry = PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getColorRegistry();
+		IToken defaultToken = new Token(new TextAttribute(colorRegistry.get(STPColorConstants.DEFAULT)));
 
-        IToken keywordToken = new Token(new TextAttribute(manager
-                .getColor(STPColorConstants.KEYWORD),null,SWT.BOLD));
+		IToken keywordToken = new Token(new TextAttribute(colorRegistry.get(STPColorConstants.KEYWORD), null, SWT.BOLD));
 
-        IToken commentToken = new Token(new TextAttribute(manager
-                .getColor(STPColorConstants.COMMENT)));
+		IToken commentToken = new Token(new TextAttribute(colorRegistry.get(STPColorConstants.COMMENT)));
 
-        IToken stringToken = new Token(new TextAttribute(manager
-                .getColor(STPColorConstants.STP_STRING)));
+		IToken stringToken = new Token(new TextAttribute(colorRegistry.get(STPColorConstants.STRING)));
 
 
         // Build keyword scanner

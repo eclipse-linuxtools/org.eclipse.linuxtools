@@ -243,6 +243,55 @@
             id="org.eclipse.linuxtools.stap.editor.documentProvider">
       </provider>
    </extension>
+   <extension
+         point="org.eclipse.ui.themes">
+      <themeElementCategory
+            id="org.eclipse.linuxtools.stap.editor.presentation"
+            label="SystemTap">
+      </themeElementCategory>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.stap.editor.presentation"
+            id="org.eclipse.linuxtools.stap.editor.color.keyword"
+            label="Keyword"
+            value="127,0,85">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.stap.editor.presentation"
+            id="org.eclipse.linuxtools.stap.editor.color.string"
+            label="String"
+            value="0,0,255">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.stap.editor.presentation"
+            id="org.eclipse.linuxtools.stap.editor.color.comment"
+            label="Comment"
+            value="63,127,95">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.stap.editor.presentation"
+            id="org.eclipse.linuxtools.stap.editor.color.type"
+            label="Type"
+            value="0,0,128">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.stap.editor.presentation"
+            id="org.eclipse.linuxtools.stap.editor.color.default"
+            label="Default"
+            value="0,0,0">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.stap.editor.presentation"
+            id="org.eclipse.linuxtools.stap.editor.color.embedded"
+            label="Default"
+            value="0,64,64">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.stap.editor.presentation"
+            id="org.eclipse.linuxtools.stap.editor.color.embeddedc"
+            label="Default"
+            value="0,64,64">
+      </colorDefinition>
+   </extension>
 
    <extension
          point="org.eclipse.ui.preferencePages">
