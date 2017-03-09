@@ -57,5 +57,42 @@
             name="%category.name.0">
       </category>
    </extension>
+   <extension
+         point="org.eclipse.ui.themes">
+      <themeElementCategory
+            id="org.eclipse.linuxtools.valgrind.editor.presentation"
+            label="Valgrind Suppression files editor">
+      </themeElementCategory>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.valgrind.editor.presentation"
+            id="org.eclipse.linuxtools.valgrind.ediotr.color.default"
+            label="Default"
+            value="0,0,0">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.valgrind.editor.presentation"
+            id="org.eclipse.linuxtools.valgrind.editor.color.tool"
+            label="Tool"
+            value="153,122,0">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.valgrind.editor.presentation"
+            id="org.eclipse.linuxtools.valgrind.editor.color.supp_type"
+            label="SUPP Type"
+            value="0,153,122">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.valgrind.editor.presentation"
+            id="org.eclipse.linuxtools.valgrind.editor.color.comment"
+            label="Comment"
+            value="0,99,166">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.valgrind.editor.presentation"
+            id="org.eclipse.linuxtools.valgrind.editor.color.context"
+            label="Context"
+            value="122,0,153">
+      </colorDefinition>
+   </extension>
 
 </plugin>

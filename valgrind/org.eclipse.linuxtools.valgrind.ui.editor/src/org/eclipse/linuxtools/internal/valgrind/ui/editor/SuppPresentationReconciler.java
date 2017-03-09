@@ -18,7 +18,7 @@ import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 public class SuppPresentationReconciler extends PresentationReconciler {
 	
 	public SuppPresentationReconciler() {
-		SuppressionsElementScanner elementScanner = new SuppressionsElementScanner(new ColorManager());
+		SuppressionsElementScanner elementScanner = new SuppressionsElementScanner();
 		DefaultDamagerRepairer dr = new DefaultDamagerRepairer(elementScanner);
         this.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
         this.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);

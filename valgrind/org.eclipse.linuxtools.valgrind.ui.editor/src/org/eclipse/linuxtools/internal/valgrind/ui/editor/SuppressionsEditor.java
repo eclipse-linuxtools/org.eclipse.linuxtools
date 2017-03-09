@@ -27,12 +27,10 @@ import org.eclipse.ui.editors.text.TextEditor;
 
 public class SuppressionsEditor extends TextEditor {
 
-    private ColorManager colorManager;
     private ProjectionAnnotationModel annotationModel;
     private Annotation[] oldAnnotations;
 
     public SuppressionsEditor() {
-        this.colorManager = new ColorManager();
         setSourceViewerConfiguration(new SuppressionsConfiguration(this));
         setDocumentProvider(new SuppressionsDocumentProvider());
         oldAnnotations = null;
@@ -68,12 +66,6 @@ public class SuppressionsEditor extends TextEditor {
         }
         annotationModel.modifyAnnotations(oldAnnotations, newAnnotations, null);
         oldAnnotations = updatedAnnotations;
-    }
-
-    @Override
-    public void dispose() {
-        colorManager.dispose();
-        super.dispose();
     }
 
 }
