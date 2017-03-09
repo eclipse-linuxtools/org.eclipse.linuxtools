@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 Red Hat Inc. and others.
+ * Copyright (c) 2006, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.changelog.core.editors;
 
-import org.eclipse.swt.graphics.RGB;
-
 /**
  * Color scheme to use for syntax highlighting.
  *
@@ -19,15 +17,9 @@ import org.eclipse.swt.graphics.RGB;
  *
  */
 public interface IChangeLogColorConstants {
-    RGB FILE_NAME = new RGB(128, 0, 0);
+	String FILE_NAME = "org.eclipse.linuxtools.changelog.ediotr.color.file_name";
+	String FUNC_NAME = "org.eclipse.linuxtools.changelog.editor.color.func_name";
+	String TEXT = "org.eclipse.linuxtools.changelog.editor.color.text";
+	String EMAIL = "org.eclipse.linuxtools.changelog.editor.color.email";
 
-    RGB FUNC_NAME = new RGB(0, 128, 0);
-
-    RGB TEXT = new RGB(0, 0, 0);
-
-    RGB EMAIL = new RGB(0, 0, 128);
-
-    RGB DATE = new RGB(64, 64, 0);
-
-    RGB AUTHOR = new RGB(0, 64, 64);
 }

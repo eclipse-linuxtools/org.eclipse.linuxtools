@@ -300,4 +300,36 @@
      </command>
   </menuContribution>
 </extension>
+ <extension
+         point="org.eclipse.ui.themes">
+      <themeElementCategory
+            id="org.eclipse.linuxtools.changelog.editor.presentation"
+            label="Changelog files editor">
+      </themeElementCategory>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.changelog.editor.presentation"
+            id="org.eclipse.linuxtools.changelog.ediotr.color.file_name"
+            label="File name"
+            value="128,0,0">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.changelog.editor.presentation"
+            id="org.eclipse.linuxtools.changelog.editor.color.func_name"
+            label="Function name"
+            value="0,128,0">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.changelog.editor.presentation"
+            id="org.eclipse.linuxtools.changelog.editor.color.text"
+            label="Text"
+            value="0,0,0">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.changelog.editor.presentation"
+            id="org.eclipse.linuxtools.changelog.editor.color.email"
+            label="Email"
+            value="0,0,128">
+      </colorDefinition>
+   </extension>
+
 </plugin>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 Red Hat Inc. and others.
+ * Copyright (c) 2006, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -79,9 +79,7 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
 
         IDocument thisDoc = textViewer.getDocument();
 
-        GNUElementScanner scanner = new GNUElementScanner();
-
-        scanner.setDefaultReturnToken(new Token("default"));
+        GNUHyperlinkScanner scanner = new GNUHyperlinkScanner();
 
         ITypedRegion partitionInfo = null;
 
@@ -96,7 +94,7 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
 
         Token tmpToken = (Token) scanner.nextToken();
 
-        String tokenStr = (String) tmpToken.getData();
+        String  tokenStr = (String) tmpToken.getData();
 
         if (tokenStr == null) {
             return null;
@@ -105,7 +103,7 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
         // try to find non-default token containing region..if none, return null.
         while (region.getOffset() < scanner.getTokenOffset() ||
                 region.getOffset() > scanner.getOffset() ||
-                tokenStr.equals("default")) {
+                tokenStr.equals("_other")) {
             tmpToken = (Token) scanner.nextToken();
             tokenStr = (String) tmpToken.getData();
             if (tokenStr == null)
@@ -125,7 +123,7 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
         }
 
         // process file link
-        if (tokenStr.equals(GNUElementScanner.FILE_NAME)) {
+        if (tokenStr.equals(GNUHyperlinkScanner.FILE_NAME)) {
 
             Region pathRegion = null;
 
