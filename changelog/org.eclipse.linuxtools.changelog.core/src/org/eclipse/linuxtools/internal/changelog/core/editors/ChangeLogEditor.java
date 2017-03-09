@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007, 2011 Red Hat Inc. and others.
+ * Copyright (c) 2006, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,6 @@ import org.eclipse.linuxtools.internal.changelog.core.Messages;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 
-
 /**
  * ChangeLog editor that supports GNU format.
  *
@@ -36,88 +35,82 @@ import org.eclipse.ui.editors.text.TextFileDocumentProvider;
  */
 public class ChangeLogEditor extends TextEditor {
 
-    private boolean forceNewLogEntry;
+	private boolean forceNewLogEntry;
 
-    public ChangeLogEditor() {
-        super();
+	public ChangeLogEditor() {
+		super();
 
-        SourceViewerConfiguration config = getConfig();
+		SourceViewerConfiguration config = getConfig();
 
-        if (config != null) {
-            setSourceViewerConfiguration(config);
-        } else {
-            ChangelogPlugin.getDefault().getLog().log(
-                    new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
-                            Messages.getString("ChangeLogEditor.ErrConfiguration"), // $NON-NLS-1$
-                            new Exception(Messages.getString("ChangeLogEditor.ErrConfiguration")))); // $NON-NLS-1$
-        }
+		if (config != null) {
+			setSourceViewerConfiguration(config);
+		} else {
+			ChangelogPlugin.getDefault().getLog()
+					.log(new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
+							Messages.getString("ChangeLogEditor.ErrConfiguration"), // $NON-NLS-1$
+							new Exception(Messages.getString("ChangeLogEditor.ErrConfiguration")))); // $NON-NLS-1$
+		}
 
-        setDocumentProvider(new TextFileDocumentProvider());
+		setDocumentProvider(new TextFileDocumentProvider());
 
-    }
+	}
 
-    @Override
-    protected void initializeKeyBindingScopes() {
-        setKeyBindingScopes(new String[] { "org.eclipse.linuxtools.changelog.core.changelogEditorScope" }); //$NON-NLS-1$
-    }
+	@Override
+	protected void initializeKeyBindingScopes() {
+		setKeyBindingScopes(new String[] { "org.eclipse.linuxtools.changelog.core.changelogEditorScope" }); //$NON-NLS-1$
+	}
 
-    /**
-     * Gets appropriate style editor from user pref.
-     *
-     * @return configuration for the Changelog editor
-     */
+	/**
+	 * Gets appropriate style editor from user pref.
+	 *
+	 * @return configuration for the Changelog editor
+	 */
 
-    private SourceViewerConfiguration getConfig() {
+	private SourceViewerConfiguration getConfig() {
 
-        IExtensionPoint editorExtensions = null;
-        IEditorChangeLogContrib editorContrib = null;
+		IExtensionPoint editorExtensions = null;
+		IEditorChangeLogContrib editorContrib = null;
 
-        // get editor which is stored in preference.
-        IPreferenceStore store = ChangelogPlugin.getDefault()
-                .getPreferenceStore();
-        String pref_Editor = store
-                .getString("IChangeLogConstants.DEFAULT_EDITOR"); // $NON-NLS-1$
+		// get editor which is stored in preference.
+		IPreferenceStore store = ChangelogPlugin.getDefault().getPreferenceStore();
+		String pref_Editor = store.getString("IChangeLogConstants.DEFAULT_EDITOR"); // $NON-NLS-1$
 
-        editorExtensions = Platform.getExtensionRegistry().getExtensionPoint(
-                "org.eclipse.linuxtools.changelog.core", "editorContribution"); //$NON-NLS-1$ //$NON-NLS-2$
+		editorExtensions = Platform.getExtensionRegistry().getExtensionPoint("org.eclipse.linuxtools.changelog.core", //$NON-NLS-1$
+				"editorContribution"); //$NON-NLS-1$
 
-        if (editorExtensions != null) {
-            IConfigurationElement[] elements = editorExtensions
-                    .getConfigurationElements();
-            for (int i = 0; i < elements.length; i++) {
-                if (elements[i].getName().equals("editor") // $NON-NLS-1$
-                        && (elements[i].getAttribute("name").equals(pref_Editor))) { //$NON-NLS-1$
+		if (editorExtensions != null) {
+			IConfigurationElement[] elements = editorExtensions.getConfigurationElements();
+			for (int i = 0; i < elements.length; i++) {
+				if (elements[i].getName().equals("editor") // $NON-NLS-1$
+						&& (elements[i].getAttribute("name").equals(pref_Editor))) { //$NON-NLS-1$
 
-                    try {
-                        IConfigurationElement bob = elements[i];
-                        editorContrib = (IEditorChangeLogContrib) bob
-                                .createExecutableExtension("class"); // $NON-NLS-1$
+					try {
+						IConfigurationElement bob = elements[i];
+						editorContrib = (IEditorChangeLogContrib) bob.createExecutableExtension("class"); // $NON-NLS-1$
 
-                        editorContrib.setTextEditor(this);
-                        return (SourceViewerConfiguration) editorContrib;
-                    } catch (CoreException e) {
-                        ChangelogPlugin.getDefault().getLog().log(
-                                new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID,
-                                        IStatus.ERROR, e.getMessage(), e));
-                    }
+						return (SourceViewerConfiguration) editorContrib;
+					} catch (CoreException e) {
+						ChangelogPlugin.getDefault().getLog().log(
+								new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e));
+					}
 
-                }
-            }
-        }
+				}
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public ISourceViewer getMySourceViewer() {
-        return this.getSourceViewer();
-    }
+	public ISourceViewer getMySourceViewer() {
+		return this.getSourceViewer();
+	}
 
-    public boolean isForceNewLogEntry() {
-        return forceNewLogEntry;
-    }
+	public boolean isForceNewLogEntry() {
+		return forceNewLogEntry;
+	}
 
-    public void setForceNewLogEntry(boolean forceNewLogEntry) {
-        this.forceNewLogEntry = forceNewLogEntry;
-    }
+	public void setForceNewLogEntry(boolean forceNewLogEntry) {
+		this.forceNewLogEntry = forceNewLogEntry;
+	}
 
 }

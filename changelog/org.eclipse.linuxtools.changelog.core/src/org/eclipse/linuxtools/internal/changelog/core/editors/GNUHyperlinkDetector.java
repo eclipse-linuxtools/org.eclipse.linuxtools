@@ -11,13 +11,13 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.changelog.core.editors;
 
-import org.eclipse.compare.CompareEditorInput;
+import org.eclipse.core.filebuffers.FileBuffers;
+import org.eclipse.core.filebuffers.ITextFileBuffer;
+import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextViewer;
@@ -26,185 +26,93 @@ import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.AbstractHyperlinkDetector;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.jface.text.rules.Token;
-import org.eclipse.team.ui.synchronize.SyncInfoCompareInput;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.editors.text.TextEditor;
-import org.eclipse.ui.texteditor.ITextEditor;
 
-/**
- *
- * @author klee (Kyu Lee)
- */
 public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
 
-    private IPath documentLocation;
+	private IPath documentLocation;
 
-    public GNUHyperlinkDetector() {
-    }
+	/**
+	 * Detector using RuleBasedScanner.
+	 */
+	@Override
+	public IHyperlink[] detectHyperlinks(ITextViewer textViewer, IRegion region, boolean canShowMultipleHyperlinks) {
+		if (documentLocation == null) {
+			ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
+			ITextFileBuffer buffer = bufferManager.getTextFileBuffer(textViewer.getDocument());
+			documentLocation = buffer.getLocation().removeLastSegments(1);
+		}
 
-    /**
-     * Creates a new URL hyperlink detector for GNU Format changelogs.
-     *
-     * NOTE: It assumes that the path this ChangeLog is in, is root
-     * directory of path names in this ChangeLog.
-     *
-     * ex) ChangeLog is in /some/project and in ChangeLog, path names are like
-     * abc/file.java ghi/file2.java
-     *
-     * then absolute path of file.java and file2.java are
-     * /some/project/abc/file.java and /some/project/ghi/file2.java
-     *
-     * @param textViewer The text viewer in which to detect the hyperlink.
-     * @param editor The editor to fetch document location from.
-     */
-    public GNUHyperlinkDetector(ITextViewer textViewer, TextEditor editor) {
-        Assert.isNotNull(textViewer);
+		IDocument thisDoc = textViewer.getDocument();
 
-        documentLocation = getDocumentLocation(editor);
+		GNUHyperlinkScanner scanner = new GNUHyperlinkScanner();
 
-    }
+		ITypedRegion partitionInfo = null;
 
-    /**
-     * Detector using RuleBasedScanner.
-     */
-    @Override
-    public IHyperlink[] detectHyperlinks(ITextViewer textViewer,
-            IRegion region, boolean canShowMultipleHyperlinks) {
-        if (documentLocation == null) {
-            ITextEditor ed = this.getAdapter(ITextEditor.class);
-            documentLocation = getDocumentLocation(ed);
-        }
+		try {
+			partitionInfo = thisDoc.getPartition(region.getOffset());
+		} catch (org.eclipse.jface.text.BadLocationException e1) {
+			e1.printStackTrace();
+			return null;
+		}
 
-        IDocument thisDoc = textViewer.getDocument();
+		scanner.setRange(thisDoc, partitionInfo.getOffset(), partitionInfo.getLength());
 
-        GNUHyperlinkScanner scanner = new GNUHyperlinkScanner();
+		Token tmpToken = (Token) scanner.nextToken();
 
-        ITypedRegion partitionInfo = null;
+		String tokenStr = (String) tmpToken.getData();
 
-        try {
-            partitionInfo = thisDoc.getPartition(region.getOffset());
-        } catch (org.eclipse.jface.text.BadLocationException e1) {
-            e1.printStackTrace();
-            return null;
-        }
+		if (tokenStr == null) {
+			return null;
+		}
 
-        scanner.setRange(thisDoc, partitionInfo.getOffset(), partitionInfo.getLength());
+		// try to find non-default token containing region..if none, return
+		// null.
+		while (region.getOffset() < scanner.getTokenOffset() || region.getOffset() > scanner.getOffset()
+				|| tokenStr.equals("_other")) {
+			tmpToken = (Token) scanner.nextToken();
+			tokenStr = (String) tmpToken.getData();
+			if (tokenStr == null)
+				return null;
+		}
 
-        Token tmpToken = (Token) scanner.nextToken();
+		Region tokenRegion = new Region(scanner.getTokenOffset(), scanner.getTokenLength());
 
-        String  tokenStr = (String) tmpToken.getData();
+		String line = "";
+		try {
+			line = thisDoc.get(tokenRegion.getOffset(), tokenRegion.getLength());
+		} catch (org.eclipse.jface.text.BadLocationException e1) {
+			e1.printStackTrace();
+			return null;
+		}
 
-        if (tokenStr == null) {
-            return null;
-        }
+		// process file link
+		if (tokenStr.equals(GNUHyperlinkScanner.FILE_NAME)) {
 
-        // try to find non-default token containing region..if none, return null.
-        while (region.getOffset() < scanner.getTokenOffset() ||
-                region.getOffset() > scanner.getOffset() ||
-                tokenStr.equals("_other")) {
-            tmpToken = (Token) scanner.nextToken();
-            tokenStr = (String) tmpToken.getData();
-            if (tokenStr == null)
-                return null;
-        }
+			Region pathRegion = null;
 
-        Region tokenRegion = new Region(scanner.getTokenOffset(), scanner
-                .getTokenLength());
+			int lineOffset = 0;
 
-        String line = "";
-        try {
-            line = thisDoc
-                    .get(tokenRegion.getOffset(), tokenRegion.getLength());
-        } catch (org.eclipse.jface.text.BadLocationException e1) {
-            e1.printStackTrace();
-            return null;
-        }
+			// cut "* " if necessary
+			if (line.startsWith("* ")) {
+				lineOffset = 2;
+				line = line.substring(2);
+			}
+			pathRegion = new Region(tokenRegion.getOffset() + lineOffset, line.length());
 
-        // process file link
-        if (tokenStr.equals(GNUHyperlinkScanner.FILE_NAME)) {
+			if (documentLocation == null)
+				return null;
 
-            Region pathRegion = null;
+			// Replace any escape characters added to name
+			line = line.replaceAll("\\\\(.)", "$1");
 
-            int lineOffset = 0;
+			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+			IFile fileLoc = (IFile) root.findMember(documentLocation.append(line));
+			if (fileLoc.exists()) {
+				return new IHyperlink[] { new FileHyperlink(pathRegion, fileLoc) };
+			}
 
-            // cut "* " if necessary
-            if (line.startsWith("* ")) {
-                lineOffset = 2;
-                line = line.substring(2);
-            }
-//            int trailingWhiteSpace;
-//            if (((trailingWhiteSpace = line.indexOf(":")) > 0)
-//                    || ((trailingWhiteSpace = line.indexOf(" ")) > 0)) {
-//
-//                line = line.substring(0, trailingWhiteSpace);
-//                pathRegion = new Region(tokenRegion.getOffset() + lineOffset,
-//                        trailingWhiteSpace);
-//            } else {
-                pathRegion = new Region(tokenRegion.getOffset() + lineOffset, line
-                        .length());
-//            }
+		}
 
-
-            if (documentLocation == null)
-                return null;
-
-            // Replace any escape characters added to name
-            line = line.replaceAll("\\\\(.)", "$1");
-
-            IFile fileLoc = ResourcesPlugin.getWorkspace().getRoot()
-                    .getFileForLocation(documentLocation.append(line));
-            if (fileLoc.exists()) {
-                return new IHyperlink[] { new FileHyperlink(pathRegion, fileLoc) };
-            }
-
-
-        }
-
-        return null;
-    }
-
-    private IWorkspaceRoot getWorkspaceRoot() {
-        return ResourcesPlugin.getWorkspace().getRoot();
-    }
-
-    /**
-     * Get current directory that ChangeLog is in.
-     *
-     * @param currentEditor
-     * @return path that this ChangeLog is in
-     */
-    private IPath getDocumentLocation(IEditorPart currentEditor) {
-        IWorkspaceRoot myWorkspaceRoot = getWorkspaceRoot();
-        String WorkspaceRoot = myWorkspaceRoot.getLocation().toOSString();
-        IEditorInput cc = currentEditor.getEditorInput();
-
-        if (cc instanceof IFileEditorInput) {
-            IFileEditorInput test = (IFileEditorInput) cc;
-            IFile loc = test.getFile();
-
-            IPath docLoc = loc.getLocation();
-            docLoc = docLoc.removeLastSegments(1);
-            return docLoc;
-
-        }
-
-        if ((cc instanceof SyncInfoCompareInput)
-                || (cc instanceof CompareEditorInput)) {
-
-            CompareEditorInput test = (CompareEditorInput) cc;
-            if (test.getCompareResult() == null)
-                return null;
-
-            IPath docLoc = new Path(WorkspaceRoot
-                    + test.getCompareResult().toString());
-            docLoc = docLoc.removeLastSegments(1);
-            return docLoc;
-
-        }
-
-        return null;
-    }
-
+		return null;
+	}
 }

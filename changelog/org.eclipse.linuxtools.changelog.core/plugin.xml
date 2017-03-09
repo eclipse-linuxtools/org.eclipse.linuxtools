@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?><!--
-    Copyright (c) 2010 Red Hat, Inc.
+    Copyright (c) 2010, 2017 Red Hat, Inc.
     All rights reserved. This program and the accompanying materials
     are made available under the terms of the Eclipse Public License v1.0
     which accompanies this distribution, and is available at
@@ -9,7 +9,6 @@
     Contributors:
         Alexander Kurtakov (Red Hat) - initial API and implementation
  -->
-
 <plugin>
 
     <extension-point id="parserContribution"
@@ -83,7 +82,17 @@
               name="%gnuFormatter">
               <fileName name="ChangeLog" />
         </formatter>
-  </extension>
+    </extension>
+    <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-names="ChangeLog"
+            id="org.eclipse.linuxtools.changelog.editor.content-type"
+            name="%content-type.name"
+            priority="high">
+      </content-type>
+    </extension>
     <extension
           id="org.eclipse.linuxtools.changelog.core.editor"
           point="org.eclipse.ui.editors">
@@ -93,8 +102,19 @@
              default="true"
              filenames="ChangeLog"
              icon="icons/file_obj.gif"
-             id="org.eclipse.linuxtools.changelog.core.editor6"
-             name="%editor.name"/>
+             id="org.eclipse.linuxtools.changelog.editor"
+             name="%editor.name">
+         <contentTypeBinding
+               contentTypeId="org.eclipse.linuxtools.changelog.editor.content-type">
+         </contentTypeBinding>
+       </editor>
+    </extension>
+    <extension
+         point="org.eclipse.ui.genericeditor.presentationReconcilers">
+      <presentationReconciler
+            class="org.eclipse.linuxtools.internal.changelog.core.editors.GNUPresentationReconciler"
+            contentType="org.eclipse.linuxtools.changelog.editor.content-type">
+      </presentationReconciler>
     </extension>
     <extension
           point="org.eclipse.linuxtools.changelog.core.editorContribution">
@@ -203,25 +223,15 @@
         <initializer
             class="org.eclipse.linuxtools.internal.changelog.core.ChangelogPreferenceInitializer" />
     </extension>
-
     <extension
-    point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
-<target id="org.eclipse.changelog.editor.target"
-    name="%target.name">
-<context type="org.eclipse.ui.texteditor.ITextEditor"/>
-</target>
-</extension>
-
-
-    <extension
-  point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors">
-  <hyperlinkDetector
-    id="org.eclipse.linuxtools.changelog.GNUHyperlinkDetector"
-    targetId="org.eclipse.changelog.editor.target"
-    class="org.eclipse.linuxtools.internal.changelog.core.editors.GNUHyperlinkDetector"
-    name="%hyperlinkDetector.name">
-  </hyperlinkDetector>
-</extension>
+  		point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors">
+  		<hyperlinkDetector
+   			id="org.eclipse.linuxtools.changelog.GNUHyperlinkDetector"
+    		targetId="org.eclipse.ui.DefaultTextEditor"
+    		class="org.eclipse.linuxtools.internal.changelog.core.editors.GNUHyperlinkDetector"
+    		name="%hyperlinkDetector.name">
+  		</hyperlinkDetector>
+	</extension>
 <extension point="org.eclipse.ui.menus">
   <menuContribution locationURI="popup:#TextEditorContext?endof=group.edit">
         <command commandId="org.eclipse.linuxtools.changelog.core.formatChangeLog">

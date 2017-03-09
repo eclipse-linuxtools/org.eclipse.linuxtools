@@ -16,7 +16,8 @@ Require-Bundle: org.eclipse.team.ui,
  org.eclipse.team.core,
  org.eclipse.ui.navigator,
  org.eclipse.compare,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ org.eclipse.ui.genericeditor;bundle-version="1.0.0"
 Export-Package: org.eclipse.linuxtools.changelog.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
