@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?><!--
-    Copyright (c) 2009, 2013 Red Hat, Inc.
+    Copyright (c) 2009, 2017 Red Hat, Inc.
     All rights reserved. This program and the accompanying materials
     are made available under the terms of the Eclipse Public License v1.0
     which accompanies this distribution, and is available at
@@ -402,5 +402,72 @@
             </instanceof>
          </with>
       </definition>
+   </extension>
+    <extension
+         point="org.eclipse.ui.themes">
+      <themeElementCategory
+            id="org.eclipse.linuxtools.rpm.editor.presentation"
+            label="RPM .spec file editor">
+      </themeElementCategory>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.rpm.editor.presentation"
+            id="org.eclipse.linuxtools.rpm.edtor.color.default"
+            label="Default"
+            value="0,0,0">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.rpm.editor.presentation"
+            id="org.eclipse.linuxtools.rpm.editor.color.sections"
+            label="RPM Section name"
+            value="128,0,0">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.rpm.editor.presentation"
+            id="org.eclipse.linuxtools.rpm.editor.color.macros"
+            label="Macros"
+            value="0,0,128">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.rpm.editor.presentation"
+            id="org.eclipse.linuxtools.rpm.editor.color.keywords"
+            label="Keywords"
+            value="127,0,85">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.rpm.editor.presentation"
+            id="org.eclipse.linuxtools.rpm.editor.color.defines"
+            label="Defines"
+            value="0,128,0">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.rpm.editor.presentation"
+            id="org.eclipse.linuxtools.rpm.editor.color.tags"
+            label="Tags"
+            value="255,101,52">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.rpm.editor.presentation"
+            id="org.eclipse.linuxtools.rpm.editor.color.comment"
+            label="Comment"
+            value="63,95,191">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.rpm.editor.presentation"
+            id="org.eclipse.linuxtools.rpm.editor.color.packages"
+            label="Package names"
+            value="0,0,128">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.rpm.editor.presentation"
+            id="org.eclipse.linuxtools.rpm.editor.color.author_email"
+            label="Author email"
+            value="10,20,175">
+      </colorDefinition>
+      <colorDefinition
+            categoryId="org.eclipse.linuxtools.rpm.editor.presentation"
+            id="org.eclipse.linuxtools.rpm.editor.color.ver_rel"
+            label="Version.Release string"
+            value="255,101,52">
+      </colorDefinition>
    </extension>
 </plugin>

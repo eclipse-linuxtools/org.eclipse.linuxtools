@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Alphonse Van Assche.
+ * Copyright (c) 2007, 2017 Alphonse Van Assche and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -20,112 +19,112 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.ColorManager;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.ISpecfileColorConstants;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePackagesScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest;
+import org.eclipse.ui.PlatformUI;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class SpecfilePackagesScannerTest extends AScannerTest {
 
-    private IToken token;
+	private IToken token;
 
-    private TextAttribute ta;
+	private TextAttribute ta;
 
-    private static SpecfilePackagesScanner scanner;
-    private static final String P_RPM_LIST_FILEPATH = "/tmp/pkglist1";
+	private static SpecfilePackagesScanner scanner;
+	private static final String P_RPM_LIST_FILEPATH = "/tmp/pkglist1";
+	private static ColorRegistry colors;
 
-    @BeforeClass
-    public static void init() {
-        Activator.getDefault().getPreferenceStore().setValue(
-                PreferenceConstants.P_RPM_LIST_FILEPATH, P_RPM_LIST_FILEPATH);
-        Activator.getDefault().getPreferenceStore().setValue(
-                PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD, false);
+	@BeforeClass
+	public static void init() {
+		Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.P_RPM_LIST_FILEPATH,
+				P_RPM_LIST_FILEPATH);
+		Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD, false);
 
-        try (BufferedWriter out = new BufferedWriter(new FileWriter(
-                P_RPM_LIST_FILEPATH))) {
-            out.write("setup\ntest_underscore\n");
-            out.close();
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
-        // we ensure that proposals are rebuild
-        Activator.packagesList = null;
-        scanner = new SpecfilePackagesScanner(new ColorManager());
-    }
+		try (BufferedWriter out = new BufferedWriter(new FileWriter(P_RPM_LIST_FILEPATH))) {
+			out.write("setup\ntest_underscore\n");
+			out.close();
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
+		// we ensure that proposals are rebuild
+		Activator.packagesList = null;
+		scanner = new SpecfilePackagesScanner();
+		colors = PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getColorRegistry();
+	}
 
-    @AfterClass
-    public static void cleanUp() {
-        File file = new File(P_RPM_LIST_FILEPATH);
-        if (file.exists()) {
-            file.delete();
-        }
-    }
+	@AfterClass
+	public static void cleanUp() {
+		File file = new File(P_RPM_LIST_FILEPATH);
+		if (file.exists()) {
+			file.delete();
+		}
+	}
 
-    @Override
-    protected String getContents() {
-        return "Requires: test_underscore\n%{name}\n# Requires:\n";
-    }
+	@Override
+	protected String getContents() {
+		return "Requires: test_underscore\n%{name}\n# Requires:\n";
+	}
 
-    @Override
-    protected RuleBasedScanner getScanner() {
-        return scanner;
-    }
+	@Override
+	protected RuleBasedScanner getScanner() {
+		return scanner;
+	}
 
-    @Test
-    public void testPackageTag() {
-        token = getNextToken();
-        assertTrue(token instanceof Token);
-        assertEquals(9, rulesBasedScanner.getTokenLength());
-        assertEquals(0, rulesBasedScanner.getTokenOffset());
-        ta = (TextAttribute) token.getData();
-        assertEquals(ta.getForeground().getRGB(), ISpecfileColorConstants.TAGS);
-    }
+	@Test
+	public void testPackageTag() {
+		token = getNextToken();
+		assertTrue(token instanceof Token);
+		assertEquals(9, rulesBasedScanner.getTokenLength());
+		assertEquals(0, rulesBasedScanner.getTokenOffset());
+		ta = (TextAttribute) token.getData();
+		assertEquals(ta.getForeground(), colors.get(ISpecfileColorConstants.TAGS));
+	}
 
-    /**
-     * We test a package with a underscore. see bug:
-     * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302
-     */
-    @Test
-    public void testPackage() {
-        token = getToken(2);
-        assertTrue(token instanceof Token);
-        assertEquals(16, rulesBasedScanner.getTokenLength());
-        assertEquals(9, rulesBasedScanner.getTokenOffset());
-        ta = (TextAttribute) token.getData();
-        assertEquals((ta.getForeground()).getRGB(),
-                ISpecfileColorConstants.PACKAGES);
-    }
+	/**
+	 * We test a package with a underscore. see bug:
+	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302
+	 */
+	@Test
+	public void testPackage() {
+		token = getToken(2);
+		assertTrue(token instanceof Token);
+		assertEquals(16, rulesBasedScanner.getTokenLength());
+		assertEquals(9, rulesBasedScanner.getTokenOffset());
+		ta = (TextAttribute) token.getData();
+		assertEquals(ta.getForeground(), colors.get(ISpecfileColorConstants.PACKAGES));
+	}
 
-    @Test
-    public void testMacro() {
-        token = getToken(4);
-        assertTrue(token instanceof Token);
-        assertEquals(7, rulesBasedScanner.getTokenLength());
-        assertEquals(26, rulesBasedScanner.getTokenOffset());
-        ta = (TextAttribute) token.getData();
-        assertEquals((ta.getForeground()).getRGB(),
-                ISpecfileColorConstants.MACROS);
-    }
-    /**
-     * Check that comments are not handle with the package scanner. See bug:
-     * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302
-     */
-    @Test
-    public void testComment() {
-        token = getToken(6);
-        assertTrue(token instanceof Token);
-        assertEquals(1, rulesBasedScanner.getTokenLength());
-        ta = (TextAttribute) token.getData();
-        assertNull(ta);
-    }
+	@Test
+	public void testMacro() {
+		token = getToken(4);
+		assertTrue(token instanceof Token);
+		assertEquals(7, rulesBasedScanner.getTokenLength());
+		assertEquals(26, rulesBasedScanner.getTokenOffset());
+		ta = (TextAttribute) token.getData();
+		assertEquals(ta.getForeground(), colors.get(ISpecfileColorConstants.MACROS));
+	}
+
+	/**
+	 * Check that comments are not handle with the package scanner. See bug:
+	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302
+	 */
+	@Test
+	public void testComment() {
+		token = getToken(6);
+		assertTrue(token instanceof Token);
+		assertEquals(1, rulesBasedScanner.getTokenLength());
+		ta = (TextAttribute) token.getData();
+		assertEquals(ta.getForeground(), colors.get(ISpecfileColorConstants.DEFAULT));
+	}
 
 }

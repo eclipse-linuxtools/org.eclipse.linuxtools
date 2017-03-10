@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Red Hat, Inc.
+ * Copyright (c) 2007, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.ColorManager;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmMacroOccurrencesUpdater;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileConfiguration;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileDocumentProvider;
@@ -42,7 +41,6 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 public class SpecfileEditor extends TextEditor {
 
-	private ColorManager colorManager;
 	private SpecfileContentOutlinePage outlinePage;
 	private IEditorInput input;
 	private Specfile specfile;
@@ -53,15 +51,13 @@ public class SpecfileEditor extends TextEditor {
 
 	public SpecfileEditor() {
 		super();
-		colorManager = new ColorManager();
 		parser = getParser();
-		setSourceViewerConfiguration(new SpecfileConfiguration(colorManager, this));
+		setSourceViewerConfiguration(new SpecfileConfiguration(this));
 		setKeyBindingScopes(new String[] { "org.eclipse.linuxtools.rpm.ui.specEditorScope" }); //$NON-NLS-1$
 	}
 
 	@Override
 	public void dispose() {
-		colorManager.dispose();
 		// Set specfile field to null here is useful for test cases because
 		// whether
 		// the specfile in null SpecfileReconcilingStrategy#reconcile don't
@@ -134,9 +130,9 @@ public class SpecfileEditor extends TextEditor {
 			return (T) getDocumentProvider().getDocument(input);
 		}
 		if (projectionSupport != null) {
-			Object adapter = projectionSupport.getAdapter(getSourceViewer(), required);
+			T adapter = projectionSupport.getAdapter(getSourceViewer(), required);
 			if (adapter != null) {
-				return (T) adapter;
+				return adapter;
 			}
 		}
 		return super.getAdapter(required);

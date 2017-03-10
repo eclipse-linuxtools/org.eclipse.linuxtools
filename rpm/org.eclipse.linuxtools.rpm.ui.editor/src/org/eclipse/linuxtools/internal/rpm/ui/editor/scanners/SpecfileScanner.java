@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * Copyright (c) 2007, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -54,13 +54,13 @@ import static org.eclipse.linuxtools.internal.rpm.ui.editor.RpmTags.VERSION;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WordRule;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.ColorManager;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.ISpecfileColorConstants;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.detectors.KeywordWordDetector;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.detectors.MacroWordDetector;
@@ -71,91 +71,86 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.rules.CommentRule;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.rules.MacroRule;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.rules.StringWithEndingRule;
 import org.eclipse.swt.SWT;
+import org.eclipse.ui.PlatformUI;
 
 public class SpecfileScanner extends RuleBasedScanner {
 
-    private static final String[] SECTIONS = { PREP_SECTION, BUILD_SECTION, INSTALL_SECTION,
-        PRETRANS_SECTION, PRE_SECTION, PREUN_SECTION, POST_SECTION, FILES_SECTION, CHANGELOG_SECTION,
-        PACKAGE_SECTION, DESCRIPTION_SECTION, POSTUN_SECTION, POSTTRANS_SECTION, CLEAN_SECTION,
-        CHECK_SECTION };
+	private static final String[] SECTIONS = { PREP_SECTION, BUILD_SECTION, INSTALL_SECTION, PRETRANS_SECTION,
+			PRE_SECTION, PREUN_SECTION, POST_SECTION, FILES_SECTION, CHANGELOG_SECTION, PACKAGE_SECTION,
+			DESCRIPTION_SECTION, POSTUN_SECTION, POSTTRANS_SECTION, CLEAN_SECTION, CHECK_SECTION };
 
-    public static final String[] DEFINED_MACROS = {
-            "%define", "%global", "%make", "%setup", "%autosetup", "%autopatch", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-            "%attrib", "%defattr", "%attr", "%dir", "%config", "%docdir", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-            "%doc", "%lang", "%license", "%verify", "%ghost" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+	public static final String[] DEFINED_MACROS = { "%define", "%global", "%make", "%setup", "%autosetup", "%autopatch", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+			"%attrib", "%defattr", "%attr", "%dir", "%config", "%docdir", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+			"%doc", "%lang", "%license", "%verify", "%ghost" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
-    private static final String[] KEYWORDS = { "%if", "%ifarch", "%ifnarch", "%else", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            "%endif" }; //$NON-NLS-1$
+	private static final String[] KEYWORDS = { "%if", "%ifarch", "%ifnarch", "%else", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			"%endif" }; //$NON-NLS-1$
 
-    private static final String[] TAGS = { SUMMARY, NAME, VERSION, PACKAGER, ICON,
-            URL, PREFIX, GROUP, LICENSE, RELEASE, BUILD_ROOT, DISTRIBUTION,
-            VENDOR, PROVIDES, EXCLUSIVE_ARCH, EXCLUDE_ARCH, EXCLUDE_OS,
-            BUILD_ARCH, BUILD_ARCHITECTURES, AUTO_REQUIRES, AUTO_REQ,
-            AUTO_REQ_PROV, AUTO_PROV, EPOCH };
+	private static final String[] TAGS = { SUMMARY, NAME, VERSION, PACKAGER, ICON, URL, PREFIX, GROUP, LICENSE, RELEASE,
+			BUILD_ROOT, DISTRIBUTION, VENDOR, PROVIDES, EXCLUSIVE_ARCH, EXCLUDE_ARCH, EXCLUDE_OS, BUILD_ARCH,
+			BUILD_ARCHITECTURES, AUTO_REQUIRES, AUTO_REQ, AUTO_REQ_PROV, AUTO_PROV, EPOCH };
 
-    public SpecfileScanner(ColorManager manager) {
-        super();
-        IToken sectionToken = new Token(new TextAttribute(manager
-                .getColor(ISpecfileColorConstants.SECTIONS), null, SWT.ITALIC));
+	public SpecfileScanner() {
+		super();
+		ColorRegistry colors = PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getColorRegistry();
+		IToken sectionToken = new Token(
+				new TextAttribute(colors.get(ISpecfileColorConstants.SECTIONS), null, SWT.ITALIC));
 
-        IToken macroToken = new Token(new TextAttribute(manager
-                .getColor(ISpecfileColorConstants.MACROS)));
+		IToken macroToken = new Token(new TextAttribute(colors.get(ISpecfileColorConstants.MACROS)));
 
-        IToken keywordToken = new Token(new TextAttribute(manager
-                .getColor(ISpecfileColorConstants.KEYWORDS), null, SWT.BOLD));
+		IToken keywordToken = new Token(
+				new TextAttribute(colors.get(ISpecfileColorConstants.KEYWORDS), null, SWT.BOLD));
 
-        IToken tagToken = new Token(new TextAttribute(manager
-                .getColor(ISpecfileColorConstants.TAGS)));
+		IToken tagToken = new Token(new TextAttribute(colors.get(ISpecfileColorConstants.TAGS)));
 
-        IToken commentToken = new Token(new TextAttribute(manager
-                .getColor(ISpecfileColorConstants.COMMENT)));
+		IToken commentToken = new Token(new TextAttribute(colors.get(ISpecfileColorConstants.COMMENT)));
 
-        List<IRule> rules = new ArrayList<>();
+		List<IRule> rules = new ArrayList<>();
 
-        rules.add(new CommentRule(commentToken));
-        rules.add(new MacroRule( macroToken));
+		rules.add(new CommentRule(commentToken));
+		rules.add(new MacroRule(macroToken));
 
-        // %define, %make, ...
-        WordRule wordRule = new WordRule(new MacroWordDetector(),
-                Token.UNDEFINED);
-        for (String definedMacro : DEFINED_MACROS) {
-            wordRule.addWord(definedMacro, macroToken);
-        }
-        rules.add(wordRule);
+		// %define, %make, ...
+		WordRule wordRule = new WordRule(new MacroWordDetector(), Token.UNDEFINED);
+		for (String definedMacro : DEFINED_MACROS) {
+			wordRule.addWord(definedMacro, macroToken);
+		}
+		rules.add(wordRule);
 
-        // %patch[0-9]+[\ \t]
-        rules.add(new StringWithEndingRule("%patch", new PatchNumberDetector(), //$NON-NLS-1$
-                macroToken, false ));
+		// %patch[0-9]+[\ \t]
+		rules.add(new StringWithEndingRule("%patch", new PatchNumberDetector(), //$NON-NLS-1$
+				macroToken, false));
 
-        // %if, %else ...
-        wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);
-        for (String keyword : KEYWORDS) {
-            wordRule.addWord(keyword, keywordToken);
-        }
-        rules.add(wordRule);
+		// %if, %else ...
+		wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);
+		for (String keyword : KEYWORDS) {
+			wordRule.addWord(keyword, keywordToken);
+		}
+		rules.add(wordRule);
 
-        // %prep, %build, ...
-        wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);
-        for (String section : SECTIONS) {
-            wordRule.addWord(section, sectionToken);
-        }
-        rules.add(wordRule);
+		// %prep, %build, ...
+		wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);
+		for (String section : SECTIONS) {
+			wordRule.addWord(section, sectionToken);
+		}
+		rules.add(wordRule);
 
-        // Name:, Summary:, ...
-        wordRule = new WordRule(new TagWordDetector(), Token.UNDEFINED);
-        for (String tag : TAGS) {
-            wordRule.addWord(tag + ":", tagToken); //$NON-NLS-1$
-        }
-        rules.add(wordRule);
+		// Name:, Summary:, ...
+		wordRule = new WordRule(new TagWordDetector(), Token.UNDEFINED);
+		for (String tag : TAGS) {
+			wordRule.addWord(tag + ":", tagToken); //$NON-NLS-1$
+		}
+		rules.add(wordRule);
 
-        // Source[0-9]*:, Patch[0-9]*:
-        rules.add(new StringWithEndingRule("Source", //$NON-NLS-1$
-                new SuffixNumberDetector(), tagToken, false));
-        rules.add(new StringWithEndingRule("Patch", new SuffixNumberDetector(), //$NON-NLS-1$
-                tagToken, false));
+		// Source[0-9]*:, Patch[0-9]*:
+		rules.add(new StringWithEndingRule("Source", //$NON-NLS-1$
+				new SuffixNumberDetector(), tagToken, false));
+		rules.add(new StringWithEndingRule("Patch", new SuffixNumberDetector(), //$NON-NLS-1$
+				tagToken, false));
 
-        IRule[] result = new IRule[rules.size()];
-        rules.toArray(result);
-        setRules(result);
-    }
+		IRule[] result = new IRule[rules.size()];
+		rules.toArray(result);
+		setRules(result);
+		setDefaultReturnToken(new Token(new TextAttribute(colors.get(ISpecfileColorConstants.DEFAULT))));
+	}
 }
