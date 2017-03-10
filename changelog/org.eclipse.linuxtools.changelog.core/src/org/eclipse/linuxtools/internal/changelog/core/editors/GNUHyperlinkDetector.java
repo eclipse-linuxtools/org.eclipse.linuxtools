@@ -107,7 +107,7 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
 
 			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 			IFile fileLoc = (IFile) root.findMember(documentLocation.append(line));
-			if (fileLoc.exists()) {
+			if (fileLoc != null && fileLoc.exists()) {
 				return new IHyperlink[] { new FileHyperlink(pathRegion, fileLoc) };
 			}
 
