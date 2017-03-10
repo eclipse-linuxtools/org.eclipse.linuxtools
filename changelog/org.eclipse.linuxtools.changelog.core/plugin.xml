@@ -318,7 +318,7 @@
       </themeElementCategory>
       <colorDefinition
             categoryId="org.eclipse.linuxtools.changelog.editor.presentation"
-            id="org.eclipse.linuxtools.changelog.ediotr.color.file_name"
+            id="org.eclipse.linuxtools.changelog.editor.color.file_name"
             label="File name"
             value="128,0,0">
       </colorDefinition>

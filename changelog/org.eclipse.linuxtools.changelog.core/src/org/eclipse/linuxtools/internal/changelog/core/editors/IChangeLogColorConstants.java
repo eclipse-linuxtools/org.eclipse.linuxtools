@@ -17,7 +17,7 @@ package org.eclipse.linuxtools.internal.changelog.core.editors;
  *
  */
 public interface IChangeLogColorConstants {
-	String FILE_NAME = "org.eclipse.linuxtools.changelog.ediotr.color.file_name";
+	String FILE_NAME = "org.eclipse.linuxtools.changelog.editor.color.file_name";
 	String FUNC_NAME = "org.eclipse.linuxtools.changelog.editor.color.func_name";
 	String TEXT = "org.eclipse.linuxtools.changelog.editor.color.text";
 	String EMAIL = "org.eclipse.linuxtools.changelog.editor.color.email";
