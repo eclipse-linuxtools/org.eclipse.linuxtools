@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Red Hat Inc. and others.
+ * Copyright (c) 2013, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,8 +22,7 @@ import org.eclipse.linuxtools.internal.rpm.createrepo.ICreaterepoCompressionType
 import org.eclipse.linuxtools.internal.rpm.createrepo.Messages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -89,12 +88,7 @@ public class CreaterepoGeneralPropertyPage extends CreaterepoPropertyPage {
         btnProjectSettings.setLayoutData(layoutData);
         btnProjectSettings.setSelection(Activator.getDefault().getPreferenceStore()
                 .getBoolean(CreaterepoPreferenceConstants.PREF_GENERAL_ENABLED));
-        btnProjectSettings.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                checkState();
-            }
-        });
+        btnProjectSettings.addSelectionListener(SelectionListener.widgetSelectedAdapter(e ->  checkState()));
 
         lnWorkspaceSettings = new Link(composite, SWT.NONE);
         layoutData = new GridData();

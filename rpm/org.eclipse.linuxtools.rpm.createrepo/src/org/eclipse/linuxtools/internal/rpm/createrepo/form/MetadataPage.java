@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2016 Red Hat Inc. and others.
+ * Copyright (c) 2013, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.linuxtools.internal.rpm.createrepo.tree.CreaterepoTreeLabelPr
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -116,13 +117,11 @@ public class MetadataPage extends FormPage {
         if (!prefRevisionTxt.isEmpty()) {
             revisionTxt.setText(prefRevisionTxt);
         }
-        revisionTxt.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
+        revisionTxt.addSelectionListener(SelectionListener.widgetDefaultSelectedAdapter(e -> {
                 String revisionText = revisionTxt.getText().trim();
                 savePreferences(CreaterepoPreferenceConstants.PREF_REVISION, revisionText);
             }
-        });
+        ));
         revSection.setClient(sectionClient);
         //---------- REVISION SECTION END
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Red Hat, Inc.
+ * Copyright (c) 2011, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,7 @@ import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -58,24 +57,19 @@ public class RPMDetailsPanel {
         defaultSettings.setSelection(true);
 
         final Group specGrid = new Group(parent, SWT.NONE);
-        defaultSettings.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (defaultSettings.getSelection()) {
-                    for (Control control : specGrid.getChildren()) {
-                        specGrid.setEnabled(false);
-                        control.setEnabled(false);
-                    }
-                } else {
-                    for (Control control : specGrid.getChildren()) {
-                        specGrid.setEnabled(true);
-                        control.setEnabled(true);
-                    }
-                }
-            }
-
-        });
+		defaultSettings.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			if (defaultSettings.getSelection()) {
+				for (Control control : specGrid.getChildren()) {
+					specGrid.setEnabled(false);
+					control.setEnabled(false);
+				}
+			} else {
+				for (Control control : specGrid.getChildren()) {
+					specGrid.setEnabled(true);
+					control.setEnabled(true);
+				}
+			}
+		}));
         GridLayout layout = new GridLayout();
         layout.numColumns = 3;
         specGrid.setLayout(layout);

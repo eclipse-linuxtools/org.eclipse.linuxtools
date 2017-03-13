@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 Alexander Kurtakov and others.
+ * Copyright (c) 2008, 2017 Alexander Kurtakov and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,10 +19,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
@@ -76,20 +74,17 @@ public class SpecfileQuickOutlineDialog extends PopupDialog {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false)
 				.hint(SWT.DEFAULT, Dialog.convertHeightInCharsToPixels(fontMetrics, 1)).applyTo(filterText);
 
-		filterText.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.keyCode == 0x0D) { // Enter pressed
-					gotoSelectedElement();
-				} else if (e.keyCode == SWT.ARROW_DOWN) {
-					treeViewer.getTree().setFocus();
-				} else if (e.keyCode == SWT.ARROW_UP) {
-					treeViewer.getTree().setFocus();
-				} else if (e.character == 0x1B) { // Escape pressed
-					dispose();
-				}
+		filterText.addKeyListener(KeyListener.keyPressedAdapter(e -> {
+			if (e.keyCode == 0x0D) { // Enter pressed
+				gotoSelectedElement();
+			} else if (e.keyCode == SWT.ARROW_DOWN) {
+				treeViewer.getTree().setFocus();
+			} else if (e.keyCode == SWT.ARROW_UP) {
+				treeViewer.getTree().setFocus();
+			} else if (e.character == 0x1B) { // Escape pressed
+				dispose();
 			}
-		});
+		}));
 		filterText.addModifyListener(e -> {
 			String filterTextInput = ((Text) e.widget).getText().toLowerCase();
 			treeViewerFilter.setLookFor(filterTextInput);
@@ -130,12 +125,7 @@ public class SpecfileQuickOutlineDialog extends PopupDialog {
 
 	private void createUIListenersTreeViewer() {
 		final Tree tree = treeViewer.getTree();
-		tree.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				gotoSelectedElement();
-			}
-		});
+		tree.addSelectionListener(SelectionListener.widgetDefaultSelectedAdapter(e -> gotoSelectedElement()));
 	}
 
 	private void gotoSelectedElement() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2016 Alphonse Van Assche.
+ * Copyright (c) 2007, 2017 Alphonse Van Assche.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,7 @@ import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Link;
@@ -68,12 +67,8 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage implem
 	protected Control createContents(final Composite parent) {
 		Link link = new Link(parent, SWT.NONE);
 		link.setText(Messages.RpmProposalsPreferencePage_2);
-		link.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				PreferencesUtil.createPreferenceDialogOn(parent.getShell(), e.text, null, null);
-			}
-		});
+		link.addSelectionListener(SelectionListener.widgetSelectedAdapter(
+				e -> PreferencesUtil.createPreferenceDialogOn(parent.getShell(), e.text, null, null)));
 		return super.createContents(parent);
 	}
 
