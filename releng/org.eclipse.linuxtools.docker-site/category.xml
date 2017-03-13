@@ -138,6 +138,9 @@
    <iu id="org.objectweb.asm.analysis" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
+   <iu id="org.apache.commons.codec" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
    <iu id="org.apache.commons.compress" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
