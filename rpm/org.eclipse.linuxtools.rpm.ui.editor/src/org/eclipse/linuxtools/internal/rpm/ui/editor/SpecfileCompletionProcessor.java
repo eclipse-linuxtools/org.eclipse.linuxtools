@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2016 Alphonse Van Assche.
+ * Copyright (c) 2007, 2017 Alphonse Van Assche.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,9 +38,9 @@ import org.eclipse.jface.text.templates.TemplateException;
 import org.eclipse.jface.text.templates.TemplateProposal;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileSource;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePartitionScanner;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
 
 /**
@@ -78,22 +78,11 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 
 	private static final String CHANGELOG_SECTION_TEMPLATE = "org.eclipse.linuxtools.rpm.ui.editor.changelogSection"; //$NON-NLS-1$
 
-	private final SpecfileEditor editor;
-
-	/**
-	 * Default constructor
-	 *
-	 * @param editor
-	 *            The editor to create completion processor for.
-	 */
-	public SpecfileCompletionProcessor(SpecfileEditor editor) {
-		this.editor = editor;
-	}
-
 	@Override
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int offset) {
 		List<ICompletionProposal> result = new ArrayList<>();
-		Specfile specfile = editor.getSpecfile();
+
+		Specfile specfile = new SpecfileParser().parse(viewer.getDocument());
 		if (specfile == null) {
 			return null;
 		}
@@ -110,8 +99,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		List<ICompletionProposal> sourcesProposals = computeSourcesProposals(region, specfile, prefix);
 		result.addAll(sourcesProposals);
 		// Get the current content type
-		String currentContentType = editor.getAdapter(IDocument.class).getDocumentPartitioner()
-				.getContentType(region.getOffset());
+		String currentContentType = viewer.getDocument().getDocumentPartitioner().getContentType(region.getOffset());
 		if (currentContentType.equals(SpecfilePartitionScanner.SPEC_PREP)) {
 			List<ICompletionProposal> patchesProposals = computePatchesProposals(region, specfile, prefix);
 			result.addAll(patchesProposals);

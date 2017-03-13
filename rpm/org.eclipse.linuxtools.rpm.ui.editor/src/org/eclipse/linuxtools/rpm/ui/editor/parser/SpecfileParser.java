@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2016 Red Hat, Inc.
+ * Copyright (c) 2007, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,7 +39,6 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
@@ -92,13 +91,8 @@ public class SpecfileParser {
 
 	private SpecfileErrorHandler errorHandler;
 	private SpecfileTaskHandler taskHandler;
-	private IPreferenceStore store;
 	private SpecfileSection lastSection;
 	private SpecfilePackage activePackage;
-
-	public SpecfileParser() {
-		store = Activator.getDefault().getPreferenceStore();
-	}
 
 	public Specfile parse(IDocument specfileDocument) {
 
@@ -200,7 +194,8 @@ public class SpecfileParser {
 	}
 
 	private void generateTaskMarker(int lineNumber, String line) {
-		String[] taskTags = store.getString(PreferenceConstants.P_TASK_TAGS).split(";"); //$NON-NLS-1$
+		String[] taskTags = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_TASK_TAGS)
+				.split(";"); //$NON-NLS-1$
 		int commentCharIndex = line.indexOf(ISpecfileSpecialSymbols.COMMENT_START);
 		if (commentCharIndex > -1) {
 			for (String item : taskTags) {

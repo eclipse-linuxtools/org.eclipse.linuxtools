@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Red Hat, Inc.
+ * Copyright (c) 2008, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -60,8 +60,7 @@ public class SpecfileCompletionProcessorTest extends FileTestCase {
         // This is needed so the changes in the testFile are loaded in the
         // editor
         editor.doRevertToSaved();
-        SpecfileCompletionProcessor complProcessor = new SpecfileCompletionProcessor(
-                editor);
+        SpecfileCompletionProcessor complProcessor = new SpecfileCompletionProcessor();
         assertNotNull(complProcessor);
         editor.getSpecfileSourceViewer().setSelectedRange(0, 0);
         ICompletionProposal[] proposals = complProcessor
@@ -99,8 +98,7 @@ public class SpecfileCompletionProcessorTest extends FileTestCase {
         editor.doRevertToSaved();
 
         editor.getSpecfileSourceViewer().setSelectedRange(BUILD_REQUIRES.length(), 0);
-        SpecfileCompletionProcessor processor = new SpecfileCompletionProcessor(
-                editor);
+        SpecfileCompletionProcessor processor = new SpecfileCompletionProcessor();
 
         ICompletionProposal[] proposals = processor.computeCompletionProposals(
                 editor.getSpecfileSourceViewer(), BUILD_REQUIRES.length());
@@ -126,8 +124,7 @@ public class SpecfileCompletionProcessorTest extends FileTestCase {
         // This is needed so the changes in the testFile are loaded in the
         // editor
         editor.doRevertToSaved();
-        SpecfileCompletionProcessor complProcessor = new SpecfileCompletionProcessor(
-                editor);
+        SpecfileCompletionProcessor complProcessor = new SpecfileCompletionProcessor();
         assertNotNull(complProcessor);
         editor.getSpecfileSourceViewer().setSelectedRange(NON_ALPHA_DOT.length(), 0);
         ICompletionProposal[] proposals = complProcessor
@@ -149,8 +146,7 @@ public class SpecfileCompletionProcessorTest extends FileTestCase {
         // This is needed so the changes in the testFile are loaded in the
         // editor
         editor.doRevertToSaved();
-        SpecfileCompletionProcessor complProcessor = new SpecfileCompletionProcessor(
-                editor);
+        SpecfileCompletionProcessor complProcessor = new SpecfileCompletionProcessor();
         assertNotNull(complProcessor);
         editor.getSpecfileSourceViewer().setSelectedRange(NON_ALPHA_PLUS.length(), 0);
         ICompletionProposal[] proposals = complProcessor

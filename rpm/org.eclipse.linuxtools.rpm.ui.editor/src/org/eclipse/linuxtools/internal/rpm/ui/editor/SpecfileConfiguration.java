@@ -34,17 +34,12 @@ import org.eclipse.jface.text.hyperlink.AbstractHyperlinkDetector;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.jface.text.hyperlink.URLHyperlinkDetector;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
-import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
-import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink.URLHyperlinkWithMacroDetector;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfileChangelogScanner;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePackagesScanner;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePartitionScanner;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfileScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
@@ -55,7 +50,6 @@ import org.osgi.framework.FrameworkUtil;
 
 public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 	private SpecfileDoubleClickStrategy doubleClickStrategy;
-	private SpecfileHover specfileHover;
 	private SpecfileEditor editor;
 	private IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,
 			FrameworkUtil.getBundle(SpecfileConfiguration.class).getSymbolicName());
@@ -80,45 +74,12 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 
 	@Override
 	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
-		if (specfileHover == null) {
-			specfileHover = new SpecfileHover(this.editor);
-		}
-		return specfileHover;
+		return new SpecfileHover();
 	}
 
 	@Override
 	public IPresentationReconciler getPresentationReconciler(ISourceViewer sourceViewer) {
-		PresentationReconciler reconciler = new PresentationReconciler();
-		SpecfileScanner scanner = new SpecfileScanner();
-		DefaultDamagerRepairer dr = new DefaultDamagerRepairer(scanner);
-		reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
-		reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
-
-		dr = new DefaultDamagerRepairer(new SpecfilePackagesScanner());
-		reconciler.setDamager(dr, SpecfilePartitionScanner.SPEC_PACKAGES);
-		reconciler.setRepairer(dr, SpecfilePartitionScanner.SPEC_PACKAGES);
-
-		dr = new DefaultDamagerRepairer(scanner);
-		reconciler.setDamager(dr, SpecfilePartitionScanner.SPEC_PREP);
-		reconciler.setRepairer(dr, SpecfilePartitionScanner.SPEC_PREP);
-
-		dr = new DefaultDamagerRepairer(scanner);
-		reconciler.setDamager(dr, SpecfilePartitionScanner.SPEC_SCRIPT);
-		reconciler.setRepairer(dr, SpecfilePartitionScanner.SPEC_SCRIPT);
-
-		dr = new DefaultDamagerRepairer(scanner);
-		reconciler.setDamager(dr, SpecfilePartitionScanner.SPEC_FILES);
-		reconciler.setRepairer(dr, SpecfilePartitionScanner.SPEC_FILES);
-
-		dr = new DefaultDamagerRepairer(scanner);
-		reconciler.setDamager(dr, SpecfilePartitionScanner.SPEC_GROUP);
-		reconciler.setRepairer(dr, SpecfilePartitionScanner.SPEC_GROUP);
-
-		dr = new DefaultDamagerRepairer(new SpecfileChangelogScanner());
-		reconciler.setDamager(dr, SpecfilePartitionScanner.SPEC_CHANGELOG);
-		reconciler.setRepairer(dr, SpecfilePartitionScanner.SPEC_CHANGELOG);
-
-		return reconciler;
+		return new SpecfilePrecentationReconciler();
 	}
 
 	@Override
@@ -136,7 +97,7 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 	@Override
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 		ContentAssistant assistant = new ContentAssistant();
-		IContentAssistProcessor processor = new SpecfileCompletionProcessor(editor);
+		IContentAssistProcessor processor = new SpecfileCompletionProcessor();
 		// add content assistance to all the supported contentType
 		assistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
 		assistant.setContentAssistProcessor(processor, SpecfilePartitionScanner.SPEC_PREP);
