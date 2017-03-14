@@ -44,10 +44,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
 
 /**
- * Content assist processor
- *
- * @author Alphonse Van Assche
- *
+ * Content assist processor.
  */
 public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 
@@ -470,7 +467,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		for (SpecfileSource patch : patches) {
 			patchName = "%patch" + patch.getNumber(); //$NON-NLS-1$
 			if (patchName.startsWith(prefix)) {
-				ret.put(patchName.toLowerCase(), SpecfileHover.getSourceOrPatchValue(specfile, "patch" //$NON-NLS-1$
+				ret.put(patchName.toLowerCase(), RPMUtils.getSourceOrPatchValue(specfile, "patch" //$NON-NLS-1$
 						+ patch.getNumber()));
 			}
 		}
@@ -495,7 +492,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			sourceName = ISpecfileSpecialSymbols.MACRO_START_LONG + SOURCE + source.getNumber()
 					+ ISpecfileSpecialSymbols.MACRO_END_LONG;
 			if (sourceName.startsWith(prefix)) {
-				ret.put(sourceName, SpecfileHover.getSourceOrPatchValue(specfile, SOURCE + source.getNumber()));
+				ret.put(sourceName, RPMUtils.getSourceOrPatchValue(specfile, SOURCE + source.getNumber()));
 			}
 		}
 		return ret;

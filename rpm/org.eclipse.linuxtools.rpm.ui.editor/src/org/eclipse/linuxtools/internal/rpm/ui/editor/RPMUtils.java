@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2016 Red Hat, Inc.
+ * Copyright (c) 2013, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@ package org.eclipse.linuxtools.internal.rpm.ui.editor;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -19,6 +21,9 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileSource;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
@@ -119,5 +124,53 @@ public class RPMUtils {
 		}
 
 		return true;
+	}
+
+	public static String getSourceOrPatchValue(Specfile spec, String patchOrSourceName) {
+		String value = null;
+		Pattern p = Pattern.compile("(source|patch)(\\d*)"); //$NON-NLS-1$
+		Matcher m = p.matcher(patchOrSourceName);
+
+		if (m.matches()) {
+			String digits = m.group(2);
+
+			SpecfileSource source = null;
+			int number = -1;
+
+			if (digits != null && digits.isEmpty()) {
+				number = 0;
+			} else if (digits != null && !digits.isEmpty()) {
+				number = Integer.parseInt(digits);
+			}
+
+			if (number != -1) {
+				if (m.group(1).equals("source")) {//$NON-NLS-1$
+					source = spec.getSource(number);
+				} else if (m.group(1).equals("patch")) {//$NON-NLS-1$
+					source = spec.getPatch(number);
+				}
+
+				if (source != null) {
+					value = source.getFileName();
+				}
+			}
+		}
+		return value;
+	}
+
+	public static String getMacroValueFromMacroList(String macroName) {
+		String value = null;
+		if (Activator.getDefault().getRpmMacroList().findKey("%" + macroName)) { //$NON-NLS-1$
+			String currentConfig = Activator.getDefault().getPreferenceStore()
+					.getString(PreferenceConstants.P_MACRO_HOVER_CONTENT);
+			// Show content of the macro according with the configuration set
+			// in the macro preference page.
+			if (currentConfig.equals(PreferenceConstants.P_MACRO_HOVER_CONTENT_VIEWDESCRIPTION)) {
+				value = Activator.getDefault().getRpmMacroList().getValue(macroName);
+			} else {
+				value = RpmMacroProposalsList.getMacroEval("%" + macroName); //$NON-NLS-1$
+			}
+		}
+		return value;
 	}
 }
