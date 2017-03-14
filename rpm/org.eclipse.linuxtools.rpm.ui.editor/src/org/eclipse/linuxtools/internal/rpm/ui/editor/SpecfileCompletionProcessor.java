@@ -25,7 +25,6 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
-import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
@@ -80,13 +79,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		List<ICompletionProposal> result = new ArrayList<>();
 
 		Specfile specfile = new SpecfileParser().parse(viewer.getDocument());
-		ITextSelection selection = (ITextSelection) viewer.getSelectionProvider().getSelection();
-		// adjust offset to start of normalized selection
-		if (selection.getOffset() != offset) {
-			offset = selection.getOffset();
-		}
-		String prefix = getPrefix(viewer, offset);
-		Region region = new Region(offset - prefix.length(), prefix.length() + selection.getLength());
+		String prefix = completionWord(viewer.getDocument(), offset);
+		Region region = new Region(offset - prefix.length(), prefix.length());
 		// RPM macro's are useful in the whole specfile.
 		List<ICompletionProposal> rpmMacroProposals = computeRpmMacroProposals(region, specfile, prefix);
 		// Sources completion
@@ -196,7 +190,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		ArrayList<ICompletionProposal> proposals = new ArrayList<>();
 		if (rpmMacroProposalsMap != null) {
 			for (Map.Entry<String, String> entry : rpmMacroProposalsMap.entrySet()) {
-				proposals.add(new CompletionProposal(
+				proposals.add(new SpecCompletionProposal(
 						ISpecfileSpecialSymbols.MACRO_START_LONG + entry.getKey().substring(1)
 								+ ISpecfileSpecialSymbols.MACRO_END_LONG,
 						region.getOffset(), region.getLength(), entry.getKey().length() + 2,
@@ -226,7 +220,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		ArrayList<ICompletionProposal> proposals = new ArrayList<>();
 		if (patchesProposalsMap != null) {
 			for (Map.Entry<String, String> entry : patchesProposalsMap.entrySet()) {
-				proposals.add(new CompletionProposal(entry.getKey(), region.getOffset(), region.getLength(),
+				proposals.add(new SpecCompletionProposal(entry.getKey(), region.getOffset(), region.getLength(),
 						entry.getKey().length(), Activator.getDefault().getImage(PATCH_ICON), entry.getKey(), null,
 						entry.getValue()));
 			}
@@ -254,7 +248,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		ArrayList<ICompletionProposal> proposals = new ArrayList<>();
 		if (sourcesProposalsMap != null) {
 			for (Map.Entry<String, String> entry : sourcesProposalsMap.entrySet()) {
-				proposals.add(new CompletionProposal(entry.getKey(), region.getOffset(), region.getLength(),
+				proposals.add(new SpecCompletionProposal(entry.getKey(), region.getOffset(), region.getLength(),
 						entry.getKey().length(), Activator.getDefault().getImage(PATCH_ICON), entry.getKey(), null,
 						entry.getValue()));
 			}
@@ -281,8 +275,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		ArrayList<ICompletionProposal> proposals = new ArrayList<>();
 		if (rpmPkgProposalsList != null) {
 			for (String[] item : rpmPkgProposalsList) {
-				proposals.add(new CompletionProposal(item[0], region.getOffset(), region.getLength(), item[0].length(),
-						Activator.getDefault().getImage(PACKAGE_ICON), item[0], null, item[1]));
+				proposals.add(new SpecCompletionProposal(item[0], region.getOffset(), region.getLength(),
+						item[0].length(), Activator.getDefault().getImage(PACKAGE_ICON), item[0], null, item[1]));
 			}
 		}
 
@@ -295,7 +289,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		ArrayList<ICompletionProposal> proposals = new ArrayList<>();
 		for (String item : rpmGroupProposalsList) {
 			if (item.startsWith(prefix)) {
-				proposals.add(new CompletionProposal(item, region.getOffset(), region.getLength(), item.length(),
+				proposals.add(new SpecCompletionProposal(item, region.getOffset(), region.getLength(), item.length(),
 						Activator.getDefault().getImage(PACKAGE_ICON), item, null, item));
 			}
 		}
@@ -362,38 +356,6 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			return 90;
 		}
 		return 0;
-	}
-
-	/**
-	 * Get the prefix for a given viewer, offset.
-	 *
-	 * @param viewer
-	 *            the viewer for which the context is created
-	 * @param offset
-	 *            the offset into <code>document</code> for which the prefix is
-	 *            research
-	 * @return the prefix
-	 */
-	private String getPrefix(ITextViewer viewer, int offset) {
-		int i = offset;
-		IDocument document = viewer.getDocument();
-		if (i > document.getLength()) {
-			return EMPTY_STRING;
-		}
-
-		try {
-			while (i > 0) {
-				char ch = document.getChar(i - 1);
-				if (!Character.isLetterOrDigit(ch) && (ch != '%') && (ch != '_') && (ch != '-') && (ch != '{')
-						&& (ch != '.') && (ch != '+')) {
-					break;
-				}
-				i--;
-			}
-			return document.get(i, offset - i);
-		} catch (BadLocationException e) {
-			return EMPTY_STRING;
-		}
 	}
 
 	/**
@@ -496,6 +458,26 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			}
 		}
 		return ret;
+	}
+
+	private String completionWord(IDocument doc, int offset) {
+		String word = null;
+		if (offset > 0) {
+			try {
+				for (int n = offset - 1; n >= 0 && word == null; n--) {
+					char c = doc.getChar(n);
+					if (Character.isWhitespace(c)) {
+						word = doc.get(n + 1, offset - n - 1);
+					} else if (n == 0) {
+						// beginning of file
+						word = doc.get(0, offset - n);
+					}
+				}
+			} catch (BadLocationException e) {
+				// ignore
+			}
+		}
+		return word == null ? "" : word; //$NON-NLS-1$
 	}
 
 	@Override
