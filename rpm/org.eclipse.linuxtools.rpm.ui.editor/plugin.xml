@@ -29,6 +29,18 @@
             priority="high">
       </content-type>
    </extension>
+   <extension point="org.eclipse.core.runtime.adapters">
+		<factory
+    		adaptableType="org.eclipse.ui.internal.genericeditor.ExtensionBasedTextEditor"
+    		class="org.eclipse.linuxtools.internal.rpm.ui.editor.outline.SpecOutlinePageAdapterFactory">
+   			<adapter type="org.eclipse.ui.views.contentoutline.IContentOutlinePage"/>
+ 		</factory>
+ 		<factory
+    		adaptableType="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor"
+    		class="org.eclipse.linuxtools.internal.rpm.ui.editor.outline.SpecOutlinePageAdapterFactory">
+   			<adapter type="org.eclipse.ui.views.contentoutline.IContentOutlinePage"/>
+ 		</factory>
+   </extension>
    <extension
          point="org.eclipse.ui.editors">
       <editor
