@@ -59,7 +59,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
-import com.spotify.docker.client.exceptions.DockerCertificateException;
+import com.spotify.docker.client.DockerCertificateException;
 
 /**
  * {@link WizardPage} to edit an {@link IDockerConnection}

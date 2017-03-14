@@ -46,7 +46,7 @@ import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.exceptions.DockerException;
+import com.spotify.docker.client.DockerException;
 
 /**
  * Testing the {@link ImagePull} wizard

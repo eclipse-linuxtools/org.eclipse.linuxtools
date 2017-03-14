@@ -80,7 +80,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
-import com.spotify.docker.client.exceptions.DockerCertificateException;
+import com.spotify.docker.client.DockerCertificateException;
 
 /**
  * {@link WizardPage} to input the settings to connect to a Docker
