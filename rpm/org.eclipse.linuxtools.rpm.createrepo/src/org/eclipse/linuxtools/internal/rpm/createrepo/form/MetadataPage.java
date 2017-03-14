@@ -57,7 +57,6 @@ public class MetadataPage extends FormPage {
 
     private FormToolkit toolkit;
 
-    private Text revisionTxt;
     private Text tagTxt;
     private Tree tagsTree;
     private TreeViewer tagsTreeViewer;
@@ -112,7 +111,7 @@ public class MetadataPage extends FormPage {
         layout.marginWidth = 1; layout.marginHeight = 7;
         sectionClient.setLayout(layout);
 
-        revisionTxt = createTextFieldWithLabel(sectionClient, Messages.MetadataPage_labelRevision);
+        Text revisionTxt = createTextFieldWithLabel(sectionClient, Messages.MetadataPage_labelRevision);
         String prefRevisionTxt = eclipsePreferences.get(CreaterepoPreferenceConstants.PREF_REVISION, ICreaterepoConstants.EMPTY_STRING);
         if (!prefRevisionTxt.isEmpty()) {
             revisionTxt.setText(prefRevisionTxt);

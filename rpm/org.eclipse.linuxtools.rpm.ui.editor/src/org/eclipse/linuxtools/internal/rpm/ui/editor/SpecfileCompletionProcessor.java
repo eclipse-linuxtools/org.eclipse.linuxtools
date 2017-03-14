@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2017 Alphonse Van Assche.
+ * Copyright (c) 2007, 2017 Alphonse Van Assche and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -83,9 +83,6 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		List<ICompletionProposal> result = new ArrayList<>();
 
 		Specfile specfile = new SpecfileParser().parse(viewer.getDocument());
-		if (specfile == null) {
-			return null;
-		}
 		ITextSelection selection = (ITextSelection) viewer.getSelectionProvider().getSelection();
 		// adjust offset to start of normalized selection
 		if (selection.getOffset() != offset) {
