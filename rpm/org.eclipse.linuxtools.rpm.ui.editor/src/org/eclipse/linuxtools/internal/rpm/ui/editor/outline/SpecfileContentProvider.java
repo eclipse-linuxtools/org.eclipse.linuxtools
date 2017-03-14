@@ -17,7 +17,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IPositionUpdater;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackageContainer;
@@ -29,7 +28,6 @@ public class SpecfileContentProvider implements ITreeContentProvider {
 
 	private IDocumentProvider documentProvider;
 	private Specfile specfile;
-	private SpecfileEditor specEditor;
 	protected static final String SECTION_POSITIONS = "section_positions"; //$NON-NLS-1$
 	protected IPositionUpdater positionUpdater = new DefaultPositionUpdater(SECTION_POSITIONS);
 
@@ -60,9 +58,7 @@ public class SpecfileContentProvider implements ITreeContentProvider {
 			if (document != null) {
 				document.addPositionCategory(SECTION_POSITIONS);
 				document.addPositionUpdater(positionUpdater);
-				if (specEditor != null) {
-					specfile = specEditor.getSpecfile();
-				}
+				specfile = new SpecfileParser().parse(document);
 			}
 		}
 	}
