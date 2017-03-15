@@ -14,8 +14,9 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.RpmlintLog;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
+import org.eclipse.ui.IEditorPart;
 
 /**
  * Defines the common functionality for a resolution which fix is only inserting line.
@@ -47,7 +48,7 @@ public abstract class AInsertLineResolution extends ARpmlintResolution {
      */
     @Override
     public void run(IMarker marker) {
-        SpecfileEditor editor = getEditor(marker);
+        IEditorPart editor = getEditor(marker);
         if (editor == null) {
             return;
         }
@@ -55,7 +56,7 @@ public abstract class AInsertLineResolution extends ARpmlintResolution {
         IDocument doc = (IDocument) editor.getAdapter(IDocument.class);
 
         try {
-            int index = doc.getLineOffset(getLineNumberForInsert(editor.getSpecfile()));
+            int index = doc.getLineOffset(getLineNumberForInsert(new SpecfileParser().parse(doc)));
             doc.replace(index, 0, getLineToInsert());
         } catch (BadLocationException e) {
             RpmlintLog.logError(e);
