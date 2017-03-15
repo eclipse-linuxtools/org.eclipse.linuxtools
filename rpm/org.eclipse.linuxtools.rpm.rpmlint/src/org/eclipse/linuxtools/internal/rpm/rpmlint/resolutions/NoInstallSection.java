@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Alexander Kurtakov.
+ * Copyright (c) 2008, 2017 Alexander Kurtakov.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@ package org.eclipse.linuxtools.internal.rpm.rpmlint.resolutions;
 
 import java.util.List;
 
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
 
 /**
@@ -42,8 +42,8 @@ public class NoInstallSection extends AInsertLineResolution {
     }
 
     @Override
-    public int getLineNumberForInsert(SpecfileEditor editor) {
-        List<SpecfileSection> sections = editor.getSpecfile().getSections();
+    public int getLineNumberForInsert(Specfile specfile) {
+        List<SpecfileSection> sections = specfile.getSections();
         for (SpecfileSection section : sections) {
             if (section.getName().equals("clean")) { //$NON-NLS-1$
                 return section.getLineNumber();

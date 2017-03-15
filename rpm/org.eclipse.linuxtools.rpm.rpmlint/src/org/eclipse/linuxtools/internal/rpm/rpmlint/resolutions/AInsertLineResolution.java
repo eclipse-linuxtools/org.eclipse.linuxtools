@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Alexander Kurtakov and others.
+ * Copyright (c) 2008, 2017 Alexander Kurtakov and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.RpmlintLog;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 
 /**
  * Defines the common functionality for a resolution which fix is only inserting line.
@@ -37,7 +38,7 @@ public abstract class AInsertLineResolution extends ARpmlintResolution {
      * @param editor The Specfile editor if it's needed for determining the correct place.
      * @return The number of the line following the inserted line.
      */
-    public abstract int getLineNumberForInsert(SpecfileEditor editor);
+    public abstract int getLineNumberForInsert(Specfile editor);
 
     /**
      * Inserts an entire line at a given position as a resolution for a problem.
@@ -54,7 +55,7 @@ public abstract class AInsertLineResolution extends ARpmlintResolution {
         IDocument doc = (IDocument) editor.getAdapter(IDocument.class);
 
         try {
-            int index = doc.getLineOffset(getLineNumberForInsert(editor));
+            int index = doc.getLineOffset(getLineNumberForInsert(editor.getSpecfile()));
             doc.replace(index, 0, getLineToInsert());
         } catch (BadLocationException e) {
             RpmlintLog.logError(e);
