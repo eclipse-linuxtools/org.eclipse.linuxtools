@@ -14,7 +14,6 @@ Export-Package: org.eclipse.linuxtools.systemtap.ui.consolelog,org.ecl
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.console,
- org.eclipse.ui.editors,
  org.eclipse.linuxtools.systemtap.structures,
  com.jcraft.jsch;bundle-version="0.1.37",
  org.eclipse.debug.ui
