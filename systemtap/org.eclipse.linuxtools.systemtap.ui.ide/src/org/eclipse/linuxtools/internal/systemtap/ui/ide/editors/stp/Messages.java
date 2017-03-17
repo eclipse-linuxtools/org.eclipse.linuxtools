@@ -19,6 +19,9 @@ public class Messages extends NLS {
     public static String STPCompletionProcessor_probe;
     public static String STPCompletionProcessor_function;
     public static String STPMetadataSingleton_noCompletions;
+    public static String NewFileHandler_NewFile;
+    public static String SimpleDocumentProvider_errorCreatingFile;
+    public static String SimpleDocumentProvider_incorrectURL;
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

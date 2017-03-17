@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+ * Copyright (c) 2006, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,20 +14,13 @@ package org.eclipse.linuxtools.systemtap.ui.consolelog.structures;
 import java.util.Arrays;
 
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
-import org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
@@ -51,7 +44,6 @@ public class ErrorTableDisplay {
         table.setHeaderVisible(true);
         table.getVerticalBar().setVisible(true);
         table.setLinesVisible(true);
-        table.addMouseListener(mouseListener);
 
         TableColumn column;
         for(String title: titles) {
@@ -114,7 +106,6 @@ public class ErrorTableDisplay {
      */
     public void dispose() {
         if(null != table && !table.isDisposed()) {
-            table.removeMouseListener(mouseListener);
             table.dispose();
             table = null;
         }
@@ -132,36 +123,6 @@ public class ErrorTableDisplay {
         item = null;
     }
 
-    /**
-     * MouseListener that is used to detect when the user clicks on a row in the table.
-     * When clicked it will find the line number the error occured on and then set the
-     * cursor location to that location in the active editor.
-     */
-    private final MouseListener mouseListener = new MouseAdapter() {
-        @Override
-        public void mouseDoubleClick(MouseEvent me) {
-            String location = table.getSelection()[0].getText(4);
-
-            if(location.length() > 0) {
-                int line = 0;
-                if(location.indexOf(':') > 0) {
-                    String[] pos = location.split(":"); //$NON-NLS-1$
-                    line = Integer.parseInt(pos[0]);
-                } else {
-                    line = Integer.parseInt(location);
-                }
-
-                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                IEditorPart ed = page.getActiveEditor();
-
-                if(ed instanceof SimpleEditor) {
-                    SimpleEditor editor = ((SimpleEditor)ed);
-                    editor.selectLine(line);
-                    editor.setFocus();
-                }
-            }
-        }
-    };
 
     private Table table;
     private String[] titles;
