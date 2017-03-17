@@ -23,7 +23,6 @@ import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
-import org.eclipse.linuxtools.systemtap.ui.editor.DoubleClickStrategy;
 
 public class STPConfiguration extends SourceViewerConfiguration {
 
