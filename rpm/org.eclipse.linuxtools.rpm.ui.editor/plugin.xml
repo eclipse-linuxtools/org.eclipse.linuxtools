@@ -36,7 +36,7 @@
    			<adapter type="org.eclipse.ui.views.contentoutline.IContentOutlinePage"/>
  		</factory>
  		<factory
-    		adaptableType="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor"
+    		adaptableType="org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileEditor"
     		class="org.eclipse.linuxtools.internal.rpm.ui.editor.outline.SpecOutlinePageAdapterFactory">
    			<adapter type="org.eclipse.ui.views.contentoutline.IContentOutlinePage"/>
  		</factory>
@@ -47,7 +47,7 @@
             name="%editor.name"
             icon="icons/rpm.gif"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            class="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor"
+            class="org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileEditor"
             id="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor">
          <contentTypeBinding
                contentTypeId="org.eclipse.linuxtools.rpm.editor.content-type">
@@ -442,7 +442,7 @@
          <with
                variable="activePart">
             <instanceof
-                  value="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor">
+                  value="org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileEditor">
             </instanceof>
          </with>
       </definition>
