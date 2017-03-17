@@ -188,7 +188,7 @@ public class SimpleEditor extends TextEditor {
 
     private static File queryFile() {
         FileDialog dialog= new FileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE);
-        dialog.setText(Localization.getString("NewFileAction.NewFile"));  //$NON-NLS-1$
+        dialog.setText(Localization.getString("NewFileHandler.NewFile"));  //$NON-NLS-1$
         String path= dialog.open();
         if (path != null && !path.isEmpty()) {
             return new File(path);

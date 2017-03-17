@@ -38,9 +38,16 @@
             name="%view.probe.name">
       </view>
    </extension>
-
    <extension
          point="org.eclipse.ui.menus">
+      <menuContribution locationURI="toolbar:org.eclipse.ui.workbench.file?before=save">
+            <command
+                commandId="org.eclipse.linuxtools.internal.systemtap.ui.ide.OpenFileCommand"
+                icon="icons/actions/file/open_wiz.gif"
+                label="%command.open.name">
+                    <visibleWhen checkEnabled="true"/>
+            </command>
+      </menuContribution>
       <menuContribution
             locationURI="toolbar:org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView">
          <command commandId="org.eclipse.ui.navigate.collapseAll"/>
@@ -339,6 +346,11 @@
             id="org.eclipse.linuxtools.systemtap.ui.ide.category.file">
       </category>
       <command
+            name="%command.open.name"
+            description="%command.open.desc"
+            categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.file"
+            id="org.eclipse.linuxtools.internal.systemtap.ui.ide.OpenFileCommand"/>
+      <command
             name="%command.import.name"
             description="%command.import.desc"
             categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.file"
@@ -430,6 +442,16 @@
 
    <extension
          point="org.eclipse.ui.handlers">
+       <handler
+            class="org.eclipse.linuxtools.internal.systemtap.ui.ide.OpenFileHandler"
+            commandId="org.eclipse.linuxtools.internal.systemtap.ui.ide.OpenFileCommand">
+            <activeWhen>
+                <with
+                    variable="activeWorkbenchWindow.activePerspective">
+                    <equals value="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective"/>
+                </with>
+            </activeWhen>
+      </handler>
       <handler
             class="org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers.RunScriptHandler"
             commandId="org.eclipse.linuxtools.systemtap.ui.ide.RunScriptCommand">
