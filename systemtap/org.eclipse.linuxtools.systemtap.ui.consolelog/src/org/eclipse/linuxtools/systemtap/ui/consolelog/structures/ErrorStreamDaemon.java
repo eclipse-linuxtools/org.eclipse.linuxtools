@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015 IBM Corporation and others.
+ * Copyright (c) 2006, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,8 @@
 
 package org.eclipse.linuxtools.systemtap.ui.consolelog.structures;
 
+import org.eclipse.linuxtools.internal.systemtap.ui.consolelog.views.ErrorView;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.Localization;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView;
 
 /**
  * A class push data to both the <code>ScriptConsole</code> and the ErrorView
