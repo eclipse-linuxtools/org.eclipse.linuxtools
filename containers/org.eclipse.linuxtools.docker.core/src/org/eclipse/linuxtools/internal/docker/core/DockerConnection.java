@@ -346,7 +346,21 @@ public class DockerConnection
 	}
 
 	@Override
+	protected void finalize() throws Throwable {
+		close();
+		super.finalize();
+	}
+
+	@Override
 	public void close() {
+		// stop and remove all logging threads
+		for (String key : loggingThreads.keySet()) {
+			LogThread t = loggingThreads.get(key);
+			if (t != null) {
+				t.kill();
+			}
+			loggingThreads.remove(key);
+		}
 		synchronized (clientLock) {
 			if (this.client != null) {
 				this.client.close();
@@ -607,6 +621,7 @@ public class DockerConnection
 
 		@Override
 		public void execute() throws InterruptedException, IOException {
+			LogStream stream = null;
 			try {
 				// Add timestamps to log based on user preference
 				IEclipsePreferences preferences = InstanceScope.INSTANCE
@@ -615,7 +630,6 @@ public class DockerConnection
 				boolean timestamps = preferences.getBoolean(
 						"logTimestamp", true); //$NON-NLS-1$
 
-				LogStream stream = null;
 
 				if (timestamps)
 					stream = copyClient.logs(id, LogsParam.follow(),
