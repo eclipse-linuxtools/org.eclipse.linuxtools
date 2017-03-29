@@ -43,8 +43,8 @@ public class DockerException extends Exception {
 			s = s.substring(JSON_MESSAGE_PREFIX.length());
 			if (s.endsWith(JSON_MESSAGE_SUFFIX)) {
 				s = s.substring(0, s.indexOf(JSON_MESSAGE_SUFFIX));
-				return s;
 			}
+			return s;
 		}
 		return super.getMessage();
 	}

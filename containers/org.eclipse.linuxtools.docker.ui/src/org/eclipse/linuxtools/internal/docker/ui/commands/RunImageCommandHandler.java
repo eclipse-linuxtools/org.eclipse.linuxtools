@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.linuxtools.docker.core.DockerContainerNotFoundException;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.EnumDockerLoggingStatus;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
@@ -115,6 +116,7 @@ public class RunImageCommandHandler extends AbstractHandler {
 				monitor.beginTask(
 						DVMessages.getString("RunImageRunningTask.msg"), 2); //$NON-NLS-1$
 				String containerId = null;
+				RunConsole console = null;
 				try {
 					final SubMonitor createContainerMonitor = SubMonitor
 							.convert(monitor, 1);
@@ -137,8 +139,7 @@ public class RunImageCommandHandler extends AbstractHandler {
 							.convert(monitor, 1);
 					startContainerMonitor.beginTask(DVMessages
 							.getString("RunImageStartingContainerTask.msg"), 1); //$NON-NLS-1$
-					final RunConsole console = getRunConsole(connection,
-							container);
+					console = getRunConsole(connection,	container);
 					if (console != null) {
 						// if we are auto-logging, show the console
 						console.showConsole();
@@ -155,6 +156,9 @@ public class RunImageCommandHandler extends AbstractHandler {
 							hostConfig, containerName,
 							removeWhenExits);
 				} catch (final DockerException | InterruptedException e) {
+					if (console != null) {
+						RunConsole.removeConsole(console);
+					}
 					Display.getDefault().syncExec(() -> MessageDialog.openError(
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 									.getShell(),
@@ -185,6 +189,9 @@ public class RunImageCommandHandler extends AbstractHandler {
 											Thread.sleep(1000);
 										}
 									}
+								} catch (DockerContainerNotFoundException e) {
+									// container not created correctly
+									return Status.OK_STATUS;
 								} catch (DockerException | InterruptedException e) {
 									// ignore any errors in waiting for container or
 									// draining log
