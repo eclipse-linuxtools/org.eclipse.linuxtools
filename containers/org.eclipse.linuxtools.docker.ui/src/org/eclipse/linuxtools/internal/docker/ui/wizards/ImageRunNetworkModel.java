@@ -96,8 +96,10 @@ public class ImageRunNetworkModel extends BaseDatabindingModel {
 	}
 
 	public void setNetworkMode(final String networkMode) {
-		firePropertyChange(NETWORK_MODE, this.networkMode,
-				this.networkMode = networkMode);
+		if (networkMode != null) {
+			firePropertyChange(NETWORK_MODE, this.networkMode,
+					this.networkMode = networkMode);
+		}
 	}
 
 	/**
