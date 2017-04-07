@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -258,13 +258,6 @@ public abstract class AbstractEventConfigTab extends AbstractLaunchConfiguration
                         int count = counterSubTab.selectedEventList.getList().getItemCount();
                         if(count == 0)
                         {
-                            valid = false;
-                        }
-                        // number of event is  allowed in opcontrol binary is equal to number of h/w counter
-                        if(OprofileProject.OPCONTROL_BINARY.equals(OprofileProject.getProfilingBinary()) && count > counters.length)
-                        {
-                            Object[] args = new Object[] { counters.length };
-                            setErrorMessage(MessageFormat.format(OprofileLaunchMessages.getString("tab.event.opcontrol.validation.msg"),args)); //$NON-NLS-1$
                             valid = false;
                         }
                     }

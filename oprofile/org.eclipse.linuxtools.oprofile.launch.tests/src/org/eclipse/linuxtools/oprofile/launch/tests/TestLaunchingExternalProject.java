@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -110,7 +110,7 @@ public class TestLaunchingExternalProject extends AbstractTest {
         assertTrue(options.getKernelImageFile().isEmpty());
         assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
 
-        OprofileProject.setProfilingBinary(OprofileProject.OPCONTROL_BINARY);
+        OprofileProject.setProfilingBinary(OprofileProject.OPERF_BINARY);
         delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
     }
 }

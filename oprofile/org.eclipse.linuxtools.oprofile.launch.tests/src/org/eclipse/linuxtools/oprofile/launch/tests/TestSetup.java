@@ -61,7 +61,7 @@ public class TestSetup extends AbstractTest {
 
     @Override
     protected ILaunchConfigurationType getLaunchConfigType() {
-        return getLaunchManager().getLaunchConfigurationType(OprofileLaunchPlugin.ID_LAUNCH_PROFILE_MANUAL);
+        return getLaunchManager().getLaunchConfigurationType(OprofileLaunchPlugin.ID_LAUNCH_PROFILE);
     }
 
     @Override

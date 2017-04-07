@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -33,36 +33,8 @@ public final class TestingOprofileLaunchConfigurationDelegate extends
     public OprofileDaemonOptions _options;
 
     @Override
-    protected void oprofileDumpSamples() {
-        return;
-    }
-
-    @Override
-    protected void oprofileReset() {
-        return;
-    }
-
-    @Override
-    protected void oprofileShutdown() {
-        return;
-    }
-
-    @Override
     protected boolean oprofileStatus() {
         return false;
-    }
-
-    @Override
-    protected void oprofileStartCollection() {
-        return;
-    }
-
-    @Override
-    protected void oprofileSetupDaemon(OprofileDaemonOptions options,
-            OprofileDaemonEvent[] events) {
-        _options = options;
-        eventsIsNull = events == null ? true : false;
-        return;
     }
 
     @Override

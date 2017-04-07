@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2009 Red Hat, Inc.
+ * Copyright (c) 2004, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,9 +20,7 @@ import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
-import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
-import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions.SessionManager;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
@@ -49,8 +47,8 @@ public class OprofileViewSaveDefaultSessionAction extends Action {
     @Override
     public void run() {
         boolean defaultSessionExists = false;
-        String defaultSessionName = null;
         UiModelRoot modelRoot = UiModelRoot.getDefault();
+        String defaultSessionName = null;
         IUiModelElement[] modelEvents = null;
 
         if (modelRoot.hasChildren()) {
@@ -83,41 +81,22 @@ public class OprofileViewSaveDefaultSessionAction extends Action {
                         new SaveSessionValidator());
 
                 int result = dialog.open();
-                if (result == Window.OK) {
-                    try {
-                        OprofileCorePlugin.getDefault().getOpcontrolProvider()
-                                .saveSession(dialog.getValue());
-                        // remove the default session
-                        for (int i = 0; i < modelEvents.length; i++) {
-                            OprofileCorePlugin
-                                    .getDefault()
-                                    .getOpcontrolProvider()
-                                    .deleteSession(defaultSessionName,
-                                            modelEvents[i].getLabelText());
-                        }
-                        // clear out collected data by this session
-                        // if opcontol is used
-                        if (Oprofile.OprofileProject.OPCONTROL_BINARY
-                                .equals(Oprofile.OprofileProject
-                                        .getProfilingBinary())) {
-                            OprofileCorePlugin.getDefault()
-                                    .getOpcontrolProvider().reset();
-                        } else if (Oprofile.OprofileProject.OPERF_BINARY.equals(Oprofile.OprofileProject.getProfilingBinary())){
-                            // remove oprofile_data so current event no longer
-                            // be there
-                            OprofileViewDeleteSessionAction
-                                    .deleteOperfDataFolder(Oprofile.OprofileProject
-                                            .getProject()
-                                            .getFolder(
-                                                    Oprofile.OprofileProject.OPERF_DATA));
-                        }
-                        OprofileUiPlugin.getDefault().getOprofileView()
-                                .refreshView();
-                    } catch (OpcontrolException oe) {
-                        OprofileCorePlugin.showErrorDialog(
-                                "opcontrolProvider", oe); //$NON-NLS-1$
+				if (result == Window.OK) {
+					SessionManager.saveSession(dialog.getValue());
+
+					// remove the default session
+                    for (int i = 0; i < modelEvents.length; i++) {
+                        SessionManager.deleteSession(defaultSessionName, modelEvents[i].getLabelText());
                     }
-                }
+
+					if (Oprofile.OprofileProject.OPERF_BINARY.equals(Oprofile.OprofileProject.getProfilingBinary())) {
+						// remove oprofile_data so current event no longer
+						// be there
+						OprofileViewDeleteSessionAction.deleteOperfDataFolder(
+								Oprofile.OprofileProject.getProject().getFolder(Oprofile.OprofileProject.OPERF_DATA));
+					}
+					OprofileUiPlugin.getDefault().getOprofileView().refreshView();
+				}
             } else {
                 MessageDialog
                         .openError(

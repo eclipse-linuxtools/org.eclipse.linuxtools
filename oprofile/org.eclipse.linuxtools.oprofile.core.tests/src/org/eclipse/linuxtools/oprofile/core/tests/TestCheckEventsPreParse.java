@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2013 Red Hat, Inc.
+ * Copyright (c) 2010, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.checkevent.CheckEventAdapter;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.info.InfoAdapter;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 import org.w3c.dom.Document;
@@ -47,7 +46,6 @@ import org.xml.sax.SAXException;
  */
 public class TestCheckEventsPreParse {
 
-    private static final String REL_PATH_TO_CHECKEVENT_BAD_COUNTER = "resources/test_check-event_invalid_counter.xml";
     private static final String REL_PATH_TO_CHECKEVENT_BAD_UMASK = "resources/test_check-event_invalid_umask.xml";
     private static final String REL_PATH_TO_CHECKEVENT_OK = "resources/test_check-event_ok.xml";
     private static final String REL_PATH_TO_INFO_PRE_PARSE_RAW = "resources/test_info_pre_parse_raw.xml";
@@ -124,18 +122,9 @@ public class TestCheckEventsPreParse {
     }
 
     @Test
-    public void testBadCounter () {
-        ctr = "999";
-        assertValidity(REL_PATH_TO_CHECKEVENT_BAD_COUNTER);
-    }
-    @Test
     public void testBadUnitMask (){
         umask = "999";
         assertValidity(REL_PATH_TO_CHECKEVENT_BAD_UMASK);
-    }
-    @Test @Ignore
-    public void testOk (){
-        assertValidity(REL_PATH_TO_CHECKEVENT_OK);
     }
 
     public void assertValidity (String path){

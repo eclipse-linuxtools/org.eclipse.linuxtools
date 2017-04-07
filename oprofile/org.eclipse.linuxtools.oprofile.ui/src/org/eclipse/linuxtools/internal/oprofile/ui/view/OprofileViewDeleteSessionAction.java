@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2013 Red Hat, Inc.
+ * Copyright (c) 2010, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,9 +15,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
+import org.eclipse.linuxtools.internal.oprofile.core.opxml.sessions.SessionManager;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.oprofile.ui.model.IUiModelElement;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelSession;
@@ -48,31 +48,20 @@ public class OprofileViewDeleteSessionAction extends Action {
      * @param sessionName The name of the session to delete
      * @param eventName The name of the event containing the session
      */
-    private void deleteSession(UiModelSession sess) {
-        String sessionName = sess.getLabelText();
-        IUiModelElement[] modelEvents = sess.getChildren();
-        try {
-            for (int i = 0; i < modelEvents.length; i++) {
-                OprofileCorePlugin
-                        .getDefault()
-                        .getOpcontrolProvider()
-                        .deleteSession(sessionName,
-                                modelEvents[i].getLabelText());
-            }
-            // clear out collected data by this session
-            // check if profile is done through operf or oprofile
-            if (Oprofile.OprofileProject.getProfilingBinary().equals(
-                    Oprofile.OprofileProject.OPERF_BINARY)) {
-                // delete operf_data folder
-                deleteOperfDataFolder(Oprofile.OprofileProject.getProject()
-                        .getFolder(Oprofile.OprofileProject.OPERF_DATA));
-            } else if (Oprofile.OprofileProject.getProfilingBinary().equals(Oprofile.OprofileProject.OPCONTROL_BINARY)) {
-                OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();
-            }
-        } catch (OpcontrolException e) {
-            OprofileCorePlugin.showErrorDialog("opcontrolProvider", e); //$NON-NLS-1$
+	private void deleteSession(UiModelSession sess) {
+		String sessionName = sess.getLabelText();
+		IUiModelElement[] modelEvents = sess.getChildren();
+
+		for (int i = 0; i < modelEvents.length; i++) {
+			SessionManager.deleteSession(sessionName, modelEvents[i].getLabelText());
         }
-    }
+		// clear out collected data by this session
+		// check if profile is done through operf or oprofile
+		if (Oprofile.OprofileProject.getProfilingBinary().equals(Oprofile.OprofileProject.OPERF_BINARY)) {
+			// delete operf_data folder
+			deleteOperfDataFolder(Oprofile.OprofileProject.getProject().getFolder(Oprofile.OprofileProject.OPERF_DATA));
+		}
+	}
 
     public static void deleteOperfDataFolder(IFolder operfData) {
         if(operfData.exists()) {
@@ -84,4 +73,5 @@ public class OprofileViewDeleteSessionAction extends Action {
         }
 
     }
+
 }

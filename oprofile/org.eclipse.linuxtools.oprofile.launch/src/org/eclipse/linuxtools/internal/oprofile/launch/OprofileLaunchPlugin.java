@@ -30,8 +30,6 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
 
     // The launch type ID for profiling
     public static final String ID_LAUNCH_PROFILE = PLUGIN_ID + ".oprofile"; //$NON-NLS-1$
-    public static final String ID_LAUNCH_PROFILE_MANUAL = PLUGIN_ID + ".oprofile.manual"; //$NON-NLS-1$
-
 
     /* Launch Configuration attributes */
 
@@ -45,9 +43,6 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
      * @since 2.1
      */
     public static final String ATTR_OPROFILE_COMBO_TEXT = ID_LAUNCH_PROFILE + ".OPROFILE_COMBO_TEXT";        //$NON-NLS-1$
-
-    // Manual Profile string \\
-    public static final String ATTR_MANUAL_PROFILE = ID_LAUNCH_PROFILE + ".MANUAL_PROFILE";        //$NON-NLS-1$
 
     // Counter Attributes \\
     private static final String attrCounter(int nr) { return ID_LAUNCH_PROFILE + ".COUNTER_" + nr; }                     //$NON-NLS-1$

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004,2008,2009 Red Hat, Inc.
+ * Copyright (c) 2004,2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -75,22 +75,13 @@ public class LaunchOptions {
      * configuration
      * @param config    the launch configuration
      */
-    public void saveConfiguration(ILaunchConfigurationWorkingCopy config) {
-        config.setAttribute(OprofileLaunchPlugin.ATTR_KERNEL_IMAGE_FILE, options.getKernelImageFile());
-        config.setAttribute(OprofileLaunchPlugin.ATTR_SEPARATE_SAMPLES, options.getSeparateProfilesMask());
-        config.setAttribute(OprofileLaunchPlugin.ATTR_EXECUTIONS_NUMBER, getExecutionsNumber());
-        try {
-            if (config.getType().getIdentifier().equals("org.eclipse.linuxtools.oprofile.launch.oprofile.manual")) { //$NON-NLS-1$
-                config.setAttribute(OprofileLaunchPlugin.ATTR_OPROFILE_COMBO_TEXT, OprofileProject.OPCONTROL_BINARY);
-                OprofileProject.setProfilingBinary(OprofileProject.OPCONTROL_BINARY);
-            } else {
-                config.setAttribute(OprofileLaunchPlugin.ATTR_OPROFILE_COMBO_TEXT, getOprofileComboText());
-                OprofileProject.setProfilingBinary(getOprofileComboText());
-            }
-        } catch (CoreException e) {
-            e.printStackTrace();
-        }
-    }
+	public void saveConfiguration(ILaunchConfigurationWorkingCopy config) {
+		config.setAttribute(OprofileLaunchPlugin.ATTR_KERNEL_IMAGE_FILE, options.getKernelImageFile());
+		config.setAttribute(OprofileLaunchPlugin.ATTR_SEPARATE_SAMPLES, options.getSeparateProfilesMask());
+		config.setAttribute(OprofileLaunchPlugin.ATTR_EXECUTIONS_NUMBER, getExecutionsNumber());
+		config.setAttribute(OprofileLaunchPlugin.ATTR_OPROFILE_COMBO_TEXT, getOprofileComboText());
+		OprofileProject.setProfilingBinary(getOprofileComboText());
+	}
 
     /**
      * Loads this object with the global options in the given launch

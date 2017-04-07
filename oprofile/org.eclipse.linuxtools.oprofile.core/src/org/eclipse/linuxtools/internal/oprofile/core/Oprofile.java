@@ -29,281 +29,278 @@ import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 
-
 /**
  * Common class wrapper for all things Oprofile.
  */
 public class Oprofile {
-    // Ugh. Need to know whether the module is loaded without running oprofile commands...
-    private static final String[] OPROFILE_CPU_TYPE_FILES = {
-        "/dev/oprofile/cpu_type", //$NON-NLS-1$
-        "/proc/sys/dev/oprofile/cpu_type"  //$NON-NLS-1$
-    };
+	// Ugh. Need to know whether the module is loaded without running oprofile
+	// commands...
+	private static final String[] OPROFILE_CPU_TYPE_FILES = { "/dev/oprofile/cpu_type", //$NON-NLS-1$
+			"/proc/sys/dev/oprofile/cpu_type" //$NON-NLS-1$
+	};
 
-    /**
-     *  Oprofile information
-     */
-    private static OpInfo info;
+	/**
+	 * Oprofile information
+	 */
+	private static OpInfo info;
 
-    /**
-     *  Make sure that oprofile is ready to go
-     */
-    static {
-        initializeOprofileModule();
-    }
+	/**
+	 * Make sure that oprofile is ready to go
+	 */
+	static {
+		initializeOprofileModule();
+	}
 
-    /**
-     * Initialize the oprofile module
-     *
-     * This function will check if the kernel module is
-     * loaded. If it is not, it will attempt to load it
-     * (which will cause the system to prompt the user for
-     * root access).
-     */
-    static private void initializeOprofileModule() {
-        // Check if kernel module is loaded, if not, try to load it
-        if (!isKernelModuleLoaded()) {
-            initializeOprofile();
-        }
+	/**
+	 * Initialize the oprofile module
+	 *
+	 * This function will check if the kernel module is loaded. If it is not, it
+	 * will attempt to load it (which will cause the system to prompt the user for
+	 * root access).
+	 */
+	static private void initializeOprofileModule() {
+		if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY) || isKernelModuleLoaded()) {
+			initializeOprofileCore();
+		}
+	}
 
-        if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY)
-                || isKernelModuleLoaded()) {
-            initializeOprofileCore();
-        }
-    }
+	// This requires more inside knowledge about Oprofile than one would like,
+	// but it is the only way of knowing whether the module is loaded (and we can
+	// succesfully call into the oprofile wrapper library without causing it to
+	// print out
+	// a lot of warnings).
+	/**
+	 * Check whether oprofile kernel module is loaded
+	 * 
+	 * @return true if the module is loaded, otherwise false
+	 */
+	private static boolean isKernelModuleLoaded() {
+		IRemoteFileProxy proxy = null;
+		try {
+			proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 
-    // This requires more inside knowledge about Oprofile than one would like,
-    // but it is the only way of knowing whether the module is loaded (and we can
-    // succesfully call into the oprofile wrapper library without causing it to print out
-    // a lot of warnings).
-    /**
-     * Check whether oprofile kernel module is loaded
-     * @return true if the module is loaded, otherwise false
-     */
-    private static boolean isKernelModuleLoaded() {
-        IRemoteFileProxy proxy = null;
-        try {
-            proxy = RemoteProxyManager.getInstance().getFileProxy(Oprofile.OprofileProject.getProject());
-        } catch (CoreException e) {
-            e.printStackTrace();
-        }
+		for (int i = 0; i < OPROFILE_CPU_TYPE_FILES.length; ++i) {
+			IFileStore f = proxy.getResource(OPROFILE_CPU_TYPE_FILES[i]);
+			if (f.fetchInfo().exists()) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-        for (int i = 0; i < OPROFILE_CPU_TYPE_FILES.length; ++i) {
-            IFileStore f = proxy.getResource(OPROFILE_CPU_TYPE_FILES[i]);
-            if (f.fetchInfo().exists()) {
-                return true;
-            }
-        }
-        return false;
-    }
-    /**
-     *  Initialize oprofile module by calling <code>`opcontrol --init`</code>
-     */
-    private static void initializeOprofile() {
-        if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPCONTROL_BINARY)) {
-            try {
-                OprofileCorePlugin.getDefault().getOpcontrolProvider()
-                        .initModule();
-            } catch (OpcontrolException e) {
-                // Fail silently
-            }
-        }
-    }
+	/**
+	 * Initializes static data for oprofile.
+	 */
+	private static void initializeOprofileCore() {
+		info = OpInfo.getInfo();
 
+		if (info == null) {
+			throw new ExceptionInInitializerError(OprofileProperties.getString("fatal.opinfoNotParsed")); //$NON-NLS-1$
+		}
+	}
 
-    /**
-     *  Initializes static data for oprofile.
-     */
-    private static void initializeOprofileCore () {
-        info = OpInfo.getInfo();
+	/**
+	 * Queries oprofile for the number of counters on the current CPU. Used only in
+	 * launch config tabs.
+	 * 
+	 * @return the number of counters
+	 */
+	public static int getNumberOfCounters() {
+		// If operf is not found, set no counters
+		try {
+			Process p = RuntimeProcessFactory.getFactory().exec(new String[] { "operf", "--version" }, //$NON-NLS-1$ //$NON-NLS-2$
+					OprofileProject.getProject());
+			if (p == null) {
+				return 0;
+			}
+		} catch (IOException e) {
+			return 0;
+		}
+		return info.getNrCounters();
+	}
 
-        if (info == null) {
-            throw new ExceptionInInitializerError(
-                    OprofileProperties.getString("fatal.opinfoNotParsed")); //$NON-NLS-1$
-        }
-    }
+	/**
+	 * Returns the CPU speed of the current configuration.
+	 * 
+	 * @return the cpu speed in MHz
+	 */
+	public static double getCpuFrequency() {
+		return info.getCPUSpeed();
+	}
 
-    /**
-     * Queries oprofile for the number of counters on the current CPU.
-     * Used only in launch config tabs.
-     * @return the number of counters
-     */
-    public static int getNumberOfCounters() {
-        // If using opcontrol, we need kernel module loaded to use any counters
-        if (!isKernelModuleLoaded() && OprofileProject.getProfilingBinary().equals(OprofileProject.OPCONTROL_BINARY)){
-            return 0;
-        }
+	/**
+	 * Get all the events that may be collected on the given counter.
+	 * 
+	 * @param num
+	 *            the counter number
+	 * @return an array of all valid events -- NEVER RETURNS NULL!
+	 */
+	public static OpEvent[] getEvents(int num) {
+		return info.getEvents(num);
+	}
 
-        // If operf is not found, set no counters
-        try {
-            Process p = RuntimeProcessFactory.getFactory().exec(
-                    new String [] {"operf", "--version"}, //$NON-NLS-1$ //$NON-NLS-2$
-                    OprofileProject.getProject());
-            if (p == null) {
-                return 0;
-            }
-        } catch (IOException e) {
-            return 0;
-        }
-        return info.getNrCounters();
-    }
+	/**
+	 * Returns the default location of the opcontrol samples directory or the
+	 * project directory if the profiler is operf.
+	 * 
+	 * @return the default samples directory
+	 */
+	public static String getDefaultSamplesDirectory() {
+		return info.getDefault(OpInfo.DEFAULT_SAMPLE_DIR);
+	}
 
-    /**
-     * Returns the CPU speed of the current configuration.
-     * @return the cpu speed in MHz
-     */
-    public static double getCpuFrequency() {
-        return info.getCPUSpeed();
-    }
+	/**
+	 * Returns the oprofile daemon log file.
+	 * 
+	 * @return the log file (absolute pathname)
+	 */
+	public static String getLogFile() {
+		return info.getDefault(OpInfo.DEFAULT_LOG_FILE);
+	}
 
-    /**
-     * Get all the events that may be collected on the given counter.
-     * @param num the counter number
-     * @return an array of all valid events -- NEVER RETURNS NULL!
-     */
-    public static OpEvent[] getEvents(int num) {
-        return info.getEvents(num);
-    }
+	/**
+	 * Returns whether or not oprofile is in timer mode.
+	 * 
+	 * @return true if oprofile is in timer mode, false otherwise
+	 */
+	public static boolean getTimerMode() {
+		return info.getTimerMode();
+	}
 
-    /**
-     * Returns the default location of the opcontrol samples directory
-     * or the project directory if the profiler is operf.
-     * @return the default samples directory
-     */
-    public static String getDefaultSamplesDirectory() {
-        return info.getDefault(OpInfo.DEFAULT_SAMPLE_DIR);
-    }
+	/**
+	 * Checks the requested counter, event, and unit mask for validity.
+	 * 
+	 * @param ctr
+	 *            the counter
+	 * @param event
+	 *            the event name
+	 * @param um
+	 *            the unit mask
+	 * @return whether the requested event is valid
+	 */
+	public static Boolean checkEvent(int ctr, String event, int um) {
+		int[] validResult = new int[1];
+		try {
+			IRunnableWithProgress opxml = OprofileCorePlugin.getDefault().getOpxmlProvider().checkEvents(ctr, event, um,
+					validResult);
+			opxml.run(null);
+		} catch (InvocationTargetException | InterruptedException e) {
+		}
 
-    /**
-     * Returns the oprofile daemon log file.
-     * @return the log file (absolute pathname)
-     */
-    public static String getLogFile() {
-        return info.getDefault(OpInfo.DEFAULT_LOG_FILE);
-    }
+		return (validResult[0] == CheckEventsProcessor.EVENT_OK);
+	}
 
-    /**
-     * Returns whether or not oprofile is in timer mode.
-     * @return true if oprofile is in timer mode, false otherwise
-     */
-    public static boolean getTimerMode() {
-        return info.getTimerMode();
-    }
+	/**
+	 * Returns a list of all the session collected on the system, as well as the
+	 * event under each of them.
+	 * 
+	 * @since 3.0
+	 * @returns a list of all collected events
+	 */
+	public static OpModelSession[] getSessions() {
+		OpModelSession[] events = null;
 
-    /**
-     * Checks the requested counter, event, and unit mask for validity.
-     * @param ctr    the counter
-     * @param event    the event name
-     * @param um    the unit mask
-     * @return whether the requested event is valid
-     */
-    public static Boolean checkEvent(int ctr, String event, int um) {
-        int[] validResult = new int[1];
-        try {
-            IRunnableWithProgress opxml = OprofileCorePlugin.getDefault().getOpxmlProvider().checkEvents(ctr, event, um, validResult);
-            opxml.run(null);
-        } catch (InvocationTargetException|InterruptedException e) {
-        }
+		ArrayList<OpModelSession> sessionList = new ArrayList<>();
+		try {
+			IRunnableWithProgress opxml = OprofileCorePlugin.getDefault().getOpxmlProvider().sessions(sessionList);
+			opxml.run(null);
+			events = new OpModelSession[sessionList.size()];
+			sessionList.toArray(events);
+		} catch (InvocationTargetException | InterruptedException e) {
+		}
+		return events;
+	}
 
-        return (validResult[0] == CheckEventsProcessor.EVENT_OK);
-    }
+	/**
+	 * Return a list of all the Samples in the given session.
+	 * 
+	 * @param session
+	 *            the session for which to get samples
+	 * @param shell
+	 *            the composite shell to use for the progress dialog
+	 */
+	public static OpModelImage getModelData(String eventName, String sessionName) {
+		OpModelImage image = new OpModelImage();
 
-    /**
-     * Returns a list of all the session collected on the system, as well as
-     * the event under each of them.
-     * @since 3.0
-     * @returns a list of all collected events
-     */
-    public static OpModelSession[] getSessions() {
-        OpModelSession[] events = null;
+		final IRunnableWithProgress opxml;
+		try {
+			opxml = OprofileCorePlugin.getDefault().getOpxmlProvider().modelData(eventName, sessionName, image);
+			opxml.run(null);
+		} catch (InvocationTargetException | InterruptedException e) {
+		}
 
-        ArrayList<OpModelSession> sessionList = new ArrayList<>();
-        try {
-            IRunnableWithProgress opxml = OprofileCorePlugin.getDefault().getOpxmlProvider().sessions(sessionList);
-            opxml.run(null);
-            events = new OpModelSession[sessionList.size()];
-            sessionList.toArray(events);
-        } catch (InvocationTargetException|InterruptedException e) {
-        }
-        return events;
-    }
+		return image;
+	}
 
-    /**
-     * Return a list of all the Samples in the given session.
-     * @param session the session for which to get samples
-     * @param shell the composite shell to use for the progress dialog
-     */
-    public static OpModelImage getModelData(String eventName, String sessionName) {
-        OpModelImage image = new OpModelImage();
+	/**
+	 * Check if oprofile kernel module is loaded and update Oprofile's information.
+	 * 
+	 * @since 1.1
+	 */
+	public static void updateInfo() {
+		info = OpInfo.getInfo();
+	}
 
-        final IRunnableWithProgress opxml;
-        try {
-            opxml = OprofileCorePlugin.getDefault().getOpxmlProvider().modelData(eventName, sessionName, image);
-            opxml.run(null);
-        } catch (InvocationTargetException|InterruptedException e) {
-        }
+	// Oprofile class has a static initializer and the code inside it needs to know
+	// which project
+	// is being profiled in order to get the path for the Linux Tools' binaries set
+	// for that project.
+	// For this reason the project property has to be set outside the Oprofile class
+	/**
+	 * OProfileProject class to set/get which project is being profiled
+	 * 
+	 * @since 1.1
+	 */
+	public static class OprofileProject {
+		private static IProject project;
+		public final static String OPERF_BINARY = "operf"; //$NON-NLS-1$
+		public final static String OCOUNT_BINARY = "ocount"; //$NON-NLS-1$
+		private static String binary = OPERF_BINARY;
+		public final static String OPERF_DATA = "oprofile_data"; //$NON-NLS-1$
 
-        return image;
-    }
+		/**
+		 * Set the project to be profiled
+		 * 
+		 * @param project
+		 */
+		public static void setProject(IProject project) {
+			OprofileProject.project = project;
 
-    /**
-     * Check if oprofile kernel module is loaded and update Oprofile's information.
-     * @since 1.1
-     */
-    public static void updateInfo(){
-        info = OpInfo.getInfo();
-    }
+		}
 
-    // Oprofile class has a static initializer and the code inside it needs to know which project
-    // is being profiled in order to get the path for the Linux Tools' binaries set for that project.
-    // For this reason the project property has to be set outside the Oprofile class
-    /**
-     * OProfileProject class to set/get which project is being profiled
-     * @since 1.1
-     */
-    public static class OprofileProject {
-        private static IProject project;
-        public final static String OPERF_BINARY = "operf"; //$NON-NLS-1$
-        public final static String OPCONTROL_BINARY = "opcontrol"; //$NON-NLS-1$
-        public final static String OCOUNT_BINARY = "ocount"; //$NON-NLS-1$
-        private static String binary = OPCONTROL_BINARY;
-        public final static String OPERF_DATA = "oprofile_data"; //$NON-NLS-1$
+		/**
+		 * Get the project to be profiled
+		 * 
+		 * @return project
+		 */
+		public static IProject getProject() {
+			return project;
+		}
 
+		/**
+		 * Set the profiling binary to be used (operf or opcontrol)
+		 * 
+		 * @param binary
+		 * @since 2.1
+		 */
+		public static void setProfilingBinary(String binary) {
+			OprofileProject.binary = binary;
 
-        /**
-         * Set the project to be profiled
-         * @param project
-         */
-        public static void setProject(IProject project) {
-            OprofileProject.project = project;
+		}
 
-        }
-        /**
-         * Get the project to be profiled
-         * @return project
-         */
-        public static IProject getProject() {
-            return project;
-        }
+		/**
+		 * Get the profiling binary (operf or opcontrol)
+		 * 
+		 * @return binary
+		 * @since 2.1
+		 */
+		public static String getProfilingBinary() {
+			return binary;
+		}
 
-        /**
-         * Set the profiling binary to be used (operf or opcontrol)
-         * @param binary
-         * @since 2.1
-         */
-        public static void setProfilingBinary(String binary) {
-            OprofileProject.binary = binary;
-
-        }
-        /**
-         * Get the profiling binary (operf or opcontrol)
-         * @return binary
-         * @since 2.1
-         */
-        public static String getProfilingBinary() {
-            return binary;
-        }
-
-    }
+	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 2010, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,6 @@ import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.linuxtools.internal.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile.OprofileProject;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
@@ -148,12 +147,12 @@ public class InfoAdapter extends AbstractDataAdapter {
 					oldRoot = elem;
 				} catch (SAXException | IOException e) {
 					e.printStackTrace();
-					OpcontrolException opcontrolException = new OpcontrolException(
+					CoreException opcontrolException = new CoreException(
 							OprofileCorePlugin.createErrorStatus("ophelpRun", null)); //$NON-NLS-1$
 					OprofileCorePlugin.showErrorDialog("opxmlSAXParseException", opcontrolException); //$NON-NLS-1$
 				}
 			} else {
-				OpcontrolException opcontrolException = new OpcontrolException(
+				CoreException opcontrolException = new CoreException(
 						OprofileCorePlugin.createErrorStatus("ophelpRun", null)); //$NON-NLS-1$
 				OprofileCorePlugin.showErrorDialog("ophelpInputStream", opcontrolException); //$NON-NLS-1$
 			}
@@ -327,16 +326,15 @@ public class InfoAdapter extends AbstractDataAdapter {
 	 */
 	private int getNrCounters() {
 		/*
-		 * TODO: Originally the number of counters for a given arch were
-		 * hard-coded in a list. This method may not be entirely correct,
-		 * although much simpler.
+		 * TODO: Originally the number of counters for a given arch were hard-coded in a
+		 * list. This method may not be entirely correct, although much simpler.
 		 */
 
 		/*
-		 * Returning 1 for operf since it multiplexes the events through the
-		 * counters and it is not possible to read data from opcontrol /dev dir
-		 * if the opcontrol module was not initialized. TODO: Make possible to
-		 * select more than one event in a tab.
+		 * Returning 1 for operf since it multiplexes the events through the counters
+		 * and it is not possible to read data from opcontrol /dev dir if the opcontrol
+		 * module was not initialized. TODO: Make possible to select more than one event
+		 * in a tab.
 		 */
 		if ((OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY))
 				|| (OprofileProject.getProfilingBinary().equals(OprofileProject.OCOUNT_BINARY))) {

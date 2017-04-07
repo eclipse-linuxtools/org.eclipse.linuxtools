@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004,2008 Red Hat, Inc.
+ * Copyright (c) 2004,2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -102,13 +102,6 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
     	}
 
         options.loadConfiguration(config);
-        try {
-            if (config.getType().getIdentifier().equals("org.eclipse.linuxtools.oprofile.launch.oprofile.manual")) { //$NON-NLS-1$
-                controlCombo.setEnabled(false);
-            }
-        } catch (CoreException e) {
-            e.printStackTrace();
-        }
         controlCombo.setText(options.getOprofileComboText());
 
         kernelImageFileText.setText(options.getKernelImageFile());
@@ -176,14 +169,6 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
          * RuntimeProcessFactory as it considers the LinuxTools Path.
          */
         IProject project = getOprofileProject();
-		try {
-			String toolPath = RuntimeProcessFactory.getFactory().whichCommand(OprofileProject.OPCONTROL_BINARY, project);
-			// Command found
-			if (!toolPath.equals(OprofileProject.OPCONTROL_BINARY)) {
-				tools.add(OprofileProject.OPCONTROL_BINARY);
-			}
-		} catch (Exception e) {
-		}
 		try {
 			String toolPath = RuntimeProcessFactory.getFactory().whichCommand(OprofileProject.OCOUNT_BINARY, project);
 			// Command found
@@ -369,14 +354,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
     }
     // Enable/disable widgets options according to the tool selected.
     private void enableOptionWidgets() {
-        if (controlCombo.getText().equals(OprofileProject.OPCONTROL_BINARY)) {
-            checkSeparateLibrary.setEnabled(true);
-            checkSeparateKernel.setEnabled(true);
-            kernelImageFileText.setEnabled(true);
-            kernelLabel.setEnabled(true);
-            executionsSpinnerLabel.setEnabled(true);
-            executionsSpinner.setEnabled(true);
-        } else if (controlCombo.getText().equals(OprofileProject.OCOUNT_BINARY)) {
+        if (controlCombo.getText().equals(OprofileProject.OCOUNT_BINARY)) {
             checkSeparateLibrary.setEnabled(false);
             checkSeparateKernel.setEnabled(false);
             kernelImageFileText.setEnabled(false);

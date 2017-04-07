@@ -12,15 +12,6 @@
             sourceLocatorId="org.eclipse.cdt.launch.DefaultSourceLocator"
             sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
       </launchConfigurationType>
-      <launchConfigurationType
-            delegate="org.eclipse.linuxtools.internal.oprofile.launch.launching.OprofileManualLaunchConfigurationDelegate"
-            id="org.eclipse.linuxtools.oprofile.launch.oprofile.manual"
-            modes="linuxtools"
-            name="%launchconfigurationtype.manual.label"
-            public="true"
-            sourceLocatorId="org.eclipse.cdt.launch.DefaultSourceLocator"
-            sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
-      </launchConfigurationType>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
@@ -29,11 +20,6 @@
             icon="icons/profile_run.png"
             id="org.eclipse.linuxtools.oprofile.launch.oprofileImage">
       </launchConfigurationTypeImage>
-      <launchConfigurationTypeImage
-            configTypeID="org.eclipse.linuxtools.oprofile.launch.oprofile.manual"
-            icon="icons/profile_manual_run.png"
-            id="org.eclipse.linuxtools.oprofile.launch.manual.oprofileImage">
-      </launchConfigurationTypeImage>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -41,11 +27,6 @@
             class="org.eclipse.linuxtools.internal.oprofile.launch.configuration.OprofileLaunchConfigurationTabGroup"
             id="org.eclipse.linuxtools.oprofile.launch.launchConfigurationTabGroup"
             type="org.eclipse.linuxtools.oprofile.launch.oprofile">
-      </launchConfigurationTabGroup>
-      <launchConfigurationTabGroup
-            class="org.eclipse.linuxtools.internal.oprofile.launch.configuration.OprofileLaunchConfigurationTabGroup"
-            id="org.eclipse.linuxtools.oprofile.launch.manualLaunchConfigurationTabGroup"
-            type="org.eclipse.linuxtools.oprofile.launch.oprofile.manual">
       </launchConfigurationTabGroup>
    </extension>
    <extension
@@ -80,50 +61,6 @@
              </with>
            </enablement>
   		 </contextualLaunch>
-      </shortcut>
-      <shortcut
-            class="org.eclipse.linuxtools.internal.oprofile.launch.launching.OprofileManualLaunchShortcut"
-            icon="icons/profile_manual_run.png"
-            id="org.eclipse.linuxtools.oprofile.launch.profileshortcut.manual"
-            label="%manual.launchshortcuts.label"
-            modes="linuxtools">
-         <contextualLaunch>
-            <enablement>
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-                  <iterate>
-                     <or>
-                        <instanceof
-                              value="org.eclipse.cdt.core.model.IBinary">
-                        </instanceof>
-                        <instanceof
-                              value="org.eclipse.cdt.core.model.ICProject">
-                        </instanceof>
-                        <test
-                              property="org.eclipse.cdt.launch.isExecutable">
-                        </test>
-                        <test
-                              property="org.eclipse.cdt.launch.isCProject">
-                        </test>
-                        <and>
-                           <instanceof
-                                 value="org.eclipse.ui.IFileEditorInput">
-                           </instanceof>
-                           <adapt
-                                 type="org.eclipse.core.resources.IResource">
-                              <adapt
-                                    type="org.eclipse.cdt.core.model.ICElement">
-                              </adapt>
-                           </adapt>
-                        </and>
-                     </or>
-                  </iterate>
-               </with>
-            </enablement>
-         </contextualLaunch>
       </shortcut>
    </extension>
    <extension

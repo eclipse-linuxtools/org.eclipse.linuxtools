@@ -80,7 +80,7 @@ public class TestLaunching extends AbstractTest {
         assertTrue(options.getBinaryImage().isEmpty());
         assertTrue(options.getKernelImageFile().isEmpty());
         assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
-        Oprofile.OprofileProject.setProfilingBinary(Oprofile.OprofileProject.OPCONTROL_BINARY);
+        Oprofile.OprofileProject.setProfilingBinary(Oprofile.OprofileProject.OPERF_BINARY);
         delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
     }
     @Test
@@ -105,7 +105,7 @@ public class TestLaunching extends AbstractTest {
         assertTrue(options.getKernelImageFile().isEmpty());
         assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
 
-        Oprofile.OprofileProject.setProfilingBinary(Oprofile.OprofileProject.OPCONTROL_BINARY);
+        Oprofile.OprofileProject.setProfilingBinary(Oprofile.OprofileProject.OPERF_BINARY);
         delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
     }
 }

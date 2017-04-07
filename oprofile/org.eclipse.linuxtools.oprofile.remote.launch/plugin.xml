@@ -32,18 +32,4 @@
    <extension
          point="org.eclipse.debug.ui.launchShortcuts">
    </extension>
-   <extension
-         point="org.eclipse.linuxtools.oprofile.core.OpcontrolProvider">
-      <opcontrolProvider
-            class="org.eclipse.linuxtools.internal.oprofile.remote.core.linux.RemoteLinuxOpcontrolProvider"
-            scheme="ssh">
-      </opcontrolProvider>
-   </extension>
-   <extension
-         point="org.eclipse.linuxtools.oprofile.core.OpcontrolProvider">
-      <opcontrolProvider
-            class="org.eclipse.linuxtools.internal.oprofile.remote.core.linux.RemoteLinuxOpcontrolProvider"
-            scheme="rse">
-      </opcontrolProvider>
-   </extension>
 </plugin>
