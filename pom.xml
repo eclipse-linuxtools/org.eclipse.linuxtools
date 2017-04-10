@@ -413,7 +413,7 @@
           <artifactId>maven-javadoc-plugin</artifactId>
 	  <version>2.10.4</version>
           <configuration>
-            <excludePackageNames>org.eclipse.linuxtools.internal.*:*.test*</excludePackageNames>
+            <excludePackageNames>org.eclipse.linuxtools.internal.*:*.test*:org.eclipse.linuxtools.docker.reddeer*</excludePackageNames>
           </configuration>
         </plugin>
       </plugins>
