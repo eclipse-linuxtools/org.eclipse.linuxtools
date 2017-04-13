@@ -7,11 +7,17 @@
    <feature url="features/org.eclipse.linuxtools.docker.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.docker.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
+   <feature url="features/org.eclipse.linuxtools.docker.tests.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.docker.tests.feature" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
    <feature url="features/org.eclipse.linuxtools.vagrant.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.vagrant.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.docker.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.docker.feature.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.docker.tests.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.docker.tests.feature.source" version="0.0.0">
+      <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.vagrant.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.vagrant.feature.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
