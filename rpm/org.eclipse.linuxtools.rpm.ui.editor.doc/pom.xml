@@ -22,4 +22,42 @@
   <packaging>eclipse-plugin</packaging>
 
   <name>Linux Tools RPM Specfile Editor Documentation Plug-in</name>
+
+	<profiles>
+		<profile>
+			<id>regenHelp</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>helpdocs</id>
+								<phase>generate-resources</phase>
+								<configuration>
+									<target>
+										<taskdef classpathref="maven.plugin.classpath"
+											resource="org/eclipse/mylyn/wikitext/mediawiki/ant/tasks.properties" />
+										<taskdef classpathref="maven.plugin.classpath"
+											resource="org/eclipse/mylyn/wikitext/ant/tasks.properties" />
+										<ant antfile="build-helper.xml" target="all" />
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>org.eclipse.mylyn.docs</groupId>
+								<artifactId>org.eclipse.mylyn.wikitext.mediawiki.ant</artifactId>
+								<version>3.0.7</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

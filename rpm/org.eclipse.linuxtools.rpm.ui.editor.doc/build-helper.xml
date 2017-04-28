@@ -18,15 +18,6 @@
     <property name="specfile.help.doc.url.base" value="http://wiki.eclipse.org" />
     <property name="imageFolder" value="images" />
 
-    <path id="wikitext.tasks.classpath">
-        <!-- Replace dir with the dir you have wikitext installed into.-->
-        <fileset dir="/usr/share/eclipse/dropins/mylyn/eclipse/plugins">
-            <include name="org.eclipse.mylyn.wikitext.*core*.jar" />
-        </fileset>
-    </path>
-    <taskdef classpathref="wikitext.tasks.classpath" resource="org/eclipse/mylyn/internal/wikitext/mediawiki/core/tasks/tasks.properties" />
-    <taskdef classpathref="wikitext.tasks.classpath" resource="org/eclipse/mylyn/wikitext/core/util/anttask/tasks.properties" />
-
     <target name="all" description="Generate Eclipse help content for the Linux Tools Specfile Editor user guide">
         <mediawiki-to-eclipse-help wikiBaseUrl="${specfile.help.doc.url.base}" title="Specfile Editor User Guide" formatoutput="true" dest="." templateExcludes="*eclipseproject*">
 
