@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.eclipse.linuxtools.jdt.docker.launcher.JavaApplicationInContainerLaunchShortcut"
+            description="Run the current Java application within a container"
+            icon="icons/repository-synchronize-attributes.png"
+            id="org.eclipse.linuxtools.jdt.docker.launcher.container.launch"
+            label="Java Application In Container"
+            modes="run, debug">
+         <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <and>
+                        <adapt
+                              type="org.eclipse.jdt.core.IJavaElement">
+                           <test
+                                 property="org.eclipse.jdt.core.isInJavaProject">
+                           </test>
+                        </adapt>
+                        <or>
+                           <test
+                                 property="org.eclipse.jdt.launching.hasMain">
+                           </test>
+                           <test
+                                 property="org.eclipse.jdt.launching.isContainer">
+                           </test>
+                           <test
+                                 property="org.eclipse.jdt.launching.isPackageFragment">
+                           </test>
+                           <test
+                                 property="org.eclipse.jdt.launching.isPackageFragmentRoot">
+                           </test>
+                        </or>
+                     </and>
+                  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.eclipse.linuxtools.jdt.docker.launcher.JavaAppInContainerLaunchDelegate"
+            id="org.eclipse.linuxtools.jdt.docker.launcher.JavaAppInContainerLaunchConfigurationType"
+            modes="run, debug"
+            name="Java App In Container"
+            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.linuxtools.jdt.docker.launcher.JavaAppInContainerLaunchConfigurationType"
+            icon="icons/repository-synchronize-attributes.png"
+            id="org.eclipse.linuxtools.jdt.docker.launcher.JavaAppInContainerLaunchConfigurationTypeImage">
+      </launchConfigurationTypeImage>
+   </extension>
+
+</plugin>
