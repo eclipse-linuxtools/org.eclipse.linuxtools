@@ -16,6 +16,8 @@ import java.util.Arrays;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.internal.launching.StandardVMRunner;
 import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
+import org.eclipse.linuxtools.docker.ui.launch.ContainerLauncher;
 
 public class ContainerVMRunner extends StandardVMRunner {
 
@@ -24,12 +26,19 @@ public class ContainerVMRunner extends StandardVMRunner {
 	}
 
 	protected Process exec(String[] cmdLine, File workingDirectory) throws CoreException {
-		System.out.println("Ran : " + String.join(" ", cmdLine) + " in " + workingDirectory.getAbsolutePath());
-		return null;
+		return exec(cmdLine, workingDirectory, null);
 	}
 
 	protected Process exec(String[] cmdLine, File workingDirectory, String[] envp) throws CoreException {
-		System.out.println("Ran : " + String.join(" ", cmdLine) + " in " + workingDirectory.getAbsolutePath() + " with env.");
+		String connectionUri = DockerConnectionManager.getInstance().getFirstConnection().getUri();
+		String command = String.join(" ", cmdLine); //$NON-NLS-1$
+
+		ContainerLauncher launch = new ContainerLauncher();
+		launch.launch("org.eclipse.linuxtools.jdt.docker.launcher", null, connectionUri,
+				"fedora-java", command, null, workingDirectory.getAbsolutePath(), null,
+				System.getenv(), null,
+				null, false, true, true);
+
 		return null;
 	}
 }
