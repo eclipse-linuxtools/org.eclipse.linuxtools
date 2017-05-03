@@ -16,4 +16,5 @@ Require-Bundle: org.eclipse.debug.core,
  org.eclipse.jdt.debug.ui;bundle-version="3.8.0",
  org.eclipse.osgi,
  org.eclipse.linuxtools.docker.ui,
- org.eclipse.linuxtools.docker.core
+ org.eclipse.linuxtools.docker.core,
+ com.spotify.docker.client

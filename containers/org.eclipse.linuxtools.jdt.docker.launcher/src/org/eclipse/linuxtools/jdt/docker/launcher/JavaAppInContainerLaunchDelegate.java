@@ -46,9 +46,7 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 			monitor.subTask("Verifying launch attributes...");
 
 			String mainTypeName = verifyMainTypeName(configuration);
-			//TODO: Do this properly by registering our own VM Runner
-			// IVMRunner runner = getVMRunner(configuration, mode);
-			IVMInstall vm = verifyVMInstall(configuration);
+			IVMInstall vm = new ContainerVMInstall(configuration);
 			ContainerVMRunner runner = new ContainerVMRunner(vm);
 
 			File workingDir = verifyWorkingDirectory(configuration);
