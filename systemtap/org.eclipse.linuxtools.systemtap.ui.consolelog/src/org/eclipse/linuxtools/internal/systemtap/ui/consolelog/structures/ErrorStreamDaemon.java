@@ -10,10 +10,13 @@
  *     Red Hat Inc. - ongoing maintenance
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.consolelog.structures;
+package org.eclipse.linuxtools.internal.systemtap.ui.consolelog.structures;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.consolelog.views.ErrorView;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.Localization;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ConsoleStreamDaemon;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.IErrorParser;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 
 /**
  * A class push data to both the <code>ScriptConsole</code> and the ErrorView
