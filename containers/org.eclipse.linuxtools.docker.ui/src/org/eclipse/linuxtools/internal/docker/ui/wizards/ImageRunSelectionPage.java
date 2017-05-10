@@ -455,10 +455,10 @@ public class ImageRunSelectionPage extends WizardPage {
 						removeButton));
 		ViewerSupport.bind(exposedPortsTableViewer, model.getExposedPorts(),
 				BeanProperties.values(ExposedPortModel.class,
-						new String[] { ExposedPortModel.CONTAINER_PORT,
-								ExposedPortModel.PORT_TYPE,
-								ExposedPortModel.HOST_ADDRESS,
-								ExposedPortModel.HOST_PORT }));
+						ExposedPortModel.CONTAINER_PORT,
+						ExposedPortModel.PORT_TYPE,
+						ExposedPortModel.HOST_ADDRESS,
+						ExposedPortModel.HOST_PORT));
 		dbc.bindSet(
 				ViewersObservables.observeCheckedElements(
 						exposedPortsTableViewer, ExposedPortModel.class),
@@ -568,12 +568,10 @@ public class ImageRunSelectionPage extends WizardPage {
 				WizardMessages.getString("ImageRunSelectionPage.remove")); //$NON-NLS-1$
 		removeButton.addSelectionListener(onRemoveLinks(linksTableViewer));
 		removeButton.setEnabled(false);
-		ViewerSupport
-				.bind(linksTableViewer, model.getLinks(),
-						BeanProperties.values(ContainerLinkModel.class,
-								new String[] {
-										ContainerLinkModel.CONTAINER_NAME,
-										ContainerLinkModel.CONTAINER_ALIAS }));
+		ViewerSupport.bind(linksTableViewer, model.getLinks(),
+				BeanProperties.values(ContainerLinkModel.class,
+						ContainerLinkModel.CONTAINER_NAME,
+						ContainerLinkModel.CONTAINER_ALIAS));
 		// disable the edit and removeButton if the table is empty
 		linksTableViewer.addSelectionChangedListener(
 				onSelectionChanged(editButton, removeButton));

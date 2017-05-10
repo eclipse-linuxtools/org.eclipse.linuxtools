@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2016 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -127,12 +127,10 @@ public class RunImageLinksTab extends AbstractLaunchConfigurationTab {
 				WizardMessages.getString("ImageRunSelectionPage.remove")); //$NON-NLS-1$
 		removeButton.addSelectionListener(onRemoveLinks(linksTableViewer));
 		removeButton.setEnabled(false);
-		ViewerSupport
-				.bind(linksTableViewer, model.getLinks(),
-						BeanProperties.values(ContainerLinkModel.class,
-								new String[] {
-										ContainerLinkModel.CONTAINER_NAME,
-										ContainerLinkModel.CONTAINER_ALIAS }));
+		ViewerSupport.bind(linksTableViewer, model.getLinks(),
+				BeanProperties.values(ContainerLinkModel.class,
+						ContainerLinkModel.CONTAINER_NAME,
+						ContainerLinkModel.CONTAINER_ALIAS));
 		// disable the edit and removeButton if the table is empty
 		linksTableViewer.addSelectionChangedListener(
 				onSelectionChanged(editButton, removeButton));
