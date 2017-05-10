@@ -39,6 +39,9 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
 		if (documentLocation == null) {
 			ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
 			ITextFileBuffer buffer = bufferManager.getTextFileBuffer(textViewer.getDocument());
+			if (buffer == null) {
+				return null;
+			}
 			documentLocation = buffer.getLocation().removeLastSegments(1);
 		}
 
