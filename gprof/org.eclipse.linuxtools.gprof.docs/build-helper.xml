@@ -10,34 +10,25 @@
          Chris Aniszczyk <caniszczyk@gmail.com> - initial API and implementation
  -->
 
-<project name="org.eclipse.mylyn.wikitext.example" default="all">
+<project name="org.eclipse.linuxtools.gprof.docs" default="all">
     <description>
             Generate Eclipse help content from the Eclipsepedia wiki
     </description>
 
-    <property name="help.doc.url.base" value="http://wiki.eclipse.org" />
-    <property name="imageFolder" value="images" />
+    <property name="gprof.help.doc.url.base" value="http://wiki.eclipse.org"/>
+    <property name="gprof.wiki.url.base" value="${gprof.help.doc.url.base}/Linux_Tools_Project/GProf"/>
+    <property name="imageFolder" value="images"/>
 
-    <path id="wikitext.tasks.classpath">
-        <!-- Replace dir with the dir you have wikitext installed into.-->
-        <fileset dir="/usr/share/eclipse/dropins/mylyn/eclipse/plugins">
-            <include name="org.eclipse.mylyn.wikitext.*core*.jar" />
-        </fileset>
-    </path>
+    <target name="all" description="Generate Eclipse help content for the Linux Tools Gprof user guide">
+        <mediawiki-to-eclipse-help wikiBaseUrl="${gprof.help.doc.url.base}" title="GProf User Guide" formatoutput="true" dest="." templateExcludes="*eclipseproject*">
 
-    <taskdef classpathref="wikitext.tasks.classpath" resource="org/eclipse/mylyn/internal/wikitext/mediawiki/core/tasks/tasks.properties" />
-    <taskdef classpathref="wikitext.tasks.classpath" resource="org/eclipse/mylyn/wikitext/core/util/anttask/tasks.properties" />
-
-    <target name="all" description="Generate Eclipse help content for the Linux Tools Callgraph user guide">
-        <mediawiki-to-eclipse-help wikiBaseUrl="${help.doc.url.base}" title="Callgraph User Guide" formatoutput="true" dest="." templateExcludes="*eclipseproject*">
-
-            <path name="Linux_Tools_Project/Callgraph/User_Guide" title="Callgraph User Guide" generateToc="false" />
+            <path name="Linux_Tools_Project/GProf/User_Guide" title="GProf User Guide" generateToc="false" />
             <stylesheet url="book.css" />
             <pageAppendum>
             = Updating This Document =
 
             This document is maintained in a collaborative wiki.  If you wish to update or modify this document please visit
-            http://wiki.eclipse.org/Linux_Tools_Project/Callgraph/User_Guide .
+            http://wiki.eclipse.org/Linux_Tools_Project/GProf/User_Guide .
                                              </pageAppendum>
         </mediawiki-to-eclipse-help>
         <antcall target="test" />
@@ -67,6 +58,6 @@ or inadvertently starting a line with a space character (in MediaWiki this start
             </fileset>
             <dtd publicid="-//W3C//DTD XHTML 1.0 Transitional//EN" location="${basedir}/tmp/__empty.dtd" />
         </xmlvalidate>
-        <delete dir="tmp" />
+        <delete dir="tmp"/>
     </target>
 </project>

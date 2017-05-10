@@ -7,16 +7,6 @@
     <property name="help.doc.url.base" value="http://wiki.eclipse.org" />
 
     <path id="tasks.classpath" path="bin" />
-    <path id="wikitext.tasks.classpath">
-        <!-- Replace dir with the dir you have wikitext installed into.-->
-        <fileset dir="/notnfs/jjohnstn/helios/eclipse/plugins">
-            <include name="org.eclipse.mylyn.wikitext.*core*.jar" />
-        </fileset>
-    </path>
-
-    <taskdef classpathref="wikitext.tasks.classpath" resource="org/eclipse/mylyn/internal/wikitext/mediawiki/core/tasks/tasks.properties" />
-    <taskdef classpathref="wikitext.tasks.classpath" resource="org/eclipse/mylyn/wikitext/core/util/anttask/tasks.properties" />
-
     <target name="all" description="Generate Eclipse help content for the Linux Tools changelog user guide">
         <mediawiki-to-eclipse-help wikiBaseUrl="${help.doc.url.base}" title="Libhover Developer's Guide" formatoutput="true" dest="." templateExcludes="*eclipseproject*">
 

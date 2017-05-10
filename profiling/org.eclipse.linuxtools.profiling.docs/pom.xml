@@ -28,4 +28,22 @@
 
   <name>Linux Tools Profiling Framework Documentation Plug-in</name>
 
+  <profiles>
+		<profile>
+			<id>regenHelp</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>helpdocs</id>
+								<phase>generate-resources</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
