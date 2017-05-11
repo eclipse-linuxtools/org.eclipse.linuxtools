@@ -22,6 +22,7 @@ import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig;
 import org.eclipse.linuxtools.internal.docker.core.DockerHostConfig;
+import org.osgi.framework.Version;
 
 import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.DockerClient.ExecCreateParam;
@@ -114,6 +115,18 @@ public class ImageQuery {
 			return new File(result);
 		} else {
 			return null;
+		}
+	}
+
+	public double getJavaVersion () {
+		String result = exec(new String [] {"sh", "-c", "java -version 2>&1 | grep version | cut -d\\\" -f2 | cut -d_ -f1"});
+		if (result != null) {
+			result = result.replaceAll("\n", "");
+			Version v = new Version(result);
+			String newV = v.getMajor() + "." + v.getMinor();
+			return Double.valueOf(newV);
+		} else {
+			return 0;
 		}
 	}
 

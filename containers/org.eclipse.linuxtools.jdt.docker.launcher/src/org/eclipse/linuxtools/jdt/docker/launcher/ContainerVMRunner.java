@@ -19,11 +19,16 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
+import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.docker.ui.launch.ContainerLauncher;
+import org.eclipse.linuxtools.docker.ui.launch.IContainerLaunchListener;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.osgi.util.NLS;
 
 public class ContainerVMRunner extends StandardVMRunner {
+
+	private String ipAddress = null;
+	private boolean isListening = false;
 
 	public ContainerVMRunner(IVMInstall vmInstance) {
 		super(vmInstance);
@@ -40,7 +45,7 @@ public class ContainerVMRunner extends StandardVMRunner {
 		String command = String.join(" ", cmdLine); //$NON-NLS-1$
 
 		ContainerLauncher launch = new ContainerLauncher();
-		launch.launch("org.eclipse.linuxtools.jdt.docker.launcher", null, connectionUri,
+		launch.launch("org.eclipse.linuxtools.jdt.docker.launcher", new JavaAppInContainerLaunchListener(), connectionUri, //$NON-NLS-1$
 				"fedora-java", command, null, workingDirectory.getAbsolutePath(), null,
 				System.getenv(), null,
 				null, false, true, true);
@@ -105,6 +110,32 @@ public class ContainerVMRunner extends StandardVMRunner {
 			return q.isFile(file);
 		} finally {
 			q.destroy();
+		}
+	}
+
+	public String getIPAddress() {
+		return ipAddress;
+	}
+
+	public boolean isListening() {
+		return isListening;
+	}
+
+	private class JavaAppInContainerLaunchListener implements IContainerLaunchListener {
+
+		@Override
+		public void newOutput(String output) {
+			if (output.contains("dt_socket")) { //$NON-NLS-1$
+				isListening = true;
+			}
+		}
+
+		@Override
+		public void done() {}
+
+		@Override
+		public void containerInfo(IDockerContainerInfo info) {
+			ipAddress = info.networkSettings().ipAddress();
 		}
 	}
 
