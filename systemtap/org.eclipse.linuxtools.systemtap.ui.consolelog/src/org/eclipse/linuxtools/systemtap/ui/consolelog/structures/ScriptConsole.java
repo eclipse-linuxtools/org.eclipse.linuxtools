@@ -21,13 +21,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.internal.systemtap.ui.consolelog.structures.ErrorStreamDaemon;
-import org.eclipse.linuxtools.internal.systemtap.ui.consolelog.views.ErrorView;
 import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.runnable.Command;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.ScpExec;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.Localization;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
@@ -191,19 +189,6 @@ public class ScriptConsole extends IOConsole {
     }
 
     /**
-     * Creates the <code>ErrorStreamDaemon</code> for passing data from the
-     * <code>LoggedCommand</code>'s ErrorStream to the Console and ErrorView.
-     */
-    private void createErrorDaemon(IErrorParser parser) {
-        ErrorView errorView = null;
-        IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ErrorView.ID);
-        if (ivp instanceof ErrorView) {
-            errorView = ((ErrorView)ivp);
-        }
-        errorDaemon = new ErrorStreamDaemon(this, errorView, parser);
-    }
-
-    /**
      * Runs the provided command in this ScriptConsole instance.
      * @param command The command and arguments to run.
      * @param envVars The environment variables to use while running.
@@ -242,7 +227,7 @@ public class ScriptConsole extends IOConsole {
             reset();
         }
         if (errorParser != null) {
-            createErrorDaemon(errorParser);
+        	errorDaemon = new ErrorStreamDaemon(this);
         }
         createConsoleDaemon();
         notifyConsoleObservers();

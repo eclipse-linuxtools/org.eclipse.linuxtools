@@ -28,7 +28,7 @@ public class ErrorStreamDaemonTest {
     public void setUp() {
         StreamGobbler gobbler = new StreamGobbler(System.in);
         gobbler.start();
-        daemon = new ErrorStreamDaemon(null, null, null);
+        daemon = new ErrorStreamDaemon(null);
     }
 
     @Test

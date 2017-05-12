@@ -2,17 +2,6 @@
 <?eclipse version="3.0"?>
 <plugin>
     <extension
-        point="org.eclipse.ui.views">
-        <view
-        allowMultiple="false"
-        category="org.eclipse.linuxtools.systemtap.ui"
-        class="org.eclipse.linuxtools.internal.systemtap.ui.consolelog.views.ErrorView"
-        icon="icons/views/error_obj.gif"
-        id="org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView"
-        name="%view.error.name"/>
-    </extension>
-
-    <extension
         point="org.eclipse.core.runtime.preferences">
         <initializer class="org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.PreferenceInitializer"/>
     </extension>
@@ -36,15 +25,6 @@
           </instanceof></enablement>
     </consolePageParticipant>
  </extension>
- <extension point="org.eclipse.ui.perspectiveExtensions">
-  <perspectiveExtension 
-	targetID="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
-    	<view id="org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView" 
-        	relative="org.eclipse.ui.console.ConsoleView" 
-    		relationship="stack" closeable="false"/>	
-    	<viewShortcut id="org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView"/>
-  </perspectiveExtension> 
-</extension>
 <extension
          point="org.eclipse.ui.console.consolePatternMatchListeners">
        <consolePatternMatchListener
