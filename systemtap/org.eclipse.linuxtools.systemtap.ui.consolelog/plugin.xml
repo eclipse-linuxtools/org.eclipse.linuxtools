@@ -45,4 +45,15 @@
     	<viewShortcut id="org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView"/>
   </perspectiveExtension> 
 </extension>
+<extension
+         point="org.eclipse.ui.console.consolePatternMatchListeners">
+       <consolePatternMatchListener
+            class="org.eclipse.linuxtools.internal.systemtap.consolelog.ErrorLineMatcher"
+            id="org.eclipse.linuxtools.systemtap.ErrorLineMatcher"
+            regex=".*\/.*:\d+">
+         <enablement>
+            <test property="org.eclipse.ui.console.consoleTypeTest" value="stap"/>
+         </enablement>
+      </consolePatternMatchListener>
+   </extension>
 </plugin>

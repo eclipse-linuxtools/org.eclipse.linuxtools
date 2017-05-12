@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.internal.systemtap.ui.consolelog.views;
 
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.Localization;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ErrorTableDisplay;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;

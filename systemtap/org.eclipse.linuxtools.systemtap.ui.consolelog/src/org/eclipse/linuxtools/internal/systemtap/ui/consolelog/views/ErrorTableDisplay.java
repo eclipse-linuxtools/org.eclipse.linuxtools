@@ -9,7 +9,7 @@
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.ui.consolelog.structures;
+package org.eclipse.linuxtools.internal.systemtap.ui.consolelog.views;
 
 import java.util.Arrays;
 
