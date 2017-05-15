@@ -63,6 +63,7 @@ import org.eclipse.linuxtools.docker.core.IDockerConnectionInfo;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings.BindingType;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
+import org.eclipse.linuxtools.docker.core.IDockerContainerChange;
 import org.eclipse.linuxtools.docker.core.IDockerContainerConfig;
 import org.eclipse.linuxtools.docker.core.IDockerContainerExit;
 import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
@@ -101,6 +102,7 @@ import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.exceptions.DockerTimeoutException;
 import com.spotify.docker.client.messages.AuthConfig;
 import com.spotify.docker.client.messages.Container;
+import com.spotify.docker.client.messages.ContainerChange;
 import com.spotify.docker.client.messages.ContainerConfig;
 import com.spotify.docker.client.messages.ContainerCreation;
 import com.spotify.docker.client.messages.ContainerExit;
@@ -1814,6 +1816,23 @@ public class DockerConnection
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 		return stream;
+	}
+
+	@Override
+	public List<IDockerContainerChange> containerChanges(final String id)
+			throws DockerException, InterruptedException {
+		List<IDockerContainerChange> containerChanges = new ArrayList<>();
+		try {
+			DockerClient copy = getClientCopy();
+			List<ContainerChange> changes = copy.inspectContainerChanges(id);
+			for (ContainerChange change : changes) {
+				containerChanges.add(new DockerContainerChange(change.path(),
+						change.kind()));
+			}
+		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+			throw new DockerException(e.getMessage(), e.getCause());
+		}
+		return containerChanges;
 	}
 
 	public boolean isLocal() {

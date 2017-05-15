@@ -438,4 +438,19 @@ public interface IDockerConnection {
 			final OutputStream err)
 			throws DockerException, InterruptedException, IOException;
 
+	/**
+	 * Get list of changes to filesystem for a Container.
+	 * 
+	 * @param id
+	 *            id of container
+	 * @return list of IDockerChange instances
+	 * @throws DockerException
+	 *             in case of underlying problem (server error)
+	 * @throws InterruptedException
+	 *             if the operation is interrupted
+	 * @since 3.0
+	 */
+	public List<IDockerContainerChange> containerChanges(final String id)
+			throws DockerException, InterruptedException;
+
 }
