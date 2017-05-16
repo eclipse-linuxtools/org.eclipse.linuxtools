@@ -11,8 +11,6 @@
 
 package org.eclipse.linuxtools.docker.reddeer.perspective;
 
-import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
-
 /**
  * 
  * @author jkopriva@redhat.com

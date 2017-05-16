@@ -11,7 +11,7 @@
 
 package org.eclipse.linuxtools.docker.integration.tests.mock;
 
-import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
+import org.eclipse.linuxtools.docker.reddeer.ui.BrowserView;
 import org.mockito.Mockito;
 
 public class MockBrowserView {

@@ -11,12 +11,12 @@
 package org.eclipse.linuxtools.docker.integration.tests.mock;
 
 import static org.junit.Assert.assertTrue;
-import com.spotify.docker.client.messages.ContainerInfo;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
+import org.eclipse.linuxtools.docker.reddeer.ui.BrowserView;
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerExplorerView;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerInfoFactory;
@@ -24,10 +24,10 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFacto
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionSettingsFinder;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
-import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 
 import com.spotify.docker.client.DockerClient;
+import com.spotify.docker.client.messages.ContainerInfo;
 
 public class MockUtils {
 

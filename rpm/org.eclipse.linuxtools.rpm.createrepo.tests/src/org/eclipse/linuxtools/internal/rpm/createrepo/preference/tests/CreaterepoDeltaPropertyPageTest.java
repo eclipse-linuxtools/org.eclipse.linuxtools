@@ -130,7 +130,7 @@ public class CreaterepoDeltaPropertyPageTest {
         bot.checkBox(Messages.CreaterepoDeltaPropertyPage_booleanEnableLabel).click();
         bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxNumberOfDeltas).setText("9"); //$NON-NLS-1$
         bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxDeltaSize).setText("13"); //$NON-NLS-1$
-        bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+        bot.button(ICreaterepoTestConstants.APPLY_AND_CLOSE_BUTTON).click();
         openPropertyPage();
         IEclipsePreferences pref = project.getEclipsePreferences();
         IPreferenceStore prefStore = Activator.getDefault().getPreferenceStore();
@@ -153,10 +153,10 @@ public class CreaterepoDeltaPropertyPageTest {
         bot.checkBox(Messages.CreaterepoDeltaPropertyPage_booleanEnableLabel).click();
         bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxNumberOfDeltas).setText("9"); //$NON-NLS-1$
         bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxDeltaSize).setText("13"); //$NON-NLS-1$
-        bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+        bot.button(ICreaterepoTestConstants.APPLY_AND_CLOSE_BUTTON).click();
         openPropertyPage();
         bot.button(ICreaterepoTestConstants.DEFAULTS).click();
-        bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+        bot.button(ICreaterepoTestConstants.APPLY_AND_CLOSE_BUTTON).click();
         IEclipsePreferences pref = project.getEclipsePreferences();
         IPreferenceStore prefStore = Activator.getDefault().getPreferenceStore();
         assertTrue(prefStore.isDefault(CreaterepoPreferenceConstants.PREF_DELTA_ENABLE));
@@ -177,7 +177,7 @@ public class CreaterepoDeltaPropertyPageTest {
         bot.checkBox(Messages.CreaterepoDeltaPropertyPage_booleanEnableLabel).click();
         bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxNumberOfDeltas).setText("9"); //$NON-NLS-1$
         bot.textWithLabel(Messages.CreaterepoDeltaPropertyPage_maxDeltaSize).setText("13"); //$NON-NLS-1$
-        bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+        bot.button(ICreaterepoTestConstants.APPLY_AND_CLOSE_BUTTON).click();
         openPropertyPage();
         bot.button(ICreaterepoTestConstants.DEFAULTS).click();
         bot.button(ICreaterepoTestConstants.CANCEL_BUTTON).click();

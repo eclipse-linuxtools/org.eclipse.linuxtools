@@ -172,7 +172,7 @@ public class PreferencesTest extends AbstractTest{
         stubRadio.click();
 
         bot.button("Apply").click(); //$NON-NLS-1$
-        bot.button("OK").click(); //$NON-NLS-1$
+        bot.button("Apply and Close").click(); //$NON-NLS-1$
     }
 
     @Ignore
@@ -216,7 +216,7 @@ public class PreferencesTest extends AbstractTest{
         SWTBotShell profileShell = bot.shell("Successful profile launch").activate(); //$NON-NLS-1$
         assertNotNull(profileShell);
 
-        bot.button("OK").click(); //$NON-NLS-1$
+        bot.button("Apply and Close").click(); //$NON-NLS-1$
         bot.waitUntil(shellCloses(profileShell));
     }
 
@@ -251,7 +251,7 @@ public class PreferencesTest extends AbstractTest{
         assertEquals(defaultToolInfo, defaultRadio.getToolTipText());
 
         bot.button("Apply").click(); //$NON-NLS-1$
-        bot.button("OK").click(); //$NON-NLS-1$
+        bot.button("Apply and Close").click(); //$NON-NLS-1$
     }
 
     @Override

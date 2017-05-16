@@ -142,7 +142,7 @@ public class CreaterepoGeneralPropertyPageTest {
         bot.checkBox(Messages.CreaterepoPreferencePage_booleanCheckTS).click();
         bot.radio(ICreaterepoChecksums.SHA512).click();
         bot.radio(ICreaterepoCompressionTypes.XZ).click();
-        bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+        bot.button(ICreaterepoTestConstants.APPLY_AND_CLOSE_BUTTON).click();
         openPropertyPage();
         IEclipsePreferences pref = project.getEclipsePreferences();
         IPreferenceStore prefStore = Activator.getDefault().getPreferenceStore();
@@ -191,10 +191,10 @@ public class CreaterepoGeneralPropertyPageTest {
         bot.checkBox(Messages.CreaterepoPreferencePage_booleanCheckTS).click();
         bot.radio(ICreaterepoChecksums.SHA512).click();
         bot.radio(ICreaterepoCompressionTypes.XZ).click();
-        bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+        bot.button(ICreaterepoTestConstants.APPLY_AND_CLOSE_BUTTON).click();
         openPropertyPage();
         bot.button(ICreaterepoTestConstants.DEFAULTS).click();
-        bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+        bot.button(ICreaterepoTestConstants.APPLY_AND_CLOSE_BUTTON).click();
         IEclipsePreferences pref = project.getEclipsePreferences();
         IPreferenceStore prefStore = Activator.getDefault().getPreferenceStore();
         assertTrue(prefStore.isDefault(CreaterepoPreferenceConstants.PREF_GENERAL_ENABLED));
@@ -241,7 +241,7 @@ public class CreaterepoGeneralPropertyPageTest {
         bot.checkBox(Messages.CreaterepoPreferencePage_booleanCheckTS).click();
         bot.radio(ICreaterepoChecksums.SHA512).click();
         bot.radio(ICreaterepoCompressionTypes.XZ).click();
-        bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+        bot.button(ICreaterepoTestConstants.APPLY_AND_CLOSE_BUTTON).click();
         openPropertyPage();
         bot.button(ICreaterepoTestConstants.DEFAULTS).click();
         bot.button(ICreaterepoTestConstants.CANCEL_BUTTON).click();

@@ -126,7 +126,7 @@ public class CreaterepoPreferencePageTest {
         bot.checkBox(Messages.CreaterepoPreferencePage_booleanCheckTS).click();
         bot.radio(ICreaterepoChecksums.SHA512).click();
         bot.radio(ICreaterepoCompressionTypes.XZ).click();
-        bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+        bot.button(ICreaterepoTestConstants.APPLY_AND_CLOSE_BUTTON).click();
         openPreferencePage();
         // verify the changes
         IPreferenceStore prefStore = Activator.getDefault().getPreferenceStore();
@@ -163,10 +163,10 @@ public class CreaterepoPreferencePageTest {
         bot.checkBox(Messages.CreaterepoPreferencePage_booleanCheckTS).click();
         bot.radio(ICreaterepoChecksums.SHA512).click();
         bot.radio(ICreaterepoCompressionTypes.XZ).click();
-        bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+        bot.button(ICreaterepoTestConstants.APPLY_AND_CLOSE_BUTTON).click();
         openPreferencePage();
         bot.button(ICreaterepoTestConstants.DEFAULTS).click();
-        bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+        bot.button(ICreaterepoTestConstants.APPLY_AND_CLOSE_BUTTON).click();
         // veryify the changes
         IPreferenceStore prefStore = Activator.getDefault().getPreferenceStore();
         assertTrue(prefStore.isDefault(CreaterepoPreferenceConstants.PREF_UNIQUE_MD_NAME));
@@ -198,7 +198,7 @@ public class CreaterepoPreferencePageTest {
         bot.checkBox(Messages.CreaterepoPreferencePage_booleanCheckTS).click();
         bot.radio(ICreaterepoChecksums.SHA512).click();
         bot.radio(ICreaterepoCompressionTypes.XZ).click();
-        bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+        bot.button(ICreaterepoTestConstants.APPLY_AND_CLOSE_BUTTON).click();
         openPreferencePage();
         bot.button(ICreaterepoTestConstants.DEFAULTS).click();
         bot.button(ICreaterepoTestConstants.CANCEL_BUTTON).click();

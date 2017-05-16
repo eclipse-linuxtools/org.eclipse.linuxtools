@@ -32,6 +32,7 @@ public interface ICreaterepoTestConstants {
     String WINDOW = "Window"; //$NON-NLS-1$
     String SHOW_VIEW = "Show View"; //$NON-NLS-1$
     String PREFERENCES = "Preferences"; //$NON-NLS-1$
+    String APPLY_AND_CLOSE_BUTTON = "Apply and Close"; //$NON-NLS-1$
     String OK_BUTTON = "OK"; //$NON-NLS-1$
     String OPEN = "Open"; //$NON-NLS-1$
     String DEFAULTS = "Restore Defaults"; //$NON-NLS-1$

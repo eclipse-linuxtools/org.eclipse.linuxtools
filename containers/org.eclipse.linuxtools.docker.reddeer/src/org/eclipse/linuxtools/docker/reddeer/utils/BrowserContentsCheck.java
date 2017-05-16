@@ -13,13 +13,13 @@ package org.eclipse.linuxtools.docker.reddeer.utils;
 
 import static org.junit.Assert.assertFalse;
 
+import org.eclipse.linuxtools.docker.reddeer.ui.BrowserView;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
-import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 
 /**

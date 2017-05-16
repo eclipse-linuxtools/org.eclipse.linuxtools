@@ -81,7 +81,7 @@ public class TestUtils {
             bot.text().setText(ICreaterepoTestConstants.NAVIGATOR);
             bot.waitUntil(new NodeAvailableAndSelect(bot.tree(),
                     ICreaterepoTestConstants.GENERAL_NODE, ICreaterepoTestConstants.NAVIGATOR));
-            bot.button(ICreaterepoTestConstants.OK_BUTTON).click();
+            bot.button(ICreaterepoTestConstants.OPEN).click();
         }
     }
 
