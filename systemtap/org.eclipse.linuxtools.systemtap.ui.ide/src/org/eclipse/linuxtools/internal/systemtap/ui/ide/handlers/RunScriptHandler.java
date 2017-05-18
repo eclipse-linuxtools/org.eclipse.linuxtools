@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat Inc. and others.
+ * Copyright (c) 2009, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -62,11 +62,9 @@ import org.eclipse.ui.ide.ResourceUtil;
 import com.jcraft.jsch.JSchException;
 
 /**
- * This <code>Action</code> is used to run a SystemTap script that is currently open in the editor.
- * Contributors:
- *    Ryan Morse - Original author.
- *    Red Hat Inc. - Copied most code from RunScriptAction here and made it into
- *                   base class for run actions.
+ * This <code>Action</code> is used to run a SystemTap script that is currently
+ * open in the editor.
+ *
  * @since 2.0
  */
 
@@ -156,7 +154,6 @@ public class RunScriptHandler extends AbstractHandler {
     }
 
     private void executeAction(ExecutionEvent event) throws ExecutionException {
-        cmdList.clear();
         final boolean local = getRunLocal();
         findTargetEditor(event);
         findFilePath();
