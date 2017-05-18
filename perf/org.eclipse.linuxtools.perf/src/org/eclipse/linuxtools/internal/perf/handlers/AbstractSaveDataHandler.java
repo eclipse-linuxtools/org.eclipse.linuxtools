@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Red Hat, Inc.
+ * Copyright (c) 2013, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -107,7 +107,7 @@ public abstract class AbstractSaveDataHandler extends BaseDataManipulator implem
         if (fileStore.fetchInfo().exists()) {
             String msg = MessageFormat.format(
                     Messages.PerfSaveSession_file_exists_msg,
-                    new Object[] { fileStore.getName() });
+                    fileStore.getName());
             return MessageDialog.openQuestion(Display.getCurrent()
                     .getActiveShell(),
                     Messages.PerfSaveSession_file_exists_title, msg);
@@ -120,7 +120,7 @@ public abstract class AbstractSaveDataHandler extends BaseDataManipulator implem
      * @param filename
      */
     public void openErroDialog(final String title, String pattern, String arg) {
-        final String errorMsg = MessageFormat.format(pattern, new Object[] { arg });
+        final String errorMsg = MessageFormat.format(pattern, arg);
         if (Display.getCurrent() != null) {
             MessageDialog.openError(Display.getCurrent().getActiveShell(), title, errorMsg);
         } else {

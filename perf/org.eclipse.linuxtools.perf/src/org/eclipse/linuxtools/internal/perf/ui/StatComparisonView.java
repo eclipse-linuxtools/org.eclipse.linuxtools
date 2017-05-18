@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Red Hat Inc.
+ * Copyright (c) 2013, 2017 Red Hat Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -206,8 +206,8 @@ public class StatComparisonView extends Viewer {
                     newDatum = generateTempFile(rStream);
                 }
 
-                String title = MessageFormat.format(Messages.ContentDescription_0,
-                        new Object[] { oldDatum.toFile().getName(), newDatum.toFile().getName() });
+				String title = MessageFormat.format(Messages.ContentDescription_0, oldDatum.toFile().getName(),
+						newDatum.toFile().getName());
 
                 // create comparison data and run comparison.
                 StatComparisonData diffData;

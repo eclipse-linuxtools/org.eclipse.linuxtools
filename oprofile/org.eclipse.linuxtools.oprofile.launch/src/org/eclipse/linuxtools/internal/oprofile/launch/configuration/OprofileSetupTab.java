@@ -296,8 +296,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
             IFileStore fileStore = proxy.getResource(filename);
             if (!fileStore.fetchInfo().exists() || fileStore.fetchInfo().isDirectory()){
                 String msg = OprofileLaunchMessages.getString("tab.global.kernelImage.kernel.nonexistent"); //$NON-NLS-1$
-                Object[] args = new Object[] { filename };
-                errorMessage = MessageFormat.format(msg, args);
+                errorMessage = MessageFormat.format(msg, filename);
             }
 
             //seems odd, but must set it even if it is invalid so that performApply

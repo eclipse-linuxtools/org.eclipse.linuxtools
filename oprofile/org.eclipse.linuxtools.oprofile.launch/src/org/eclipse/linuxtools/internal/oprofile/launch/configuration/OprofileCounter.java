@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004,2008 Red Hat, Inc.
+ * Copyright (c) 2004, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -208,8 +208,7 @@ public class OprofileCounter {
      * @return the label to use in widgets referring to this counter
      */
     public String getText() {
-        Object[] args = new Object[] {Integer.valueOf(number)};
-        return MessageFormat.format(COUNTER_STRING, args);
+        return MessageFormat.format(COUNTER_STRING, Integer.valueOf(number));
     }
 
     /**

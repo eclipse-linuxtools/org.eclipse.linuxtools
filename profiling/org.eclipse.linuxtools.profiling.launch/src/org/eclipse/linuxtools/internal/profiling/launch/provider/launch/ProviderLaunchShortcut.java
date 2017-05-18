@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -132,9 +132,8 @@ public class ProviderLaunchShortcut extends ProfileLaunchShortcut implements IEx
                     + type.substring(1);
 
             // prompt message
-            String promptMsg = MessageFormat.format(
-                    Messages.ProviderLaunchConfigurationPrompt_0,
-                    (Object[]) new String[] { profileType, provider });
+			String promptMsg = MessageFormat.format(Messages.ProviderLaunchConfigurationPrompt_0, profileType,
+					provider);
 
             MessageBox prompt = new MessageBox(getActiveWorkbenchShell(),
                     SWT.ICON_QUESTION | SWT.YES | SWT.NO);
