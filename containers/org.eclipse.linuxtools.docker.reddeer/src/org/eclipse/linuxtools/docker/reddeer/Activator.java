@@ -61,14 +61,6 @@ public class Activator extends Plugin {
 		log(new Status(IStatus.WARNING, PLUGIN_ID, IStatus.WARNING, message, null));
 	}
 
-	/**
-	 * @deprecated see https://bugs.eclipse.org/bugs/show_bug.cgi?id=489111
-	 */
-	@Deprecated
-	public static void logErrorMessage(final String message) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, message, null));
-	}
-
 	public static void logErrorMessage(final String message, final Throwable e) {
 		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, message, e));
 	}
