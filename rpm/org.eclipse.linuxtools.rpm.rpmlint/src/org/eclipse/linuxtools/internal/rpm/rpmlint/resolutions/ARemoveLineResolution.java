@@ -18,28 +18,28 @@ import org.eclipse.linuxtools.internal.rpm.rpmlint.RpmlintLog;
 import org.eclipse.ui.IEditorPart;
 
 /**
- * Defines the common functionallity for resolution which fix is to remove a line.
+ * Defines the common functionallity for resolution which fix is to remove a
+ * line.
  */
 public abstract class ARemoveLineResolution extends ARpmlintResolution {
 
-    @Override
-    public void run(IMarker marker) {
+	@Override
+	public void run(IMarker marker) {
 
-        IEditorPart editor = getEditor(marker);
-        if (editor == null) {
-            return;
-        }
-        // Get the document
-        IDocument doc = (IDocument) editor.getAdapter(IDocument.class);
+		IEditorPart editor = getEditor(marker);
+		if (editor == null) {
+			return;
+		}
+		// Get the document
+		IDocument doc = editor.getAdapter(IDocument.class);
 
-        try {
-            int index = doc.getLineOffset(marker.getAttribute(IMarker.LINE_NUMBER, 0));
-            int lineLength = doc.getLineLength(marker.getAttribute(IMarker.LINE_NUMBER, 0));
-            doc.replace(index, lineLength, "");  //$NON-NLS-1$
-        } catch (BadLocationException e) {
-            RpmlintLog.logError(e);
-        }
-    }
-
+		try {
+			int index = doc.getLineOffset(marker.getAttribute(IMarker.LINE_NUMBER, 0));
+			int lineLength = doc.getLineLength(marker.getAttribute(IMarker.LINE_NUMBER, 0));
+			doc.replace(index, lineLength, ""); //$NON-NLS-1$
+		} catch (BadLocationException e) {
+			RpmlintLog.logError(e);
+		}
+	}
 
 }
