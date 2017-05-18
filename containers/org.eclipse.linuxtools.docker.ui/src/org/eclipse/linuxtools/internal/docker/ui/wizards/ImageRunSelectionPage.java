@@ -82,8 +82,6 @@ import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel.
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel.ExposedPortModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
@@ -729,13 +727,8 @@ public class ImageRunSelectionPage extends WizardPage {
 	}
 
 	private SelectionListener onPullImage() {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				pullSelectedImage();
-			}
-		};
+		return SelectionListener
+				.widgetDefaultSelectedAdapter(e -> pullSelectedImage());
 	}
 
 	private IValueChangeListener onPublishAllPortsChange(

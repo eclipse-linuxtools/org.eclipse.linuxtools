@@ -40,6 +40,7 @@ import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -237,18 +238,12 @@ public class GraphDisplaySet {
                 gd.title, GraphFactory.getGraphName(gd.graphID)));
         final GraphComposite gc = new GraphComposite(folder, SWT.FILL, gd, dataSet);
         gc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        gc.addCheckOption(Messages.GraphCompositeTitle, new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                gc.setTitleVisible(((Button)e.getSource()).getSelection());
-            }
-        });
-        gc.addCheckOption(Messages.GraphCompositeLegend, new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                gc.setLegendVisible(((Button)e.getSource()).getSelection());
-            }
-        });
+		gc.addCheckOption(Messages.GraphCompositeTitle, SelectionListener.widgetSelectedAdapter(e -> {
+			gc.setTitleVisible(((Button) e.getSource()).getSelection());
+		}));
+		gc.addCheckOption(Messages.GraphCompositeLegend, SelectionListener.widgetSelectedAdapter(e -> {
+			gc.setLegendVisible(((Button) e.getSource()).getSelection());
+		}));
         folder.setSelection(item);
 
         AbstractChartBuilder g = gc.getCanvas();

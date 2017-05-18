@@ -26,7 +26,6 @@ import org.eclipse.linuxtools.dataviewers.charts.provider.IChartField;
 import org.eclipse.linuxtools.internal.dataviewers.charts.Activator;
 import org.eclipse.linuxtools.internal.dataviewers.charts.Messages;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
@@ -186,7 +185,7 @@ public class ChartDialog extends Dialog {
         chartTypeGroup.setLayout(new GridLayout(2, false));
         chartTypeGroup.setText(Messages.ChartConstants_SELECT_YOUR_CHART_TYPE);
 
-        ValidateSelectionListener listener = new ValidateSelectionListener();
+        SelectionListener listener = SelectionListener.widgetSelectedAdapter(e ->  validateInput());
 
         barGraphButton = new Button(chartTypeGroup, SWT.RADIO);
         barGraphButton.setText(Messages.ChartConstants_BAR_GRAPH);
@@ -377,13 +376,6 @@ public class ChartDialog extends Dialog {
                     .produceBarChart(objects, labelField, selectedFields, Messages.ChartConstants_BAR_GRAPH, horizontalBars);
         } else {
             return ChartFactory.producePieChart(objects, labelField, selectedFields, Messages.ChartConstants_PIE_CHART);
-        }
-    }
-
-    private class ValidateSelectionListener extends SelectionAdapter {
-        @Override
-        public void widgetSelected(SelectionEvent e) {
-            validateInput();
         }
     }
 
