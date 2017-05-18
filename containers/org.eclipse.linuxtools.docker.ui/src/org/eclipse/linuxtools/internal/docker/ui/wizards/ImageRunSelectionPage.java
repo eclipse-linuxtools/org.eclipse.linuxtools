@@ -595,61 +595,49 @@ public class ImageRunSelectionPage extends WizardPage {
 	}
 
 	private SelectionListener onAddLink() {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				final ContainerLinkDialog dialog = new ContainerLinkDialog(
-						getShell(), model.getSelectedConnection());
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					model.addLink(dialog.getContainerName(),
-							dialog.getContainerAlias());
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final ContainerLinkDialog dialog = new ContainerLinkDialog(
+					getShell(), model.getSelectedConnection());
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				model.addLink(dialog.getContainerName(),
+						dialog.getContainerAlias());
 			}
-		};
+		});
 	}
 
 	private SelectionListener onEditLink(final TableViewer linksTableViewer) {
-		return new SelectionAdapter() {
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final IStructuredSelection selection = linksTableViewer
+					.getStructuredSelection();
 
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				final IStructuredSelection selection = linksTableViewer
-						.getStructuredSelection();
-
-				final ContainerLinkModel selectedContainerLink = (ContainerLinkModel) selection
-						.getFirstElement();
-				final ContainerLinkDialog dialog = new ContainerLinkDialog(
-						getShell(), model.getSelectedConnection(),
-						selectedContainerLink);
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					selectedContainerLink
-							.setContainerName(dialog.getContainerName());
-					selectedContainerLink
-							.setContainerAlias(dialog.getContainerAlias());
-					linksTableViewer.refresh();
-				}
+			final ContainerLinkModel selectedContainerLink = (ContainerLinkModel) selection
+					.getFirstElement();
+			final ContainerLinkDialog dialog = new ContainerLinkDialog(
+					getShell(), model.getSelectedConnection(),
+					selectedContainerLink);
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				selectedContainerLink
+						.setContainerName(dialog.getContainerName());
+				selectedContainerLink
+						.setContainerAlias(dialog.getContainerAlias());
+				linksTableViewer.refresh();
 			}
-		};
+		});
 	}
 
 	private SelectionListener onRemoveLinks(
 			final TableViewer linksTableViewer) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final IStructuredSelection selection = linksTableViewer
-						.getStructuredSelection();
-				for (@SuppressWarnings("unchecked")
-				Iterator<ContainerLinkModel> iterator = selection
-						.iterator(); iterator.hasNext();) {
-					model.removeLink(iterator.next());
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final IStructuredSelection selection = linksTableViewer
+					.getStructuredSelection();
+			for (@SuppressWarnings("unchecked")
+			Iterator<ContainerLinkModel> iterator = selection
+					.iterator(); iterator.hasNext();) {
+				model.removeLink(iterator.next());
 			}
-		};
+		});
 	}
 
 	private void createRunOptionsSection(final Composite container) {
@@ -756,89 +744,72 @@ public class ImageRunSelectionPage extends WizardPage {
 	}
 
 	private SelectionListener onSearchImage() {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				final ImageSearch imageSearchWizard = new ImageSearch(
-						ImageRunSelectionPage.this.model
-								.getSelectedConnection(),
-						ImageRunSelectionPage.this.model
-								.getSelectedImageName(),
-						new RegistryInfo(AbstractRegistry.DOCKERHUB_REGISTRY,
-								true));
-				final boolean completed = CommandUtils
-						.openWizard(imageSearchWizard, getShell());
-				if (completed) {
-					model.setSelectedImageName(
-							imageSearchWizard.getSelectedImage());
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final ImageSearch imageSearchWizard = new ImageSearch(
+					ImageRunSelectionPage.this.model.getSelectedConnection(),
+					ImageRunSelectionPage.this.model.getSelectedImageName(),
+					new RegistryInfo(AbstractRegistry.DOCKERHUB_REGISTRY,
+							true));
+			final boolean completed = CommandUtils.openWizard(imageSearchWizard,
+					getShell());
+			if (completed) {
+				model.setSelectedImageName(
+						imageSearchWizard.getSelectedImage());
 			}
-		};
+		});
 	}
 
 	private SelectionListener onAddPort(
 			final CheckboxTableViewer exposedPortsTableViewer) {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final ContainerPortDialog dialog = new ContainerPortDialog(
-						getShell());
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					final ExposedPortModel port = dialog.getPort();
-					port.setSelected(true);
-					model.addAvailablePort(port);
-					model.getSelectedPorts().add(port);
-					exposedPortsTableViewer.setChecked(port, true);
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final ContainerPortDialog dialog = new ContainerPortDialog(
+					getShell());
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				final ExposedPortModel port = dialog.getPort();
+				port.setSelected(true);
+				model.addAvailablePort(port);
+				model.getSelectedPorts().add(port);
+				exposedPortsTableViewer.setChecked(port, true);
 			}
-		};
+		});
 	}
 
 	private SelectionListener onEditPort(
 			final CheckboxTableViewer exposedPortsTableViewer) {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final IStructuredSelection selection = exposedPortsTableViewer
-						.getStructuredSelection();
-				final ExposedPortModel selectedContainerPort = (ExposedPortModel) selection
-						.getFirstElement();
-				final ContainerPortDialog dialog = new ContainerPortDialog(
-						getShell(), selectedContainerPort);
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					final ExposedPortModel configuredPort = dialog.getPort();
-					selectedContainerPort.setContainerPort(
-							configuredPort.getContainerPort());
-					selectedContainerPort
-							.setHostAddress(configuredPort.getHostAddress());
-					selectedContainerPort
-							.setHostPort(configuredPort.getHostPort());
-					exposedPortsTableViewer.refresh();
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final IStructuredSelection selection = exposedPortsTableViewer
+					.getStructuredSelection();
+			final ExposedPortModel selectedContainerPort = (ExposedPortModel) selection
+					.getFirstElement();
+			final ContainerPortDialog dialog = new ContainerPortDialog(
+					getShell(), selectedContainerPort);
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				final ExposedPortModel configuredPort = dialog.getPort();
+				selectedContainerPort
+						.setContainerPort(configuredPort.getContainerPort());
+				selectedContainerPort
+						.setHostAddress(configuredPort.getHostAddress());
+				selectedContainerPort.setHostPort(configuredPort.getHostPort());
+				exposedPortsTableViewer.refresh();
 			}
-		};
+		});
 	}
 
 	private SelectionListener onRemovePorts(
 			final TableViewer portsTableViewer) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final IStructuredSelection selection = portsTableViewer
-						.getStructuredSelection();
-				for (@SuppressWarnings("unchecked")
-				Iterator<ExposedPortModel> iterator = selection
-						.iterator(); iterator.hasNext();) {
-					final ExposedPortModel port = iterator.next();
-					model.removeAvailablePort(port);
-					model.getSelectedPorts().remove(port);
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final IStructuredSelection selection = portsTableViewer
+					.getStructuredSelection();
+			for (@SuppressWarnings("unchecked")
+			Iterator<ExposedPortModel> iterator = selection.iterator(); iterator
+					.hasNext();) {
+				final ExposedPortModel port = iterator.next();
+				model.removeAvailablePort(port);
+				model.getSelectedPorts().remove(port);
 			}
-		};
+		});
 	}
 
 	/**

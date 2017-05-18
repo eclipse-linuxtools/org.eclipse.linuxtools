@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 QNX Software Systems and others.
+ * Copyright (c) 2005, 2017 QNX Software Systems and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -49,8 +49,7 @@ import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 import org.eclipse.linuxtools.profiling.launch.ui.ResourceSelectorWidget;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -174,13 +173,8 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 
         fTerminalButton = createCheckButton(mainComp,
                 LaunchMessages.CMainTab_UseTerminal);
-        fTerminalButton.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent evt) {
-                updateLaunchConfigurationDialog();
-            }
-        });
+		fTerminalButton
+				.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> updateLaunchConfigurationDialog()));
         fTerminalButton.setEnabled(PTY.isSupported());
     }
 
@@ -386,14 +380,10 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 
         fProjButton = createPushButton(projComp,
                 LaunchMessages.Launch_common_Browse_1, null);
-        fProjButton.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent evt) {
-                handleProjectButtonSelected();
-                updateLaunchConfigurationDialog();
-            }
-        });
+		fProjButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			handleProjectButtonSelected();
+			updateLaunchConfigurationDialog();
+		}));
     }
 
     @Override
@@ -463,14 +453,11 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 
         toLabel.setEnabled(false);
 
-        enableCopyFromExeButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                boolean copyEnabled = enableCopyFromExeButton.getSelection();
-                setEnableCopyFromSection(copyEnabled);
-                updateLaunchConfigurationDialog();
-            }
-        });
+		enableCopyFromExeButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			boolean copyEnabled = enableCopyFromExeButton.getSelection();
+			setEnableCopyFromSection(copyEnabled);
+			updateLaunchConfigurationDialog();
+		}));
 
         copyFromExeText = copyFromExeSelector.getURIText();
         copyFromExeText.addModifyListener(evt -> updateLaunchConfigurationDialog());

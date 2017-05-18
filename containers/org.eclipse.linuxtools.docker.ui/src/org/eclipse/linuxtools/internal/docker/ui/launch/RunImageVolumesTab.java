@@ -53,8 +53,6 @@ import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunResourceVolumes
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunResourceVolumesVariablesModel.MountType;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.WizardMessages;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
@@ -234,31 +232,23 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 
 	private SelectionListener onAddDataVolume(
 			final CheckboxTableViewer dataVolumesTableViewer) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final ContainerDataVolumeDialog dialog = new ContainerDataVolumeDialog(
-						getShell(), model.getConnection());
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					model.getDataVolumes().add(dialog.getDataVolume());
-					model.getSelectedDataVolumes().add(dialog.getDataVolume());
-					dialog.getDataVolume().setSelected(true);
-					dataVolumesTableViewer.setChecked(dialog.getDataVolume(),
-							true);
-					updateLaunchConfigurationDialog();
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final ContainerDataVolumeDialog dialog = new ContainerDataVolumeDialog(
+					getShell(), model.getConnection());
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				model.getDataVolumes().add(dialog.getDataVolume());
+				model.getSelectedDataVolumes().add(dialog.getDataVolume());
+				dialog.getDataVolume().setSelected(true);
+				dataVolumesTableViewer.setChecked(dialog.getDataVolume(), true);
+				updateLaunchConfigurationDialog();
 			}
-		};
+		});
 	}
 
 	private SelectionListener onEditDataVolume(
 			final CheckboxTableViewer dataVolumesTableViewer) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+		return SelectionListener.widgetSelectedAdapter(e -> {
 				final IStructuredSelection selection = (IStructuredSelection) dataVolumesTableViewer
 						.getSelection();
 				if (selection.isEmpty()) {
@@ -287,27 +277,23 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 					updateLaunchConfigurationDialog();
 				}
 			}
-		};
+		);
 	}
 
 	private SelectionListener onRemoveDataVolumes(
 			final TableViewer dataVolumesTableViewer) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final IStructuredSelection selection = dataVolumesTableViewer
-						.getStructuredSelection();
-				for (@SuppressWarnings("unchecked")
-				Iterator<DataVolumeModel> iterator = selection
-						.iterator(); iterator.hasNext();) {
-					final DataVolumeModel volume = iterator.next();
-					model.removeDataVolume(volume);
-					model.getSelectedDataVolumes().remove(volume);
-				}
-				updateLaunchConfigurationDialog();
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final IStructuredSelection selection = dataVolumesTableViewer
+					.getStructuredSelection();
+			for (@SuppressWarnings("unchecked")
+			Iterator<DataVolumeModel> iterator = selection.iterator(); iterator
+					.hasNext();) {
+				final DataVolumeModel volume = iterator.next();
+				model.removeDataVolume(volume);
+				model.getSelectedDataVolumes().remove(volume);
 			}
-		};
+			updateLaunchConfigurationDialog();
+		});
 	}
 
 	private CheckboxTableViewer createVolumesTable(final Composite container) {

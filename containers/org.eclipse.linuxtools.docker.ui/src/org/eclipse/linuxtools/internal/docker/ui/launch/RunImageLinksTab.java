@@ -36,8 +36,6 @@ import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel.ContainerLinkModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.WizardMessages;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
@@ -167,64 +165,52 @@ public class RunImageLinksTab extends AbstractLaunchConfigurationTab {
 	}
 
 	private SelectionListener onAddLink() {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				final ContainerLinkDialog dialog = new ContainerLinkDialog(
-						getShell(), model.getSelectedConnection());
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					model.addLink(dialog.getContainerName(),
-							dialog.getContainerAlias());
-				}
-				updateLaunchConfigurationDialog();
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final ContainerLinkDialog dialog = new ContainerLinkDialog(
+					getShell(), model.getSelectedConnection());
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				model.addLink(dialog.getContainerName(),
+						dialog.getContainerAlias());
 			}
-		};
+			updateLaunchConfigurationDialog();
+		});
 	}
 
 	private SelectionListener onEditLink(final TableViewer linksTableViewer) {
-		return new SelectionAdapter() {
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final IStructuredSelection selection = linksTableViewer
+					.getStructuredSelection();
 
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				final IStructuredSelection selection = linksTableViewer
-						.getStructuredSelection();
-
-				final ContainerLinkModel selectedContainerLink = (ContainerLinkModel) selection
-						.getFirstElement();
-				final ContainerLinkDialog dialog = new ContainerLinkDialog(
-						getShell(), model.getSelectedConnection(),
-						selectedContainerLink);
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					selectedContainerLink
-							.setContainerName(dialog.getContainerName());
-					selectedContainerLink
-							.setContainerAlias(dialog.getContainerAlias());
-					linksTableViewer.refresh();
-					updateLaunchConfigurationDialog();
-				}
+			final ContainerLinkModel selectedContainerLink = (ContainerLinkModel) selection
+					.getFirstElement();
+			final ContainerLinkDialog dialog = new ContainerLinkDialog(
+					getShell(), model.getSelectedConnection(),
+					selectedContainerLink);
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				selectedContainerLink
+						.setContainerName(dialog.getContainerName());
+				selectedContainerLink
+						.setContainerAlias(dialog.getContainerAlias());
+				linksTableViewer.refresh();
+				updateLaunchConfigurationDialog();
 			}
-		};
+		});
 	}
 
 	private SelectionListener onRemoveLinks(
 			final TableViewer linksTableViewer) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final IStructuredSelection selection = linksTableViewer
-						.getStructuredSelection();
-				for (@SuppressWarnings("unchecked")
-				Iterator<ContainerLinkModel> iterator = selection
-						.iterator(); iterator.hasNext();) {
-					model.removeLink(iterator.next());
-				}
-				updateLaunchConfigurationDialog();
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final IStructuredSelection selection = linksTableViewer
+					.getStructuredSelection();
+			for (@SuppressWarnings("unchecked")
+			Iterator<ContainerLinkModel> iterator = selection
+					.iterator(); iterator.hasNext();) {
+				model.removeLink(iterator.next());
 			}
-		};
+			updateLaunchConfigurationDialog();
+		});
 	}
 
 	private static void setControlsEnabled(final Control[] controls,

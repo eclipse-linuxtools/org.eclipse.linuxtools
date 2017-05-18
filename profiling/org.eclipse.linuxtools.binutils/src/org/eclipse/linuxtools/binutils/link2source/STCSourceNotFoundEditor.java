@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 STMicroelectronics.
+ * Copyright (c) 2009, 2017 STMicroelectronics and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,8 +32,7 @@ import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.internal.Activator;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -120,32 +119,21 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
     }
 
     @Override
-    protected void createButtons(Composite parent) {
-        locateFileButton = new Button(parent, SWT.PUSH);
-        GridData data = new GridData();
-        data.grabExcessHorizontalSpace = false;
-        data.grabExcessVerticalSpace = false;
-        locateFileButton.setLayoutData(data);
-        locateFileButton.setText(Messages.STCSourceNotFoundEditor_locate_file);
-        locateFileButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent evt) {
-                locateFile();
-            }
-        });
+	protected void createButtons(Composite parent) {
+		locateFileButton = new Button(parent, SWT.PUSH);
+		GridData data = new GridData();
+		data.grabExcessHorizontalSpace = false;
+		data.grabExcessVerticalSpace = false;
+		locateFileButton.setLayoutData(data);
+		locateFileButton.setText(Messages.STCSourceNotFoundEditor_locate_file);
+		locateFileButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> locateFile()));
 
-        editLookupButton = new Button(parent, SWT.PUSH);
-        editLookupButton.setLayoutData(data);
-        editLookupButton
-                .setText(Messages.STCSourceNotFoundEditor_edit_source_lookup_path);
-        editLookupButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent evt) {
-                editSourceLookupPath();
-            }
-        });
-        syncButtons();
-    }
+		editLookupButton = new Button(parent, SWT.PUSH);
+		editLookupButton.setLayoutData(data);
+		editLookupButton.setText(Messages.STCSourceNotFoundEditor_edit_source_lookup_path);
+		editLookupButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> editSourceLookupPath()));
+		syncButtons();
+	}
 
     @Override
     protected void editSourceLookupPath() {

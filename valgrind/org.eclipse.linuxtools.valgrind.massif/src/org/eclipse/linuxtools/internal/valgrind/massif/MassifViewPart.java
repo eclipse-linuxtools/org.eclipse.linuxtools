@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Red Hat, Inc.
+ * Copyright (c) 2008, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -35,8 +35,6 @@ import org.eclipse.linuxtools.internal.valgrind.massif.charting.HeapChart;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
@@ -165,56 +163,52 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
     }
 
     private SelectionListener getHeaderListener() {
-        return new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                TableColumn column = (TableColumn) e.widget;
-                Table table = viewer.getTable();
-                if (column.equals(table.getSortColumn())) {
-                    int direction = table.getSortDirection() == SWT.UP ? SWT.DOWN
-                            : SWT.UP;
-                    table.setSortDirection(direction);
-                } else {
-                    table.setSortDirection(SWT.UP);
-                }
-                table.setSortColumn(column);
-                viewer.setComparator(new ViewerComparator() {
-                    @Override
-                    public int compare(Viewer viewer, Object o1, Object o2) {
-                        Table table = ((TableViewer) viewer).getTable();
-                        int direction = table.getSortDirection();
-                        MassifSnapshot s1 = (MassifSnapshot) o1;
-                        MassifSnapshot s2 = (MassifSnapshot) o2;
-                        long result;
-                        TableColumn column = table.getSortColumn();
-                        if (column.getText().equals(TITLE_NUMBER)) {
-                            result = s1.getNumber() - s2.getNumber();
-                        } else if (column.getText().startsWith(TITLE_TIME)) {
-                            result = s1.getTime() - s2.getTime();
-                        } else if (column.getText().equals(TITLE_TOTAL)) {
-                            result = s1.getTotal() - s2.getTotal();
-                        } else if (column.getText().equals(TITLE_USEFUL)) {
-                            result = s1.getHeapBytes() - s2.getHeapBytes();
-                        } else if (column.getText().equals(TITLE_EXTRA)) {
-                            result = s1.getHeapExtra() - s2.getHeapExtra();
-                        } else {
-                            result = s1.getStacks() - s2.getStacks();
-                        }
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			TableColumn column = (TableColumn) e.widget;
+			Table table = viewer.getTable();
+			if (column.equals(table.getSortColumn())) {
+				int direction = table.getSortDirection() == SWT.UP ? SWT.DOWN : SWT.UP;
+				table.setSortDirection(direction);
+			} else {
+				table.setSortDirection(SWT.UP);
+			}
+			table.setSortColumn(column);
+			viewer.setComparator(new ViewerComparator() {
+				@Override
+				public int compare(Viewer viewer, Object o1, Object o2) {
+					Table table = ((TableViewer) viewer).getTable();
+					int direction = table.getSortDirection();
+					MassifSnapshot s1 = (MassifSnapshot) o1;
+					MassifSnapshot s2 = (MassifSnapshot) o2;
+					long result;
+					TableColumn column = table.getSortColumn();
+					if (column.getText().equals(TITLE_NUMBER)) {
+						result = s1.getNumber() - s2.getNumber();
+					} else if (column.getText().startsWith(TITLE_TIME)) {
+						result = s1.getTime() - s2.getTime();
+					} else if (column.getText().equals(TITLE_TOTAL)) {
+						result = s1.getTotal() - s2.getTotal();
+					} else if (column.getText().equals(TITLE_USEFUL)) {
+						result = s1.getHeapBytes() - s2.getHeapBytes();
+					} else if (column.getText().equals(TITLE_EXTRA)) {
+						result = s1.getHeapExtra() - s2.getHeapExtra();
+					} else {
+						result = s1.getStacks() - s2.getStacks();
+					}
 
-                        // ascending / descending
-                        result = direction == SWT.UP ? result : -result;
+					// ascending / descending
+					result = direction == SWT.UP ? result : -result;
 
-                        // overflow check
-                        if (result > Integer.MAX_VALUE) {
-                            result = Integer.MAX_VALUE;
-                        } else if (result < Integer.MIN_VALUE) {
-                            result = Integer.MIN_VALUE;
-                        }
-                        return (int) result;
-                    }
-                });
-            }
-        };
+					// overflow check
+					if (result > Integer.MAX_VALUE) {
+						result = Integer.MAX_VALUE;
+					} else if (result < Integer.MIN_VALUE) {
+						result = Integer.MIN_VALUE;
+					}
+					return (int) result;
+				}
+			});
+		});
     }
 
     @Override

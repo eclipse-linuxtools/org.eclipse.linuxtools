@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,8 +39,6 @@ import org.eclipse.linuxtools.valgrind.ui.CollapseAction;
 import org.eclipse.linuxtools.valgrind.ui.ExpandAction;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -207,70 +205,63 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
         return doubleClickListener;
     }
 
-    private SelectionListener getHeaderListener() {
-        return new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                TreeColumn column = (TreeColumn) e.widget;
-                Tree tree = viewer.getTree();
-                if (column.equals(tree.getSortColumn())) {
-                    int direction = tree.getSortDirection() == SWT.UP ? SWT.DOWN
-                            : SWT.UP;
-                    tree.setSortDirection(direction);
-                } else {
-                    tree.setSortDirection(SWT.UP);
-                }
-                tree.setSortColumn(column);
-                viewer.setComparator(new ViewerComparator() {
-                    @Override
-                    public int compare(Viewer viewer, Object e1, Object e2) {
-                        Tree tree = ((TreeViewer) viewer).getTree();
-                        int direction = tree.getSortDirection();
-                        ICachegrindElement o1 = (ICachegrindElement) e1;
-                        ICachegrindElement o2 = (ICachegrindElement) e2;
-                        long result = 0;
+	private SelectionListener getHeaderListener() {
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			TreeColumn column = (TreeColumn) e.widget;
+			Tree tree = viewer.getTree();
+			if (column.equals(tree.getSortColumn())) {
+				int direction = tree.getSortDirection() == SWT.UP ? SWT.DOWN : SWT.UP;
+				tree.setSortDirection(direction);
+			} else {
+				tree.setSortDirection(SWT.UP);
+			}
+			tree.setSortColumn(column);
+			viewer.setComparator(new ViewerComparator() {
+				@Override
+				public int compare(Viewer viewer, Object e1, Object e2) {
+					Tree tree = ((TreeViewer) viewer).getTree();
+					int direction = tree.getSortDirection();
+					ICachegrindElement o1 = (ICachegrindElement) e1;
+					ICachegrindElement o2 = (ICachegrindElement) e2;
+					long result = 0;
 
-                        int sortIndex = Arrays.asList(tree.getColumns()).indexOf(tree.getSortColumn());
-                        if (sortIndex == 0) { // use compareTo
-                            result = o1.compareTo(o2);
-                        }
-                        else {
-                            long[] v1 = null;
-                            long[] v2 = null;
-                            if (o1 instanceof CachegrindFunction && o2 instanceof CachegrindFunction) {
-                                v1 = ((CachegrindFunction) o1).getTotals();
-                                v2 = ((CachegrindFunction) o2).getTotals();
-                            }
-                            else if (o1 instanceof CachegrindLine && o2 instanceof CachegrindLine) {
-                                v1 = ((CachegrindLine) o1).getValues();
-                                v2 = ((CachegrindLine) o2).getValues();
-                            }
-                            else if (o1 instanceof CachegrindOutput && o2 instanceof CachegrindOutput) {
-                                v1 = ((CachegrindOutput) o1).getSummary();
-                                v2 = ((CachegrindOutput) o2).getSummary();
-                            }
+					int sortIndex = Arrays.asList(tree.getColumns()).indexOf(tree.getSortColumn());
+					if (sortIndex == 0) { // use compareTo
+						result = o1.compareTo(o2);
+					} else {
+						long[] v1 = null;
+						long[] v2 = null;
+						if (o1 instanceof CachegrindFunction && o2 instanceof CachegrindFunction) {
+							v1 = ((CachegrindFunction) o1).getTotals();
+							v2 = ((CachegrindFunction) o2).getTotals();
+						} else if (o1 instanceof CachegrindLine && o2 instanceof CachegrindLine) {
+							v1 = ((CachegrindLine) o1).getValues();
+							v2 = ((CachegrindLine) o2).getValues();
+						} else if (o1 instanceof CachegrindOutput && o2 instanceof CachegrindOutput) {
+							v1 = ((CachegrindOutput) o1).getSummary();
+							v2 = ((CachegrindOutput) o2).getSummary();
+						}
 
-                            if (v1 != null && v2 != null) {
-                                result = v1[sortIndex - 1] - v2[sortIndex - 1];
-                            }
-                        }
+						if (v1 != null && v2 != null) {
+							result = v1[sortIndex - 1] - v2[sortIndex - 1];
+						}
+					}
 
-                        // ascending or descending
-                        result = direction == SWT.UP ? result : -result;
+					// ascending or descending
+					result = direction == SWT.UP ? result : -result;
 
-                        // overflow check
-                        if (result > Integer.MAX_VALUE) {
-                            result = Integer.MAX_VALUE;
-                        } else if (result < Integer.MIN_VALUE) {
-                            result = Integer.MIN_VALUE;
-                        }
+					// overflow check
+					if (result > Integer.MAX_VALUE) {
+						result = Integer.MAX_VALUE;
+					} else if (result < Integer.MIN_VALUE) {
+						result = Integer.MIN_VALUE;
+					}
 
-                        return (int) result;
-                    }
-                });
-            }
-        };
-    }
+					return (int) result;
+				}
+			});
+		});
+	}
 
     private String getFullEventName(String event) {
         String result = event;

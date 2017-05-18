@@ -64,8 +64,6 @@ import org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils;
 import org.eclipse.linuxtools.internal.docker.ui.propertytesters.ContainerPropertyTester;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -417,17 +415,13 @@ public class DockerContainersView extends ViewPart implements
 	}
 	
 	private SelectionListener onColumnSelected() {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final TableColumn sortColumn = (TableColumn) e.getSource();
-				final DockerContainersComparator comparator = (DockerContainersComparator) viewer
-						.getComparator();
-				comparator.setColumn(sortColumn);
-				viewer.refresh();
-			}
-		};
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final TableColumn sortColumn = (TableColumn) e.getSource();
+			final DockerContainersComparator comparator = (DockerContainersComparator) viewer
+					.getComparator();
+			comparator.setColumn(sortColumn);
+			viewer.refresh();
+		});
 	}
 
 	private void setLayout(final TableViewerColumn viewerColumn, final TableColumnLayout tableLayout, final int weight) {

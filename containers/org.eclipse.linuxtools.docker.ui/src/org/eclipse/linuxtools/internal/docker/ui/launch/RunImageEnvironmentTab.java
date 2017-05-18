@@ -37,8 +37,6 @@ import org.eclipse.linuxtools.internal.docker.ui.wizards.EnvironmentVariableMode
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunResourceVolumesVariablesModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.WizardMessages;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
@@ -180,65 +178,55 @@ public class RunImageEnvironmentTab extends AbstractLaunchConfigurationTab {
 
 	private SelectionListener onAddEnvironmentVariable(
 			final TableViewer environmentVariablesTableViewer) {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final ContainerEnvironmentVariableDialog dialog = new ContainerEnvironmentVariableDialog(
-						getShell());
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					model.getEnvironmentVariables()
-							.add(dialog.getEnvironmentVariable());
-					environmentVariablesTableViewer
-							.add(dialog.getEnvironmentVariable());
-					environmentVariablesTableViewer.refresh();
-					updateLaunchConfigurationDialog();
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final ContainerEnvironmentVariableDialog dialog = new ContainerEnvironmentVariableDialog(
+					getShell());
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				model.getEnvironmentVariables()
+						.add(dialog.getEnvironmentVariable());
+				environmentVariablesTableViewer
+						.add(dialog.getEnvironmentVariable());
+				environmentVariablesTableViewer.refresh();
+				updateLaunchConfigurationDialog();
 			}
-		};
+		});
 	}
 
 	private SelectionListener onEditEnvironmentVariable(
 			final TableViewer environmentVariablesTableViewer) {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final EnvironmentVariableModel selectedVariable = (EnvironmentVariableModel) environmentVariablesTableViewer
-						.getStructuredSelection().getFirstElement();
-				final ContainerEnvironmentVariableDialog dialog = new ContainerEnvironmentVariableDialog(
-						getShell(), selectedVariable);
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					selectedVariable
-							.setName(dialog.getEnvironmentVariable().getName());
-					selectedVariable.setValue(
-							dialog.getEnvironmentVariable().getValue());
-					environmentVariablesTableViewer.refresh();
-				}
-				updateLaunchConfigurationDialog();
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final EnvironmentVariableModel selectedVariable = (EnvironmentVariableModel) environmentVariablesTableViewer
+					.getStructuredSelection().getFirstElement();
+			final ContainerEnvironmentVariableDialog dialog = new ContainerEnvironmentVariableDialog(
+					getShell(), selectedVariable);
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				selectedVariable
+						.setName(dialog.getEnvironmentVariable().getName());
+				selectedVariable
+						.setValue(dialog.getEnvironmentVariable().getValue());
+				environmentVariablesTableViewer.refresh();
 			}
-		};
+			updateLaunchConfigurationDialog();
+		});
 	}
 
 	private SelectionListener onRemoveEnvironmentVariables(
 			final TableViewer environmentVariablesTableViewer) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final IStructuredSelection selection = environmentVariablesTableViewer
-						.getStructuredSelection();
-				for (@SuppressWarnings("unchecked")
-				Iterator<EnvironmentVariableModel> iterator = selection
-						.iterator(); iterator.hasNext();) {
-					EnvironmentVariableModel m = iterator.next();
-					model.removeEnvironmentVariable(m);
-					environmentVariablesTableViewer.remove(m);
-					environmentVariablesTableViewer.refresh();
-				}
-				updateLaunchConfigurationDialog();
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final IStructuredSelection selection = environmentVariablesTableViewer
+					.getStructuredSelection();
+			for (@SuppressWarnings("unchecked")
+			Iterator<EnvironmentVariableModel> iterator = selection
+					.iterator(); iterator.hasNext();) {
+				EnvironmentVariableModel m = iterator.next();
+				model.removeEnvironmentVariable(m);
+				environmentVariablesTableViewer.remove(m);
+				environmentVariablesTableViewer.refresh();
 			}
-		};
+			updateLaunchConfigurationDialog();
+		});
 	}
 
 	private static void setControlsEnabled(final Control[] controls,

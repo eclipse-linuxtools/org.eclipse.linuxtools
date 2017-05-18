@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2016 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -147,35 +147,29 @@ public class DockerComposeUpLaunchConfigurationMainTab
 	 */
 	private SelectionListener onBrowseWorkspace(final Text pathText,
 			final Class<?> expectedType) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
-						getShell(), new WorkbenchLabelProvider(),
-						new WorkbenchContentProvider());
-				dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-				dialog.setTitle(LaunchMessages.getString(
-						"DockerComposeUpLaunchConfigurationMainTab.dockerComposePath.browseworkspace.dialog.title")); //$NON-NLS-1$
-				dialog.setComparator(
-						new ResourceComparator(ResourceComparator.NAME));
-				dialog.setAllowMultiple(false);
-				dialog.setValidator(selection -> {
-					if (selection.length == 1 && expectedType
-							.isAssignableFrom(selection[0].getClass())) {
-						return new Status(IStatus.OK, Activator.PLUGIN_ID,
-								null);
-					}
-					return new Status(IStatus.ERROR, Activator.PLUGIN_ID, null);
-				});
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					final IResource selection = (IResource) dialog
-							.getFirstResult();
-					pathText.setText(selection.getFullPath().toOSString());
-					dockerComposeFilePathWorkspaceRelative = true;
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
+					getShell(), new WorkbenchLabelProvider(),
+					new WorkbenchContentProvider());
+			dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
+			dialog.setTitle(LaunchMessages.getString(
+					"DockerComposeUpLaunchConfigurationMainTab.dockerComposePath.browseworkspace.dialog.title")); //$NON-NLS-1$
+			dialog.setComparator(
+					new ResourceComparator(ResourceComparator.NAME));
+			dialog.setAllowMultiple(false);
+			dialog.setValidator(selection -> {
+				if (selection.length == 1 && expectedType
+						.isAssignableFrom(selection[0].getClass())) {
+					return new Status(IStatus.OK, Activator.PLUGIN_ID, null);
 				}
+				return new Status(IStatus.ERROR, Activator.PLUGIN_ID, null);
+			});
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				final IResource selection = (IResource) dialog.getFirstResult();
+				pathText.setText(selection.getFullPath().toOSString());
+				dockerComposeFilePathWorkspaceRelative = true;
 			}
-		};
+		});
 	}
 
 	/**
@@ -185,18 +179,14 @@ public class DockerComposeUpLaunchConfigurationMainTab
 	 */
 	private SelectionListener onBrowseFileSystemForDirectory(
 			final Text pathText) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final DirectoryDialog dialog = new DirectoryDialog(getShell());
-				final String selection = dialog.open();
-				if (selection != null) {
-					pathText.setText(selection);
-					dockerComposeFilePathWorkspaceRelative = false;
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final DirectoryDialog dialog = new DirectoryDialog(getShell());
+			final String selection = dialog.open();
+			if (selection != null) {
+				pathText.setText(selection);
+				dockerComposeFilePathWorkspaceRelative = false;
 			}
-		};
+		});
 	}
 
 	@Override

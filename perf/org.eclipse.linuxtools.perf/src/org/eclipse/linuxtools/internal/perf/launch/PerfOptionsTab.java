@@ -25,8 +25,7 @@ import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.linuxtools.internal.perf.PerfVersion;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -117,12 +116,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 
         Button button = createPushButton(kernelComp, Messages.PerfOptionsTab_Browse, null);
         final Shell shell = top.getShell();
-        button.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent sev) {
-                showFileDialog(shell);
-            }
-        });
+		button.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> showFileDialog(shell)));
 
         createVerticalSpacer(top, 1);
 
@@ -143,39 +137,28 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
         showStatComp.setLayout(parallelLayout);
 
         chkShowStat = createCheckButtonHelper(showStatComp, PerfPlugin.STRINGS_ShowStat);
-        chkShowStat.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent se) {
-                handleShowStatSelection();
-            }
-        });
+		chkShowStat.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> handleShowStatSelection()));
         statRunCount = new Spinner(showStatComp, SWT.BORDER);
         statRunCount.setEnabled(false);
         statRunCount.setMinimum(1);
         statRunCount.addModifyListener(e -> updateLaunchConfigurationDialog());
 
-        chkSourceLineNumbers.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent se) {
-                if ((chkKernelSourceLineNumbers != null) && (!chkSourceLineNumbers.getSelection())) {
-                    chkKernelSourceLineNumbers.setEnabled(false);
-                } else {
-                    chkKernelSourceLineNumbers.setEnabled(true);
-                }
-            }
-        });
+		chkSourceLineNumbers.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			if ((chkKernelSourceLineNumbers != null) && (!chkSourceLineNumbers.getSelection())) {
+				chkKernelSourceLineNumbers.setEnabled(false);
+			} else {
+				chkKernelSourceLineNumbers.setEnabled(true);
+			}
+		}));
         chkKernelSourceLineNumbers = createCheckButtonHelper(chkBoxComp, PerfPlugin.STRINGS_Kernel_SourceLineNumbers);
 
         Composite realtimeComp = new Composite(top, SWT.NONE);
         realtimeComp.setLayout(parallelLayout);
 
         chkRecordRealtime = createCheckButtonHelper(realtimeComp, PerfPlugin.STRINGS_Record_Realtime);
-        chkRecordRealtime.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent se) {
-                rtPriority.setEnabled(chkRecordRealtime.getSelection());
-            }
-        });
+		chkRecordRealtime.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			rtPriority.setEnabled(chkRecordRealtime.getSelection());
+		}));
         rtPriority = new Spinner(realtimeComp, SWT.BORDER);
         rtPriority.setEnabled(chkRecordRealtime.getSelection());
         rtPriority.setMinimum(1);
@@ -202,13 +185,10 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
     private Button createCheckButtonHelper(Composite parent, String label) {
         final Button b = new Button(parent, SWT.CHECK);
         b.setText(label);
-        b.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent se) {
-                setDirty(true);
-                updateLaunchConfigurationDialog();
-            }
-        });
+		b.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			setDirty(true);
+			updateLaunchConfigurationDialog();
+		}));
         return b;
     }
 

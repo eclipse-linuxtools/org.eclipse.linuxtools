@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 STMicroelectronics.
+ * Copyright (c) 2009, 2017 STMicroelectronics and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,8 +29,7 @@ import org.eclipse.linuxtools.internal.gprof.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -131,20 +130,12 @@ public class OpenGmonDialog extends Dialog {
         cbBin.setLayout(new GridLayout(2, true));
         Button binBrowseWorkspaceButton = new Button(cbBin, SWT.PUSH);
         binBrowseWorkspaceButton.setText(Messages.OpenGmonDialog_WORKSPACE);
-        binBrowseWorkspaceButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent sev) {
-                handleBrowseWorkspace(Messages.OpenGmonDialog_OPEN_BINARY_FILE, binText);
-            }
-        });
+		binBrowseWorkspaceButton.addSelectionListener(SelectionListener
+				.widgetSelectedAdapter(e -> handleBrowseWorkspace(Messages.OpenGmonDialog_OPEN_BINARY_FILE, binText)));
         Button binBrowseFileSystemButton = new Button(cbBin, SWT.PUSH);
         binBrowseFileSystemButton.setText(Messages.OpenGmonDialog_FILE_SYSTEM);
-        binBrowseFileSystemButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent sev) {
-                handleBrowse(Messages.OpenGmonDialog_OPEN_BINARY_FILE, binText);
-            }
-        });
+		binBrowseFileSystemButton.addSelectionListener(SelectionListener
+				.widgetSelectedAdapter(e -> handleBrowse(Messages.OpenGmonDialog_OPEN_BINARY_FILE, binText)));
 
         /* 2sd line */
         errorLabel = new Label(composite, SWT.NONE);

@@ -25,8 +25,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.internal.callgraph.core.PluginConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -170,17 +169,14 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
         Button scriptButton = new Button(fileComp, SWT.PUSH);
         scriptButton.setText(Messages.getString("SystemTapOptionsTab.BrowseFiles")); //$NON-NLS-1$
         scriptButton.setLayoutData(new GridData());
-        scriptButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                String filePath = scriptLocation.getText();
-                FileDialog dialog = new FileDialog(sh, SWT.SAVE);
-                filePath = dialog.open();
-                if (filePath != null) {
-                    scriptLocation.setText(filePath);
-                }
-            }
-        });
+		scriptButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			String filePath = scriptLocation.getText();
+			FileDialog dialog = new FileDialog(sh, SWT.SAVE);
+			filePath = dialog.open();
+			if (filePath != null) {
+				scriptLocation.setText(filePath);
+			}
+		}));
 
 
         GridData gd2 = new GridData();
@@ -193,21 +189,19 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
         textData.applyTo(binaryLocation);
         Button binaryButton = new Button(fileComp, SWT.PUSH);
         binaryButton.setText(Messages.getString("SystemTapOptionsTab.WorkspaceButton2")); //$NON-NLS-1$
-        binaryButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(sh, new WorkbenchLabelProvider(), new WorkbenchContentProvider());
-                dialog.setTitle(Messages.getString("SystemTapOptionsTab.SelectResource"));  //$NON-NLS-1$
-                dialog.setMessage(Messages.getString("SystemTapOptionsTab.SelectSuppressions"));  //$NON-NLS-1$
-                dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-                dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
-                if (dialog.open() == IDialogConstants.OK_ID) {
-                    IResource resource = (IResource) dialog.getFirstResult();
-                    String arg = resource.getFullPath().toString();
-                    binaryLocation.setText(workspacePath + arg);
-                }
-            }
-        });
+		binaryButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(sh, new WorkbenchLabelProvider(),
+					new WorkbenchContentProvider());
+			dialog.setTitle(Messages.getString("SystemTapOptionsTab.SelectResource")); //$NON-NLS-1$
+			dialog.setMessage(Messages.getString("SystemTapOptionsTab.SelectSuppressions")); //$NON-NLS-1$
+			dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
+			dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				IResource resource = (IResource) dialog.getFirstResult();
+				String arg = resource.getFullPath().toString();
+				binaryLocation.setText(workspacePath + arg);
+			}
+		}));
 
         Composite argumentsComp = new Composite(sh, SWT.BORDER_DASH);
         argumentsComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -223,15 +217,11 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
         argumentsLocation.setLayoutData(gd3);
         Button argumentsButton = new Button(argumentsComp, SWT.PUSH);
         argumentsButton.setText(Messages.getString("LaunchWizard.Func")); //$NON-NLS-1$
-        argumentsButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                argumentsLocation.setText(
-                        argumentsLocation.getText() + " process(\""  //$NON-NLS-1$
-                        + binaryLocation.getText() + "\").function(\"\")"); //$NON-NLS-1$
-            }
-        });
+		argumentsButton.addSelectionListener(SelectionListener
+				.widgetSelectedAdapter(e -> argumentsLocation.setText(argumentsLocation.getText() + " process(\"" //$NON-NLS-1$
+						+ binaryLocation.getText() + "\").function(\"\")") //$NON-NLS-1$
 
+		));
 
         //TODO: Don't use blank labels to move button to the right column :P
         Label blankLabel2 = new Label(argumentsComp, SWT.HORIZONTAL);
@@ -241,22 +231,19 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
         Button launch = new Button(sh, SWT.PUSH);
         launch.setLayoutData(new GridData(GridData.CENTER, GridData.BEGINNING, false, false));
         launch.setText(Messages.getString("LaunchWizard.Launch")); //$NON-NLS-1$
-        launch.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                    scriptPath = scriptLocation.getText();
-                    binaryPath = binaryLocation.getText();
-                    arguments = argumentsLocation.getText();
-                    ILaunchConfigurationWorkingCopy wc = createConfiguration(null, name);
-                    try {
-                        finishLaunch(scriptPath + ": " + binName, mode, wc);//$NON-NLS-1$
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
-                    sh.dispose();
-                }
+		launch.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			scriptPath = scriptLocation.getText();
+			binaryPath = binaryLocation.getText();
+			arguments = argumentsLocation.getText();
+			ILaunchConfigurationWorkingCopy wc = createConfiguration(null, name);
+			try {
+				finishLaunch(scriptPath + ": " + binName, mode, wc);//$NON-NLS-1$
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			sh.dispose();
 
-        });
+		}));
 
         //TODO: Verify that this works
         Display.getCurrent().asyncExec(() -> sh.open());

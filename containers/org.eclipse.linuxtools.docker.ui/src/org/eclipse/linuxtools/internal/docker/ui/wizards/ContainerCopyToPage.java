@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2015, 2016 IBM Corporation and others.
+ * Copyright (c) 2000, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,12 +42,8 @@ import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -225,38 +221,28 @@ public class ContainerCopyToPage
 		selectTypesButton = createButton(buttonComposite,
 				IDialogConstants.SELECT_TYPES_ID, SELECT_TYPES_TITLE, false);
 
-		SelectionListener listener = new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				handleTypesEditButtonPressed();
-			}
-		};
+		SelectionListener listener = SelectionListener
+				.widgetSelectedAdapter(e -> handleTypesEditButtonPressed());
 		selectTypesButton.addSelectionListener(listener);
 		setButtonLayoutData(selectTypesButton);
 
 		selectAllButton = createButton(buttonComposite,
 				IDialogConstants.SELECT_ALL_ID, SELECT_ALL_TITLE, false);
 
-		listener = new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				setAllSelections(true);
-				updateWidgetEnablements();
-			}
-		};
+		listener = SelectionListener.widgetSelectedAdapter(e -> {
+			setAllSelections(true);
+			updateWidgetEnablements();
+		});
 		selectAllButton.addSelectionListener(listener);
 		setButtonLayoutData(selectAllButton);
 
 		deselectAllButton = createButton(buttonComposite,
 				IDialogConstants.DESELECT_ALL_ID, DESELECT_ALL_TITLE, false);
 
-		listener = new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				setAllSelections(false);
-				updateWidgetEnablements();
-			}
-		};
+		listener = SelectionListener.widgetSelectedAdapter(e -> {
+			setAllSelections(false);
+			updateWidgetEnablements();
+		});
 		deselectAllButton.addSelectionListener(listener);
 		setButtonLayoutData(deselectAllButton);
 
@@ -335,57 +321,26 @@ public class ContainerCopyToPage
 		sourceNameField.setFont(parent.getFont());
 		BidiUtils.applyBidiProcessing(sourceNameField, "file");
 
-		sourceNameField.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
+		sourceNameField.addSelectionListener(SelectionListener
+				.widgetSelectedAdapter(e -> updateFromSourceField()));
+
+		sourceNameField.addKeyListener(KeyListener.keyPressedAdapter(e -> {
+			if (e.character == SWT.CR) {
+				entryChanged = false;
 				updateFromSourceField();
 			}
-		});
-
-		sourceNameField.addKeyListener(new KeyListener() {
-			/*
-			 * @see KeyListener.keyPressed
-			 */
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.character == SWT.CR) {
-					entryChanged = false;
-					updateFromSourceField();
-				}
-			}
-
-			/*
-			 * @see KeyListener.keyReleased
-			 */
-			@Override
-			public void keyReleased(KeyEvent e) {
-			}
-		});
+		}));
 
 		sourceNameField.addModifyListener(e -> entryChanged = true);
 
-		sourceNameField.addFocusListener(new FocusListener() {
-			/*
-			 * @see FocusListener.focusGained(FocusEvent)
-			 */
-			@Override
-			public void focusGained(FocusEvent e) {
-				// Do nothing when getting focus
+		sourceNameField.addFocusListener(FocusListener.focusLostAdapter(e -> {
+			// Clear the flag to prevent constant update
+			if (entryChanged) {
+				entryChanged = false;
+				updateFromSourceField();
 			}
 
-			/*
-			 * @see FocusListener.focusLost(FocusEvent)
-			 */
-			@Override
-			public void focusLost(FocusEvent e) {
-				// Clear the flag to prevent constant update
-				if (entryChanged) {
-					entryChanged = false;
-					updateFromSourceField();
-				}
-
-			}
-		});
+		}));
 
 		// source browse button
 		sourceBrowseButton = new Button(sourceContainerGroup, SWT.PUSH);

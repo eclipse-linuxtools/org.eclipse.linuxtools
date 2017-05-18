@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,6 @@ import org.eclipse.linuxtools.internal.valgrind.launch.LaunchConfigurationConsta
 import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -49,12 +47,7 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
     private Button l2Button;
 
     private boolean isInitializing = false;
-    private SelectionListener selectListener = new SelectionAdapter() {
-        @Override
-        public void widgetSelected(SelectionEvent e) {
-            updateLaunchConfigurationDialog();
-        }
-    };
+    private SelectionListener selectListener = SelectionListener.widgetSelectedAdapter(e -> updateLaunchConfigurationDialog());
     private ModifyListener modifyListener = e -> updateLaunchConfigurationDialog();
 
     @Override
@@ -81,13 +74,10 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
         // I1 Cache
         i1Button = new Button(cacheGroup, SWT.CHECK);
         i1Button.setText(Messages.getString("CachegrindToolPage.I1_Cache")); //$NON-NLS-1$
-        i1Button.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                checkI1Enablement();
-                updateLaunchConfigurationDialog();
-            }
-        });
+		i1Button.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			checkI1Enablement();
+			updateLaunchConfigurationDialog();
+		}));
 
         Composite i1Top = new Composite(cacheGroup, SWT.BORDER);
         GridLayout i1Layout = new GridLayout(6, false);
@@ -118,13 +108,10 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
         // D1 Cache
         d1Button = new Button(cacheGroup, SWT.CHECK);
         d1Button.setText(Messages.getString("CachegrindToolPage.D1_Cache")); //$NON-NLS-1$
-        d1Button.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                checkD1Enablement();
-                updateLaunchConfigurationDialog();
-            }
-        });
+		d1Button.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			checkD1Enablement();
+			updateLaunchConfigurationDialog();
+		}));
 
         Composite d1Top = new Composite(cacheGroup, SWT.BORDER);
         GridLayout d1Layout = new GridLayout(6, false);
@@ -155,13 +142,10 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
         // D1 Cache
         l2Button = new Button(cacheGroup, SWT.CHECK);
         l2Button.setText(Messages.getString("CachegrindToolPage.L2_Cache")); //$NON-NLS-1$
-        l2Button.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                checkL2Enablement();
-                updateLaunchConfigurationDialog();
-            }
-        });
+		l2Button.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			checkL2Enablement();
+			updateLaunchConfigurationDialog();
+		}));
 
         Composite l2Top = new Composite(cacheGroup, SWT.BORDER);
         GridLayout l2Layout = new GridLayout(6, false);

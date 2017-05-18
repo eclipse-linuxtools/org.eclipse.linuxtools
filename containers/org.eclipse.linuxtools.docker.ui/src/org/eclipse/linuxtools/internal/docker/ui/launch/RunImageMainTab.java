@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2016 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -61,8 +61,6 @@ import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel.ExposedPortModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.WizardMessages;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -457,23 +455,19 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 	}
 
 	private SelectionListener onSearchImage() {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				final ImageSearch imageSearchWizard = new ImageSearch(
-						RunImageMainTab.this.model.getSelectedConnection(),
-						RunImageMainTab.this.model.getSelectedImageName(),
-						new RegistryInfo(AbstractRegistry.DOCKERHUB_REGISTRY,
-								true));
-				final boolean completed = CommandUtils
-						.openWizard(imageSearchWizard, getShell());
-				if (completed) {
-					model.setSelectedImageName(
-							imageSearchWizard.getSelectedImage());
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final ImageSearch imageSearchWizard = new ImageSearch(
+					RunImageMainTab.this.model.getSelectedConnection(),
+					RunImageMainTab.this.model.getSelectedImageName(),
+					new RegistryInfo(AbstractRegistry.DOCKERHUB_REGISTRY,
+							true));
+			final boolean completed = CommandUtils.openWizard(imageSearchWizard,
+					getShell());
+			if (completed) {
+				model.setSelectedImageName(
+						imageSearchWizard.getSelectedImage());
 			}
-		};
+		});
 	}
 
 	@Override

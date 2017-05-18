@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+ * Copyright (c) 2006, 2017 IBM Corporation.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,6 @@ package org.eclipse.linuxtools.internal.systemtap.graphing.ui.wizards.filter;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.Localization;
 import org.eclipse.linuxtools.systemtap.graphing.core.filters.RangeFilter;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -182,19 +180,15 @@ public class RangeFilterWizardPage extends FilterWizardPage {
         }
     }
 
-    private final KeyListener numberKeyListener = new KeyAdapter() {
-        @Override
-        public void keyPressed(KeyEvent e) {
-            if((e.character >= ' ' && e.character <= '~')
-                && (e.character > '9' || e.character < '0')) {
-                e.doit = false;
-            }
-            if(e.character == '.' && !((Text)e.widget).getText().contains(".")) { //$NON-NLS-1$
-                e.doit = true;
-            }
-        }
+	private final KeyListener numberKeyListener = KeyListener.keyPressedAdapter(e -> {
+		if ((e.character >= ' ' && e.character <= '~') && (e.character > '9' || e.character < '0')) {
+			e.doit = false;
+		}
+		if (e.character == '.' && !((Text) e.widget).getText().contains(".")) { //$NON-NLS-1$
+			e.doit = true;
+		}
 
-    };
+	});
 
     private Combo cboColumn;
     private Text txtLow, txtHigh;

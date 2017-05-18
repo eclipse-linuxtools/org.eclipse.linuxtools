@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Red Hat.
+ * Copyright (c) 2012, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,7 +44,6 @@ import org.eclipse.linuxtools.systemtap.graphing.ui.wizards.graph.SelectGraphAnd
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -201,80 +200,79 @@ public class SystemTapScriptGraphOptionsTab extends
 	    updateLaunchConfigurationDialog();
 	};
 
-    private SelectionAdapter regexGenerator = new SelectionAdapter() {
-        @Override
-        public void widgetSelected(SelectionEvent e) {
-            MessageDialog dialog;
-            IWorkbench workbench = PlatformUI.getWorkbench();
-            IPath scriptPath = null;
-            for (ILaunchConfigurationTab tab : getLaunchConfigurationDialog().getTabs()) {
-                if (tab instanceof SystemTapScriptLaunchConfigurationTab) {
-                    scriptPath = ((SystemTapScriptLaunchConfigurationTab) tab).getScriptPath();
-                    break;
-                }
-            }
-            if (scriptPath == null) {
-                dialog = new MessageDialog(workbench
-                        .getActiveWorkbenchWindow().getShell(), Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsErrorTitle, null,
-                        Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsError,
-                        MessageDialog.ERROR, new String[]{"OK"}, 0); //$NON-NLS-1$
-                dialog.open();
-                return;
-            }
+	private SelectionListener regexGenerator = SelectionListener.widgetSelectedAdapter(e -> {
+		MessageDialog dialog;
+		IWorkbench workbench = PlatformUI.getWorkbench();
+		IPath scriptPath = null;
+		for (ILaunchConfigurationTab tab : getLaunchConfigurationDialog().getTabs()) {
+			if (tab instanceof SystemTapScriptLaunchConfigurationTab) {
+				scriptPath = ((SystemTapScriptLaunchConfigurationTab) tab).getScriptPath();
+				break;
+			}
+		}
+		if (scriptPath == null) {
+			dialog = new MessageDialog(workbench.getActiveWorkbenchWindow().getShell(),
+					Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsErrorTitle, null,
+					Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsError, MessageDialog.ERROR,
+					new String[] { "OK" }, 0); //$NON-NLS-1$
+			dialog.open();
+			return;
+		}
 
-            dialog = new MessageDialog(workbench
-                    .getActiveWorkbenchWindow().getShell(), Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsTitle, null,
-                    Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsMessage,
-                    MessageDialog.QUESTION, new String[]{"Yes", "Cancel"}, 0); //$NON-NLS-1$ //$NON-NLS-2$
-            int result = dialog.open();
-            if (result != 0) { // Cancel
-                return;
-            }
+		dialog = new MessageDialog(workbench.getActiveWorkbenchWindow().getShell(),
+				Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsTitle, null,
+				Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsMessage, MessageDialog.QUESTION,
+				new String[] { "Yes", "Cancel" }, 0); //$NON-NLS-1$ //$NON-NLS-2$
+		int result = dialog.open();
+		if (result != 0) { // Cancel
+			return;
+		}
 
-            List<Entry<String, Integer>> regexs = SystemTapRegexGenerator.generateFromPrintf(scriptPath, MAX_NUMBER_OF_REGEXS);
+		List<Entry<String, Integer>> regexs = SystemTapRegexGenerator.generateFromPrintf(scriptPath,
+				MAX_NUMBER_OF_REGEXS);
 
-            if (regexs.size() == 0) {
-                dialog = new MessageDialog(workbench
-                        .getActiveWorkbenchWindow().getShell(), Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsErrorTitle, null,
-                        Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsEmpty,
-                        MessageDialog.ERROR, new String[]{"OK"}, 0); //$NON-NLS-1$
-                dialog.open();
-            } else {
-                // Since script output has been found, reset the configuration's regexs.
-                textListenersEnabled = false;
-                regularExpressionCombo.removeAll();
-                outputList.clear();
-                regexErrorMessages.clear();
-                columnNamesList.clear();
-                cachedNamesList.clear();
-                graphsTable.removeAll();
-                graphsDataList.clear();
-                badGraphs.clear();
-                for (int i = 0, n = regexs.size(); i < n; i++) {
-                    List<String> columnNames = new ArrayList<>();
-                    for (int c = 0, numColumns = regexs.get(i).getValue(); c < numColumns; c++) {
-                        columnNames.add(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_defaultColumnTitleBase, c+1));
-                    }
-                    regularExpressionCombo.add(regexs.get(i).getKey());
-                    outputList.add(""); //$NON-NLS-1$ //For empty "sample output" entry.
-                    regexErrorMessages.add(null);
-                    columnNamesList.add(columnNames);
-                    cachedNamesList.add(new Stack<String>());
-                    graphsDataList.add(new LinkedList<GraphData>());
-                }
-                if (getNumberOfRegexs() < MAX_NUMBER_OF_REGEXS) {
-                    regularExpressionCombo.add(Messages.SystemTapScriptGraphOptionsTab_regexAddNew);
-                }
-                textListenersEnabled = true;
+		if (regexs.size() == 0) {
+			dialog = new MessageDialog(workbench.getActiveWorkbenchWindow().getShell(),
+					Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsErrorTitle, null,
+					Messages.SystemTapScriptGraphOptionsTab_generateFromPrintsEmpty, MessageDialog.ERROR,
+					new String[] { "OK" }, 0); //$NON-NLS-1$
+			dialog.open();
+		} else {
+			// Since script output has been found, reset the configuration's regexs.
+			textListenersEnabled = false;
+			regularExpressionCombo.removeAll();
+			outputList.clear();
+			regexErrorMessages.clear();
+			columnNamesList.clear();
+			cachedNamesList.clear();
+			graphsTable.removeAll();
+			graphsDataList.clear();
+			badGraphs.clear();
+			for (int i = 0, n = regexs.size(); i < n; i++) {
+				List<String> columnNames = new ArrayList<>();
+				for (int c = 0, numColumns = regexs.get(i).getValue(); c < numColumns; c++) {
+					columnNames.add(MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_defaultColumnTitleBase,
+							c + 1));
+				}
+				regularExpressionCombo.add(regexs.get(i).getKey());
+				outputList.add(""); //$NON-NLS-1$ //For empty "sample output" entry.
+				regexErrorMessages.add(null);
+				columnNamesList.add(columnNames);
+				cachedNamesList.add(new Stack<String>());
+				graphsDataList.add(new LinkedList<GraphData>());
+			}
+			if (getNumberOfRegexs() < MAX_NUMBER_OF_REGEXS) {
+				regularExpressionCombo.add(Messages.SystemTapScriptGraphOptionsTab_regexAddNew);
+			}
+			textListenersEnabled = true;
 
-                removeRegexButton.setEnabled(getNumberOfRegexs() > 1);
-                regularExpressionCombo.select(0);
-                updateRegexSelection(0, true);
-                checkAllOtherErrors(); // Check for errors in case there was a problem with regex generation
-                updateLaunchConfigurationDialog();
-            }
-        }
-    };
+			removeRegexButton.setEnabled(getNumberOfRegexs() > 1);
+			regularExpressionCombo.select(0);
+			updateRegexSelection(0, true);
+			checkAllOtherErrors(); // Check for errors in case there was a problem with regex generation
+			updateLaunchConfigurationDialog();
+		}
+	});
 
     /**
      * Returns the list of the names given to reach regular expression.
@@ -476,79 +474,73 @@ public class SystemTapScriptGraphOptionsTab extends
         regularExpressionCombo = new Combo(regexButtonLayout, SWT.DROP_DOWN);
         regularExpressionCombo.setTextLimit(MAX_REGEX_LENGTH);
         regularExpressionCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        regularExpressionCombo.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                int selected = regularExpressionCombo.getSelectionIndex();
-                if (selected == selectedRegex) {
-                    return;
-                }
+		regularExpressionCombo.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			int selected = regularExpressionCombo.getSelectionIndex();
+			if (selected == selectedRegex) {
+				return;
+			}
 
-                // If deselecting an empty regular expression, delete it automatically.
-                if (regularExpressionCombo.getItem(selectedRegex).isEmpty()
-                        && graphsDataList.get(selectedRegex).size() == 0
-                        && outputList.get(selectedRegex).isEmpty()) {
+			// If deselecting an empty regular expression, delete it automatically.
+			if (regularExpressionCombo.getItem(selectedRegex).isEmpty() && graphsDataList.get(selectedRegex).size() == 0
+					&& outputList.get(selectedRegex).isEmpty()) {
 
-                    // If the deselected regex is the last one in the combo, just quit.
-                    // Otherwise, the deleted blank entry would be replaced by another blank entry.
-                    if (selected == regularExpressionCombo.getItemCount() - 1) {
-                        regularExpressionCombo.select(selectedRegex); // To keep the text blank.
-                        return;
-                    }
-                    removeRegex(false);
-                    if (selected > selectedRegex) {
-                        selected--;
-                    }
-                }
+				// If the deselected regex is the last one in the combo, just quit.
+				// Otherwise, the deleted blank entry would be replaced by another blank entry.
+				if (selected == regularExpressionCombo.getItemCount() - 1) {
+					regularExpressionCombo.select(selectedRegex); // To keep the text blank.
+					return;
+				}
+				removeRegex(false);
+				if (selected > selectedRegex) {
+					selected--;
+				}
+			}
 
-                // When selecting the "Add New Regex" item in the combo (which is always the last item),
-                // update all appropriate values to make room for a new regular expression.
-                if (selected == regularExpressionCombo.getItemCount() - 1 && getNumberOfRegexs() < MAX_NUMBER_OF_REGEXS) {
-                    outputList.add(""); //$NON-NLS-1$
-                    regexErrorMessages.add(null);
-                    columnNamesList.add(new ArrayList<String>());
-                    cachedNamesList.add(new Stack<String>());
-                    graphsDataList.add(new LinkedList<GraphData>());
+			// When selecting the "Add New Regex" item in the combo (which is always the
+			// last item),
+			// update all appropriate values to make room for a new regular expression.
+			if (selected == regularExpressionCombo.getItemCount() - 1 && getNumberOfRegexs() < MAX_NUMBER_OF_REGEXS) {
+				outputList.add(""); //$NON-NLS-1$
+				regexErrorMessages.add(null);
+				columnNamesList.add(new ArrayList<String>());
+				cachedNamesList.add(new Stack<String>());
+				graphsDataList.add(new LinkedList<GraphData>());
 
-                    // Remove "Add New Regex" from the selected combo item; make it blank.
-                    regularExpressionCombo.setItem(selected, ""); //$NON-NLS-1$
-                    regularExpressionCombo.select(selected);
-                    updateRegexSelection(selected, false);
-                    updateLaunchConfigurationDialog();
+				// Remove "Add New Regex" from the selected combo item; make it blank.
+				regularExpressionCombo.setItem(selected, ""); //$NON-NLS-1$
+				regularExpressionCombo.select(selected);
+				updateRegexSelection(selected, false);
+				updateLaunchConfigurationDialog();
 
-                    // Enable the "remove" button if only one item was present before.
-                    // (Don't do this _every_ time something is added.)
-                    if (getNumberOfRegexs() == 2) {
-                        removeRegexButton.setEnabled(true);
-                    }
-                    if (getNumberOfRegexs() < MAX_NUMBER_OF_REGEXS) {
-                        regularExpressionCombo.add(Messages.SystemTapScriptGraphOptionsTab_regexAddNew);
-                    }
-                } else {
-                    updateRegexSelection(selected, false);
-                }
-            }
-        });
+				// Enable the "remove" button if only one item was present before.
+				// (Don't do this _every_ time something is added.)
+				if (getNumberOfRegexs() == 2) {
+					removeRegexButton.setEnabled(true);
+				}
+				if (getNumberOfRegexs() < MAX_NUMBER_OF_REGEXS) {
+					regularExpressionCombo.add(Messages.SystemTapScriptGraphOptionsTab_regexAddNew);
+				}
+			} else {
+				updateRegexSelection(selected, false);
+			}
+		}));
         regularExpressionCombo.addModifyListener(regexListener);
 
         removeRegexButton = new Button(regexButtonLayout, SWT.PUSH);
         removeRegexButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false));
         removeRegexButton.setText(Messages.SystemTapScriptGraphOptionsTab_regexRemove);
-        removeRegexButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                IWorkbench workbench = PlatformUI.getWorkbench();
-                MessageDialog dialog = new MessageDialog(workbench
-                        .getActiveWorkbenchWindow().getShell(), Messages.SystemTapScriptGraphOptionsTab_removeRegexTitle, null,
-                        MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_removeRegexAsk,
-                                regularExpressionCombo.getItem(selectedRegex)),
-                                MessageDialog.QUESTION, new String[]{"Yes", "No"}, 0); //$NON-NLS-1$ //$NON-NLS-2$
-                int result = dialog.open();
-                if (result == 0) { //Yes
-                    removeRegex(true);
-                }
-            }
-        });
+		removeRegexButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			IWorkbench workbench = PlatformUI.getWorkbench();
+			MessageDialog dialog = new MessageDialog(workbench.getActiveWorkbenchWindow().getShell(),
+					Messages.SystemTapScriptGraphOptionsTab_removeRegexTitle, null,
+					MessageFormat.format(Messages.SystemTapScriptGraphOptionsTab_removeRegexAsk,
+							regularExpressionCombo.getItem(selectedRegex)),
+					MessageDialog.QUESTION, new String[] { "Yes", "No" }, 0); //$NON-NLS-1$ //$NON-NLS-2$
+			int result = dialog.open();
+			if (result == 0) { // Yes
+				removeRegex(true);
+			}
+		}));
 
         GridLayout twoColumns = new GridLayout(2, false);
 
@@ -645,99 +637,82 @@ public class SystemTapScriptGraphOptionsTab extends
 
         // Action to notify the buttons when to enable/disable themselves based
         // on list selection
-        graphsTable.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                selectedTableItem = (TableItem) e.item;
-                setSelectionControlsEnabled(true);
-            }
-        });
+		graphsTable.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			selectedTableItem = (TableItem) e.item;
+			setSelectionControlsEnabled(true);
+		}));
 
         // Brings up a new dialog box when user clicks the add button. Allows
         // selecting a new graph to display.
-        addGraphButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                SelectGraphAndSeriesWizard wizard = new SelectGraphAndSeriesWizard(getCurrentDataset(), null);
-                IWorkbench workbench = PlatformUI.getWorkbench();
-                wizard.init(workbench, null);
-                WizardDialog dialog = new WizardDialog(workbench
-                        .getActiveWorkbenchWindow().getShell(), wizard);
-                dialog.create();
-                dialog.open();
+		addGraphButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			SelectGraphAndSeriesWizard wizard = new SelectGraphAndSeriesWizard(getCurrentDataset(), null);
+			IWorkbench workbench = PlatformUI.getWorkbench();
+			wizard.init(workbench, null);
+			WizardDialog dialog = new WizardDialog(workbench.getActiveWorkbenchWindow().getShell(), wizard);
+			dialog.create();
+			dialog.open();
 
-                GraphData gd = wizard.getGraphData();
+			GraphData gd = wizard.getGraphData();
 
-                if (gd != null) {
-                    TableItem item = new TableItem(graphsTable, SWT.NONE);
-                    graphsData.add(gd);
-                    setUpGraphTableItem(item, gd, false);
-                    updateLaunchConfigurationDialog();
-                }
-            }
-        });
+			if (gd != null) {
+				TableItem item = new TableItem(graphsTable, SWT.NONE);
+				graphsData.add(gd);
+				setUpGraphTableItem(item, gd, false);
+				updateLaunchConfigurationDialog();
+			}
+		}));
 
         // Adds a new entry to the list of graphs that is a copy of the one selected.
-        duplicateGraphButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                GraphData gd = ((GraphData) selectedTableItem.getData()).getCopy();
+		duplicateGraphButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			GraphData gd = ((GraphData) selectedTableItem.getData()).getCopy();
 
-                TableItem item = new TableItem(graphsTable, SWT.NONE);
-                graphsData.add(gd);
-                if (badGraphs.contains(selectedTableItem.getData())) {
-                    badGraphs.add(gd);
-                    setUpGraphTableItem(item, gd, true);
-                } else {
-                    setUpGraphTableItem(item, gd, false);
-                }
-                updateLaunchConfigurationDialog();
-            }
-        });
+			TableItem item = new TableItem(graphsTable, SWT.NONE);
+			graphsData.add(gd);
+			if (badGraphs.contains(selectedTableItem.getData())) {
+				badGraphs.add(gd);
+				setUpGraphTableItem(item, gd, true);
+			} else {
+				setUpGraphTableItem(item, gd, false);
+			}
+			updateLaunchConfigurationDialog();
+		}));
 
         // When button is clicked, brings up same wizard as the one for adding
         // a graph. Data in the wizard is filled out to match the properties
         // of the selected graph.
-        editGraphButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                SelectGraphAndSeriesWizard wizard = new SelectGraphAndSeriesWizard(getCurrentDataset(),
-                        (GraphData) selectedTableItem.getData());
-                IWorkbench workbench = PlatformUI.getWorkbench();
-                wizard.init(workbench, null);
-                WizardDialog dialog = new WizardDialog(workbench
-                        .getActiveWorkbenchWindow().getShell(), wizard);
-                dialog.create();
-                dialog.open();
+		editGraphButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			SelectGraphAndSeriesWizard wizard = new SelectGraphAndSeriesWizard(getCurrentDataset(),
+					(GraphData) selectedTableItem.getData());
+			IWorkbench workbench = PlatformUI.getWorkbench();
+			wizard.init(workbench, null);
+			WizardDialog dialog = new WizardDialog(workbench.getActiveWorkbenchWindow().getShell(), wizard);
+			dialog.create();
+			dialog.open();
 
-                GraphData gd = wizard.getGraphData();
-                if (gd == null) {
-                    return;
-                }
-                GraphData old_gd = (GraphData) selectedTableItem.getData();
-                if (!gd.isCopyOf(old_gd)) {
-                    badGraphs.remove(old_gd);
-                    setUpGraphTableItem(selectedTableItem, gd, false);
-                    graphsData.set(graphsTable.indexOf(selectedTableItem), gd);
-                    checkErrors(selectedRegex);
-                    updateLaunchConfigurationDialog();
-                }
-            }
-        });
+			GraphData gd = wizard.getGraphData();
+			if (gd == null) {
+				return;
+			}
+			GraphData old_gd = (GraphData) selectedTableItem.getData();
+			if (!gd.isCopyOf(old_gd)) {
+				badGraphs.remove(old_gd);
+				setUpGraphTableItem(selectedTableItem, gd, false);
+				graphsData.set(graphsTable.indexOf(selectedTableItem), gd);
+				checkErrors(selectedRegex);
+				updateLaunchConfigurationDialog();
+			}
+		}));
 
         // Removes the selected graph/filter from the table
-        removeGraphButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                GraphData gd = (GraphData) selectedTableItem.getData();
-                graphsData.remove(gd);
-                badGraphs.remove(gd);
-                selectedTableItem.dispose();
-                setSelectionControlsEnabled(false);
-                checkErrors(selectedRegex);
-                updateLaunchConfigurationDialog();
-            }
-        });
+		removeGraphButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			GraphData gd = (GraphData) selectedTableItem.getData();
+			graphsData.remove(gd);
+			badGraphs.remove(gd);
+			selectedTableItem.dispose();
+			setSelectionControlsEnabled(false);
+			checkErrors(selectedRegex);
+			updateLaunchConfigurationDialog();
+		}));
     }
 
     private void removeRegex(boolean autoSelect) {
@@ -935,43 +910,37 @@ public class SystemTapScriptGraphOptionsTab extends
         textFieldsComposite.pack();
 
         // Add button listeners for shifting column names.
-        buttonUp.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                Control clickedButton = (Control) e.widget;
-                Control[] children = textFieldsComposite.getChildren();
-                int currentColumn = 0;
-                for (; currentColumn < numberOfVisibleColumns - 1; currentColumn++) {
-                    if (children[currentColumn*4].equals(clickedButton)) {
-                        break;
-                    }
-                }
-                String edgeName = ((Text)children[currentColumn*4 + 2]).getText();
-                for (int i = currentColumn; i < numberOfVisibleColumns - 1; i++) {
-                    ((Text)children[i*4 + 2]).setText(((Text)children[(i + 1)*4 + 2]).getText());
-                }
-                ((Text)children[(numberOfVisibleColumns - 1)*4 + 2]).setText(edgeName);
-            }
-        });
+		buttonUp.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			Control clickedButton = (Control) e.widget;
+			Control[] children = textFieldsComposite.getChildren();
+			int currentColumn = 0;
+			for (; currentColumn < numberOfVisibleColumns - 1; currentColumn++) {
+				if (children[currentColumn * 4].equals(clickedButton)) {
+					break;
+				}
+			}
+			String edgeName = ((Text) children[currentColumn * 4 + 2]).getText();
+			for (int i = currentColumn; i < numberOfVisibleColumns - 1; i++) {
+				((Text) children[i * 4 + 2]).setText(((Text) children[(i + 1) * 4 + 2]).getText());
+			}
+			((Text) children[(numberOfVisibleColumns - 1) * 4 + 2]).setText(edgeName);
+		}));
 
-        buttonDown.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                Control clickedButton = (Control) e.widget;
-                Control[] children = textFieldsComposite.getChildren();
-                int currentColumn = 0;
-                for (; currentColumn < numberOfVisibleColumns - 1; currentColumn++) {
-                    if (children[currentColumn*4 + 1].equals(clickedButton)) {
-                        break;
-                    }
-                }
-                String edgeName = ((Text)children[(numberOfVisibleColumns - 1)*4 + 2]).getText();
-                for (int i = numberOfVisibleColumns - 1; i > currentColumn; i--) {
-                    ((Text)children[i*4 + 2]).setText(((Text)children[(i - 1)*4 + 2]).getText());
-                }
-                ((Text)children[currentColumn*4 + 2]).setText(edgeName);
-            }
-        });
+		buttonDown.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			Control clickedButton = (Control) e.widget;
+			Control[] children = textFieldsComposite.getChildren();
+			int currentColumn = 0;
+			for (; currentColumn < numberOfVisibleColumns - 1; currentColumn++) {
+				if (children[currentColumn * 4 + 1].equals(clickedButton)) {
+					break;
+				}
+			}
+			String edgeName = ((Text) children[(numberOfVisibleColumns - 1) * 4 + 2]).getText();
+			for (int i = numberOfVisibleColumns - 1; i > currentColumn; i--) {
+				((Text) children[i * 4 + 2]).setText(((Text) children[(i - 1) * 4 + 2]).getText());
+			}
+			((Text) children[currentColumn * 4 + 2]).setText(edgeName);
+		}));
     }
 
     /**

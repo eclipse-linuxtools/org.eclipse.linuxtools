@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Red Hat.
+ * Copyright (c) 2012, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,6 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.PathEditorInput;
 import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -128,16 +127,12 @@ public class SystemTapScriptLaunchConfigurationTab extends
         gridData.widthHint = 110;
         selectScriptButon.setLayoutData(gridData);
         selectScriptButon.setText(Messages.SystemTapScriptLaunchConfigurationTab_browse);
-        selectScriptButon.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                String path = fileDialog.open();
-                if (path != null) {
-                    scriptPathText.setText(path);
-                }
-            }
-        });
+		selectScriptButon.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			String path = fileDialog.open();
+			if (path != null) {
+				scriptPathText.setText(path);
+			}
+		}));
 
         // User Settings
         Group userSettingsGroup = new Group(top, SWT.SHADOW_ETCHED_IN);

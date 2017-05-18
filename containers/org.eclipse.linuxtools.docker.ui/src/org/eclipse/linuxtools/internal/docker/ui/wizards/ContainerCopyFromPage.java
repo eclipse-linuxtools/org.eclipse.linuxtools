@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat.
+ * Copyright (c) 2016, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,8 +26,6 @@ import org.eclipse.linuxtools.internal.docker.ui.MinimizedFileSystemElement;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -279,18 +277,14 @@ public class ContainerCopyFromPage extends WizardPage {
 
 	private SelectionListener onBrowseSelect() {
 		final ContainerCopyFromPage page = this;
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				DirectoryDialog d = new DirectoryDialog(
-						Activator.getActiveWorkbenchShell());
-				String x = d.open();
-				if (x != null) {
-					page.targetText.setText(x);
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			DirectoryDialog d = new DirectoryDialog(
+					Activator.getActiveWorkbenchShell());
+			String x = d.open();
+			if (x != null) {
+				page.targetText.setText(x);
 			}
-		};
-
+		});
 	}
     /**
      * Returns a content provider for <code>FileSystemElement</code>s that returns

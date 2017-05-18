@@ -42,8 +42,7 @@ import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchMessages;
 import org.eclipse.linuxtools.internal.oprofile.launch.OprofileLaunchPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -175,12 +174,8 @@ public abstract class AbstractEventConfigTab extends AbstractLaunchConfiguration
                 defaultEventCheck = new Button(top, SWT.CHECK);
                 defaultEventCheck.setText(OprofileLaunchMessages.getString("tab.event.defaultevent.button.text")); //$NON-NLS-1$
                 defaultEventCheck.setLayoutData(new GridData());
-                defaultEventCheck.addSelectionListener(new SelectionAdapter() {
-                    @Override
-                    public void widgetSelected(SelectionEvent se) {
-                        handleEnabledToggle();
-                    }
-                });
+				defaultEventCheck
+						.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> handleEnabledToggle()));
                 createVerticalSpacer(top, 1);
                 createCounterTabs(top);
             }
@@ -551,14 +546,11 @@ public abstract class AbstractEventConfigTab extends AbstractLaunchConfiguration
             enabledCheck = new Button(parent, SWT.CHECK);
             enabledCheck.setText(OprofileLaunchMessages.getString("tab.event.counterSettings.enabled.button.text")); //$NON-NLS-1$
             enabledCheck.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-            enabledCheck.addSelectionListener(new SelectionAdapter() {
-                @Override
-                public void widgetSelected(SelectionEvent se) {
-                    counter.setEnabled(enabledCheck.getSelection());
-                    internalSetEnabledState(counter.getEnabled());
-                    updateLaunchConfigurationDialog();
-                }
-            });
+			enabledCheck.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+				counter.setEnabled(enabledCheck.getSelection());
+				internalSetEnabledState(counter.getEnabled());
+				updateLaunchConfigurationDialog();
+			}));
             enabledCheck.setEnabled(false);
 
             //label for textbox
@@ -732,22 +724,14 @@ public abstract class AbstractEventConfigTab extends AbstractLaunchConfiguration
             //profile kernel checkbox
             profileKernelCheck = new Button(parent, SWT.CHECK);
             profileKernelCheck.setText(OprofileLaunchMessages.getString("tab.event.counterSettings.profileKernel.check.text")); //$NON-NLS-1$
-            profileKernelCheck.addSelectionListener(new SelectionAdapter() {
-                @Override
-                public void widgetSelected(SelectionEvent se) {
-                    handleProfileKernelToggle();
-                }
-            });
+			profileKernelCheck
+					.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> handleProfileKernelToggle()));
 
             //profile user checkbox -- should this ever be disabled?
             profileUserCheck = new Button(parent, SWT.CHECK);
             profileUserCheck.setText(OprofileLaunchMessages.getString("tab.event.counterSettings.profileUser.check.text")); //$NON-NLS-1$
-            profileUserCheck.addSelectionListener(new SelectionAdapter() {
-                @Override
-                public void widgetSelected(SelectionEvent se) {
-                    handleProfileUserToggle();
-                }
-            });
+			profileUserCheck
+					.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> handleProfileUserToggle()));
 
         }
 
@@ -1118,12 +1102,8 @@ public abstract class AbstractEventConfigTab extends AbstractLaunchConfiguration
                         maskButton.setEnabled(true);
                         maskButton.setText(mask.getText(i));
                         maskButton.setSelection(selected);
-                        maskButton.addSelectionListener(new SelectionAdapter() {
-                            @Override
-                            public void widgetSelected(SelectionEvent se) {
-                                handleToggle((Button)se.getSource(), maskButtonIndex);
-                            }
-                        });
+						maskButton.addSelectionListener(SelectionListener
+								.widgetSelectedAdapter(se -> handleToggle((Button) se.getSource(), maskButtonIndex)));
 
                         maskButtons.add(maskButton);
                     }

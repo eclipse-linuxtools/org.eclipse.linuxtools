@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2016 Red Hat.
+ * Copyright (c) 2015, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,8 +34,6 @@ import org.eclipse.linuxtools.internal.vagrant.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.vagrant.core.IVagrantBox;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
@@ -207,57 +205,47 @@ public class CreateVMPage extends WizardPage {
 	private SelectionListener onCheckCustomVMFile(Text vmNameText,
 			Text boxRefText, Text boxLocText, Button searchButton,
 			Button boxSearchButton) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				if (e.widget instanceof Button) {
-					Button bt = (Button) e.widget;
-					if (bt.getSelection()) {
-						vmNameText.setEnabled(false);
-						boxRefText.setEnabled(false);
-						boxSearchButton.setEnabled(false);
-						searchButton.setEnabled(true);
-						boxLocText.setEnabled(true);
-						model.setVFileMode(true);
-					} else {
-						vmNameText.setEnabled(true);
-						boxRefText.setEnabled(true);
-						boxSearchButton.setEnabled(true);
-						searchButton.setEnabled(false);
-						boxLocText.setEnabled(false);
-						model.setVFileMode(false);
-					}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			if (e.widget instanceof Button) {
+				Button bt = (Button) e.widget;
+				if (bt.getSelection()) {
+					vmNameText.setEnabled(false);
+					boxRefText.setEnabled(false);
+					boxSearchButton.setEnabled(false);
+					searchButton.setEnabled(true);
+					boxLocText.setEnabled(true);
+					model.setVFileMode(true);
+				} else {
+					vmNameText.setEnabled(true);
+					boxRefText.setEnabled(true);
+					boxSearchButton.setEnabled(true);
+					searchButton.setEnabled(false);
+					boxLocText.setEnabled(false);
+					model.setVFileMode(false);
 				}
 			}
-		};
+		});
 	}
 
 	private SelectionListener onSearchImage() {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				FileDialog fd = new FileDialog(getShell());
-				String location = fd.open();
-				if (location != null && !location.isEmpty()) {
-					model.setBoxRef(location);
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			FileDialog fd = new FileDialog(getShell());
+			String location = fd.open();
+			if (location != null && !location.isEmpty()) {
+				model.setBoxRef(location);
 			}
-		};
+		});
 	}
 
 	private SelectionListener onSearchVMFile() {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				FileDialog fd = new FileDialog(getShell());
-				String location = fd.open();
-				if (location != null && !location.isEmpty()) {
-					model.setVMFile(location);
-					vmFileChanged(location);
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			FileDialog fd = new FileDialog(getShell());
+			String location = fd.open();
+			if (location != null && !location.isEmpty()) {
+				model.setVMFile(location);
+				vmFileChanged(location);
 			}
-		};
+		});
 	}
 
 	private void vmFileChanged(String vagrantFile) {

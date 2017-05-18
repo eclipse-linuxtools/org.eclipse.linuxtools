@@ -28,8 +28,6 @@ import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
@@ -315,26 +313,18 @@ public class ImageRunNetworkPage extends WizardPage {
 
 	private SelectionListener onContainerSelection(final Button containerButton,
 			final Combo containerList) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final boolean selection = containerButton.getSelection();
-				containerList.setEnabled(selection);
-			}
-		};
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final boolean selection = containerButton.getSelection();
+			containerList.setEnabled(selection);
+		});
 	}
 
 	private SelectionListener onOtherSelection(final Button otherButton,
 			final Text otherText) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final boolean selection = otherButton.getSelection();
-				otherText.setEnabled(selection);
-			}
-		};
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final boolean selection = otherButton.getSelection();
+			otherText.setEnabled(selection);
+		});
 	}
 
 	private void setDefaultValues() {

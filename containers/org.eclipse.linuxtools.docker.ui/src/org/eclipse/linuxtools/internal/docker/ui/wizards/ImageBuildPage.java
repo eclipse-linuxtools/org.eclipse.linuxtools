@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2016 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,8 +29,7 @@ import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -194,49 +193,49 @@ public class ImageBuildPage extends WizardPage {
 
 		Button browse = new Button(container, SWT.NULL);
 		browse.setText(WizardMessages.getString(BROWSE_LABEL));
-		browse.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				DirectoryDialog d = new DirectoryDialog(container.getShell());
-				String k = d.open();
-				if (k != null)
-					directoryText.setText(k);
-			}
-		});
+		browse.addSelectionListener(
+				SelectionListener.widgetSelectedAdapter(e -> {
+					DirectoryDialog d = new DirectoryDialog(
+							container.getShell());
+					String k = d.open();
+					if (k != null)
+						directoryText.setText(k);
+				}));
 
 		editButton = new Button(container, SWT.NULL);
 		editButton.setText(WizardMessages.getString(EDIT_LABEL));
 		editButton.setEnabled(false);
-		editButton.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				String dir = directoryText.getText();
-				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-						new Path(dir).append("Dockerfile")); //$NON-NLS-1$
-				java.nio.file.Path filePath = Paths.get(dir, "Dockerfile"); //$NON-NLS-1$
-				if (!Files.exists(filePath)) {
-					try {
-						Files.createFile(filePath);
-					} catch (IOException e1) {
-						// File won't exist, and directory should be writable
-					}
-				}
-				IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		editButton.addSelectionListener(
+				SelectionListener.widgetSelectedAdapter(e -> {
+					String dir = directoryText.getText();
+					IFileStore fileStore = EFS.getLocalFileSystem()
+							.getStore(new Path(dir).append("Dockerfile")); //$NON-NLS-1$
+					java.nio.file.Path filePath = Paths.get(dir, "Dockerfile"); //$NON-NLS-1$
+					if (!Files.exists(filePath)) {
 				try {
-					IEditorPart dockerFileEditor = IDE.openEditorOnFileStore(page, fileStore);
-					IWorkbenchPartSite site = page.getActivePart().getSite();
-					EModelService s = site.getService(EModelService.class);
-					MPartSashContainerElement p = site.getService(MPart.class);
-					s.detach(p, 100, 100, 500, 375);
-					editors.add(dockerFileEditor);
-				} catch (PartInitException e1) {
-					Activator.log(e1);
+							Files.createFile(filePath);
+						} catch (IOException e1) {
+							// File won't exist, and directory should be
+							// writable
 				}
-				validate();
-			}
-		});
+					}
+					IWorkbenchPage page = PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getActivePage();
+					try {
+						IEditorPart dockerFileEditor = IDE
+								.openEditorOnFileStore(page, fileStore);
+						IWorkbenchPartSite site = page.getActivePart()
+								.getSite();
+						EModelService s = site.getService(EModelService.class);
+						MPartSashContainerElement p = site
+								.getService(MPart.class);
+						s.detach(p, 100, 100, 500, 375);
+						editors.add(dockerFileEditor);
+					} catch (PartInitException e1) {
+						Activator.log(e1);
+					}
+					validate();
+				}));
 
 		Point p1 = label.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 		Point p2 = directoryText.computeSize(SWT.DEFAULT, SWT.DEFAULT);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,8 +28,6 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.internal.vagrant.ui.SWTImagesFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
@@ -140,17 +138,13 @@ public class AddBoxPage extends WizardPage {
 	 * @return
 	 */
 	private SelectionListener onSearchImage() {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				FileDialog fd = new FileDialog(getShell());
-				String location = fd.open();
-				if (location != null && !location.isEmpty()) {
-					model.setBoxLoc(location);
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			FileDialog fd = new FileDialog(getShell());
+			String location = fd.open();
+			if (location != null && !location.isEmpty()) {
+				model.setBoxLoc(location);
 			}
-		};
+		});
 	}
 
 	private class CreateBoxValidationStatusProvider extends MultiValidator {

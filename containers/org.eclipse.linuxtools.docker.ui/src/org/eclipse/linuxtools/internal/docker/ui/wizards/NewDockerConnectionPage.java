@@ -401,31 +401,25 @@ public class NewDockerConnectionPage extends WizardPage {
 	}
 
 	private SelectionListener onBrowseUnixSocketPath() {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				final FileDialog fileDialog = new FileDialog(getShell());
-				final String selectedPath = fileDialog.open();
-				if (selectedPath != null) {
-					model.setUnixSocketPath("unix://" + selectedPath); //$NON-NLS-1$
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final FileDialog fileDialog = new FileDialog(getShell());
+			final String selectedPath = fileDialog.open();
+			if (selectedPath != null) {
+				model.setUnixSocketPath("unix://" + selectedPath); //$NON-NLS-1$
 			}
-		};
+		});
 	}
 
 	private SelectionListener onBrowseTcpCertPath() {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				final DirectoryDialog directoryDialog = new DirectoryDialog(
-						getShell());
-				directoryDialog.setFilterPath(model.getTcpCertPath());
-				final String selectedPath = directoryDialog.open();
-				if (selectedPath != null) {
-					model.setTcpCertPath(selectedPath);
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final DirectoryDialog directoryDialog = new DirectoryDialog(
+					getShell());
+			directoryDialog.setFilterPath(model.getTcpCertPath());
+			final String selectedPath = directoryDialog.open();
+			if (selectedPath != null) {
+				model.setTcpCertPath(selectedPath);
 			}
-		};
+		});
 	}
 
 	/**

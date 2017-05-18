@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2016 Red Hat, Inc. and others.
+ * Copyright (c) 2004, 2017 Red Hat, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,8 +26,7 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.linuxtools.internal.perf.PerfCore;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -113,12 +112,9 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
                 Table table = new Table(c, SWT.CHECK | SWT.MULTI);
                 eventTable[i] = table;
                 table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-                table.addSelectionListener(new SelectionAdapter() {
-                    @Override
-                    public void widgetSelected(SelectionEvent se) {
-                        updateLaunchConfigurationDialog();
-                    }
-                });
+				table.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+					updateLaunchConfigurationDialog();
+				}));
 
                 // Right side to enter new events and delete old ones
                 Composite right = new Composite(c, SWT.NONE);
@@ -144,18 +140,15 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
                 Button b = new Button(right, SWT.PUSH);
                 b.setText(Messages.PerfEventsTab_Add);
                 b.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
-                b.addSelectionListener(new SelectionAdapter() {
-                    @Override
-                    public void widgetSelected(SelectionEvent se) {
-                        int i = tabFolder.getSelectionIndex();
-                        if (rawTabIndex == i) {
-                            new TableItem(eventTable[i], SWT.NONE).setText(rawText.getText());
-                        } else if(bpTabIndex == i) {
-                            new TableItem(eventTable[i], SWT.NONE).setText(bpText.getText());
-                        }
-                        updateLaunchConfigurationDialog();
-                    }
-                });
+				b.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+					int index = tabFolder.getSelectionIndex();
+					if (rawTabIndex == index) {
+						new TableItem(eventTable[index], SWT.NONE).setText(rawText.getText());
+					} else if (bpTabIndex == index) {
+						new TableItem(eventTable[index], SWT.NONE).setText(bpText.getText());
+					}
+					updateLaunchConfigurationDialog();
+				}));
                 l = new Label(right, SWT.NONE);
                 l.setForeground(new Color(right.getDisplay(), 100,100,100));
                 if (tabNames[i].equals(PerfPlugin.STRINGS_HWBREAKPOINTS)) {
@@ -174,13 +167,11 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
                 b = new Button(right, SWT.PUSH);
                 b.setText(Messages.PerfEventsTab_RemoveSelectedEvents);
                 b.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, false,2,1));
-                b.addSelectionListener(new SelectionAdapter() {
-                    @Override
-                    public void widgetSelected(SelectionEvent se) {
-                        eventTable[tabFolder.getSelectionIndex()].remove(eventTable[tabFolder.getSelectionIndex()].getSelectionIndices());
-                        updateLaunchConfigurationDialog();
-                    }
-                });
+				b.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+					eventTable[tabFolder.getSelectionIndex()]
+							.remove(eventTable[tabFolder.getSelectionIndex()].getSelectionIndices());
+					updateLaunchConfigurationDialog();
+				}));
                 l = new Label(right, SWT.NONE);
                 l.setForeground(new Color(right.getDisplay(), 100,100,100));
                 l.setText(Messages.PerfEventsTab_Note);
@@ -199,12 +190,8 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
                     item.setText(event);
                 }
 
-                table.addSelectionListener(new SelectionAdapter() {
-                    @Override
-                    public void widgetSelected(SelectionEvent se) {
-                        updateLaunchConfigurationDialog();
-                    }
-                });
+				table.addSelectionListener(
+						SelectionListener.widgetSelectedAdapter(e -> updateLaunchConfigurationDialog()));
 
                 eventTabItems[i].setControl(table);
             }
@@ -241,13 +228,10 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
                 chkDefaultEvent = new Button(top, SWT.CHECK);
                 chkDefaultEvent.setText("Default Event"); //$NON-NLS-1$
                 chkDefaultEvent.setLayoutData(new GridData());
-                chkDefaultEvent.addSelectionListener(new SelectionAdapter() {
-                    @Override
-                    public void widgetSelected(SelectionEvent se) {
-                        refreshDefaultEnabled();
-                        updateLaunchConfigurationDialog();
-                    }
-                });
+				chkDefaultEvent.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+					refreshDefaultEnabled();
+					updateLaunchConfigurationDialog();
+				}));
 
                 createEventTabs(top, config);
             }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2016 Red Hat Inc. and others.
+ * Copyright (c) 2014, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -50,11 +50,7 @@ import org.eclipse.linuxtools.docker.core.IRegistry;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Image;
@@ -69,10 +65,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * @author xcoulon
- *
- */
 public class ImageSearchPage extends WizardPage {
 
 	private final ImageSearchModel model;
@@ -246,31 +238,19 @@ public class ImageSearchPage extends WizardPage {
 	}
 
 	private KeyListener onKeyPressed() {
-		return new KeyAdapter() {
-
-			@Override
-			public void keyReleased(final KeyEvent event) {
-				final IStatus status = AggregateValidationStatus
-						.getStatusMaxSeverity(
-								ctx.getValidationStatusProviders());
-				final String searchTerm = ImageSearchPage.this.model.getTerm();
-				if (event.character == SWT.CR && searchTerm != null
-						&& !searchTerm.isEmpty()
-						&& status.isOK()) {
-					searchImages();
-				}
+		return KeyListener.keyReleasedAdapter(event -> {
+			final IStatus status = AggregateValidationStatus
+					.getStatusMaxSeverity(ctx.getValidationStatusProviders());
+			final String searchTerm = ImageSearchPage.this.model.getTerm();
+			if (event.character == SWT.CR && searchTerm != null
+					&& !searchTerm.isEmpty() && status.isOK()) {
+				searchImages();
 			}
-		};
+		});
 	}
 
 	private SelectionListener onSearchImageButtonSelected() {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent event) {
-				searchImages();
-			}
-		};
+		return SelectionListener.widgetSelectedAdapter(e -> searchImages());
 	}
 
 	private void searchImages() {

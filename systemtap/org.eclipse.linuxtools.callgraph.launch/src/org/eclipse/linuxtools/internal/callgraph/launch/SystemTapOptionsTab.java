@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,12 +42,8 @@ import org.eclipse.linuxtools.internal.callgraph.core.LaunchConfigurationConstan
 import org.eclipse.linuxtools.internal.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapView;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -132,29 +128,22 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
      * and a final
      */
 
-    private SelectionListener graphicsModeListener = new SelectionAdapter(){
-        @Override
-        public void widgetSelected(SelectionEvent e) {
-            if (scriptFile.isEnabled()){
-                scriptFile.setEnabled(false);
-                workspaceBrowseButton.setEnabled(false);
-                fileBrowseButton.setEnabled(false);
-                scriptFile.setText(PluginConstants.getPluginLocation()+"parse_function.stp"); //$NON-NLS-1$
-            }else{
-                scriptFile.setEnabled(true);
-                workspaceBrowseButton.setEnabled(true);
-                fileBrowseButton.setEnabled(true);
-            }
-            updateLaunchConfigurationDialog();
-        }
-    };
+	private SelectionListener graphicsModeListener = SelectionListener.widgetSelectedAdapter(e -> {
+		if (scriptFile.isEnabled()) {
+			scriptFile.setEnabled(false);
+			workspaceBrowseButton.setEnabled(false);
+			fileBrowseButton.setEnabled(false);
+			scriptFile.setText(PluginConstants.getPluginLocation() + "parse_function.stp"); //$NON-NLS-1$
+		} else {
+			scriptFile.setEnabled(true);
+			workspaceBrowseButton.setEnabled(true);
+			fileBrowseButton.setEnabled(true);
+		}
+		updateLaunchConfigurationDialog();
+	});
 
-    private SelectionListener selectListener = new SelectionAdapter() {
-        @Override
-        public void widgetSelected(SelectionEvent e) {
-            updateLaunchConfigurationDialog();
-        }
-    };
+	private SelectionListener selectListener = SelectionListener
+			.widgetSelectedAdapter(e -> updateLaunchConfigurationDialog());
 
     private ModifyListener modifyListener = e -> updateLaunchConfigurationDialog();
 
@@ -163,18 +152,15 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 	    outputFileHasChanged = true;
 	};
 
-    private FocusListener focusListener = new FocusAdapter() {
+	private FocusListener focusListener = FocusListener.focusLostAdapter(e -> {
 
-        @Override
-        public void focusLost(FocusEvent e) {
-            if (outputFileHasChanged) {
-                checkOverwrite();
-            }
-            outputFileHasChanged = false;
+		if (outputFileHasChanged) {
+			checkOverwrite();
+		}
+		outputFileHasChanged = false;
 
-            updateLaunchConfigurationDialog();
-        }
-    };
+		updateLaunchConfigurationDialog();
+	});
 
     /**
      * Convenience method to check if the overwrite permissions are consistent
@@ -311,25 +297,20 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 
         Button parserButton = createPushButton(browseTop,
                 "Find parsers", null);  //$NON-NLS-1$
-        parserButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(),
-                        new ListLabelProvider());
-                dialog.setTitle("Select parser");  //$NON-NLS-1$
-                dialog.setMessage("Select parser to use.");  //$NON-NLS-1$
-                IExtensionRegistry reg = Platform.getExtensionRegistry();
-                IConfigurationElement[] extensions = reg
-                        .getConfigurationElementsFor(PluginConstants.PARSER_RESOURCE,
-                                PluginConstants.PARSER_NAME);
+		parserButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(), new ListLabelProvider());
+			dialog.setTitle("Select parser"); //$NON-NLS-1$
+			dialog.setMessage("Select parser to use."); //$NON-NLS-1$
+			IExtensionRegistry reg = Platform.getExtensionRegistry();
+			IConfigurationElement[] extensions = reg.getConfigurationElementsFor(PluginConstants.PARSER_RESOURCE,
+					PluginConstants.PARSER_NAME);
 
-                dialog.setElements(extensions);
-                if (dialog.open() == IDialogConstants.OK_ID) {
-                    String arg = getUsefulLabel(dialog.getFirstResult());
-                    parser.setText(arg);
-                }
-            }
-        });
+			dialog.setElements(extensions);
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				String arg = getUsefulLabel(dialog.getFirstResult());
+				parser.setText(arg);
+			}
+		}));
 
 
         viewer = new Text(browseTop, SWT.BORDER);
@@ -338,38 +319,33 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 
         Button viewerButton = createPushButton(browseTop,
                 "Find viewers", null);  //$NON-NLS-1$
-        viewerButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(),
-                        new ListLabelProvider());
-                dialog.setTitle("Select viewer");  //$NON-NLS-1$
-                dialog.setMessage("Select viewer to use.");  //$NON-NLS-1$
-                IExtensionRegistry reg = Platform.getExtensionRegistry();
-                IConfigurationElement[] extensions = reg
-                        .getConfigurationElementsFor(PluginConstants.VIEW_RESOURCE,
-                                PluginConstants.VIEW_NAME);
-                ArrayList<IConfigurationElement> ext = new ArrayList<>();
-                for (IConfigurationElement el : extensions) {
-                    if (!el.getNamespaceIdentifier().contains("org.eclipse.linuxtools")) //$NON-NLS-1$
-                        continue;
-                    //TODO: Rough hack to get all the objects. We restrict to id's containing org.eclipse.linuxtools, then see if the class extends SystemTapView
-                    try {
-                        if (el.createExecutableExtension(PluginConstants.ATTR_CLASS)
-                                instanceof SystemTapView) {
-                            ext.add(el);
-                        }
-                    } catch (CoreException e1) {
-                    }
-                }
+		viewerButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(), new ListLabelProvider());
+			dialog.setTitle("Select viewer"); //$NON-NLS-1$
+			dialog.setMessage("Select viewer to use."); //$NON-NLS-1$
+			IExtensionRegistry reg = Platform.getExtensionRegistry();
+			IConfigurationElement[] extensions = reg.getConfigurationElementsFor(PluginConstants.VIEW_RESOURCE,
+					PluginConstants.VIEW_NAME);
+			ArrayList<IConfigurationElement> ext = new ArrayList<>();
+			for (IConfigurationElement el : extensions) {
+				if (!el.getNamespaceIdentifier().contains("org.eclipse.linuxtools")) //$NON-NLS-1$
+					continue;
+				// TODO: Rough hack to get all the objects. We restrict to id's containing
+				// org.eclipse.linuxtools, then see if the class extends SystemTapView
+				try {
+					if (el.createExecutableExtension(PluginConstants.ATTR_CLASS) instanceof SystemTapView) {
+						ext.add(el);
+					}
+				} catch (CoreException e1) {
+				}
+			}
 
-                dialog.setElements(ext.toArray());
-                if (dialog.open() == IDialogConstants.OK_ID) {
-                    String arg = getUsefulLabel(dialog.getFirstResult());
-                    viewer.setText(arg);
-                }
-            }
-        });
+			dialog.setElements(ext.toArray());
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				String arg = getUsefulLabel(dialog.getFirstResult());
+				viewer.setText(arg);
+			}
+		}));
 
     }
 
@@ -392,12 +368,9 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 
 
         Button probeFunctionButton = createPushButton(browseTop, Messages.getString("SystemTapOptionsTab.ProbeFunction"), null);  //$NON-NLS-1$
-        probeFunctionButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                arguments.setText(arguments.getText() + " process(\"" + binaryFile.getText() + "\").function(\"\")"); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-        });
+		probeFunctionButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> arguments
+				.setText(arguments.getText() + " process(\"" + binaryFile.getText() + "\").function(\"\")") //$NON-NLS-1$ //$NON-NLS-2$
+		));
     }
 
     private void createFileOption(Composite top) {
@@ -413,34 +386,29 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
         scriptFile.addModifyListener(modifyListener);
 
         workspaceBrowseButton = createPushButton(browseTop, Messages.getString("SystemTapOptionsTab.WorkspaceButton"), null);  //$NON-NLS-1$
-        workspaceBrowseButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(), new WorkbenchContentProvider());
-                dialog.setTitle(Messages.getString("SystemTapOptionsTab.ResourceButton"));  //$NON-NLS-1$
-                dialog.setMessage(Messages.getString("SystemTapOptionsTab.SuppresionsFile"));  //$NON-NLS-1$
-                dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-                dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
-                if (dialog.open() == IDialogConstants.OK_ID) {
-                    IResource resource = (IResource) dialog.getFirstResult();
-                    String arg = resource.getFullPath().toString();
-                    scriptFile.setText(workspacePath + arg);
-                }
-            }
-        });
+		workspaceBrowseButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(),
+					new WorkbenchContentProvider());
+			dialog.setTitle(Messages.getString("SystemTapOptionsTab.ResourceButton")); //$NON-NLS-1$
+			dialog.setMessage(Messages.getString("SystemTapOptionsTab.SuppresionsFile")); //$NON-NLS-1$
+			dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
+			dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				IResource resource = (IResource) dialog.getFirstResult();
+				String arg = resource.getFullPath().toString();
+				scriptFile.setText(workspacePath + arg);
+			}
+		}));
 
         fileBrowseButton = createPushButton(browseTop, Messages.getString("SystemTapOptionsTab.FileSystem"), null); //$NON-NLS-1$
-        fileBrowseButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                String filePath = scriptFile.getText();
-                FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
-                filePath = dialog.open();
-                if (filePath != null) {
-                    scriptFile.setText(filePath);
-                }
-            }
-        });
+		fileBrowseButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			String filePath = scriptFile.getText();
+			FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
+			filePath = dialog.open();
+			if (filePath != null) {
+				scriptFile.setText(filePath);
+			}
+		}));
 
 
         Label binaryFileLabel = new Label(browseTop, SWT.NONE);
@@ -452,36 +420,32 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 
 
         Button workspaceBrowseButton2 = createPushButton(browseTop, Messages.getString("SystemTapOptionsTab.WorkspaceButton2"), null);  //$NON-NLS-1$
-        workspaceBrowseButton2.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(), new WorkbenchContentProvider());
-                dialog.setTitle(Messages.getString("SystemTapOptionsTab.SelectResource"));  //$NON-NLS-1$
-                dialog.setMessage(Messages.getString("SystemTapOptionsTab.SelectSuppressions"));  //$NON-NLS-1$
-                dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-                dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
-                if (dialog.open() == IDialogConstants.OK_ID) {
-                    IResource resource = (IResource) dialog.getFirstResult();
-                    String arg = resource.getFullPath().toString();
-                    binaryFile.setText(workspacePath + arg);
-                }
-            }
-        });
+		workspaceBrowseButton2.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(),
+					new WorkbenchContentProvider());
+			dialog.setTitle(Messages.getString("SystemTapOptionsTab.SelectResource")); //$NON-NLS-1$
+			dialog.setMessage(Messages.getString("SystemTapOptionsTab.SelectSuppressions")); //$NON-NLS-1$
+			dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
+			dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				IResource resource = (IResource) dialog.getFirstResult();
+				String arg = resource.getFullPath().toString();
+				binaryFile.setText(workspacePath + arg);
+			}
+		}));
 
 
         Button fileBrowseButton2 = createPushButton(browseTop, Messages.getString("SystemTapOptionsTab.BrowseFiles"), null); //$NON-NLS-1$
-        fileBrowseButton2.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                String filePath = binaryFile.getText();
-                FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
-                filePath = dialog.open();
-                if (filePath != null) {
-                    File file = new File(filePath);
-                    if (file.exists()) binaryFile.setText(filePath);
-                }
-            }
-        });
+		fileBrowseButton2.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			String filePath = binaryFile.getText();
+			FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
+			filePath = dialog.open();
+			if (filePath != null) {
+				File file = new File(filePath);
+				if (file.exists())
+					binaryFile.setText(filePath);
+			}
+		}));
 
 
         Label outputFileLabel = new Label(browseTop, SWT.NONE);
@@ -493,39 +457,34 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
         outputFile.addFocusListener(focusListener);
 
         Button workspaceBrowseButton3 = createPushButton(browseTop, Messages.getString("SystemTapOptionsTab.WorkspaceButton2"), null);  //$NON-NLS-1$
-        workspaceBrowseButton3.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(), new WorkbenchContentProvider());
-                dialog.setTitle(Messages.getString("SystemTapOptionsTab.SelectResource"));  //$NON-NLS-1$
-                dialog.setMessage(Messages.getString("SystemTapOptionsTab.SelectSuppressions"));  //$NON-NLS-1$
-                dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-                dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
-                if (dialog.open() == IDialogConstants.OK_ID) {
-                    IResource resource = (IResource) dialog.getFirstResult();
-                    String arg = resource.getFullPath().toString();
-                    outputFile.setText(workspacePath + arg);
-                    checkOverwrite();
-                    updateLaunchConfigurationDialog();
+		workspaceBrowseButton3.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(),
+					new WorkbenchContentProvider());
+			dialog.setTitle(Messages.getString("SystemTapOptionsTab.SelectResource")); //$NON-NLS-1$
+			dialog.setMessage(Messages.getString("SystemTapOptionsTab.SelectSuppressions")); //$NON-NLS-1$
+			dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
+			dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				IResource resource = (IResource) dialog.getFirstResult();
+				String arg = resource.getFullPath().toString();
+				outputFile.setText(workspacePath + arg);
+				checkOverwrite();
+				updateLaunchConfigurationDialog();
 
-                }
-            }
-        });
+			}
+		}));
 
         Button fileBrowseButton3 = createPushButton(browseTop, Messages.getString("SystemTapOptionsTab.BrowseFiles"), null); //$NON-NLS-1$
-        fileBrowseButton3.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                String filePath = outputFile.getText();
-                FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
-                filePath = dialog.open();
-                if (filePath != null) {
-                    outputFile.setText(filePath);
-                    checkOverwrite();
-                    updateLaunchConfigurationDialog();
-                }
-            }
-        });
+		fileBrowseButton3.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			String filePath = outputFile.getText();
+			FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
+			filePath = dialog.open();
+			if (filePath != null) {
+				outputFile.setText(filePath);
+				checkOverwrite();
+				updateLaunchConfigurationDialog();
+			}
+		}));
 
         useColourButton = new Button(browseTop, SWT.CHECK);
         useColourButton.setText(Messages.getString("SystemTapOptionsTab.ColourCodes"));  //$NON-NLS-1$

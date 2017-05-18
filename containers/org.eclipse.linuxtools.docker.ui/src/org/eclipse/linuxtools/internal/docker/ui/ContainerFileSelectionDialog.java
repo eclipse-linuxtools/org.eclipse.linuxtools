@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat Inc. and others.
+ * Copyright (c) 2016, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,8 +15,6 @@ import java.util.Iterator;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -108,23 +106,14 @@ public class ContainerFileSelectionDialog extends SelectionDialog {
 
         Button selectButton = new Button(buttonComposite, SWT.PUSH);
 		selectButton.setText(Messages.getString(SELECT_ALL_TITLE));
-        SelectionListener listener = new SelectionAdapter() {
-            @Override
-			public void widgetSelected(SelectionEvent e) {
-                selectionGroup.setAllSelections(true);
-            }
-        };
+		SelectionListener listener = SelectionListener.widgetSelectedAdapter(
+				e -> selectionGroup.setAllSelections(true));
         selectButton.addSelectionListener(listener);
 
         Button deselectButton = new Button(buttonComposite, SWT.PUSH);
 		deselectButton.setText(Messages.getString(DESELECT_ALL_TITLE));
-        listener = new SelectionAdapter() {
-            @Override
-			public void widgetSelected(SelectionEvent e) {
-                selectionGroup.setAllSelections(false);
-
-            }
-        };
+		listener = SelectionListener.widgetSelectedAdapter(
+				e -> selectionGroup.setAllSelections(false));
         deselectButton.addSelectionListener(listener);
 
     }

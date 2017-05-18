@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Red Hat, Inc.
+ * Copyright (c) 2013, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,7 @@ package org.eclipse.linuxtools.systemtap.graphing.ui.widgets;
 import org.eclipse.linuxtools.systemtap.graphing.ui.charts.AbstractChartBuilder;
 import org.eclipse.linuxtools.systemtap.structures.listeners.IUpdateListener;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -57,86 +56,57 @@ public class GraphDiscreteXControl extends Composite implements IUpdateListener 
         firstButton.setText(Messages.GraphDiscreteXControl_First);
         firstButton.setFont(font);
         firstButton.setEnabled(false);
-        firstButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                builder.setScroll(0);
-                firstButton.setEnabled(false);
-                leftButton.setEnabled(false);
-                rightButton.setEnabled(true);
-                lastButton.setEnabled(true);
-            }
-        });
+		firstButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			builder.setScroll(0);
+			firstButton.setEnabled(false);
+			leftButton.setEnabled(false);
+			rightButton.setEnabled(true);
+			lastButton.setEnabled(true);
+		}));
 
         leftButton = new Button(this, SWT.CENTER);
         leftButton.setText(Messages.GraphDiscreteXControl_Left);
         leftButton.setFont(font);
         leftButton.setEnabled(false);
-        leftButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                stepScroll(-1);
-            }
-        });
+		leftButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> stepScroll(-1)));
 
         zoomInButton = new Button(this, SWT.CENTER);
         zoomInButton.setText(Messages.GraphDiscreteXControl_ZoomIn);
         zoomInButton.setFont(font);
         zoomInButton.setEnabled(false);
-        zoomInButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                builder.setScale(builder.getScale() / ZOOM_AMOUNT);
-            }
-        });
+		zoomInButton.addSelectionListener(
+				SelectionListener.widgetSelectedAdapter(e -> builder.setScale(builder.getScale() / ZOOM_AMOUNT)));
 
         zoomOutButton = new Button(this, SWT.CENTER);
         zoomOutButton.setText(Messages.GraphDiscreteXControl_ZoomOut);
         zoomOutButton.setFont(font);
         zoomOutButton.setEnabled(false);
-        zoomOutButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                builder.setScale(builder.getScale() * ZOOM_AMOUNT);
-            }
-        });
+		zoomOutButton.addSelectionListener(
+				SelectionListener.widgetSelectedAdapter(e -> builder.setScale(builder.getScale() * ZOOM_AMOUNT)));
 
         allButton = new Button(this, SWT.CENTER);
         allButton.setText(Messages.GraphDiscreteXControl_All);
         allButton.setFont(font);
         allButton.setEnabled(false);
-        allButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                builder.setScale(1.0);
-            }
-        });
+		allButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> builder.setScale(1.0)));
 
         rightButton = new Button(this, SWT.CENTER);
         rightButton.setText(Messages.GraphDiscreteXControl_Right);
         rightButton.setFont(font);
         rightButton.setEnabled(false);
-        rightButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                stepScroll(1);
-            }
-        });
+		rightButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> stepScroll(1)));
 
         lastButton = new Button(this, SWT.CENTER);
         lastButton.setText(Messages.GraphDiscreteXControl_Last);
         lastButton.setFont(font);
         lastButton.setEnabled(false);
-        lastButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                builder.setScroll(1);
-                firstButton.setEnabled(true);
-                leftButton.setEnabled(true);
-                rightButton.setEnabled(false);
-                lastButton.setEnabled(false);
-            }
-        });
+		lastButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			builder.setScroll(1);
+			firstButton.setEnabled(true);
+			leftButton.setEnabled(true);
+			rightButton.setEnabled(false);
+			lastButton.setEnabled(false);
+		}));
     }
 
     private int getNumItems() {

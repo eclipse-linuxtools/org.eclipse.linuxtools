@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat.
+ * Copyright (c) 2016, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,8 +34,6 @@ import org.eclipse.linuxtools.internal.docker.core.RegistryInfo;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.internal.docker.ui.preferences.PreferenceConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -139,28 +137,23 @@ public abstract class ImagePullPushPage<M extends ImagePullPushPageModel>
 
 	private SelectionListener onAddRegistry(
 			final ComboViewer registryAccountComboViewer) {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final RegistryAccountDialog dialog = new RegistryAccountDialog(
-						getShell(),
-						WizardMessages
-								.getString(
-										"ImagePullPushPage.addregistry.title"), //$NON-NLS-1$
-						AbstractRegistry.DOCKERHUB_REGISTRY,
-						WizardMessages.getString(
-								"RegistryAccountDialog.add.explanation")); ///$NON-NLS-1$
-				if (dialog.open() == Window.OK) {
-					RegistryAccountManager.getInstance()
-							.add(dialog.getSignonInformation());
-					final List<IRegistry> updatedRegistryAccounts = getRegistryAccounts();
-					registryAccountComboViewer
-							.setInput(updatedRegistryAccounts);
-					// set selection on the newly created registry
-					model.setSelectedRegistry(dialog.getSignonInformation());
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final RegistryAccountDialog dialog = new RegistryAccountDialog(
+					getShell(),
+					WizardMessages
+							.getString("ImagePullPushPage.addregistry.title"), //$NON-NLS-1$
+					AbstractRegistry.DOCKERHUB_REGISTRY,
+					WizardMessages.getString(
+							"RegistryAccountDialog.add.explanation")); ///$NON-NLS-1$
+			if (dialog.open() == Window.OK) {
+				RegistryAccountManager.getInstance()
+						.add(dialog.getSignonInformation());
+				final List<IRegistry> updatedRegistryAccounts = getRegistryAccounts();
+				registryAccountComboViewer.setInput(updatedRegistryAccounts);
+				// set selection on the newly created registry
+				model.setSelectedRegistry(dialog.getSignonInformation());
 			}
-		};
+		});
 	}
 
 	/**

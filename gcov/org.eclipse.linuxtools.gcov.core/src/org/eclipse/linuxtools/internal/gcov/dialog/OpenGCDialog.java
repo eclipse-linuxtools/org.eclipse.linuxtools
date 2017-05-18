@@ -34,8 +34,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -142,20 +141,12 @@ public class OpenGCDialog extends Dialog {
         cbBin.setLayout(new GridLayout(2, true));
         Button binBrowseWorkspaceButton = new Button(cbBin, SWT.PUSH);
         binBrowseWorkspaceButton.setText(Messages.OpenGCDialog_bin_browser_button_text);
-        binBrowseWorkspaceButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent sev) {
-                handleBrowseWorkspace(Messages.OpenGCDialog_bin_browser_handler_text, binText);
-            }
-        });
+        binBrowseWorkspaceButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e ->
+                handleBrowseWorkspace(Messages.OpenGCDialog_bin_browser_handler_text, binText)));
         Button binBrowseFileSystemButton = new Button(cbBin, SWT.PUSH);
         binBrowseFileSystemButton.setText(Messages.OpenGCDialog_bin_browser_fs_button_text);
-        binBrowseFileSystemButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent sev) {
-                handleBrowse(Messages.OpenGCDialog_bin_browser_handler_text, binText);
-            }
-        });
+        binBrowseFileSystemButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e ->
+                handleBrowse(Messages.OpenGCDialog_bin_browser_handler_text, binText)));
 
         Group covMode = new Group(composite, SWT.NONE);
         covMode.setText(Messages.OpenGCDialog_coverage_mode_header);
@@ -174,12 +165,8 @@ public class OpenGCDialog extends Dialog {
 
         openCoverageSummaryButton.setSelection(true);
 
-        SelectionAdapter sa = new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent sev) {
-                openCoverageSummary = openCoverageSummaryButton.getSelection();
-            }
-        };
+        SelectionListener sa = SelectionListener.widgetSelectedAdapter(e ->
+                openCoverageSummary = openCoverageSummaryButton.getSelection());
         openCoverageSummaryButton.addSelectionListener(sa);
         openThisFileOnlyButton.addSelectionListener(sa);
 

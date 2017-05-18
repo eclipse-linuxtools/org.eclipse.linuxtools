@@ -34,8 +34,7 @@ import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -204,12 +203,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 
         Button button = createPushButton(p, OprofileLaunchMessages.getString("tab.global.kernelImage.browse.button.text"), null); //$NON-NLS-1$
         final Shell shell = top.getShell();
-        button.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent sev) {
-                showFileDialog(shell);
-            }
-        });
+		button.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> showFileDialog(shell)));
 
         createVerticalSpacer(top, 1);
 
@@ -248,12 +242,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
     private Button myCreateCheckButton(Composite parent, String label) {
         final Button b = new Button(parent, SWT.CHECK);
         b.setText(label);
-        b.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent se) {
-                handleCheckSelected(b);
-            }
-        });
+		b.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> handleCheckSelected(b)));
 
         return b;
     }

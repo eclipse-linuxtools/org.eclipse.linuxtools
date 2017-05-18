@@ -25,7 +25,6 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenc
 import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -92,16 +91,12 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
         selectTargetProgramButton.setLayoutData(gridData);
         selectTargetProgramButton
                 .setText(Messages.SystemTapScriptLaunchConfigurationTab_browse);
-        selectTargetProgramButton.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                String fileName = fileDialog.open();
-                if (fileName != null) {
-                    targetProgramText.setText(fileName);
-                }
-            }
-        });
+		selectTargetProgramButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			String fileName = fileDialog.open();
+			if (fileName != null) {
+				targetProgramText.setText(fileName);
+			}
+		}));
 
         // Check boxes
         Composite cmpChkBoxes = new Composite(comp, SWT.NONE);

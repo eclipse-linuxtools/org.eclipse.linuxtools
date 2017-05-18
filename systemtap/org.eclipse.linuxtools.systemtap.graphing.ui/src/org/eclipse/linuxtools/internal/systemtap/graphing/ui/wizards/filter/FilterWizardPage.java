@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+ * Copyright (c) 2006, 2017 IBM Corporation.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,6 @@ package org.eclipse.linuxtools.internal.systemtap.graphing.ui.wizards.filter;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.systemtap.graphing.core.filters.IDataSetFilter;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 
@@ -46,12 +44,7 @@ public abstract class FilterWizardPage extends WizardPage {
         super.dispose();
     }
 
-    protected final SelectionListener selectionListener = new SelectionAdapter() {
-        @Override
-        public void widgetSelected(SelectionEvent e) {
-            update();
-        }
-    };
+    protected final SelectionListener selectionListener = SelectionListener.widgetSelectedAdapter(e -> update());
 
     protected final ModifyListener modifyListener = e -> update();
 

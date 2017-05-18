@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 STMicroelectronics.
+ * Copyright (c) 2009, 2017 STMicroelectronics and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -120,20 +121,10 @@ public class STDataViewersSortDialog extends TrayDialog {
 
             ascendingButtons[i] = new Button(directionGroup, SWT.RADIO);
             ascendingButtons[i].setText(getAscendingText(i));
-            ascendingButtons[i].addSelectionListener(new SelectionAdapter() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
-                    markDirty();
-                }
-            });
+			ascendingButtons[i].addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> markDirty()));
             descendingButtons[i] = new Button(directionGroup, SWT.RADIO);
             descendingButtons[i].setText(getDescendingText(i));
-            descendingButtons[i].addSelectionListener(new SelectionAdapter() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
-                    markDirty();
-                }
-            });
+			descendingButtons[i].addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> markDirty()));
 
             if (i < priorityCombos.length - 1) {
                 priorityCombos[i].addSelectionListener(new SelectionAdapter() {
@@ -171,12 +162,7 @@ public class STDataViewersSortDialog extends TrayDialog {
                     }
                 });
             } else {
-                priorityCombos[i].addSelectionListener(new SelectionAdapter() {
-                    @Override
-                    public void widgetSelected(SelectionEvent e) {
-                        markDirty();
-                    }
-                });
+				priorityCombos[i].addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> markDirty()));
             }
         }
 
@@ -234,13 +220,10 @@ public class STDataViewersSortDialog extends TrayDialog {
         Button defaultsButton = new Button(parent, SWT.PUSH);
         defaultsButton.setText(STDataViewersMessages.restoreDefaults_text);
         setButtonSize(defaultsButton, new GridData(GridData.HORIZONTAL_ALIGN_END | GridData.FILL_HORIZONTAL));
-        defaultsButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                restoreDefaults();
-                markDirty();
-            }
-        });
+		defaultsButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			restoreDefaults();
+			markDirty();
+		}));
     }
 
     private void createSeparatorLine(Composite parent) {

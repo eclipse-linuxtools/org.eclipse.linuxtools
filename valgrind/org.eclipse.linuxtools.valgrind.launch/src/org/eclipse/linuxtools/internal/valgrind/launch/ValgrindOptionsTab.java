@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Red Hat, Inc. and others.
+ * Copyright (c) 2008, 2017 Red Hat, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,8 +32,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -117,12 +115,8 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			this.tool = tools[0];
 	}
 
-	private SelectionListener selectListener = new SelectionAdapter() {
-        @Override
-        public void widgetSelected(SelectionEvent e) {
-            updateLaunchConfigurationDialog();
-        }
-    };
+	private SelectionListener selectListener = SelectionListener
+			.widgetSelectedAdapter(e -> updateLaunchConfigurationDialog());
     private ModifyListener modifyListener = e -> updateLaunchConfigurationDialog();
 
 
@@ -332,13 +326,10 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
         mainStackSizeTop.setLayout(mainStackSizeLayout);
         mainStackSizeButton = new Button(mainStackSizeTop, SWT.CHECK);
         mainStackSizeButton.setText(Messages.getString("ValgrindOptionsTab.Main_stack_size")); //$NON-NLS-1$
-        mainStackSizeButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                checkMainStackEnablement();
-                updateLaunchConfigurationDialog();
-            }
-        });
+		mainStackSizeButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			checkMainStackEnablement();
+			updateLaunchConfigurationDialog();
+		}));
         mainStackSizeSpinner = new Spinner(mainStackSizeTop, SWT.BORDER);
         mainStackSizeSpinner.setMaximum(Integer.MAX_VALUE);
         mainStackSizeSpinner.addModifyListener(modifyListener);
@@ -388,47 +379,40 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
         buttonTop.setLayoutData(new GridData(SWT.CENTER, SWT.BEGINNING, false, false));
 
         Button workspaceBrowseButton = createPushButton(buttonTop, Messages.getString("ValgrindOptionsTab.Workspace"), null);  //$NON-NLS-1$
-        workspaceBrowseButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(), new WorkbenchContentProvider());
-                dialog.setTitle(Messages.getString("ValgrindOptionsTab.Select_a_Resource"));  //$NON-NLS-1$
-                dialog.setMessage(Messages.getString("ValgrindOptionsTab.Select_a_Suppressions_File"));  //$NON-NLS-1$
-                dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-                dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
-                if (dialog.open() == IDialogConstants.OK_ID) {
-                    IResource resource = (IResource) dialog.getFirstResult();
-                    String arg = resource.getFullPath().toString();
-                    String fileLoc = VariablesPlugin.getDefault().getStringVariableManager().generateVariableExpression("workspace_loc", arg); //$NON-NLS-1$
-                    suppFileList.add(fileLoc);
-                    updateLaunchConfigurationDialog();
-                }
-            }
-        });
+		workspaceBrowseButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(),
+					new WorkbenchContentProvider());
+			dialog.setTitle(Messages.getString("ValgrindOptionsTab.Select_a_Resource")); //$NON-NLS-1$
+			dialog.setMessage(Messages.getString("ValgrindOptionsTab.Select_a_Suppressions_File")); //$NON-NLS-1$
+			dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
+			dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				IResource resource = (IResource) dialog.getFirstResult();
+				String arg = resource.getFullPath().toString();
+				String fileLoc = VariablesPlugin.getDefault().getStringVariableManager()
+						.generateVariableExpression("workspace_loc", arg); //$NON-NLS-1$
+				suppFileList.add(fileLoc);
+				updateLaunchConfigurationDialog();
+			}
+		}));
         Button fileBrowseButton = createPushButton(buttonTop, Messages.getString("ValgrindOptionsTab.File_System"), null); //$NON-NLS-1$
-        fileBrowseButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                String filePath = null;
-                FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
-                filePath = dialog.open();
-                if (filePath != null) {
-                    suppFileList.add(filePath);
-                    updateLaunchConfigurationDialog();
-                }
-            }
-        });
+		fileBrowseButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			String filePath = null;
+			FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
+			filePath = dialog.open();
+			if (filePath != null) {
+				suppFileList.add(filePath);
+				updateLaunchConfigurationDialog();
+			}
+		}));
         Button removeButton = createPushButton(buttonTop, Messages.getString("ValgrindOptionsTab.Supp_remove"), null); //$NON-NLS-1$
-        removeButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                int[] selected = suppFileList.getSelectionIndices();
-                if (selected.length > 0) {
-                    suppFileList.remove(selected);
-                    updateLaunchConfigurationDialog();
-                }
-            }
-        });
+		removeButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			int[] selected = suppFileList.getSelectionIndices();
+			if (selected.length > 0) {
+				suppFileList.remove(selected);
+				updateLaunchConfigurationDialog();
+			}
+		}));
     }
 
     private void handleToolChanged() {

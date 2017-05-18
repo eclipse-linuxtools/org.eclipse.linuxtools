@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Red Hat, Inc.
+ * Copyright (c) 2011, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,8 +34,7 @@ import org.eclipse.linuxtools.internal.cdt.libhover.LibHoverLibrary;
 import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.DevHelpPlugin;
 import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.ParseDevHelp;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -141,12 +140,7 @@ public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
         generateButton = new Button(parent, SWT.NONE);
         generateButton.setFont(parent.getFont());
         generateButton.setText(LibHoverMessages.getString(GENERATE));
-        generateButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent evt) {
-                regenerate();
-            }
-        });
+        generateButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> regenerate()));
         generateButton.addDisposeListener(event -> generateButton = null);
         GridData gd = new GridData();
 

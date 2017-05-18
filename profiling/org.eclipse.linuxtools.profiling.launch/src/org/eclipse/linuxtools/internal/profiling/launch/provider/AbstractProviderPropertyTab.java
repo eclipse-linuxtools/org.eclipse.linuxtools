@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.Messages;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderFramework;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -76,12 +75,7 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
         useProjectSetting.setText(Messages.UseProjectSetting_0);
         useProjectSetting.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
         useProjectSetting.setSelection(getPreferenceStore().getBoolean(ProviderProfileConstants.USE_PROJECT_SETTINGS + getType()));
-        useProjectSetting.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                updateOptionsEnable();
-            }
-        });
+		useProjectSetting.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> updateOptionsEnable()));
 
         String highestProviderId = ProviderFramework.getHighestProviderId(getType());
         if (highestProviderId != null) {
@@ -93,12 +87,8 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
         fLink= new Link(usercomp, SWT.NULL);
         fLink.setText(Messages.PreferenceLink_0);
         fLink.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, true, false, 1, 1));
-        fLink.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                PreferencesUtil.createPreferenceDialogOn(parent.getShell(), getPrefPageId(), null, null).open();
-            }
-        });
+		fLink.addSelectionListener(SelectionListener.widgetSelectedAdapter(
+				e -> PreferencesUtil.createPreferenceDialogOn(parent.getShell(), getPrefPageId(), null, null).open()));
 
 
         HashMap<String, String> map = ProviderFramework
@@ -147,12 +137,8 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
             radio.setText(labelAndValue[0]);
             radio.setData(labelAndValue[1]);
             radio.setFont(parent.getFont());
-            radio.addSelectionListener(new SelectionAdapter() {
-                @Override
-                public void widgetSelected(SelectionEvent event) {
-                    value = (String) event.widget.getData();
-                }
-            });
+			radio.addSelectionListener(
+					SelectionListener.widgetSelectedAdapter(event -> value = (String) event.widget.getData()));
         }
         projectSettingsGroup.addDisposeListener(event -> {
 		    projectSettingsGroup = null;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Red Hat, Inc.
+ * Copyright (c) 2013, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,7 @@ package org.eclipse.linuxtools.systemtap.graphing.ui.widgets;
 
 import org.eclipse.linuxtools.systemtap.graphing.ui.charts.AbstractChartBuilder;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -56,13 +55,10 @@ public class GraphContinuousXControl extends Composite {
         data.left = new FormAttachment(0, 0);
         data.bottom = new FormAttachment(100, 0);
         zoomOutButton.setLayoutData(data);
-        zoomOutButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                zoomScale.setSelection(zoomScale.getSelection() - CLICK_INCREMENT);
-                updateScale();
-            }
-        });
+		zoomOutButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			zoomScale.setSelection(zoomScale.getSelection() - CLICK_INCREMENT);
+			updateScale();
+		}));
 
         Button zoomInButton = new Button(this, SWT.CENTER);
         zoomInButton.setText(Messages.GraphContinuousControl_ZoomInLabel);
@@ -72,13 +68,10 @@ public class GraphContinuousXControl extends Composite {
         data.right = new FormAttachment(100, 0);
         data.bottom = ((FormData) zoomOutButton.getLayoutData()).bottom;
         zoomInButton.setLayoutData(data);
-        zoomInButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                zoomScale.setSelection(zoomScale.getSelection() + CLICK_INCREMENT);
-                updateScale();
-            }
-        });
+		zoomInButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			zoomScale.setSelection(zoomScale.getSelection() + CLICK_INCREMENT);
+			updateScale();
+		}));
 
         zoomScale = new Scale(this,SWT.HORIZONTAL);
         zoomScale.setMinimum(0);
@@ -107,18 +100,8 @@ public class GraphContinuousXControl extends Composite {
         data.right = new FormAttachment(zoomInButton, 0);
         scrollBar.setLayoutData(data);
 
-        zoomScale.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                updateScale();
-            }
-        });
-        scrollBar.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                updateScroll();
-            }
-        });
+		zoomScale.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> updateScale()));
+		scrollBar.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> updateScroll()));
 
         updateScale();
         updateScroll();

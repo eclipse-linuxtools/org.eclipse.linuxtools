@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -63,12 +62,8 @@ public class ImageRemoveTagPage extends WizardPage {
 				.grab(false, false).applyTo(repoLabel);
 		final Combo tagCombo = new Combo(container, SWT.BORDER | SWT.READ_ONLY);
 		tagCombo.setToolTipText(WizardMessages.getString(REMOVE_TAG_TOOLTIP));
-		tagCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				selectedTag = tagCombo.getText();
-			}
-		});
+		tagCombo.addSelectionListener(SelectionListener
+				.widgetSelectedAdapter(e -> selectedTag = tagCombo.getText()));
 		// Set up combo with repoTags that can be removed
 		final List<String> repoTags = image.repoTags();
 		tagCombo.setItems(repoTags.toArray(new String[0]));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -98,22 +97,13 @@ public class ValgrindExportWizardPage extends WizardPage {
         Button selectAllButton = new Button(selectAllNoneTop, SWT.NONE);
         selectAllButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         selectAllButton.setText(Messages.getString("ValgrindExportWizardPage.Select_all")); //$NON-NLS-1$
-        selectAllButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                viewer.setAllChecked(true);
-            }
-        });
+		selectAllButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> viewer.setAllChecked(true)));
 
         Button deselectAllButton = new Button(selectAllNoneTop, SWT.NONE);
         deselectAllButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         deselectAllButton.setText(Messages.getString("ValgrindExportWizardPage.Deselect_all")); //$NON-NLS-1$
-        deselectAllButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                viewer.setAllChecked(false);
-            }
-        });
+		deselectAllButton
+				.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> viewer.setAllChecked(false)));
 
         createDestinationGroup(top);
 
@@ -153,19 +143,16 @@ public class ValgrindExportWizardPage extends WizardPage {
 
         Button browseButton = new Button(destGroup, SWT.PUSH);
         browseButton.setText(Messages.getString("ValgrindExportWizardPage.Browse")); //$NON-NLS-1$
-        browseButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                // Prompt for output directory
-                Shell parent = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-                DirectoryDialog dialog = new DirectoryDialog(parent);
-                dialog.setText(Messages.getString("ValgrindLaunchConfigurationDelegate.Select_Destination")); //$NON-NLS-1$
-                String strpath = dialog.open();
-                if (strpath != null) {
-                    destText.setText(strpath);
-                }
-            }
-        });
+		browseButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			// Prompt for output directory
+			Shell parent = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+			DirectoryDialog dialog = new DirectoryDialog(parent);
+			dialog.setText(Messages.getString("ValgrindLaunchConfigurationDelegate.Select_Destination")); //$NON-NLS-1$
+			String strpath = dialog.open();
+			if (strpath != null) {
+				destText.setText(strpath);
+			}
+		}));
     }
 
     private boolean isValid() {

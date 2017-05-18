@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,8 +31,6 @@ import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
 import org.eclipse.linuxtools.vagrant.core.VagrantService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -165,15 +163,14 @@ public class VagrantBoxView extends ViewPart implements IVagrantBoxListener {
 	}
 
 	private SelectionListener onColumnSelected() {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final TableColumn sortColumn = (TableColumn) e.getSource();
-				final VagrantBoxComparator comparator = (VagrantBoxComparator) viewer.getComparator();
-				comparator.setColumn(sortColumn);
-				viewer.refresh();
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final TableColumn sortColumn = (TableColumn) e.getSource();
+			final VagrantBoxComparator comparator = (VagrantBoxComparator) viewer
+					.getComparator();
+			comparator.setColumn(sortColumn);
+			viewer.refresh();
 			}
-		};
+		);
 	}
 
 	private void setLayout(final TableViewerColumn viewerColumn, final TableColumnLayout tableLayout, final int weight) {

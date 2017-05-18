@@ -45,8 +45,6 @@ import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel.ExposedPortModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.WizardMessages;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
@@ -251,68 +249,57 @@ public class RunImagePortsTab extends AbstractLaunchConfigurationTab
 
 	private SelectionListener onAddPort(
 			final CheckboxTableViewer exposedPortsTableViewer) {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final ContainerPortDialog dialog = new ContainerPortDialog(
-						getShell());
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					final ExposedPortModel port = dialog.getPort();
-					model.addAvailablePort(port);
-					model.getSelectedPorts().add(port);
-					port.setSelected(true);
-					exposedPortsTableViewer.setChecked(port, true);
-					updateLaunchConfigurationDialog();
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final ContainerPortDialog dialog = new ContainerPortDialog(
+					getShell());
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				final ExposedPortModel port = dialog.getPort();
+				model.addAvailablePort(port);
+				model.getSelectedPorts().add(port);
+				port.setSelected(true);
+				exposedPortsTableViewer.setChecked(port, true);
+				updateLaunchConfigurationDialog();
 			}
-		};
+		});
 	}
 
 	private SelectionListener onEditPort(
 			final CheckboxTableViewer exposedPortsTableViewer) {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final IStructuredSelection selection = exposedPortsTableViewer
-						.getStructuredSelection();
-				final ExposedPortModel selectedContainerPort = (ExposedPortModel) selection
-						.getFirstElement();
-				final ContainerPortDialog dialog = new ContainerPortDialog(
-						getShell(), selectedContainerPort);
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					final ExposedPortModel configuredPort = dialog.getPort();
-					selectedContainerPort.setContainerPort(
-							configuredPort.getContainerPort());
-					selectedContainerPort
-							.setHostAddress(configuredPort.getHostAddress());
-					selectedContainerPort
-							.setHostPort(configuredPort.getHostPort());
-				}
-				updateLaunchConfigurationDialog();
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final IStructuredSelection selection = exposedPortsTableViewer
+					.getStructuredSelection();
+			final ExposedPortModel selectedContainerPort = (ExposedPortModel) selection
+					.getFirstElement();
+			final ContainerPortDialog dialog = new ContainerPortDialog(
+					getShell(), selectedContainerPort);
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				final ExposedPortModel configuredPort = dialog.getPort();
+				selectedContainerPort
+						.setContainerPort(configuredPort.getContainerPort());
+				selectedContainerPort
+						.setHostAddress(configuredPort.getHostAddress());
+				selectedContainerPort.setHostPort(configuredPort.getHostPort());
 			}
-		};
+			updateLaunchConfigurationDialog();
+		});
 	}
 
 	private SelectionListener onRemovePorts(
 			final TableViewer portsTableViewer) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final IStructuredSelection selection = portsTableViewer
-						.getStructuredSelection();
-				for (@SuppressWarnings("unchecked")
-				Iterator<ExposedPortModel> iterator = selection
-						.iterator(); iterator.hasNext();) {
-					final ExposedPortModel port = iterator.next();
-					model.removeAvailablePort(port);
-					model.getSelectedPorts().remove(port);
-				}
-				updateLaunchConfigurationDialog();
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final IStructuredSelection selection = portsTableViewer
+					.getStructuredSelection();
+			for (@SuppressWarnings("unchecked")
+			Iterator<ExposedPortModel> iterator = selection.iterator(); iterator
+					.hasNext();) {
+				final ExposedPortModel port = iterator.next();
+				model.removeAvailablePort(port);
+				model.getSelectedPorts().remove(port);
 			}
-		};
+			updateLaunchConfigurationDialog();
+		});
 	}
 
 	private void togglePortMappingControls(final Control... controls) {

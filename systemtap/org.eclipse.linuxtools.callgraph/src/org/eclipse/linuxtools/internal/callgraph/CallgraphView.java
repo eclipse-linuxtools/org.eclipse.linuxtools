@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -37,8 +37,7 @@ import org.eclipse.linuxtools.internal.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapView;
 import org.eclipse.linuxtools.internal.callgraph.graphlisteners.AutoScrollSelectionListener;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -722,37 +721,34 @@ public class CallgraphView extends SystemTapView {
                 Button setLimit = new Button(sh, SWT.PUSH);
                 setLimit.setText(Messages.getString("CallgraphView.SetValues")); //$NON-NLS-1$
                 setLimit.setLayoutData(new GridData(SWT.CENTER, SWT.DEFAULT, true, false));
-                setLimit.addSelectionListener(new SelectionAdapter() {
-                    @Override
-                    public void widgetSelected(SelectionEvent e) {
-                        boolean redraw = false;
-                        if (limit.getSelection() >= 0 && buffer.getSelection() >= 0) {
-                            g.setMaxNodes(limit.getSelection());
-                            g.setLevelBuffer(buffer.getSelection());
+				setLimit.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+					boolean redraw = false;
+					if (limit.getSelection() >= 0 && buffer.getSelection() >= 0) {
+						g.setMaxNodes(limit.getSelection());
+						g.setLevelBuffer(buffer.getSelection());
 
-                            if (g.changeLevelLimits(g.getLevelOfNode(g.getRootVisibleNodeNumber()))) {
-                                SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-                                        Messages.getString("CallgraphView.BufferTooHigh"), Messages.getString("CallgraphView.BufferTooHigh"),  //$NON-NLS-1$ //$NON-NLS-2$
-                                        Messages.getString("CallgraphView.BufferMessage1") + //$NON-NLS-1$
-                                        Messages.getString("CallgraphView.BufferMessage2") + //$NON-NLS-1$
-                                        Messages.getString("CallgraphView.BufferMessage3") + //$NON-NLS-1$
-                                        Messages.getString("CallgraphView.BufferMessage4") + g.getLevelBuffer() + //$NON-NLS-1$
-                                        Messages.getString("CallgraphView.BufferMessage5") + PluginConstants.NEW_LINE + PluginConstants.NEW_LINE +   //$NON-NLS-1$
-                                        Messages.getString("CallgraphView.BufferMessage6") + //$NON-NLS-1$
-                                        Messages.getString("CallgraphView.BufferMessage7")); //$NON-NLS-1$
-                                mess.schedule();
-                            }
+						if (g.changeLevelLimits(g.getLevelOfNode(g.getRootVisibleNodeNumber()))) {
+							SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
+									Messages.getString("CallgraphView.BufferTooHigh"), //$NON-NLS-1$
+									Messages.getString("CallgraphView.BufferTooHigh"), //$NON-NLS-1$
+									Messages.getString("CallgraphView.BufferMessage1") + //$NON-NLS-1$
+							Messages.getString("CallgraphView.BufferMessage2") + //$NON-NLS-1$
+							Messages.getString("CallgraphView.BufferMessage3") + //$NON-NLS-1$
+							Messages.getString("CallgraphView.BufferMessage4") + g.getLevelBuffer() + //$NON-NLS-1$
+							Messages.getString("CallgraphView.BufferMessage5") + PluginConstants.NEW_LINE //$NON-NLS-1$
+											+ PluginConstants.NEW_LINE + Messages.getString("CallgraphView.BufferMessage6") + //$NON-NLS-1$
+							Messages.getString("CallgraphView.BufferMessage7")); //$NON-NLS-1$
+							mess.schedule();
+						}
 
-                            redraw = true;
-                        }
-                        sh.dispose();
+						redraw = true;
+					}
+					sh.dispose();
 
-                        if (redraw) {
-                            g.draw();
-                        }
-                    }
-
-                });
+					if (redraw) {
+						g.draw();
+					}
+				}));
 
 
                 sh.open();            }

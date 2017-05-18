@@ -64,8 +64,6 @@ import org.eclipse.linuxtools.internal.docker.ui.jobs.FindImageInfoRunnable;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunResourceVolumesVariablesModel.MountType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -506,79 +504,64 @@ image);
 
 	private SelectionListener onAddDataVolume(
 			final CheckboxTableViewer dataVolumesTableViewer) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final ContainerDataVolumeDialog dialog = new ContainerDataVolumeDialog(
-						getShell(), model.getConnection());
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					final DataVolumeModel dataVolume = dialog.getDataVolume();
-					dataVolume.setSelected(true);
-					model.getDataVolumes().add(dataVolume);
-					model.getSelectedDataVolumes().add(dataVolume);
-					dataVolumesTableViewer.setChecked(dataVolume,
-							true);
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final ContainerDataVolumeDialog dialog = new ContainerDataVolumeDialog(
+					getShell(), model.getConnection());
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				final DataVolumeModel dataVolume = dialog.getDataVolume();
+				dataVolume.setSelected(true);
+				model.getDataVolumes().add(dataVolume);
+				model.getSelectedDataVolumes().add(dataVolume);
+				dataVolumesTableViewer.setChecked(dataVolume, true);
 			}
-		};
+		});
 	}
 
 	private SelectionListener onEditDataVolume(
 			final CheckboxTableViewer dataVolumesTableViewer) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final IStructuredSelection selection = (IStructuredSelection) dataVolumesTableViewer
-						.getSelection();
-				if (selection.isEmpty()) {
-					return;
-				}
-				final DataVolumeModel selectedDataVolume = (DataVolumeModel) selection
-						.getFirstElement();
-				final ContainerDataVolumeDialog dialog = new ContainerDataVolumeDialog(
-						getShell(), model.getConnection(), selectedDataVolume);
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					final DataVolumeModel dialogDataVolume = dialog
-							.getDataVolume();
-					selectedDataVolume.setContainerMount(
-							dialogDataVolume.getContainerMount());
-					selectedDataVolume
-							.setMountType(dialogDataVolume.getMountType());
-					selectedDataVolume.setHostPathMount(
-							dialogDataVolume.getHostPathMount());
-					selectedDataVolume.setContainerMount(
-							dialogDataVolume.getContainerMount());
-					selectedDataVolume
-							.setReadOnly(dialogDataVolume.isReadOnly());
-					model.getSelectedDataVolumes().add(selectedDataVolume);
-					dataVolumesTableViewer.setChecked(selectedDataVolume, true);
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final IStructuredSelection selection = (IStructuredSelection) dataVolumesTableViewer
+					.getSelection();
+			if (selection.isEmpty()) {
+				return;
 			}
-		};
+			final DataVolumeModel selectedDataVolume = (DataVolumeModel) selection
+					.getFirstElement();
+			final ContainerDataVolumeDialog dialog = new ContainerDataVolumeDialog(
+					getShell(), model.getConnection(), selectedDataVolume);
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				final DataVolumeModel dialogDataVolume = dialog.getDataVolume();
+				selectedDataVolume.setContainerMount(
+						dialogDataVolume.getContainerMount());
+				selectedDataVolume
+						.setMountType(dialogDataVolume.getMountType());
+				selectedDataVolume
+						.setHostPathMount(dialogDataVolume.getHostPathMount());
+				selectedDataVolume.setContainerMount(
+						dialogDataVolume.getContainerMount());
+				selectedDataVolume.setReadOnly(dialogDataVolume.isReadOnly());
+				model.getSelectedDataVolumes().add(selectedDataVolume);
+				dataVolumesTableViewer.setChecked(selectedDataVolume, true);
+			}
+		});
 	}
 
 	private SelectionListener onRemoveDataVolumes(
 			final TableViewer dataVolumesTableViewer) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final IStructuredSelection selection = dataVolumesTableViewer
-						.getStructuredSelection();
-				for (@SuppressWarnings("unchecked")
-				Iterator<DataVolumeModel> iterator = selection
-						.iterator(); iterator.hasNext();) {
-					final DataVolumeModel volume = iterator.next();
-					model.removeDataVolume(volume);
-					model.getSelectedDataVolumes().remove(volume);
-				}
-
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final IStructuredSelection selection = dataVolumesTableViewer
+					.getStructuredSelection();
+			for (@SuppressWarnings("unchecked")
+			Iterator<DataVolumeModel> iterator = selection.iterator(); iterator
+					.hasNext();) {
+				final DataVolumeModel volume = iterator.next();
+				model.removeDataVolume(volume);
+				model.getSelectedDataVolumes().remove(volume);
 			}
-		};
+
+		});
 	}
 
 	private CheckboxTableViewer createVolumesTable(final Composite container) {
@@ -689,55 +672,43 @@ image);
 	}
 
 	private SelectionListener onAddLabelVariable() {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final ContainerLabelVariableDialog dialog = new ContainerLabelVariableDialog(
-						getShell());
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					model.getLabelVariables().add(dialog.getLabelVariable());
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final ContainerLabelVariableDialog dialog = new ContainerLabelVariableDialog(
+					getShell());
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				model.getLabelVariables().add(dialog.getLabelVariable());
 			}
-		};
+		});
 	}
 
 	private SelectionListener onEditLabelVariable(
 			final TableViewer LabelVariablesTableViewer) {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final LabelVariableModel selectedVariable = (LabelVariableModel) LabelVariablesTableViewer
-						.getStructuredSelection().getFirstElement();
-				final ContainerLabelVariableDialog dialog = new ContainerLabelVariableDialog(
-						getShell(), selectedVariable);
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					selectedVariable
-							.setName(dialog.getLabelVariable().getName());
-					selectedVariable
-							.setValue(dialog.getLabelVariable().getValue());
-					LabelVariablesTableViewer.refresh();
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final LabelVariableModel selectedVariable = (LabelVariableModel) LabelVariablesTableViewer
+					.getStructuredSelection().getFirstElement();
+			final ContainerLabelVariableDialog dialog = new ContainerLabelVariableDialog(
+					getShell(), selectedVariable);
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				selectedVariable.setName(dialog.getLabelVariable().getName());
+				selectedVariable.setValue(dialog.getLabelVariable().getValue());
+				LabelVariablesTableViewer.refresh();
 			}
-		};
+		});
 	}
 
 	private SelectionListener onRemoveLabelVariables(
 			final TableViewer linksTableViewer) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final IStructuredSelection selection = linksTableViewer
-						.getStructuredSelection();
-				for (@SuppressWarnings("unchecked")
-				Iterator<LabelVariableModel> iterator = selection
-						.iterator(); iterator.hasNext();) {
-					model.removeLabelVariable(iterator.next());
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final IStructuredSelection selection = linksTableViewer
+					.getStructuredSelection();
+			for (@SuppressWarnings("unchecked")
+			Iterator<LabelVariableModel> iterator = selection
+					.iterator(); iterator.hasNext();) {
+				model.removeLabelVariable(iterator.next());
 			}
-		};
+		});
 	}
 
 	private void createEnvironmentVariablesContainer(
@@ -812,56 +783,46 @@ image);
 	}
 
 	private SelectionListener onAddEnvironmentVariable() {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final ContainerEnvironmentVariableDialog dialog = new ContainerEnvironmentVariableDialog(
-						getShell());
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					model.getEnvironmentVariables()
-							.add(dialog.getEnvironmentVariable());
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final ContainerEnvironmentVariableDialog dialog = new ContainerEnvironmentVariableDialog(
+					getShell());
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				model.getEnvironmentVariables()
+						.add(dialog.getEnvironmentVariable());
 			}
-		};
+		});
 	}
 
 	private SelectionListener onEditEnvironmentVariable(
 			final TableViewer environmentVariablesTableViewer) {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final EnvironmentVariableModel selectedVariable = (EnvironmentVariableModel) environmentVariablesTableViewer
-						.getStructuredSelection().getFirstElement();
-				final ContainerEnvironmentVariableDialog dialog = new ContainerEnvironmentVariableDialog(
-						getShell(), selectedVariable);
-				dialog.create();
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					selectedVariable.setName(
-							dialog.getEnvironmentVariable().getName());
-					selectedVariable.setValue(
-							dialog.getEnvironmentVariable().getValue());
-					environmentVariablesTableViewer.refresh();
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final EnvironmentVariableModel selectedVariable = (EnvironmentVariableModel) environmentVariablesTableViewer
+					.getStructuredSelection().getFirstElement();
+			final ContainerEnvironmentVariableDialog dialog = new ContainerEnvironmentVariableDialog(
+					getShell(), selectedVariable);
+			dialog.create();
+			if (dialog.open() == IDialogConstants.OK_ID) {
+				selectedVariable
+						.setName(dialog.getEnvironmentVariable().getName());
+				selectedVariable
+						.setValue(dialog.getEnvironmentVariable().getValue());
+				environmentVariablesTableViewer.refresh();
 			}
-		};
+		});
 	}
 
 	private SelectionListener onRemoveEnvironmentVariables(
 			final TableViewer linksTableViewer) {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final IStructuredSelection selection = linksTableViewer
-						.getStructuredSelection();
-				for (@SuppressWarnings("unchecked")
-				Iterator<EnvironmentVariableModel> iterator = selection
-						.iterator(); iterator.hasNext();) {
-					model.removeEnvironmentVariable(iterator.next());
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final IStructuredSelection selection = linksTableViewer
+					.getStructuredSelection();
+			for (@SuppressWarnings("unchecked")
+			Iterator<EnvironmentVariableModel> iterator = selection
+					.iterator(); iterator.hasNext();) {
+				model.removeEnvironmentVariable(iterator.next());
 			}
-		};
+		});
 	}
 
 	private static void setControlsEnabled(final Control[] controls,

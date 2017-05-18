@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2016 Red Hat Inc. and others.
+ * Copyright (c) 2012, 2017 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,8 +22,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -86,12 +85,7 @@ public class StapNewWizardPage extends WizardPage {
 
         Button button = new Button(container, SWT.PUSH);
         button.setText(resourceBundle.getString("StapNewWizardPage.Browse")); //$NON-NLS-1$
-        button.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                handleBrowse();
-            }
-        });
+		button.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> handleBrowse()));
         initialize();
         dialogChanged();
         setControl(container);

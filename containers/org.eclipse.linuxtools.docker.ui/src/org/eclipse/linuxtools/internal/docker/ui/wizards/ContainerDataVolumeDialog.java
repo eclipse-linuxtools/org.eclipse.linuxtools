@@ -44,8 +44,6 @@ import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunResourceVolumesVariablesModel.MountType;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
@@ -343,32 +341,24 @@ public class ContainerDataVolumeDialog extends Dialog {
 	}
 
 	private SelectionListener onHostDirectoryPath() {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				final DirectoryDialog directoryDialog = new DirectoryDialog(
-						getShell());
-				final String selectedPath = directoryDialog.open();
-				if (selectedPath != null) {
-					model.setHostPathMount(selectedPath);
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final DirectoryDialog directoryDialog = new DirectoryDialog(
+					getShell());
+			final String selectedPath = directoryDialog.open();
+			if (selectedPath != null) {
+				model.setHostPathMount(selectedPath);
 			}
-		};
+		});
 	}
 
 	private SelectionListener onHostFilePath() {
-		return new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				final FileDialog fileDialog = new FileDialog(getShell());
-				final String selectedPath = fileDialog.open();
-				if (selectedPath != null) {
-					model.setHostPathMount(selectedPath);
-				}
+		return SelectionListener.widgetSelectedAdapter(e -> {
+			final FileDialog fileDialog = new FileDialog(getShell());
+			final String selectedPath = fileDialog.open();
+			if (selectedPath != null) {
+				model.setHostPathMount(selectedPath);
 			}
-		};
+		});
 	}
 
 	/**

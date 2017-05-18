@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2015 Red Hat, Inc.
+ * Copyright (c) 2013, 2017 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,8 +29,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -88,19 +87,16 @@ public abstract class AbstractProfilingOptionsTab extends AbstractLaunchConfigur
         tabgroup.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true,
                 true));
 
-        providerCombo.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                String curProviderId = comboItems.get(providerCombo.getText());
-                loadTabGroupItems(tabgroup, curProviderId);
-                initializeFrom(initial);
-                // Since we are calling initializeFrom manually, we have to
-                // update the launch configuration dialog manually to ensure
-                // initial validation on the configuration.
-                updateLaunchConfigurationDialog();
-                top.layout();
-            }
-        });
+		providerCombo.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+			String curProviderId = comboItems.get(providerCombo.getText());
+			loadTabGroupItems(tabgroup, curProviderId);
+			initializeFrom(initial);
+			// Since we are calling initializeFrom manually, we have to
+			// update the launch configuration dialog manually to ensure
+			// initial validation on the configuration.
+			updateLaunchConfigurationDialog();
+			top.layout();
+		}));
     }
 
     /**

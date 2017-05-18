@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 STMicroelectronics.
+ * Copyright (c) 2009, 2017 STMicroelectronics and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -191,12 +191,8 @@ public class ChartDialog extends Dialog {
         barGraphButton = new Button(chartTypeGroup, SWT.RADIO);
         barGraphButton.setText(Messages.ChartConstants_BAR_GRAPH);
         barGraphButton.addSelectionListener(listener);
-        barGraphButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                verticalBarsButton.setEnabled(barGraphButton.getSelection());
-            }
-        });
+		barGraphButton.addSelectionListener(SelectionListener
+				.widgetSelectedAdapter(e -> verticalBarsButton.setEnabled(barGraphButton.getSelection())));
         data = new GridData();
         barGraphButton.setLayoutData(data);
 
