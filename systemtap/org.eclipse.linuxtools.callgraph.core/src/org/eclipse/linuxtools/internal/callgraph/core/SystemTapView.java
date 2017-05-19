@@ -20,6 +20,10 @@ import java.io.InputStreamReader;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.NotEnabledException;
+import org.eclipse.core.commands.NotHandledException;
+import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -35,8 +39,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.UIJob;
@@ -74,16 +77,19 @@ public abstract class SystemTapView extends ViewPart {
     /**
      * If view is not maximized it will be maximized
      */
-    public void maximizeIfUnmaximized() {
-        IWorkbenchPage page = this.getViewSite()
-                .getWorkbenchWindow().getActivePage();
+	public void maximizeIfUnmaximized() {
+		IWorkbenchPage page = this.getViewSite().getWorkbenchWindow().getActivePage();
 
-        if (page.getPartState(page.getActivePartReference()) != IWorkbenchPage.STATE_MAXIMIZED) {
-            IWorkbenchAction action = ActionFactory.MAXIMIZE.create(this
-                    .getViewSite().getWorkbenchWindow());
-            action.run();
-        }
-    }
+		if (page.getPartState(page.getActivePartReference()) != IWorkbenchPage.STATE_MAXIMIZED) {
+			IHandlerService handlerService = getSite().getService(IHandlerService.class);
+			try {
+				handlerService.executeCommand("org.eclipse.ui.window.maximizePart", null); //$NON-NLS-1$
+			} catch (ExecutionException | NotDefinedException | NotEnabledException | NotHandledException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 
     /**
      * Schedules the updateMethod job in a UI Thread. Does not return until
