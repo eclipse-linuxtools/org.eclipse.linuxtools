@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 IBM Corporation and others.
+ * Copyright (c) 2012, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -149,17 +148,14 @@ public class FileSystemSelectionArea {
      * @return FileSystemElement or <code>null</code> if nothing
      * is selected.
      */
-    public FileSystemElement getSelectedFileSystem() {
-        ISelection selection = fileSystems.getSelection();
+	public FileSystemElement getSelectedFileSystem() {
+		IStructuredSelection selection = fileSystems.getStructuredSelection();
 
-        if (selection instanceof IStructuredSelection) {
-            IStructuredSelection structured = (IStructuredSelection) selection;
-            if (structured.size() == 1) {
-                return ((FileSystemElement) structured.getFirstElement());
-            }
-        }
-        return null;
-    }
+		if (selection.size() == 1) {
+			return ((FileSystemElement) selection.getFirstElement());
+		}
+		return null;
+	}
 
     /**
      * Set the filesystem selection combo box to the specified scheme.

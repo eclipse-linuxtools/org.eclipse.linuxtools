@@ -11,7 +11,6 @@
 
 package org.eclipse.linuxtools.internal.rpm.ui.editor.outline;
 
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -84,11 +83,11 @@ public class SpecfileContentOutlinePage extends ContentOutlinePage {
 
 		// find out which item in tree viewer we have selected, and set
 		// highlight range accordingly
-		ISelection selection = event.getSelection();
+		IStructuredSelection selection = event.getStructuredSelection();
 		if (selection.isEmpty()) {
 			editor.resetHighlightRange();
 		} else {
-			SpecfileElement element = (SpecfileElement) ((IStructuredSelection) selection).getFirstElement();
+			SpecfileElement element = (SpecfileElement) selection.getFirstElement();
 
 			int start = element.getLineStartPosition();
 			try {

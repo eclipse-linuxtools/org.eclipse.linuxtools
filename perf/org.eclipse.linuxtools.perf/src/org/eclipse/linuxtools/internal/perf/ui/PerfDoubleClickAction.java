@@ -1,5 +1,5 @@
 /*******************************************************************************
- * (C) Copyright 2010 IBM Corp. 2010
+ * (C) Copyright 2010, 2017 IBM Corp. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.internal.perf.PerfPlugin;
@@ -39,8 +38,8 @@ public class PerfDoubleClickAction extends Action {
     }
     @Override
     public void run() {
-        ISelection selection = viewer.getSelection();
-        Object obj = ((IStructuredSelection)selection).getFirstElement();
+        IStructuredSelection selection = viewer.getStructuredSelection();
+        Object obj = selection.getFirstElement();
 
         try {
             if (obj instanceof PMLineRef) {

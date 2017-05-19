@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+ * Copyright (c) 2006, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -70,8 +70,7 @@ public class TreeExpandCollapseAction extends Action implements
      */
     @Override
     public void run() {
-        ISelection incoming = viewer.getViewer().getSelection();
-        IStructuredSelection selection = (IStructuredSelection)incoming;
+		IStructuredSelection selection = viewer.getViewer().getStructuredSelection();
         Object o = selection.getFirstElement();
 
         if(o == null) {

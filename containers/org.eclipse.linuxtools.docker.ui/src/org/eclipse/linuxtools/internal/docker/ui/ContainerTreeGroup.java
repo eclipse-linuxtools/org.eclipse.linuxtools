@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2015 IBM Corporation and others.
+ * Copyright (c) 2000, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -208,8 +208,7 @@ public class ContainerTreeGroup extends EventManager implements
 	 */
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
-		IStructuredSelection selection = (IStructuredSelection) event
-				.getSelection();
+		IStructuredSelection selection = event.getStructuredSelection();
 		Object selectedElement = selection.getFirstElement();
 		currentTreeSelection = selectedElement;
 		notifySelectionChangeListeners(event);

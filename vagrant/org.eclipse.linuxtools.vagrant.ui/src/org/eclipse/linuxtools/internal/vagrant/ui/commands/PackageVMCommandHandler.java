@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.internal.vagrant.ui.wizards.PackageVMWizard;
 import org.eclipse.linuxtools.vagrant.core.IVagrantConnection;
 import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
@@ -38,7 +38,8 @@ public class PackageVMCommandHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) {
-		final ISelection selection = HandlerUtil.getCurrentSelection(event);
+		final IStructuredSelection selection = HandlerUtil
+				.getCurrentStructuredSelection(event);
 		List<IVagrantVM> vms = CommandUtils.getSelectedContainers(selection);
 		IVagrantVM vm = vms.iterator().next();
 		PackageVMWizard wizard = new PackageVMWizard();

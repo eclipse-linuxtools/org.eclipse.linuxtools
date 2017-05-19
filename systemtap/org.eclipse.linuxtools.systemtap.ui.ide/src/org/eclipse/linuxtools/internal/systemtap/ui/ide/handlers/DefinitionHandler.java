@@ -17,8 +17,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.CommentRemover;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.OpenFileHandler;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
@@ -51,15 +50,13 @@ public class DefinitionHandler extends AbstractHandler {
         return null;
     }
 
-    private TreeDefinitionNode getSelection(ExecutionEvent event) {
-        ISelection selection = HandlerUtil.getCurrentSelection(event);
-        if (selection instanceof StructuredSelection) {
-            Object[] selections = ((StructuredSelection) selection).toArray();
-            return (selections.length == 1 && selections[0] instanceof TreeDefinitionNode)
-                    ? (TreeDefinitionNode) selections[0] : null;
-        }
-        return null;
-    }
+	private TreeDefinitionNode getSelection(ExecutionEvent event) {
+		IStructuredSelection selection = HandlerUtil.getCurrentStructuredSelection(event);
+		Object[] selections = selection.toArray();
+		return (selections.length == 1 && selections[0] instanceof TreeDefinitionNode)
+				? (TreeDefinitionNode) selections[0]
+				: null;
+	}
 
     private int findDefinitionLine(ISearchableNode data, STPEditor editor) {
         int locationIndex;

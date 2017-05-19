@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2015 Red Hat.
+ * Copyright (c) 2014, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -29,7 +29,8 @@ public abstract class BaseVMCommandHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) {
-		final ISelection selection = HandlerUtil.getCurrentSelection(event);
+		final IStructuredSelection selection = HandlerUtil
+				.getCurrentStructuredSelection(event);
 		final List<IVagrantVM> selectedContainers = CommandUtils
 				.getSelectedContainers(selection);
 		final Job job = new Job(getJobName(selectedContainers)) {

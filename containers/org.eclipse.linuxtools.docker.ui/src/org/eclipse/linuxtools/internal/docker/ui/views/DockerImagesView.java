@@ -32,7 +32,9 @@ import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
@@ -467,11 +469,11 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 	/**
 	 * @return the current selection
 	 */
-	public ISelection getSelection() {
-		if(this.viewer != null) {
-			return this.viewer.getSelection();
+	public IStructuredSelection getStructuredSelection() {
+		if (this.viewer != null) {
+			return this.viewer.getStructuredSelection();
 		}
-		return null;
+		return StructuredSelection.EMPTY;
 	}
 
 	/**

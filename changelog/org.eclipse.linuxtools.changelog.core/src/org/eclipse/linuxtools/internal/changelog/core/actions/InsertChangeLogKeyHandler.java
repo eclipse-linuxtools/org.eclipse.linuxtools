@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 Phil Muldoon <pkmuldoon@picobot.org>.
+ * Copyright (c) 2006, 2017 Phil Muldoon <pkmuldoon@picobot.org>.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,10 +27,6 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-
-/**
- * @author pmuldoon (Phil Muldoon)
- */
 public class InsertChangeLogKeyHandler extends ChangeLogAction implements
         IHandler, IWorkbenchWindowActionDelegate {
 
