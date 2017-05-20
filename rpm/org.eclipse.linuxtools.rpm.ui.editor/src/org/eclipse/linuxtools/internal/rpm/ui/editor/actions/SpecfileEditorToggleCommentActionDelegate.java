@@ -22,23 +22,21 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.ISpecfileSpecialSymbols;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.eclipse.ui.texteditor.ITextEditor;
 
 public class SpecfileEditorToggleCommentActionDelegate extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) {
 		IEditorPart editor = HandlerUtil.getActiveEditor(event);
-		if (!(editor instanceof SpecfileEditor)) {
-			return null;
-		}
-
-		SpecfileEditor specfileEditor = (SpecfileEditor) editor;
-		IDocument document = specfileEditor.getAdapter(IDocument.class);
-		ISelection currentSelection = specfileEditor.getSpecfileSourceViewer().getSelection();
+		ITextEditor specfileEditor = editor.getAdapter(ITextEditor.class);
+		IDocumentProvider dp = specfileEditor.getDocumentProvider();
+		IDocument document = dp.getDocument(specfileEditor.getEditorInput());
+		ISelection currentSelection = HandlerUtil.getCurrentSelection(event);
 		if (currentSelection instanceof ITextSelection) {
 			ITextSelection selection = (ITextSelection) currentSelection;
 			String selectedContent = ""; //$NON-NLS-1$

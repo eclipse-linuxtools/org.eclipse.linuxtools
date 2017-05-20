@@ -16,7 +16,6 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyListener;
@@ -29,15 +28,16 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.texteditor.ITextEditor;
 
 public class SpecfileQuickOutlineDialog extends PopupDialog {
 
 	TreeViewer treeViewer;
 	private Text filterText;
-	private SpecfileEditor editor;
+	private ITextEditor editor;
 	private ContainsFilter treeViewerFilter;
 
-	public SpecfileQuickOutlineDialog(Shell parent, int shellStyle, SpecfileEditor editor) {
+	public SpecfileQuickOutlineDialog(Shell parent, int shellStyle, ITextEditor editor) {
 		super(parent, shellStyle, true, true, true, true, true, null, null);
 		this.editor = editor;
 		create();

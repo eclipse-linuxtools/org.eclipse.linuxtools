@@ -439,12 +439,11 @@
          point="org.eclipse.core.expressions.definitions">
       <definition
             id="org.eclipse.linuxtools.rpm.ui.editor.specEditorActive">
-         <with
-               variable="activePart">
-            <instanceof
-                  value="org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileEditor">
-            </instanceof>
-         </with>
+          <with variable="activeEditorInput">
+			 <adapt type="org.eclipse.core.resources.IFile">
+         		 <test property="org.eclipse.core.resources.contentTypeId" value="org.eclipse.linuxtools.rpm.editor.content-type" />
+    		 </adapt>
+		  </with>
       </definition>
    </extension>
     <extension

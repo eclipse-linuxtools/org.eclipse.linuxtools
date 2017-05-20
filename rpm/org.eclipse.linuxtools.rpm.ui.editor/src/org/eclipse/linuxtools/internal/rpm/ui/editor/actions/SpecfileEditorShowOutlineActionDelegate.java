@@ -12,22 +12,21 @@ package org.eclipse.linuxtools.internal.rpm.ui.editor.actions;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.outline.SpecfileQuickOutlineDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.texteditor.ITextEditor;
 
 public class SpecfileEditorShowOutlineActionDelegate extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) {
 		IEditorPart editor = HandlerUtil.getActiveEditor(event);
-		if (editor instanceof SpecfileEditor) {
-			SpecfileQuickOutlineDialog quickOutlinePopupDialog = new SpecfileQuickOutlineDialog(
-					editor.getSite().getShell(), SWT.NONE, (SpecfileEditor) editor);
-			quickOutlinePopupDialog.setVisible(true);
-		}
+		ITextEditor textEditor = editor.getAdapter(ITextEditor.class);
+		SpecfileQuickOutlineDialog quickOutlinePopupDialog = new SpecfileQuickOutlineDialog(editor.getSite().getShell(),
+				SWT.NONE, textEditor);
+		quickOutlinePopupDialog.setVisible(true);
 		return null;
 	}
 
