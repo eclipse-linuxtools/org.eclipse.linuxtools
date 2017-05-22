@@ -1,3 +1,0 @@
-nmi_watchdog=opcontrolNmiWatchdog
-distinct=opcontrolDistinct
-sudo=opcontrolSudo
