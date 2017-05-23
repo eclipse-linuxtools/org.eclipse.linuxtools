@@ -258,7 +258,7 @@
 							<dependency>
 								<groupId>org.eclipse.mylyn.docs</groupId>
 								<artifactId>org.eclipse.mylyn.wikitext.mediawiki.ant</artifactId>
-								<version>3.0.8</version>
+								<version>3.0.9</version>
 							</dependency>
 						</dependencies>
 					</plugin>
