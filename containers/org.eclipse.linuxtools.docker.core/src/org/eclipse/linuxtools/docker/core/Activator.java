@@ -36,6 +36,7 @@ public class Activator extends Plugin {
 	public void start(BundleContext bundleContext) throws Exception {
 		super.start(bundleContext);
 		plugin = this;
+		DockerConnectionManager.getInstance();
 	}
 
 	@Override
