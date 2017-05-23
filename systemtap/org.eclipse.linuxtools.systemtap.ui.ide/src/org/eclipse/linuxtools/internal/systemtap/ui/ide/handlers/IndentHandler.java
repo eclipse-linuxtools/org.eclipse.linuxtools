@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010, 2013 IBM Corporation and others.
+ * Copyright (c) 2000, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -59,22 +59,6 @@ public class IndentHandler extends AbstractHandler {
     /** The caret offset after an indent operation. */
     private int fCaretOffset;
 
-    private class STPRunnable implements Runnable {
-        private ITextEditor editor;
-
-        public STPRunnable(ITextEditor editor) {
-            this.editor = editor;
-        }
-
-        public ITextEditor getTextEditor() {
-            return editor;
-        }
-
-        @Override
-        public void run() {
-        }
-    }
-
     /**
      * Whether this is the action invoked by TAB. When <code>true</code>,
      * indentation behaves differently to accommodate normal TAB operation.
@@ -102,73 +86,61 @@ public class IndentHandler extends AbstractHandler {
             final int firstLine, nLines;
             fCaretOffset = -1;
 
-            try {
-                firstLine = document.getLineOfOffset(offset);
-                // check for marginal (zero-length) lines
-                int minusOne = length == 0 ? 0 : 1;
-                nLines = document.getLineOfOffset(offset + length - minusOne)
-                        - firstLine + 1;
-                document.addPosition(end);
-            } catch (BadLocationException e) {
-                // will only happen on concurrent modification
-                IDEPlugin.log(new Status(IStatus.ERROR,
-                        IDEPlugin.PLUGIN_ID, IStatus.OK, "", e)); //$NON-NLS-1$
-                return null;
-            }
+			try {
+				firstLine = document.getLineOfOffset(offset);
+				// check for marginal (zero-length) lines
+				int minusOne = length == 0 ? 0 : 1;
+				nLines = document.getLineOfOffset(offset + length - minusOne) - firstLine + 1;
+				document.addPosition(end);
+			} catch (BadLocationException e) {
+				// will only happen on concurrent modification
+				IDEPlugin.log(new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID, IStatus.OK, "", e)); //$NON-NLS-1$
+				return null;
+			}
 
-            Runnable runnable = new STPRunnable(editor) {
-                @Override
-                public void run() {
-                    IRewriteTarget target = getTextEditor()
-                            .getAdapter(IRewriteTarget.class);
-                    if (target != null) {
-                        target.beginCompoundChange();
-                    }
+			Runnable runnable = () -> {
+				IRewriteTarget target = editor.getAdapter(IRewriteTarget.class);
+				if (target != null) {
+					target.beginCompoundChange();
+				}
 
-                    try {
-                        STPHeuristicScanner scanner = new STPHeuristicScanner(
-                                document);
-                        STPIndenter indenter = new STPIndenter(document,
-                                scanner, getProject(getTextEditor()));
-                        final boolean multiLine = nLines > 1;
-                        boolean hasChanged = false;
-                        for (int i = 0; i < nLines; i++) {
-                            hasChanged |= indentLine(document, firstLine + i,
-                                    offset, indenter, scanner, multiLine);
-                        }
+				try {
+					STPHeuristicScanner scanner = new STPHeuristicScanner(document);
+					STPIndenter indenter = new STPIndenter(document, scanner, getProject(editor));
+					final boolean multiLine = nLines > 1;
+					boolean hasChanged = false;
+					for (int i = 0; i < nLines; i++) {
+						hasChanged |= indentLine(document, firstLine + i, offset, indenter, scanner, multiLine);
+					}
 
-                        // update caret position: move to new position when
-                        // indenting just one line
-                        // keep selection when indenting multiple
-                        int newOffset, newLength;
-                        if (!fIsTabAction && multiLine) {
-                            newOffset = offset;
-                            newLength = end.getOffset() - offset;
-                        } else {
-                            newOffset = fCaretOffset;
-                            newLength = 0;
-                        }
+					// update caret position: move to new position when
+					// indenting just one line
+					// keep selection when indenting multiple
+					int newOffset, newLength;
+					if (!fIsTabAction && multiLine) {
+						newOffset = offset;
+						newLength = end.getOffset() - offset;
+					} else {
+						newOffset = fCaretOffset;
+						newLength = 0;
+					}
 
-                        // always reset the selection if anything was replaced
-                        // but not when we had a single line non-tab invocation
-                        if (newOffset != -1
-                                && (hasChanged || newOffset != offset || newLength != length))
-                            selectAndReveal(getTextEditor(), newOffset,
-                                    newLength);
+					// always reset the selection if anything was replaced
+					// but not when we had a single line non-tab invocation
+					if (newOffset != -1 && (hasChanged || newOffset != offset || newLength != length))
+						selectAndReveal(editor, newOffset, newLength);
 
-                    } catch (BadLocationException e) {
-                        // will only happen on concurrent modification
-                        IDEPlugin.log(new Status(IStatus.ERROR, IDEPlugin
-                                .PLUGIN_ID, IStatus.OK,
-                                "ConcurrentModification in IndentAction", e)); //$NON-NLS-1$
-                    } finally {
-                        document.removePosition(end);
-                        if (target != null) {
-                            target.endCompoundChange();
-                        }
-                    }
-                }
-            };
+				} catch (BadLocationException e) {
+					// will only happen on concurrent modification
+					IDEPlugin.log(new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID, IStatus.OK,
+							"ConcurrentModification in IndentAction", e)); //$NON-NLS-1$
+				} finally {
+					document.removePosition(end);
+					if (target != null) {
+						target.endCompoundChange();
+					}
+				}
+			};
 
             if (nLines > 50) {
                 Display display = editor.getEditorSite().getWorkbenchWindow()
