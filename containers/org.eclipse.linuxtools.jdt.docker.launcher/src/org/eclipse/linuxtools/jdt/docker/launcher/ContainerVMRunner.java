@@ -46,7 +46,7 @@ public class ContainerVMRunner extends StandardVMRunner {
 
 		ContainerLauncher launch = new ContainerLauncher();
 		launch.launch("org.eclipse.linuxtools.jdt.docker.launcher", new JavaAppInContainerLaunchListener(), connectionUri, //$NON-NLS-1$
-				"fedora-java", command, null, workingDirectory.getAbsolutePath(), null,
+				fVMInstance.getId(), command, null, workingDirectory.getAbsolutePath(), null,
 				System.getenv(), null,
 				null, false, true, true);
 
@@ -105,7 +105,7 @@ public class ContainerVMRunner extends StandardVMRunner {
 	@Override
 	protected boolean fileExists(File file) {
 		DockerConnection conn = (DockerConnection) DockerConnectionManager.getInstance().getFirstConnection();
-		ImageQuery q = new ImageQuery(conn, "fedora-java");
+		ImageQuery q = new ImageQuery(conn, fVMInstance.getId());
 		try {
 			return q.isFile(file);
 		} finally {

@@ -33,6 +33,7 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
+import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.osgi.util.NLS;
 
@@ -53,11 +54,21 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 		if (monitor.isCanceled()) {
 			return;
 		}
+		String connectionURI = configuration.getAttribute("org.eclipse.linuxtools.jdt.docker.launcher.connection.uri", (String) null); //$NON-NLS-1$
+		String imageID = configuration.getAttribute("org.eclipse.linuxtools.jdt.docker.launcher.image.id", (String) null); //$NON-NLS-1$
+
+		if (connectionURI == null || imageID == null) {
+			return;
+		}
+
 		try {
+			DockerConnection conn = (DockerConnection) DockerConnectionManager.getInstance().getConnectionByUri(connectionURI);
+			IDockerImage img = conn.getImage(imageID);
+
 			monitor.subTask("Verifying launch attributes...");
 
 			String mainTypeName = verifyMainTypeName(configuration);
-			IVMInstall vm = new ContainerVMInstall(configuration);
+			IVMInstall vm = new ContainerVMInstall(configuration, img);
 			ContainerVMRunner runner = new ContainerVMRunner(vm);
 
 			File workingDir = verifyWorkingDirectory(configuration);
@@ -87,7 +98,7 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 
 			List<String> finalVMArgs = new ArrayList<> (Arrays.asList(execArgs.getVMArgumentsArray()));
 			if (ILaunchManager.DEBUG_MODE.equals(mode)) {
-				double version = getJavaVersion();
+				double version = getJavaVersion(conn, img);
 				if (version < 1.5) {
 					finalVMArgs.add("-Xdebug"); //$NON-NLS-1$
 					finalVMArgs.add("-Xnoagent"); //$NON-NLS-1$
@@ -164,9 +175,8 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 		}
 	}
 
-	private double getJavaVersion() {
-		DockerConnection conn = (DockerConnection) DockerConnectionManager.getInstance().getFirstConnection();
-		ImageQuery q = new ImageQuery(conn, "fedora-java");
+	private double getJavaVersion(DockerConnection conn, IDockerImage img) {
+		ImageQuery q = new ImageQuery(conn, img.id());
 		double res = q.getJavaVersion();
 		q.destroy();
 		return res;
