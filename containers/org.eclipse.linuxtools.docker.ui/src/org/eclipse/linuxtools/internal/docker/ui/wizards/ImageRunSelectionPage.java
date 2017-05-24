@@ -687,6 +687,18 @@ public class ImageRunSelectionPage extends WizardPage {
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.PRIVILEGED)
 						.observe(model));
+
+		// seccomp:unconfined
+		final Button unconfinedButton = new Button(container, SWT.CHECK);
+		unconfinedButton.setText(
+				WizardMessages.getString("ImageRunSelectionPage.unconfined")); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
+				.span(COLUMNS, 1).grab(true, false).applyTo(unconfinedButton);
+		dbc.bindValue(WidgetProperties.selection().observe(unconfinedButton),
+				BeanProperties
+						.value(ImageRunSelectionModel.class,
+								ImageRunSelectionModel.UNCONFINED)
+						.observe(model));
 	}
 
 	/**

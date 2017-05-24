@@ -66,6 +66,10 @@ public class MockContainerInfoFactory {
 		return new Builder().privilegedMode(mode);
 	}
 
+	public static Builder securityOpt(String profile) {
+		return new Builder().securityOpt(profile);
+	}
+
 	public static Builder labels(Map<String, String> labels) {
 		return new Builder().labels(labels);
 	}
@@ -87,6 +91,8 @@ public class MockContainerInfoFactory {
 		private String ipAddress;
 
 		private Boolean privilegedMode;
+
+		private List<String> securityOpt;
 
 		private Builder() {
 			this.containerInfo = Mockito.mock(ContainerInfo.class, Mockito.RETURNS_DEEP_STUBS);
@@ -139,6 +145,14 @@ public class MockContainerInfoFactory {
 			return this;
 		}
 
+		public Builder securityOpt(final String opt) {
+			if (this.securityOpt == null) {
+				this.securityOpt = new ArrayList<>();
+			}
+			this.securityOpt.add(opt);
+			return this;
+		}
+
 		public Builder volume(final String volume) {
 			if (this.volumes == null) {
 				this.volumes = new ArrayList<>();
@@ -177,6 +191,7 @@ public class MockContainerInfoFactory {
 			final HostConfig hostConfig = Mockito.mock(HostConfig.class);
 			Mockito.when(this.containerInfo.hostConfig()).thenReturn(hostConfig);
 			Mockito.when(hostConfig.links()).thenReturn(this.links);
+			Mockito.when(hostConfig.securityOpt()).thenReturn(this.securityOpt);
 			Mockito.when(hostConfig.binds()).thenReturn(this.volumes);
 			Mockito.when(hostConfig.networkMode()).thenReturn(this.networkMode);
 			Mockito.when(hostConfig.privileged()).thenReturn(this.privilegedMode);

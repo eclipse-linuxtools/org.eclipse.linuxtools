@@ -104,6 +104,14 @@ public class ImageRunSelectionPage extends WizardPage {
 	public void setGiveExtendedPrivileges() {
 		setGiveExtendedPrivileges(true);
 	}
+	
+	public void setUnconfined(boolean checked) {
+		new CheckBox("Use unconfined seccomp profile (--securityOpt seccomp=unconfined)").toggle(checked);
+	}
+	
+	public void setUnconfined() {
+		setUnconfined(true);
+	}
 
 	public void addExposedPort(String containerPort, String hostAddress, String hostPort) {
 		new PushButton(0, new WithTextMatcher("Add...")).click();

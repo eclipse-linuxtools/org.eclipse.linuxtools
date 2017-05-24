@@ -199,6 +199,11 @@ public class ImageRun extends Wizard {
 		hostConfigBuilder.binds(binds);
 		hostConfigBuilder.volumesFrom(volumesFrom);
 		hostConfigBuilder.privileged(selectionModel.isPrivileged());
+		if (selectionModel.isUnconfined()) {
+			List<String> seccomp = new ArrayList<>();
+			seccomp.add("seccomp:unconfined"); //$NON-NLS-1$
+			hostConfigBuilder.securityOpt(seccomp);
+		}
 		String networkMode = networkModel.getNetworkModeString();
 		// if network mode is not default, set it in host config
 		if (networkMode != null

@@ -19,6 +19,7 @@ import org.eclipse.linuxtools.docker.integration.tests.container.ExposePortTest;
 import org.eclipse.linuxtools.docker.integration.tests.container.LabelsTest;
 import org.eclipse.linuxtools.docker.integration.tests.container.LinkContainersTest;
 import org.eclipse.linuxtools.docker.integration.tests.container.PrivilegedModeTest;
+import org.eclipse.linuxtools.docker.integration.tests.container.UnconfinedTest;
 import org.eclipse.linuxtools.docker.integration.tests.container.VariablesTest;
 import org.eclipse.linuxtools.docker.integration.tests.container.VolumeMountTest;
 import org.eclipse.linuxtools.docker.integration.tests.image.BuildImageTest;
@@ -57,6 +58,7 @@ import org.junit.runners.Suite;
 	ContainerTabTest.class,
 	VolumeMountTest.class,
 	PrivilegedModeTest.class,
+	UnconfinedTest.class,
 	VariablesTest.class,
 	LinkContainersTest.class,
 	DifferentRegistryTest.class,

@@ -69,6 +69,8 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 
 	public static final String PRIVILEGED = "privileged"; //$NON-NLS-1$
 
+	public static final String UNCONFINED = "unconfined"; //$NON-NLS-1$
+
 	private String selectedConnectionName = "";
 
 	private List<String> connectionNames;
@@ -104,6 +106,8 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 	private boolean removeWhenExits = false;
 
 	private boolean privileged = false;
+
+	private boolean unconfined = false;
 
 	public ImageRunSelectionModel(
 			final IDockerConnection selectedConnection) {
@@ -407,6 +411,15 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 	public void setPrivileged(boolean privileged) {
 		firePropertyChange(PRIVILEGED, this.privileged,
 				this.privileged = privileged);
+	}
+
+	public boolean isUnconfined() {
+		return unconfined;
+	}
+
+	public void setUnconfined(boolean unconfined) {
+		firePropertyChange(UNCONFINED, this.unconfined,
+				this.unconfined = unconfined);
 	}
 
 	public static class ExposedPortModel extends BaseDatabindingModel
