@@ -64,5 +64,13 @@
             id="org.eclipse.linuxtools.jdt.docker.launcher.JavaAppInContainerLaunchConfigurationTypeImage">
       </launchConfigurationTypeImage>
    </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.eclipse.linuxtools.jdt.docker.launcher.JavaAppInContainerLaunchConfigurationTabGroup"
+            id="org.eclipse.linuxtools.jdt.docker.launcher.JavaAppInContainerLaunchConfigurationTabGroup"
+            type="org.eclipse.linuxtools.jdt.docker.launcher.JavaAppInContainerLaunchConfigurationType">
+      </launchConfigurationTabGroup>
+   </extension>
 
 </plugin>
