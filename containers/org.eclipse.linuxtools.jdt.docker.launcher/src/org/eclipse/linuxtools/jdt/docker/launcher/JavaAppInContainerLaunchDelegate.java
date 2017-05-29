@@ -65,7 +65,7 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 			DockerConnection conn = (DockerConnection) DockerConnectionManager.getInstance().getConnectionByUri(connectionURI);
 			IDockerImage img = conn.getImage(imageID);
 
-			monitor.subTask("Verifying launch attributes...");
+			monitor.subTask(Messages.JavaAppInContainerLaunchDelegate_Verifying_launch_attributes____1);
 
 			String mainTypeName = verifyMainTypeName(configuration);
 			IVMInstall vm = new ContainerVMInstall(configuration, img);
@@ -133,7 +133,7 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 			// done the verification phase
 			monitor.worked(1);
 
-			monitor.subTask("Creating source locator...");
+			monitor.subTask(Messages.JavaAppInContainerLaunchDelegate_Creating_source_locator____2);
 			// set the default source locator if required
 			setDefaultSourceLocator(launch, configuration);
 			monitor.worked(1);

@@ -40,7 +40,7 @@ public class ImageSelectionDialog extends SelectionDialog {
 
 	protected ImageSelectionDialog(Shell parentShell) {
 		super(parentShell);
-		setTitle("Image Selection");
+		setTitle(Messages.ImageSelectionDialog_title);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class ImageSelectionDialog extends SelectionDialog {
 		composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 
 		Label connLbl = new Label(composite, SWT.NONE);
-		connLbl.setText("Connection :");
+		connLbl.setText(Messages.ImageSelectionDialog_connection_label);
 		ComboViewer connCmb = new ComboViewer(composite, SWT.READ_ONLY);
 		connCmb.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
 		connCmb.setContentProvider(new IStructuredContentProvider() {
@@ -71,7 +71,7 @@ public class ImageSelectionDialog extends SelectionDialog {
 		connCmb.setInput("place_holder"); //$NON-NLS-1$
 
 		Label imageLbl = new Label(composite, SWT.NONE);
-		imageLbl.setText("Image :");
+		imageLbl.setText(Messages.ImageSelectionDialog_image_label);
 		ComboViewer imageCmb = new ComboViewer(composite, SWT.READ_ONLY);
 		imageCmb.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
 		imageCmb.setContentProvider(new IStructuredContentProvider() {
