@@ -49,8 +49,8 @@
   </distributionManagement>
 
   <properties>
-    <mirror-repo-name>updates-nightly</mirror-repo-name>
-    <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
+    <mirror-repo-name>update-6.0.0</mirror-repo-name>
+    <mirror-docker-repo-name>update-docker-3.0.0</mirror-docker-repo-name>
     <tycho-version>1.0.0</tycho-version>
     <tycho-extras-version>1.0.0</tycho-extras-version>
     <target-platform>linuxtools-e4.7</target-platform>
