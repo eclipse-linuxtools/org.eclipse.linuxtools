@@ -11,8 +11,15 @@
 package org.eclipse.linuxtools.jdt.docker.launcher;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,10 +72,15 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 			DockerConnection conn = (DockerConnection) DockerConnectionManager.getInstance().getConnectionByUri(connectionURI);
 			IDockerImage img = conn.getImage(imageID);
 
+			// randomized port between 1025 and 65535
+			int port = ILaunchManager.DEBUG_MODE.equals(mode)
+					? (int)((65535 - 1025) * Math.random()) + 1025
+					: -1;
+
 			monitor.subTask(Messages.JavaAppInContainerLaunchDelegate_Verifying_launch_attributes____1);
 
 			String mainTypeName = verifyMainTypeName(configuration);
-			IVMInstall vm = new ContainerVMInstall(configuration, img);
+			IVMInstall vm = new ContainerVMInstall(configuration, img, port);
 			ContainerVMRunner runner = new ContainerVMRunner(vm);
 
 			File workingDir = verifyWorkingDirectory(configuration);
@@ -90,6 +102,9 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 
 			// Classpath
 			String[] classpath = getClasspath(configuration);
+			for (int i = 0; i < classpath.length; i++) {
+				classpath[i] = UnixFile.convertDOSPathToUnixPath(classpath[i]);
+			}
 
 			// Create VM config
 			VMRunnerConfiguration runConfig = new VMRunnerConfiguration(mainTypeName, classpath);
@@ -109,9 +124,9 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 					finalVMArgs.add("-Djava.compiler=NONE"); //$NON-NLS-1$
 				}
 				if (version < 1.5) {
-					finalVMArgs.add("-Xrunjdwp:transport=dt_socket,server=y,address=" + 8000); //$NON-NLS-1$
+					finalVMArgs.add("-Xrunjdwp:transport=dt_socket,server=y,address=" + port); //$NON-NLS-1$
 				} else {
-					finalVMArgs.add("-agentlib:jdwp=transport=dt_socket,server=y,address=" + 8000); //$NON-NLS-1$
+					finalVMArgs.add("-agentlib:jdwp=transport=dt_socket,server=y,address=" + port); //$NON-NLS-1$
 				}
 			}
 
@@ -160,9 +175,20 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 				}
 
 				String ip = runner.getIPAddress();
+				// The container has an IP and is listening
+				// Can we reach it ? Or is it on a different network.
+				if (!isListening(ip, port)) {
+					// Try to find some network interface that's listening
+					ip = getIPAddressListening(port);
+				}
+
+				if (ip == null) {
+					return;
+				}
+
 				Map<String, String> map = new HashMap<> ();
 				map.put("hostname", ip); //$NON-NLS-1$
-				map.put("port", String.valueOf(8000)); //$NON-NLS-1$
+				map.put("port", String.valueOf(port)); //$NON-NLS-1$
 				wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CONNECT_MAP, map);
 				String projectName = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null);
 				wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
@@ -180,6 +206,38 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 		double res = q.getJavaVersion();
 		q.destroy();
 		return res;
+	}
+
+	private boolean isListening (String addr, int port) {
+		try (Socket s = new Socket(addr, port))
+		{
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
+	}
+
+	private String getIPAddressListening (int port) {
+		Enumeration<NetworkInterface> ifaces;
+		try {
+			ifaces = NetworkInterface.getNetworkInterfaces();
+			while (ifaces.hasMoreElements()) {
+				NetworkInterface iface = ifaces.nextElement();
+				if (iface.isUp()) {
+					Enumeration<InetAddress> addrs = iface.getInetAddresses();
+					while (addrs.hasMoreElements()) {
+						InetAddress addr = addrs.nextElement();
+						if (addr instanceof Inet4Address
+								&& isListening(addr.getHostAddress(), port)) {
+							return addr.getHostAddress();
+						}
+					}
+				}
+			}
+		} catch (SocketException e) {
+		}
+
+		return null;
 	}
 
 }

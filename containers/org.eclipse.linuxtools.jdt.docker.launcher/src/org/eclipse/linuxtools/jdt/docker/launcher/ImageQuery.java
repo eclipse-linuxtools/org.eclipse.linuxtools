@@ -94,7 +94,7 @@ public class ImageQuery {
 	public File getDefaultJVMInstallLocation () {
 		final String JRE = "jre"; //$NON-NLS-1$
 		final String[] fgCandidateJavaFiles = {"javaw", "javaw.exe", "java", "java.exe", "j9w", "j9w.exe", "j9", "j9.exe"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-		final String[] fgCandidateJavaLocations = {JRE + File.separatorChar + "bin" + File.separatorChar, "bin" + File.separatorChar}; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] fgCandidateJavaLocations = {JRE + UnixFile.separatorChar + "bin" + UnixFile.separatorChar, "bin" + UnixFile.separatorChar}; //$NON-NLS-1$ //$NON-NLS-2$
 
 		String result = exec(new String [] {"sh", "-c", "readlink -f `which java`"});
 		if (result != null) {
@@ -103,7 +103,7 @@ public class ImageQuery {
 			for (int i = 0; i < fgCandidateJavaFiles.length; i++) {
 				for (int j = 0; j < fgCandidateJavaLocations.length; j++) {
 					if (result.endsWith(fgCandidateJavaLocations[j] + fgCandidateJavaFiles[i])) {
-						return new File(result.replace(fgCandidateJavaLocations[j] + fgCandidateJavaFiles[i], ""));
+						return new UnixFile(result.replace(fgCandidateJavaLocations[j] + fgCandidateJavaFiles[i], ""));
 					}
 				}
 			}
@@ -112,7 +112,7 @@ public class ImageQuery {
 			if (result != null) {
 				result = result.replaceAll("\n", "");
 			}
-			return new File(result);
+			return new UnixFile(result);
 		} else {
 			return null;
 		}

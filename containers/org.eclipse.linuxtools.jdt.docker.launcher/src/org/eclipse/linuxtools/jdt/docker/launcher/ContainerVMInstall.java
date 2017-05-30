@@ -28,10 +28,12 @@ public class ContainerVMInstall implements IVMInstall {
 	private String name;
 	private File installLocation;
 	private IDockerImage image;
+	private int port;
 
-	public ContainerVMInstall (ILaunchConfiguration cfg, IDockerImage img) {
+	public ContainerVMInstall (ILaunchConfiguration cfg, IDockerImage img, int port) {
 		this.config = cfg;
 		this.image = img;
+		this.port = port;
 	}
 
 	@Override
@@ -118,11 +120,15 @@ public class ContainerVMInstall implements IVMInstall {
         return null;
 	}
 
+	public int getPort() {
+		return port;
+	}
+
 	// org.eclipse.jdt.internal.launching.StandardVMType#findJavaExecutable(File)
 	public File findJavaExecutable(File vmInstallLocation) {
 		final String JRE = "jre"; //$NON-NLS-1$
 		final String[] fgCandidateJavaFiles = {"javaw", "javaw.exe", "java", "java.exe", "j9w", "j9w.exe", "j9", "j9.exe"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-		final String[] fgCandidateJavaLocations = {"bin" + File.separatorChar, JRE + File.separatorChar + "bin" + File.separatorChar}; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] fgCandidateJavaLocations = {"bin" + UnixFile.separatorChar, JRE + UnixFile.separatorChar + "bin" + UnixFile.separatorChar}; //$NON-NLS-1$ //$NON-NLS-2$
 
 		DockerConnection conn = (DockerConnection) DockerConnectionManager.getInstance().getFirstConnection();
 		ImageQuery q = new ImageQuery(conn, image.id());
@@ -131,7 +137,7 @@ public class ContainerVMInstall implements IVMInstall {
 		// of fgCandidateJavaLocations and fgCandidateJavaFiles is significant.
 		for (int i = 0; i < fgCandidateJavaFiles.length; i++) {
 			for (int j = 0; j < fgCandidateJavaLocations.length; j++) {
-				File javaFile = new File(vmInstallLocation, fgCandidateJavaLocations[j] + fgCandidateJavaFiles[i]);
+				File javaFile = new UnixFile(vmInstallLocation, fgCandidateJavaLocations[j] + fgCandidateJavaFiles[i]);
 				if (q.isFile(javaFile)) {
 					q.destroy();
 					return javaFile;

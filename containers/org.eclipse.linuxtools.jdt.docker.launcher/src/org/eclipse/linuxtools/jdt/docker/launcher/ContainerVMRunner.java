@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.jdt.docker.launcher;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
@@ -43,12 +44,18 @@ public class ContainerVMRunner extends StandardVMRunner {
 	protected Process exec(String[] cmdLine, File workingDirectory, String[] envp) throws CoreException {
 		String connectionUri = DockerConnectionManager.getInstance().getFirstConnection().getUri();
 		String command = String.join(" ", cmdLine); //$NON-NLS-1$
+		String newWD = UnixFile.convertDOSPathToUnixPath(workingDirectory.getAbsolutePath());
 
 		ContainerLauncher launch = new ContainerLauncher();
+		int port = ((ContainerVMInstall)fVMInstance).getPort();
+		String [] portMap = port != -1
+				? new String [] {String.valueOf(port) + ':' + String.valueOf(port)}
+				: null;
 		launch.launch("org.eclipse.linuxtools.jdt.docker.launcher", new JavaAppInContainerLaunchListener(), connectionUri, //$NON-NLS-1$
-				fVMInstance.getId(), command, null, workingDirectory.getAbsolutePath(), null,
+				fVMInstance.getId(), command, null, newWD, null,
 				System.getenv(), null,
-				null, false, true, true);
+				Arrays.asList(portMap),
+				false, true, true);
 
 		return null;
 	}
@@ -78,20 +85,20 @@ public class ContainerVMRunner extends StandardVMRunner {
 
 		// Build the path to the java executable.  First try 'bin', and if that
 		// doesn't exist, try 'jre/bin'
-		String installLocation = fVMInstance.getInstallLocation().getAbsolutePath() + File.separatorChar;
-		File exe = new File(installLocation + "bin" + File.separatorChar + command); //$NON-NLS-1$
+		String installLocation = fVMInstance.getInstallLocation().getAbsolutePath() + UnixFile.separatorChar;
+		File exe = new UnixFile(installLocation + "bin" + UnixFile.separatorChar + command); //$NON-NLS-1$
 		if (fileExists(exe)){
 			return exe.getAbsolutePath();
 		}
-		exe = new File(exe.getAbsolutePath() + ".exe"); //$NON-NLS-1$
+		exe = new UnixFile(exe.getAbsolutePath() + ".exe"); //$NON-NLS-1$
 		if (fileExists(exe)){
 			return exe.getAbsolutePath();
 		}
-		exe = new File(installLocation + "jre" + File.separatorChar + "bin" + File.separatorChar + command); //$NON-NLS-1$ //$NON-NLS-2$
+		exe = new UnixFile(installLocation + "jre" + UnixFile.separatorChar + "bin" + UnixFile.separatorChar + command); //$NON-NLS-1$ //$NON-NLS-2$
 		if (fileExists(exe)) {
 			return exe.getAbsolutePath();
 		}
-		exe = new File(exe.getAbsolutePath() + ".exe"); //$NON-NLS-1$
+		exe = new UnixFile(exe.getAbsolutePath() + ".exe"); //$NON-NLS-1$
 		if (fileExists(exe)) {
 			return exe.getAbsolutePath();
 		}
