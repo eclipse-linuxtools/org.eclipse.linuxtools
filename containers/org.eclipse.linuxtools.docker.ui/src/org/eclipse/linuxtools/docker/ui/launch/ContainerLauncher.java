@@ -65,7 +65,9 @@ import org.eclipse.linuxtools.internal.docker.core.DockerPortBinding;
 import org.eclipse.linuxtools.internal.docker.ui.consoles.ConsoleOutputStream;
 import org.eclipse.linuxtools.internal.docker.ui.consoles.RunConsole;
 import org.eclipse.linuxtools.internal.docker.ui.launch.ContainerCommandProcess;
+import org.eclipse.linuxtools.internal.docker.ui.launch.LaunchConfigurationUtils;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
+import org.eclipse.linuxtools.internal.docker.ui.wizards.DataVolumeModel;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
@@ -92,11 +94,11 @@ public class ContainerLauncher {
 		private static final String COPY_VOLUMES_TASK = "ContainerLaunch.copyVolumesJob.task"; //$NON-NLS-1$
 		private static final String ERROR_COPYING_VOLUME = "ContainerLaunch.copyVolumesJob.error"; //$NON-NLS-1$
 
-		private final Set<String> volumes;
+		private final Map<String, String> volumes;
 		private final IDockerConnection connection;
 		private final String containerId;
 
-		public CopyVolumesJob(Set<String> volumes,
+		public CopyVolumesJob(Map<String, String> volumes,
 				IDockerConnection connection,
 				String containerId) {
 			super(Messages.getString(COPY_VOLUMES_JOB_TITLE));
@@ -110,7 +112,7 @@ public class ContainerLauncher {
 			monitor.beginTask(
 					Messages.getFormattedString(COPY_VOLUMES_DESC, containerId),
 					volumes.size());
-			Iterator<String> iterator = volumes.iterator();
+			Iterator<String> iterator = volumes.keySet().iterator();
 			IStatus status = Status.OK_STATUS;
 			// for each remote volume, copy from host to Container volume
 			while (iterator.hasNext()) {
@@ -118,20 +120,24 @@ public class ContainerLauncher {
 					monitor.done();
 					return Status.CANCEL_STATUS;
 				}
-				String directory = iterator.next();
-				if (!directory.endsWith("/")) { //$NON-NLS-1$
-					directory = directory + "/"; //$NON-NLS-1$
+				String hostDirectory = iterator.next();
+				if (!hostDirectory.endsWith("/")) { //$NON-NLS-1$
+					hostDirectory = hostDirectory + "/"; //$NON-NLS-1$
+				}
+				String containerDirectory = volumes.get(hostDirectory);
+				if (!containerDirectory.endsWith("/")) { //$NON-NLS-1$
+					containerDirectory = containerDirectory + "/"; //$NON-NLS-1$
 				}
 				monitor.setTaskName(Messages
-						.getFormattedString(COPY_VOLUMES_TASK, directory));
+						.getFormattedString(COPY_VOLUMES_TASK, hostDirectory));
 				try {
-					((DockerConnection) connection).copyToContainer(directory,
-							containerId, directory);
+					((DockerConnection) connection).copyToContainer(
+							hostDirectory, containerId, containerDirectory);
 					monitor.worked(1);
 				} catch (DockerException | InterruptedException
 						| IOException e) {
 					monitor.done();
-					final String dir = directory;
+					final String dir = hostDirectory;
 					Display.getDefault().syncExec(() -> MessageDialog.openError(
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 									.getShell(),
@@ -690,22 +696,28 @@ public class ContainerLauncher {
 		}
 
 
-		final Set<String> remoteVolumes = new TreeSet<>();
+		final Map<String, String> remoteVolumes = new HashMap<>();
 		if (!((DockerConnection) connection).isLocal()) {
+			final Set<String> volumes = new HashSet<>();
 			// if using remote daemon, we have to
 			// handle volume mounting differently.
 			// Instead we mount empty volumes and copy
 			// the host data over before starting.
 			if (additionalDirs != null) {
 				for (String dir : additionalDirs) {
-					remoteVolumes.add(dir); // $NON-NLS-1$
+					remoteVolumes.put(dir, dir);
+					volumes.add(dir);
 				}
 			}
-			if (workingDir != null)
-				remoteVolumes.add(workingDir); // $NON-NLS-1$
-			if (commandDir != null)
-				remoteVolumes.add(commandDir); // $NON-NLS-1$
-			builder = builder.volumes(remoteVolumes);
+			if (workingDir != null) {
+				remoteVolumes.put(workingDir, workingDir); // $NON-NLS-1$
+				volumes.add(workingDir);
+			}
+			if (commandDir != null) {
+				remoteVolumes.put(commandDir, commandDir); // $NON-NLS-1$
+				volumes.add(commandDir);
+			}
+			builder = builder.volumes(volumes);
 		} else {
 			// Running daemon on local host.
 			// Add mounts for any directories we need to run the executable.
@@ -1057,6 +1069,8 @@ public class ContainerLauncher {
 		// remote daemon. Local mounted volumes are passed
 		// via the HostConfig binds setting
 		final Set<String> remoteVolumes = new TreeSet<>();
+		final Map<String, String> remoteDataVolumes = new HashMap<>();
+		final Set<String> readOnlyVolumes = new TreeSet<>();
 		if (!((DockerConnection) connection).isLocal()) {
 			// if using remote daemon, we have to
 			// handle volume mounting differently.
@@ -1064,6 +1078,23 @@ public class ContainerLauncher {
 			// the host data over before starting.
 			if (additionalDirs != null) {
 				for (String dir : additionalDirs) {
+					if (dir.contains(":")) { //$NON-NLS-1$
+						DataVolumeModel dvm = DataVolumeModel.parseString(dir);
+						switch (dvm.getMountType()) {
+						case HOST_FILE_SYSTEM:
+							dir = dvm.getHostPathMount();
+							remoteDataVolumes.put(dir, dvm.getContainerMount());
+							// keep track of read-only volumes so we don't copy
+							// these
+							// back after command completion
+							if (dvm.isReadOnly()) {
+								readOnlyVolumes.add(dir);
+							}
+							break;
+						default:
+							continue;
+						}
+					}
 					IPath p = new Path(dir).removeTrailingSeparator();
 					remoteVolumes.add(p.toPortableString());
 				}
@@ -1085,11 +1116,33 @@ public class ContainerLauncher {
 			// In our case, we want all directories mounted as-is so the
 			// executable will run as the user expects.
 			final Set<String> volumes = new TreeSet<>();
+			final List<String> volumesFrom = new ArrayList<>();
 			if (additionalDirs != null) {
 				for (String dir : additionalDirs) {
 					IPath p = new Path(dir).removeTrailingSeparator();
-					volumes.add(p.toPortableString() + ":" //$NON-NLS-1$
-							+ p.toPortableString() + ":Z"); //$NON-NLS-1$
+					if (dir.contains(":")) { //$NON-NLS-1$
+						DataVolumeModel dvm = DataVolumeModel.parseString(dir);
+						switch (dvm.getMountType()) {
+						case HOST_FILE_SYSTEM:
+							String bind = LaunchConfigurationUtils
+									.convertToUnixPath(dvm.getHostPathMount())
+									+ ':' + dvm.getContainerPath() + ":Z"; //$NON-NLS-1$ //$NON-NLS-2$
+							if (dvm.isReadOnly()) {
+								bind += ",ro"; //$NON-NLS-1$
+							}
+							volumes.add(bind);
+							break;
+						case CONTAINER:
+							volumesFrom.add(dvm.getContainerMount());
+							break;
+						default:
+							break;
+
+						}
+					} else {
+						volumes.add(p.toPortableString() + ":" //$NON-NLS-1$
+								+ p.toPortableString() + ":Z"); //$NON-NLS-1$
+					}
 				}
 			}
 			if (workingDir != null) {
@@ -1104,6 +1157,9 @@ public class ContainerLauncher {
 			}
 			List<String> volumeList = new ArrayList<>(volumes);
 			hostBuilder = hostBuilder.binds(volumeList);
+			if (!volumesFrom.isEmpty()) {
+				hostBuilder = hostBuilder.volumesFrom(volumesFrom);
+			}
 		}
 
 		final DockerContainerConfig config = builder.build();
@@ -1131,7 +1187,7 @@ public class ContainerLauncher {
 				// if daemon is remote, we need to copy
 				// data over from the host.
 				if (!remoteVolumes.isEmpty()) {
-					CopyVolumesJob job = new CopyVolumesJob(remoteVolumes,
+					CopyVolumesJob job = new CopyVolumesJob(remoteDataVolumes,
 							conn, id);
 					job.schedule();
 					try {
@@ -1153,8 +1209,13 @@ public class ContainerLauncher {
 
 		t.start();
 
+		// remove all read-only remote volumes from our list of remote
+		// volumes so they won't be copied back on command completion
+		for (String readonly : readOnlyVolumes) {
+			remoteDataVolumes.remove(readonly);
+		}
 		return new ContainerCommandProcess(connection, imageName, containerId,
-				remoteVolumes,
+				remoteDataVolumes,
 				keepContainer);
 	}
 
