@@ -14,7 +14,7 @@
   <parent>
     <artifactId>linuxtools-javadocs-parent</artifactId>
     <groupId>org.eclipse.linuxtools.javadocs</groupId>
-    <version>6.0.0-SNAPSHOT</version>
+    <version>6.0.0</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.javadocs</artifactId>
