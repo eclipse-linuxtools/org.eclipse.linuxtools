@@ -110,7 +110,7 @@ public class DockerDocumentProvider extends FileDocumentProvider {
 			String encoding = null;
 
 			ElementInfo info = getElementInfo(element);
-			Path filePath = Paths.get(((FileStoreEditorInput) element).getURI().getPath());
+			Path filePath = Paths.get(((FileStoreEditorInput) element).getURI());
 
 			encoding = getEncoding(element);
 
