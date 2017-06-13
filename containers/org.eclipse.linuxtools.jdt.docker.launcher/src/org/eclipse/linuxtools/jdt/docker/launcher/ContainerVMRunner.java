@@ -47,6 +47,9 @@ public class ContainerVMRunner extends StandardVMRunner {
 		String command = String.join(" ", cmdLine); //$NON-NLS-1$
 		String newWD = workingDirectory.getAbsolutePath();
 
+		// classpath has already been converted if on Windows
+		String [] classPath = extractClassPathFromCommand(cmdLine);
+
 		if (Platform.OS_WIN32.equals(Platform.getOS())) {
 			newWD = UnixFile.convertDOSPathToUnixPath(workingDirectory.getAbsolutePath());
 		}
@@ -57,7 +60,7 @@ public class ContainerVMRunner extends StandardVMRunner {
 				? new String [] {String.valueOf(port) + ':' + String.valueOf(port)}
 				: new String [0];
 		launch.launch("org.eclipse.linuxtools.jdt.docker.launcher", new JavaAppInContainerLaunchListener(), connectionUri, //$NON-NLS-1$
-				fVMInstance.getId(), command, null, newWD, null,
+				fVMInstance.getId(), command, null, newWD, Arrays.asList(classPath),
 				System.getenv(), null,
 				Arrays.asList(portMap),
 				false, true, true);
@@ -131,6 +134,15 @@ public class ContainerVMRunner extends StandardVMRunner {
 
 	public boolean isListening() {
 		return isListening;
+	}
+
+	private String [] extractClassPathFromCommand (String [] cmd) {
+		int i = 0;
+		while (!"-classpath".equals(cmd[i])) {
+			i++;
+		}
+		String [] classPath = (cmd.length > i + 1) ? cmd[i+1].split(UnixFile.pathSeparator) : new String[0];
+		return classPath;
 	}
 
 	private class JavaAppInContainerLaunchListener implements IContainerLaunchListener {

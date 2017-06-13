@@ -43,6 +43,7 @@ import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
+import org.eclipse.linuxtools.internal.docker.core.TCPConnectionSettings;
 import org.eclipse.osgi.util.NLS;
 
 public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigurationDelegate {
@@ -181,8 +182,15 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 				// The container has an IP and is listening
 				// Can we reach it ? Or is it on a different network.
 				if (!isListening(ip, port)) {
-					// Try to find some network interface that's listening
-					ip = getIPAddressListening(port);
+					// If the daemon is reachable via TCP it should forward traffic.
+					if (conn.getSettings() instanceof TCPConnectionSettings) {
+						ip = ((TCPConnectionSettings)conn.getSettings()).getAddr();
+						if (!isListening(ip, port)) {
+							// Try to find some network interface that's listening
+							ip = getIPAddressListening(port);
+						}
+					}
+
 				}
 
 				if (ip == null) {

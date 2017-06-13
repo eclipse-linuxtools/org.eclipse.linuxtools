@@ -23,6 +23,8 @@ public class UnixFile extends File {
 
 	public static final char separatorChar = '/';
 	public static final String separator = "" + separatorChar; //$NON-NLS-1$
+	public static final char pathSeparatorChar = ':';
+	public static final String pathSeparator = "" + pathSeparatorChar; //$NON-NLS-1$
 
 	private String path;
 
@@ -50,7 +52,7 @@ public class UnixFile extends File {
 	}
 
 	public static String convertDOSPathToUnixPath (String wPath) {
-		String result = separator + wPath.replace(":", "") //$NON-NLS-1$ //$NON-NLS-12
+		String result = separator + wPath.replace(pathSeparator, "") //$NON-NLS-1$
 		.replace('\\', separatorChar);
 		return result;
 	}
