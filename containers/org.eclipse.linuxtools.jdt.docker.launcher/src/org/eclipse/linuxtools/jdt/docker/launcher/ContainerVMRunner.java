@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.internal.launching.StandardVMRunner;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IVMInstall;
@@ -44,13 +45,17 @@ public class ContainerVMRunner extends StandardVMRunner {
 	protected Process exec(String[] cmdLine, File workingDirectory, String[] envp) throws CoreException {
 		String connectionUri = DockerConnectionManager.getInstance().getFirstConnection().getUri();
 		String command = String.join(" ", cmdLine); //$NON-NLS-1$
-		String newWD = UnixFile.convertDOSPathToUnixPath(workingDirectory.getAbsolutePath());
+		String newWD = workingDirectory.getAbsolutePath();
+
+		if (Platform.OS_WIN32.equals(Platform.getOS())) {
+			newWD = UnixFile.convertDOSPathToUnixPath(workingDirectory.getAbsolutePath());
+		}
 
 		ContainerLauncher launch = new ContainerLauncher();
 		int port = ((ContainerVMInstall)fVMInstance).getPort();
 		String [] portMap = port != -1
 				? new String [] {String.valueOf(port) + ':' + String.valueOf(port)}
-				: null;
+				: new String [0];
 		launch.launch("org.eclipse.linuxtools.jdt.docker.launcher", new JavaAppInContainerLaunchListener(), connectionUri, //$NON-NLS-1$
 				fVMInstance.getId(), command, null, newWD, null,
 				System.getenv(), null,
