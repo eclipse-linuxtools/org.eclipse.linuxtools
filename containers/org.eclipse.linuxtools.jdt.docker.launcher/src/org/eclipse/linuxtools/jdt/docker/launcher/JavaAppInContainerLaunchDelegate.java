@@ -40,11 +40,13 @@ import org.eclipse.jdt.launching.ExecutionArguments;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.TCPConnectionSettings;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Display;
 
 public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigurationDelegate {
 
@@ -66,13 +68,32 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 		String connectionURI = configuration.getAttribute("org.eclipse.linuxtools.jdt.docker.launcher.connection.uri", (String) null); //$NON-NLS-1$
 		String imageID = configuration.getAttribute("org.eclipse.linuxtools.jdt.docker.launcher.image.id", (String) null); //$NON-NLS-1$
 
-		if (connectionURI == null || imageID == null) {
-			return;
-		}
-
 		try {
 			DockerConnection conn = (DockerConnection) DockerConnectionManager.getInstance().getConnectionByUri(connectionURI);
+			if (conn == null || !conn.isOpen()) {
+				Display.getDefault().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						MessageDialog.openError(Display.getDefault().getActiveShell()
+							, Messages.JavaAppInContainerLaunchDelegate_connection_not_found_title
+							, Messages.bind(Messages.JavaAppInContainerLaunchDelegate_connection_not_found_text, connectionURI));
+					}
+				});
+				return;
+			}
+
 			IDockerImage img = conn.getImage(imageID);
+			if (img == null) {
+				Display.getDefault().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						MessageDialog.openError(Display.getDefault().getActiveShell()
+							, Messages.JavaAppInContainerLaunchDelegate_image_not_found_title
+							, Messages.bind(Messages.JavaAppInContainerLaunchDelegate_image_not_found_text, imageID));
+					}
+				});
+				return;
+			}
 
 			// randomized port between 1025 and 65535
 			int port = ILaunchManager.DEBUG_MODE.equals(mode)
@@ -188,12 +209,25 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 						if (!isListening(ip, port)) {
 							// Try to find some network interface that's listening
 							ip = getIPAddressListening(port);
+							if (!isListening(ip, port)) {
+								ip = null;
+							}
 						}
+					} else {
+						ip = null;
 					}
-
 				}
 
 				if (ip == null) {
+					String imageName = conn.getImage(imageID).repoTags().get(0);
+					Display.getDefault().asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							MessageDialog.openError(Display.getDefault().getActiveShell()
+									, Messages.JavaAppInContainerLaunchDelegate_session_unreachable_title
+									, Messages.bind(Messages.JavaAppInContainerLaunchDelegate_session_unreachable_text, new Object [] {imageName, imageID, runner.getIPAddress()}));
+						}
+					});
 					return;
 				}
 

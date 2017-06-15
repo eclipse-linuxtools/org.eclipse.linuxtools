@@ -19,7 +19,13 @@ public class Messages extends NLS {
 	public static String ImageSelectionDialog_connection_label;
 	public static String ImageSelectionDialog_image_label;
 	public static String ImageSelectionDialog_title;
+	public static String JavaAppInContainerLaunchDelegate_connection_not_found_title;
+	public static String JavaAppInContainerLaunchDelegate_connection_not_found_text;
 	public static String JavaAppInContainerLaunchDelegate_Creating_source_locator____2;
+	public static String JavaAppInContainerLaunchDelegate_image_not_found_title;
+	public static String JavaAppInContainerLaunchDelegate_image_not_found_text;
+	public static String JavaAppInContainerLaunchDelegate_session_unreachable_title;
+	public static String JavaAppInContainerLaunchDelegate_session_unreachable_text;
 	public static String JavaAppInContainerLaunchDelegate_Verifying_launch_attributes____1;
 	static {
 		// initialize resource bundle
