@@ -11,7 +11,9 @@
 package org.eclipse.linuxtools.jdt.docker.launcher;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
@@ -31,6 +33,7 @@ public class ContainerVMRunner extends StandardVMRunner {
 
 	private String ipAddress = null;
 	private boolean isListening = false;
+	private List<String> extraDirs;
 
 	public ContainerVMRunner(IVMInstall vmInstance) {
 		super(vmInstance);
@@ -50,6 +53,10 @@ public class ContainerVMRunner extends StandardVMRunner {
 		// classpath has already been converted if on Windows
 		String [] classPath = extractClassPathFromCommand(cmdLine);
 
+		List<String> additionalDirs = new ArrayList<> ();
+		additionalDirs.addAll(Arrays.asList(classPath));
+		additionalDirs.addAll(getAdditionalDirectories());
+
 		if (Platform.OS_WIN32.equals(Platform.getOS())) {
 			newWD = UnixFile.convertDOSPathToUnixPath(workingDirectory.getAbsolutePath());
 		}
@@ -60,7 +67,7 @@ public class ContainerVMRunner extends StandardVMRunner {
 				? new String [] {String.valueOf(port) + ':' + String.valueOf(port)}
 				: new String [0];
 		launch.launch("org.eclipse.linuxtools.jdt.docker.launcher", new JavaAppInContainerLaunchListener(), connectionUri, //$NON-NLS-1$
-				fVMInstance.getId(), command, null, newWD, Arrays.asList(classPath),
+				fVMInstance.getId(), command, null, newWD, additionalDirs,
 				System.getenv(), null,
 				Arrays.asList(portMap),
 				false, true, true);
@@ -143,6 +150,14 @@ public class ContainerVMRunner extends StandardVMRunner {
 		}
 		String [] classPath = (cmd.length > i + 1) ? cmd[i+1].split(UnixFile.pathSeparator) : new String[0];
 		return classPath;
+	}
+
+	public void setAdditionalDirectories (List<String> dirs) {
+		extraDirs = dirs;
+	}
+
+	public List<String> getAdditionalDirectories () {
+		return extraDirs;
 	}
 
 	private class JavaAppInContainerLaunchListener implements IContainerLaunchListener {

@@ -39,8 +39,8 @@ public class JavaApplicationInContainerLaunchShortcut extends JavaApplicationLau
 		ILaunchConfiguration cfg = super.createConfiguration(type);
 		try {
 			ILaunchConfigurationWorkingCopy wc = cfg.getWorkingCopy();
-			wc.setAttribute("org.eclipse.linuxtools.jdt.docker.launcher.connection.uri", isd.getConnection().getUri()); //$NON-NLS-1$
-			wc.setAttribute("org.eclipse.linuxtools.jdt.docker.launcher.image.id", isd.getImage().id()); //$NON-NLS-1$
+			wc.setAttribute(JavaLaunchConfigurationConstants.CONNECTION_URI, isd.getConnection().getUri());
+			wc.setAttribute(JavaLaunchConfigurationConstants.IMAGE_ID, isd.getImage().id());
 			wc.doSave();
 		} catch (CoreException e) {
 		}

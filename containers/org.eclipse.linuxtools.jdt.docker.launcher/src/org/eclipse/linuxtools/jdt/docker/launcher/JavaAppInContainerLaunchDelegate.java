@@ -65,8 +65,9 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 		if (monitor.isCanceled()) {
 			return;
 		}
-		String connectionURI = configuration.getAttribute("org.eclipse.linuxtools.jdt.docker.launcher.connection.uri", (String) null); //$NON-NLS-1$
-		String imageID = configuration.getAttribute("org.eclipse.linuxtools.jdt.docker.launcher.image.id", (String) null); //$NON-NLS-1$
+		String connectionURI = configuration.getAttribute(JavaLaunchConfigurationConstants.CONNECTION_URI, (String) null);
+		String imageID = configuration.getAttribute(JavaLaunchConfigurationConstants.IMAGE_ID, (String) null);
+		List<String> extraDirs = configuration.getAttribute(JavaLaunchConfigurationConstants.DIRS, Arrays.asList(new String [0]));
 
 		try {
 			DockerConnection conn = (DockerConnection) DockerConnectionManager.getInstance().getConnectionByUri(connectionURI);
@@ -111,6 +112,8 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 			if (workingDir != null) {
 				workingDirName = workingDir.getAbsolutePath();
 			}
+
+			runner.setAdditionalDirectories(extraDirs);
 
 			// Environment variables
 			String[] envp= getEnvironment(configuration);

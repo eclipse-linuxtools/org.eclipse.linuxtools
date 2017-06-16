@@ -27,6 +27,10 @@ public class Messages extends NLS {
 	public static String JavaAppInContainerLaunchDelegate_session_unreachable_title;
 	public static String JavaAppInContainerLaunchDelegate_session_unreachable_text;
 	public static String JavaAppInContainerLaunchDelegate_Verifying_launch_attributes____1;
+	public static String JavaImageTab_additional_dirs;
+	public static String JavaImageTab_button_add;
+	public static String JavaImageTab_button_remove;
+	public static String JavaImageTab_image_tab_title;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
