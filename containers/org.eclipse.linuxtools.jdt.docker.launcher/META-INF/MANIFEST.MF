@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Java Container Launch Plug-in
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.jdt.docker.launcher;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Vendor: Eclipse Linux Tools
+Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.debug.core,

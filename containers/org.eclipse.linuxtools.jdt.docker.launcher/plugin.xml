@@ -5,10 +5,10 @@
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
             class="org.eclipse.linuxtools.jdt.docker.launcher.JavaApplicationInContainerLaunchShortcut"
-            description="Run the current Java application within a container"
+            description="%shortcut.description"
             icon="icons/repository-synchronize-attributes.png"
             id="org.eclipse.linuxtools.jdt.docker.launcher.container.launch"
-            label="Java Application In Container"
+            label="%shortcut.label"
             modes="run, debug">
          <contextualLaunch>
             <enablement>
@@ -52,7 +52,7 @@
             delegate="org.eclipse.linuxtools.jdt.docker.launcher.JavaAppInContainerLaunchDelegate"
             id="org.eclipse.linuxtools.jdt.docker.launcher.JavaAppInContainerLaunchConfigurationType"
             modes="run, debug"
-            name="Java App In Container"
+            name="%launchConfigurationType.name"
             sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector">
       </launchConfigurationType>
    </extension>
