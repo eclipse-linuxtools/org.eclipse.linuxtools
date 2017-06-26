@@ -92,7 +92,7 @@ public class ContainerVMRunner extends StandardVMRunner {
 				exe = ((ContainerVMInstall)fVMInstance).getJavaExecutable();
 			}
 			if (exe == null) {
-				abort(NLS.bind(Messages.ContainerVMRunner_Unable_to_locate_executable_for__0__1, new String[]{fVMInstance.getName()}), null, IJavaLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
+				abort(Messages.ContainerVMRunner_Unable_to_locate_executable_for__0__1, null, IJavaLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
 			} else {
 				return exe.getAbsolutePath();
 			}
