@@ -1187,32 +1187,25 @@ public class ContainerLauncher {
 		
 		final String id = containerId;
 		final IDockerConnection conn = connection;
-		Thread t = new Thread(() -> {
-			if (!((DockerConnection) conn).isLocal()) {
-				// if daemon is remote, we need to copy
-				// data over from the host.
-				if (!remoteVolumes.isEmpty()) {
-					CopyVolumesJob job = new CopyVolumesJob(remoteDataVolumes,
-							conn, id);
-					job.schedule();
-					try {
-						job.join();
-					} catch (InterruptedException e) {
-						// ignore
-					}
-					if (job.getResult() != Status.OK_STATUS)
-						return;
+		if (!((DockerConnection) conn).isLocal()) {
+			// if daemon is remote, we need to copy
+			// data over from the host.
+			if (!remoteVolumes.isEmpty()) {
+				CopyVolumesJob job = new CopyVolumesJob(remoteDataVolumes, conn,
+						id);
+				job.schedule();
+				try {
+					job.join();
+				} catch (InterruptedException e) {
+					// ignore
 				}
 			}
-			try {
-				((DockerConnection) conn).startContainer(id,
-						null);
-			} catch (DockerException | InterruptedException e) {
-				// ignore
-			}
-		});
-
-		t.start();
+		}
+		try {
+			((DockerConnection) conn).startContainer(id, null);
+		} catch (DockerException | InterruptedException e) {
+			Activator.log(e);
+		}
 
 		// remove all read-only remote volumes from our list of remote
 		// volumes so they won't be copied back on command completion
