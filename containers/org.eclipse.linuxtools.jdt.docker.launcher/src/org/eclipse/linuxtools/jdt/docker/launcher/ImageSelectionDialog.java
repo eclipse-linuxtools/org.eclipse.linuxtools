@@ -17,8 +17,10 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
+import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
+import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -65,6 +67,12 @@ public class ImageSelectionDialog extends SelectionDialog {
 		connCmb.setContentProvider(new IStructuredContentProvider() {
 			@Override
 			public Object[] getElements(Object inputElement) {
+				for (IDockerConnection conn : DockerConnectionManager.getInstance().getAllConnections()) {
+					try {
+						((DockerConnection)conn).open(false);
+					} catch (DockerException e) {
+					}
+				}
 				return DockerConnectionManager.getInstance().getAllConnections().stream().filter(c -> c.isOpen()).toArray(size -> new IDockerConnection[size]);
 			}
 		});
