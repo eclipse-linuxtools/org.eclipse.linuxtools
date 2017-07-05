@@ -34,6 +34,7 @@ public class ContainerVMRunner extends StandardVMRunner {
 	private String ipAddress = null;
 	private boolean isListening = false;
 	private List<String> extraDirs;
+	private IDockerContainerInfo containerInfo;
 
 	public ContainerVMRunner(IVMInstall vmInstance) {
 		super(vmInstance);
@@ -160,6 +161,10 @@ public class ContainerVMRunner extends StandardVMRunner {
 		return extraDirs;
 	}
 
+	public IDockerContainerInfo getContainerInfo () {
+		return containerInfo;
+	}
+
 	private class JavaAppInContainerLaunchListener implements IContainerLaunchListener {
 
 		@Override
@@ -175,6 +180,7 @@ public class ContainerVMRunner extends StandardVMRunner {
 		@Override
 		public void containerInfo(IDockerContainerInfo info) {
 			ipAddress = info.networkSettings().ipAddress();
+			containerInfo = info;
 		}
 	}
 

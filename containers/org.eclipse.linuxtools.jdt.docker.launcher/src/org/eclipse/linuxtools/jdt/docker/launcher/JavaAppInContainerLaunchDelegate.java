@@ -42,6 +42,8 @@ import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
+import org.eclipse.linuxtools.docker.core.DockerException;
+import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.TCPConnectionSettings;
@@ -71,7 +73,7 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 
 		try {
 			DockerConnection conn = (DockerConnection) DockerConnectionManager.getInstance().getConnectionByUri(connectionURI);
-			if (conn == null || !conn.isOpen()) {
+			if (conn == null) {
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
@@ -81,6 +83,23 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 					}
 				});
 				return;
+			} else if (!conn.isOpen()) {
+				try {
+					conn.open(false);
+				} catch (DockerException e) {
+				}
+
+				if (!conn.isOpen()) {
+					Display.getDefault().asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							MessageDialog.openError(Display.getDefault().getActiveShell()
+							, Messages.JavaAppInContainerLaunchDelegate_connection_not_active_title
+							, Messages.bind(Messages.JavaAppInContainerLaunchDelegate_connection_not_active_text, connectionURI));
+						}
+					});
+					return;
+				}
 			}
 
 			IDockerImage img = conn.getImage(imageID);
@@ -190,17 +209,20 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 			}
 
 			if (ILaunchManager.DEBUG_MODE.equals(mode)) {
-				ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-				ILaunchConfigurationType type = manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_REMOTE_JAVA_APPLICATION);
-				ILaunchConfiguration cfgForAttach = type.newInstance(null, "attach_to_container"); //$NON-NLS-1$
-				ILaunchConfigurationWorkingCopy wc = cfgForAttach.getWorkingCopy();
-
 				while (runner.getIPAddress() == null || !runner.isListening()) {
 					try {
 						Thread.sleep(100);
 					} catch (InterruptedException e) {
 					}
 				}
+
+				IDockerContainerInfo info = runner.getContainerInfo();
+				String configName = info.name().startsWith("/") ? info.name().substring(1) : info.name();
+
+				ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+				ILaunchConfigurationType type = manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_REMOTE_JAVA_APPLICATION);
+				ILaunchConfiguration cfgForAttach = type.newInstance(null, configName);
+				ILaunchConfigurationWorkingCopy wc = cfgForAttach.getWorkingCopy();
 
 				String ip = runner.getIPAddress();
 				// The container has an IP and is listening
