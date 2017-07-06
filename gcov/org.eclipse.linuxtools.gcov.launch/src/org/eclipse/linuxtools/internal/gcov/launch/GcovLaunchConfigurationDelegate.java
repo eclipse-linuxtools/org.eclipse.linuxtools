@@ -40,7 +40,6 @@ import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.linuxtools.profiling.ui.CProjectBuildHelpers;
 import org.eclipse.linuxtools.profiling.ui.CProjectBuildHelpers.ProjectBuildType;
 import org.eclipse.linuxtools.profiling.ui.MessageDialogSyncedRunnable;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
@@ -211,29 +210,31 @@ public class GcovLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
                  * activate the OProfile view (open it if it isn't already),
                  * refresh the view (which parses the data/ui model and displays it).
                  */
-                if (l.equals(launch)) {
-                    //need to run this in the ui thread otherwise get SWT Exceptions
-                    // based on concurrency issues
-                    Display.getDefault().syncExec(() -> {
-					    String s = exePath.toOSString();
-					    CovManager cvrgeMnger = new CovManager(s, getProject());
+            	if (l.equals(launch)) {
+            		//need to run this in the ui thread otherwise get SWT Exceptions
+            		// based on concurrency issues
+            		String s = exePath.toOSString();
+            		CovManager cvrgeMnger = new CovManager(s, getProject());
 
-					    try {
-					        List<String> gcdaPaths = cvrgeMnger.getGCDALocations();
-					        if (gcdaPaths.isEmpty()) {
-					            String title = GcovLaunchMessages.GcovCompilerOptions_msg;
-					            String message = GcovLaunchMessages.GcovCompileAgain_msg;
-					            Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-					            MessageDialog.openWarning(parent, title, message);
-					        }
-					        CovView.displayCovResults(s, null);
-					        GcovAnnotationModelTracker.getInstance().addProject(getProject(), exePath);
-					        GcovAnnotationModelTracker.getInstance().annotateAllCEditors();
-					    } catch (InterruptedException e) {
-					        // Do nothing
-					    }
-					});
-                }
+            		try {
+            			List<String> gcdaPaths = cvrgeMnger.getGCDALocations();
+            			if (gcdaPaths.isEmpty()) {
+            				String title = GcovLaunchMessages.GcovCompilerOptions_msg;
+            				String message = GcovLaunchMessages.GcovCompileAgain_msg;
+            				PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
+            					Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+            					MessageDialog.openWarning(parent, title, message);
+            				});
+            			}
+            			CovView.displayCovResults(s, null);
+            			GcovAnnotationModelTracker.getInstance().addProject(getProject(), exePath);
+        				PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+        					GcovAnnotationModelTracker.getInstance().annotateAllCEditors();
+        				});
+            		} catch (InterruptedException e) {
+            			// Do nothing
+            		}
+            	}
             }
 
         }

@@ -13,5 +13,6 @@ Require-Bundle: org.eclipse.linuxtools.profiling.launch;bundle-version="1.2.0",
  org.eclipse.ui;bundle-version="3.103.0",
  org.eclipse.linuxtools.gcov.core;bundle-version="4.2.0",
  org.eclipse.debug.ui;bundle-version="3.8.0",
- org.eclipse.linuxtools.profiling.ui
+ org.eclipse.linuxtools.profiling.ui,
+ org.eclipse.linuxtools.dataviewers;bundle-version="6.1.0"
 Bundle-Vendor: %bundleProvider

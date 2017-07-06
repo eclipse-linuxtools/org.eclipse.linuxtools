@@ -81,8 +81,7 @@ public class OpenGCAction implements IEditorLauncher {
             } else {
                 safeBinaryPath = binaryPath;
             }
-
-            PlatformUI.getWorkbench().getDisplay().syncExec(() -> displayCoverage(file, safeBinaryPath, pair.gcda, isCompleteCoverageResultWanted));
+            displayCoverage(file, safeBinaryPath, pair.gcda, isCompleteCoverageResultWanted);
         }
     }
 
@@ -120,13 +119,19 @@ public class OpenGCAction implements IEditorLauncher {
         if (d.open() != Window.OK) {
             return;
         }
-        displayCoverage(file, d.getBinaryFile(), pair.gcda, d.isCompleteCoverageResultWanted());
+        // start a thread so we can return control from UI thread until needed
+        Thread t = new Thread(() -> {
+        	displayCoverage(file, d.getBinaryFile(), pair.gcda, d.isCompleteCoverageResultWanted());
+        });
+        t.start();
     }
 
     private void displayCoverage(IPath file, String binaryPath, File gcda, boolean isCompleteCoverageResultWanted) {
         IProject project = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(file).getProject();
         GcovAnnotationModelTracker.getInstance().addProject(project, new Path(binaryPath));
-        GcovAnnotationModelTracker.getInstance().annotateAllCEditors();
+        PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
+        	GcovAnnotationModelTracker.getInstance().annotateAllCEditors();
+        });
 
         if (isCompleteCoverageResultWanted) {
             CovView.displayCovResults(binaryPath, gcda.getAbsolutePath());

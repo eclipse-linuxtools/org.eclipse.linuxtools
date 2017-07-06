@@ -33,6 +33,7 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
@@ -81,6 +82,7 @@ public final class OpenSourceFileAction {
 
     public static void openAnnotatedSourceFile(IProject project, IFile binary, SourceFile sourceFile, IPath realLocation,
             int lineNumber) {
+    	PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
         IWorkbenchPage page = CUIPlugin.getActivePage();
         if (page != null) {
             IFileStore fs = getFileStore(project, realLocation);
@@ -118,7 +120,9 @@ public final class OpenSourceFileAction {
                     Activator.getDefault().getLog().log(s);
                 }
             }
+            
         }
+    	});
     }
 
 }

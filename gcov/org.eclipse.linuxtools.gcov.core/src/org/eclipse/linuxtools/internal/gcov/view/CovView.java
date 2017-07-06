@@ -165,7 +165,7 @@ public class CovView extends AbstractSTDataView {
         }
     }
 
-    public static CovView displayCovResults(String binaryPath, String gcda) {
+    public static void displayCovResults(String binaryPath, String gcda) {
         try {
             IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
             IFile binary = root.getFileForLocation(new Path(binaryPath));
@@ -190,14 +190,19 @@ public class CovView extends AbstractSTDataView {
                 }
             }
             String timestamp = DateFormat.getInstance().format(date);
-            return displayCovResults(cvrgeMnger, timestamp);
+            PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
+            	try {
+					displayCovResults(cvrgeMnger, timestamp);
+				} catch (PartInitException e) {
+					reportError(e);
+				}
+            });
         } catch (InterruptedException|IOException|CoreException e) {
             reportError(e);
         }
-        return null;
     }
 
-    private static void reportError(Exception ex) {
+    public static void reportError(Exception ex) {
         final String message = NLS.bind(Messages.CovView_error_message, ex.getMessage());
         Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR, message, ex);
 
@@ -210,10 +215,11 @@ public class CovView extends AbstractSTDataView {
 
     /**
      * Used by Test engine and OpenSerAction
+     * Must be run in UI thread
      * @param cvrgeMnger
      * @throws PartInitException
      */
-    private static CovView displayCovResults(CovManager cvrgeMnger, String timestamp) throws PartInitException {
+    public static CovView displayCovResults(CovManager cvrgeMnger, String timestamp) throws PartInitException {
         // load an Eclipse view
         IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         IWorkbenchPage page = window.getActivePage();
