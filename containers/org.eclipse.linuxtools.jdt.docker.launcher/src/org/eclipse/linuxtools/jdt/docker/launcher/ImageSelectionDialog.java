@@ -51,6 +51,9 @@ public class ImageSelectionDialog extends SelectionDialog {
         if (getInitialElementSelections().isEmpty()) {
             getOkButton().setEnabled(false);
         }
+
+        Shell shell = getShell();
+        shell.setSize(shell.getSize().x + 100, shell.getSize().y);
     }
 
 	@Override

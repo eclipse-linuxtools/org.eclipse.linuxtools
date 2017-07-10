@@ -218,7 +218,7 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 				}
 
 				IDockerContainerInfo info = runner.getContainerInfo();
-				String configName = info.name().startsWith("/") ? info.name().substring(1) : info.name();
+				String configName = info.name().startsWith("/") ? info.name().substring(1) : info.name(); //$NON-NLS-1$
 
 				ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 				ILaunchConfigurationType type = manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_REMOTE_JAVA_APPLICATION);
