@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.docker.core;
 import java.io.FilterInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.Socket;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
@@ -69,6 +70,26 @@ public class HttpHijackWorkaround {
 		List<String[]> list = new LinkedList<>();
 		for (int i = 0; i < fields.length; i++) {
 			list.add(new String[] { declared[i], fields[i] });
+		}
+
+		try {
+			// See org.apache.http.impl.conn.LoggingManagedHttpClientConnection#getSocketInputStream()
+			// We need to perform : LogFactory.getLogger("org.apache.http.wire").isDebugEnabled()
+			Class<?> cLogFactory = null;
+			Class<?> cLog = null;
+			final String[] commonsLogging = new String[] { "org.apache.commons.logging" }; //$NON-NLS-1$
+			cLogFactory = loadClass("org.apache.commons.logging.LogFactory", commonsLogging); //$NON-NLS-1$
+			cLog = loadClass("org.apache.commons.logging.Log", commonsLogging); //$NON-NLS-1$
+			if (cLogFactory != null && cLog != null) {
+				Method mGetLog = cLogFactory.getMethod("getLog", String.class); //$NON-NLS-1$
+				Object log = mGetLog.invoke(null, "org.apache.http.wire"); //$NON-NLS-1$
+				Method mIsDebug = cLog.getMethod("isDebugEnabled"); //$NON-NLS-1$
+				Boolean isDebug = (Boolean) mIsDebug.invoke(log);
+				if (isDebug.booleanValue()) {
+					list.add(new String[] { "org.apache.http.impl.conn.LoggingInputStream", "in" }); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+			}
+		} catch (Exception e) {
 		}
 
 		if (uri.startsWith("unix:")) { //$NON-NLS-1$
