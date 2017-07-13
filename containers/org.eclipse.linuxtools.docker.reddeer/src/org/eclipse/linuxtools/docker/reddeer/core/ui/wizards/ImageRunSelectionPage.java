@@ -113,6 +113,14 @@ public class ImageRunSelectionPage extends WizardPage {
 		setUnconfined(true);
 	}
 
+	public void setBasicSecurity(boolean checked) {
+		new CheckBox("Add basic security (--readonly --tmpfs /run --tmpfs /tmp)").toggle(checked);
+	}
+	
+	public void setBasicSecurity() {
+		setBasicSecurity(true);
+	}
+
 	public void addExposedPort(String containerPort, String hostAddress, String hostPort) {
 		new PushButton(0, new WithTextMatcher("Add...")).click();
 		new DefaultShell("Exposing a Container Port");

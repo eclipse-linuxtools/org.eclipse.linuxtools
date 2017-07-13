@@ -31,6 +31,8 @@ public class DockerHostConfig implements IDockerHostConfig {
 	private final String containerIDFile;
 	private final List<IDockerConfParameter> lxcConf;
 	private final boolean privileged;
+	private final boolean readonlyRootfs;
+	private final Map<String, String> tmpfs;
 	private final Map<String, List<IDockerPortBinding>> portBindings;
 	private final List<String> links;
 	private final boolean publishAllPorts;
@@ -53,6 +55,10 @@ public class DockerHostConfig implements IDockerHostConfig {
 		}
 		this.privileged = hostConfig.privileged() != null
 				? hostConfig.privileged() : false;
+		this.readonlyRootfs = hostConfig.readonlyRootfs() != null
+				? hostConfig.readonlyRootfs()
+				: false;
+		this.tmpfs = hostConfig.tmpfs();
 		this.portBindings = new HashMap<>();
 		if(hostConfig != null && hostConfig.portBindings() != null) {
 			for(Entry<String, List<PortBinding>> entry : hostConfig.portBindings().entrySet()) {
@@ -81,6 +87,10 @@ public class DockerHostConfig implements IDockerHostConfig {
 		this.lxcConf = builder.lxcConf;
 		this.privileged = builder.privileged != null ? builder.privileged
 				: false;
+		this.readonlyRootfs = builder.readonlyRootfs != null
+				? builder.readonlyRootfs
+				: false;
+		this.tmpfs = builder.tmpfs;
 		this.portBindings = builder.portBindings;
 		this.links = builder.links;
 		this.publishAllPorts = builder.publishAllPorts != null
@@ -113,6 +123,14 @@ public class DockerHostConfig implements IDockerHostConfig {
 	@Override
 	public boolean privileged() {
 		return privileged;
+	}
+
+	public boolean readonlyRootfs() {
+		return readonlyRootfs;
+	}
+
+	public Map<String, String> tmpfs() {
+		return tmpfs;
 	}
 
 	@Override
@@ -173,6 +191,8 @@ public class DockerHostConfig implements IDockerHostConfig {
 		private String containerIDFile;
 		private List<IDockerConfParameter> lxcConf;
 		private Boolean privileged;
+		private Boolean readonlyRootfs;
+		private Map<String, String> tmpfs;
 		private Map<String, List<IDockerPortBinding>> portBindings;
 		private List<String> links;
 		private Boolean publishAllPorts;
@@ -216,6 +236,20 @@ public class DockerHostConfig implements IDockerHostConfig {
 		public Builder privileged(final Boolean privileged) {
 			this.privileged = privileged;
 			return this;
+		}
+
+		public Builder readonlyRootfs(final Boolean readonlyRootfs) {
+			this.readonlyRootfs = readonlyRootfs;
+			return this;
+		}
+
+		public Builder tmpfs(Map<String, String> tmpfs) {
+			this.tmpfs = tmpfs;
+			return this;
+		}
+
+		public Map<String, String> tmpfs() {
+			return tmpfs;
 		}
 
 		public Builder portBindings(

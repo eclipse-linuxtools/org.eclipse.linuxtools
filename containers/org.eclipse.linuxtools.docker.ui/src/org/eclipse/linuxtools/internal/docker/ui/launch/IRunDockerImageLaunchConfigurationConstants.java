@@ -50,6 +50,8 @@ public interface IRunDockerImageLaunchConfigurationConstants {
 
 	String PRIVILEGED = "privileged"; //$NON-NLS-1$
 
+	String READONLY = "readonly"; //$NON-NLS-1$
+
 	String DATA_VOLUMES = "volumes"; //$NON-NLS-1$
 
 	String VOLUMES_FROM = "volumesFrom"; //$NON-NLS-1$

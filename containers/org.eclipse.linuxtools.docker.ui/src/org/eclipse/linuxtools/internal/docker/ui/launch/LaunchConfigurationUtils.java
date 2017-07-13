@@ -33,6 +33,7 @@ import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLa
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PRIVILEGED;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PUBLISHED_PORTS;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PUBLISH_ALL_PORTS;
+import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.READONLY;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,6 +71,7 @@ import org.eclipse.linuxtools.docker.core.IDockerImageInfo;
 import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig;
+import org.eclipse.linuxtools.internal.docker.core.DockerHostConfig;
 import org.eclipse.linuxtools.internal.docker.core.DockerPortBinding;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.DataVolumeModel;
 import org.eclipse.swt.SWT;
@@ -208,6 +210,8 @@ public class LaunchConfigurationUtils {
 					containerConfig.tty());
 			workingCopy.setAttribute(INTERACTIVE, containerConfig.openStdin());
 			workingCopy.setAttribute(PRIVILEGED, hostConfig.privileged());
+			workingCopy.setAttribute(READONLY,
+					((DockerHostConfig) hostConfig).readonlyRootfs());
 			if (hostConfig.networkMode() != null)
 				workingCopy.setAttribute(NETWORK_MODE,
 						hostConfig.networkMode());

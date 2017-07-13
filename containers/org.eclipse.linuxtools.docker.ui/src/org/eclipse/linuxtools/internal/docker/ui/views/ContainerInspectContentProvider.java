@@ -26,6 +26,7 @@ import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
 import org.eclipse.linuxtools.docker.core.IDockerNetworkSettings;
 import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig;
+import org.eclipse.linuxtools.internal.docker.core.DockerHostConfig;
 
 /**
  * @author xcoulon
@@ -84,7 +85,7 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 					new Object[]{"Pid", containerState.pid()}, //$NON-NLS-1$
 			};		
 		} else if(propertyValue instanceof IDockerHostConfig) {
-			final IDockerHostConfig hostConfig = (IDockerHostConfig) propertyValue;
+			final DockerHostConfig hostConfig = (DockerHostConfig) propertyValue;
 			return new Object[] {
 					new Object[]{"Binds", LabelProviderUtils.reduce(hostConfig.binds())}, //$NON-NLS-1$
 					new Object[]{"ContainerIDFile", hostConfig.containerIDFile()}, //$NON-NLS-1$
@@ -96,7 +97,10 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 					new Object[]{"PortBindings", LabelProviderUtils.reduce(hostConfig.portBindings())}, //$NON-NLS-1$
 					new Object[]{"Privileged", hostConfig.privileged()}, //$NON-NLS-1$
 					new Object[]{"PublishAllPorts", hostConfig.publishAllPorts()}, //$NON-NLS-1$
+					new Object[] { "ReadonlyRootfs", //$NON-NLS-1$
+							hostConfig.readonlyRootfs() },
 					new Object[] { "SecurityOpt", hostConfig.securityOpt() }, //$NON-NLS-1$
+					new Object[] { "Tmpfs", hostConfig.tmpfs() }, //$NON-NLS-1$
 					new Object[]{"VolumesFrom", LabelProviderUtils.reduce(hostConfig.volumesFrom())}, //$NON-NLS-1$
 			};
 		} else if(propertyValue instanceof IDockerContainerConfig) {

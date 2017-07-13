@@ -135,6 +135,11 @@ public class RunDockerImageLaunchConfigurationDelegate
 				false);
 		hostConfigBuilder.privileged(privileged);
 
+		// run with readonly root fs
+		final boolean readonly = config.getAttribute(
+				IRunDockerImageLaunchConfigurationConstants.READONLY, false);
+		hostConfigBuilder.readonlyRootfs(readonly);
+
 		final String networkMode = config.getAttribute(
 				IRunDockerImageLaunchConfigurationConstants.NETWORK_MODE, ""); //$NON-NLS-1$
 		if (!networkMode.isEmpty()) {

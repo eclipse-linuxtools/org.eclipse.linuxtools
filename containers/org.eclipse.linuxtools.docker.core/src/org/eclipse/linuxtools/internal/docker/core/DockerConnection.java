@@ -91,6 +91,7 @@ import org.eclipse.tm.terminal.view.core.TerminalServiceFactory;
 import org.eclipse.tm.terminal.view.core.interfaces.ITerminalService;
 import org.eclipse.tm.terminal.view.core.interfaces.constants.ITerminalsConnectorConstants;
 
+import com.google.common.collect.ImmutableMap;
 import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.DockerClient.AttachParameter;
 import com.spotify.docker.client.DockerClient.BuildParam;
@@ -1430,7 +1431,12 @@ public class DockerConnection
 			HostConfig.Builder hbuilder = HostConfig.builder()
 					.containerIDFile(hc.containerIDFile())
 					.publishAllPorts(hc.publishAllPorts())
-					.privileged(hc.privileged()).networkMode(hc.networkMode());
+					.privileged(hc.privileged()).networkMode(hc.networkMode())
+					.readonlyRootfs(((DockerHostConfig) hc).readonlyRootfs());
+			if (((DockerHostConfig) hc).tmpfs() != null) {
+				hbuilder.tmpfs(
+						ImmutableMap.copyOf(((DockerHostConfig) hc).tmpfs()));
+			}
 			if (hc.binds() != null)
 				hbuilder.binds(hc.binds());
 			if (hc.dns() != null)

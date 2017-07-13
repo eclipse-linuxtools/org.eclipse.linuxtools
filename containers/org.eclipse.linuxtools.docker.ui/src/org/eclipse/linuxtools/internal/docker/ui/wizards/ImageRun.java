@@ -199,6 +199,13 @@ public class ImageRun extends Wizard {
 		hostConfigBuilder.binds(binds);
 		hostConfigBuilder.volumesFrom(volumesFrom);
 		hostConfigBuilder.privileged(selectionModel.isPrivileged());
+		if (selectionModel.isBasicSecurity()) {
+			hostConfigBuilder.readonlyRootfs(true);
+			Map<String, String> tmpfsValues = new HashMap<>();
+			tmpfsValues.put("/run", "rw,exec"); //$NON-NLS-1$ //$NON-NLS-2$
+			tmpfsValues.put("/tmp", "rw,exec"); //$NON-NLS-1$ //$NON-NLS-2$
+			hostConfigBuilder.tmpfs(tmpfsValues);
+		}
 		if (selectionModel.isUnconfined()) {
 			List<String> seccomp = new ArrayList<>();
 			seccomp.add("seccomp:unconfined"); //$NON-NLS-1$
