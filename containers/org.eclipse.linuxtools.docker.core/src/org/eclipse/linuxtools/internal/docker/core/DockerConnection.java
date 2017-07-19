@@ -1437,6 +1437,12 @@ public class DockerConnection
 				hbuilder.tmpfs(
 						ImmutableMap.copyOf(((DockerHostConfig) hc).tmpfs()));
 			}
+			if (((DockerHostConfig) hc).capAdd() != null) {
+				hbuilder.capAdd(((DockerHostConfig) hc).capAdd());
+			}
+			if (((DockerHostConfig) hc).capDrop() != null) {
+				hbuilder.capDrop(((DockerHostConfig) hc).capDrop());
+			}
 			if (hc.binds() != null)
 				hbuilder.binds(hc.binds());
 			if (hc.dns() != null)

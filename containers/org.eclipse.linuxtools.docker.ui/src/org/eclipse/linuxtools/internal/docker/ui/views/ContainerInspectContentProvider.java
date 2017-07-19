@@ -88,6 +88,8 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 			final DockerHostConfig hostConfig = (DockerHostConfig) propertyValue;
 			return new Object[] {
 					new Object[]{"Binds", LabelProviderUtils.reduce(hostConfig.binds())}, //$NON-NLS-1$
+					new Object[] { "CapAdd", hostConfig.capAdd() }, //$NON-NLS-1$
+					new Object[] { "CapDrop", hostConfig.capDrop() }, //$NON-NLS-1$
 					new Object[]{"ContainerIDFile", hostConfig.containerIDFile()}, //$NON-NLS-1$
 					new Object[]{"Dns", LabelProviderUtils.reduce(hostConfig.dns())}, //$NON-NLS-1$
 					new Object[]{"DnsSearch", LabelProviderUtils.reduce(hostConfig.dnsSearch())}, //$NON-NLS-1$

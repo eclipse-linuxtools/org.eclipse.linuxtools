@@ -78,6 +78,8 @@ public class BasicSecurityTest extends AbstractImageBotTest {
 		assertTrue("Container /run is not tmpfs rw,exec!", tmpfsProp.equals("rw,exec"));
 		tmpfsProp = propertiesView.getProperty("HostConfig", "Tmpfs", "/tmp").getPropertyValue();
 		assertTrue("Container /tmp is not tmpfs rw,exec!", tmpfsProp.equals("rw,exec"));
+		String capDropProp = propertiesView.getProperty("HostConfig", "CapDrop", "").getPropertyValue();
+		assertTrue("Container does not have capDrop all!", capDropProp.equals("all"));
 	}
 
 	@After

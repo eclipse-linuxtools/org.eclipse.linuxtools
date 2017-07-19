@@ -40,6 +40,8 @@ public class DockerHostConfig implements IDockerHostConfig {
 	private final List<String> dnsSearch;
 	private final List<String> volumesFrom;
 	private final List<String> securityOpt;
+	private final List<String> capAdd;
+	private final List<String> capDrop;
 	private final String networkMode;
 	private final Long memory;
 	private final Long cpuShares;
@@ -79,6 +81,8 @@ public class DockerHostConfig implements IDockerHostConfig {
 		this.memory = hostConfig.memory();
 		this.cpuShares = hostConfig.cpuShares();
 		this.securityOpt = hostConfig.securityOpt();
+		this.capAdd = hostConfig.capAdd();
+		this.capDrop = hostConfig.capDrop();
 	}
 
 	private DockerHostConfig(final Builder builder) {
@@ -102,6 +106,8 @@ public class DockerHostConfig implements IDockerHostConfig {
 		this.memory = builder.memory;
 		this.cpuShares = builder.cpuShares;
 		this.securityOpt = builder.securityOpt;
+		this.capAdd = builder.capAdd;
+		this.capDrop = builder.capDrop;
 
 	}
 
@@ -168,6 +174,14 @@ public class DockerHostConfig implements IDockerHostConfig {
 		return securityOpt;
 	}
 
+	public List<String> capAdd() {
+		return capAdd;
+	}
+
+	public List<String> capDrop() {
+		return capDrop;
+	}
+
 	@Override
 	public String networkMode() {
 		return networkMode;
@@ -200,6 +214,8 @@ public class DockerHostConfig implements IDockerHostConfig {
 		private List<String> dnsSearch;
 		private List<String> volumesFrom;
 		private List<String> securityOpt;
+		private List<String> capAdd;
+		private List<String> capDrop;
 		private String networkMode;
 		private Long memory;
 		private Long cpuShares;
@@ -310,6 +326,26 @@ public class DockerHostConfig implements IDockerHostConfig {
 
 		public Builder securityOpt(final String... securityOpt) {
 			this.securityOpt = Arrays.asList(securityOpt);
+			return this;
+		}
+
+		public Builder capAdd(final List<String> capAdd) {
+			this.capAdd = new ArrayList<>(capAdd);
+			return this;
+		}
+
+		public Builder capAdd(final String... capAdd) {
+			this.capAdd = Arrays.asList(capAdd);
+			return this;
+		}
+
+		public Builder capDrop(final List<String> capDrop) {
+			this.capDrop = new ArrayList<>(capDrop);
+			return this;
+		}
+
+		public Builder capDrop(final String... capDrop) {
+			this.capDrop = Arrays.asList(capDrop);
 			return this;
 		}
 

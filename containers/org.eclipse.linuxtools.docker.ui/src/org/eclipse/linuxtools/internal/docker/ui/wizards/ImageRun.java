@@ -199,12 +199,17 @@ public class ImageRun extends Wizard {
 		hostConfigBuilder.binds(binds);
 		hostConfigBuilder.volumesFrom(volumesFrom);
 		hostConfigBuilder.privileged(selectionModel.isPrivileged());
+		// if user has asked for basic security, use a readonly rootfs,
+		// make /tmp and /run use tmpfs, and drop all capabilities
 		if (selectionModel.isBasicSecurity()) {
 			hostConfigBuilder.readonlyRootfs(true);
 			Map<String, String> tmpfsValues = new HashMap<>();
 			tmpfsValues.put("/run", "rw,exec"); //$NON-NLS-1$ //$NON-NLS-2$
 			tmpfsValues.put("/tmp", "rw,exec"); //$NON-NLS-1$ //$NON-NLS-2$
 			hostConfigBuilder.tmpfs(tmpfsValues);
+			List<String> capDropList = new ArrayList<>();
+			capDropList.add("all"); //$NON-NLS-1$
+			hostConfigBuilder.capDrop(capDropList);
 		}
 		if (selectionModel.isUnconfined()) {
 			List<String> seccomp = new ArrayList<>();

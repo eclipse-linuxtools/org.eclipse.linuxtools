@@ -114,7 +114,7 @@ public class ImageRunSelectionPage extends WizardPage {
 	}
 
 	public void setBasicSecurity(boolean checked) {
-		new CheckBox("Add basic security (--readonly --tmpfs /run --tmpfs /tmp)").toggle(checked);
+		new CheckBox("Add basic security (--readonly --tmpfs /run --tmpfs /tmp --cap-drop=all)").toggle(checked);
 	}
 	
 	public void setBasicSecurity() {
