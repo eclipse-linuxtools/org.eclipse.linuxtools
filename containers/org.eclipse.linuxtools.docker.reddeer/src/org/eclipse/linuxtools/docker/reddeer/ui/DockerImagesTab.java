@@ -65,7 +65,7 @@ public class DockerImagesTab extends WorkbenchView {
 	public void buildImage(String name, String directory) {
 		activate();
 		new DefaultToolItem("Build Image").click();
-		new WaitUntil(new ShellWithTextIsAvailable(""));
+		new WaitUntil(new ShellWithTextIsAvailable("Build a Docker Image"));
 		new LabeledText("Image Name:").setText(name);
 		new LabeledText("Directory:").setText(directory);
 		new FinishButton().click();
