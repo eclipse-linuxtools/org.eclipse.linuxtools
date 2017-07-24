@@ -230,6 +230,9 @@ public class ImageBuildPage extends WizardPage {
 						MPartSashContainerElement p = site
 								.getService(MPart.class);
 						s.detach(p, 100, 100, 500, 375);
+						dockerFileEditor.getEditorSite().getShell()
+								.setText(WizardMessages
+										.getString("ImageBuild.editor.name"));
 						editors.add(dockerFileEditor);
 					} catch (PartInitException e1) {
 						Activator.log(e1);
