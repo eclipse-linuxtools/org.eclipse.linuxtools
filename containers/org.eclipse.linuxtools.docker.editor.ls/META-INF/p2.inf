@@ -1,0 +1,4 @@
+instructions.install=\
+org.eclipse.equinox.p2.touchpoint.natives.checkAndPromptNativePackage(distro:fedora,package:nodejs,comparator:ge,version:6);\
+org.eclipse.equinox.p2.touchpoint.natives.checkAndPromptNativePackage(distro:debian,package:nodejs,comparator:ge,version:6);\
+org.eclipse.equinox.p2.touchpoint.natives.checkAndPromptNativePackage(distro:windows,package:nodejs,comparator:ge,version:6);

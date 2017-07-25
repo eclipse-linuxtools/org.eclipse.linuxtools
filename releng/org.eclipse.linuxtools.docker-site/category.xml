@@ -10,6 +10,13 @@
    <feature url="features/org.eclipse.linuxtools.jdt.docker.launcher.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.jdt.docker.launcher.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
+   <!--
+       Do not expose this until CQ for libraries that
+       dockerfile-language-server-nodejs depends on are approved.
+   <feature url="features/org.eclipse.linuxtools.ls.dockerfile.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.ls.dockerfile.feature" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   -->
    <feature url="features/org.eclipse.linuxtools.docker.tests.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.docker.tests.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
