@@ -181,22 +181,19 @@ public abstract class TapsetParser extends Job {
         }
 
         StringStreamGobbler gobbler = new StringStreamGobbler(process.getInputStream());
-        StringStreamGobbler egobbler = null;
+        StringStreamGobbler egobbler = new StringStreamGobbler(process.getErrorStream());
         gobbler.start();
-        if (getErrors) {
-            egobbler = new StringStreamGobbler(process.getErrorStream());
-            egobbler.start();
-        }
+        egobbler.start();
         try {
             process.waitFor();
         } catch (InterruptedException e) {
             process.destroy();
         }
         gobbler.stop();
-        if (egobbler == null) {
+        egobbler.stop();
+        if (!getErrors) {
             return gobbler.getOutput().toString();
         } else {
-            egobbler.stop();
             return egobbler.getOutput().toString();
         }
     }
