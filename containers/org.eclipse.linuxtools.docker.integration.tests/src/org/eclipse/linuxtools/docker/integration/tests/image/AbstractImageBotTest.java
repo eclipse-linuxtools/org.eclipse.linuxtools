@@ -68,6 +68,8 @@ public class AbstractImageBotTest extends AbstractDockerBotTest {
 	protected static final String IMAGE_RHEL = "rhel7.2";
 
 	protected static final String DOCKERFILE_FOLDER = "resources/test-build";
+	
+	protected static final String EDIT_DOCKERFILE_FOLDER = "resources/test-edit-dockerfile";
 
 	protected static final String REGISTRY_URL = "https://index.docker.io";
 

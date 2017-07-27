@@ -12,18 +12,20 @@
 package org.eclipse.linuxtools.docker.integration.tests;
 
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.linuxtools.docker.integration.tests.connection.AddConnectionTest;
+import org.eclipse.linuxtools.docker.integration.tests.container.ContainerLogTest;
 import org.eclipse.linuxtools.docker.integration.tests.container.DockerContainerTest;
 import org.eclipse.linuxtools.docker.integration.tests.container.ExposePortTest;
 import org.eclipse.linuxtools.docker.integration.tests.container.LabelsTest;
 import org.eclipse.linuxtools.docker.integration.tests.container.LinkContainersTest;
+import org.eclipse.linuxtools.docker.integration.tests.container.NetworkModeTest;
 import org.eclipse.linuxtools.docker.integration.tests.container.PrivilegedModeTest;
 import org.eclipse.linuxtools.docker.integration.tests.container.UnconfinedTest;
 import org.eclipse.linuxtools.docker.integration.tests.container.VariablesTest;
 import org.eclipse.linuxtools.docker.integration.tests.container.VolumeMountTest;
 import org.eclipse.linuxtools.docker.integration.tests.image.BuildImageTest;
 import org.eclipse.linuxtools.docker.integration.tests.image.DeleteImagesAfter;
+import org.eclipse.linuxtools.docker.integration.tests.image.EditDockerFileTest;
 import org.eclipse.linuxtools.docker.integration.tests.image.HierarchyViewTest;
 import org.eclipse.linuxtools.docker.integration.tests.image.ImageTagTest;
 import org.eclipse.linuxtools.docker.integration.tests.image.PullImageTest;
@@ -31,11 +33,12 @@ import org.eclipse.linuxtools.docker.integration.tests.image.PushImageTest;
 import org.eclipse.linuxtools.docker.integration.tests.ui.ComposeTest;
 import org.eclipse.linuxtools.docker.integration.tests.ui.ContainerTabTest;
 import org.eclipse.linuxtools.docker.integration.tests.ui.DifferentRegistryTest;
+import org.eclipse.linuxtools.docker.integration.tests.ui.ImageTabTest;
+import org.eclipse.linuxtools.docker.integration.tests.ui.LaunchDockerImageTest;
 import org.eclipse.linuxtools.docker.integration.tests.ui.PerspectiveTest;
 import org.eclipse.linuxtools.docker.integration.tests.ui.PropertiesViewTest;
 import org.eclipse.linuxtools.docker.integration.tests.ui.SearchDialogTest;
-import org.eclipse.linuxtools.docker.integration.tests.ui.ImageTabTest;
-import org.eclipse.linuxtools.docker.integration.tests.ui.LaunchDockerImageTest;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -70,6 +73,9 @@ import org.junit.runners.Suite;
 	PushImageTest.class,
 	LaunchDockerImageTest.class,
 	ComposeTest.class,
+	ContainerLogTest.class,
+	NetworkModeTest.class,
+	EditDockerFileTest.class,
 	
 	DeleteImagesAfter.class
 })

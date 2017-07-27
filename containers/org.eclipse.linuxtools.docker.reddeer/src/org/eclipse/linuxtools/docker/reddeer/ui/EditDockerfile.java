@@ -11,9 +11,11 @@
 
 package org.eclipse.linuxtools.docker.reddeer.ui;
 
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabFolder;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.core.reference.ReferencedComposite;
 import org.jboss.reddeer.swt.api.CTabFolder;
 import org.jboss.reddeer.swt.api.CTabItem;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabFolder;
 
 /**
  * 
@@ -21,10 +23,10 @@ import org.jboss.reddeer.swt.impl.ctab.DefaultCTabFolder;
  *
  */
 
-public class DockerTerminal extends WorkbenchView {
+public class EditDockerfile extends WorkbenchView {
 
-	public DockerTerminal() {
-		super("Terminal");
+	public EditDockerfile() {
+		super("");
 	}
 
 	public CTabItem getPage(String pageLabel) {
@@ -36,6 +38,10 @@ public class DockerTerminal extends WorkbenchView {
 
 	public String getTextFromPage(String tabName) {
 		return getPage(tabName).getText();
+	}
+	
+	public void setTextOnPage(String tabName, String text) {
+		new DefaultStyledText((ReferencedComposite) getPage(tabName)).setText(text);
 	}
 
 }
