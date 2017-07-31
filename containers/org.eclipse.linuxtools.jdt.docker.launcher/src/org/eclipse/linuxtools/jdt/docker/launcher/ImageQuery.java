@@ -33,6 +33,7 @@ public class ImageQuery {
 
 	private String id;
 	private DockerClient client;
+	private DockerConnection conn;
 
 	public ImageQuery(DockerConnection conn, String image) {
 		IDockerHostConfig hc = DockerHostConfig.builder().build();
@@ -49,6 +50,7 @@ public class ImageQuery {
 			this.id = conn.createContainer(cc, hc);
 			conn.startContainer(id, null);
 			this.client = conn.getClient();
+			this.conn = conn;
 		} catch (DockerException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -153,7 +155,6 @@ public class ImageQuery {
 	}
 
 	public void destroy() {
-		IDockerConnection conn = DockerConnectionManager.getInstance().getFirstConnection();
 		try {
 			conn.stopContainer(id);
 			conn.removeContainer(id);

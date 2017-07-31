@@ -47,7 +47,7 @@ public class ContainerVMRunner extends StandardVMRunner {
 
 	@Override
 	protected Process exec(String[] cmdLine, File workingDirectory, String[] envp) throws CoreException {
-		String connectionUri = DockerConnectionManager.getInstance().getFirstConnection().getUri();
+		String connectionUri = ((ContainerVMInstall) fVMInstance).getConnection().getUri();
 		String command = String.join(" ", cmdLine); //$NON-NLS-1$
 		String newWD = workingDirectory.getAbsolutePath();
 
@@ -142,7 +142,7 @@ public class ContainerVMRunner extends StandardVMRunner {
 
 	@Override
 	protected boolean fileExists(File file) {
-		DockerConnection conn = (DockerConnection) DockerConnectionManager.getInstance().getFirstConnection();
+		DockerConnection conn = ((ContainerVMInstall) fVMInstance).getConnection();
 		ImageQuery q = new ImageQuery(conn, fVMInstance.getId());
 		try {
 			return q.isFile(file);
