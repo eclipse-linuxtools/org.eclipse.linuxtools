@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.jdt.docker.launcher;
 import java.io.File;
 import java.net.URL;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMInstallType;
@@ -50,7 +51,7 @@ public class ContainerVMInstall implements IVMInstall {
 	@Override
 	public String getName() {
 		if (name == null) {
-			DockerConnection conn = (DockerConnection) DockerConnectionManager.getInstance().getFirstConnection();
+			DockerConnection conn = getConnection();
 			ImageQuery q = new ImageQuery(conn, image.id());
 			name = q.getDefaultJVMName();
 			q.destroy();
@@ -66,7 +67,7 @@ public class ContainerVMInstall implements IVMInstall {
 	@Override
 	public File getInstallLocation() {
 		if (installLocation == null) {
-			DockerConnection conn = (DockerConnection) DockerConnectionManager.getInstance().getFirstConnection();
+			DockerConnection conn = getConnection();
 			ImageQuery q = new ImageQuery(conn, image.id());
 			installLocation = q.getDefaultJVMInstallLocation();
 			q.destroy();
@@ -130,7 +131,7 @@ public class ContainerVMInstall implements IVMInstall {
 		final String[] fgCandidateJavaFiles = {"javaw", "javaw.exe", "java", "java.exe", "j9w", "j9w.exe", "j9", "j9.exe"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 		final String[] fgCandidateJavaLocations = {"bin" + UnixFile.separatorChar, JRE + UnixFile.separatorChar + "bin" + UnixFile.separatorChar}; //$NON-NLS-1$ //$NON-NLS-2$
 
-		DockerConnection conn = (DockerConnection) DockerConnectionManager.getInstance().getFirstConnection();
+		DockerConnection conn = getConnection();
 		ImageQuery q = new ImageQuery(conn, image.id());
 
 		// Try each candidate in order.  The first one found wins.  Thus, the order
@@ -145,6 +146,16 @@ public class ContainerVMInstall implements IVMInstall {
 			}
 		}
 		q.destroy();
+		return null;
+	}
+
+	public DockerConnection getConnection () {
+		String connectionURI;
+		try {
+			connectionURI = config.getAttribute(JavaLaunchConfigurationConstants.CONNECTION_URI, (String) null);
+			return (DockerConnection) DockerConnectionManager.getInstance().getConnectionByUri(connectionURI);
+		} catch (CoreException e) {
+		}
 		return null;
 	}
 
