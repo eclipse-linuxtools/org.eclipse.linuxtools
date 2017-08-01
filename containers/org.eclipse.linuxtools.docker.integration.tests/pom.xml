@@ -12,7 +12,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 	
 	<properties>
-		<systemProperties>-DsearchConnection=${searchConnection} -DdockerServerURI=${dockerServerURI} -DunixSocket=${unixSocket} -DdockerHubUsername=${dockerHubUsername} -DdockerHubEmail=${dockerHubEmail} -DdockerHubPassword=${dockerHubPassword} -DdockerComposePath=${dockerComposePath} -DdockerMockito=${dockerMockito}</systemProperties>
+		<systemProperties>-DsearchConnection=${searchConnection} -DdockerServerURI=${dockerServerURI} -DunixSocket=${unixSocket} -DdockerHubUsername=${dockerHubUsername} -DdockerHubEmail=${dockerHubEmail} -DdockerHubPassword=${dockerHubPassword} -DdockerComposePath=${dockerComposePath} -DdockerMockito=${dockerMockito} -DtargetPlatformRepoURL=${targetPlatformRepoURL} -DtargetPlatformFeatureGroupID=${targetPlatformFeatureGroupID}</systemProperties>
 		<searchConnection></searchConnection>
 		<unixSocket></unixSocket>
 		<dockerServerURI></dockerServerURI>
@@ -23,6 +23,8 @@
 		<dockerMockito>true</dockerMockito>
 		<tycho.test.jvmArgs>-Xmx800m</tycho.test.jvmArgs>
 		<tycho.surefire.timeout>1800</tycho.surefire.timeout>
+		<targetPlatformRepoURL></targetPlatformRepoURL>
+		<targetPlatformFeatureGroupID></targetPlatformFeatureGroupID>
 	</properties>
 
 
@@ -105,6 +107,36 @@
 					</plugin>
 				</plugins>
 			</build>
+		</profile>
+		<profile>
+			<id>change-target-platform</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<configuration>
+      							<dependency-resolution>
+           							<extraRequirements>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>${targetPlatformFeatureGroupID}</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+         							</extraRequirements>
+    							</dependency-resolution>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+			<repositories>
+				<repository>
+					<id>repo</id>
+					<name>repo</name>
+					<layout>p2</layout>
+					<url>${targetPlatformRepoURL}</url>
+				</repository>
+			</repositories>
 		</profile>
 	</profiles>
 

@@ -57,7 +57,7 @@ public class EditDockerFileTest extends AbstractImageBotTest {
 			getConnection();
 			imageTab.activate();
 			new DefaultToolItem("Build Image").click();
-			new WaitUntil(new ShellWithTextIsAvailable(""));
+			new WaitUntil(new ShellWithTextIsAvailable("Build a Docker Image"));
 			new LabeledText("Image Name:").setText(IMAGE_NAME);
 			new LabeledText("Directory:").setText(dockerFilePath);
 			new PushButton("Edit Dockerfile").click();
@@ -69,8 +69,8 @@ public class EditDockerFileTest extends AbstractImageBotTest {
 			CTabItem tabItem = tabFolder.getSelection();
 			KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.CTRL,'S');
 			tabItem.close();
-			new WaitUntil(new ShellWithTextIsAvailable(""));
-			new DefaultShell("").setFocus();
+			new WaitUntil(new ShellWithTextIsAvailable("Dockerfile Editor"));
+			new DefaultShell("Build a Docker Image").setFocus();
 			new FinishButton().click();
 			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		} catch (IOException ex) {
