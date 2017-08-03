@@ -121,12 +121,12 @@ public class ContainerLauncher {
 					return Status.CANCEL_STATUS;
 				}
 				String hostDirectory = iterator.next();
-				if (!hostDirectory.endsWith("/")) { //$NON-NLS-1$
-					hostDirectory = hostDirectory + "/"; //$NON-NLS-1$
-				}
 				String containerDirectory = volumes.get(hostDirectory);
 				if (!containerDirectory.endsWith("/")) { //$NON-NLS-1$
 					containerDirectory = containerDirectory + "/"; //$NON-NLS-1$
+				}
+				if (!hostDirectory.endsWith("/")) { //$NON-NLS-1$
+					hostDirectory = hostDirectory + "/"; //$NON-NLS-1$
 				}
 				monitor.setTaskName(Messages
 						.getFormattedString(COPY_VOLUMES_TASK, hostDirectory));
@@ -1083,6 +1083,10 @@ public class ContainerLauncher {
 			// the host data over before starting.
 			if (additionalDirs != null) {
 				for (String dir : additionalDirs) {
+					IPath p = new Path(dir).removeTrailingSeparator();
+					remoteVolumes.add(p.toPortableString());
+					remoteDataVolumes.put(p.toPortableString(),
+							p.toPortableString());
 					if (dir.contains(":")) { //$NON-NLS-1$
 						DataVolumeModel dvm = DataVolumeModel.parseString(dir);
 						switch (dvm.getMountType()) {
@@ -1100,17 +1104,19 @@ public class ContainerLauncher {
 							continue;
 						}
 					}
-					IPath p = new Path(dir).removeTrailingSeparator();
-					remoteVolumes.add(p.toPortableString());
 				}
 			}
 			if (workingDir != null) {
 				IPath p = new Path(workingDir).removeTrailingSeparator();
 				remoteVolumes.add(p.toPortableString());
+				remoteDataVolumes.put(p.toPortableString(),
+						p.toPortableString());
 			}
 			if (commandDir != null) {
 				IPath p = new Path(commandDir).removeTrailingSeparator();
 				remoteVolumes.add(p.toPortableString());
+				remoteDataVolumes.put(p.toPortableString(),
+						p.toPortableString());
 			}
 			builder = builder.volumes(remoteVolumes);
 		} else {
