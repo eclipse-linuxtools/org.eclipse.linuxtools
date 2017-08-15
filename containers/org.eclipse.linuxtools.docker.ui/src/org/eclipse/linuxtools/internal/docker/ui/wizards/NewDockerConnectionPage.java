@@ -497,7 +497,7 @@ public class NewDockerConnectionPage extends WizardPage {
 					DefaultDockerConnectionSettingsFinder.DOCKER_HOST)) {
 				tokens = line.split(EQUAL);
 				if (tokens.length == 2) {
-					String host = tokens[1];
+					String host = tokens[1].replaceAll("\"", ""); //$NON-NLS-1$ //$NON-NLS-2$
 					if (host.startsWith("unix")) { //$NON-NLS-1$
 						model.setUnixSocketBindingMode(true);
 						model.setUnixSocketPath(host);
@@ -511,7 +511,7 @@ public class NewDockerConnectionPage extends WizardPage {
 					DefaultDockerConnectionSettingsFinder.DOCKER_CERT_PATH)) {
 				tokens = line.split(EQUAL);
 				if (tokens.length == 2) {
-					model.setTcpCertPath(tokens[1]);
+					model.setTcpCertPath(tokens[1].replaceAll("\"", "")); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			} else if (line.startsWith(
 					DefaultDockerConnectionSettingsFinder.DOCKER_TLS_VERIFY)) {
@@ -519,7 +519,7 @@ public class NewDockerConnectionPage extends WizardPage {
 				if (tokens.length == 2) {
 					model.setTcpTLSVerify(
 							DefaultDockerConnectionSettingsFinder.DOCKER_TLS_VERIFY_TRUE
-									.equals(tokens[1]));
+									.equals(tokens[1].replaceAll("\"", ""))); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 		}
