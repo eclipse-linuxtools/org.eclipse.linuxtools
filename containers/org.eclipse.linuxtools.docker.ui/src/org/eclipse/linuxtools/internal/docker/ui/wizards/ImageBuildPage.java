@@ -62,6 +62,7 @@ public class ImageBuildPage extends WizardPage {
 	private final static String UNREADABLE_DIRECTORY = "ErrorUnreadableDirectory.msg"; //$NON-NLS-1$
 	private final static String INVALID_ID = "ErrorInvalidImageId.msg"; //$NON-NLS-1$
 	private final static String NO_DOCKER_FILE = "ErrorNoDockerFile.msg"; //$NON-NLS-1$
+	private final static String IMAGE_NAME_EMPTY = "ImageBuild.name.empty"; //$NON-NLS-1$
 
 	private Text nameText;
 	private Text directoryText;
@@ -106,18 +107,20 @@ public class ImageBuildPage extends WizardPage {
 		boolean complete = true;
 		boolean error = false;
 
+		setMessage(null);
 		String name = nameText.getText();
 
-		if (name.length() > 0 && name.charAt(name.length() - 1) == ':') { //$NON-NLS-1$
-			//				&& (tag.length() > 0) || tag.contains(":")) { //$NON-NLS-1$
+		if (name.length() > 0 && name.charAt(name.length() - 1) == ':') {
 			setErrorMessage(WizardMessages.getString(INVALID_ID));
 			error = true;
 		} else {
-			if (name.contains(":")) { //$NON-NLS-$
+			if (name.contains(":")) { //$NON-NLS-1$
 				if (name.substring(name.indexOf(':') + 1).contains(":")) { //$NON-NLS-1$
 					setErrorMessage(WizardMessages.getString(INVALID_ID));
 					error = true;
 				}
+			} else if (name.isEmpty()) {
+				setMessage(WizardMessages.getString(IMAGE_NAME_EMPTY), WARNING);
 			}
 		}
 
@@ -149,7 +152,6 @@ public class ImageBuildPage extends WizardPage {
 						setMessage(WizardMessages.getString(NO_DOCKER_FILE),
 								IMessageProvider.INFORMATION);
 					} else {
-						setMessage(null, IMessageProvider.INFORMATION);
 						lastDirectoryPath = dir;
 					}
 
@@ -232,7 +234,7 @@ public class ImageBuildPage extends WizardPage {
 						s.detach(p, 100, 100, 500, 375);
 						dockerFileEditor.getEditorSite().getShell()
 								.setText(WizardMessages
-										.getString("ImageBuild.editor.name"));
+										.getString("ImageBuild.editor.name")); //$NON-NLS-1$
 						editors.add(dockerFileEditor);
 					} catch (PartInitException e1) {
 						Activator.log(e1);
