@@ -89,6 +89,7 @@ import org.eclipse.linuxtools.internal.docker.core.DockerImage.DockerImageQualif
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.tm.terminal.view.core.TerminalServiceFactory;
 import org.eclipse.tm.terminal.view.core.interfaces.ITerminalService;
+import org.eclipse.tm.terminal.view.core.interfaces.ITerminalServiceOutputStreamMonitorListener;
 import org.eclipse.tm.terminal.view.core.interfaces.constants.ITerminalsConnectorConstants;
 
 import com.google.common.collect.ImmutableMap;
@@ -581,6 +582,7 @@ public class DockerConnection
 				getContainers(force);
 			} catch (DockerException e) {
 				Activator.log(e);
+				return Collections.emptyList();
 			}
 
 		} else if (!isContainersLoaded() || force) {
@@ -984,6 +986,7 @@ public class DockerConnection
 				latestImages = getImages(force);
 			} catch (DockerException e) {
 				Activator.log(e);
+				return Collections.emptyList();
 			}
 		} else if (!isImagesLoaded() || force) {
 			try {
@@ -1933,7 +1936,6 @@ public class DockerConnection
 				Activator.log(e);
 			}
 		}
-
 	}
 
 	@Override
@@ -2007,7 +2009,7 @@ public class DockerConnection
 	}
 
 	public void attachCommand(final String id, final InputStream in,
-			@SuppressWarnings("unused") final OutputStream out)
+			@SuppressWarnings("unused") final DockerConsoleOutputStream out)
 					throws DockerException {
 
 		final byte[] prevCmd = new byte[1024];
@@ -2021,7 +2023,7 @@ public class DockerConnection
 			final boolean isOpenStdin = info.config().openStdin();
 
 			if (isTtyEnabled) {
-				openTerminal(pty_stream, info.name());
+				openTerminal(pty_stream, info.name(), out);
 			}
 
 			// Data from the given input stream
@@ -2130,16 +2132,43 @@ public class DockerConnection
 			final LogStream pty_stream = client.execStart(execId,
 					DockerClient.ExecStartParameter.TTY);
 			final IDockerContainerInfo info = getContainerInfo(id);
-			openTerminal(pty_stream, info.name() + " [shell]"); //$NON-NLS-1$
+			openTerminal(pty_stream, info.name() + " [shell]", null); //$NON-NLS-1$
 		} catch (Exception e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
 
-	private void openTerminal(LogStream pty_stream, String name) throws DockerException {
+	private class TerminalOutputMonitorListener
+			implements ITerminalServiceOutputStreamMonitorListener {
+
+		private DockerConsoleOutputStream consoleOutputStream;
+
+		public TerminalOutputMonitorListener(DockerConsoleOutputStream out) {
+			this.consoleOutputStream = out;
+		}
+
+		@Override
+		public void onContentReadFromStream(byte[] byteBuffer, int bytesRead) {
+			try {
+				if (consoleOutputStream != null) {
+					consoleOutputStream.write(byteBuffer, 0, bytesRead);
+				}
+			} catch (IOException e) {
+				Activator.log(e);
+			}
+		}
+
+	}
+
+	private void openTerminal(LogStream pty_stream, String name,
+			DockerConsoleOutputStream out) throws DockerException {
 		try {
-			OutputStream tout = noBlockingOutputStream(HttpHijackWorkaround.getOutputStream(pty_stream, getUri()));
+			OutputStream tout = noBlockingOutputStream(
+					HttpHijackWorkaround.getOutputStream(pty_stream, getUri()));
 			InputStream tin = HttpHijackWorkaround.getInputStream(pty_stream);
+			
+			TerminalOutputMonitorListener monitor = new TerminalOutputMonitorListener(out);
+			
 			// org.eclipse.tm.terminal.connector.ssh.controls.SshWizardConfigurationPanel
 			Map<String, Object> properties = new HashMap<>();
 			properties.put(ITerminalsConnectorConstants.PROP_DELEGATE_ID,
@@ -2152,6 +2181,10 @@ public class DockerConnection
 			properties.put(ITerminalsConnectorConstants.PROP_FORCE_NEW, true);
 			properties.put(ITerminalsConnectorConstants.PROP_STREAMS_STDIN, tout);
 			properties.put(ITerminalsConnectorConstants.PROP_STREAMS_STDOUT, tin);
+			properties.put(ITerminalsConnectorConstants.PROP_STDERR_LISTENERS, new ITerminalServiceOutputStreamMonitorListener[] {monitor});
+			properties.put(ITerminalsConnectorConstants.PROP_STDOUT_LISTENERS,
+					new ITerminalServiceOutputStreamMonitorListener[] {
+							monitor });
 			properties.put(ITerminalsConnectorConstants.PROP_DATA, pty_stream);
 			/*
 			 * The JVM will call finalize() on 'pty_stream' (LogStream)
@@ -2161,6 +2194,10 @@ public class DockerConnection
 			 * used so we must preserve a reference to it.
 			 */
 			properties.put("PREVENT_JVM_GC_FINALIZE", pty_stream); //$NON-NLS-1$
+			// save properties to remove terminal later
+			if (out != null) {
+				out.setTerminalProperties(properties);
+			}
 			ITerminalService service = TerminalServiceFactory.getService();
 			service.openConsole(properties, null);
 		} catch (Exception e) {

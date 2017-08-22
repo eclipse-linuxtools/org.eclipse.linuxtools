@@ -268,7 +268,7 @@ public class CommandUtils {
 				&& connection.getContainerInfo(container.id()) != null
 				&& connection.getContainerInfo(container.id()).config() != null
 				&& connection.getContainerInfo(container.id()).config().tty()) {
-			RunConsole.attachToTerminal(connection, container.id());
+			RunConsole.attachToTerminal(connection, container.id(), null);
 			return null;
 		}
 		final boolean autoLogOnStart = Activator.getDefault().getPreferenceStore()
