@@ -19,6 +19,7 @@ import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerState;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
+import org.eclipse.linuxtools.internal.docker.core.DockerConsoleOutputStream;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
@@ -142,7 +143,6 @@ public class RunConsole extends IOConsole {
 	 */
 	public void attachToConsole(final IDockerConnection connection) {
 		final InputStream in = getInputStream();
-		final OutputStream out = newOutputStream();
 		Thread t = new Thread(() -> {
 			try {
 				DockerConnection conn = (DockerConnection) connection;
@@ -155,7 +155,7 @@ public class RunConsole extends IOConsole {
 						}
 						state = conn.getContainerInfo(containerId).state();
 					} while (!state.running() && state.finishDate() == null);
-					conn.attachCommand(containerId, in, out);
+					conn.attachCommand(containerId, in, null);
 				}
 			} catch (Exception e) {
 			}
@@ -164,7 +164,8 @@ public class RunConsole extends IOConsole {
 		attached = true;
 	}
 
-	public static void attachToTerminal (final IDockerConnection connection, final String containerId) {
+	public static void attachToTerminal(final IDockerConnection connection,
+			final String containerId, final DockerConsoleOutputStream out) {
 		Thread t = new Thread(() -> {
 			try {
 				DockerConnection conn = (DockerConnection) connection;
@@ -176,7 +177,7 @@ public class RunConsole extends IOConsole {
 					}
 					state = conn.getContainerInfo(containerId).state();
 				} while (!state.running() && state.finishDate() == null);
-				conn.attachCommand(containerId, null, null);
+				conn.attachCommand(containerId, null, out);
 			} catch (Exception e) {
 			}
 		});

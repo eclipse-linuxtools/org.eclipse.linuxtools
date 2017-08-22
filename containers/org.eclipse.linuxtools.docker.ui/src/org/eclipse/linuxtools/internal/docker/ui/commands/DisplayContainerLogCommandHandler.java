@@ -49,7 +49,7 @@ public class DisplayContainerLogCommandHandler extends AbstractHandler {
 		final String name = container.name();
 
 		if (connection.getContainerInfo(id).config().tty()) {
-			RunConsole.attachToTerminal(connection, id);
+			RunConsole.attachToTerminal(connection, id, null);
 			return null;
 		}
 		try {

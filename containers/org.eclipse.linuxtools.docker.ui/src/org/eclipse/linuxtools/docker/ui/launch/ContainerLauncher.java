@@ -48,7 +48,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.DockerException;
-import org.eclipse.linuxtools.docker.core.EnumDockerLoggingStatus;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainerConfig;
 import org.eclipse.linuxtools.docker.core.IDockerContainerExit;
@@ -59,16 +58,22 @@ import org.eclipse.linuxtools.docker.core.IDockerImageInfo;
 import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
+import org.eclipse.linuxtools.internal.docker.core.DockerConsoleOutputStream;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig;
 import org.eclipse.linuxtools.internal.docker.core.DockerHostConfig;
 import org.eclipse.linuxtools.internal.docker.core.DockerPortBinding;
+import org.eclipse.linuxtools.internal.docker.core.IConsoleListener;
 import org.eclipse.linuxtools.internal.docker.ui.consoles.ConsoleOutputStream;
 import org.eclipse.linuxtools.internal.docker.ui.consoles.RunConsole;
 import org.eclipse.linuxtools.internal.docker.ui.launch.ContainerCommandProcess;
 import org.eclipse.linuxtools.internal.docker.ui.launch.LaunchConfigurationUtils;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.DataVolumeModel;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
 public class ContainerLauncher {
@@ -545,6 +550,25 @@ public class ContainerLauncher {
 
 	}
 
+	// The following class allows us to use internal IConsoleListeners in
+	// docker.core
+	// but still use the public IRunConsoleListeners API here without requiring
+	// a minor release.
+	private class RunConsoleListenerBridge implements IConsoleListener {
+
+		private IRunConsoleListener listener;
+
+		public RunConsoleListenerBridge(IRunConsoleListener listener) {
+			this.listener = listener;
+		}
+
+		@Override
+		public void newOutput(String output) {
+			listener.newOutput(output);
+		}
+
+	}
+
 	/**
 	 * Perform a launch of a command in a container and output stdout/stderr to
 	 * console.
@@ -652,6 +676,17 @@ public class ContainerLauncher {
 				.cmd(cmdList)
 				.image(image)
 				.workingDir(workingDir);
+
+		// Ugly hack...we want CDT gdbserver to run in the terminal so we look
+		// for its
+		// ContainerListener class and set tty=true in that case...this avoids a
+		// minor release and we can later add a new launch method with the tty
+		// option
+		if (listener != null && listener.getClass().getName().equals(
+				"org.eclipse.cdt.internal.docker.launcher.ContainerLaunchConfigurationDelegate$StartGdbServerJob")) {
+			builder = builder.tty(true);
+		}
+
 		// add any exposed ports as needed
 		if (exposedPorts.size() > 0)
 			builder = builder.exposedPorts(exposedPorts);
@@ -776,77 +811,163 @@ public class ContainerLauncher {
 							return;
 					}
 				}
-				OutputStream stream = null;
-				RunConsole oldConsole = getConsole();
-				final RunConsole rc = RunConsole.findConsole(containerId,
-						consoleId);
-				setConsole(rc);
-				rc.clearConsole();
-				if (oldConsole != null)
-					RunConsole.removeConsole(oldConsole);
-				Display.getDefault()
-						.syncExec(() -> rc.setTitle(Messages.getFormattedString(
-								LAUNCH_TITLE, new String[] { cmdList.get(0),
-										imageName })));
-				// if (!rc.isAttached()) {
-				rc.attachToConsole(connection, containerId);
-				// }
-				if (rc != null) {
-					stream = rc.getOutputStream();
-					if (containerListener != null) {
-						((ConsoleOutputStream) stream)
-								.addConsoleListener(containerListener);
+				if (config.tty()) {
+					// We need tty support to handle issue with Docker daemon
+					// not always outputting in time (e.g. we might get an
+					// output line after the process has exited which can be
+					// too late to show or it might get displayed in a wrong
+					// order in relation to other output. We also want the
+					// output to ultimately show up in the Console View.
+					OutputStream stream = null;
+					RunConsole oldConsole = getConsole();
+					final RunConsole rc = RunConsole.findConsole(containerId,
+							consoleId);
+					setConsole(rc);
+					rc.clearConsole();
+					if (oldConsole != null)
+						RunConsole.removeConsole(oldConsole);
+					Display.getDefault().syncExec(() -> rc.setTitle(Messages
+							.getFormattedString(LAUNCH_TITLE, new String[] {
+									cmdList.get(0), imageName })));
+					if (rc != null) {
+						stream = rc.getOutputStream();
 					}
-				}
-				// Create a unique logging thread id which has container id
-				// and console id
-				String loggingId = containerId + "." + consoleId;
-				((DockerConnection) connection).startContainer(containerId,
-						loggingId, stream);
-				if (rc != null)
-					rc.showConsole();
-				if (containerListener != null) {
+
+					// We want terminal support, but we want to output to the
+					// RunConsole.
+					// To do this, we create a DockerConsoleOutputStream which
+					// we
+					// hook into the TM Terminal via stdout and stderr output
+					// listeners.
+					// These listeners will output to the
+					// DockerConsoleOutputStream which
+					// will in turn output to the RunConsole. See
+					// DockerConnection.openTerminal().
+					DockerConsoleOutputStream out = new DockerConsoleOutputStream(
+							stream);
+					RunConsole.attachToTerminal(connection, containerId, out);
+					if (containerListener != null) {
+						out.addConsoleListener(new RunConsoleListenerBridge(
+								containerListener));
+					}
+					((DockerConnection) connection).startContainer(containerId,
+							null, null);
 					IDockerContainerInfo info = ((DockerConnection) connection)
 							.getContainerInfo(containerId);
-					containerListener.containerInfo(info);
-				}
-
-				// Wait for the container to finish
-				final IDockerContainerExit status = ((DockerConnection) connection)
-						.waitForContainer(containerId);
-				Display.getDefault().syncExec(() -> {
-					rc.setTitle(
-							Messages.getFormattedString(LAUNCH_EXITED_TITLE,
-									new String[] {
-											status.statusCode().toString(),
-											cmdList.get(0), imageName }));
-					rc.showConsole();
-				});
-
-				// Let any container listener know that the container is
-				// finished
-				if (containerListener != null)
-					containerListener.done();
-
-				if (!keepContainer) {
-					// Drain the logging thread before we remove the
-					// container (we need to use the logging id)
-					((DockerConnection) connection)
-							.stopLoggingThread(loggingId);
-					while (((DockerConnection) connection).loggingStatus(
-							loggingId) == EnumDockerLoggingStatus.LOGGING_ACTIVE) {
-						Thread.sleep(1000);
+					if (containerListener != null) {
+						containerListener.containerInfo(info);
 					}
-					// Look for any Display Log console that the user may
-					// have opened which would be
-					// separate and make sure it is removed as well
-					RunConsole rc2 = RunConsole
-							.findConsole(((DockerConnection) connection)
-									.getContainer(containerId));
-					if (rc2 != null)
-						RunConsole.removeConsole(rc2);
-					((DockerConnection) connection)
-							.removeContainer(containerId);
+					// Wait for the container to finish
+					final IDockerContainerExit status = ((DockerConnection) connection)
+							.waitForContainer(containerId);
+					Display.getDefault().syncExec(() -> {
+						rc.setTitle(
+								Messages.getFormattedString(LAUNCH_EXITED_TITLE,
+										new String[] {
+												status.statusCode().toString(),
+												cmdList.get(0), imageName }));
+						rc.showConsole();
+						// We used a TM Terminal to receive the output of the
+						// session and
+						// then sent the output to the RunConsole. Remove the
+						// terminal
+						// tab that got created now that we are finished and all
+						// data is shown
+						// in Console View.
+						IWorkbenchPage page = PlatformUI.getWorkbench()
+								.getActiveWorkbenchWindow().getActivePage();
+						IViewPart terminalView = page.findView(
+								"org.eclipse.tm.terminal.view.ui.TerminalsView");
+						CTabFolder ctabfolder = terminalView
+								.getAdapter(CTabFolder.class);
+						if (ctabfolder != null) {
+							CTabItem[] items = ctabfolder.getItems();
+							for (CTabItem item : items) {
+								if (item.getText().endsWith(info.name())) {
+									item.dispose();
+									break;
+								}
+							}
+						 }
+					});
+					// Let any container listener know that the container is
+					// finished
+					if (containerListener != null)
+						containerListener.done();
+
+					if (!keepContainer) {
+						((DockerConnection) connection)
+								.removeContainer(containerId);
+					}
+				} else {
+					OutputStream stream = null;
+					RunConsole oldConsole = getConsole();
+					final RunConsole rc = RunConsole.findConsole(containerId,
+							consoleId);
+					setConsole(rc);
+					rc.clearConsole();
+					if (oldConsole != null)
+						RunConsole.removeConsole(oldConsole);
+					Display.getDefault().syncExec(() -> rc.setTitle(Messages
+							.getFormattedString(LAUNCH_TITLE, new String[] {
+									cmdList.get(0), imageName })));
+					// if (!rc.isAttached()) {
+					rc.attachToConsole(connection, containerId);
+					// }
+					if (rc != null) {
+						stream = rc.getOutputStream();
+						if (containerListener != null) {
+							((ConsoleOutputStream) stream)
+									.addConsoleListener(containerListener);
+						}
+					}
+					// Create a unique logging thread id which has container id
+					// and console id
+					String loggingId = containerId + "." + consoleId;
+					((DockerConnection) connection).startContainer(containerId,
+							loggingId, stream);
+					if (rc != null)
+						rc.showConsole();
+					if (containerListener != null) {
+						IDockerContainerInfo info = ((DockerConnection) connection)
+								.getContainerInfo(containerId);
+						containerListener.containerInfo(info);
+					}
+
+					// Wait for the container to finish
+					final IDockerContainerExit status = ((DockerConnection) connection)
+							.waitForContainer(containerId);
+					Display.getDefault().syncExec(() -> {
+						rc.setTitle(
+								Messages.getFormattedString(LAUNCH_EXITED_TITLE,
+										new String[] {
+												status.statusCode().toString(),
+												cmdList.get(0), imageName }));
+						rc.showConsole();
+					});
+
+					// Let any container listener know that the container is
+					// finished
+					if (containerListener != null)
+						containerListener.done();
+
+					if (!keepContainer) {
+						// Drain the logging thread before we remove the
+						// container (we need to use the logging id)
+						Thread.sleep(1000);
+						((DockerConnection) connection)
+								.stopLoggingThread(loggingId);
+						// Look for any Display Log console that the user may
+						// have opened which would be
+						// separate and make sure it is removed as well
+						RunConsole rc2 = RunConsole
+								.findConsole(((DockerConnection) connection)
+										.getContainer(containerId));
+						if (rc2 != null)
+							RunConsole.removeConsole(rc2);
+						((DockerConnection) connection)
+								.removeContainer(containerId);
+					}
 				}
 
 			} catch (final DockerException e2) {

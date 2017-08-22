@@ -65,14 +65,32 @@ public class ContainerCommandProcess extends Process {
 		this.keepContainer = keepContainer;
 		// Lambda Runnable
 		Runnable logContainer = () -> {
+			PipedOutputStream pipedOut = null;
+			PipedOutputStream pipedErr = null;
 			try (PipedOutputStream pipedStdout = new PipedOutputStream(stdout);
 					PipedOutputStream pipedStderr = new PipedOutputStream(
 							stderr)) {
+				pipedOut = pipedStdout;
+				pipedErr = pipedStderr;
 				connection.attachLog(containerId, pipedStdout, pipedStderr);
 				pipedStdout.flush();
 				pipedStderr.flush();
 			} catch (DockerException | InterruptedException | IOException e) {
-				// do nothing but close output streams
+				// do nothing but flush/close output streams
+				if (pipedOut != null) {
+					try {
+						pipedOut.flush();
+					} catch (IOException e1) {
+						// ignore
+					}
+				}
+				if (pipedErr != null) {
+					try {
+						pipedErr.flush();
+					} catch (IOException e1) {
+						// ignore
+					}
+				}
 			}
 		};
 
@@ -93,12 +111,19 @@ public class ContainerCommandProcess extends Process {
 			} catch (InterruptedException e1) {
 				// ignore
 			}
+			thread.interrupt();
+			while (thread.isAlive()) {
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// ignore
+				}
+			}
 			this.stdout.close();
 			this.stderr.close();
 		} catch (IOException e) {
 			// ignore
 		}
-		thread.interrupt();
 	}
 
 	@Override
@@ -262,6 +287,14 @@ public class ContainerCommandProcess extends Process {
 		try {
 			IDockerContainerExit exit = connection
 					.waitForContainer(containerId);
+			thread.interrupt();
+			while (thread.isAlive()) {
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// ignore
+				}
+			}
 			connection.stopLoggingThread(containerId);
 			if (!keepContainer) {
 				connection.removeContainer(containerId);
