@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.eclipse.linuxtools.rpm</groupId>
     <artifactId>linuxtools-rpm-parent</artifactId>
-    <version>6.1.0</version>
+    <version>6.1.1</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.rpmstubby</artifactId>

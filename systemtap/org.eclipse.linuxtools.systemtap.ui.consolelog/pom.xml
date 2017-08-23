@@ -13,7 +13,7 @@
   <parent>
     <artifactId>linuxtools-systemtap-parent</artifactId>
     <groupId>org.eclipse.linuxtools.systemtap</groupId>
-    <version>6.1.0</version>
+    <version>6.1.1</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.systemtap.ui.consolelog</artifactId>

@@ -6,7 +6,7 @@
     <parent>
       <groupId>org.eclipse.linuxtools.releng</groupId>
       <artifactId>linuxtools-releng-parent</artifactId>
-      <version>6.1.0</version>
+      <version>6.1.1</version>
     </parent>
 
     <groupId>org.eclipse.linuxtools</groupId>
