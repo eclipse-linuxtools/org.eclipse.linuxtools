@@ -22,6 +22,41 @@
    <feature url="features/org.eclipse.linuxtools.vagrant.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.vagrant.feature.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
+   <!-- Reddeer Dependencies -->
+   <iu id="org.eclipse.reddeer.common" version="0.0.0">
+	<category name="Docker Test Dependencies"/>
+   </iu>
+   <iu id="org.eclipse.reddeer.core" version="0.0.0">
+	<category name="Docker Test Dependencies"/>
+   </iu>
+   <iu id="org.eclipse.reddeer.eclipse" version="0.0.0">
+	<category name="Docker Test Dependencies"/>
+   </iu>
+   <iu id="org.eclipse.reddeer.jface" version="0.0.0">
+	<category name="Docker Test Dependencies"/>
+   </iu>
+   <iu id="org.eclipse.reddeer.junit.extension" version="0.0.0">
+	<category name="Docker Test Dependencies"/>
+   </iu>
+   <iu id="org.eclipse.reddeer.junit" version="0.0.0">
+	<category name="Docker Test Dependencies"/>
+   </iu>
+   <iu id="org.eclipse.reddeer.requirements" version="0.0.0">
+	<category name="Docker Test Dependencies"/>
+   </iu>
+   <iu id="org.eclipse.reddeer.swt" version="0.0.0">
+	<category name="Docker Test Dependencies"/>
+   </iu>
+   <iu id="org.eclipse.reddeer.ui" version="0.0.0">
+	<category name="Docker Test Dependencies"/>
+   </iu>
+   <iu id="org.eclipse.reddeer.workbench" version="2.0.0">
+	<category name="Docker Test Dependencies"/>
+   </iu>
+   <iu id="org.eclipse.reddeer.workbench.core" version="0.0.0">
+	<category name="Docker Test Dependencies"/>
+   </iu>
+
    <!-- Orbit Dependencies -->
    <iu id="com.spotify.docker.client" version="0.0.0">
         <category name="Docker Client Dependencies"/>
@@ -163,6 +198,11 @@
    <category-def name="Docker Client Dependencies" label="Docker Client Dependencies">
       <description>
          Eclipse Linux Tools Docker Client Dependencies
+      </description>
+   </category-def>
+   <category-def name="Docker Test Dependencies" label="Docker Test Dependencies">
+      <description>
+         Eclipse Linux Tools Docker Integration Test Dependencies
       </description>
    </category-def>
 </site>

@@ -38,7 +38,7 @@ import org.eclipse.linuxtools.docker.integration.tests.ui.LaunchDockerImageTest;
 import org.eclipse.linuxtools.docker.integration.tests.ui.PerspectiveTest;
 import org.eclipse.linuxtools.docker.integration.tests.ui.PropertiesViewTest;
 import org.eclipse.linuxtools.docker.integration.tests.ui.SearchDialogTest;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

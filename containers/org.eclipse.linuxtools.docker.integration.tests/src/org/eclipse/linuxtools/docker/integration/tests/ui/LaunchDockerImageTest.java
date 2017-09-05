@@ -17,13 +17,13 @@ import org.eclipse.linuxtools.docker.integration.tests.image.AbstractImageBotTes
 import org.eclipse.linuxtools.docker.integration.tests.mock.MockUtils;
 import org.eclipse.linuxtools.docker.reddeer.condition.ContainerIsDeployedCondition;
 import org.eclipse.linuxtools.docker.reddeer.ui.RunDockerImageLaunchConfiguration;
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.handler.ShellHandler;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -90,7 +90,7 @@ public class LaunchDockerImageTest extends AbstractImageBotTest {
 
 	@After
 	public void after() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		deleteIfExists(CONFIGURATION_NAME);
 		deleteImageContainerAfter(CONTAINER_NAME);
 	}

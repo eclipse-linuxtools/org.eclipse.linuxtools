@@ -23,13 +23,14 @@ import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageSearchResultFactory;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ProgressInformationShellIsActive;
-import org.jboss.reddeer.swt.impl.button.CancelButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,7 +69,7 @@ public class SearchDialogTest extends AbstractImageBotTest {
 				pageOne.searchResultsContains(EXPECTED_IMAGE_NAME));
 		pageOne.next();
 
-		new WaitWhile(new ProgressInformationShellIsActive(), TimePeriod.NORMAL);
+//		new WaitUntil(new ShellIsAvailable("Progress Information"), TimePeriod.DEFAULT);
 		AbstractWait.sleep(TimePeriod.getCustom(5));
 		ImageTagSelectionPage pageTwo = new ImageTagSelectionPage();
 		assertFalse("Search tags are empty!", pageTwo.getTags().isEmpty());

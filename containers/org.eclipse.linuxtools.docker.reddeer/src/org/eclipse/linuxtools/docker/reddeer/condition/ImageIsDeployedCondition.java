@@ -14,7 +14,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.linuxtools.docker.reddeer.ui.resources.DockerConnection;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 
 /**
  * @author adietish@redhat.com

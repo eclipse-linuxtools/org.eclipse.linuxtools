@@ -13,20 +13,20 @@ package org.eclipse.linuxtools.docker.reddeer.ui;
 
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.swt.api.Combo;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
+import org.eclipse.reddeer.swt.api.Combo;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 
 /**
  * 
@@ -65,7 +65,7 @@ public class DockerImagesTab extends WorkbenchView {
 	public void buildImage(String name, String directory) {
 		activate();
 		new DefaultToolItem("Build Image").click();
-		new WaitUntil(new ShellWithTextIsAvailable("Build a Docker Image"));
+		new WaitUntil(new ShellIsAvailable("Build a Docker Image"));
 		new LabeledText("Image Name:").setText(name);
 		new LabeledText("Directory:").setText(directory);
 		new FinishButton().click();
@@ -74,7 +74,7 @@ public class DockerImagesTab extends WorkbenchView {
 	public void runImage(String imageName) {
 		activate();
 		selectImage(imageName);
-		new ContextMenu("Run...").select();
+		new ContextMenu().getItem("Run...").select();
 	}
 
 	public String getImageTags(String imageName) {
@@ -85,7 +85,7 @@ public class DockerImagesTab extends WorkbenchView {
 
 	public void addTagToImage(String imageName, String newTag) {
 		selectImage(imageName);
-		new ContextMenu("Add Tag").select();
+		new ContextMenu().getItem("Add Tag").select();
 		new DefaultShell("Tag Image");
 		new LabeledText("New Tag:").setText(newTag);
 		new FinishButton().click();
@@ -93,7 +93,7 @@ public class DockerImagesTab extends WorkbenchView {
 
 	public void removeTagFromImage(String imageName, String tagToBeRemoved) {
 		selectImage(imageName);
-		new ContextMenu("Remove Tag").select();
+		new ContextMenu().getItem("Remove Tag").select();
 		String fullTag = "";
 		Combo combo = new DefaultCombo();
 		List<String> comboItems = combo.getItems();
@@ -115,7 +115,7 @@ public class DockerImagesTab extends WorkbenchView {
 
 	public void pushImage(String imageName, String registryAccount, boolean forceTagging, boolean keepTaggedImage) {
 		selectImage(imageName);
-		new ContextMenu("Push...").select();
+		new ContextMenu().getItem("Push...").select();
 		Combo combo = new DefaultCombo();
 		combo.setSelection(registryAccount);
 		new CheckBox("Force tagging image with selected registry").toggle(forceTagging);

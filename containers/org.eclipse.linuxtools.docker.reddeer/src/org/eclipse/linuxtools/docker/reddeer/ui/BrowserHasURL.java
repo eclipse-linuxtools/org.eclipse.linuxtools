@@ -11,8 +11,8 @@
 package org.eclipse.linuxtools.docker.reddeer.ui;
 
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.eclipse.ui.browser.BrowserEditor;
 
 /**
  * Wait condition which returns true if a given browser has the specified URL.
@@ -69,7 +69,7 @@ public class BrowserHasURL extends AbstractWaitCondition {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.jboss.reddeer.common.condition.WaitCondition#test()
+	 * @see org.eclipse.reddeer.common.condition.WaitCondition#test()
 	 */
 	@Override
 	public boolean test() {
@@ -90,7 +90,7 @@ public class BrowserHasURL extends AbstractWaitCondition {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.jboss.reddeer.common.condition.AbstractWaitCondition#description()
+	 * @see org.eclipse.reddeer.common.condition.AbstractWaitCondition#description()
 	 */
 	@Override
 	public String description() {

@@ -19,9 +19,9 @@ import org.eclipse.linuxtools.docker.reddeer.core.ui.wizards.ImageRunSelectionPa
 import org.eclipse.linuxtools.docker.reddeer.ui.BrowserView;
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerImagesTab;
 import org.eclipse.linuxtools.docker.reddeer.utils.BrowserContentsCheck;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.junit.After;
 import org.junit.Test;
 

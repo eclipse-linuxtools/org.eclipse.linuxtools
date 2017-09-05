@@ -32,23 +32,22 @@ import org.eclipse.linuxtools.docker.reddeer.utils.BrowserContentsCheck;
 import org.eclipse.linuxtools.internal.docker.core.DockerCompose;
 import org.eclipse.linuxtools.internal.docker.core.ProcessLauncher;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.CustomMatchers;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
-import org.jboss.reddeer.jface.preference.PreferenceDialog;
-import org.jboss.reddeer.swt.api.Menu;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.eclipse.condition.ConsoleHasNoChange;
+import org.eclipse.reddeer.jface.preference.PreferenceDialog;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenu;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -108,7 +107,7 @@ public class ComposeTest extends AbstractImageBotTest {
 	public void testCompose() {
 		// Set up Docker Compose location
 		PreferenceDialog dialog = new WorkbenchPreferenceDialog();
-		DockerComposePreferencePage composePreference = new DockerComposePreferencePage();
+		DockerComposePreferencePage composePreference = new DockerComposePreferencePage(dialog);
 		dialog.open();
 		dialog.select(composePreference);
 		composePreference.setPathToDockerCompose(this.dockerComposePath);
@@ -142,21 +141,22 @@ public class ComposeTest extends AbstractImageBotTest {
 		pe.open();
 		pe.getProject(project).getProjectItem(projectFile).select();
 		@SuppressWarnings("unchecked")
-		Menu contextMenu = new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher(".*Docker Compose"));
+		ContextMenuItem contextMenu = new ContextMenuItem(new WithTextMatcher("Run As"),
+				new RegexMatcher(".*Docker Compose"));
 		contextMenu.select();
 		new OkButton().click();
 		try {
 			new DefaultShell("Docker Compose");
 			new PushButton("Apply and Close").click();
 			fail("Docker Compose has not been found! Is it installed and the path is correct?");
-		} catch (SWTLayerException ex) {
+		} catch (CoreLayerException ex) {
 		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		new WaitWhile(new ConsoleHasNoChange());
 	}
 
 	private void importProject(String path) {
-		new ShellMenu("File", "Open Projects from File System...").select();
+		new ShellMenu().getItem("File", "Open Projects from File System...").select();
 		new LabeledCombo("Import source:").setText(path);
 		new FinishButton().click();
 		new WaitWhile(new JobIsRunning());

@@ -21,11 +21,11 @@ import org.eclipse.linuxtools.docker.reddeer.core.ui.wizards.NewDockerConnection
 import org.eclipse.linuxtools.docker.reddeer.ui.resources.AuthenticationMethod;
 import org.eclipse.linuxtools.docker.reddeer.ui.resources.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionStorageManagerFactory;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.jface.exception.JFaceLayerException;
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.jface.exception.JFaceLayerException;
+import org.eclipse.reddeer.jface.handler.TreeViewerHandler;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 
 /**
  * 

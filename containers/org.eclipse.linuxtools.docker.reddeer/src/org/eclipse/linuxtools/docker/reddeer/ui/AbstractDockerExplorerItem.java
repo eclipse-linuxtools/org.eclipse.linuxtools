@@ -11,8 +11,8 @@
 
 package org.eclipse.linuxtools.docker.reddeer.ui;
 
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.jface.handler.TreeViewerHandler;
+import org.eclipse.reddeer.swt.api.TreeItem;
 
 /**
  * 

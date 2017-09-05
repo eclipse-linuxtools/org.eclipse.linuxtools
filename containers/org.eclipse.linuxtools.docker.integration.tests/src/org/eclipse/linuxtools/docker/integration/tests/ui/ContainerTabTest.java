@@ -19,11 +19,11 @@ import org.eclipse.linuxtools.docker.integration.tests.mock.MockUtils;
 import org.eclipse.linuxtools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerContainersTab;
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerImagesTab;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +53,7 @@ public class ContainerTabTest extends AbstractImageBotTest {
 		containerTab.activate();
 		containerTab.refresh();
 
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT);
 
 		// get values from Container Tab
 		String nameFromTable = "";
@@ -74,7 +74,7 @@ public class ContainerTabTest extends AbstractImageBotTest {
 		statusFromTable = item.getText(5);
 
 		// get values from Properties view
-		PropertiesView propertiesView = new PropertiesView();
+		PropertySheet propertiesView = new PropertySheet();
 		propertiesView.open();
 		getConnection().getContainer(CONTAINER_NAME).select();
 		propertiesView.selectTab("Info");

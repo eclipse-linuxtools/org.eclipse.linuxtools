@@ -10,7 +10,7 @@
  ******************************************************************************/ 
 package org.eclipse.linuxtools.docker.reddeer.ui;
 
-import org.jboss.reddeer.workbench.api.View;
+import org.eclipse.reddeer.workbench.api.View;
 
 
 /**

@@ -12,34 +12,35 @@ package org.eclipse.linuxtools.docker.reddeer.ui;
 
 import java.util.List;
 
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.util.ResultRunnable;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.lookup.WidgetLookup;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.core.matcher.WithTextMatchers;
+import org.eclipse.reddeer.swt.api.CTabItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenu;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.api.View;
+import org.eclipse.reddeer.workbench.api.WorkbenchPart;
+import org.eclipse.reddeer.workbench.exception.WorkbenchLayerException;
+import org.eclipse.reddeer.workbench.handler.WorkbenchPartHandler;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.views.IViewCategory;
 import org.eclipse.ui.views.IViewDescriptor;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.handler.ViewHandler;
-import org.jboss.reddeer.core.handler.WidgetHandler;
-import org.jboss.reddeer.core.handler.WorkbenchPartHandler;
-import org.jboss.reddeer.core.lookup.WidgetLookup;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.core.matcher.WithTextMatchers;
-import org.jboss.reddeer.swt.api.CTabItem;
-import org.jboss.reddeer.swt.api.Menu;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.api.View;
-import org.jboss.reddeer.workbench.api.WorkbenchPart;
-import org.jboss.reddeer.workbench.exception.WorkbenchLayerException;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 
 /**
  * Abstract class for all View implementations
@@ -84,7 +85,7 @@ public class AbstractView implements View {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.jboss.reddeer.workbench.api.WorkbenchPart#maximize()
+	 * @see org.eclipse.reddeer.workbench.api.WorkbenchPart#maximize()
 	 */
 	@Override
 	public void maximize() {
@@ -94,7 +95,7 @@ public class AbstractView implements View {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.jboss.reddeer.workbench.api.WorkbenchPart#minimize()
+	 * @see org.eclipse.reddeer.workbench.api.WorkbenchPart#minimize()
 	 */
 	@Override
 	public void minimize() {
@@ -121,9 +122,12 @@ public class AbstractView implements View {
 	@Override
 	public void activate() {
 		log.info("Activate view " + getTitle());
+		if (!isOpen()) {
+			open();
+		}
 		cTabItemIsNotNull();
 		getViewCTabItem().activate();
-		ViewHandler.getInstance().focusChildControl();
+//		ViewHandler.getInstance().focusChildControl();
 	}
 
 	/**
@@ -136,7 +140,7 @@ public class AbstractView implements View {
 			cTabItem = null;
 		}
 		if (cTabItem == null) {
-			if (!isOpened()){
+			if (!isOpen()){
 				return cTabItem;
 			}
 			log.debug("Looking up CTabItem with text " + getTitle());
@@ -190,7 +194,7 @@ public class AbstractView implements View {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.jboss.reddeer.workbench.api.WorkbenchPart#close()
+	 * @see org.eclipse.reddeer.workbench.api.WorkbenchPart#close()
 	 */
 	@Override
 	public void close() {
@@ -201,7 +205,7 @@ public class AbstractView implements View {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.jboss.reddeer.workbench.api.View#open()
+	 * @see org.eclipse.reddeer.workbench.api.View#open()
 	 */
 	@Override
 	public void open() {
@@ -219,12 +223,11 @@ public class AbstractView implements View {
 				new RegexMatcher("Window.*"),
 				new RegexMatcher("Show View.*"),
 				new RegexMatcher("Other...*") });
-		Menu menu = new ShellMenu(m.getMatchers());
-		menu.select();
+		new ShellMenu().getItem(m.getMatchers()).select();
 		new DefaultShell(SHOW_VIEW);
 		new DefaultTreeItem(path).select();
 		new PushButton("Open").click();
-		new WaitWhile(new ShellWithTextIsAvailable(SHOW_VIEW));
+		new WaitWhile(new ShellIsAvailable(SHOW_VIEW));
 		new WaitUntil(new ViewCTabIsAvailable());
 	}
 
@@ -265,21 +268,29 @@ public class AbstractView implements View {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.jboss.reddeer.workbench.api.View#isVisible()
+	 * @see org.eclipse.reddeer.workbench.api.View#isVisible()
 	 */
-	@Override
 	public boolean isVisible() {
 		return getViewCTabItem().isShowing();
 	}
 	
+	private String getCTabText(final org.eclipse.swt.custom.CTabItem tabItem){
+		return Display.syncExec(new ResultRunnable<String>() {
+			@Override
+			public String run() {
+				return tabItem.getText();
+			}
+		});
+	}
+
 	/* (non-Javadoc)
-	 * @see org.jboss.reddeer.workbench.api.View#isOpened()
+	 * @see org.eclipse.reddeer.workbench.api.View#isOpened()
 	 */
 	@Override
-	public boolean isOpened() {
+	public boolean isOpen() {
 		List<org.eclipse.swt.custom.CTabItem> tabs = WidgetLookup.getInstance().activeWidgets(new WorkbenchShell(), org.eclipse.swt.custom.CTabItem.class);
 		for (org.eclipse.swt.custom.CTabItem tab : tabs){
-			String text = WidgetHandler.getInstance().getText(tab);
+			String text = getCTabText(tab);
 			if (viewNameMatcher.matches(text)){
 				return true;
 			}
@@ -297,4 +308,23 @@ public class AbstractView implements View {
 	public boolean isActive(){
 		throw new UnsupportedOperationException("Method isActive is not supported due to the bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=468948");
 	}
+
+	@Override
+	public String getTitleToolTip() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Image getTitleImage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Control getControl() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

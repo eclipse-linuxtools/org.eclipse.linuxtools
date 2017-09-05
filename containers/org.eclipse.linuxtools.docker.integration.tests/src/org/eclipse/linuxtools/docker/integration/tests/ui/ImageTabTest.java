@@ -15,11 +15,11 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.linuxtools.docker.integration.tests.image.AbstractImageBotTest;
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerImagesTab;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +45,7 @@ public class ImageTabTest extends AbstractImageBotTest {
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
 		imageTab.refresh();
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT);
 
 		String idFromTable = "";
 		String repoTagsFromTable = "";
@@ -65,7 +65,7 @@ public class ImageTabTest extends AbstractImageBotTest {
 
 		getConnection().getImage(getCompleteImageName(IMAGE_HELLO_WORLD)).select();
 
-		PropertiesView propertiesView = new PropertiesView();
+		PropertySheet propertiesView = new PropertySheet();
 		propertiesView.open();
 		propertiesView.selectTab("Info");
 		String idProp = propertiesView.getProperty("Id").getPropertyValue();
@@ -85,7 +85,7 @@ public class ImageTabTest extends AbstractImageBotTest {
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
 		imageTab.refresh();
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT);
 		imageTab.searchImage("aaa");
 		assertTrue("Search result is not 0!", imageTab.getTableItems().size() == 0);
 		imageTab.searchImage("");

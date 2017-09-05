@@ -13,23 +13,25 @@ package org.eclipse.linuxtools.docker.reddeer.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.core.resources.AbstractProject;
-import org.jboss.reddeer.eclipse.core.resources.ExplorerItem;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.utils.DeleteUtils;
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.core.resources.AbstractProject;
+import org.eclipse.reddeer.eclipse.core.resources.DefaultProject;
+import org.eclipse.reddeer.eclipse.core.resources.DefaultProjectItem;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
+import org.eclipse.reddeer.eclipse.utils.DeleteUtils;
+import org.eclipse.reddeer.jface.handler.TreeViewerHandler;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 
 /**
  * Common ancestor for Package and Project Explorer and Resource Navigator and any similar ones.
@@ -106,7 +108,7 @@ public class AbstractExplorer extends WorkbenchView {
 		for (TreeItem item : getTree().getItems()){
 			String projectName = treeViewerHandler.getNonStyledText(item);
 			log.debug("Getting project with name "+projectName);
-			projects.add(new Project(item));
+			projects.add(new DefaultProject(item));
 		}
 		return projects;
 	}
@@ -115,11 +117,11 @@ public class AbstractExplorer extends WorkbenchView {
 	 * Provides list of all items in explorer.
 	 * @return list of explorer items
 	 */
-	public List<ExplorerItem> getExplorerItems() {
-		List<ExplorerItem> items = new ArrayList<ExplorerItem>();
+	public List<ProjectItem> getExplorerItems() {
+		List<ProjectItem> items = new ArrayList<ProjectItem>();
 		
 		for (TreeItem item : getTree().getItems()) {
-			items.add(new ExplorerItem(item));
+			items.add(new DefaultProjectItem(item));
 		}		
 		return items;
 	}
@@ -151,9 +153,9 @@ public class AbstractExplorer extends WorkbenchView {
 		activate();
 		if(getProjects().size() > 0){
 			selectAllProjects();
-			new ContextMenu("Refresh").select();
+			new ContextMenu().getItem("Refresh").select();
 			new WaitWhile(new JobIsRunning(), timeout);
-			new ContextMenu("Delete").select();
+			new ContextMenu().getItem("Delete").select();
 			Shell s = new DefaultShell("Delete Resources");
 			new CheckBox().toggle(deleteFromFileSystem);
 			new PushButton("OK").click();

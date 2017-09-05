@@ -19,22 +19,28 @@ package org.eclipse.linuxtools.docker.reddeer.core.ui.wizards;
 
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.button.CancelButton;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 
 public class ImageTagSelectionPage extends WizardPage {
 
+	public ImageTagSelectionPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+		new WaitUntil(new ShellIsAvailable("Search and pull a Docker image"), TimePeriod.DEFAULT);
+	}
+	
 	public ImageTagSelectionPage() {
-		super();
-		new WaitUntil(new ShellWithTextIsAvailable("Search and pull a Docker image"), TimePeriod.NORMAL);
+		super(null);
+		new WaitUntil(new ShellIsAvailable("Search and pull a Docker image"), TimePeriod.DEFAULT);
 	}
 
 	public void finish() {

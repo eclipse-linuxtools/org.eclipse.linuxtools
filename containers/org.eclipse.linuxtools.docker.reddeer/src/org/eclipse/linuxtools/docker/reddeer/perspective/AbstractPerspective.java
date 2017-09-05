@@ -10,11 +10,11 @@
  ******************************************************************************/ 
 package org.eclipse.linuxtools.docker.reddeer.perspective;
 
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 
 /**
  * Abstract parent for each Perspective implementation
@@ -22,7 +22,7 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
  * @author vlado pakan
  * 
  */
-public abstract class AbstractPerspective extends org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective {
+public abstract class AbstractPerspective extends org.eclipse.reddeer.eclipse.ui.perspectives.AbstractPerspective {
 
 	/**
 	 * Constructs the perspective with a given label.

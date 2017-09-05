@@ -10,12 +10,12 @@
  ******************************************************************************/ 
 package org.eclipse.linuxtools.docker.reddeer.ui;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.swt.api.Browser;
-import org.jboss.reddeer.swt.condition.PageIsLoaded;
-import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.api.Browser;
+import org.eclipse.reddeer.swt.condition.PageIsLoaded;
+import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
 
 /**
  * Represents Internal Browser view in Eclipse

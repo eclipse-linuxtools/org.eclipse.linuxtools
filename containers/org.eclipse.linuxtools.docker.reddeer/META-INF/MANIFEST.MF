@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Docker RedDeer
 Bundle-SymbolicName: org.eclipse.linuxtools.docker.reddeer;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 2.0.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.docker.reddeer.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Red Hat
@@ -12,15 +12,17 @@ Require-Bundle: org.junit,
  org.eclipse.ui,
  org.eclipse.osgi,
  org.eclipse.core.runtime,
- org.jboss.reddeer.eclipse;bundle-version="1.2.1",
- org.jboss.reddeer.common;bundle-version="1.2.1",
- org.jboss.reddeer.swt;bundle-version="1.2.1",
- org.jboss.reddeer.core;bundle-version="1.2.1",
- org.jboss.reddeer.workbench;bundle-version="1.2.1",
+ org.eclipse.reddeer.eclipse;bundle-version="2.0.0",
+ org.eclipse.reddeer.common;bundle-version="2.0.0",
+ org.eclipse.reddeer.swt;bundle-version="2.0.0",
+ org.eclipse.reddeer.core;bundle-version="2.0.0",
+ org.eclipse.reddeer.workbench;bundle-version="2.0.0",
+ org.eclipse.reddeer.jface;bundle-version="2.0.0",
  org.apache.commons.lang;bundle-version="2.6.0",
  org.eclipse.linuxtools.docker.core,
  org.hamcrest.library;bundle-version="1.3.0",
- org.hamcrest.core;bundle-version="1.3.0"
+ org.hamcrest.core;bundle-version="1.3.0",
+ org.eclipse.reddeer.workbench.core;bundle-version="2.0.0"
 Export-Package: org.eclipse.linuxtools.docker.reddeer.condition,
  org.eclipse.linuxtools.docker.reddeer.core.ui.wizards,
  org.eclipse.linuxtools.docker.reddeer.perspective,

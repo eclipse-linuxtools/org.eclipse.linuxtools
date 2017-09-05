@@ -24,19 +24,18 @@ import org.eclipse.linuxtools.docker.reddeer.condition.ContainerIsDeployedCondit
 import org.eclipse.linuxtools.docker.reddeer.preferences.RegistryAccountsPreferencePage;
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerImagesTab;
 import org.eclipse.linuxtools.docker.reddeer.ui.resources.DockerImage;
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.reddeer.jface.preference.PreferenceDialog;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.eclipse.condition.ConsoleHasNoChange;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.junit.After;
 
 /**
@@ -87,7 +86,7 @@ public class AbstractImageBotTest extends AbstractDockerBotTest {
 		imageTab.activate();
 		imageTab.refresh();
 
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT);
 
 		return imageTab;
 	}
@@ -119,28 +118,28 @@ public class AbstractImageBotTest extends AbstractDockerBotTest {
 	}
 
 	protected void setUpRegister(String serverAddress, String email, String userName, String password) {
-		PreferenceDialog dialog = new WorkbenchPreferenceDialog();
-		RegistryAccountsPreferencePage page = new RegistryAccountsPreferencePage();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		RegistryAccountsPreferencePage page = new RegistryAccountsPreferencePage(dialog);
 		dialog.open();
 		dialog.select(page);
 		page.removeRegistry(serverAddress);
 		page.addRegistry(serverAddress, email, userName, password);
 		try {
 			new DefaultShell("New Registry Account").setFocus();
-		} catch (SWTLayerException e) {
+		} catch (CoreLayerException e) {
 			new DefaultShell("Preferences").setFocus();
 		}
 		new PushButton("Apply and Close").click();
 	}
 
 	protected void deleteRegister(String serverAddress) {
-		PreferenceDialog dialog = new WorkbenchPreferenceDialog();
-		RegistryAccountsPreferencePage page = new RegistryAccountsPreferencePage();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		RegistryAccountsPreferencePage page = new RegistryAccountsPreferencePage(dialog);
 		dialog.open();
 		dialog.select(page);
 		page.removeRegistry(serverAddress);
 		new WaitWhile(new JobIsRunning());
-		new PushButton("Apply and Close").click();
+		dialog.ok();
 	}
 
 	protected void deleteRegisterIfExists(String serverAddress) {
@@ -288,7 +287,7 @@ public class AbstractImageBotTest extends AbstractDockerBotTest {
 	}
 
 	protected String getContainerIP(String containerName) {
-		PropertiesView propertiesView = openPropertiesTabForContainer("Inspect", containerName);
+		PropertySheet propertiesView = openPropertiesTabForContainer("Inspect", containerName);
 		return propertiesView.getProperty("NetworkSettings", "IPAddress").getPropertyValue();
 	}
 	

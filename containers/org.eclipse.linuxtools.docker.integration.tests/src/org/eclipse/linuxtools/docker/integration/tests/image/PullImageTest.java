@@ -13,8 +13,8 @@ package org.eclipse.linuxtools.docker.integration.tests.image;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
