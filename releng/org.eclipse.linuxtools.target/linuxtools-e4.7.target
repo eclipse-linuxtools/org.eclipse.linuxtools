@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="linuxtools-e4.7" sequenceNumber="11">
+<?pde version="3.8"?><target name="linuxtools-e4.7" sequenceNumber="14">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.swtchart" version="0.10.0.v201605200358"/>
-<unit id="org.cyberneko.html" version="1.9.14.v201105210654"/>
-<unit id="org.apache.xerces" version="2.9.0.v201101211617"/>
 <unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.6.2.v20161117-2150"/>
 <unit id="com.fasterxml.jackson.core.jackson-core" version="2.6.2.v20161117-2150"/>
 <unit id="com.fasterxml.jackson.core.jackson-databind" version="2.6.2.v20161117-2150"/>
@@ -27,10 +24,16 @@
 <unit id="org.aopalliance" version="1.0.0.v201105210816"/>
 <unit id="org.apache.commons.codec" version="1.9.0.v20170208-1614"/>
 <unit id="org.apache.commons.compress" version="1.6.0.v201310281400"/>
+<unit id="org.apache.commons.io" version="2.2.0.v201405211200"/>
+<unit id="org.apache.commons.lang" version="2.6.0.v201404270220"/>
+<unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
 <unit id="org.apache.httpcomponents.httpclient" version="4.5.2.v20170210-0925"/>
 <unit id="org.apache.httpcomponents.httpcore" version="4.4.6.v20170210-0925"/>
+<unit id="org.apache.xerces" version="2.9.0.v201101211617"/>
+<unit id="org.assertj" version="1.7.1.v20170413-2026"/>
 <unit id="org.bouncycastle.bcpkix" version="1.52.0.v20161004-1854"/>
 <unit id="org.bouncycastle.bcprov" version="1.52.0.v20161004-1854"/>
+<unit id="org.cyberneko.html" version="1.9.14.v201105210654"/>
 <unit id="org.glassfish.hk2.api" version="2.5.0.v20161103-0227"/>
 <unit id="org.glassfish.hk2.locator" version="2.5.0.v20161103-0227"/>
 <unit id="org.glassfish.hk2.osgi-resource-locator" version="2.5.0.v20161103-1916"/>
@@ -42,6 +45,7 @@
 <unit id="org.glassfish.jersey.core.jersey-server" version="2.22.1.v20161103-1916"/>
 <unit id="org.glassfish.jersey.ext.entityfiltering" version="2.22.1.v20161103-0227"/>
 <unit id="org.glassfish.jersey.media.jersey-media-json-jackson" version="2.22.1.v20161117-2005"/>
+<unit id="org.mockito" version="1.9.5.v201605172210"/>
 <unit id="org.objectweb.asm" version="5.2.0.v20170126-0011"/>
 <unit id="org.objectweb.asm.analysis" version="5.2.0.v20170126-0011"/>
 <unit id="org.objectweb.asm.tree" version="5.2.0.v20170126-0011"/>
@@ -52,20 +56,21 @@
 <unit id="org.apache.commons.lang" version="2.6.0.v201404270220"/>
 <unit id="org.apache.commons.io" version="2.2.0.v201405211200"/>
 <unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
+<unit id="org.swtchart" version="0.10.0.v201605200358"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20170516192513/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.cdt.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.cdt.autotools.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.cdt.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.launchbar.feature.group" version="0.0.0"/>
 <repository location="http://download.eclipse.org/tools/cdt/releases/9.3"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.platform.ide" version="0.0.0"/>
-<unit id="org.eclipse.pde.runtime" version="0.0.0"/>
 <unit id="org.eclipse.jdt.core" version="0.0.0"/>
 <unit id="org.eclipse.jdt.debug.ui" version="0.0.0"/>
 <unit id="org.eclipse.jdt.ui" version="0.0.0"/>
+<unit id="org.eclipse.platform.ide" version="0.0.0"/>
+<unit id="org.eclipse.pde.runtime" version="0.0.0"/>
 <repository location="http://download.eclipse.org/eclipse/updates/4.7"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -78,8 +83,8 @@
 <repository location="http://download.eclipse.org/cbi/updates/license"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.zest.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.jgit.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.zest.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.tm.terminal.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.remote.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.dstore.core" version="0.0.0"/>
@@ -87,10 +92,10 @@
 <repository location="http://download.eclipse.org/releases/oxygen/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.jboss.reddeer.junit.extension.feature.feature.group" version="1.2.1.Final"/>
-<unit id="org.jboss.reddeer.eclipse.feature.feature.group" version="1.2.1.Final"/>
-<unit id="org.jboss.reddeer.ui.feature.feature.group" version="1.2.1.Final"/>
-<repository location="http://download.jboss.org/jbosstools/neon/stable/updates/reddeer/1.2.1/"/>
+<unit id="org.eclipse.reddeer.eclipse.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.reddeer.tests.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.reddeer.ui.feature.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/reddeer/milestones/2.0.0.Beta"/>
 </location>
 </locations>
 <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>

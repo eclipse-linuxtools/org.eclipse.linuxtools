@@ -11,8 +11,9 @@
 
 package org.eclipse.linuxtools.docker.reddeer.preferences;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.preference.PreferencePage;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * 
@@ -22,8 +23,13 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 public class DockerComposePreferencePage extends PreferencePage {
 
+	public DockerComposePreferencePage(ReferencedComposite referenced) {
+		super(referenced, "Docker", "Docker Compose");
+	}
+
+	// Following constructor no longer works
 	public DockerComposePreferencePage() {
-		super("Docker", "Docker Compose");
+		super(null, "Docker", "Docker Compose");
 	}
 
 	public void setPathToDockerCompose(String path) {

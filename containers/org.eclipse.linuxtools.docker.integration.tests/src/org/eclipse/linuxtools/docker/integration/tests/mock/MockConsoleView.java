@@ -11,7 +11,7 @@
 
 package org.eclipse.linuxtools.docker.integration.tests.mock;
 
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.mockito.Mockito;
 
 public class MockConsoleView {

@@ -30,16 +30,17 @@ import org.eclipse.linuxtools.docker.reddeer.perspective.DockerPerspective;
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerExplorerView;
 import org.eclipse.linuxtools.docker.reddeer.ui.resources.AuthenticationMethod;
 import org.eclipse.linuxtools.docker.reddeer.ui.resources.DockerConnection;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.ui.PlatformUI;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -79,7 +80,7 @@ public abstract class AbstractDockerBotTest {
 	}
 
 	protected static void cleanupShells() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
 
 	protected List<String> getIds(String stringWithIds) {
@@ -195,7 +196,7 @@ public abstract class AbstractDockerBotTest {
 			new DefaultShell("Secure Storage - Password Hint Needed");
 			new PushButton("NO").click();
 		} catch (CoreLayerException ex) {
-			new PushButton("OK").click();
+			// swallowing intentionally
 		} catch (SWTLayerException e) {
 			try {
 				new DefaultShell("Secure Storage");
@@ -278,24 +279,24 @@ public abstract class AbstractDockerBotTest {
 		}
 	}
 
-	protected PropertiesView openPropertiesTab(String tabName) {
-		PropertiesView propertiesView = new PropertiesView();
+	protected PropertySheet openPropertiesTab(String tabName) {
+		PropertySheet propertiesView = new PropertySheet();
 		propertiesView.open();
 		getConnection().select();
 		propertiesView.selectTab(tabName);
 		return propertiesView;
 	}
 
-	protected PropertiesView openPropertiesTabForImage(String tabName, String imageName) {
-		PropertiesView propertiesView = new PropertiesView();
+	protected PropertySheet openPropertiesTabForImage(String tabName, String imageName) {
+		PropertySheet propertiesView = new PropertySheet();
 		propertiesView.open();
 		getConnection().getImage(imageName).select();
 		propertiesView.selectTab(tabName);
 		return propertiesView;
 	}
 
-	protected PropertiesView openPropertiesTabForContainer(String tabName, String containerName) {
-		PropertiesView propertiesView = new PropertiesView();
+	protected PropertySheet openPropertiesTabForContainer(String tabName, String containerName) {
+		PropertySheet propertiesView = new PropertySheet();
 		propertiesView.open();
 		getConnection().getContainer(containerName).select();
 		propertiesView.selectTab(tabName);
@@ -317,7 +318,7 @@ public abstract class AbstractDockerBotTest {
 	 * @return
 	 */
 	protected boolean isDockerDaemon(int majorVersion, int minorVersion) {
-		PropertiesView infoTab = openPropertiesTab("Info");
+		PropertySheet infoTab = openPropertiesTab("Info");
 		getConnection().select();
 		String daemonVersion = infoTab.getProperty("Version").getPropertyValue();
 		assertTrue("Could not retrieve docker daemon version.", !StringUtils.isBlank(daemonVersion));

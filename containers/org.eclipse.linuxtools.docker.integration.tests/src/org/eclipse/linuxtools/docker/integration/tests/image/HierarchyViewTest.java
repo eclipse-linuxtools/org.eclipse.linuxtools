@@ -22,9 +22,9 @@ import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -81,7 +81,7 @@ public class HierarchyViewTest extends AbstractImageBotTest {
 
 	private DockerImageHierarchyTab openDockerImageHierarchyTab() {
 		getConnection().getImage(IMAGE_TEST_BUILD).openImageHierarchy();
-		new WaitWhile(new ShellWithTextIsAvailable("Docker Image Hierarchy"));
+		new WaitWhile(new ShellIsAvailable("Docker Image Hierarchy"));
 		DockerImageHierarchyTab hierarchyTab = new DockerImageHierarchyTab();
 		hierarchyTab.open();
 		return hierarchyTab;

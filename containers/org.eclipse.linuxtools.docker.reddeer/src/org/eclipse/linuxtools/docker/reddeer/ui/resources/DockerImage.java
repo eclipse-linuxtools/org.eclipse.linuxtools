@@ -10,21 +10,21 @@
  ******************************************************************************/
 package org.eclipse.linuxtools.docker.reddeer.ui.resources;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.swt.api.Combo;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.linuxtools.docker.reddeer.ui.AbstractDockerExplorerItem;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.api.Combo;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 
 /**
  * 
@@ -43,7 +43,7 @@ public class DockerImage extends AbstractDockerExplorerItem {
 	 */
 	public void remove() {
 		select();
-		new ContextMenu("Remove").select();
+		new ContextMenu().getItem("Remove").select();
 
 		Shell confirm = new DefaultShell("Confirm Remove Image");
 		new OkButton().click();
@@ -54,12 +54,12 @@ public class DockerImage extends AbstractDockerExplorerItem {
 
 	public void openImageHierarchy() {
 		select();
-		new ContextMenu("Open Image Hierarchy").select();
+		new ContextMenu().getItem("Open Image Hierarchy").select();
 	}
 
 	public void pushImage(String registryAccount, boolean forceTagging, boolean keepTaggedImage) {
 		select();
-		new ContextMenu("Push...").select();
+		new ContextMenu().getItem("Push...").select();
 		new DefaultShell("Push Image");
 		Combo combo = new DefaultCombo();
 		combo.setSelection(registryAccount);
@@ -70,7 +70,7 @@ public class DockerImage extends AbstractDockerExplorerItem {
 
 	public void addTagToImage(String newTag) {
 		select();
-		new ContextMenu("Add Tag").select();
+		new ContextMenu().getItem("Add Tag").select();
 		new DefaultShell("Tag Image");
 		new LabeledText("New Tag:").setText(newTag);
 		new FinishButton().click();
@@ -78,7 +78,7 @@ public class DockerImage extends AbstractDockerExplorerItem {
 
 	public void run() {
 		select();
-		new ContextMenu("Run...").select();
+		new ContextMenu().getItem("Run...").select();
 	}
 
 }

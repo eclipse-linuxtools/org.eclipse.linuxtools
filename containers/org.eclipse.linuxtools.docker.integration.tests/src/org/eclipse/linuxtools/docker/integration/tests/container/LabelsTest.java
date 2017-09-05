@@ -28,10 +28,10 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerInfoFact
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -84,7 +84,7 @@ public class LabelsTest extends AbstractImageBotTest {
 		DockerContainersTab containerTab = new DockerContainersTab();
 		containerTab.searchContainer(CONTAINER_NAME);
 		containerTab.select(CONTAINER_NAME);
-		PropertiesView propertiesView = new PropertiesView();
+		PropertySheet propertiesView = new PropertySheet();
 		propertiesView.open();
 		getConnection().getContainer(CONTAINER_NAME).select();
 		propertiesView.selectTab("Inspect");

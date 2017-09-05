@@ -25,13 +25,13 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerInfoFact
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.swt.api.CTabItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.swt.api.CTabItem;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,7 +68,7 @@ public class ContainerLogTest extends AbstractImageBotTest {
 			getConnection().refresh();
 			new WaitUntil(new ContainerIsDeployedCondition(CONTAINER_NAME, getConnection()));
 		}
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT);
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class ContainerLogTest extends AbstractImageBotTest {
 	}
 	
 	private String getContainerLog() {
-		new ContextMenu("Display Log").select();
+		new ContextMenu().getItem("Display Log").select();
 		String consoleText;
 		if (mockitoIsUsed()) {
 			ConsoleView consoleView = new ConsoleView();

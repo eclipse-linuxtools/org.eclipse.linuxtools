@@ -8,12 +8,9 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
+package org.eclipse.linuxtools.docker.reddeer.core.ui.wizards;
 
-package org.eclipse.linuxtools.docker.reddeer.ui;
-
-import org.eclipse.reddeer.swt.api.CTabFolder;
-import org.eclipse.reddeer.swt.api.CTabItem;
-import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabFolder;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
 
 /**
  * 
@@ -21,21 +18,11 @@ import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabFolder;
  *
  */
 
-public class DockerTerminal extends WorkbenchView {
-
-	public DockerTerminal() {
-		super("Terminal");
-	}
-
-	public CTabItem getPage(String pageLabel) {
-		CTabFolder tabFolder = new DefaultCTabFolder();
-		CTabItem tabItem = tabFolder.getSelection();
-		tabItem.activate();
-		return tabItem;
-	}
-
-	public String getTextFromPage(String tabName) {
-		return getPage(tabName).getText();
+public class ImageRunWizard  extends WizardDialog {
+	
+	public ImageRunWizard() {
+		super("Run a Docker Image");
 	}
 
 }
+
