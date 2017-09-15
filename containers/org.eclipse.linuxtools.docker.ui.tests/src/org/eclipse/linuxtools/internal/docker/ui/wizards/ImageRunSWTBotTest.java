@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2017 Red Hat.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -75,15 +75,6 @@ public class ImageRunSWTBotTest {
 		final DockerContainerConfig containerConfig = MockDockerContainerConfigFactory.cmd("cmd").build();
 		final IDockerHostConfig hostConfig = MockDockerHostConfigFactory.publishAllPorts(true).networkMode(networkMode)
 				.build();
-		final ILaunchConfiguration runImageLaunchConfiguration = LaunchConfigurationUtils
-				.createRunImageLaunchConfiguration(image, containerConfig, hostConfig, "some_container", false);
-		return runImageLaunchConfiguration.getName();
-	}
-
-	private String configureRunImageLaunchConfiguration(final IDockerConnection connection) {
-		final IDockerImage image = MockDockerImageFactory.name("images").connection(connection).build();
-		final DockerContainerConfig containerConfig = MockDockerContainerConfigFactory.cmd("cmd").build();
-		final IDockerHostConfig hostConfig = MockDockerHostConfigFactory.publishAllPorts(true).build();
 		final ILaunchConfiguration runImageLaunchConfiguration = LaunchConfigurationUtils
 				.createRunImageLaunchConfiguration(image, containerConfig, hostConfig, "some_container", false);
 		return runImageLaunchConfiguration.getName();

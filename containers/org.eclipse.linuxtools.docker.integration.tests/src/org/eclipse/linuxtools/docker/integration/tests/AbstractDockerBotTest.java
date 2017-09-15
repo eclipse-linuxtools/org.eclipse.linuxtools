@@ -40,13 +40,12 @@ import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
-import org.eclipse.ui.PlatformUI;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
 /**
- * 
+ *
  * @author jkopriva@redhat.com
  * @contributor adietish@redhat.com
  *
@@ -87,17 +86,17 @@ public abstract class AbstractDockerBotTest {
 		if (StringUtils.isBlank(stringWithIds)) {
 			return Collections.emptyList();
 		}
-		ArrayList<String> idList = new ArrayList<String>();
-		idList = new ArrayList<String>(Arrays.asList(stringWithIds.split("\\r?\\n")));
+		ArrayList<String> idList = new ArrayList<>();
+		idList = new ArrayList<>(Arrays.asList(stringWithIds.split("\\r?\\n")));
 		return idList;
 	}
 
 	/**
 	 * Creates a connection with the settings in this test. Stores it in
 	 * instance variable {@link #connection}.
-	 * 
+	 *
 	 * @returns the connection that was creates
-	 * 
+	 *
 	 * @see #SYSPROP_DOCKER_MACHINE_NAME
 	 * @see #SYSPROP_DOCKER_SERVER_URI
 	 * @see #SYSPROP_UNIX_SOCKET
@@ -179,7 +178,7 @@ public abstract class AbstractDockerBotTest {
 	 * host as docker server (unix socket, serverURI). Returns {@code false} if
 	 * the configuration for this test is set to use a name as docker server
 	 * (docker-machine)
-	 * 
+	 *
 	 * @return
 	 */
 	private boolean isDockerServerHost() {
@@ -230,9 +229,9 @@ public abstract class AbstractDockerBotTest {
 	/**
 	 * Returns a connection that matches the current settings. If none is found,
 	 * a new one is created.
-	 * 
+	 *
 	 * @return
-	 * 
+	 *
 	 * @see #createConnection()
 	 */
 	protected DockerConnection getConnection() {
@@ -312,7 +311,7 @@ public abstract class AbstractDockerBotTest {
 	/**
 	 * Returns {@code true} if the running docker daemon matches at least the
 	 * given major and minor version. Returns {@code false} otherwise.
-	 * 
+	 *
 	 * @param majorVersion
 	 * @param minorVersion
 	 * @return

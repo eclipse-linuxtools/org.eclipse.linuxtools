@@ -654,23 +654,6 @@ image);
 				onSelectionChanged(editButton, removeButton));
 	}
 
-	private TableViewer createLabelVariablesTable(Composite container) {
-		final Table table = new Table(container,
-				SWT.BORDER | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL);
-		final TableViewer tableViewer = new TableViewer(table);
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
-		addTableViewerColum(tableViewer,
-				WizardMessages
-						.getString("ImageRunResourceVolVarPage.nameColumn"), //$NON-NLS-1$
-				200);
-		addTableViewerColum(tableViewer,
-				WizardMessages
-						.getString("ImageRunResourceVolVarPage.valueColumn"), //$NON-NLS-1$
-				200);
-		return tableViewer;
-	}
-
 	private SelectionListener onAddLabelVariable() {
 		return SelectionListener.widgetSelectedAdapter(e -> {
 			final ContainerLabelVariableDialog dialog = new ContainerLabelVariableDialog(

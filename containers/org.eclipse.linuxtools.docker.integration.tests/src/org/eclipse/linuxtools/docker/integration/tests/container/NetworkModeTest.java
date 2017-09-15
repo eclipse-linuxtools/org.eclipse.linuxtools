@@ -36,7 +36,7 @@ import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.exceptions.DockerException;
 
 /**
- * 
+ *
  * @author jkopriva@redhat.com
  *
  */
@@ -49,8 +49,6 @@ public class NetworkModeTest extends AbstractImageBotTest {
 	private static final String NETWORK_MODE_BRIDGE = "bridge";
 	private static final String NETWORK_MODE_HOST = "host";
 	private static final String NETWORK_MODE_NONE = "none";
-	private static final String NETWORK_MODE_CONTAINER = "container";
-	private static final String NETWORK_MODE_OTHER = "other";
 
 	@Before
 	public void before() throws DockerException, InterruptedException {
@@ -75,7 +73,7 @@ public class NetworkModeTest extends AbstractImageBotTest {
 		networkPage.finish();
 		checkNetworkMode(NETWORK_MODE_DEFAULT);
 	}
-	
+
 	@Test
 	public void testBridgeMode() {
 		ImageRunNetworkPage networkPage = new ImageRunNetworkPage();
@@ -83,7 +81,7 @@ public class NetworkModeTest extends AbstractImageBotTest {
 		networkPage.finish();
 		checkNetworkMode(NETWORK_MODE_BRIDGE);
 	}
-	
+
 	@Test
 	public void testHostMode() {
 		ImageRunNetworkPage networkPage = new ImageRunNetworkPage();
@@ -91,7 +89,7 @@ public class NetworkModeTest extends AbstractImageBotTest {
 		networkPage.finish();
 		checkNetworkMode(NETWORK_MODE_HOST);
 	}
-	
+
 	@Test
 	public void testNoneMode() {
 		ImageRunNetworkPage networkPage = new ImageRunNetworkPage();
@@ -100,6 +98,7 @@ public class NetworkModeTest extends AbstractImageBotTest {
 		checkNetworkMode(NETWORK_MODE_NONE);
 	}
 
+	@Override
 	@After
 	public void after() {
 		deleteContainerIfExists(CONTAINER_NAME);

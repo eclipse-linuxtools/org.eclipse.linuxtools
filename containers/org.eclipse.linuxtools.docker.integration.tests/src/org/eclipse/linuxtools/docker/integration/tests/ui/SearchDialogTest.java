@@ -25,9 +25,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionF
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageSearchResultFactory;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
-import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
-import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.CancelButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
@@ -37,7 +35,7 @@ import org.junit.Test;
 import com.spotify.docker.client.DockerClient;
 
 /**
- * 
+ *
  * @author jkopriva@redhat.com
  * @contributor adietish@redhat.com
  *
