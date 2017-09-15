@@ -432,8 +432,9 @@ public class DockerContainersView extends ViewPart implements
 	 */
 	private ModifyListener onSearch() {
 		return e -> {
-			if (DockerContainersView.this.viewer != null) {
-				DockerContainersView.this.viewer.refresh();
+			if (viewer != null) {
+				viewer.refresh();
+				refreshViewTitle();
 			}
 		};
 	}

@@ -344,7 +344,12 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 	 * @return
 	 */
 	private ModifyListener onSearch() {
-		return e -> DockerImagesView.this.viewer.refresh();
+		return e -> {
+			if (viewer != null) {
+				viewer.refresh();
+				refreshViewTitle();
+			}
+		};
 	}
 	
 	/**
