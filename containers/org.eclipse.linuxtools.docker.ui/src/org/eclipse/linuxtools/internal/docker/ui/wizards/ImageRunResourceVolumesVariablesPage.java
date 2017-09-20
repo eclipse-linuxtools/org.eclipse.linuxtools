@@ -402,7 +402,7 @@ image);
 			final Set<DataVolumeModel> selectedVolumes = new HashSet<>();
 			if (selectedImageInfo != null
 					&& selectedImageInfo.config() != null) {
-				for (String volume : selectedImageInfo.config().volumes()) {
+				for (String volume : selectedImageInfo.config().volumes().keySet()) {
 					volumes.put(volume, new DataVolumeModel(volume));
 				}
 			}

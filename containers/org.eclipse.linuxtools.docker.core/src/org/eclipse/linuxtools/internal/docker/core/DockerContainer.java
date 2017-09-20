@@ -54,21 +54,25 @@ public class DockerContainer implements IDockerContainer, IAdaptable {
 		this.created = container.created();
 		this.status = container.status();
 		this.names = new ArrayList<>();
-		for (String name : container.names()) {
-			if (name.startsWith("/")) {
-				this.names.add(name.substring(1));
-			} else {
-				this.names.add(name);
+		if (container.names() != null) {
+			for (String name : container.names()) {
+				if (name.startsWith("/")) {
+					this.names.add(name.substring(1));
+				} else {
+					this.names.add(name);
+				}
 			}
 		}
 		this.sizeRw = container.sizeRw();
 		this.sizeRootFs = container.sizeRootFs();
 		this.ports = new ArrayList<>();
-		for (Container.PortMapping port : container.ports()) {
-			final DockerPortMapping portMapping = new DockerPortMapping(this,
-					port.getPrivatePort(), port.getPublicPort(), port.getType(),
-					port.getIp());
-			ports.add(portMapping);
+		if (container.ports() != null) {
+			for (Container.PortMapping port : container.ports()) {
+				final DockerPortMapping portMapping = new DockerPortMapping(this,
+						port.privatePort(), port.publicPort(), port.type(),
+						port.ip());
+				ports.add(portMapping);
+			}
 		}
 		// TODO: include volumes
 	}

@@ -90,7 +90,7 @@ public class ImageInspectContentProvider implements ITreeContentProvider {
 					new Object[] { "Cmd", LabelProviderUtils.reduce(config.cmd()) }, //$NON-NLS-1$
 					new Object[] { "Image", config.image() }, //$NON-NLS-1$
 					new Object[] {
-							"Volumes", LabelProviderUtils.reduce(config.volumes()) }, //$NON-NLS-1$
+							"Volumes", LabelProviderUtils.reduce(config.volumes().keySet()) }, //$NON-NLS-1$
 					new Object[] { "WorkingDir", config.workingDir() }, //$NON-NLS-1$
 					new Object[] {
 							"EntryPoint", LabelProviderUtils.reduce(config.entrypoint()) }, //$NON-NLS-1$

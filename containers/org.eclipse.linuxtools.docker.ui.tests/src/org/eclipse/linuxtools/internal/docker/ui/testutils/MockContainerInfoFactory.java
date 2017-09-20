@@ -15,10 +15,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.mockito.Mockito;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.spotify.docker.client.messages.ContainerConfig;
 import com.spotify.docker.client.messages.ContainerInfo;
 import com.spotify.docker.client.messages.HostConfig;
@@ -70,7 +71,7 @@ public class MockContainerInfoFactory {
 		return new Builder().securityOpt(profile);
 	}
 
-	public static Builder labels(Map<String, String> labels) {
+	public static Builder labels(ImmutableMap<String, String> labels) {
 		return new Builder().labels(labels);
 	}
 
@@ -78,13 +79,13 @@ public class MockContainerInfoFactory {
 
 		private final ContainerInfo containerInfo;
 
-		private Map<String, String> labels;
+		private ImmutableMap<String, String> labels;
 
-		private Map<String, List<PortBinding>> ports;
+		private ImmutableMap<String, List<PortBinding>> ports;
 
-		private List<String> links;
+		private ImmutableList<String> links;
 
-		private List<String> volumes;
+		private ImmutableList<String> volumes;
 
 		private String networkMode;
 
@@ -92,7 +93,7 @@ public class MockContainerInfoFactory {
 
 		private Boolean privilegedMode;
 
-		private List<String> securityOpt;
+		private ImmutableList<String> securityOpt;
 
 		private Builder() {
 			this.containerInfo = Mockito.mock(ContainerInfo.class, Mockito.RETURNS_DEEP_STUBS);
@@ -113,11 +114,11 @@ public class MockContainerInfoFactory {
 			Mockito.when(this.containerInfo.hostsPath()).thenReturn(null);
 			Mockito.when(this.containerInfo.mountLabel()).thenReturn(null);
 			Mockito.when(this.containerInfo.volumes()).thenReturn(null);
-			Mockito.when(this.containerInfo.volumesRW()).thenReturn(null);
+			Mockito.when(this.containerInfo.volumesRw()).thenReturn(null);
 
 		}
 
-		public Builder labels(Map<String, String> labels) {
+		public Builder labels(ImmutableMap<String, String> labels) {
 			this.labels = labels;
 			return this;
 		}
@@ -139,25 +140,34 @@ public class MockContainerInfoFactory {
 
 		public Builder link(final String link) {
 			if (this.links == null) {
-				this.links = new ArrayList<>();
+				this.links = ImmutableList.of();
 			}
-			this.links.add(link);
+
+			ArrayList<String> tmp = new ArrayList<>(this.links);
+			tmp.add(link);
+			this.links = ImmutableList.copyOf(tmp);
 			return this;
 		}
 
 		public Builder securityOpt(final String opt) {
 			if (this.securityOpt == null) {
-				this.securityOpt = new ArrayList<>();
+				this.securityOpt = ImmutableList.of();
 			}
-			this.securityOpt.add(opt);
+
+			ArrayList<String> tmp = new ArrayList<>(this.securityOpt);
+			tmp.add(opt);
+			this.securityOpt = ImmutableList.copyOf(tmp);
 			return this;
 		}
 
 		public Builder volume(final String volume) {
 			if (this.volumes == null) {
-				this.volumes = new ArrayList<>();
+				this.volumes = ImmutableList.of();
 			}
-			this.volumes.add(volume);
+
+			ArrayList<String> tmp = new ArrayList<>(this.volumes);
+			tmp.add(volume);
+			this.volumes = ImmutableList.copyOf(tmp);
 			return this;
 		}
 
@@ -173,12 +183,15 @@ public class MockContainerInfoFactory {
 
 		public Builder port(final String privatePort, final String hostIp, final String hostPort) {
 			if (this.ports == null) {
-				this.ports = new HashMap<>();
+				this.ports = ImmutableMap.of();
 			}
 			final PortBinding binding = Mockito.mock(PortBinding.class);
 			Mockito.when(binding.hostIp()).thenReturn(hostIp);
 			Mockito.when(binding.hostPort()).thenReturn(hostPort);
-			ports.put(privatePort, new ArrayList<>());
+
+			HashMap<String, List<PortBinding>> tmp = new HashMap<>(this.ports);
+			tmp.put(privatePort, new ArrayList<>());
+			this.ports = ImmutableMap.copyOf(tmp);
 			ports.get(privatePort).add(binding);
 			return this;
 		}

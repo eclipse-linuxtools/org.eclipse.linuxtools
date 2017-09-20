@@ -24,8 +24,8 @@ public class DockerNetworkContainer implements IDockerNetworkContainer {
 	public DockerNetworkContainer(final Network.Container container) {
 		this.endpointId = container.endpointId();
 		this.macAddress = container.macAddress();
-		this.ipv4address = container.ipv4address();
-		this.ipv6address = container.ipv6address();
+		this.ipv4address = container.ipv4Address();
+		this.ipv6address = container.ipv6Address();
 	}
 
 	@Override

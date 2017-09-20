@@ -76,10 +76,7 @@ public class ImageQuery {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				stream.close();
-			} catch (IOException e) {
-			}
+			stream.close();
 		}
 		return null;
 	}

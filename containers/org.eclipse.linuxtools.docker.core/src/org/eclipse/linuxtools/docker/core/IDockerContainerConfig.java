@@ -52,7 +52,7 @@ public interface IDockerContainerConfig {
 
 	String image();
 
-	Set<String> volumes();
+	Map<String, Map> volumes();
 
 	String workingDir();
 

@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.internal.docker.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
@@ -68,7 +69,13 @@ public class DockerConnectionInfo implements IDockerConnectionInfo {
 		this.gitCommit = version != null ? version.gitCommit() : null;
 		this.os = version != null ? version.os() : "";
 		this.version = version != null ? version.version() : null;
-		this.driverStatus = info != null ? info.driverStatus() : null;
+		List<List<String>> tmp = new ArrayList<>();
+		if (info != null && info.driverStatus() != null) {
+			for (List<String> ls : info.driverStatus()) {
+				tmp.add(ls);
+			}
+		}
+		this.driverStatus = tmp;
 		this.cpuNumber = info != null ? info.cpus() : -1;
 		this.totalMemory = info != null ? info.memTotal() : -1;
 		this.name = info != null ? info.name() : null;

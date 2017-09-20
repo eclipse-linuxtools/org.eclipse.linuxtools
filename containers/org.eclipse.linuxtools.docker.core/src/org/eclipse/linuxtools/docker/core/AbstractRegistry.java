@@ -149,13 +149,13 @@ public abstract class AbstractRegistry implements IRegistry {
 				throw new DockerException(e);
 			}
 			List<ImageSearchResult> tmp = cisr.getRepositories().stream()
-					.filter(e -> e.getName().contains(term))
+					.filter(e -> e.name().contains(term))
 					.collect(Collectors.toList());
 
 			result.addAll(tmp.stream()
-					.map(r -> new DockerImageSearchResult(r.getDescription(),
-							r.isOfficial(), r.isAutomated(), r.getName(),
-							r.getStarCount()))
+					.map(r -> new DockerImageSearchResult(r.description(),
+							r.official(), r.automated(), r.name(),
+							r.starCount()))
 					.collect(Collectors.toList()));
 		} else {
 			ImageSearchResultV1 pisr = null;
@@ -175,9 +175,8 @@ public abstract class AbstractRegistry implements IRegistry {
 					List<ImageSearchResult> tmp = pisr.getResult();
 					result.addAll(tmp.stream()
 							.map(r -> new DockerImageSearchResult(
-									r.getDescription(), r.isOfficial(),
-									r.isAutomated(), r.getName(),
-									r.getStarCount()))
+									r.description(), r.official(),
+									r.automated(), r.name(), r.starCount()))
 							.collect(Collectors.toList()));
 				}
 			} catch (InterruptedException | ExecutionException e) {

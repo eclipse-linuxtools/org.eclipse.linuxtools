@@ -102,7 +102,6 @@ import com.spotify.docker.client.LogStream;
 import com.spotify.docker.client.exceptions.ContainerNotFoundException;
 import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.exceptions.DockerTimeoutException;
-import com.spotify.docker.client.messages.AuthConfig;
 import com.spotify.docker.client.messages.Container;
 import com.spotify.docker.client.messages.ContainerChange;
 import com.spotify.docker.client.messages.ContainerConfig;
@@ -120,6 +119,7 @@ import com.spotify.docker.client.messages.Ipam;
 import com.spotify.docker.client.messages.Network;
 import com.spotify.docker.client.messages.NetworkConfig;
 import com.spotify.docker.client.messages.PortBinding;
+import com.spotify.docker.client.messages.RegistryAuth;
 import com.spotify.docker.client.messages.Version;
 
 /**
@@ -1203,10 +1203,10 @@ public class DockerConnection
 			final List<ImageSearchResult> searchResults = client.searchImages(term);
 			final List<IDockerImageSearchResult> results = new ArrayList<>();
 			for(ImageSearchResult r : searchResults) {
-				if (r.getName().contains(term)) {
-					results.add(new DockerImageSearchResult(r.getDescription(),
-							r.isOfficial(), r.isAutomated(), r.getName(),
-							r.getStarCount()));
+				if (r.name().contains(term)) {
+					results.add(new DockerImageSearchResult(r.description(),
+							r.official(), r.automated(), r.name(),
+							r.starCount()));
 				}
 			}
 			return results;
@@ -1445,7 +1445,7 @@ public class DockerConnection
 
 		try {
 			HostConfig.Builder hbuilder = HostConfig.builder()
-					.containerIDFile(hc.containerIDFile())
+					.containerIdFile(hc.containerIDFile())
 					.publishAllPorts(hc.publishAllPorts())
 					.privileged(hc.privileged()).networkMode(hc.networkMode())
 					.readonlyRootfs(((DockerHostConfig) hc).readonlyRootfs());
@@ -1471,7 +1471,7 @@ public class DockerConnection
 				List<IDockerConfParameter> lxcconf = hc.lxcConf();
 				ArrayList<LxcConfParameter> lxcreal = new ArrayList<>();
 				for (IDockerConfParameter param : lxcconf) {
-					lxcreal.add(new LxcConfParameter(param.key(), param.value()));
+					// TODO: Fix This
 				}
 				hbuilder.lxcConf(lxcreal);
 			}
@@ -1939,7 +1939,7 @@ public class DockerConnection
 	public int auth(IRegistryAccount cfg)
 			throws DockerException, InterruptedException {
 		try {
-			AuthConfig authConfig = AuthConfig.builder()
+			RegistryAuth authConfig = RegistryAuth.builder()
 					.username(new String(cfg.getUsername()))
 					.password(cfg.getPassword() != null
 							? new String(cfg.getPassword()) : null)
@@ -2302,10 +2302,7 @@ public class DockerConnection
 			Ipam ipam = ipamBuilder.build();
 			NetworkConfig.Builder networkConfigBuilder = NetworkConfig.builder()
 					.name(cfg.name()).driver(cfg.driver()).ipam(ipam);
-			Map<String, String> cfgOptions = cfg.options();
-			for (Entry<String, String> entry : cfgOptions.entrySet()) {
-				networkConfigBuilder.option(entry.getKey(), entry.getValue());
-			}
+			networkConfigBuilder.options(cfg.options());
 			NetworkConfig networkConfig = networkConfigBuilder.build();
 			com.spotify.docker.client.messages.NetworkCreation creation = client
 					.createNetwork(networkConfig);

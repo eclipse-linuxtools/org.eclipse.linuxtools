@@ -119,7 +119,7 @@ public class ImageRunResourceVolumesVariablesModel
 				if (this.imageInfo.config() != null
 						&& this.imageInfo.config().volumes() != null) {
 					final List<DataVolumeModel> volumes = new ArrayList<>();
-					for (String volume : this.imageInfo.config().volumes()) {
+					for (String volume : this.imageInfo.config().volumes().keySet()) {
 						volumes.add(new DataVolumeModel(volume));
 					}
 					setDataVolumes(volumes);

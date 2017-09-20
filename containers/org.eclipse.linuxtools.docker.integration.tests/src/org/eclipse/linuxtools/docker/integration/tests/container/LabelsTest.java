@@ -13,9 +13,6 @@ package org.eclipse.linuxtools.docker.integration.tests.container;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.linuxtools.docker.integration.tests.image.AbstractImageBotTest;
 import org.eclipse.linuxtools.docker.integration.tests.mock.MockDockerConnectionManager;
 import org.eclipse.linuxtools.docker.reddeer.condition.ContainerIsDeployedCondition;
@@ -36,6 +33,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableMap;
 import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.exceptions.DockerException;
 
@@ -101,8 +99,7 @@ public class LabelsTest extends AbstractImageBotTest {
 	}
 
 	private void runContainer() {
-		Map<String, String> labels = new HashMap<>();
-		labels.put(CONTAINER_LABEL_KEY,CONTAINER_LABEL_VALUE);
+		ImmutableMap<String, String> labels = ImmutableMap.of(CONTAINER_LABEL_KEY,CONTAINER_LABEL_VALUE);
 		final DockerClient client = MockDockerClientFactory
 				.container(MockContainerFactory.id("1MockContainer").name(CONTAINER_NAME)
 						.imageName("1a2b3c4d5e6f7g").status("Started 1 second ago").build(),

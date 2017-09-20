@@ -791,7 +791,7 @@ public class ContainerLauncher {
 
 		final Map<String, String> remoteVolumes = new HashMap<>();
 		if (!((DockerConnection) connection).isLocal()) {
-			final Set<String> volumes = new HashSet<>();
+			final Map<String,Map> volumes = new HashMap<>();
 			// if using remote daemon, we have to
 			// handle volume mounting differently.
 			// Instead we mount empty volumes and copy
@@ -799,12 +799,12 @@ public class ContainerLauncher {
 			if (additionalDirs != null) {
 				for (String dir : additionalDirs) {
 					remoteVolumes.put(dir, dir);
-					volumes.add(dir);
+					volumes.put(dir, new HashMap<>());
 				}
 			}
 			if (workingDir != null) {
 				remoteVolumes.put(workingDir, workingDir); // $NON-NLS-1$
-				volumes.add(workingDir);
+				volumes.put(workingDir, new HashMap<>());
 			}
 			builder = builder.volumes(volumes);
 		} else {
@@ -1332,7 +1332,7 @@ public class ContainerLauncher {
 		// Note we only pass volumes to the config if we have a
 		// remote daemon. Local mounted volumes are passed
 		// via the HostConfig binds setting
-		final Set<String> remoteVolumes = new TreeSet<>();
+		final Map<String, Map> remoteVolumes = new HashMap<>();
 		final Map<String, String> remoteDataVolumes = new HashMap<>();
 		final Set<String> readOnlyVolumes = new TreeSet<>();
 		if (!((DockerConnection) connection).isLocal()) {
@@ -1343,7 +1343,7 @@ public class ContainerLauncher {
 			if (additionalDirs != null) {
 				for (String dir : additionalDirs) {
 					IPath p = new Path(dir).removeTrailingSeparator();
-					remoteVolumes.add(p.toPortableString());
+					remoteVolumes.put(p.toPortableString(), new HashMap<>());
 					remoteDataVolumes.put(p.toPortableString(),
 							p.toPortableString());
 					if (dir.contains(":")) { //$NON-NLS-1$
@@ -1367,7 +1367,7 @@ public class ContainerLauncher {
 			}
 			if (workingDir != null) {
 				IPath p = new Path(workingDir).removeTrailingSeparator();
-				remoteVolumes.add(p.toPortableString());
+				remoteVolumes.put(p.toPortableString(), new HashMap<>());
 				remoteDataVolumes.put(p.toPortableString(),
 						p.toPortableString());
 			}

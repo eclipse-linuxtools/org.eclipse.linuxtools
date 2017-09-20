@@ -23,7 +23,7 @@ import com.spotify.docker.client.DefaultDockerClient.Builder;
 import com.spotify.docker.client.DockerCertificates;
 import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.exceptions.DockerCertificateException;
-import com.spotify.docker.client.messages.AuthConfig;
+import com.spotify.docker.client.messages.RegistryAuth;
 
 /**
  * Factory for {@link DockerClient}. Decoupling from {@link DockerConnection}
@@ -90,14 +90,14 @@ public class DockerClientFactory {
 		}
 
 		if (registryAccount != null) {
-			builder.authConfig(buildAuthentication(registryAccount));
+			builder.registryAuth(buildAuthentication(registryAccount));
 		}
 		return builder.build();
 	}
 
-	private AuthConfig buildAuthentication(final IRegistryAccount info) {
+	private RegistryAuth buildAuthentication(final IRegistryAccount info) {
 		if (info.getUsername() != null && !info.getUsername().isEmpty()) {
-			final AuthConfig authAccount = AuthConfig.builder()
+			final RegistryAuth authAccount = RegistryAuth.builder()
 					.serverAddress(info.getServerAddress())
 					.username(info.getUsername()).email(info.getEmail())
 					.password(info.getPassword() != null

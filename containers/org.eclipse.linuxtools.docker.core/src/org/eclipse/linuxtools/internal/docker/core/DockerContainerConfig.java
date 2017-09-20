@@ -44,7 +44,7 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 	private String rawcmd;
 	private final List<String> cmd;
 	private final String image;
-	private final Set<String> volumes;
+	private final Map<String, Map> volumes;
 	private final String workingDir;
 	private final List<String> entrypoint;
 	private final boolean networkDisabled;
@@ -94,7 +94,7 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 		 * volumes.keySet() which might be null. For now we need to guard
 		 * against this.
 		 */
-		Set<String> res = null;
+		Map<String, Map> res = null;
 		try {
 			res = containerConfig != null ? containerConfig.volumes() : null;
 		} catch (NullPointerException e) {
@@ -261,9 +261,9 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 	}
 
 	@Override
-	public Set<String> volumes() {
+	public Map<String, Map> volumes() {
 		if (volumes == null) {
-			return Collections.emptySet();
+			return Collections.emptyMap();
 		}
 		return volumes;
 	}
@@ -324,7 +324,7 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 		private String rawcmd;
 		private List<String> cmd;
 		private String image;
-		private Set<String> volumes;
+		private Map<String, Map> volumes;
 		private String workingDir;
 		private List<String> entrypoint;
 		private Boolean networkDisabled;
@@ -518,17 +518,12 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 			return image;
 		}
 
-		public Builder volumes(final Set<String> volumes) {
-			this.volumes = new TreeSet<>(volumes);
+		public Builder volumes(final Map<String, Map> volumes) {
+			this.volumes = volumes;
 			return this;
 		}
 
-		public Builder volumes(final String... volumes) {
-			this.volumes = new TreeSet<>(Arrays.asList(volumes));
-			return this;
-		}
-
-		public Set<String> volumes() {
+		public Map<String, Map> volumes() {
 			return volumes;
 		}
 

@@ -56,27 +56,27 @@ public class ImageSearchResultV2 {
 		}
 
 		@Override
-		public String getDescription() {
+		public String description() {
 			return "";
 		}
 
 		@Override
-		public boolean isOfficial() {
+		public boolean official() {
 			return false;
 		}
 
 		@Override
-		public boolean isAutomated() {
+		public boolean automated() {
 			return false;
 		}
 
 		@Override
-		public String getName() {
+		public String name() {
 			return name;
 		}
 
 		@Override
-		public int getStarCount() {
+		public int starCount() {
 			return 0;
 		}
 	}

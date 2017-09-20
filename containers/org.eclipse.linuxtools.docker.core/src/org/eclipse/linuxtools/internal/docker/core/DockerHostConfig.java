@@ -48,7 +48,7 @@ public class DockerHostConfig implements IDockerHostConfig {
 
 	public DockerHostConfig(final HostConfig hostConfig) {
 		this.binds = hostConfig.binds();
-		this.containerIDFile = hostConfig.containerIDFile();
+		this.containerIDFile = hostConfig.containerIdFile();
 		this.lxcConf = new ArrayList<>();
 		if(hostConfig.lxcConf() != null) {
 			for (LxcConfParameter lxcConfParameter : hostConfig.lxcConf()) {

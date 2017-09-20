@@ -19,22 +19,22 @@ import com.spotify.docker.client.messages.ImageSearchResult;
  * Factory for mocked {@link ImageSearchResult} instances.
  */
 public class MockImageSearchResultFactory {
-	
+
 	public static ImageSearchResultBuilder name(final String name) {
 		return new ImageSearchResultBuilder(name);
 	}
-	
+
 	public static class ImageSearchResultBuilder {
 
 		private final String name;
-		
+
 		public ImageSearchResultBuilder(final String name) {
 			this.name = name;
 		}
-		
+
 		public ImageSearchResult build() {
 			final ImageSearchResult imageSearchResult = Mockito.mock(ImageSearchResult.class);
-			Mockito.when(imageSearchResult.getName()).thenReturn(this.name);
+			Mockito.when(imageSearchResult.name()).thenReturn(this.name);
 			return imageSearchResult;
 		}
 

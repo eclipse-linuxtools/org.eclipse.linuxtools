@@ -131,7 +131,7 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 					new Object[]{"StdinOnce", config.stdinOnce()}, //$NON-NLS-1$
 					new Object[]{"Tty", config.tty()}, //$NON-NLS-1$
 					new Object[] { "Volumes", //$NON-NLS-1$
-							LabelProviderUtils.reduce(config.volumes()) },
+							LabelProviderUtils.reduce(config.volumes().keySet()) },
 					new Object[]{"WorkingDir", config.workingDir()}, //$NON-NLS-1$
 			};
 		} else if(propertyValue instanceof IDockerPortBinding) {

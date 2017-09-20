@@ -67,7 +67,7 @@ public class DockerContainerInfo implements IDockerContainerInfo {
 		this.processLabel = info != null ? info.processLabel() : null;
 		this.mountLabel = info != null ? info.mountLabel() : null;
 		this.volumes = info != null ? info.volumes() : null;
-		this.volumesRW = info != null ? info.volumesRW() : null;
+		this.volumesRW = info != null ? info.volumesRw() : null;
 	}
 
 	@Override
