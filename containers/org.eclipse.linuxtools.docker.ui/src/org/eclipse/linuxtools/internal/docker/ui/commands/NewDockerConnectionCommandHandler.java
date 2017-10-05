@@ -13,9 +13,7 @@ package org.eclipse.linuxtools.internal.docker.ui.commands;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.NewDockerConnection;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.ui.navigator.CommonNavigator;
 
 /**
  * @author xcoulon
@@ -25,11 +23,8 @@ public class NewDockerConnectionCommandHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) {
-		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
-		if(activePart instanceof CommonNavigator) {
-			CommandUtils.openWizard(new NewDockerConnection(),
-					HandlerUtil.getActiveShell(event));
-		}
+		CommandUtils.openWizard(new NewDockerConnection(),
+				HandlerUtil.getActiveShell(event));
 		return null;
 	}
 	
