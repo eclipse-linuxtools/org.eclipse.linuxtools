@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="org.eclipse.linuxtools.mylyn.osio.rest.repository"
+         name="%Repository.name"
+         point="org.eclipse.mylyn.tasks.core.repositories">
+      <connectorCore
+            class="org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestConnector"
+            id="org.eclipse.linuxtools.mylyn.osio.rest"
+            name="%Connector.name">
+      </connectorCore>
+   </extension>
+
+</plugin>

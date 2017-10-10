@@ -51,6 +51,7 @@
   <properties>
     <mirror-repo-name>updates-nightly</mirror-repo-name>
     <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
+    <mirror-mylyn-repo-name>updates-mylyn-nightly</mirror-mylyn-repo-name>
     <tycho-version>1.0.0</tycho-version>
     <tycho-extras-version>1.0.0</tycho-extras-version>
     <target-platform>linuxtools-e4.7</target-platform>
@@ -284,6 +285,7 @@
     <module>valgrind</module>
     <module>containers</module>
     <module>vagrant</module>
+    <module>mylyn</module>
     <module>releng</module>
   </modules>
 

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright (C) 2011, Red Hat, Inc. and others
+
+   All rights reserved. This program and the accompanying materials
+   are made available under the terms of the Eclipse Public License v1.0
+   which accompanies this distribution, and is available at
+   http://www.eclipse.org/legal/epl-v10.html
+
+   Contributors:
+       Red Hat Incorporated - initial implementation
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.eclipse.linuxtools.releng</groupId>
+    <artifactId>linuxtools-releng-parent</artifactId>
+    <version>6.2.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>org.eclipse.linuxtools.mylyn-site</artifactId>
+  <packaging>eclipse-repository</packaging>
+
+  <profiles>
+     <profile>
+     <id>build-server</id>
+     <build>
+        <plugins>
+           <plugin>
+             <artifactId>maven-antrun-plugin</artifactId>
+             <executions>
+               <execution>
+                 <id>deploy</id>
+                 <phase>verify</phase>
+                 <goals>
+                   <goal>run</goal>
+                 </goals>
+                 <configuration>
+                   <target>
+                    <delete includeemptydirs="false">
+                       <fileset
+                         dir="/home/data/httpd/download.eclipse.org/linuxtools/updates-mylyn-nightly">
+                         <include name="**" />
+                       </fileset>
+                     </delete>
+                     <copy includeemptydirs="false"
+                       todir="/home/data/httpd/download.eclipse.org/linuxtools/updates-mylyn-nightly">
+                       <fileset dir="target/repository">
+                         <include name="**" />
+                       </fileset>
+                     </copy>
+                   </target>
+                 </configuration>
+               </execution>
+             </executions>
+           </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-publisher-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <publishArtifacts>true</publishArtifacts>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-repository-plugin</artifactId>
+        <version>${tycho-version}</version>
+	<executions>
+          <execution>
+            <id>default-archive-repository</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>archive-repository</goal>
+            </goals>
+            <configuration>
+              <finalName>${project.artifactId}</finalName>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>prepare-promotion</id>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <!-- copy scripts to build directory and execute -->
+                <copy file="p2.xsl" todir="${project.build.directory}"/>
+                <copy file="promoter.xml" todir="${project.build.directory}"/>
+                <ant antfile="${project.build.directory}/promoter.xml"/>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho.extras</groupId>
+        <artifactId>tycho-eclipserun-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>eclipse-run</goal>
+            </goals>
+            <configuration>
+              <applicationsArgs>
+                <arg>-application</arg>
+                <arg>org.eclipse.cbi.p2repo.analyzers.repoReport</arg>
+              </applicationsArgs>
+              <jvmArgs>
+                <arg>-DreportRepoDir=${project.build.directory}/repository</arg>
+                <arg>-DreportOutputDir=${project.build.directory}/repository/buildInfo</arg>
+              <arg>-DreferenceRepo=/home/data/httpd/download.eclipse.org/staging/oxygen/</arg>
+              </jvmArgs>
+              <executionEnvironment>JavaSE-1.8</executionEnvironment>
+              <dependencies>
+              <dependency>
+                <artifactId>org.eclipse.cbi.p2repo.analyzers</artifactId>
+                <type>eclipse-plugin</type>
+              </dependency>
+              <dependency>
+                <artifactId>org.eclipse.equinox.p2.core.feature</artifactId>
+                <type>eclipse-feature</type>
+              </dependency>
+              <dependency>
+                <artifactId>org.eclipse.e4.rcp</artifactId>
+                <type>eclipse-feature</type>
+              </dependency>
+            </dependencies>
+              <repositories>
+                <repository>
+                  <id>cbi-reports</id>
+                  <url>http://download.eclipse.org/cbi/updates/analyzers/4.6/I20161201-1633</url>
+                  <layout>p2</layout>
+                </repository>
+                <repository>
+                  <id>eclipse-4.6.1</id>
+                  <url>http://download.eclipse.org/eclipse/updates/4.6/R-4.6.1-201609071200/</url>
+                  <layout>p2</layout>
+                </repository>
+              </repositories>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <name>Linux Tools Mylyn Connector Repository</name>
+</project>

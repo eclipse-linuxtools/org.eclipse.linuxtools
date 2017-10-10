@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site
+      mirrorsURL="http://www.eclipse.org/downloads/download.php?file=/linuxtools/updates-mylyn-nightly/site.xml&amp;format=xml">
+   <description url="http://download.eclipse.org/linuxtools/updates-mylyn-nightly">
+      Nightly builds of Linux Tools Mylyn Connectors project.
+   </description>
+   <feature url="features/org.eclipse.linuxtools.mylyn.osio.rest.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.mylyn.osio.rest.feature" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.mylyn.osio.rest.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.mylyn.osio.rest.feature.source" version="0.0.0">
+      <category name="Linux Tools Sources"/>
+   </feature>
+
+   <!-- Orbit Dependencies -->
+   <iu id="org.apache.httpcomponents.httpcore" version="0.0.0">
+        <category name="Mylyn Connector Dependencies"/>
+   </iu>
+   <iu id="org.apache.httpcomponents.httpclient" version="0.0.0">
+        <category name="Mylyn Connector Dependencies"/>
+   </iu>
+   <iu id="com.google.guava" version="0.0.0">
+        <category name="Mylyn Connector Dependencies"/>
+   </iu>
+   <iu id="com.google.gson" version="0.0.0">
+        <category name="Mylyn Connector Dependencies"/>
+   </iu>
+   <category-def name="Linux Tools" label="Linux Tools">
+      <description>
+         Eclipse Linux Tools Mylyn Connectors
+      </description>
+   </category-def>
+   <category-def name="Linux Tools Sources" label="Linux Tools Sources">
+      <description>
+         Eclipse Linux Tools Mylyn Connectors Sources
+      </description>
+   </category-def>
+   <category-def name="Mylyn Connector Dependencies" label="Linux Tools Mylyn Connector Client Dependencies">
+      <description>
+         Eclipse Linux Tools Mylyn Connector Dependencies
+      </description>
+   </category-def>
+</site>
