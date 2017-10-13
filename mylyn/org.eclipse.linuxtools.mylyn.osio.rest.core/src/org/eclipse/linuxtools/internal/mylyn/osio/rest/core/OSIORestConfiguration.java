@@ -26,6 +26,7 @@ import java.util.TreeSet;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.IdNamed;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Space;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.User;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.WorkItemTypeAttributes;
@@ -168,7 +169,7 @@ public class OSIORestConfiguration implements Serializable {
 			internalSetAttributeOptions(taskAttribute, actualSpace.getAreas());
 		} else if (taskAttribute.getId().equals(SCHEMA.ITERATION.getKey())) {
 			internalSetAttributeOptions(taskAttribute, actualSpace.getIterations());
-		} else if (taskAttribute.getId().equals(SCHEMA.ASSIGNEES.getKey())) {
+		} else if (taskAttribute.getId().equals(SCHEMA.ADD_ASSIGNEE.getKey())) {
 			internalSetAttributeOptions(taskAttribute, actualSpace.getUsers());
 		} else if (taskAttribute.getId().equals(SCHEMA.STATUS.getKey())) {
 			Map<String, String> stateMap = new LinkedHashMap<>();
@@ -196,7 +197,12 @@ public class OSIORestConfiguration implements Serializable {
 		String actualValue = taskAttribute.getValue();
 		for (Object entry : spaceMap.keySet()) {
 			String option = (String)entry;
-			taskAttribute.putOption(option, option);
+			String name = option;
+			Object optionValue = spaceMap.get(entry);
+			if (optionValue instanceof IdNamed) {
+				name = ((IdNamed)optionValue).getName();
+			}
+			taskAttribute.putOption(option, name);
 			if (!found) {
 				found = actualValue.equals(option);
 			}
@@ -247,9 +253,9 @@ public class OSIORestConfiguration implements Serializable {
 			if (attributeIteration != null) {
 				setAttributeOptionsForSpace(attributeIteration, actualSpace);
 			}
-			TaskAttribute attributeAssignees = taskData.getRoot().getMappedAttribute(SCHEMA.ASSIGNEES.getKey());
-			if (attributeAssignees != null) {
-				setAttributeOptionsForSpace(attributeAssignees, actualSpace);
+			TaskAttribute attributeAddAssignee = taskData.getRoot().getMappedAttribute(SCHEMA.ADD_ASSIGNEE.getKey());
+			if (attributeAddAssignee != null) {
+				setAttributeOptionsForSpace(attributeAddAssignee, actualSpace);
 			}
 			TaskAttribute attributeState = taskData.getRoot().getMappedAttribute(SCHEMA.STATUS.getKey());
 			if (attributeState != null) {

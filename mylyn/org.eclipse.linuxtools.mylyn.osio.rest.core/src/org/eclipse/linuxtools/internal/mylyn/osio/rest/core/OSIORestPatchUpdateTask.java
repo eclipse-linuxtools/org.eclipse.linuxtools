@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -38,7 +39,6 @@ import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Space;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.User;
 import org.eclipse.mylyn.commons.repositories.core.RepositoryLocation;
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
-import org.eclipse.mylyn.tasks.core.data.DefaultTaskSchema;
 import org.eclipse.mylyn.tasks.core.data.TaskAttribute;
 import org.eclipse.mylyn.tasks.core.data.TaskData;
 
@@ -163,13 +163,42 @@ public class OSIORestPatchUpdateTask extends OSIORestPatchRequest<TaskData> {
 			out.beginObject();
 			attribute = taskData.getRoot().getAttribute(taskSchema.ASSIGNEES.getKey());
 			List<String> assignees = attribute.getValues();
-			if (assignees != null && assignees.size() > 0 && !assignees.get(0).isEmpty()) {
+			if (assignees == null) {
+				assignees = new ArrayList<String>();
+			} else {
+				assignees = new ArrayList<>(assignees);
+			}
+			attribute = taskData.getRoot().getAttribute(taskSchema.REMOVE_ASSIGNEE.getKey());
+			List<String> removals = attribute.getValues();
+			if (removals != null) {
+				for (String removal : removals) {
+					int index = assignees.indexOf(removal);
+					if (index >= 0) {
+						assignees.remove(index);
+					}
+				}
+			}
+			attribute = taskData.getRoot().getAttribute(taskSchema.ADD_ASSIGNEE.getKey());
+			List<String> additions = attribute.getValues();
+			if (additions != null) {
+				for (String addition : additions) {
+					int index = assignees.indexOf(addition);
+					if (index < 0) {
+						assignees.add(addition);
+					}
+				}
+			}
+			if (assignees.size() > 0 && !assignees.get(0).isEmpty()) {
 				Map<String, User> users = space.getUsers();
 				out.name("data"); //$NON-NLS-1$
 				out.beginArray();
 				for (String assignee : assignees) {
-					out.beginObject();
 					String userid = users.get(assignee).getId();
+					if (userid == null) {
+						throw new UnsupportedOperationException(
+								OSIORestMessages.getFormattedString("UnknownAssignee.msg", assignee)); //$NON-NLS-1$
+					}
+					out.beginObject();
 					out.name("id").value(userid); //$NON-NLS-1$
 					out.name("type").value("users"); //$NON-NLS-1$ //$NON-NLS-2$
 					out.endObject();
@@ -262,11 +291,6 @@ public class OSIORestPatchUpdateTask extends OSIORestPatchRequest<TaskData> {
 				throws JsonParseException {
 			JsonObject workitemdata = json.getAsJsonObject().get("data").getAsJsonObject(); //$NON-NLS-1$
 			JsonObject attributes = workitemdata.get("attributes").getAsJsonObject(); //$NON-NLS-1$
-			JsonObject relationships = workitemdata.get("relationships").getAsJsonObject(); //$NON-NLS-1$
-			JsonObject space = relationships.get("space").getAsJsonObject(); //$NON-NLS-1$
-			JsonObject spaceData = space.get("data").getAsJsonObject(); //$NON-NLS-1$
-			String spaceId = spaceData.get("id").getAsString(); //$NON-NLS-1$
-			Space actualSpace = spaces.get(spaceId);
 			
 			String version = attributes.get("version").getAsString(); //$NON-NLS-1$
 			TaskAttribute versionAttr = taskData.getRoot().getAttribute(taskSchema.VERSION.getKey());

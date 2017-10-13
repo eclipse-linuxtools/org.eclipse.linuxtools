@@ -13,8 +13,6 @@ package org.eclipse.linuxtools.internal.mylyn.osio.rest.core;
 import org.eclipse.mylyn.tasks.core.data.AbstractTaskSchema;
 import org.eclipse.mylyn.tasks.core.data.DefaultTaskSchema;
 import org.eclipse.mylyn.tasks.core.data.TaskAttribute;
-import org.eclipse.mylyn.tasks.core.data.AbstractTaskSchema.Field;
-import org.eclipse.mylyn.tasks.core.data.AbstractTaskSchema.Flag;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -114,8 +112,16 @@ public class OSIORestTaskSchema extends AbstractTaskSchema {
 	
 	public final Field ASSIGNEES = createField("assignees", //$NON-NLS-1$
 			OSIORestMessages.getString("SchemaAssignees.label"), //$NON-NLS-1$
-			TaskAttribute.TYPE_MULTI_SELECT, Flag.PEOPLE);
+			IOSIORestConstants.EDITOR_TYPE_ASSIGNEES, Flag.PEOPLE);
 	
+	public final Field ADD_ASSIGNEE = createField("addAssignee", //$NON-NLS-1$
+			OSIORestMessages.getString("SchemaAddAssignee.label"), //$NON-NLS-1$
+			TaskAttribute.TYPE_MULTI_LABEL, Flag.PEOPLE);
+	
+	public final Field REMOVE_ASSIGNEE = createField("removeAssignee", //$NON-NLS-1$
+			OSIORestMessages.getString("SchemaRemoveAssignee.label"), //$NON-NLS-1$
+			IOSIORestConstants.EDITOR_TYPE_ASSIGNEES);
+
 	public final Field ASSIGNEE_IDS = createField("assigneeIDs", //$NON-NLS-1$
 			OSIORestMessages.getString("SchemaAssigneeIDs.label"), //$NON-NLS-1$
 			TaskAttribute.TYPE_SHORT_TEXT, Flag.READ_ONLY);

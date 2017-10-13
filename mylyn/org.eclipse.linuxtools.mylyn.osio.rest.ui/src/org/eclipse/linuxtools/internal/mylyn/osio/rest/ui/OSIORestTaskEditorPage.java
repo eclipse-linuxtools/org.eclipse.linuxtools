@@ -17,11 +17,15 @@ import java.util.Set;
 
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.IOSIORestConstants;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestCore;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestTaskSchema;
 import org.eclipse.mylyn.tasks.core.data.TaskAttribute;
 import org.eclipse.mylyn.tasks.ui.editors.AbstractAttributeEditor;
 import org.eclipse.mylyn.tasks.ui.editors.AbstractTaskEditorPage;
 import org.eclipse.mylyn.tasks.ui.editors.AbstractTaskEditorPart;
 import org.eclipse.mylyn.tasks.ui.editors.AttributeEditorFactory;
+import org.eclipse.mylyn.tasks.ui.editors.LayoutHint;
+import org.eclipse.mylyn.tasks.ui.editors.LayoutHint.ColumnSpan;
+import org.eclipse.mylyn.tasks.ui.editors.LayoutHint.RowSpan;
 import org.eclipse.mylyn.tasks.ui.editors.TaskEditor;
 import org.eclipse.mylyn.tasks.ui.editors.TaskEditorPartDescriptor;
 
@@ -51,6 +55,11 @@ public class OSIORestTaskEditorPage extends AbstractTaskEditorPage {
 				} else {
 					editor = super.createEditor(type, taskAttribute);
 				}
+				if (editor != null
+						&& OSIORestTaskSchema.getDefault().ADD_ASSIGNEE.getKey().equals(taskAttribute.getId())) {
+					editor.setLayoutHint(new LayoutHint(RowSpan.SINGLE, ColumnSpan.SINGLE));
+				}
+
 				return editor;
 			}
 		};
