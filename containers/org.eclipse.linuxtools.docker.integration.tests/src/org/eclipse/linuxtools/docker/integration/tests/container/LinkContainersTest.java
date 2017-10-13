@@ -37,7 +37,7 @@ import org.junit.Test;
 import com.spotify.docker.client.DockerClient;
 
 /**
- * 
+ *
  * @author jkopriva@redhat.com
  *
  */
@@ -56,8 +56,8 @@ public class LinkContainersTest extends AbstractImageBotTest {
 		pullImage(IMAGE_UHTTPD);
 	}
 
-	private ImageRunSelectionPage openImageRunSelectionPage(String containerName, boolean publishAllExposedPorts) {
-		ImageRunSelectionPage page = new ImageRunSelectionPage();
+	private ImageRunSelectionPage openImageRunSelectionPage(String containerName, boolean publishAllExposedPorts, DockerImagesTab imagesTab) {
+		ImageRunSelectionPage page = new ImageRunSelectionPage(imagesTab);
 		page.setContainerName(containerName);
 		page.setPublishAllExposedPorts(publishAllExposedPorts);
 		return page;
@@ -73,7 +73,7 @@ public class LinkContainersTest extends AbstractImageBotTest {
 	public void runUhttpServer(String imageName, String containerName) {
 		DockerImagesTab imagesTab = openDockerImagesTab();
 		imagesTab.runImage(imageName);
-		ImageRunSelectionPage firstPage = openImageRunSelectionPage(containerName, false);
+		ImageRunSelectionPage firstPage = openImageRunSelectionPage(containerName, false, imagesTab);
 		firstPage.setContainerName(containerName);
 		firstPage.setPublishAllExposedPorts(false);
 		firstPage.finish();
@@ -90,7 +90,7 @@ public class LinkContainersTest extends AbstractImageBotTest {
 		String serverAddress = getHttpServerAddress(CONTAINER_NAME_HTTP_SERVER);
 		DockerImagesTab imagesTab = openDockerImagesTab();
 		imagesTab.runImage(imageName);
-		ImageRunSelectionPage firstPage = openImageRunSelectionPage(containerName, false);
+		ImageRunSelectionPage firstPage = openImageRunSelectionPage(containerName, false, imagesTab);
 		firstPage.setContainerName(containerName);
 		firstPage.setCommand(serverAddress + ":80");
 		firstPage.addLinkToContainer(CONTAINER_NAME_HTTP_SERVER, "http_server");
@@ -118,6 +118,7 @@ public class LinkContainersTest extends AbstractImageBotTest {
 		return propertiesView.getProperty("NetworkSettings", "IPAddress").getPropertyValue();
 	}
 
+	@Override
 	@After
 	public void after() {
 		deleteContainerIfExists(CONTAINER_NAME_CLIENT_ALPINE);

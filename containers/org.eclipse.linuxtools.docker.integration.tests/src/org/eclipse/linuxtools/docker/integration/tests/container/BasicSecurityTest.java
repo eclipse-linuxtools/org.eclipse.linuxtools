@@ -35,7 +35,7 @@ import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.exceptions.DockerException;
 
 /**
- * 
+ *
  * @author jkopriva@redhat.com
  * @contributor adietish@redhat.com
  *
@@ -57,7 +57,7 @@ public class BasicSecurityTest extends AbstractImageBotTest {
 	public void testBasicSecurity() {
 		DockerImagesTab imagesTab = openDockerImagesTab();
 		imagesTab.runImage(IMAGE_NAME + ":" + IMAGE_TAG);
-		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
+		ImageRunSelectionPage firstPage = new ImageRunSelectionPage(imagesTab);
 		firstPage.setContainerName(CONTAINER_NAME);
 		firstPage.setAllocatePseudoTTY();
 		firstPage.setKeepSTDINOpen();
@@ -82,6 +82,7 @@ public class BasicSecurityTest extends AbstractImageBotTest {
 		assertTrue("Container does not have capDrop all!", capDropProp.equals("all"));
 	}
 
+	@Override
 	@After
 	public void after() {
 		deleteContainerIfExists(CONTAINER_NAME);

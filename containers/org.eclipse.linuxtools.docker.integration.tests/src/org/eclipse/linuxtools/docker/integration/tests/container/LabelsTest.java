@@ -40,7 +40,7 @@ import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.exceptions.DockerException;
 
 /**
- * 
+ *
  * @author jkopriva@redhat.com
  *
  */
@@ -51,7 +51,7 @@ public class LabelsTest extends AbstractImageBotTest {
 	private static final String CONTAINER_LABEL_KEY = "foo";
 	private static final String IMAGE_NAME = IMAGE_BUSYBOX;
 	private static final String IMAGE_TAG = "latest";
-	private static final String CONTAINER_NAME = "test_run_busybox_label";	
+	private static final String CONTAINER_NAME = "test_run_busybox_label";
 
 	@Before
 	public void before() throws DockerException, InterruptedException {
@@ -65,13 +65,13 @@ public class LabelsTest extends AbstractImageBotTest {
 		DockerImagesTab imagesTab = openDockerImagesTab();
 		imagesTab.runImage(IMAGE_NAME + ":" + IMAGE_TAG);
 
-		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
+		ImageRunSelectionPage firstPage = new ImageRunSelectionPage(imagesTab);
 		firstPage.setContainerName(CONTAINER_NAME);
 		firstPage.setAllocatePseudoTTY();
 		firstPage.setKeepSTDINOpen();
 		firstPage.setGiveExtendedPrivileges();
 		firstPage.next();
-		ImageRunResourceVolumesVariablesPage secondPage = new ImageRunResourceVolumesVariablesPage();
+		ImageRunResourceVolumesVariablesPage secondPage = new ImageRunResourceVolumesVariablesPage(firstPage);
 		secondPage.addLabel(CONTAINER_LABEL_KEY, CONTAINER_LABEL_VALUE);
 		secondPage.finish();
 		new WaitWhile(new JobIsRunning());
@@ -93,14 +93,15 @@ public class LabelsTest extends AbstractImageBotTest {
 				labelProp.equals(CONTAINER_LABEL_VALUE));
 	}
 
+	@Override
 	@After
 	public void after() {
 		killRunningImageJobs();
 		deleteContainerIfExists(CONTAINER_NAME);
 	}
-	
+
 	private void runContainer() {
-		Map<String, String> labels = new HashMap<String, String>();
+		Map<String, String> labels = new HashMap<>();
 		labels.put(CONTAINER_LABEL_KEY,CONTAINER_LABEL_VALUE);
 		final DockerClient client = MockDockerClientFactory
 				.container(MockContainerFactory.id("1MockContainer").name(CONTAINER_NAME)
@@ -113,6 +114,6 @@ public class LabelsTest extends AbstractImageBotTest {
 				.from(DEFAULT_CONNECTION_NAME, client).withDefaultTCPConnectionSettings();
 		MockDockerConnectionManager.configureConnectionManager(dockerConnection);
 	}
-	
-	
+
+
 }

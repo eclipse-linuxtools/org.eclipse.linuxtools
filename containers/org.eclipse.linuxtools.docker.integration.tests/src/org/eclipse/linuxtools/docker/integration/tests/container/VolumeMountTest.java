@@ -31,8 +31,8 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionF
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
-import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasNoChange;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ import org.junit.Test;
 import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.exceptions.DockerException;
 /**
- * 
+ *
  * @author jkopriva@redhat.com
  * @contributor adietish@redhat.com
  */
@@ -66,12 +66,12 @@ public class VolumeMountTest extends AbstractImageBotTest {
 		DockerImagesTab imagesTab = openDockerImagesTab();
 		imagesTab.runImage(IMAGE_UHTTPD + ":" + IMAGE_TAG_LATEST);
 
-		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
+		ImageRunSelectionPage firstPage = new ImageRunSelectionPage(imagesTab);
 		firstPage.setContainerName(CONTAINER_NAME);
 		firstPage.setPublishAllExposedPorts(true);
 		firstPage.next();
 
-		ImageRunResourceVolumesVariablesPage secondPage = new ImageRunResourceVolumesVariablesPage();
+		ImageRunResourceVolumesVariablesPage secondPage = new ImageRunResourceVolumesVariablesPage(firstPage);
 		String volumePath = (new File(VOLUME_PATH)).getCanonicalPath();
 		secondPage.addDataVolumeToHost(CONTAINER_PATH, volumePath);
 		secondPage.finish();
@@ -113,6 +113,7 @@ public class VolumeMountTest extends AbstractImageBotTest {
 		MockDockerConnectionManager.configureConnectionManager(dockerConnection);
 	}
 
+	@Override
 	@After
 	public void after() {
 		deleteContainerIfExists(CONTAINER_NAME);

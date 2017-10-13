@@ -35,7 +35,7 @@ import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.exceptions.DockerException;
 
 /**
- * 
+ *
  * @author jkopriva@redhat.com
  * @contributor adietish@redhat.com
  *
@@ -57,7 +57,7 @@ public class UnconfinedTest extends AbstractImageBotTest {
 	public void testUnconfined() {
 		DockerImagesTab imagesTab = openDockerImagesTab();
 		imagesTab.runImage(IMAGE_NAME + ":" + IMAGE_TAG);
-		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
+		ImageRunSelectionPage firstPage = new ImageRunSelectionPage(imagesTab);
 		firstPage.setContainerName(CONTAINER_NAME);
 		firstPage.setAllocatePseudoTTY();
 		firstPage.setKeepSTDINOpen();
@@ -76,6 +76,7 @@ public class UnconfinedTest extends AbstractImageBotTest {
 		assertTrue("Container is not running in seccomp:unconfined mode!", securityProp.equals("seccomp:unconfined"));
 	}
 
+	@Override
 	@After
 	public void after() {
 		deleteContainerIfExists(CONTAINER_NAME);

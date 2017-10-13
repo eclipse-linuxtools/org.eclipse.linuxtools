@@ -38,11 +38,6 @@ public class ImageSearchPage extends WizardPage {
 		super(referencedComposite);
 		new DefaultShell("Search and pull a Docker image");
 	}
-	
-	public ImageSearchPage() {
-		super(null);
-		new DefaultShell("Search and pull a Docker image");
-	}
 
 	public void finish() {
 		new FinishButton().click();

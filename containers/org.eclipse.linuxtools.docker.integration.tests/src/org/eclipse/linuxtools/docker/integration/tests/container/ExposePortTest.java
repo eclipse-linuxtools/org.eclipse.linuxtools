@@ -20,13 +20,13 @@ import org.eclipse.linuxtools.docker.reddeer.ui.BrowserView;
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerImagesTab;
 import org.eclipse.linuxtools.docker.reddeer.utils.BrowserContentsCheck;
 import org.eclipse.reddeer.common.wait.WaitWhile;
-import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasNoChange;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.junit.After;
 import org.junit.Test;
 
 /**
- * 
+ *
  * @author jkopriva@redhat.com
  *
  */
@@ -58,7 +58,7 @@ public class ExposePortTest extends AbstractImageBotTest {
 
 	private void runContainer(String imageName, String imageTag, String containerName, DockerImagesTab imagesTab) {
 		imagesTab.runImage(imageName + ":" + imageTag);
-		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
+		ImageRunSelectionPage firstPage = new ImageRunSelectionPage(imagesTab);
 		firstPage.setContainerName(containerName);
 		firstPage.setPublishAllExposedPorts(false);
 		firstPage.finish();
@@ -66,6 +66,7 @@ public class ExposePortTest extends AbstractImageBotTest {
 		new WaitWhile(new ConsoleHasNoChange());
 	}
 
+	@Override
 	@After
 	public void after() {
 		deleteContainerIfExists(CONTAINER_NAME);

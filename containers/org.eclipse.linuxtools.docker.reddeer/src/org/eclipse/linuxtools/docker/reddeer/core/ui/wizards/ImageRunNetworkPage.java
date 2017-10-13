@@ -35,11 +35,6 @@ public class ImageRunNetworkPage extends WizardPage {
 		super(referencedComposite);
 		new WaitUntil(new ShellIsAvailable("Run a Docker Image"), TimePeriod.LONG);
 	}
-	
-	public ImageRunNetworkPage() {
-		super(null);
-		new WaitUntil(new ShellIsAvailable("Run a Docker Image"), TimePeriod.LONG);
-	}
 
 	public void finish() {
 		if (new FinishButton().isEnabled()) {

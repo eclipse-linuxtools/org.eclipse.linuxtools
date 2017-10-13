@@ -40,11 +40,6 @@ public class ImageRunSelectionPage extends WizardPage {
 		super(referencedComposite);
 		new WaitUntil(new ShellIsAvailable("Run a Docker Image"), TimePeriod.LONG);
 	}
-	
-	public ImageRunSelectionPage() {
-		super(null);
-		new WaitUntil(new ShellIsAvailable("Run a Docker Image"), TimePeriod.LONG);
-	}
 
 	public void finish() {
 		if (new FinishButton().isEnabled()) {

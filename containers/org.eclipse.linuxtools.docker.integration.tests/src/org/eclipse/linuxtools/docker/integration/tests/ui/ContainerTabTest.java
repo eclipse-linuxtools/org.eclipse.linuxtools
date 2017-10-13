@@ -29,7 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * 
+ *
  * @author jkopriva@redhat.com
  *
  */
@@ -111,11 +111,11 @@ public class ContainerTabTest extends AbstractImageBotTest {
 		containerTab.searchContainer("");
 		assertTrue("Search result is 0!", containerTab.getTableItems().size() > 0);
 	}
-	
+
 	private void runContainer(String connectionName, String imageName, String imageTag, String containerName){
 		DockerImagesTab imagesTab = openDockerImagesTab();
 		imagesTab.runImage(imageName);
-		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
+		ImageRunSelectionPage firstPage = new ImageRunSelectionPage(imagesTab);
 		firstPage.setContainerName(containerName);
 		firstPage.finish();
 		if (mockitoIsUsed()) {
@@ -134,6 +134,7 @@ public class ContainerTabTest extends AbstractImageBotTest {
 		return null;
 	}
 
+	@Override
 	@After
 	public void after() {
 		deleteContainerIfExists(CONTAINER_NAME);

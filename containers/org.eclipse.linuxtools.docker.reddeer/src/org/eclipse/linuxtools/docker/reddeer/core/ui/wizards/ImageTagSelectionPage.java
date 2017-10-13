@@ -37,11 +37,6 @@ public class ImageTagSelectionPage extends WizardPage {
 		super(referencedComposite);
 		new WaitUntil(new ShellIsAvailable("Search and pull a Docker image"), TimePeriod.DEFAULT);
 	}
-	
-	public ImageTagSelectionPage() {
-		super(null);
-		new WaitUntil(new ShellIsAvailable("Search and pull a Docker image"), TimePeriod.DEFAULT);
-	}
 
 	public void finish() {
 		new FinishButton().click();

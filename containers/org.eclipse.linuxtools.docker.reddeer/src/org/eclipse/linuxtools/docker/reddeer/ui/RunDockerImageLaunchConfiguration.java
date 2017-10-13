@@ -141,11 +141,11 @@ public class RunDockerImageLaunchConfiguration extends LaunchConfiguration {
 	public void searchImage(String imageName, String tag) {
 		selectTab(MAIN_TAB_LABEL);
 		new PushButton("Search...");
-		ImageSearchPage pageOne = new ImageSearchPage();
+		ImageSearchPage pageOne = new ImageSearchPage(new DefaultCTabItem(MAIN_TAB_LABEL));
 		pageOne.searchImage(imageName);
 		pageOne.next();
 		new WaitWhile(new ShellIsActive("Progress Information"), TimePeriod.DEFAULT);
-		ImageTagSelectionPage pageTwo = new ImageTagSelectionPage();
+		ImageTagSelectionPage pageTwo = new ImageTagSelectionPage(pageOne);
 		assertFalse("Search tags are empty!", pageTwo.getTags().isEmpty());
 		new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT);
 		assertTrue("Search results do not contains tag:" + tag + "!", pageTwo.tagsContains(tag));

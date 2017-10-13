@@ -19,6 +19,7 @@ import org.eclipse.linuxtools.docker.reddeer.condition.ContainerIsDeployedCondit
 import org.eclipse.linuxtools.docker.reddeer.core.ui.wizards.ImageRunNetworkPage;
 import org.eclipse.linuxtools.docker.reddeer.core.ui.wizards.ImageRunResourceVolumesVariablesPage;
 import org.eclipse.linuxtools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
+import org.eclipse.linuxtools.docker.reddeer.ui.DockerExplorerView;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerInfoFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
@@ -50,25 +51,28 @@ public class NetworkModeTest extends AbstractImageBotTest {
 	private static final String NETWORK_MODE_HOST = "host";
 	private static final String NETWORK_MODE_NONE = "none";
 
+	ImageRunSelectionPage firstPage;
+
 	@Before
 	public void before() throws DockerException, InterruptedException {
 		deleteAllConnections();
 		getConnection();
 		pullImage(IMAGE_NAME, IMAGE_TAG);
 		new WaitWhile(new JobIsRunning());
+		DockerExplorerView explorer = new DockerExplorerView();
 		getConnection().getImage(IMAGE_NAME).run();
-		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
+		firstPage = new ImageRunSelectionPage(explorer);
 		firstPage.setContainerName(CONTAINER_NAME);
 		firstPage.setAllocatePseudoTTY();
 		firstPage.setKeepSTDINOpen();
 		firstPage.next();
-		ImageRunResourceVolumesVariablesPage variablesPage = new ImageRunResourceVolumesVariablesPage();
+		ImageRunResourceVolumesVariablesPage variablesPage = new ImageRunResourceVolumesVariablesPage(firstPage);
 		variablesPage.next();
 	}
 
 	@Test
 	public void testDefaultMode() {
-		ImageRunNetworkPage networkPage = new ImageRunNetworkPage();
+		ImageRunNetworkPage networkPage = new ImageRunNetworkPage(firstPage);
 		networkPage.setDefaultNetworkMode();
 		networkPage.finish();
 		checkNetworkMode(NETWORK_MODE_DEFAULT);
@@ -76,7 +80,7 @@ public class NetworkModeTest extends AbstractImageBotTest {
 
 	@Test
 	public void testBridgeMode() {
-		ImageRunNetworkPage networkPage = new ImageRunNetworkPage();
+		ImageRunNetworkPage networkPage = new ImageRunNetworkPage(firstPage);
 		networkPage.setBridgeNetworkMode();
 		networkPage.finish();
 		checkNetworkMode(NETWORK_MODE_BRIDGE);
@@ -84,7 +88,7 @@ public class NetworkModeTest extends AbstractImageBotTest {
 
 	@Test
 	public void testHostMode() {
-		ImageRunNetworkPage networkPage = new ImageRunNetworkPage();
+		ImageRunNetworkPage networkPage = new ImageRunNetworkPage(firstPage);
 		networkPage.setHostNetworkMode();
 		networkPage.finish();
 		checkNetworkMode(NETWORK_MODE_HOST);
@@ -92,7 +96,7 @@ public class NetworkModeTest extends AbstractImageBotTest {
 
 	@Test
 	public void testNoneMode() {
-		ImageRunNetworkPage networkPage = new ImageRunNetworkPage();
+		ImageRunNetworkPage networkPage = new ImageRunNetworkPage(firstPage);
 		networkPage.setNoneNetworkMode();
 		networkPage.finish();
 		checkNetworkMode(NETWORK_MODE_NONE);

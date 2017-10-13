@@ -38,10 +38,6 @@ public class ImageRunResourceVolumesVariablesPage extends WizardPage {
 		super(referencedComposite);
 	}
 
-	public ImageRunResourceVolumesVariablesPage() {
-		super(null);
-	}
-
 	public void finish() {
 		new FinishButton().click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);

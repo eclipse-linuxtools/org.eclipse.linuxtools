@@ -40,7 +40,7 @@ import com.spotify.docker.client.messages.Image;
 import com.spotify.docker.client.messages.ImageInfo;
 
 /**
- * 
+ *
  * @author jkopriva@redhat.com
  * @contributor adietish@redhat.com
  */
@@ -77,10 +77,10 @@ public class VariablesTest extends AbstractImageBotTest {
 		new WaitWhile(new JobIsRunning());
 
 		imagesTab.runImage(IMAGE_NAME);
-		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
+		ImageRunSelectionPage firstPage = new ImageRunSelectionPage(imagesTab);
 		firstPage.setContainerName(CONTAINER_NAME);
 		firstPage.next();
-		ImageRunResourceVolumesVariablesPage secondPage = new ImageRunResourceVolumesVariablesPage();
+		ImageRunResourceVolumesVariablesPage secondPage = new ImageRunResourceVolumesVariablesPage(firstPage);
 		secondPage.addEnviromentVariable("FOO", "barbarbar");
 		if (mockitoIsUsed()) {
 			MockDockerClientFactory.addContainer(this.client, this.createdContainer, this.containerInfo);
@@ -90,6 +90,7 @@ public class VariablesTest extends AbstractImageBotTest {
 		assertConsoleContains("FOO is barbarbar");
 	}
 
+	@Override
 	@After
 	public void after() {
 		deleteContainerIfExists(CONTAINER_NAME);

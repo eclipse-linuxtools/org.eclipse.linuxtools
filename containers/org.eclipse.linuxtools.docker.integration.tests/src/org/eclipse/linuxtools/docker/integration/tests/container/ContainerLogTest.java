@@ -19,6 +19,7 @@ import org.eclipse.linuxtools.docker.integration.tests.mock.MockDockerConnection
 import org.eclipse.linuxtools.docker.integration.tests.mock.MockUtils;
 import org.eclipse.linuxtools.docker.reddeer.condition.ContainerIsDeployedCondition;
 import org.eclipse.linuxtools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
+import org.eclipse.linuxtools.docker.reddeer.ui.DockerExplorerView;
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerTerminal;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerInfoFactory;
@@ -39,7 +40,7 @@ import org.junit.Test;
 import com.spotify.docker.client.DockerClient;
 
 /**
- * 
+ *
  * @author jkopriva@redhat.com
  *
  */
@@ -56,9 +57,10 @@ public class ContainerLogTest extends AbstractImageBotTest {
 		getConnection();
 		pullImage(IMAGE_NAME);
 		new WaitWhile(new JobIsRunning());
+		DockerExplorerView explorer = new DockerExplorerView();
 		getConnection().refresh();
 		getConnection().getImage(IMAGE_NAME).run();
-		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
+		ImageRunSelectionPage firstPage = new ImageRunSelectionPage(explorer);
 		firstPage.setContainerName(CONTAINER_NAME);
 		firstPage.setAllocatePseudoTTY();
 		firstPage.setKeepSTDINOpen();
@@ -78,6 +80,7 @@ public class ContainerLogTest extends AbstractImageBotTest {
 		assertTrue("Log for container:" + CONTAINER_NAME + " is empty!", StringUtils.isNotEmpty(consoleText));
 	}
 
+	@Override
 	@After
 	public void after() {
 		deleteImageContainerAfter(CONTAINER_NAME);
@@ -96,7 +99,7 @@ public class ContainerLogTest extends AbstractImageBotTest {
 				.from(DEFAULT_CONNECTION_NAME, client).withDefaultTCPConnectionSettings();
 		MockDockerConnectionManager.configureConnectionManager(dockerConnection);
 	}
-	
+
 	private String getContainerLog() {
 		new ContextMenu().getItem("Display Log").select();
 		String consoleText;
@@ -112,7 +115,7 @@ public class ContainerLogTest extends AbstractImageBotTest {
 		}
 		return consoleText;
 	}
-	
+
 	private void cleanDockerTerminal () {
 		if (!mockitoIsUsed()) {
 			DockerTerminal dockerTerminal = new DockerTerminal();
