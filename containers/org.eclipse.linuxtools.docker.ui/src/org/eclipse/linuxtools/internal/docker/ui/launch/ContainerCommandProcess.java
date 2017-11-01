@@ -51,6 +51,8 @@ public class ContainerCommandProcess extends Process {
 	private Map<String, String> remoteVolumes;
 	private boolean keepContainer;
 	private Thread thread;
+	private boolean containerRemoved;
+	private int exitValue;
 
 	public ContainerCommandProcess(IDockerConnection connection,
 			String imageName, String containerId,
@@ -128,6 +130,11 @@ public class ContainerCommandProcess extends Process {
 
 	@Override
 	public int exitValue() {
+		// if container has been removed, we need to return
+		// the exit value that we cached before removal
+		if (containerRemoved) {
+			return exitValue;
+		}
 		IDockerContainerInfo info = connection
 				.getContainerInfo(containerId);
 		if (info != null) {
@@ -297,6 +304,8 @@ public class ContainerCommandProcess extends Process {
 			}
 			connection.stopLoggingThread(containerId);
 			if (!keepContainer) {
+				exitValue = exitValue();
+				containerRemoved = true;
 				connection.removeContainer(containerId);
 			}
 			if (!((DockerConnection) connection).isLocal()) {
