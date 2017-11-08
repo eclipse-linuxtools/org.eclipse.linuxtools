@@ -132,7 +132,7 @@ public class OSIORestTaskSchema extends AbstractTaskSchema {
 	
 	public final Field VERSION = createField("version", //$NON-NLS-1$
 			OSIORestMessages.getString("SchemaVersion.label"), //$NON-NLS-1$
-			TaskAttribute.TYPE_INTEGER, Flag.ATTRIBUTE);
+			TaskAttribute.TYPE_INTEGER, Flag.ATTRIBUTE, Flag.READ_ONLY);
 	
 	public final Field AREA = createField("area", //$NON-NLS-1$
 			OSIORestMessages.getString("SchemaArea.label"), //$NON-NLS-1$

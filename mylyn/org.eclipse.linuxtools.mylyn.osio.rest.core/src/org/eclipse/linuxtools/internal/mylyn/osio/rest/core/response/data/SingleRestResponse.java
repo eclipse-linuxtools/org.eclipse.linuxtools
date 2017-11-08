@@ -10,30 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data;
 
-public class WorkItemTypeFieldType {
-	
-	private String kind;
-	
-	private String baseType;
-	
-	private String componentType;
-	
-	private String[] values;
-	
-	public String getKind() {
-		return kind;
-	}
-	
-	public String getBaseType() {
-		return baseType;
-	}
-	
-	public String getComponentType() {
-		return componentType;
-	}
-	
-	public String[] getValues() {
-		return values;
-	}
-
+public interface SingleRestResponse<T> {
+	public T getData();
 }

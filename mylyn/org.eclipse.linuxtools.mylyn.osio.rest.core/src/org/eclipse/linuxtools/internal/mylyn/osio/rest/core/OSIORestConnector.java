@@ -262,7 +262,7 @@ public class OSIORestConnector extends AbstractRepositoryConnector {
 	}
 
 	public String getURLSuffix(String url) {
-		int index = url.indexOf("/api"); //$NON-NLS-1$
+		int index = url.indexOf("/api/"); //$NON-NLS-1$
 		return index == -1 ? null : url.substring(index + 4);
 	}
 	
@@ -308,12 +308,11 @@ public class OSIORestConnector extends AbstractRepositoryConnector {
 		context.remove();
 	}
 
-	// TODO following is wrong
 	@Override
 	public void updateTaskFromTaskData(TaskRepository taskRepository, ITask task, TaskData taskData) {
 		TaskMapper scheme = getTaskMapping(taskData);
 		scheme.applyTo(task);
-		task.setUrl(taskData.getRepositoryUrl() + "/rest.cgi/bug/" + taskData.getTaskId()); //$NON-NLS-1$
+		task.setUrl(taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().TASK_URL.getKey()).getValue());
 
 		boolean isComplete = false;
 		TaskAttribute attributeStatus = taskData.getRoot().getMappedAttribute(TaskAttribute.STATUS);
@@ -342,7 +341,7 @@ public class OSIORestConnector extends AbstractRepositoryConnector {
 			List<TaskAttribute> taskComments = taskData.getAttributeMapper().getAttributesByType(taskData,
 					TaskAttribute.TYPE_COMMENT);
 			if (taskComments != null && taskComments.size() > 0) {
-				TaskAttribute lastComment = taskComments.get(taskComments.size() - 1);
+				TaskAttribute lastComment = taskComments.get(0); // comments are in reverse order
 				if (lastComment != null) {
 					TaskAttribute attributeCommentDate = lastComment.getMappedAttribute(TaskAttribute.COMMENT_DATE);
 					if (attributeCommentDate != null) {

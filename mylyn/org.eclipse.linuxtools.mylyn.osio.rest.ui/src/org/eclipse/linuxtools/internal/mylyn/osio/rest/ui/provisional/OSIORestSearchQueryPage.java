@@ -20,12 +20,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestConfiguration;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestConnector;
-import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestTaskSchema;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.ui.OSIORestUIPlugin;
 import org.eclipse.mylyn.commons.core.StatusHandler;
-import org.eclipse.mylyn.internal.provisional.tasks.ui.wizards.AbstractQueryPageSchema;
-import org.eclipse.mylyn.internal.provisional.tasks.ui.wizards.QueryPageDetails;
-import org.eclipse.mylyn.internal.provisional.tasks.ui.wizards.RepositoryQuerySchemaPage;
 import org.eclipse.mylyn.tasks.core.IRepositoryQuery;
 import org.eclipse.mylyn.tasks.core.TaskRepository;
 import org.eclipse.mylyn.tasks.core.data.TaskAttribute;
@@ -89,7 +85,6 @@ public class OSIORestSearchQueryPage extends RepositoryQuerySchemaPage {
 		return false;
 	}
 
-	@SuppressWarnings("restriction")
 	private void restoreStateFromUrl(String queryUrl) throws UnsupportedEncodingException {
 		queryUrl = queryUrl.substring(queryUrl.indexOf("?") + 1); //$NON-NLS-1$
 		String[] options = queryUrl.split("&"); //$NON-NLS-1$

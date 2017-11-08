@@ -16,8 +16,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestConfiguration;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestConnector;
-import org.eclipse.mylyn.internal.provisional.tasks.ui.wizards.QueryPageDetails;
-import org.eclipse.mylyn.internal.provisional.tasks.ui.wizards.SimpleURLQueryPageSchema;
 import org.eclipse.mylyn.tasks.core.IRepositoryQuery;
 import org.eclipse.mylyn.tasks.core.TaskRepository;
 import org.eclipse.mylyn.tasks.core.data.TaskData;

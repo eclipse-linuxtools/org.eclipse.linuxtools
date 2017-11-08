@@ -36,6 +36,7 @@ import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.RestRe
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Space;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.SpaceResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.User;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.UserSingleResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.UsersResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.WorkItemLinkTypeData;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.WorkItemLinkTypeResponse;
@@ -167,46 +168,52 @@ public class OSIORestClient {
 		}
 		return cachedSpaces;
 	}
-
+	
 	private Map<String, Space> getSpaces(IOperationMonitor monitor) throws OSIORestException {
 		cachedSpaces = retrieveItems(monitor, "/namedspaces/" + userName, new TypeToken<SpaceResponse>() { //$NON-NLS-1$
 		});
 		return cachedSpaces;
 	}
 	
-	private Map<String, User> getUsers(IOperationMonitor monitor, Space space) throws OSIORestException {
+	public Map<String, User> getUsers(IOperationMonitor monitor, Space space) throws OSIORestException {
 		Map<String, User> users = retrieveItemsAuth(monitor, "/spaces/" + space.getId() + "/collaborators", new TypeToken<UsersResponse>() { //$NON-NLS-1$
 		});
 		return users;
 	}
 	
-	private Map<String, WorkItemTypeData> getSpaceWorkItemTypes(IOperationMonitor monitor, Space space) throws OSIORestException {
+	public Map<String, WorkItemTypeData> getSpaceWorkItemTypes(IOperationMonitor monitor, Space space) throws OSIORestException {
 		String linkSuffix = connector.getURLSuffix(space.getLinks().getWorkItemTypes());
 		return retrieveItems(monitor, linkSuffix, new TypeToken<WorkItemTypeResponse>() {
 		});
 	}
+	
+	public User getOwnedByLink(IOperationMonitor monitor, Space space) throws OSIORestException {
+		String ownerSuffix = connector.getURLSuffix(space.getRelationships().getOwnedBy().getLinks().getRelated());
+		UserSingleResponse owner = new OSIORestGetRequest<UserSingleResponse>(client, ownerSuffix, new TypeToken<UserSingleResponse>() {}, true, true).run(monitor);
+		return owner.getData();
+	}
 
-	private Map<String, WorkItemLinkTypeData> getSpaceWorkItemLinkTypes(IOperationMonitor monitor, Space space) throws OSIORestException {
+	public Map<String, WorkItemLinkTypeData> getSpaceWorkItemLinkTypes(IOperationMonitor monitor, Space space) throws OSIORestException {
 		String linkSuffix = connector.getURLSuffix(space.getLinks().getWorkItemLinkTypes());
 		return retrieveItemsById(monitor, linkSuffix, new TypeToken<WorkItemLinkTypeResponse>() {
 		});
 	}
 
-	private Map<String, Area> getSpaceAreas(IOperationMonitor monitor, Space space) throws OSIORestException {
+	public Map<String, Area> getSpaceAreas(IOperationMonitor monitor, Space space) throws OSIORestException {
 		return retrieveItems(monitor, "/spaces/" + space.getId() + "/areas", new TypeToken<AreaListResponse>() { //$NON-NLS-1$ //$NON-NLS-2$
 		});
 	}
 
-	private Map<String, Iteration> getSpaceIterations(IOperationMonitor monitor, Space space) throws OSIORestException {
+	public Map<String, Iteration> getSpaceIterations(IOperationMonitor monitor, Space space) throws OSIORestException {
 		return retrieveItems(monitor, "/spaces/" + space.getId() + "/iterations", new TypeToken<IterationListResponse>() { //$NON-NLS-1$ //$NON-NLS-2$
 		});
 	}
 
 	public RepositoryResponse postTaskData(TaskData taskData, Set<TaskAttribute> oldAttributes,
 			TaskRepository repository, IOperationMonitor monitor) throws OSIORestException {
+		TaskAttribute spaceAttribute = taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().SPACE.getKey());
+		String spaceName = spaceAttribute.getValue();
 		if (taskData.isNew()) {
-			TaskAttribute spaceAttribute = taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().SPACE.getKey());
-			String spaceName = spaceAttribute.getValue();
 			Map<String, Space> spaces = getCachedSpaces(new NullOperationMonitor());
 			Space space = spaces.get(spaceName);
 			String id = null;
@@ -232,7 +239,13 @@ public class OSIORestClient {
 					newComment.setValue("");
 				}
 			}
-			new OSIORestPatchUpdateTask(client, taskData, oldAttributes, config.getSpaces()).run(monitor);
+			Map<String, Space> spaces = config.getSpaces();
+			Space space = spaces.get(spaceName);
+			if (space == null) {
+				Map<String, Space> externalSpaces = config.getExternalSpaces();
+				space = externalSpaces.get(spaceName);
+			}
+			new OSIORestPatchUpdateTask(client, taskData, oldAttributes, space).run(monitor);
 			return new RepositoryResponse(ResponseKind.TASK_UPDATED, taskData.getTaskId());
 		}
 	}
@@ -261,15 +274,23 @@ public class OSIORestClient {
 			if (taskId.isEmpty()) {
 				continue;
 			}
+			String user = userName;
 			String[] tokens = taskId.split("#"); //$NON-NLS-1$
 			String spaceName = tokens[0];
+			// check for workitem in space not owned by this user
+			// in which case it is prefixed by username
+			String[] spaceTokens = spaceName.split("/"); //$NON-NLS-1$
+			if (spaceTokens.length > 1) {
+				spaceName = spaceTokens[1];
+				user = spaceTokens[0];
+			}
 			String wiNumber = tokens[1];
 			try {
 				// We need to translate from the space's workitem number to the real id
 				// The easiest way is to use a namedspaces request that we know will give
 				// us a "ResourceMovedPermanently" error which will contain the URL of the
 				// real location of the workitem which contains the workitem uuid.
-				String query = "/namedspaces/" + userName + "/" + spaceName + "/workitems/" + wiNumber; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				String query = "/namedspaces/" + user + "/" + spaceName + "/workitems/" + wiNumber; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				String wid = ""; //$NON-NLS-1$
 				try {
 				    wid = new OSIORestGetWID(client, query, taskRepository).run(monitor);
@@ -287,9 +308,14 @@ public class OSIORestClient {
 				TaskData taskData = new OSIORestGetSingleTaskData(client, connector, workitemquery, taskRepository)
 						.run(monitor);
 				Map<String, Space> spaces = getCachedSpaces(monitor);
-				new OSIORestGetTaskComments(getClient(), spaces.get(spaceName),taskData).run(monitor);
+				Space space = spaces.get(spaceName);
+				if (space == null) {
+					Map<String, Space> externalSpaces = config.getExternalSpaces();
+					space = externalSpaces.get(spaceName);
+				}
+				new OSIORestGetTaskComments(getClient(), space,taskData).run(monitor);
 				new OSIORestGetTaskCreator(getClient(), taskData).run(monitor);
-				new OSIORestGetTaskLinks(getClient(), spaces.get(spaceName), taskData).run(monitor);
+				new OSIORestGetTaskLinks(getClient(), space, taskData).run(monitor);
 				setTaskAssignees(taskData);
 				config.updateSpaceOptions(taskData);
 				config.addValidOperations(taskData);
@@ -374,11 +400,13 @@ public class OSIORestClient {
 					Space space = cachedSpaces.get(spaceName);
 					if (space != null) {
 						Map<String, User> users = space.getUsers();
-						for (String name : userSet) {
-							User user = users.get(name);
-							if (user != null) {
-								searchFilter += itemSeparator + "{\"assignee\":\"" + user.getAttributes().getIdentityID() + "\"}"; //$NON-NLS-1$ //$NON-NLS-2$
-								itemSeparator = ","; //$NON-NLS-1$
+						if (users != null) {
+							for (String name : userSet) {
+								User user = users.get(name);
+								if (user != null) {
+									searchFilter += itemSeparator + "{\"assignee\":\"" + user.getAttributes().getIdentityID() + "\"}"; //$NON-NLS-1$ //$NON-NLS-2$
+									itemSeparator = ","; //$NON-NLS-1$
+								}
 							}
 						}
 					}
@@ -401,11 +429,13 @@ public class OSIORestClient {
 					Space space = cachedSpaces.get(spaceName);
 					if (space != null) {
 						Map<String, Area> areas = space.getAreas();
-						for (String name : areaSet) {
-							Area area = areas.get(name);
-							if (area != null) {
-								searchFilter += itemSeparator + "{\"area\":\"" + area.getId() + "\"}"; //$NON-NLS-1$ //$NON-NLS-2$
-								itemSeparator = ","; //$NON-NLS-1$
+						if (areas != null) {
+							for (String name : areaSet) {
+								Area area = areas.get(name);
+								if (area != null) {
+									searchFilter += itemSeparator + "{\"area\":\"" + area.getId() + "\"}"; //$NON-NLS-1$ //$NON-NLS-2$
+									itemSeparator = ","; //$NON-NLS-1$
+								}
 							}
 						}
 					}
@@ -416,11 +446,13 @@ public class OSIORestClient {
 					Space space = cachedSpaces.get(spaceName);
 					if (space != null) {
 						Map<String, Iteration> iterations = space.getIterations();
-						for (String name : iterationSet) {
-							Iteration iteration = iterations.get(name);
-							if (iteration != null) {
-								searchFilter += itemSeparator + "{\"iteration\":\"" + iteration.getId() + "\"}"; //$NON-NLS-1$ //$NON-NLS-2$
-								itemSeparator = ","; //$NON-NLS-1$
+						if (iterations != null) {
+							for (String name : iterationSet) {
+								Iteration iteration = iterations.get(name);
+								if (iteration != null) {
+									searchFilter += itemSeparator + "{\"iteration\":\"" + iteration.getId() + "\"}"; //$NON-NLS-1$ //$NON-NLS-2$
+									itemSeparator = ","; //$NON-NLS-1$
+								}
 							}
 						}
 					}

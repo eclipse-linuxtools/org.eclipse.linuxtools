@@ -60,7 +60,7 @@ public class OSIORestPatchUpdateTask extends OSIORestPatchRequest<TaskData> {
 
 	private final TaskData taskData;
 	private final OSIORestTaskSchema taskSchema;
-	private final Map<String, Space> spaces;
+	private final Space space;
 	private final CommonHttpClient client;
 
 	class OldAttributes {
@@ -129,7 +129,6 @@ public class OSIORestPatchUpdateTask extends OSIORestPatchRequest<TaskData> {
 			out.beginObject();
 			attribute = taskData.getRoot().getAttribute(taskSchema.SPACE.getKey());
 			String spaceName = attribute.getValue();
-			Space space = spaces.get(spaceName);
 			out.name("id").value(space.getId()); //$NON-NLS-1$
 			out.name("type").value("spaces"); //$NON-NLS-1$ //$NON-NLS-2$
 			out.endObject(); // space data
@@ -229,12 +228,12 @@ public class OSIORestPatchUpdateTask extends OSIORestPatchRequest<TaskData> {
 	}
 	
 	public OSIORestPatchUpdateTask(CommonHttpClient client, TaskData taskData, 
-			Set<TaskAttribute> oldAttributes, Map<String, Space> spaces) {
+			Set<TaskAttribute> oldAttributes, Space space) {
 		super(client, "/workitems/" + //$NON-NLS-1$ 
 				taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().UUID.getKey()).getValue(), true); //$NON-NLS-1$
 		this.taskData = taskData;
 		this.taskSchema = OSIORestTaskSchema.getDefault();
-		this.spaces = spaces;
+		this.space = space;
 		this.client = client;
 		this.oldAttributes = new OldAttributes(oldAttributes);
 	}

@@ -13,7 +13,6 @@
 package org.eclipse.linuxtools.internal.mylyn.osio.rest.ui.provisional;
 
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestTaskSchema;
-import org.eclipse.mylyn.internal.provisional.tasks.ui.wizards.AbstractQueryPageSchema;
 import org.eclipse.mylyn.tasks.core.data.TaskAttribute;
 
 public class OSIORestSearchQueryPageSchema extends AbstractQueryPageSchema {
@@ -53,6 +52,7 @@ public class OSIORestSearchQueryPageSchema extends AbstractQueryPageSchema {
 			.create();
 	
 	public final Field assignee = copyFrom(parent.ASSIGNEES).type(TaskAttribute.TYPE_MULTI_SELECT)
+			.label(Messages.OSIORestQuery_AssigneesLabel)
 			.dependsOn(parent.SPACE.getKey())
 			.layoutPriority(11)
 			.create();

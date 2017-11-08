@@ -30,8 +30,14 @@ import org.apache.http.HttpStatus;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Area;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.IdNamed;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Iteration;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Space;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.SpaceSingleResponse;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.User;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.WorkItemLinkTypeData;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.WorkItemTypeData;
 import org.eclipse.mylyn.commons.core.operations.IOperationMonitor;
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpResponse;
@@ -55,12 +61,14 @@ public class OSIORestGetTaskData extends OSIORestGetRequest<List<TaskData>> {
 
 	private final TaskRepository taskRepository;
 	private final OSIORestConfiguration taskConfiguration;
+	private final CommonHttpClient client;
 
 	private final OSIORestConnector connector;
 
 	public OSIORestGetTaskData(@SuppressWarnings("restriction") CommonHttpClient client, OSIORestConnector connector, String urlSuffix,
 			TaskRepository taskRepository) throws CoreException {
 		super(client, urlSuffix, null); //$NON-NLS-1$
+		this.client = client;
 		this.taskRepository = taskRepository;
 		this.taskConfiguration = connector.getRepositoryConfiguration(taskRepository);
 		this.connector = connector;
@@ -126,9 +134,60 @@ public class OSIORestGetTaskData extends OSIORestGetRequest<List<TaskData>> {
 						break;
 					}
 				}
+				OSIORestClient restClient = null;
+				try {
+					restClient = connector.getClient(taskRepository);
+				} catch (CoreException e2) {
+					// TODO Auto-generated catch block
+					com.google.common.base.Throwables.propagate(
+							new CoreException(new Status(IStatus.ERROR, OSIORestCore.ID_PLUGIN,
+									"Can not get OSIORestClient"))); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+				if (actualSpace == null) {
+					Map<String, Space> externalSpaces = taskConfiguration.getExternalSpaces();
+					for (Space entry : externalSpaces.values()) {
+						if (entry.getId().equals(spaceId)) {
+							actualSpace = entry;
+							break;
+						}
+					}
+					if (actualSpace == null) {
+						SpaceSingleResponse spaceResponse = null;
+						try {
+							spaceResponse = new OSIORestGetRequest<SpaceSingleResponse>(client, "/spaces/" + spaceId, new TypeToken<SpaceSingleResponse>() {}, true).run(new NullOperationMonitor());
+							actualSpace = spaceResponse.getData();
+							Map<String, WorkItemTypeData> workItemTypes = restClient.getSpaceWorkItemTypes(new NullOperationMonitor(), actualSpace);
+							actualSpace.setWorkItemTypes(workItemTypes);
+							Map<String, WorkItemLinkTypeData> workItemLinkTypes = restClient.getSpaceWorkItemLinkTypes(new NullOperationMonitor(), actualSpace);
+							actualSpace.setWorkItemLinkTypes(workItemLinkTypes);
+							Map<String, Area> areas = restClient.getSpaceAreas(new NullOperationMonitor(), actualSpace);
+							actualSpace.setAreas(areas);
+							Map<String, Iteration> iterations = restClient.getSpaceIterations(new NullOperationMonitor(), actualSpace);
+							actualSpace.setIterations(iterations);
+							Map<String, User> users = restClient.getUsers(new NullOperationMonitor(), actualSpace);
+							actualSpace.setUsers(users);
+						} catch (OSIORestException e) {
+							continue;
+//							com.google.common.base.Throwables.propagate(
+//									new CoreException(new Status(IStatus.ERROR, OSIORestCore.ID_PLUGIN,
+//											"Can not find Space (" + spaceId + ")"))); //$NON-NLS-1$ //$NON-NLS-2$
+						}
+						externalSpaces.put(actualSpace.getName(), actualSpace);
+					}
+				}
 				String spaceName = actualSpace.getName();
+				String ownedByLink = actualSpace.getRelationships().getOwnedBy().getLinks().getRelated();
+				User owner = null;
+				try {
+					owner = restClient.getOwnedByLink(new NullOperationMonitor(), actualSpace);
+				} catch (OSIORestException e1) {
+					com.google.common.base.Throwables.propagate(
+							new CoreException(new Status(IStatus.ERROR, OSIORestCore.ID_PLUGIN,
+									"Can not get owner of Space (" + spaceId + ")"))); //$NON-NLS-1$ //$NON-NLS-2$
+				}				
+				
 				int number = attributes.get("system.number").getAsInt(); //$NON-NLS-1$
-				String taskId = spaceName + "#" + number; //$NON-NLS-1$
+				String taskId = owner.getName() + "/" + spaceName + "#" + number; //$NON-NLS-1$ //$NON-NLS-2$
 				TaskData taskData = null;
 				taskData = new TaskData(mapper, connector.getConnectorKind(), taskRepository.getRepositoryUrl(),
 						taskId);
