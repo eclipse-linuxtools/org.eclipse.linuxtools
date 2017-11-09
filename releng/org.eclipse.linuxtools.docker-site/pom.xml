@@ -128,7 +128,7 @@
               <jvmArgs>
                 <arg>-DreportRepoDir=${project.build.directory}/repository</arg>
                 <arg>-DreportOutputDir=${project.build.directory}/repository/buildInfo</arg>
-              <arg>-DreferenceRepo=/home/data/httpd/download.eclipse.org/staging/neon/</arg>
+              <arg>-DreferenceRepo=/home/data/httpd/download.eclipse.org/staging/oxygen/</arg>
               </jvmArgs>
               <executionEnvironment>JavaSE-1.8</executionEnvironment>
               <dependencies>
@@ -148,12 +148,12 @@
               <repositories>
                 <repository>
                   <id>cbi-reports</id>
-                  <url>http://download.eclipse.org/cbi/updates/analyzers/4.6/I20161201-1633</url>
+                  <url>http://download.eclipse.org/cbi/updates/analyzers/4.7/I20170727-1641</url>
                   <layout>p2</layout>
                 </repository>
                 <repository>
-                  <id>eclipse-4.6.1</id>
-                  <url>http://download.eclipse.org/eclipse/updates/4.6/R-4.6.1-201609071200/</url>
+                  <id>eclipse-4.7.1a</id>
+                  <url>http://download.eclipse.org/eclipse/updates/4.7/R-4.7.1a-201710090410/</url>
                   <layout>p2</layout>
                 </repository>
               </repositories>
