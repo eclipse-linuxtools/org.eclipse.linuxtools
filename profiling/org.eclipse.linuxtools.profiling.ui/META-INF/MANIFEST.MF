@@ -25,3 +25,4 @@ Import-Package: org.eclipse.cdt.debug.core,
  org.eclipse.linuxtools.profiling.launch,
  org.eclipse.ui.ide,
  org.eclipse.ui.texteditor
+Automatic-Module-Name: org.eclipse.linuxtools.profiling.ui

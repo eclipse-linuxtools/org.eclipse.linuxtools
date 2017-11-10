@@ -29,3 +29,4 @@ Export-Package: org.eclipse.linuxtools.internal.profiling.launch;x-int
  ipse.linuxtools.profiling.launch.ui
 Bundle-Localization: plugin
 Bundle-Vendor: %Bundle-Vendor.0
+Automatic-Module-Name: org.eclipse.linuxtools.profiling.launch

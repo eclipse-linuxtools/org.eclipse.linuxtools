@@ -13,3 +13,4 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.linuxtools.profiling.launch;bundle-version="1.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: org.eclipse.linuxtools.profiling.launch.ui.rdt.proxy

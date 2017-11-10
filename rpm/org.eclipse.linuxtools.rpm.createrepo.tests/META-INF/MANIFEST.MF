@@ -10,3 +10,4 @@ Require-Bundle: org.junit;bundle-version="4.8.1",
  org.eclipse.swtbot.eclipse.finder,
  org.eclipse.swtbot.junit4_x,
  org.eclipse.ui
+Automatic-Module-Name: org.eclipse.linuxtools.rpm.createrepo.tests

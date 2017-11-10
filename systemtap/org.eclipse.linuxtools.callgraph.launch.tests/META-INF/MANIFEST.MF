@@ -10,3 +10,4 @@ Fragment-Host: org.eclipse.linuxtools.callgraph.launch
 Import-Package: org.eclipse.linuxtools.profiling.tests,
  org.eclipse.linuxtools.tools.launch.core.factory
 Bundle-Vendor: %Bundle-Vendor
+Automatic-Module-Name: org.eclipse.linuxtools.callgraph.launch.tests

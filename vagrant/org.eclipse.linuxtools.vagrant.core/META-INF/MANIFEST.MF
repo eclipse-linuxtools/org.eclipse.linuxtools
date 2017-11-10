@@ -17,3 +17,4 @@ Import-Package: org.eclipse.debug.core,
 Bundle-ClassPath: .
 Export-Package: org.eclipse.linuxtools.internal.vagrant.core;x-friends:="org.eclipse.linuxtools.vagrant.ui",
  org.eclipse.linuxtools.vagrant.core
+Automatic-Module-Name: org.eclipse.linuxtools.vagrant.core

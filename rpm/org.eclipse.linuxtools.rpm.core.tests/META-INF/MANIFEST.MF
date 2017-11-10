@@ -10,3 +10,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.junit;bundle-version="4.8.1"
 Export-Package: org.eclipse.linuxtools.rpm.core.tests
+Automatic-Module-Name: org.eclipse.linuxtools.rpm.core.tests

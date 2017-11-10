@@ -38,3 +38,4 @@ Export-Package: org.eclipse.linuxtools.internal.valgrind.launch; x-fri
  ipse.linuxtools.valgrind.memcheck.tests",org.eclipse.linuxtools.valgr
  ind.launch
 Bundle-Localization: plugin
+Automatic-Module-Name: org.eclipse.linuxtools.valgrind.launch

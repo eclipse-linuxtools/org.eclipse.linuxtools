@@ -6,3 +6,4 @@ Bundle-Version: 2.7.1.qualifier
 Bundle-Vendor: %providerName
 Require-Bundle: org.eclipse.help
 Bundle-Localization: plugin
+Automatic-Module-Name: org.eclipse.linuxtools.changelog.doc

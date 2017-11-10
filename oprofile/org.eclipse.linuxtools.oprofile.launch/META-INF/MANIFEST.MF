@@ -30,3 +30,4 @@ Import-Package: org.eclipse.cdt.core.model,
 Export-Package: org.eclipse.linuxtools.internal.oprofile.launch;x-friends:="org.eclipse.linuxtools.oprofile.remote.launch",
  org.eclipse.linuxtools.internal.oprofile.launch.configuration;x-friends:="org.eclipse.linuxtools.oprofile.remote.launch",
  org.eclipse.linuxtools.internal.oprofile.launch.launching;x-friends:="org.eclipse.linuxtools.oprofile.remote.launch"
+Automatic-Module-Name: org.eclipse.linuxtools.oprofile.launch

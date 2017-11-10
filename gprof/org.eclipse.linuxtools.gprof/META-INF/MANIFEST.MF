@@ -19,3 +19,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Localization: plugin
 Export-Package: 
  org.eclipse.linuxtools.internal.gprof.view;x-friends:="org.eclipse.linuxtools.gprof.launch"
+Automatic-Module-Name: org.eclipse.linuxtools.gprof

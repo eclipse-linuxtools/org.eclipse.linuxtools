@@ -16,3 +16,4 @@ Export-Package:
  org.eclipse.linuxtools.rpm.core,
  org.eclipse.linuxtools.rpm.core.utils
 Import-Package: org.eclipse.linuxtools.profiling.launch
+Automatic-Module-Name: org.eclipse.linuxtools.rpm.core

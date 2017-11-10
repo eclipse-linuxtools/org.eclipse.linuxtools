@@ -29,3 +29,4 @@ Export-Package: org.eclipse.linuxtools.internal.ssh.proxy;x-friends:="org.eclips
    org.osgi.framework,
    org.eclipse.swt.widgets,
    org.eclipse.jface.dialogs"
+Automatic-Module-Name: org.eclipse.linuxtools.ssh.proxy

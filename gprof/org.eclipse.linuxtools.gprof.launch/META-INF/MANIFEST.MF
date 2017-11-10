@@ -19,3 +19,4 @@ Require-Bundle: org.eclipse.linuxtools.profiling.launch;bundle-version="1.2.0",
 Import-Package: org.eclipse.linuxtools.internal.gprof.view
 Export-Package: org.eclipse.linuxtools.internal.gprof.launch;x-friends:="org.eclipse.linuxtools.gprof.test"
 Bundle-Vendor: %bundleProvider
+Automatic-Module-Name: org.eclipse.linuxtools.gprof.launch

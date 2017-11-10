@@ -23,3 +23,4 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.linuxtools.valgrind.core,
  org.eclipse.linuxtools.valgrind.launch,
  org.eclipse.linuxtools.valgrind.ui
+Automatic-Module-Name: org.eclipse.linuxtools.valgrind.cachegrind

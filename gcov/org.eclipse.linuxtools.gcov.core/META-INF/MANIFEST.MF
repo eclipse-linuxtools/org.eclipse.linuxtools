@@ -25,3 +25,4 @@ Export-Package:
  org.eclipse.linuxtools.internal.gcov.parser;x-friends:="org.eclipse.linuxtools.gcov.launch",
  org.eclipse.linuxtools.internal.gcov.view;x-friends:="org.eclipse.linuxtools.gcov.launch",
  org.eclipse.linuxtools.internal.gcov.view.annotatedsource;x-friends:="org.eclipse.linuxtools.gcov.launch"
+Automatic-Module-Name: org.eclipse.linuxtools.gcov.core

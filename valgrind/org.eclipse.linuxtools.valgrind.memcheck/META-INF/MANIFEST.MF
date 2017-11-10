@@ -15,3 +15,4 @@ Import-Package: org.eclipse.debug.core,
  org.eclipse.linuxtools.valgrind.launch,
  org.eclipse.linuxtools.valgrind.ui
 Bundle-Localization: plugin
+Automatic-Module-Name: org.eclipse.linuxtools.valgrind.memcheck

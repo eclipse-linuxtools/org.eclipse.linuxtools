@@ -15,3 +15,4 @@ Export-Package: org.eclipse.linuxtools.dataviewers.charts.actions,
 Import-Package: org.eclipse.linuxtools.dataviewers.piechart,
  org.swtchart
 Bundle-Localization: plugin
+Automatic-Module-Name: org.eclipse.linuxtools.dataviewers.charts

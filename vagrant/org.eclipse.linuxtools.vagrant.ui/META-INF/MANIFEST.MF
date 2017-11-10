@@ -35,3 +35,4 @@ Export-Package: org.eclipse.linuxtools.internal.vagrant.ui;x-internal:=true,
  org.eclipse.linuxtools.internal.vagrant.ui.views;x-internal:=true,
  org.eclipse.linuxtools.internal.vagrant.ui.wizards;x-internal:=true
 Import-Package: org.eclipse.jsch.internal.core
+Automatic-Module-Name: org.eclipse.linuxtools.vagrant.ui

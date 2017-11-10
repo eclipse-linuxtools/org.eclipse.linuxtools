@@ -29,3 +29,4 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.linuxtools.valgrind.ui,
  org.eclipse.ui,
  org.swtchart
+Automatic-Module-Name: org.eclipse.linuxtools.valgrind.massif

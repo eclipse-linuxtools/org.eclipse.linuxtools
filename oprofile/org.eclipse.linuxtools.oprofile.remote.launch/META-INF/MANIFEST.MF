@@ -22,3 +22,4 @@ Import-Package: org.eclipse.cdt.debug.core,
  org.eclipse.linuxtools.internal.oprofile.launch.configuration,
  org.eclipse.linuxtools.internal.oprofile.launch.launching,
  org.eclipse.linuxtools.profiling.launch
+Automatic-Module-Name: org.eclipse.linuxtools.oprofile.remote.launch

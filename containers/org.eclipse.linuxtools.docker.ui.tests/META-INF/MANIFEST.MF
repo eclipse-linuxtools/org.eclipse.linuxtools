@@ -35,3 +35,4 @@ Require-Bundle: org.eclipse.linuxtools.docker.ui;bundle-version="1.0.0",
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.linuxtools.internal.docker.ui.testutils;x-friends:="org.eclipse.linuxtools.docker.reddeer,org.eclipse.linuxtools.docker.integration.tests"
+Automatic-Module-Name: org.eclipse.linuxtools.docker.ui.tests

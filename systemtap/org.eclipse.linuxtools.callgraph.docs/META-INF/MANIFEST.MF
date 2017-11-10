@@ -6,3 +6,4 @@ Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.help
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin
+Automatic-Module-Name: org.eclipse.linuxtools.callgraph.docs

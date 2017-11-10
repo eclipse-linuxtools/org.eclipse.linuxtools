@@ -20,3 +20,4 @@ Import-Package: org.eclipse.jface.text,
  org.eclipse.ui.editors.text,
  org.eclipse.ui.texteditor,
  org.eclipse.core.filebuffers
+Automatic-Module-Name: org.eclipse.linuxtools.valgrind.ui.editor

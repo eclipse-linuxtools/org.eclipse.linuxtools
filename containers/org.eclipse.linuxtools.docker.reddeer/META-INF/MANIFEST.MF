@@ -32,3 +32,4 @@ Export-Package: org.eclipse.linuxtools.docker.reddeer.condition,
  org.eclipse.linuxtools.docker.reddeer.utils,
  org.eclipse.linuxtools.docker.reddeer
 Import-Package: org.eclipse.linuxtools.internal.docker.ui.testutils
+Automatic-Module-Name: org.eclipse.linuxtools.docker.reddeer

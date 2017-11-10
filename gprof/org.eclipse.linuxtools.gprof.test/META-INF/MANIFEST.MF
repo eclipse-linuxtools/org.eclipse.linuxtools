@@ -14,3 +14,4 @@ Require-Bundle: org.junit;bundle-version="4.10.0",
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
 Fragment-Host: org.eclipse.linuxtools.gprof
+Automatic-Module-Name: org.eclipse.linuxtools.gprof.test

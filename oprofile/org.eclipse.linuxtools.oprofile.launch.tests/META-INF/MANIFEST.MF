@@ -11,3 +11,4 @@ Bundle-ActivationPolicy: lazy
 Fragment-Host: org.eclipse.linuxtools.oprofile.launch
 Import-Package: org.eclipse.linuxtools.profiling.tests
 Bundle-Localization: plugin
+Automatic-Module-Name: org.eclipse.linuxtools.oprofile.launch.tests

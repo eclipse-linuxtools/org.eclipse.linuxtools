@@ -13,4 +13,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Import-Package: org.eclipse.linuxtools.internal.valgrind.tests,
  org.eclipse.linuxtools.profiling.tests
+Automatic-Module-Name: org.eclipse.linuxtools.valgrind.ui.tests
 

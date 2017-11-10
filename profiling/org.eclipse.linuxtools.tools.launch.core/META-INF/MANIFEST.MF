@@ -17,3 +17,4 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.tools.launch.core,org.eclipse.l
  inuxtools.tools.launch.core.factory,org.eclipse.linuxtools.tools.laun
  ch.core.properties
+Automatic-Module-Name: org.eclipse.linuxtools.tools.launch.core

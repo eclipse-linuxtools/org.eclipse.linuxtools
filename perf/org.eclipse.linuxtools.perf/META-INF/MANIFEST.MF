@@ -27,4 +27,5 @@ Import-Package: org.eclipse.compare,
  org.eclipse.core.filesystem,
  org.eclipse.linuxtools.tools.launch.core.factory
 Export-Package: org.eclipse.linuxtools.internal.perf.launch
+Automatic-Module-Name: org.eclipse.linuxtools.perf
 

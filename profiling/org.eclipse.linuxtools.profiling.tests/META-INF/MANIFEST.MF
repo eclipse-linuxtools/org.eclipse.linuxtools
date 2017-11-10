@@ -27,3 +27,4 @@ Import-Package: org.eclipse.cdt.build.core.scannerconfig,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
  org.eclipse.ui.wizards.datatransfer
+Automatic-Module-Name: org.eclipse.linuxtools.profiling.tests

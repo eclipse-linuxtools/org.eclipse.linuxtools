@@ -26,3 +26,4 @@ Import-Package: org.eclipse.core.filesystem,
  org.eclipse.linuxtools.tools.launch.core.factory,
  org.eclipse.ui.ide,
  org.eclipse.ui.texteditor
+Automatic-Module-Name: org.eclipse.linuxtools.systemtap.ui.consolelog

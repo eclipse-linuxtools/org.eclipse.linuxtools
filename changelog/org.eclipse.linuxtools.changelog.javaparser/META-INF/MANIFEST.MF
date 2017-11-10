@@ -8,4 +8,5 @@ Require-Bundle: org.eclipse.jdt.core;bundle-version="3.3.0",
 Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Fragment-Host: org.eclipse.linuxtools.changelog.core;bundle-version="2.6.3"
+Automatic-Module-Name: org.eclipse.linuxtools.changelog.parsers.java
 

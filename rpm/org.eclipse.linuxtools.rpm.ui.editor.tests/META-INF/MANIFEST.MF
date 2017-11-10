@@ -11,3 +11,4 @@ Require-Bundle:
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %provider
+Automatic-Module-Name: org.eclipse.linuxtools.rpm.ui.editor.tests

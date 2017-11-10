@@ -18,3 +18,4 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.ui.console
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin
+Automatic-Module-Name: org.eclipse.linuxtools.callgraph.core

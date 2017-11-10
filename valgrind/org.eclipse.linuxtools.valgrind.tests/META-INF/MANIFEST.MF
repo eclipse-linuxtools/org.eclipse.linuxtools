@@ -22,3 +22,4 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.linuxtools.profiling.tests,
  org.eclipse.linuxtools.valgrind.launch
 Export-Package: org.eclipse.linuxtools.internal.valgrind.tests
+Automatic-Module-Name: org.eclipse.linuxtools.valgrind.tests

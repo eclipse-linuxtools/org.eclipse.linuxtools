@@ -9,3 +9,4 @@ Require-Bundle: org.eclipse.linuxtools.docker.tests.hamcrest-wrap;bundle-version
  org.junit;bundle-version="4.12.0",
  org.mockito
 Bundle-Vendor: Eclipse Linux Tools
+Automatic-Module-Name: org.eclipse.linuxtools.valgrind.core.tests

@@ -17,3 +17,4 @@ Import-Package: org.eclipse.cdt.core,
  org.eclipse.linuxtools.changelog.core,
  org.eclipse.ui.ide,
  org.eclipse.ui.texteditor
+Automatic-Module-Name: org.eclipse.linuxtools.changelog.tests

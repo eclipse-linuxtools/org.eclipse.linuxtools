@@ -6,3 +6,4 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.help
 Bundle-Vendor: %Bundle-Vendor
+Automatic-Module-Name: org.eclipse.linuxtools.gprof.docs

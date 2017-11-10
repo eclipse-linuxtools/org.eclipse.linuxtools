@@ -9,3 +9,4 @@ Require-Bundle: org.junit,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Fragment-Host: org.eclipse.linuxtools.cdt.libhover.devhelp
+Automatic-Module-Name: org.eclipse.linuxtools.cdt.libhover.devhelp.tests

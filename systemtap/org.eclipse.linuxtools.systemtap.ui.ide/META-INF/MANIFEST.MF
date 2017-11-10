@@ -27,3 +27,4 @@ Import-Package: com.jcraft.jsch;version="0.1.37",
  org.eclipse.cdt.core.model,
  org.eclipse.linuxtools.tools.launch.core.factory
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.linuxtools.systemtap.ui.ide

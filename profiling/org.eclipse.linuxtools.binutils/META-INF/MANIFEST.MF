@@ -21,3 +21,4 @@ Export-Package: org.eclipse.linuxtools.binutils.link2source,
  org.eclipse.linuxtools.binutils.utils
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Localization: plugin
+Automatic-Module-Name: org.eclipse.linuxtools.binutils

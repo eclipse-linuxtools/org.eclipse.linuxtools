@@ -17,3 +17,4 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.linuxtools.profiling.tests,
  org.eclipse.ui.ide,
  org.eclipse.ui.texteditor
+Automatic-Module-Name: org.eclipse.linuxtools.valgrind.massif.tests

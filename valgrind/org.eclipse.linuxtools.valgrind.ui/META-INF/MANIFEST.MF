@@ -29,3 +29,4 @@ Export-Package: org.eclipse.linuxtools.internal.valgrind.ui;
    org.eclipse.linuxtools.valgrind.memcheck.tests",
  org.eclipse.linuxtools.valgrind.ui
 Bundle-Localization: plugin
+Automatic-Module-Name: org.eclipse.linuxtools.valgrind.ui

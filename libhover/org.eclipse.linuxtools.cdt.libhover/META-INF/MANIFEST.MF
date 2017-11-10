@@ -19,3 +19,4 @@ Export-Package: org.eclipse.linuxtools.cdt.libhover,
  org.eclipse.linuxtools.internal.cdt.libhover;x-friends:="org.eclipse.linuxtools.cdt.libhover.devhelp,org.eclipse.linuxtools.cdt.libhover.devhelp.tests",
  org.eclipse.linuxtools.internal.cdt.libhover.preferences;x-friends:="org.eclipse.linuxtools.cdt.libhover.devhelp.tests"
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: org.eclipse.linuxtools.cdt.libhover

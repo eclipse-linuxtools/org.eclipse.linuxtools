@@ -16,3 +16,4 @@ Require-Bundle: org.eclipse.linuxtools.profiling.launch;bundle-version="1.2.0",
  org.eclipse.linuxtools.profiling.ui,
  org.eclipse.linuxtools.dataviewers;bundle-version="6.1.0"
 Bundle-Vendor: %bundleProvider
+Automatic-Module-Name: org.eclipse.linuxtools.gcov.launch

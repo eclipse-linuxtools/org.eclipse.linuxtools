@@ -12,3 +12,4 @@ Export-Package: org.eclipse.linuxtools.internal.man.parser;x-friends:="org.eclip
  org.eclipse.linuxtools.man.parser,
  org.eclipse.linuxtools.man.views
 Bundle-Vendor: %Bundle-Vendor
+Automatic-Module-Name: org.eclipse.linuxtools.man.core
