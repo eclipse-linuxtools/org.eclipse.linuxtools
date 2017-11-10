@@ -18,6 +18,7 @@ import java.io.OutputStream;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerState;
+import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerConsoleOutputStream;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
@@ -150,14 +151,22 @@ public class RunConsole extends IOConsole {
 					IDockerContainerState state = conn
 							.getContainerInfo(containerId).state();
 					do {
-						if (!state.running() && state.finishDate() == null) {
+						if (!state.running() && (state.finishDate() == null
+								|| state.finishDate()
+										.before(state.startDate()))) {
 							Thread.sleep(300);
 						}
 						state = conn.getContainerInfo(containerId).state();
-					} while (!state.running() && state.finishDate() == null);
-					conn.attachCommand(containerId, in, null);
+					} while (!state.running() && (state.finishDate() == null
+							|| state.finishDate().before(state.startDate())));
+					Thread.sleep(300);
+					state = conn.getContainerInfo(containerId).state();
+					if (state.running()) {
+						conn.attachCommand(containerId, in, null);
+					}
 				}
 			} catch (Exception e) {
+				Activator.log(e);
 			}
 		});
 		t.start();
@@ -172,13 +181,30 @@ public class RunConsole extends IOConsole {
 				IDockerContainerState state = conn.getContainerInfo(containerId)
 						.state();
 				do {
-					if (!state.running() && state.finishDate() == null) {
+					if (!state.running() && (state.finishDate() == null
+							|| state.finishDate().before(state.startDate()))) {
 						Thread.sleep(300);
 					}
 					state = conn.getContainerInfo(containerId).state();
-				} while (!state.running() && state.finishDate() == null);
-				conn.attachCommand(containerId, null, out);
+				} while (!state.running() && (state.finishDate() == null
+						|| state.finishDate().before(state.startDate())));
+				// Pause as there appears to be some timing issue with regards
+				// to the Container saying it is running, but an exception
+				// thrown when we try and attach.
+				Thread.sleep(300);
+				state = conn.getContainerInfo(containerId).state();
+				if (state.running()) {
+					conn.attachCommand(containerId, null, out);
+				} else {
+					// notify any console listener that there is no more output
+					// going to follow
+					out.notifyConsoleListeners(new byte[] { 0 }, 0, 0);
+				}
 			} catch (Exception e) {
+				Activator.log(e);
+				// notify any console listener that there is no more output
+				// going to follow
+				out.notifyConsoleListeners(new byte[] { 0 }, 0, 0);
 			}
 		});
 		t.start();
