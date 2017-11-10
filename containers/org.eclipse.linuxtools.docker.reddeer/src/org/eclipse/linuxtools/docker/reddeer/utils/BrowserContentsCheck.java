@@ -13,14 +13,14 @@ package org.eclipse.linuxtools.docker.reddeer.utils;
 
 import static org.junit.Assert.assertFalse;
 
-import org.eclipse.linuxtools.docker.reddeer.ui.BrowserView;
 import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.WaitWhile;
-import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.eclipse.ui.browser.BrowserEditor;
+import org.eclipse.reddeer.eclipse.ui.browser.WebBrowserView;
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 
 /**
  * 
@@ -71,7 +71,7 @@ public class BrowserContentsCheck {
 	 * @param browserView
 	 * @param url
 	 */
-	public static void checkBrowserForErrorPage(BrowserView browserView, String url) {
+	public static void checkBrowserForErrorPage(WebBrowserView browserView, String url) {
 		// Try to refresh page if it is not loaded.
 		if (browserView.getText().contains("Unable") || browserView.getText().contains("404")) {
 			if (url == null) {

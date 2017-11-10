@@ -25,7 +25,6 @@ import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.integration.tests.image.AbstractImageBotTest;
 import org.eclipse.linuxtools.docker.integration.tests.mock.MockUtils;
 import org.eclipse.linuxtools.docker.reddeer.preferences.DockerComposePreferencePage;
-import org.eclipse.linuxtools.docker.reddeer.ui.BrowserView;
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerImagesTab;
 import org.eclipse.linuxtools.docker.reddeer.ui.PackageExplorer;
 import org.eclipse.linuxtools.docker.reddeer.utils.BrowserContentsCheck;
@@ -38,6 +37,7 @@ import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.core.matcher.WithTextMatcher;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasNoChange;
+import org.eclipse.reddeer.eclipse.ui.browser.WebBrowserView;
 import org.eclipse.reddeer.jface.preference.PreferenceDialog;
 import org.eclipse.reddeer.swt.impl.button.FinishButton;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
@@ -55,7 +55,7 @@ import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 /**
- * 
+ *
  * @author jkopriva@redhat.com
  *
  */
@@ -80,7 +80,7 @@ public class ComposeTest extends AbstractImageBotTest {
 			assertTrue(
 					"Please provide -D" + SYSPROP_DOCKER_COMPOSE_PATH
 					+ "=<path to docker-compose binary> in your launch parameters.",
-					!StringUtils.isBlank(this.dockerComposePath));	
+					!StringUtils.isBlank(this.dockerComposePath));
 		}
 		deleteAllConnections();
 		if (mockitoIsUsed()) {
@@ -126,7 +126,7 @@ public class ComposeTest extends AbstractImageBotTest {
 		runDockerCompose(PROJECT_TEST_COMPOSE, FILE_DOCKER_COMPOSE);
 
 		// Check if application is running
-		BrowserView browserView = new BrowserView();
+		WebBrowserView browserView = new WebBrowserView();
 		browserView.open();
 		//Skip browser contents check, if mockito is used
 		if (!mockitoIsUsed()) {
@@ -196,6 +196,7 @@ public class ComposeTest extends AbstractImageBotTest {
 		});
 	}
 
+	@Override
 	@After
 	public void after() {
 		deleteImageContainerAfter("testcompose_web_1", "testcompose_redis_1", "testcompose_web", "test_compose",

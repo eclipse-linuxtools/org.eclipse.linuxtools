@@ -22,7 +22,6 @@ import org.eclipse.linuxtools.docker.integration.tests.mock.MockUtils;
 import org.eclipse.linuxtools.docker.reddeer.condition.ContainerIsDeployedCondition;
 import org.eclipse.linuxtools.docker.reddeer.core.ui.wizards.ImageRunResourceVolumesVariablesPage;
 import org.eclipse.linuxtools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
-import org.eclipse.linuxtools.docker.reddeer.ui.BrowserView;
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerImagesTab;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerInfoFactory;
@@ -32,6 +31,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasNoChange;
+import org.eclipse.reddeer.eclipse.ui.browser.WebBrowserView;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.junit.After;
 import org.junit.Before;
@@ -92,7 +92,7 @@ public class VolumeMountTest extends AbstractImageBotTest {
 	private String getIndexPageContent() throws IOException {
 		String containerIP = getContainerIP(CONTAINER_NAME);
 		String url = "http://" + containerIP + ":" + HOST_PORT + "/" + INDEX_PAGE;
-		BrowserView browserView = new BrowserView();
+		WebBrowserView browserView = new WebBrowserView();
 		browserView.open();
 		if (mockitoIsUsed()) {
 			browserView = MockUtils.getBrowserView(INDEX_PAGE_PATH, getResourceAsString(INDEX_PAGE_PATH));

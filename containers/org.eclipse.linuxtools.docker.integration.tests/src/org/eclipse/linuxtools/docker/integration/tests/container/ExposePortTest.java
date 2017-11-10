@@ -16,11 +16,11 @@ import java.io.IOException;
 import org.eclipse.linuxtools.docker.integration.tests.image.AbstractImageBotTest;
 import org.eclipse.linuxtools.docker.integration.tests.mock.MockUtils;
 import org.eclipse.linuxtools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
-import org.eclipse.linuxtools.docker.reddeer.ui.BrowserView;
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerImagesTab;
 import org.eclipse.linuxtools.docker.reddeer.utils.BrowserContentsCheck;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasNoChange;
+import org.eclipse.reddeer.eclipse.ui.browser.WebBrowserView;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.junit.After;
 import org.junit.Test;
@@ -48,7 +48,7 @@ public class ExposePortTest extends AbstractImageBotTest {
 	}
 
 	private void assertPortIsAccessible(String exposedPort) {
-		BrowserView browserView = new BrowserView();
+		WebBrowserView browserView = new WebBrowserView();
 		browserView.open();
 		String url = createURL(":" + exposedPort);
 		if (!mockitoIsUsed()) {

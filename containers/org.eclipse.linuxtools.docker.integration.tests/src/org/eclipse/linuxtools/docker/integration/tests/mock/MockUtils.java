@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
-import org.eclipse.linuxtools.docker.reddeer.ui.BrowserView;
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerExplorerView;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerInfoFactory;
@@ -24,6 +23,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFacto
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionSettingsFinder;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
+import org.eclipse.reddeer.eclipse.ui.browser.WebBrowserView;
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 
 import com.spotify.docker.client.DockerClient;
@@ -84,7 +84,7 @@ public class MockUtils {
 				.from(connectionName, client).withDefaultTCPConnectionSettings();
 		MockDockerConnectionManager.configureConnectionManager(dockerConnection);
 	}
-	
+
 	public static void runContainer(String connectionName, String imageName, String imageTag, String containerName, ContainerInfo containerInfo) {
 		final DockerClient client = MockDockerClientFactory
 				.container(MockContainerFactory.name(containerName).status("Stopped").build(), MockContainerInfoFactory.link("alpine").volume("resources/test-volumes/index.html").id("TestTestTestTestTest")
@@ -100,8 +100,8 @@ public class MockUtils {
 		return cv;
 	}
 
-	public static BrowserView getBrowserView(String url, String text) {
-		final BrowserView browser = MockBrowserView.openPageURL(url).setText(text).build();
+	public static WebBrowserView getBrowserView(String url, String text) {
+		final WebBrowserView browser = MockBrowserView.openPageURL(url).setText(text).build();
 		return browser;
 	}
 

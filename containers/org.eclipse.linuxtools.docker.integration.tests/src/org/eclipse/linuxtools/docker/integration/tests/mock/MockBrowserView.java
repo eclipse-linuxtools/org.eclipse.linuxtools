@@ -11,7 +11,7 @@
 
 package org.eclipse.linuxtools.docker.integration.tests.mock;
 
-import org.eclipse.linuxtools.docker.reddeer.ui.BrowserView;
+import org.eclipse.reddeer.eclipse.ui.browser.WebBrowserView;
 import org.mockito.Mockito;
 
 public class MockBrowserView {
@@ -47,8 +47,8 @@ public class MockBrowserView {
 			return this;
 		}
 
-		public BrowserView build() {
-			final BrowserView browserView = Mockito.mock(BrowserView.class);
+		public WebBrowserView build() {
+			final WebBrowserView browserView = Mockito.mock(WebBrowserView.class);
 			Mockito.when(browserView.getPageURL()).thenReturn(this.url);
 			Mockito.when(browserView.getText()).thenReturn(this.text);
 			return browserView;
