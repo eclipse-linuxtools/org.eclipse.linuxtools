@@ -26,7 +26,6 @@ import org.eclipse.linuxtools.docker.integration.tests.image.AbstractImageBotTes
 import org.eclipse.linuxtools.docker.integration.tests.mock.MockUtils;
 import org.eclipse.linuxtools.docker.reddeer.preferences.DockerComposePreferencePage;
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerImagesTab;
-import org.eclipse.linuxtools.docker.reddeer.ui.PackageExplorer;
 import org.eclipse.linuxtools.docker.reddeer.utils.BrowserContentsCheck;
 import org.eclipse.linuxtools.internal.docker.core.DockerCompose;
 import org.eclipse.linuxtools.internal.docker.core.ProcessLauncher;
@@ -37,6 +36,7 @@ import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.core.matcher.WithTextMatcher;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasNoChange;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
 import org.eclipse.reddeer.eclipse.ui.browser.WebBrowserView;
 import org.eclipse.reddeer.jface.preference.PreferenceDialog;
 import org.eclipse.reddeer.swt.impl.button.FinishButton;
@@ -137,7 +137,7 @@ public class ComposeTest extends AbstractImageBotTest {
 	}
 
 	private void runDockerCompose(String project, String projectFile) {
-		PackageExplorer pe = new PackageExplorer();
+		PackageExplorerPart pe = new PackageExplorerPart();
 		pe.open();
 		pe.getProject(project).getProjectItem(projectFile).select();
 		@SuppressWarnings("unchecked")
