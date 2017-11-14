@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Area;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.IdNamed;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Iteration;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Label;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Space;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.SpaceSingleResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.User;
@@ -164,13 +165,12 @@ public class OSIORestGetTaskData extends OSIORestGetRequest<List<TaskData>> {
 							actualSpace.setAreas(areas);
 							Map<String, Iteration> iterations = restClient.getSpaceIterations(new NullOperationMonitor(), actualSpace);
 							actualSpace.setIterations(iterations);
+							Map<String, Label> labels = restClient.getSpaceLabels(new NullOperationMonitor(), actualSpace);
+							actualSpace.setLabels(labels);
 							Map<String, User> users = restClient.getUsers(new NullOperationMonitor(), actualSpace);
 							actualSpace.setUsers(users);
 						} catch (OSIORestException e) {
 							continue;
-//							com.google.common.base.Throwables.propagate(
-//									new CoreException(new Status(IStatus.ERROR, OSIORestCore.ID_PLUGIN,
-//											"Can not find Space (" + spaceId + ")"))); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 						externalSpaces.put(actualSpace.getName(), actualSpace);
 					}
@@ -267,6 +267,7 @@ public class OSIORestGetTaskData extends OSIORestGetRequest<List<TaskData>> {
 					if (attributeId.equals("space") //$NON-NLS-1$
 							|| attributeId.equals("assignees") //$NON-NLS-1$
 							|| attributeId.equals("creator") //$NON-NLS-1$
+							|| attributeId.equals("labels") //$NON-NLS-1$
 						    || attributeId.equals("children")) { //$NON-NLS-1$
 						continue;
 					}
@@ -306,6 +307,12 @@ public class OSIORestGetTaskData extends OSIORestGetRequest<List<TaskData>> {
 				JsonObject creatorObject = relationships.get("creator").getAsJsonObject(); //$NON-NLS-1$
 				JsonObject creatorData = creatorObject.get("data").getAsJsonObject(); //$NON-NLS-1$
 				creatorID.setValue(creatorData.get("id").getAsString()); //$NON-NLS-1$
+				
+				// add labels link (will resolve later)
+				TaskAttribute labelsLink = taskData.getRoot().getAttribute(taskSchema.LABELS_LINK.getKey());
+				JsonObject labelsObject = relationships.get("labels").getAsJsonObject(); //$NON-NLS-1$
+				JsonObject labelsData = labelsObject.get("links").getAsJsonObject(); //$NON-NLS-1$
+				labelsLink.setValue(labelsData.get("related").getAsString());
 				
 				// add workitem url
 				TaskAttribute workitemURL = taskData.getRoot().getAttribute(taskSchema.TASK_URL.getKey());

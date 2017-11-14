@@ -50,6 +50,8 @@ public class OSIORestTaskEditorPage extends AbstractTaskEditorPage {
 				AbstractAttributeEditor editor;
 				if (IOSIORestConstants.EDITOR_TYPE_ASSIGNEES.equals(type)) {
 					editor = new OSIOAssigneeAttributeEditor(getModel(), taskAttribute);
+				} else if (IOSIORestConstants.EDITOR_TYPE_LABELS.equals(type)) {
+					editor = new OSIOLabelAttributeEditor(getModel(), taskAttribute);
 				} else if (IOSIORestConstants.EDITOR_TYPE_KEYWORD.equals(type)) {
 					editor = new OSIOKeywordAttributeEditor(getModel(), taskAttribute);
 				} else {
@@ -57,6 +59,10 @@ public class OSIORestTaskEditorPage extends AbstractTaskEditorPage {
 				}
 				if (editor != null
 						&& OSIORestTaskSchema.getDefault().ADD_ASSIGNEE.getKey().equals(taskAttribute.getId())) {
+					editor.setLayoutHint(new LayoutHint(RowSpan.SINGLE, ColumnSpan.SINGLE));
+				}
+				if (editor != null
+						&& OSIORestTaskSchema.getDefault().ADD_LABEL.getKey().equals(taskAttribute.getId())) {
 					editor.setLayoutHint(new LayoutHint(RowSpan.SINGLE, ColumnSpan.SINGLE));
 				}
 

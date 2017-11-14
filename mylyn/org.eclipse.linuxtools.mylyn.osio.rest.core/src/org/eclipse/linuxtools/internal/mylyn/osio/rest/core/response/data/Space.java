@@ -39,6 +39,10 @@ public class Space implements IdNamed {
 	
 	private Map<String, IdNamed> iterationsIdNamed;
 	
+	private Map<String, Label> labels;
+	
+	private Map<String, IdNamed> labelsIdNamed;
+	
 	private Map<String, User> users;
 	
 	private Map<String, IdNamed> usersIdNamed;
@@ -113,6 +117,16 @@ public class Space implements IdNamed {
 	
 	public Map<String, Iteration> getIterations() {
 		return iterations;
+	}
+	
+	public void setLabels(Map<String, Label> labels) {
+		this.labels = labels;
+		this.labelsIdNamed = labels.entrySet().stream()
+			     .collect(Collectors.toMap(Map.Entry::getKey, e -> (IdNamed)e.getValue()));
+	}
+	
+	public Map<String, Label> getLabels() {
+		return labels;
 	}
 	
 	public Map<String, IdNamed> getMapFor(String member) {

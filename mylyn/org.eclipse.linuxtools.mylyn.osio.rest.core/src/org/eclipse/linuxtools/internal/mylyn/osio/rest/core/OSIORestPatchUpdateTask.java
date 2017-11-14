@@ -35,6 +35,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Area;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Iteration;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Label;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.LabelResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Space;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.User;
 import org.eclipse.mylyn.commons.repositories.core.RepositoryLocation;
@@ -192,19 +194,80 @@ public class OSIORestPatchUpdateTask extends OSIORestPatchRequest<TaskData> {
 				out.name("data"); //$NON-NLS-1$
 				out.beginArray();
 				for (String assignee : assignees) {
-					String userid = users.get(assignee).getId();
-					if (userid == null) {
-						throw new UnsupportedOperationException(
-								OSIORestMessages.getFormattedString("UnknownAssignee.msg", assignee)); //$NON-NLS-1$
+					if (assignee != null && !assignee.isEmpty()) {
+						User user = users.get(assignee);
+						if (user == null) {
+							throw new UnsupportedOperationException(
+									OSIORestMessages.getFormattedString("UnknownAssignee.msg", assignee)); //$NON-NLS-1$
+						}
+						String userid = user.getId();
+						out.beginObject();
+						out.name("id").value(userid); //$NON-NLS-1$
+						out.name("type").value("users"); //$NON-NLS-1$ //$NON-NLS-2$
+						out.endObject();
 					}
-					out.beginObject();
-					out.name("id").value(userid); //$NON-NLS-1$
-					out.name("type").value("users"); //$NON-NLS-1$ //$NON-NLS-2$
-					out.endObject();
 				}
 				out.endArray();
 			}
 			out.endObject(); // assignees
+			// labels
+			attribute = taskData.getRoot().getAttribute(taskSchema.LABELS.getKey());
+			List<String> labels = attribute.getValues();
+			if (labels == null) {
+				labels = new ArrayList<String>();
+			} else {
+				labels = new ArrayList<>(labels);
+			}
+			attribute = taskData.getRoot().getAttribute(taskSchema.REMOVE_LABEL.getKey());
+			List<String> labelRemovals = attribute.getValues();
+			if (labelRemovals != null) {
+				for (String removal : labelRemovals) {
+					int index = labels.indexOf(removal);
+					if (index >= 0) {
+						labels.remove(index);
+					}
+				}
+			}
+			attribute = taskData.getRoot().getAttribute(taskSchema.ADD_LABEL.getKey());
+			String labelAddString = attribute.getValue();
+			String[] labelAdditions = labelAddString.split(",");
+			if (labelAdditions != null) {
+				for (String addition : labelAdditions) {
+					int index = labels.indexOf(addition);
+					if (index < 0) {
+						labels.add(addition);
+					}
+				}
+			}
+			out.name("labels"); //$NON-NLS-1$
+			out.beginObject();
+			out.name("data"); //$NON-NLS-1$
+			out.beginArray();
+			if (labels.size() > 0 && !labels.get(0).isEmpty()) {
+				Map<String, Label> spaceLabels = space.getLabels();
+				for (String label : labels) {
+					Label l = spaceLabels.get(label);
+					if (l == null) {
+						try {
+							LabelResponse response = new OSIORestPostNewLabelTask(client, space, label).run(new NullOperationMonitor());
+							Label newLabel = response.getData();
+							spaceLabels.put(label, newLabel);
+						} catch (OSIORestException e) {
+							e.printStackTrace();
+						}
+					}
+					l = spaceLabels.get(label);
+					if (l != null) {
+						String labelid = l.getId();
+						out.beginObject();
+						out.name("id").value(labelid); //$NON-NLS-1$
+						out.name("type").value("labels"); //$NON-NLS-1$ //$NON-NLS-2$
+						out.endObject();
+					}
+				}
+			}
+			out.endArray();
+			out.endObject(); // labels
 			out.endObject(); // relationships
 			
 			out.name("type").value("workitems"); //$NON-NLS-1$ //$NON-NLS-2$

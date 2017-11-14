@@ -31,6 +31,8 @@ import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.AreaLi
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.IdNamed;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Iteration;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.IterationListResponse;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Label;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.LabelListResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Named;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.RestResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Space;
@@ -117,6 +119,8 @@ public class OSIORestClient {
 				space.setAreas(areas);
 				Map<String, Iteration> iterations = getSpaceIterations(new NullOperationMonitor(), space);
 				space.setIterations(iterations);
+				Map<String, Label> labels = getSpaceLabels(new NullOperationMonitor(), space);
+				space.setLabels(labels);
 				Map<String, User> users = getUsers(new NullOperationMonitor(), space);
 				space.setUsers(users);
 			}
@@ -206,6 +210,11 @@ public class OSIORestClient {
 
 	public Map<String, Iteration> getSpaceIterations(IOperationMonitor monitor, Space space) throws OSIORestException {
 		return retrieveItems(monitor, "/spaces/" + space.getId() + "/iterations", new TypeToken<IterationListResponse>() { //$NON-NLS-1$ //$NON-NLS-2$
+		});
+	}
+
+	public Map<String, Label> getSpaceLabels(IOperationMonitor monitor, Space space) throws OSIORestException {
+		return retrieveItems(monitor, "/spaces/" + space.getId() + "/labels", new TypeToken<LabelListResponse>() { //$NON-NLS-1$ //$NON-NLS-2$
 		});
 	}
 
@@ -316,6 +325,7 @@ public class OSIORestClient {
 				new OSIORestGetTaskComments(getClient(), space,taskData).run(monitor);
 				new OSIORestGetTaskCreator(getClient(), taskData).run(monitor);
 				new OSIORestGetTaskLinks(getClient(), space, taskData).run(monitor);
+				new OSIORestGetTaskLabels(getClient(), space, taskData).run(monitor);
 				setTaskAssignees(taskData);
 				config.updateSpaceOptions(taskData);
 				config.addValidOperations(taskData);

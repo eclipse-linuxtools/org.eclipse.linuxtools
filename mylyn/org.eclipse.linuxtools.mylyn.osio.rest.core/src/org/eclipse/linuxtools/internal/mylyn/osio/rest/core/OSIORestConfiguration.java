@@ -178,6 +178,8 @@ public class OSIORestConfiguration implements Serializable {
 			internalSetAttributeOptions(taskAttribute, actualSpace.getIterations());
 		} else if (taskAttribute.getId().equals(SCHEMA.ADD_ASSIGNEE.getKey())) {
 			internalSetAttributeOptions(taskAttribute, actualSpace.getUsers());
+		} else if (taskAttribute.getId().equals(SCHEMA.ADD_LABEL.getKey())) {
+			internalSetAttributeOptions(taskAttribute, actualSpace.getLabels());
 		} else if (taskAttribute.getId().equals(SCHEMA.STATUS.getKey())) {
 			Map<String, String> stateMap = new LinkedHashMap<>();
 			Map<String, WorkItemTypeData> workItemTypes = actualSpace.getWorkItemTypes();
@@ -263,6 +265,10 @@ public class OSIORestConfiguration implements Serializable {
 			TaskAttribute attributeAddAssignee = taskData.getRoot().getMappedAttribute(SCHEMA.ADD_ASSIGNEE.getKey());
 			if (attributeAddAssignee != null) {
 				setAttributeOptionsForSpace(attributeAddAssignee, actualSpace);
+			}
+			TaskAttribute attributeAddLabel = taskData.getRoot().getMappedAttribute(SCHEMA.ADD_LABEL.getKey());
+			if (attributeAddLabel != null) {
+				setAttributeOptionsForSpace(attributeAddLabel, actualSpace);
 			}
 			TaskAttribute attributeState = taskData.getRoot().getMappedAttribute(SCHEMA.STATUS.getKey());
 			if (attributeState != null) {

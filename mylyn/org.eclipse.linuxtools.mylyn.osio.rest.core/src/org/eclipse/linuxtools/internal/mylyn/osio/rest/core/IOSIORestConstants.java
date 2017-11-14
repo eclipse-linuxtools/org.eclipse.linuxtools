@@ -14,6 +14,8 @@ package org.eclipse.linuxtools.internal.mylyn.osio.rest.core;
 
 public interface IOSIORestConstants {
 	public static final String EDITOR_TYPE_ASSIGNEES = "osio.editor.assignees"; //$NON-NLS-1$
+	
+	public static final String EDITOR_TYPE_LABELS = "osio.editor.labels"; //$NON-NLS-1$
 
 	public static final String EDITOR_TYPE_KEYWORD = "osio.editor.keyword"; //$NON-NLS-1$
 
