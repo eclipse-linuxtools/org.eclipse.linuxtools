@@ -20,6 +20,8 @@ public class OSIORestWorkItem {
 	
 	private String id;
 	
+	private String spaceId;
+	
 	public String getNumber() {
 		return number;
 	}
@@ -50,6 +52,14 @@ public class OSIORestWorkItem {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public String getSpaceId() {
+		return spaceId;
+	}
+	
+	public void setSpaceId(String spaceId) {
+		this.spaceId = spaceId;
 	}
 
 }

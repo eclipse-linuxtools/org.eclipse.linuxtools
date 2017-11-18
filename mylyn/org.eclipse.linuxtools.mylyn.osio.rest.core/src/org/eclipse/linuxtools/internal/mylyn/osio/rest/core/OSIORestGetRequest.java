@@ -20,6 +20,7 @@ import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+@SuppressWarnings("restriction")
 public class OSIORestGetRequest<T> extends OSIORestRequest<T> {
 
 	private final TypeToken<?> responseType;

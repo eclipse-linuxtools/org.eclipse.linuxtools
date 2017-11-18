@@ -32,6 +32,7 @@ public class OSIORestTaskSchema extends AbstractTaskSchema {
 			.put("system.state", getDefault().STATUS.getKey()) //$NON-NLS-1$
 			.put("system.title", getDefault().SUMMARY.getKey()) //$NON-NLS-1$
 			.put("version", getDefault().VERSION.getKey()) //$NON-NLS-1$
+			.put("system.order", getDefault().ORDER.getKey()) //$NON-NLS-1$
 			.put("system.updated_at", getDefault().DATE_MODIFICATION.getKey()) //$NON-NLS-1$
 			.put("system.created_at", getDefault().DATE_CREATION.getKey()) //$NON-NLS-1$
 			.put("baseType", getDefault().WORKITEM_TYPE.getKey()) //$NON-NLS-1$
@@ -46,6 +47,7 @@ public class OSIORestTaskSchema extends AbstractTaskSchema {
 			.put(getDefault().STATUS.getKey(), "system.state") //$NON-NLS-1$
 			.put(getDefault().SUMMARY.getKey(), "system.title") //$NON-NLS-1$
 			.put(getDefault().VERSION.getKey(), "version") //$NON-NLS-1$
+			.put(getDefault().ORDER.getKey(), "system.order") //$NON-NLS-1$
 			.put(getDefault().DATE_MODIFICATION.getKey(), "system.updated_at") //$NON-NLS-1$
 			.put(getDefault().DATE_CREATION.getKey(), "system.created_at") //$NON-NLS-1$
 			.put(getDefault().WORKITEM_TYPE.getKey(), "baseType") //$NON-NLS-1$
@@ -90,6 +92,10 @@ public class OSIORestTaskSchema extends AbstractTaskSchema {
 			OSIORestMessages.getString("SchemaSpace.label"), //$NON-NLS-1$
 			TaskAttribute.TYPE_SHORT_TEXT, Flag.READ_ONLY);
 	
+	public final Field SPACE_ID = createField("spaceid", //$NON-NLS-1$
+			OSIORestMessages.getString("SchemaSpaceid.label"), //$NON-NLS-1$
+			TaskAttribute.TYPE_SHORT_TEXT, Flag.READ_ONLY);
+	
 	public final Field DESCRIPTION = inheritFrom(parent.DESCRIPTION).create();
 	
 	public final Field SUMMARY = inheritFrom(parent.SUMMARY).addFlags(Flag.READ_ONLY).create();
@@ -122,19 +128,6 @@ public class OSIORestTaskSchema extends AbstractTaskSchema {
 			OSIORestMessages.getString("SchemaRemoveAssignee.label"), //$NON-NLS-1$
 			IOSIORestConstants.EDITOR_TYPE_ASSIGNEES);
 
-	public final Field LABELS = createField("labels", //$NON-NLS-1$
-			OSIORestMessages.getString("SchemaLabels.label"), //$NON-NLS-1$
-			IOSIORestConstants.EDITOR_TYPE_LABELS, Flag.ATTRIBUTE);
-	
-	
-	public final Field REMOVE_LABEL = createField("removeLabel", //$NON-NLS-1$
-			OSIORestMessages.getString("SchemaRemoveLabel.label"), //$NON-NLS-1$
-			IOSIORestConstants.EDITOR_TYPE_LABELS);
-	
-	public final Field LABELS_LINK = createField("labelsLink", //$NON-NLS-1$
-			OSIORestMessages.getString("SchemaLabelsLink.label"), //$NON-NLS-1$
-			TaskAttribute.TYPE_URL);
-
 	public final Field ASSIGNEE_IDS = createField("assigneeIDs", //$NON-NLS-1$
 			OSIORestMessages.getString("SchemaAssigneeIDs.label"), //$NON-NLS-1$
 			TaskAttribute.TYPE_SHORT_TEXT, Flag.READ_ONLY);
@@ -147,6 +140,10 @@ public class OSIORestTaskSchema extends AbstractTaskSchema {
 			OSIORestMessages.getString("SchemaVersion.label"), //$NON-NLS-1$
 			TaskAttribute.TYPE_INTEGER, Flag.ATTRIBUTE, Flag.READ_ONLY);
 	
+	public final Field ORDER = createField("order", //$NON-NLS-1$
+			OSIORestMessages.getString("SchemaOrder.label"), //$NON-NLS-1$
+			TaskAttribute.TYPE_INTEGER, Flag.ATTRIBUTE, Flag.READ_ONLY);
+	
 	public final Field AREA = createField("area", //$NON-NLS-1$
 			OSIORestMessages.getString("SchemaArea.label"), //$NON-NLS-1$
 			TaskAttribute.TYPE_SINGLE_SELECT, null, SPACE.getKey(), Flag.ATTRIBUTE);
@@ -155,13 +152,34 @@ public class OSIORestTaskSchema extends AbstractTaskSchema {
 			OSIORestMessages.getString("SchemaIteration.label"), //$NON-NLS-1$
 			TaskAttribute.TYPE_SINGLE_SELECT, null, SPACE.getKey(), Flag.ATTRIBUTE);
 	
-	public final Field LINKS = createField("links", //$NON-NLS-1$)
-			OSIORestMessages.getString("SchemaLinks.label"),
-			TaskAttribute.TYPE_SHORT_TEXT, Flag.ATTRIBUTE);
+	public final Field LABELS = createField("labels", //$NON-NLS-1$
+			OSIORestMessages.getString("SchemaLabels.label"), //$NON-NLS-1$
+			IOSIORestConstants.EDITOR_TYPE_LABELS, Flag.ATTRIBUTE);
 	
-	public final Field ADD_LABEL = createField("addLabel", //$NON-NLS-1$
+	public final Field REMOVE_LABEL = createField("removeLabel", //$NON-NLS-1$
+			OSIORestMessages.getString("SchemaRemoveLabel.label"), //$NON-NLS-1$
+			IOSIORestConstants.EDITOR_TYPE_LABELS);
+	
+	public final Field LABELS_LINK = createField("labelsLink", //$NON-NLS-1$
+			OSIORestMessages.getString("SchemaLabelsLink.label"), //$NON-NLS-1$
+			TaskAttribute.TYPE_URL);
+	
+	public final Field ADD_LABEL = createField("labelsAdd", //$NON-NLS-1$
 			OSIORestMessages.getString("SchemaLabelAdd.label"), //$NON-NLS-1$
 			TaskAttribute.TYPE_MULTI_LABEL, Flag.ATTRIBUTE);
+	
+	public final Field REMOVE_LINKS = createField("removeLinks", //$NON-NLS-1$
+			OSIORestMessages.getString("SchemaRemoveLinks.label"), //$NON-NLS-1$
+			IOSIORestConstants.EDITOR_TYPE_LINKS);
+	
+	public final Field LINKS = createField("links", //$NON-NLS-1$)
+			OSIORestMessages.getString("SchemaLinks.label"),
+			IOSIORestConstants.EDITOR_TYPE_LINKS, Flag.ATTRIBUTE);
+	
+	public final Field ADD_LINK = createField("addLink", //$NON-NLS-1$
+			OSIORestMessages.getString("SchemaLinkAdd.label"), //$NON-NLS-1$
+			IOSIORestConstants.EDITOR_TYPE_ADD_LINKS, Flag.ATTRIBUTE);
+	
 	
 	public final Field COMMENT_COUNT = createField("commentCount", //$NON-NLS-1$
 			OSIORestMessages.getString("SchemaCommentCount.label"), //$NON-NLS-1$

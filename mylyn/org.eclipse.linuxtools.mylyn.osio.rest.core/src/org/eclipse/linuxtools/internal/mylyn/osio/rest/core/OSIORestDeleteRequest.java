@@ -12,20 +12,20 @@
 
 package org.eclipse.linuxtools.internal.mylyn.osio.rest.core;
 
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
 
 @SuppressWarnings("restriction")
-public abstract class OSIORestPostRequest<T> extends OSIORestRequest<T> {
+public abstract class OSIORestDeleteRequest<T> extends OSIORestRequest<T> {
 
-	public OSIORestPostRequest(CommonHttpClient client, String urlSuffix, boolean authenticationRequired) {
+	public OSIORestDeleteRequest(CommonHttpClient client, String urlSuffix, boolean authenticationRequired) {
 		super(client, urlSuffix, authenticationRequired, false);
 	}
 
 	@Override
 	protected HttpRequestBase createHttpRequestBase(String url) {
-		HttpPost request = new HttpPost(url);
+		HttpDelete request = new HttpDelete(url);
 		request.setHeader(CONTENT_TYPE, APPLICATION_VND_JSON);
 		return request;
 	}

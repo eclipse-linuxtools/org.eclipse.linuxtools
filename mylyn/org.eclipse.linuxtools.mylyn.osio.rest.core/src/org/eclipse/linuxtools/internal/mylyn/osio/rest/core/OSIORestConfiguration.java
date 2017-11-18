@@ -118,10 +118,24 @@ public class OSIORestConfiguration implements Serializable {
 		return spaces;
 	}
 
-	public Space getSpaceWithName(String SpaceName) {
-		return spaces.get(SpaceName);
+	public Space getSpaceById(String spaceId) {
+		for (Space space : getSpaces().values()) {
+			if (space.getId().equals(spaceId)) {
+				return space;
+			}
+		}
+		for (Space space : getExternalSpaces().values()) {
+			if (space.getId().equals(spaceId)) {
+				return space;
+			}
+		}
+		return null;
 	}
 
+	public Space getSpaceWithName(String name) {
+		return getSpaces().get(name);
+	}
+	
 	public void updateInitialTaskData(TaskData data) throws CoreException {
 		setSpaceOptions(data, getSpaces());
 		updateSpaceOptions(data);
@@ -243,13 +257,16 @@ public class OSIORestConfiguration implements Serializable {
 		if (taskData == null) {
 			return false;
 		}
+		TaskAttribute attributeSpaceId = taskData.getRoot().getMappedAttribute(SCHEMA.SPACE_ID.getKey());
 		TaskAttribute attributeSpace = taskData.getRoot().getMappedAttribute(SCHEMA.SPACE.getKey());
-		if (attributeSpace == null) {
+		if (attributeSpaceId == null) {
 			return false;
 		}
-		if (!attributeSpace.getValue().isEmpty()) {
-			Space actualSpace = getSpaceWithName(attributeSpace.getValue());
-
+		if (!attributeSpaceId.getValue().isEmpty()) {
+			Space actualSpace = getSpaceById(attributeSpaceId.getValue());
+			if (actualSpace == null) {
+				return false;
+			}
 			TaskAttribute attributeWorkItemType = taskData.getRoot().getMappedAttribute(SCHEMA.WORKITEM_TYPE.getKey());
 			if (attributeWorkItemType != null) {
 				setAttributeOptionsForSpace(attributeWorkItemType, actualSpace);

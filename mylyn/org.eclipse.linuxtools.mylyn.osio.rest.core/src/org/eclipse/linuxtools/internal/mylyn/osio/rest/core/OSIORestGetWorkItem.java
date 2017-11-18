@@ -52,6 +52,7 @@ public class OSIORestGetWorkItem extends OSIORestGetRequest<OSIORestWorkItem>{
 			response.setId(id);
 			
 			JsonObject attributes = (JsonObject)data.get("attributes"); //$NON-NLS-1$
+			JsonObject relationships = (JsonObject)data.get("relationships"); //$NON-NLS-1$
 			
 			String title = attributes.get("system.title").getAsString(); //$NON-NLS-1$
 			response.setTitle(title);
@@ -61,6 +62,12 @@ public class OSIORestGetWorkItem extends OSIORestGetRequest<OSIORestWorkItem>{
 			
 			String number = attributes.get("system.number").getAsString(); //$NON-NLS-1$
 			response.setNumber(number);
+			
+			
+			JsonObject space = relationships.get("space").getAsJsonObject();
+			JsonObject spaceData = space.get("data").getAsJsonObject();
+			String spaceId = spaceData.get("id").getAsString();
+			response.setSpaceId(spaceId);
 			
 			return response;
 		}

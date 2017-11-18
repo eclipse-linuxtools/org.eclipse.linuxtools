@@ -56,6 +56,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
+@SuppressWarnings("restriction")
 public class OSIORestGetSingleTaskData extends OSIORestGetRequest<TaskData> {
 
 	private final TaskRepository taskRepository;
@@ -64,7 +65,7 @@ public class OSIORestGetSingleTaskData extends OSIORestGetRequest<TaskData> {
 
 	private final OSIORestConnector connector;
 
-	public OSIORestGetSingleTaskData(@SuppressWarnings("restriction") CommonHttpClient client, OSIORestConnector connector, String urlSuffix,
+	public OSIORestGetSingleTaskData(CommonHttpClient client, OSIORestConnector connector, String urlSuffix,
 			TaskRepository taskRepository) throws CoreException {
 		super(client, urlSuffix, null); //$NON-NLS-1$
 		this.client = client;
@@ -193,11 +194,15 @@ public class OSIORestGetSingleTaskData extends OSIORestGetRequest<TaskData> {
 			}
 			TaskAttribute idAttribute = taskData.getRoot().getAttribute(taskSchema.ID.getKey());
 			idAttribute.setValue(taskId);
+			TaskAttribute spaceIdAttribute = taskData.getRoot().getAttribute(taskSchema.SPACE_ID.getKey());
+			spaceIdAttribute.setValue(spaceId);
 			TaskAttribute uuidAttribute = taskData.getRoot().getAttribute(taskSchema.UUID.getKey());
 			String uuid = workitemdata.get("id").getAsString(); //$NON-NLS-1$
 			uuidAttribute.setValue(uuid);
 			TaskAttribute spaceAttribute = taskData.getRoot().getAttribute(taskSchema.SPACE.getKey());
 			spaceAttribute.setValue(spaceName);
+			TaskAttribute addLinkAttribute = taskData.getRoot().getAttribute(taskSchema.ADD_LINK.getKey());
+			addLinkAttribute.putOption("space", actualSpace.getId()); //$NON-NLS-1$
 			// handle fields in the attributes section
 			for (Entry<String, JsonElement> entry : attributes.entrySet()) {
 				String attributeId = OSIORestTaskSchema.getAttributeNameFromFieldName(entry.getKey());

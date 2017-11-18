@@ -16,6 +16,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestTaskSchema;
 import org.eclipse.mylyn.tasks.core.data.TaskAttribute;
+import org.eclipse.mylyn.tasks.core.data.TaskAttributeMetaData;
 import org.eclipse.mylyn.tasks.core.data.TaskDataModel;
 import org.eclipse.mylyn.tasks.ui.editors.AbstractAttributeEditor;
 import org.eclipse.mylyn.tasks.ui.editors.LayoutHint;
@@ -28,15 +29,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-public class OSIOLabelAttributeEditor extends AbstractAttributeEditor {
+public class OSIOLinksAttributeEditor extends AbstractAttributeEditor {
 
 	private List list;
 	
-	private TaskAttribute attrRemoveLabel;
+	private TaskAttribute attrRemoveLinks;
 
 	protected boolean suppressRefresh;
 
-	public OSIOLabelAttributeEditor(TaskDataModel manager, TaskAttribute taskAttribute) {
+	public OSIOLinksAttributeEditor(TaskDataModel manager, TaskAttribute taskAttribute) {
 		super(manager, taskAttribute);
 		setLayoutHint(new LayoutHint(RowSpan.MULTIPLE, ColumnSpan.MULTIPLE));
 	}
@@ -52,10 +53,12 @@ public class OSIOLabelAttributeEditor extends AbstractAttributeEditor {
 
 		populateFromAttribute();
 
-		attrRemoveLabel = getModel().getTaskData()
+		attrRemoveLinks = getModel().getTaskData()
 				.getRoot()
-				.getMappedAttribute(OSIORestTaskSchema.getDefault().REMOVE_LABEL.getKey());
+				.getMappedAttribute(OSIORestTaskSchema.getDefault().REMOVE_LINKS.getKey());
 
+		copyLinkMetaData();
+		
 		selectValuesToRemove();
 
 		list.addSelectionListener(new SelectionAdapter() {
@@ -67,15 +70,15 @@ public class OSIOLabelAttributeEditor extends AbstractAttributeEditor {
 					for (String cc : list.getItems()) {
 						int index = list.indexOf(cc);
 						if (list.isSelected(index)) {
-							java.util.List<String> remove = attrRemoveLabel.getValues();
+							java.util.List<String> remove = attrRemoveLinks.getValues();
 							if (!remove.contains(cc)) {
-								attrRemoveLabel.addValue(cc);
+								attrRemoveLinks.addValue(cc);
 							}
 						} else {
-							attrRemoveLabel.removeValue(cc);
+							attrRemoveLinks.removeValue(cc);
 						}
 					}
-					getModel().attributeChanged(attrRemoveLabel);
+					getModel().attributeChanged(attrRemoveLinks);
 				} finally {
 					suppressRefresh = false;
 				}
@@ -88,16 +91,32 @@ public class OSIOLabelAttributeEditor extends AbstractAttributeEditor {
 	}
 
 	private void populateFromAttribute() {
-		TaskAttribute attrLabel = getTaskAttribute();
-		if (attrLabel != null) {
-			for (String value : attrLabel.getValues()) {
+		TaskAttribute attrLinks = getTaskAttribute();
+		if (attrLinks != null) {
+			for (String value : attrLinks.getValues()) {
 				list.add(value);
+			}
+		}
+	}
+	
+	// Copy link meta data from Links attribute to RemoveLinks attribute
+	// (a map of link strings to their link uuids which is needed to delete them)
+	private void copyLinkMetaData() {
+		TaskAttribute attrLinks = getTaskAttribute();
+		if (attrLinks != null) {
+			TaskAttributeMetaData metadata = attrLinks.getMetaData();
+			TaskAttributeMetaData removeMetaData = attrRemoveLinks.getMetaData();
+			if (metadata != null) {
+				for (String link : attrLinks.getValues()) {
+					String metaValue = metadata.getValue(link);
+					removeMetaData.putValue(link, metaValue);
+				}
 			}
 		}
 	}
 
 	private void selectValuesToRemove() {
-		for (String item : attrRemoveLabel.getValues()) {
+		for (String item : attrRemoveLinks.getValues()) {
 			int i = list.indexOf(item);
 			if (i != -1) {
 				list.select(i);

@@ -176,7 +176,6 @@ public class OSIORestGetTaskData extends OSIORestGetRequest<List<TaskData>> {
 					}
 				}
 				String spaceName = actualSpace.getName();
-				String ownedByLink = actualSpace.getRelationships().getOwnedBy().getLinks().getRelated();
 				User owner = null;
 				try {
 					owner = restClient.getOwnedByLink(new NullOperationMonitor(), actualSpace);
@@ -197,6 +196,8 @@ public class OSIORestGetTaskData extends OSIORestGetRequest<List<TaskData>> {
 					com.google.common.base.Throwables.propagate(e);
 				}
 				response.add(taskData);
+				TaskAttribute spaceIdAttribute = taskData.getRoot().getAttribute(taskSchema.SPACE_ID.getKey());
+				spaceIdAttribute.setValue(spaceId);
 				TaskAttribute idAttribute = taskData.getRoot().getAttribute(taskSchema.ID.getKey());
 				idAttribute.setValue(taskId);
 				TaskAttribute uuidAttribute = taskData.getRoot().getAttribute(taskSchema.UUID.getKey());
@@ -204,6 +205,8 @@ public class OSIORestGetTaskData extends OSIORestGetRequest<List<TaskData>> {
 				uuidAttribute.setValue(uuid);
 				TaskAttribute spaceAttribute = taskData.getRoot().getAttribute(taskSchema.SPACE.getKey());
 				spaceAttribute.setValue(spaceName);
+				TaskAttribute addLinkAttribute = taskData.getRoot().getAttribute(taskSchema.ADD_LINK.getKey());
+				addLinkAttribute.putOption("space", actualSpace.getId()); //$NON-NLS-1$
 				// handle fields in the attributes section
 				for (Entry<String, JsonElement> entry : attributes.entrySet()) {
 					String attributeId = OSIORestTaskSchema.getAttributeNameFromFieldName(entry.getKey());
