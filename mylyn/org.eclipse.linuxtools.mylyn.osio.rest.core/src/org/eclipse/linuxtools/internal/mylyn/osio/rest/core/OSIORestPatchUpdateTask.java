@@ -137,29 +137,33 @@ public class OSIORestPatchUpdateTask extends OSIORestPatchRequest<TaskData> {
 			out.endObject(); // space data
 			out.endObject(); // spaces
 			// area
-			out.name("area"); //$NON-NLS-1$
-			out.beginObject();
-			out.name("data"); //$NON-NLS-1$
-			out.beginObject();
 			attribute = taskData.getRoot().getAttribute(taskSchema.AREA.getKey());
 			String areaName = attribute.getValue();
-			Area area = space.getAreas().get(areaName);
-			out.name("id").value(area.getId()); //$NON-NLS-1$
-			out.name("type").value("areas"); //$NON-NLS-1$ //$NON-NLS-2$
-			out.endObject(); // area data
-			out.endObject(); // areas
+			if (areaName != null && !areaName.trim().isEmpty()) {
+				out.name("area"); //$NON-NLS-1$
+				out.beginObject();
+				out.name("data"); //$NON-NLS-1$
+				out.beginObject();
+				Area area = space.getAreas().get(areaName);
+				out.name("id").value(area.getId()); //$NON-NLS-1$
+				out.name("type").value("areas"); //$NON-NLS-1$ //$NON-NLS-2$
+				out.endObject(); // area data
+				out.endObject(); // areas
+			}
 			// iteration
-			out.name("iteration"); //$NON-NLS-1$
-			out.beginObject();
-			out.name("data"); //$NON-NLS-1$
-			out.beginObject();
 			attribute = taskData.getRoot().getAttribute(taskSchema.ITERATION.getKey());
 			String iterationName = attribute.getValue();
-			Iteration iteration = space.getIterations().get(iterationName);
-			out.name("id").value(iteration.getId()); //$NON-NLS-1$
-			out.name("type").value("iterations"); //$NON-NLS-1$ //$NON-NLS-2$
-			out.endObject(); // iteration data
-			out.endObject(); // iterations
+			if (iterationName != null && !iterationName.trim().isEmpty()) {
+				out.name("iteration"); //$NON-NLS-1$
+				out.beginObject();
+				out.name("data"); //$NON-NLS-1$
+				out.beginObject();
+				Iteration iteration = space.getIterations().get(iterationName);
+				out.name("id").value(iteration.getId()); //$NON-NLS-1$
+				out.name("type").value("iterations"); //$NON-NLS-1$ //$NON-NLS-2$
+				out.endObject(); // iteration data
+				out.endObject(); // iterations
+			}
 			// assignees
 			out.name("assignees"); //$NON-NLS-1$
 			out.beginObject();
@@ -248,7 +252,7 @@ public class OSIORestPatchUpdateTask extends OSIORestPatchRequest<TaskData> {
 				Map<String, Label> spaceLabels = space.getLabels();
 				for (String label : labels) {
 					Label l = spaceLabels.get(label);
-					if (l == null && !label.isEmpty()) {
+					if (l == null && !label.trim().isEmpty()) {
 						try {
 							LabelResponse response = new OSIORestPostNewLabelTask(client, space, label).run(new NullOperationMonitor());
 							Label newLabel = response.getData();

@@ -157,6 +157,10 @@ public class OSIORestGetTaskData extends OSIORestGetRequest<List<TaskData>> {
 						try {
 							spaceResponse = new OSIORestGetRequest<SpaceSingleResponse>(client, "/spaces/" + spaceId, new TypeToken<SpaceSingleResponse>() {}, true).run(new NullOperationMonitor());
 							actualSpace = spaceResponse.getData();
+						} catch (OSIORestException e) {
+							continue;
+						}
+						try {
 							Map<String, WorkItemTypeData> workItemTypes = restClient.getSpaceWorkItemTypes(new NullOperationMonitor(), actualSpace);
 							actualSpace.setWorkItemTypes(workItemTypes);
 							Map<String, WorkItemLinkTypeData> workItemLinkTypes = restClient.getSpaceWorkItemLinkTypes(new NullOperationMonitor(), actualSpace);
@@ -170,6 +174,7 @@ public class OSIORestGetTaskData extends OSIORestGetRequest<List<TaskData>> {
 							Map<String, User> users = restClient.getUsers(new NullOperationMonitor(), actualSpace);
 							actualSpace.setUsers(users);
 						} catch (OSIORestException e) {
+							e.printStackTrace();
 							continue;
 						}
 						externalSpaces.put(actualSpace.getName(), actualSpace);

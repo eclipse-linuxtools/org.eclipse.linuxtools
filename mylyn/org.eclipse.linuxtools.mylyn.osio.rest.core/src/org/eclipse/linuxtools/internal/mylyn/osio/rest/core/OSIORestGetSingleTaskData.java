@@ -149,7 +149,7 @@ public class OSIORestGetSingleTaskData extends OSIORestGetRequest<TaskData> {
 				if (actualSpace == null) {
 					SpaceSingleResponse spaceResponse = null;
 					try {
-						spaceResponse = new OSIORestGetRequest<SpaceSingleResponse>(client, "/space/" + spaceId, new TypeToken<SpaceSingleResponse>() {}).run(new NullOperationMonitor());
+						spaceResponse = new OSIORestGetRequest<SpaceSingleResponse>(client, "/spaces/" + spaceId, new TypeToken<SpaceSingleResponse>() {}).run(new NullOperationMonitor());
 						actualSpace = spaceResponse.getData();
 						Map<String, WorkItemTypeData> workItemTypes = restClient.getSpaceWorkItemTypes(new NullOperationMonitor(), actualSpace);
 						actualSpace.setWorkItemTypes(workItemTypes);

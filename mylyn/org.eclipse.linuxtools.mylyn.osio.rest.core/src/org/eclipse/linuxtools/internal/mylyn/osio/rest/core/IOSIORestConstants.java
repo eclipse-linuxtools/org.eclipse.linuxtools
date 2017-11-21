@@ -20,6 +20,8 @@ public interface IOSIORestConstants {
 	public static final String EDITOR_TYPE_LINKS = "osio.editor.links"; //$NON-NLS-1$
 	
 	public static final String EDITOR_TYPE_ADD_LINKS = "osio.editor.add.links"; //$NON-NLS-1$
+	
+	public static final String EDITOR_TYPE_ADD_LABELS = "osio.editor.add.labels"; //$NON-NLS-1$
 
 	public static final String EDITOR_TYPE_KEYWORD = "osio.editor.keyword"; //$NON-NLS-1$
 
