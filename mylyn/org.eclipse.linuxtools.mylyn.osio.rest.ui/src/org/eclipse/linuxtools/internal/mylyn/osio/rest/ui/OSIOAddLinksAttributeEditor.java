@@ -12,6 +12,7 @@
 
 package org.eclipse.linuxtools.internal.mylyn.osio.rest.ui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -152,7 +153,18 @@ public class OSIOAddLinksAttributeEditor extends AbstractAttributeEditor {
 		if (index >= 0) {
 			typeCombo.select(index);
 		}
-		workitemCombo.setItems(workitems.keySet().toArray(new String[0]));
+		
+		ArrayList<String> workitemsList = new ArrayList<>();
+		String sourceName = getModel().getTaskData()
+				.getRoot()
+				.getMappedAttribute(OSIORestTaskSchema.getDefault().SUMMARY.getKey()).getValue();
+		for (String workitemName : workitems.keySet()) {
+			if (!workitemName.equals(sourceName)) {
+				workitemsList.add(workitemName);
+			}
+		}
+		workitemCombo.setItems(workitemsList.toArray(new String[0]));
+
 		index = -1;
 		if (link != null && !link.isEmpty()) {
 			int i = 0;
