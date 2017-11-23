@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,25 @@ public class Space implements IdNamed {
 	private Map<String, User> users;
 	
 	private Map<String, IdNamed> usersIdNamed;
+	
+	private Map<String, IdNamed> statusNamed;
+	
+	private class Status implements IdNamed {
+		
+		private String name;
+		
+		public Status(String name) {
+			this.name = name;
+		}
+		
+		public String getName() {
+			return name;
+		}
+		
+		public String getId() {
+			return "0"; // for now this will never be used
+		}
+	}
 		
 	public String getId() {
 		return id;
@@ -138,6 +158,16 @@ public class Space implements IdNamed {
 			return iterationsIdNamed;
 		} else if ("assignees".equals(member)) {
 			return usersIdNamed;
+		} else if ("system.state".equals(member)) {
+			if (statusNamed == null) {
+				statusNamed = new LinkedHashMap<>();
+				statusNamed.put("new", new Status("new")); //$NON-NLS-1$ //$NON-NLS-2$
+				statusNamed.put("open", new Status("open")); //$NON-NLS-1$ //$NON-NLS-2$
+				statusNamed.put("in progress", new Status("in progress")); //$NON-NLS-1$ //$NON-NLS-2$
+				statusNamed.put("resolved", new Status("resolved")); //$NON-NLS-1$ //$NON-NLS-2$
+				statusNamed.put("closed", new Status("closed")); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			return statusNamed;
 		}
 		return null;
 	}

@@ -134,7 +134,7 @@ public class OSIORestTaskSchema extends AbstractTaskSchema {
 	
 	public final Field STATUS = createField("system.state", //$NON-NLS-1$
 			OSIORestMessages.getString("SchemaStatus.label"), //$NON-NLS-1$
-			TaskAttribute.TYPE_SINGLE_SELECT, Flag.REQUIRED);
+			TaskAttribute.TYPE_SINGLE_SELECT, null, SPACE.getKey(), Flag.REQUIRED);
 	
 	public final Field VERSION = createField("version", //$NON-NLS-1$
 			OSIORestMessages.getString("SchemaVersion.label"), //$NON-NLS-1$

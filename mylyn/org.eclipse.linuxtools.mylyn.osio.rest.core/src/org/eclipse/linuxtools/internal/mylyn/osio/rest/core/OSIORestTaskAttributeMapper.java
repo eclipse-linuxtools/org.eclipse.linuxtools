@@ -41,7 +41,10 @@ public class OSIORestTaskAttributeMapper extends TaskAttributeMapper {
 		if (attribute.getId().equals(taskSchema.WORKITEM_TYPE.getKey())
 				|| attribute.getId().equals(taskSchema.AREA.getKey())
 				|| attribute.getId().equals(taskSchema.ASSIGNEES.getKey())
+				|| attribute.getId().equals(taskSchema.STATUS.getKey())
 				|| attribute.getId().equals(taskSchema.ITERATION.getKey())) {
+			TaskAttribute spaceIdAttribute = attribute.getParentAttribute()
+					.getAttribute(OSIORestTaskSchema.getDefault().SPACE_ID.getKey());
 			TaskAttribute spaceAttribute = attribute.getParentAttribute()
 					.getAttribute(OSIORestCreateTaskSchema.getDefault().SPACE.getKey());
 			OSIORestConfiguration repositoryConfiguration;
@@ -49,13 +52,26 @@ public class OSIORestTaskAttributeMapper extends TaskAttributeMapper {
 				repositoryConfiguration = connector.getRepositoryConfiguration(this.getTaskRepository());
 				// TODO: change this when we have offline cache for the repository configuration so we build the options in an temp var
 				if (repositoryConfiguration != null) {
-					if (!spaceAttribute.getValue().equals("")) { //$NON-NLS-1$
+					if (spaceIdAttribute != null && !spaceIdAttribute.getValue().equals("")) { //$NON-NLS-1$
 						boolean found = false;
+						attribute.clearOptions();
+						for (String spaceId : spaceIdAttribute.getValues()) {
+							Space actualSpace = connector.getClient(getTaskRepository()).getSpaceById(spaceId, getTaskRepository());
+							String key = attribute.getId();
+							internalSetAttributeOptions4Space(attribute, actualSpace.getMapFor(attribute.getId()));
+						}
+					} else {
 						attribute.clearOptions();
 						for (String spaceName : spaceAttribute.getValues()) {
 							Space actualSpace = repositoryConfiguration.getSpaceWithName(spaceName);
 							String key = attribute.getId();
 							internalSetAttributeOptions4Space(attribute, actualSpace.getMapFor(attribute.getId()));
+						}
+						if (attribute.getOptions().size() == 0) {
+							if (attribute.getId().equals(taskSchema.ASSIGNEES.getKey())) {
+								String userName = repositoryConfiguration.getUserName();
+								attribute.putOption(userName, userName);
+							}
 						}
 					}
 				}

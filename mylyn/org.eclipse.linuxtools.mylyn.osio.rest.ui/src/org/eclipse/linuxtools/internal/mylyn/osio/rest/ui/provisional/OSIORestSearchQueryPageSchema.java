@@ -48,6 +48,7 @@ public class OSIORestSearchQueryPageSchema extends AbstractQueryPageSchema {
 			.create();
 	
 	public final Field status = copyFrom(parent.STATUS).type(TaskAttribute.TYPE_MULTI_SELECT)
+			.dependsOn(parent.SPACE.getKey())
 			.layoutPriority(11)
 			.create();
 	

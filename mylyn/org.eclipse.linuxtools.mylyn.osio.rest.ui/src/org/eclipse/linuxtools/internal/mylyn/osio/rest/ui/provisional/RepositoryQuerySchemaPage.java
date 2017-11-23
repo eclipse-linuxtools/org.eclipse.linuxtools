@@ -38,6 +38,7 @@ import org.eclipse.mylyn.tasks.ui.editors.LayoutHint;
 import org.eclipse.mylyn.tasks.ui.editors.LayoutHint.ColumnSpan;
 import org.eclipse.mylyn.tasks.ui.editors.LayoutHint.RowSpan;
 import org.eclipse.mylyn.tasks.ui.wizards.AbstractRepositoryQueryPage2;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -249,11 +250,11 @@ public class RepositoryQuerySchemaPage extends AbstractRepositoryQueryPage2 {
 			if (field.isQueryRequired()) {
 				String text = targetTaskData.getRoot().getAttribute(field.getKey()).getValue();
 				if (text == null || text.length() == 0) {
-					setMessage("Enter a value for " + field.getLabel());
+					setMessage(NLS.bind(Messages.OSIORestQuery_EnterValue, field.getLabel()));
 					return false;
 				}
 			}
-			if (field.getType().equals("url")) {
+			if (field.getType().equals("url")) { //$NON-NLS-1$
 				String text = targetTaskData.getRoot().getAttribute(field.getKey()).getValue();
 				if (text != null && text.length() > 0) {
 					Matcher m = URL_PATTERN.matcher(text);
@@ -261,14 +262,14 @@ public class RepositoryQuerySchemaPage extends AbstractRepositoryQueryPage2 {
 						setErrorMessage(null);
 						return true;
 					} else {
-						setErrorMessage("Please specify a valid URL in " + field.getLabel());
+						setErrorMessage(NLS.bind(Messages.OSIORestQuery_EnterValidURL, field.getLabel()));
 						return false;
 					}
 				}
 			}
 		}
 		if (!oneFieldHasValue) {
-			setErrorMessage("Please fill at least on field!");
+			setErrorMessage(Messages.OSIORestQuery_SpecifyOneField);
 		}
 		return true;
 	}
