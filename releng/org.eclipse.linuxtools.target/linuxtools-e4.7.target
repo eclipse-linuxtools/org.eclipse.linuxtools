@@ -66,8 +66,11 @@
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.cdt.autotools.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.cdt.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/tools/cdt/builds/9.4"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.launchbar.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/tools/cdt/releases/9.3"/>
+<repository location="http://download.eclipse.org/tools/cdt/launchbar/milestones/oxygen.2"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.core" version="0.0.0"/>
