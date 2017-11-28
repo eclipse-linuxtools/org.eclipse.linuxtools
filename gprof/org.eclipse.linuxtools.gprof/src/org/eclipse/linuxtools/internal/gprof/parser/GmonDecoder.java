@@ -62,7 +62,7 @@ public class GmonDecoder {
     private final IProject project;
 
     // for dump
-    private boolean shouldDump = false;
+	private boolean shouldDump = false;
 
     /**
      * Constructor
@@ -86,7 +86,7 @@ public class GmonDecoder {
         this.project = project;
         program.getBinaryParser().getFormat();
         String cpu = program.getCPU();
-        if (Platform.ARCH_X86_64.equals(cpu) || "ppc64".equals(cpu)) { //$NON-NLS-1$
+		if (Platform.ARCH_X86_64.equals(cpu) || "aarch64".equals(cpu) || "ppc64".equals(cpu)) { //$NON-NLS-1$
             histo = new HistogramDecoder64(this);
             callGraph = new CallGraphDecoder64(this);
             _32_bit_platform = false;
