@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class Space implements IdNamed {
@@ -93,8 +94,8 @@ public class Space implements IdNamed {
 
 	public void setWorkItemTypes(Map<String, WorkItemTypeData> workItemTypes) {
 		this.workItemTypes = workItemTypes;
-		this.workItemTypesIdNamed = workItemTypes.entrySet().stream()
-	     .collect(Collectors.toMap(Map.Entry::getKey, e -> (IdNamed)e.getValue()));
+		this.workItemTypesIdNamed = new TreeMap<>(workItemTypes.entrySet().stream()
+	     .collect(Collectors.toMap(Map.Entry::getKey, e -> (IdNamed)e.getValue())));
 	}
 	
 	public Map<String, WorkItemTypeData> getWorkItemTypes() {

@@ -36,4 +36,4 @@ public class OSIORestCreateTaskSchema extends AbstractTaskSchema {
 	
 	public final Field TITLE = inheritFrom(parent.SUMMARY).addFlags(Flag.REQUIRED).create();
 	
-}
+}   

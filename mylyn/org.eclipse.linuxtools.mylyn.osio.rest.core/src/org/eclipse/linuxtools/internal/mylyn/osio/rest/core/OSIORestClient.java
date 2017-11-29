@@ -304,17 +304,11 @@ public class OSIORestClient {
 	
 	public RepositoryResponse postTaskData(TaskData taskData, Set<TaskAttribute> oldAttributes,
 			TaskRepository repository, IOperationMonitor monitor) throws OSIORestException {
-		TaskAttribute spaceIdAttribute = taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().SPACE_ID.getKey());
-		String spaceId = spaceIdAttribute.getValue();
 		Space space = null;
 		if (taskData.isNew()) {
+			TaskAttribute spaceAttribute = taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().SPACE.getKey());
 			Map<String, Space> spaces = getCachedSpaces(new NullOperationMonitor());
-			for (Space s : spaces.values()) {
-				if (s.getId().equals(spaceId)) {
-					space = s;
-					break;
-				}
-			}
+			space = spaces.get(spaceAttribute.getValue());
 			String id = null;
 			try {
 				id = new OSIORestPostNewTask(client, taskData, space, connector, repository).run(monitor);
@@ -323,6 +317,8 @@ public class OSIORestClient {
 			}
 			return new RepositoryResponse(ResponseKind.TASK_CREATED, id);
 		} else {
+			TaskAttribute spaceIdAttribute = taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().SPACE_ID.getKey());
+			String spaceId = spaceIdAttribute.getValue();
 			OSIORestConfiguration config;
 			try {
 				config = connector.getRepositoryConfiguration(repository);

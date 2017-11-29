@@ -18,14 +18,20 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.function.Function;
 
-import org.apache.commons.httpclient.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.ErrorResponse;
+import org.eclipse.mylyn.commons.core.StatusHandler;
 import org.eclipse.mylyn.commons.core.operations.IOperationMonitor;
-import org.eclipse.mylyn.commons.repositories.core.RepositoryLocation;
 import org.eclipse.mylyn.commons.repositories.core.auth.AuthenticationException;
 import org.eclipse.mylyn.commons.repositories.core.auth.AuthenticationRequest;
 import org.eclipse.mylyn.commons.repositories.core.auth.AuthenticationType;
@@ -38,7 +44,6 @@ import org.eclipse.osgi.util.NLS;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonWriter;
 
 public abstract class OSIORestRequest<T> extends CommonHttpOperation<T> {
 	protected static final String ACCEPT = "Accept"; //$NON-NLS-1$
@@ -102,47 +107,35 @@ public abstract class OSIORestRequest<T> extends CommonHttpOperation<T> {
 		String urlSuffix = getUrlSuffix();
 		return baseUrl() + urlSuffix;
 	}
-
+	
+	private Function<IResource, String> getProvider() {
+		IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor("org.jboss.tools.openshift.io.core.tokenProvider"); //$NON-NLS-1$
+		for(IConfigurationElement element : elements) {
+			try {
+				return (Function<IResource, String>) element.createExecutableExtension("class"); //$NON-NLS-1$
+			} catch (CoreException e) {
+				StatusHandler.log(new Status(IStatus.ERROR, OSIORestCore.ID_PLUGIN,
+						OSIORestMessages.getString("TokenProviderFetchError.msg"), //$NON-NLS-1$
+						e));
+			}
+		}
+		return null;
+	}
+	
 	private String getToken() {
-		String auth_token = getClient().getLocation().getProperty(IOSIORestConstants.REPOSITORY_AUTH_TOKEN);
+		String auth_token = null;
+		Function<IResource, String> provider = getProvider();
+		if (provider != null) {
+			auth_token = (String) provider.apply(null);
+		}
 		if (auth_token != null) {
 			return auth_token;
 		}
-		// TODO: remove below when authorization UI is working
-		return "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwb"
-				+ "EwwdlhzOVlSVnFaTW93eXc4dU5MUl95cjBpRmFvemR"
-				+ "RazlyenEyT1ZVIn0.eyJqdGkiOiI5YTlmMTk3Yi1iY"
-				+ "2I4LTRmY2QtYjM2OC04ZDg5MDRjYmRiYWIiLCJleHA"
-				+ "iOjE1MDgzODgwNjgsIm5iZiI6MCwiaWF0IjoxNTA1N"
-				+ "zk2MDY4LCJpc3MiOiJodHRwczovL3Nzby5vcGVuc2h"
-				+ "pZnQuaW8vYXV0aC9yZWFsbXMvZmFicmljOCIsImF1Z"
-				+ "CI6ImZhYnJpYzgtb25saW5lLXBsYXRmb3JtIiwic3V"
-				+ "iIjoiZTkwMjRmODQtODQ1My00YTgwLWFjZWMtOThhM"
-				+ "jc2ODZlYzI0IiwidHlwIjoiQmVhcmVyIiwiYXpwIjo"
-				+ "iZmFicmljOC1vbmxpbmUtcGxhdGZvcm0iLCJhdXRoX"
-				+ "3RpbWUiOjE1MDU0OTA4MjUsInNlc3Npb25fc3RhdGU"
-				+ "iOiI5MTFlZWE0Ny01NjcyLTRkNGItYWZiMi1mOTFjM"
-				+ "TQ2NGE1MTciLCJhY3IiOiIwIiwiYWxsb3dlZC1vcml"
-				+ "naW5zIjpbIioiXSwicmVhbG1fYWNjZXNzIjp7InJvb"
-				+ "GVzIjpbInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXN"
-				+ "vdXJjZV9hY2Nlc3MiOnsiYnJva2VyIjp7InJvbGVzI"
-				+ "jpbInJlYWQtdG9rZW4iXX0sImFjY291bnQiOnsicm9"
-				+ "sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtY"
-				+ "WNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0"
-				+ "sImFwcHJvdmVkIjp0cnVlLCJuYW1lIjoiSmVmZiBKb"
-				+ "2huc3RvbiIsImNvbXBhbnkiOiJSZWQgSGF0IiwicHJ"
-				+ "lZmVycmVkX3VzZXJuYW1lIjoiampvaG5zdG4iLCJna"
-				+ "XZlbl9uYW1lIjoiSmVmZiIsImZhbWlseV9uYW1lIjo"
-				+ "iSm9obnN0b24iLCJlbWFpbCI6Impqb2huc3RuQHJlZ"
-				+ "GhhdC5jb20ifQ.VMe9GfHxG51BkH5YPXyfcLsZgIi9"
-				+ "-ui0gXzco3t7AKLhIsHKUYiInurwxYJVT2ToHffMwN"
-				+ "rrfUbm0eGAkLbR_A_04vvYzi7keBMep0XjuZW6lM3v"
-				+ "xb-93NxITQcHCNMFvLxvm1wrN5ui29X5x4NIcIcU0K"
-				+ "ye2qsDKn_d-UxQXDgxavqrc_a5d0RYb-WImPej2ZDe"
-				+ "po8IU16Ev-wPWLLN91KnqLBSyVCB2MxFkkdNOE284n"
-				+ "I5p2yzCX_QbVMKdbuY0S8Hyu8Bs-A1LMBAB2xuecSu"
-				+ "u4Glykw9KNNOV8KqNSAoDwm_KIw7SG2kcv_d8Z4oap"
-				+ "HlrNg4u9_2rsPzEKotnw";
+		auth_token = getClient().getLocation().getProperty(IOSIORestConstants.REPOSITORY_AUTH_TOKEN);
+		if (auth_token != null) {
+			return auth_token;
+		}
+		return ""; //$NON-NLS-1$
 	}
 	
 	private String getBearer() {
@@ -168,7 +161,7 @@ public abstract class OSIORestRequest<T> extends CommonHttpOperation<T> {
 			throws IOException, OSIORestException {
 		try (BufferedInputStream is = new BufferedInputStream(response.getResponseEntityAsStream())) {
 			InputStreamReader in = new InputStreamReader(is);
-			throwExeptionIfRestError(is, in);
+			throwExceptionIfRestError(is, in);
 			return parseFromJson(in);
 		}
 	}
@@ -235,7 +228,7 @@ public abstract class OSIORestRequest<T> extends CommonHttpOperation<T> {
 		return new Gson().fromJson(in, a.getType());
 	}
 
-	protected void throwExeptionIfRestError(InputStream is, InputStreamReader in)
+	protected void throwExceptionIfRestError(InputStream is, InputStreamReader in)
 			throws IOException, OSIORestException {
 		try {
 			is.mark(18);

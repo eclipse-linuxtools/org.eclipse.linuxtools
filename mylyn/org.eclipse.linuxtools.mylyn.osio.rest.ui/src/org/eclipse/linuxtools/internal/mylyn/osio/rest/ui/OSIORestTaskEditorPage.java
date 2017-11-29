@@ -89,6 +89,7 @@ public class OSIORestTaskEditorPage extends AbstractTaskEditorPage {
 		ArrayList<TaskEditorPartDescriptor> descriptorsToRemove = new ArrayList<TaskEditorPartDescriptor>(2);
 		for (TaskEditorPartDescriptor taskEditorPartDescriptor : descriptors) {
 			if (taskEditorPartDescriptor.getId().equals(ID_PART_PEOPLE) ||
+					taskEditorPartDescriptor.getId().equals("org.eclipse.mylyn.tasks.activity.ui.viewer.ActivityPart") || //$NON-NLS-1$
 					taskEditorPartDescriptor.getId().equals(ID_PART_ATTRIBUTES)) {
 				descriptorsToRemove.add(taskEditorPartDescriptor);
 				continue;

@@ -75,7 +75,7 @@ public class OSIORestRepositorySettingsPage extends AbstractRepositorySettingsPa
 		
 		authTokenLabel = new Label(authTokenContainer, SWT.NONE);
 		authTokenLabel.setText(Messages.OSIORestRepositorySettingsPage_auth_token);
-		authToken = new StyledText(authTokenContainer, SWT.BORDER | SWT.WRAP);
+		authToken = new StyledText(authTokenContainer, SWT.BORDER | SWT.WRAP | SWT.PASSWORD);
 		authToken.setEnabled(true);
 		GridDataFactory.fillDefaults()
 				.grab(true, true)
@@ -117,6 +117,7 @@ public class OSIORestRepositorySettingsPage extends AbstractRepositorySettingsPa
 	public void applyTo(TaskRepository repository) {
 		repository.setProperty(IOSIORestConstants.REPOSITORY_AUTH_TOKEN, authToken.getText());
 		repository.setProperty(IOSIORestConstants.REPOSITORY_AUTH_ID, userId.getText());
+		repository.setCategory(TaskRepository.CATEGORY_TASKS);
 		super.applyTo(repository);
 	}
 }

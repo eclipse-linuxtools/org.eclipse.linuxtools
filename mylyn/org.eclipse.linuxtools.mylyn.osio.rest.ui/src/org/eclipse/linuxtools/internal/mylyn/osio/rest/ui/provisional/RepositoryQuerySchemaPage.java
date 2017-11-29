@@ -50,15 +50,15 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 @SuppressWarnings("nls")
 public class RepositoryQuerySchemaPage extends AbstractRepositoryQueryPage2 {
 
-	private static final int LABEL_WIDTH = 110;
+	private static final int LABEL_WIDTH = 100;
 
-	private static final int COLUMN_WIDTH = 140;
+	private static final int COLUMN_WIDTH = 160;
 
 	private static final int COLUMN_GAP = 20;
 
 	private static final int MULTI_COLUMN_WIDTH = COLUMN_WIDTH + 5 + COLUMN_GAP + LABEL_WIDTH + 5 + COLUMN_WIDTH;
 
-	private static final int MULTI_ROW_HEIGHT = 55;
+	private static final int MULTI_ROW_HEIGHT = 80;
 
 	protected final AbstractQueryPageSchema schema;
 
@@ -103,7 +103,7 @@ public class RepositoryQuerySchemaPage extends AbstractRepositoryQueryPage2 {
 		layout.marginHeight = 0;
 		layout.marginWidth = 10;
 		layout.horizontalSpacing = 0;
-		layout.verticalSpacing = 0;
+		layout.verticalSpacing = 10;
 		scrolledBodyComposite.setLayout(layout);
 
 		Composite attributesComposite = new Composite(scrolledBodyComposite, SWT.NONE);
@@ -113,11 +113,11 @@ public class RepositoryQuerySchemaPage extends AbstractRepositoryQueryPage2 {
 				.span(2, 1)
 				.applyTo(attributesComposite);
 		layout = new GridLayout(6, false);
-		layout.marginHeight = 0;
-		layout.marginWidth = 0;
+		layout.marginHeight = 20;
+		layout.marginWidth = 10;
 		attributesComposite.setLayout(layout);
 		GridData g = new GridData(GridData.FILL, GridData.FILL, true, true);
-		g.widthHint = 400;
+		g.widthHint = 600;
 		attributesComposite.setLayoutData(g);
 		attributesComposite.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_LIST_FOREGROUND));
 		FormToolkit toolkit = new FormToolkit(parent.getDisplay());
@@ -127,7 +127,7 @@ public class RepositoryQuerySchemaPage extends AbstractRepositoryQueryPage2 {
 		ITaskDataWorkingCopy workingCopy = TasksUi.getTaskDataManager().createWorkingCopy(nTask, data);
 
 		final TaskDataModel model = new TaskDataModel(repository, nTask, workingCopy);
-		factory = new AttributeEditorFactory(model, repository);
+		factory = new RepositoryQueryAttributeEditorFactory(model, repository);
 		model.addModelListener(new TaskDataModelListener() {
 
 			@Override
