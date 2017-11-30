@@ -20,6 +20,14 @@ public class FieldDefinition {
 	
 	private String description;
 	
+	// for testing purposes only
+	public FieldDefinition (String label, String description, FieldType fieldType, boolean required) {
+		this.label = label;
+	    this.description = description;
+		this.fieldType = fieldType;
+		this.required = required;
+	}
+	
 	public boolean isRequired() {
 		return required;
 	}

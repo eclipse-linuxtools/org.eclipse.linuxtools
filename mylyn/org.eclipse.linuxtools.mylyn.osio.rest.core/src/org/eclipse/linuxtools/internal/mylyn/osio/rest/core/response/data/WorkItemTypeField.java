@@ -20,6 +20,15 @@ public class WorkItemTypeField {
 	
 	private WorkItemTypeFieldType type;
 	
+	// for testing purposes only
+	public WorkItemTypeField (String description, String label, Boolean required,
+			WorkItemTypeFieldType type) {
+		this.description = description;
+		this.label = label;
+		this.required = required;
+		this.type = type;
+	}
+	
 	public String getDescription() {
 		return description;
 	}

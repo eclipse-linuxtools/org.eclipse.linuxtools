@@ -17,7 +17,6 @@ import java.lang.reflect.Type;
 
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
 import org.eclipse.mylyn.tasks.core.TaskRepository;
-import org.eclipse.mylyn.tasks.core.data.TaskAttribute;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -27,16 +26,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
+@SuppressWarnings("restriction")
 public class OSIORestGetWID extends OSIORestGetRequest<String> {
-	
-	private final TaskRepository repository;
-	@SuppressWarnings("restriction")
-	private final CommonHttpClient client;
 
-	public OSIORestGetWID(@SuppressWarnings("restriction") CommonHttpClient client, String query, TaskRepository repository) {
+	public OSIORestGetWID(CommonHttpClient client, String query, TaskRepository repository) {
 		super(client, query, null, false);
-		this.repository = repository;
-		this.client = client;
 	}
 
 	@Override

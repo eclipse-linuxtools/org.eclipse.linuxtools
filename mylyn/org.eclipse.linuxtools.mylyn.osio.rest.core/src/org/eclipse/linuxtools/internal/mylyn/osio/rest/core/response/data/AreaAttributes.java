@@ -32,6 +32,17 @@ public class AreaAttributes implements Named {
 	
 	private String parent_path_resolved;
 	
+	// for testing purposes only
+	public AreaAttributes (String name, int version, String created_at, String updated_at,
+			String parent_path, String parent_path_resolved) {
+		this.name = name;
+		this.version = version;
+		this.created_at = created_at;
+		this.updated_at = updated_at;
+		this.parent_path = parent_path;
+		this.parent_path_resolved = parent_path_resolved;
+	}
+	
 	public String getName() {
 		return name;
 	}

@@ -17,6 +17,13 @@ public class SpaceResponse implements RestResponse<Space> {
 	private PagingLinks links;
 	
 	private SpaceListMeta meta;
+	
+	// for testing purposes only
+	public SpaceResponse (Space[] data, PagingLinks links, SpaceListMeta meta) {
+		this.data = data;
+		this.links = links;
+		this.meta = meta;
+	}
 
 	@Override
 	public Space[] getArray() {

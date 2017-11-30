@@ -20,6 +20,15 @@ public class AreaRelationships {
 	
 	private RelationGeneric workitems;
 	
+	// for testing purposes only
+	public AreaRelationships (RelationGeneric space, RelationGeneric parent,
+			RelationGeneric children, RelationGeneric workitems) {
+		this.space = space;
+		this.parent = parent;
+		this.children = children;
+		this.workitems = workitems;
+	}
+	
 	public RelationGeneric getSpace() {
 		return space;
 	}

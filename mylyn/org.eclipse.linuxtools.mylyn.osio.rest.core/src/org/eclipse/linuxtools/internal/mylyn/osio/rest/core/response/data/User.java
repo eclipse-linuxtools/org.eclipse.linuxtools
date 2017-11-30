@@ -20,6 +20,14 @@ public class User implements IdNamed {
 	
 	private GenericLinks links;
 	
+	// for testing purposes only
+	public User (String id, String type, UserAttributes attributes, GenericLinks links) {
+		this.id = id;
+		this.type = type;
+		this.attributes = attributes;
+		this.links = links;
+	}
+	
 	public String getType() {
 		return type;
 	}

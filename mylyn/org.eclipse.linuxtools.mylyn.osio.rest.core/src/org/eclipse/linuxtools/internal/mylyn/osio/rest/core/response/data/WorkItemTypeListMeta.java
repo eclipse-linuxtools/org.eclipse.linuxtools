@@ -14,6 +14,11 @@ public class WorkItemTypeListMeta {
 	
 	private int totalCount;
 	
+	// for testing purposes only
+	public WorkItemTypeListMeta (int totalCount) {
+		this.totalCount = totalCount;
+	}
+	
 	public int getTotalCount() {
 		return totalCount;
 	}

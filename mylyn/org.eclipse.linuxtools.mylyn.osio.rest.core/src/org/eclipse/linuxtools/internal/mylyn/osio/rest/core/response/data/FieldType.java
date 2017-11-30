@@ -20,6 +20,14 @@ public class FieldType {
 	
 	private String[] values;
 	
+	// for testing purposes only
+	public FieldType (String kind, String componentType, String baseType, String[] values) {
+		this.kind = kind;
+		this.componentType = componentType;
+		this.baseType = baseType;
+		this.values = values;
+	}
+	
 	public String getKind() {
 		return kind;
 	}

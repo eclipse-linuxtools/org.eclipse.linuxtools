@@ -25,11 +25,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.mylyn.commons.core.operations.IOperationMonitor;
 import org.eclipse.mylyn.commons.core.operations.OperationUtil;
-import org.eclipse.mylyn.commons.net.AuthenticationCredentials;
 import org.eclipse.mylyn.commons.net.Policy;
 import org.eclipse.mylyn.commons.repositories.core.RepositoryLocation;
-import org.eclipse.mylyn.commons.repositories.core.auth.AuthenticationType;
-import org.eclipse.mylyn.commons.repositories.core.auth.UserCredentials;
 import org.eclipse.mylyn.internal.commons.core.operations.NullOperationMonitor;
 import org.eclipse.mylyn.internal.tasks.core.IRepositoryConstants;
 import org.eclipse.mylyn.tasks.core.AbstractRepositoryConnector;
@@ -53,6 +50,7 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 
+@SuppressWarnings("restriction")
 public class OSIORestConnector extends AbstractRepositoryConnector {
 	
 	public final static String CONNECTOR_LABEL = "Connector.label"; //$NON-NLS-1$
@@ -183,7 +181,6 @@ public class OSIORestConnector extends AbstractRepositoryConnector {
 				Collectors.toMap(e -> convertProperty(e.getKey()), Map.Entry::getValue));
 	}
 
-	@SuppressWarnings("restriction")
 	private String convertProperty(String key) {
 		if (TaskRepository.PROXY_USEDEFAULT.equals(key)) {
 			return RepositoryLocation.PROPERTY_PROXY_USEDEFAULT;

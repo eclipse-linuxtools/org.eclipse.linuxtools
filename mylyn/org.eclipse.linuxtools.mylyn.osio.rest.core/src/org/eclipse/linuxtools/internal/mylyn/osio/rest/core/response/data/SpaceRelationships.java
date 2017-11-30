@@ -33,6 +33,23 @@ public class SpaceRelationships {
 	
 	private RelationGeneric labels;
 	
+	// for testing purposes only
+	public SpaceRelationships (SpaceOwnedBy owned_by, RelationGeneric iterations,
+			RelationGeneric areas, RelationGeneric workitemlinktypes,
+			RelationGeneric workitemtypes,
+			RelationGeneric workitems, RelationGeneric codebases, RelationGeneric collaborators,
+			RelationGeneric labels) {
+		this.owned_by = owned_by;
+		this.iterations = iterations;
+		this.areas = areas;
+		this.workitemlinktypes = workitemlinktypes;
+		this.workitemtypes = workitemtypes;
+		this.workitems = workitems;
+		this.codebases = codebases;
+		this.collaborators = collaborators;
+		this.labels = labels;
+	}
+	
 	public SpaceOwnedBy getOwnedBy() {
 		return owned_by;
 	}
@@ -65,4 +82,7 @@ public class SpaceRelationships {
 		return labels;
 	}
 	
+	public RelationGeneric getAreas() {
+		return areas;
+	}
 }

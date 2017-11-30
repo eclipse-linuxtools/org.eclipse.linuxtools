@@ -30,6 +30,16 @@ public class SpaceAttributes {
 	@SerializedName("updated-at")
 	private String updated_at;
 	
+	// for testing purposes only
+	public SpaceAttributes (String name, String description, int version,
+			String created_at, String updated_at) {
+		this.name = name;
+		this.description = description;
+		this.version = version;
+		this.created_at = created_at;
+		this.updated_at = updated_at;
+	}
+	
 	public String getName() {
 		return name;
 	}

@@ -14,6 +14,11 @@ package org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data;
 
 public class BooleanResult {
 	private Boolean result;
+	
+	// for testing purposes only
+	public BooleanResult (Boolean result) {
+		this.result = result;
+	}
 
 	public Boolean getResult() {
 		return result;

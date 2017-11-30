@@ -26,6 +26,13 @@ public class WorkItemLinkAttributes {
 	
 	private int version;
 	
+	// for testing purposes only
+	public WorkItemLinkAttributes (String created_at, String updated_at, int version) {
+		this.created_at = created_at;
+		this.updated_at = updated_at;
+		this.version = version;
+	}
+	
 	public String getCreated_at() {
 		return created_at;
 	}

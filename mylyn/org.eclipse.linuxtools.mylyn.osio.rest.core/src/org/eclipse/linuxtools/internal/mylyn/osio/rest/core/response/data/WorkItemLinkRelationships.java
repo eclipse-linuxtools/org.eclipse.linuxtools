@@ -18,6 +18,14 @@ public class WorkItemLinkRelationships {
 	
 	public RelationWorkItem target;
 	
+	// for testing purposes only
+	public WorkItemLinkRelationships (RelationWorkItemLinkType link_type,
+			RelationWorkItem source, RelationWorkItem target) {
+		this.link_type = link_type;
+		this.source = source;
+		this.target = target;
+	}
+	
 	public RelationWorkItemLinkType getLink_type() {
 		return link_type;
 	}

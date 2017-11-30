@@ -29,18 +29,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
+@SuppressWarnings("restriction")
 public class OSIORestGetTaskCreator extends OSIORestGetRequest<TaskAttribute> {
 	
 	private final TaskData taskData;
 	private final String id;
-	@SuppressWarnings("restriction")
-	private final CommonHttpClient client;
 
-	public OSIORestGetTaskCreator(@SuppressWarnings("restriction") CommonHttpClient client, TaskData taskData) {
+	public OSIORestGetTaskCreator(CommonHttpClient client, TaskData taskData) {
 		super(client, "/users/" + taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().CREATOR_ID.getKey()).getValue(), null, true); //$NON-NLS-1$
 		this.taskData = taskData;
 		this.id = taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().CREATOR_ID.getKey()).getValue();
-		this.client = client;
 	}
 
 	@Override

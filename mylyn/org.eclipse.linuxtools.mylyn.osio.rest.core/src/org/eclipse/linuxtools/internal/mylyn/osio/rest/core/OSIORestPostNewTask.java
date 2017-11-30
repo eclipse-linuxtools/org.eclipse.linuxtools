@@ -35,10 +35,8 @@ import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpResponse;
 import org.eclipse.mylyn.tasks.core.TaskRepository;
 import org.eclipse.mylyn.tasks.core.data.TaskAttribute;
-import org.eclipse.mylyn.tasks.core.data.TaskAttributeMapper;
 import org.eclipse.mylyn.tasks.core.data.TaskData;
 
-import com.google.common.base.Function;
 import com.google.common.base.Throwables;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -52,6 +50,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+@SuppressWarnings("restriction")
 public class OSIORestPostNewTask extends OSIORestPostRequest<String> {
 	
 	private final TaskData taskData;
@@ -59,8 +58,6 @@ public class OSIORestPostNewTask extends OSIORestPostRequest<String> {
 	private final TaskRepository taskRepository;
 	private final OSIORestConnector connector;
 	private final OSIORestConfiguration taskConfiguration;
-	private final CommonHttpClient client;
-
 	class TaskAttributeTypeAdapter extends TypeAdapter<TaskData> {
 		RepositoryLocation location;
 
@@ -68,14 +65,6 @@ public class OSIORestPostNewTask extends OSIORestPostRequest<String> {
 			super();
 			this.location = location;
 		}
-
-		private final Function<String, String> function = new Function<String, String>() {
-
-			@Override
-			public String apply(String input) {
-				return OSIORestGsonUtil.convertString2GSonString(input);
-			}
-		};
 
 		@Override
 		public void write(JsonWriter out, TaskData taskData) throws IOException {
@@ -142,11 +131,11 @@ public class OSIORestPostNewTask extends OSIORestPostRequest<String> {
 		this.taskRepository = taskRepository;
 		this.taskConfiguration = connector.getRepositoryConfiguration(taskRepository);
 		this.taskData = taskData;
-		this.client = client;
 	}
 
 	List<NameValuePair> requestParameters;
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void addHttpRequestEntities(HttpRequestBase request) throws OSIORestException {
 		super.addHttpRequestEntities(request);
@@ -204,7 +193,7 @@ public class OSIORestPostNewTask extends OSIORestPostRequest<String> {
 		public String deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
 			OSIORestTaskDataHandler dataHandler = (OSIORestTaskDataHandler) connector.getTaskDataHandler();
-			TaskAttributeMapper mapper = dataHandler.getAttributeMapper(taskRepository);
+			dataHandler.getAttributeMapper(taskRepository);
 			JsonObject workitemdata = json.getAsJsonObject().get("data").getAsJsonObject(); //$NON-NLS-1$
 			JsonObject attributes = workitemdata.get("attributes").getAsJsonObject(); //$NON-NLS-1$
 			JsonObject relationships = workitemdata.get("relationships").getAsJsonObject(); //$NON-NLS-1$

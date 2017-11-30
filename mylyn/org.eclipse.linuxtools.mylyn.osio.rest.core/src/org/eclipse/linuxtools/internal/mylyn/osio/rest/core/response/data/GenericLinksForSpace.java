@@ -28,6 +28,20 @@ public class GenericLinksForSpace {
 	
 	private BacklogGenericLinkType backlog;
 	
+	// for testing purposes only
+	public GenericLinksForSpace (String self, String related, String workitemtypes,
+			String workitemlinktypes, String collaborators, String filters,
+			String workitemtypegroups, BacklogGenericLinkType backlog) {
+		this.self = self;
+		this.related = related;
+		this.workitemtypes = workitemtypes;
+		this.workitemlinktypes = workitemlinktypes;
+		this.collaborators = collaborators;
+		this.filters = filters;
+		this.workitemtypegroups = workitemtypegroups;
+		this.backlog = backlog;
+	}
+	
 	public String getSelf() {
 		return self;
 	}

@@ -29,7 +29,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.IdNamed;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Space;
-import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.User;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.WorkItemTypeAttributes;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.WorkItemTypeData;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.WorkItemTypeField;
@@ -56,8 +55,6 @@ public class OSIORestConfiguration implements Serializable {
 	private Map<String, Space> spaces;
 	
 	private Map<String, Space> externalSpaces = new TreeMap<>();
-	
-	private Map<String, User> users;
 	
 	private final static String NEW = "new"; //$NON-NLS-1$
 	private final static String OPEN = "open"; //$NON-NLS-1$
@@ -328,7 +325,6 @@ public class OSIORestConfiguration implements Serializable {
 					}
 					for (Entry<String, WorkItemTypeData> entry : space.getWorkItemTypes().entrySet()) {
 						workItemTypes.add(entry.getKey());
-						WorkItemTypeData data = entry.getValue();
 					}
 				}
 				if (space.getAreas() != null) {

@@ -14,6 +14,11 @@ package org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data;
 public class LinkResponse implements SingleRestResponse<WorkItemLinkData> {
 	private WorkItemLinkData data;
 	
+	// for testing purposes only
+	public LinkResponse (WorkItemLinkData data) {
+		this.data = data;
+	}
+	
 	@Override
 	public WorkItemLinkData getData() {
 		return data;

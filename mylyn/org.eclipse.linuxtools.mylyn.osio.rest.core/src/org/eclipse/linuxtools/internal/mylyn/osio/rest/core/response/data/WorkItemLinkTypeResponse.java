@@ -12,6 +12,11 @@ package org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data;
 
 public class WorkItemLinkTypeResponse implements RestResponse<WorkItemLinkTypeData> {
 	private WorkItemLinkTypeData[] data;
+	
+	// for testing purposes only
+	public WorkItemLinkTypeResponse (WorkItemLinkTypeData[] data) {
+		this.data = data;
+	}
 
 	@Override
 	public WorkItemLinkTypeData[] getArray() {

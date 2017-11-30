@@ -82,13 +82,23 @@ public class OSIORestClient {
 
 	public static final int MAX_RETRIEVED_PER_QUERY = 50;
 
+	// use a middle-man class to perform OSIO Rest requests so that
+	// we can replace with mock-up when running tests
+	public final IOSIORestRequestProvider restRequestProvider;
+	
 	public OSIORestClient(RepositoryLocation location, OSIORestConnector connector) {
+		this(location, connector, new DefaultOSIORestRequestProvider());
+	}
+
+	public OSIORestClient(RepositoryLocation location, OSIORestConnector connector,
+			IOSIORestRequestProvider provider) {
 		client = new CommonHttpClient(location);
 		this.location = location;
 		userName = location.getProperty(IOSIORestConstants.REPOSITORY_AUTH_ID);
 		this.connector = connector;
+		this.restRequestProvider = provider;
 	}
-
+	
 	public CommonHttpClient getClient() {
 		return client;
 	}
@@ -136,7 +146,8 @@ public class OSIORestClient {
 
 	public <R extends RestResponse<E>, E extends Named> Map<String, E> retrieveItems(IOperationMonitor monitor,
 			String path, TypeToken<?> typeToken) throws OSIORestException {
-		R response = new OSIORestGetRequest<R>(client, path, typeToken).run(monitor);
+		R response = restRequestProvider.getRequest(monitor, client, path, typeToken);
+//		R response = new OSIORestGetRequest<R>(client, path, typeToken).run(monitor);
 		E[] members = response.getArray();
 		Map<String, E> map = new TreeMap<>();
 		for (E member : members) {
@@ -147,7 +158,8 @@ public class OSIORestClient {
 	
 	public <R extends RestResponse<E>, E extends Named> Map<String, E> retrieveItemsAuth(IOperationMonitor monitor,
 			String path, TypeToken<?> typeToken) throws OSIORestException {
-		R response = new OSIORestGetRequest<R>(client, path, typeToken, true).run(monitor);
+		R response = restRequestProvider.getRequest(monitor, client, path, typeToken, true);
+//		R response = new OSIORestGetRequest<R>(client, path, typeToken, true).run(monitor);
 		E[] members = response.getArray();
 		Map<String, E> map = new TreeMap<>();
 		for (E member : members) {
@@ -158,7 +170,8 @@ public class OSIORestClient {
 
 	public <R extends RestResponse<E>, E extends IdNamed> Map<String, E> retrieveItemsById(IOperationMonitor monitor,
 			String path, TypeToken<?> typeToken) throws OSIORestException {
-		R response = new OSIORestGetRequest<R>(client, path, typeToken).run(monitor);
+		R response = restRequestProvider.getRequest(monitor, client, path, typeToken);
+//		R response = new OSIORestGetRequest<R>(client, path, typeToken).run(monitor);
 		E[] members = response.getArray();
 		return Maps.uniqueIndex(Lists.newArrayList(members), new Function<E, String>() {
 			public String apply(E input) {
@@ -194,7 +207,8 @@ public class OSIORestClient {
 	
 	public User getOwnedByLink(IOperationMonitor monitor, Space space) throws OSIORestException {
 		String ownerSuffix = connector.getURLSuffix(space.getRelationships().getOwnedBy().getLinks().getRelated());
-		UserSingleResponse owner = new OSIORestGetRequest<UserSingleResponse>(client, ownerSuffix, new TypeToken<UserSingleResponse>() {}, true, true).run(monitor);
+		UserSingleResponse owner = restRequestProvider.getSingleRequest(monitor, client, ownerSuffix, new TypeToken<UserSingleResponse>() {} , true, true);
+//				new OSIORestGetRequest<UserSingleResponse>(client, ownerSuffix, new TypeToken<UserSingleResponse>() {}, true, true).run(monitor);
 		return owner.getData();
 	}
 
@@ -219,6 +233,7 @@ public class OSIORestClient {
 		});
 	}
 
+	@SuppressWarnings("deprecation")
 	public Space getSpaceById(String spaceId, TaskRepository taskRepository) throws CoreException {
 		OSIORestConfiguration config = null;
 		config = connector.getRepositoryConfiguration(taskRepository);
@@ -242,7 +257,8 @@ public class OSIORestClient {
 			if (space == null) {
 				SpaceSingleResponse spaceResponse = null;
 				try {
-					spaceResponse = new OSIORestGetRequest<SpaceSingleResponse>(client, "/spaces/" + spaceId, new TypeToken<SpaceSingleResponse>() {}).run(new NullOperationMonitor());
+					spaceResponse = restRequestProvider.getSingleRequest(new NullOperationMonitor(), client, "/spaces/" + spaceId, new TypeToken<SpaceSingleResponse>() {});
+//					spaceResponse = new OSIORestGetRequest<SpaceSingleResponse>(client, "/spaces/" + spaceId, new TypeToken<SpaceSingleResponse>() {}).run(new NullOperationMonitor());
 					space = spaceResponse.getData();
 					Map<String, WorkItemTypeData> workItemTypes = getSpaceWorkItemTypes(new NullOperationMonitor(), space);
 					space.setWorkItemTypes(workItemTypes);
@@ -311,7 +327,7 @@ public class OSIORestClient {
 			space = spaces.get(spaceAttribute.getValue());
 			String id = null;
 			try {
-				id = new OSIORestPostNewTask(client, taskData, space, connector, repository).run(monitor);
+				id = restRequestProvider.postNewTask(monitor, client, taskData, space, connector, repository);
 			} catch (CoreException e1) {
 				throw new OSIORestException(e1);
 			}
@@ -319,9 +335,7 @@ public class OSIORestClient {
 		} else {
 			TaskAttribute spaceIdAttribute = taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().SPACE_ID.getKey());
 			String spaceId = spaceIdAttribute.getValue();
-			OSIORestConfiguration config;
 			try {
-				config = connector.getRepositoryConfiguration(repository);
 				space = getSpaceById(spaceId, repository);
 			} catch (CoreException e1) {
 				throw new OSIORestException(e1);
@@ -331,7 +345,7 @@ public class OSIORestClient {
 			if (newComment != null) {
 				String value = newComment.getValue();
 				if (value != null && !value.isEmpty()) {
-					new OSIORestPostNewCommentTask(client, taskData, oldAttributes).run(monitor);
+					restRequestProvider.postNewCommentTask(monitor, client, taskData, oldAttributes);
 					newComment.setValue("");
 				}
 			}
@@ -345,7 +359,7 @@ public class OSIORestClient {
 				for (String link : links) {
 					try {
 						String id = metadata.getValue(link);
-						new OSIORestDeleteLink(client, wid, id).run(monitor);
+						restRequestProvider.deleteLink(monitor, client, wid, id);
 					} catch (Exception e) {
 						StatusHandler.log(new Status(IStatus.ERROR, OSIORestCore.ID_PLUGIN,
 								NLS.bind("Unexpected error during deletion of work item link: <{0}>", //$NON-NLS-1$
@@ -366,10 +380,9 @@ public class OSIORestClient {
 				isForward = direction.equals("forward"); //$NON-NLS-1$
 			}
 			if (linkid != null && targetid != null) {
-				new OSIORestPostNewLink(client, linkid, sourceid, targetid, isForward).run(monitor);
+				restRequestProvider.postNewLink(monitor, client, linkid, sourceid, targetid, isForward);
 			}
-			
-			new OSIORestPatchUpdateTask(client, taskData, oldAttributes, space).run(monitor);
+			restRequestProvider.patchUpdateTask(monitor, client, taskData, oldAttributes, space);
 			return new RepositoryResponse(ResponseKind.TASK_UPDATED, taskData.getTaskId());
 		}
 	}
@@ -407,7 +420,7 @@ public class OSIORestClient {
 				String query = "/namedspaces/" + user + "/" + spaceName + "/workitems/" + wiNumber; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				String wid = ""; //$NON-NLS-1$
 				try {
-				    wid = new OSIORestGetWID(client, query, taskRepository).run(monitor);
+				    wid = restRequestProvider.getWID(monitor, client, query, taskRepository);
 				} catch (OSIORestResourceMovedPermanentlyException e) {
 					Header h = e.getHeader();
 					HeaderElement[] elements = h.getElements();
@@ -419,17 +432,15 @@ public class OSIORestClient {
 					}
 				}
 				String workitemquery = "/workitems/" + wid; //$NON-NLS-1$
-				TaskData taskData = new OSIORestGetSingleTaskData(client, connector, workitemquery, taskRepository)
-						.run(monitor);
-				Map<String, Space> spaces = config.getSpaces();
+				TaskData taskData = restRequestProvider.getSingleTaskData(monitor, client, connector, workitemquery, taskRepository);
 				Space space = null;
 				String spaceId = taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().SPACE_ID.getKey()).getValue();
 				space = getSpaceById(spaceId, taskRepository);
 				
-				new OSIORestGetTaskComments(getClient(), space,taskData).run(monitor);
-				new OSIORestGetTaskCreator(getClient(), taskData).run(monitor);
-				new OSIORestGetTaskLabels(getClient(), space, taskData).run(monitor);
-				new OSIORestGetTaskLinks(getClient(), this, space, taskData, config).run(monitor);
+				restRequestProvider.getTaskComments(monitor, client, space,taskData);
+				restRequestProvider.getTaskCreator(monitor, client, taskData);
+				restRequestProvider.getTaskLabels(monitor, client, space, taskData);
+				restRequestProvider.getTaskLinks(monitor, client, this, space, taskData, config);
 				setTaskAssignees(taskData);
 				config.updateSpaceOptions(taskData);
 				config.addValidOperations(taskData);
@@ -452,7 +463,7 @@ public class OSIORestClient {
 		TaskAttribute assigneeIDs = taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().ASSIGNEE_IDS.getKey());
 		List<String> ids = assigneeIDs.getValues();
 		for (String id : ids) {
-			new OSIORestGetTaskAssignee(getClient(), id, taskData).run(new NullOperationMonitor());
+			restRequestProvider.getTaskAssignee(new NullOperationMonitor(), getClient(), id, taskData);
 		}
 	}
 
@@ -600,8 +611,7 @@ public class OSIORestClient {
 		}
 		String queryUrlSuffix = connector.getURLSuffix(queryUrl);
 		try {
-			List<TaskData> taskDataArray = new OSIORestGetTaskData(client, connector, queryUrlSuffix, taskRepository)
-					.run(monitor);
+			List<TaskData> taskDataArray = restRequestProvider.getTaskData(monitor, client, connector, queryUrlSuffix, taskRepository);
 			for (final TaskData taskData : taskDataArray) {
 				taskData.setPartial(true);
 				SafeRunner.run(new ISafeRunnable() {

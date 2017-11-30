@@ -24,6 +24,16 @@ public class WorkItemResponse implements IdNamed {
 	
 	private GenericLinksForWorkItem links;
 	
+	// for testing purposes only
+	public WorkItemResponse (String id, String type, Map<String, Object> attributes,
+			WorkItemRelationships relationships, GenericLinksForWorkItem links) {
+		this.id = id;
+		this.type = type;
+		this.attributes = attributes;
+		this.relationships = relationships;
+		this.links = links;
+	}
+	
 	public String getName() {
 		return (String)attributes.get("system.title"); //$NON-NLS-1$
 	}

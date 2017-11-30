@@ -14,6 +14,11 @@ public class SpaceListMeta {
 	
 	private int totalCount;
 	
+	// for testing purposes only
+	public SpaceListMeta (int totalCount) {
+		this.totalCount = totalCount;
+	}
+	
 	public int getTotalCount() {
 		return totalCount;
 	}

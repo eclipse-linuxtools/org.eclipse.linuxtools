@@ -22,6 +22,15 @@ public class Area implements IdNamed {
 	
 	private GenericLinks links;
 	
+	// for testing purposes only
+	public Area (String id, String type, AreaAttributes attributes, AreaRelationships relationships,
+			GenericLinks links) {
+		this.id = id;
+		this.type = type;
+		this.attributes = attributes;
+		this.relationships = relationships;
+	}
+	
 	public String getType() {
 		return type;
 	}

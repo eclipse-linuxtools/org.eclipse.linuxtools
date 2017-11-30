@@ -18,7 +18,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.IdNamed;
-import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.SortableActiveEntry;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Space;
 import org.eclipse.mylyn.commons.core.StatusHandler;
 import org.eclipse.mylyn.tasks.core.RepositoryStatus;
@@ -53,18 +52,15 @@ public class OSIORestTaskAttributeMapper extends TaskAttributeMapper {
 				// TODO: change this when we have offline cache for the repository configuration so we build the options in an temp var
 				if (repositoryConfiguration != null) {
 					if (spaceIdAttribute != null && !spaceIdAttribute.getValue().equals("")) { //$NON-NLS-1$
-						boolean found = false;
 						attribute.clearOptions();
 						for (String spaceId : spaceIdAttribute.getValues()) {
 							Space actualSpace = connector.getClient(getTaskRepository()).getSpaceById(spaceId, getTaskRepository());
-							String key = attribute.getId();
 							internalSetAttributeOptions4Space(attribute, actualSpace.getMapFor(attribute.getId()));
 						}
 					} else {
 						attribute.clearOptions();
 						for (String spaceName : spaceAttribute.getValues()) {
 							Space actualSpace = repositoryConfiguration.getSpaceWithName(spaceName);
-							String key = attribute.getId();
 							internalSetAttributeOptions4Space(attribute, actualSpace.getMapFor(attribute.getId()));
 						}
 						if (attribute.getOptions().size() == 0) {

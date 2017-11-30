@@ -20,6 +20,14 @@ public class ErrorResponse {
 	private int code;
 
 	private String documentation;
+	
+	// for testing purposes only
+	public ErrorResponse (boolean error, String message, int code, String documentation) {
+		this.error = error;
+		this.message = message;
+		this.code = code;
+		this.documentation = documentation;
+	}
 
 	public boolean isError() {
 		return error;

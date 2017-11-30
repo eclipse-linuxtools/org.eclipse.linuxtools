@@ -18,6 +18,14 @@ public class WorkItemType implements Named {
 	
 	private WorkItemTypeListMeta workItemTypeListMeta;
 	
+	// for testing purposes only
+	public WorkItemType (WorkItemTypeData workItemTypedata, PagingLinks pagingLinks,
+			WorkItemTypeListMeta workItemTypeListMeta) {
+		this.workItemTypeData = workItemTypedata;
+		this.pagingLinks = pagingLinks;
+		this.workItemTypeListMeta = workItemTypeListMeta;
+	}
+	
 	public WorkItemTypeData getWorkItemTypeData() {
 		return workItemTypeData;
 	}

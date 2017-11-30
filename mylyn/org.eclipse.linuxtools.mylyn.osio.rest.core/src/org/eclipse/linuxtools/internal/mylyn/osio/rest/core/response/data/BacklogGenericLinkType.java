@@ -16,6 +16,12 @@ public class BacklogGenericLinkType {
 	
 	private BacklogLinkMeta meta;
 	
+	// for testing purposes only
+	public BacklogGenericLinkType (String self, BacklogLinkMeta meta) {
+		this.self = self;
+		this.meta = meta;
+	}
+	
 	public String getSelf() {
 		return self;
 	}

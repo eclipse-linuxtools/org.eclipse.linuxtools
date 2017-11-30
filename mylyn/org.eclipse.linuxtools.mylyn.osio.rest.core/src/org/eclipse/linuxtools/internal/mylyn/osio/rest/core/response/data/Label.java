@@ -22,6 +22,16 @@ public class Label implements IdNamed {
 	
 	private GenericLinks links;
 	
+	// for testing purposes only
+	public Label (String type, String id, LabelAttributes attributes,
+			LabelRelationships relationships, GenericLinks links) {
+		this.id = id;
+		this.type = type;
+		this.attributes = attributes;
+		this.relationships = relationships;
+		this.links = links;
+	}
+	
 	public String getType() {
 		return type;
 	}

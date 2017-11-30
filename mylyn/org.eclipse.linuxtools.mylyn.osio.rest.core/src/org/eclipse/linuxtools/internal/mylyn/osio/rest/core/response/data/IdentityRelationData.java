@@ -16,6 +16,12 @@ public class IdentityRelationData {
 	
 	private String id;
 	
+	// for testing purposes only
+	public IdentityRelationData (String id, String type) {
+		this.id = id;
+		this.type = type;
+	}
+	
 	public String getType() {
 		return type;
 	}

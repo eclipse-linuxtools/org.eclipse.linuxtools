@@ -18,6 +18,13 @@ public class RelationGenericList {
 	
 	private Object meta;
 	
+	// for testing purposes only
+	public RelationGenericList (GenericData[] data, GenericLinks links, Object meta) {
+		this.data = data;
+		this.links = links;
+		this.meta = meta;
+	}
+	
 	public GenericData[] getData() {
 		return data;
 	}

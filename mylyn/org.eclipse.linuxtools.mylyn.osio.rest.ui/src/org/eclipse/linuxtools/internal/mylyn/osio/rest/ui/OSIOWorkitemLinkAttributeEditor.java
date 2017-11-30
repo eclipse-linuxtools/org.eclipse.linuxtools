@@ -80,6 +80,7 @@ import com.google.common.base.Strings;
  * @author Steffen Pingel
  * @author Jingwen Ou
  */
+@SuppressWarnings("restriction")
 public class OSIOWorkitemLinkAttributeEditor extends AbstractTaskEditorPart {
 
 	private static final String ID_POPUP_MENU = "org.eclipse.mylyn.tasks.ui.editor.menu.comments"; //$NON-NLS-1$

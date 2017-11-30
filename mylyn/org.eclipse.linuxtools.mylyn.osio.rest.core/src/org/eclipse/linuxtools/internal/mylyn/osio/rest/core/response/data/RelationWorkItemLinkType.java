@@ -14,6 +14,11 @@ public class RelationWorkItemLinkType {
 	
 	private RelationWorkItemLinkTypeData data;
 	
+	// for testing purposes only
+	public RelationWorkItemLinkType (RelationWorkItemLinkTypeData data) {
+		this.data = data;
+	}
+	
 	public RelationWorkItemLinkTypeData getData() {
 		return data;
 	}

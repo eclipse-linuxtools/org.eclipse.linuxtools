@@ -14,6 +14,11 @@ public class LabelRelationships {
 
 	private RelationGeneric space;
 	
+	// for testing purposes only
+	public LabelRelationships (RelationGeneric space) {
+		this.space = space;
+	}
+	
 	public RelationGeneric getSpace() {
 		return space;
 	}

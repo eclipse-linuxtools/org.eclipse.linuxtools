@@ -22,6 +22,16 @@ public class WorkItemLinkData implements Named {
 	
 	private String id;
 	
+	// for testing purposes only
+	public WorkItemLinkData (String id, String type, WorkItemLinkAttributes attributes,
+			WorkItemLinkRelationships relationships, GenericLinks links) {
+		this.id = id;
+		this.type = type;
+		this.attributes = attributes;
+		this.relationships = relationships;
+		this.links = links;
+	}
+	
 	public String getType() {
 		return type;
 	}

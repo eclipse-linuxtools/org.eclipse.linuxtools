@@ -16,6 +16,11 @@ public class WorkItemsResponse implements RestResponse<WorkItemResponse> {
 	
 	private WorkItemResponse[] data;
 	
+	// for testing purposes only
+	public WorkItemsResponse (WorkItemResponse[] data) {
+		this.data = data;
+	}
+	
 	@Override
 	public WorkItemResponse[] getArray() {
 		return data;

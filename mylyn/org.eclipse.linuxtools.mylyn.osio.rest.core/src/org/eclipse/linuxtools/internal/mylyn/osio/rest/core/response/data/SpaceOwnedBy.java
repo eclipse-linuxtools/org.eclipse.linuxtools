@@ -16,6 +16,12 @@ public class SpaceOwnedBy {
 	
 	private GenericLinks links;
 	
+	// for testing purposes only
+	public SpaceOwnedBy (IdentityRelationData data, GenericLinks links) {
+		this.data = data;
+		this.links = links;
+	}
+	
 	public IdentityRelationData getData() {
 		return data;
 	}

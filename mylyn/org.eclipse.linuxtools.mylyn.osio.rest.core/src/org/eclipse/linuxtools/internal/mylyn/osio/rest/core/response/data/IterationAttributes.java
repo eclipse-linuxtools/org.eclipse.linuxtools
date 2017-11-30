@@ -42,6 +42,24 @@ public class IterationAttributes implements Named {
 	
 	private String resolved_parent_path;
 	
+	// for testing purposes only
+	public IterationAttributes (String name, String description, String created_at,
+			String updated_at, String startAt, String endAt, String state,
+			boolean user_active, boolean active_status, String parent_path,
+			String resolved_parent_path) {
+		this.name = name;
+		this.description = description;
+		this.created_at = created_at;
+		this.updated_at = updated_at;
+		this.startAt = startAt;
+		this.endAt = endAt;
+		this.state = state;
+		this.user_active = user_active;
+		this.active_status = active_status;
+		this.parent_path = parent_path;
+		this.resolved_parent_path = resolved_parent_path;
+	}
+	
 	public String getName() {
 		return name;
 	}

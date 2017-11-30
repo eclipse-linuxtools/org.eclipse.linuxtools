@@ -16,6 +16,12 @@ public class RelationBaseType {
 	
 	private GenericLinks links;
 	
+	// for testing purposes only
+	public RelationBaseType (BaseTypeData data, GenericLinks links) {
+		this.data = data;
+		this.links = links;
+	}
+	
 	public BaseTypeData getData() {
 		return data;
 	}

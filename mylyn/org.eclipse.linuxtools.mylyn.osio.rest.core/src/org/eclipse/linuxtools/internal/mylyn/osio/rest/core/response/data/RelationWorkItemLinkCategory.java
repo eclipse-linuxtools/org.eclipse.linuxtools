@@ -16,6 +16,13 @@ public class RelationWorkItemLinkCategory {
 	
 	private GenericLinks links;
 	
+	// for testing purposes only
+	public RelationWorkItemLinkCategory (RelationWorkItemLinkCategoryData data,
+			GenericLinks links) {
+		this.data = data;
+		this.links = links;
+	}
+	
 	public RelationWorkItemLinkCategoryData getData() {
 		return data;
 	}

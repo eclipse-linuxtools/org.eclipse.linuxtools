@@ -110,6 +110,7 @@ public class OSIORestGetSingleTaskData extends OSIORestGetRequest<TaskData> {
 
 	private class JSonTaskDataDeserializer implements JsonDeserializer<TaskData> {
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public TaskData deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
@@ -173,7 +174,6 @@ public class OSIORestGetSingleTaskData extends OSIORestGetRequest<TaskData> {
 			}
 
 			String spaceName = actualSpace.getName();
-			String ownedByLink = actualSpace.getRelationships().getOwnedBy().getLinks().getSelf();
 			User owner = null;
 			try {
 				owner = restClient.getOwnedByLink(new NullOperationMonitor(), actualSpace);

@@ -22,6 +22,15 @@ public class PagingLinks {
 	
 	private String filters;
 	
+	// for testing purposes only
+	public PagingLinks (String prev, String next, String first, String last, String filters) {
+		this.prev = prev;
+		this.next = next;
+		this.first = first;
+		this.last = last;
+		this.filters = filters;
+	}
+	
 	public String getPrev() {
 		return prev;
 	}

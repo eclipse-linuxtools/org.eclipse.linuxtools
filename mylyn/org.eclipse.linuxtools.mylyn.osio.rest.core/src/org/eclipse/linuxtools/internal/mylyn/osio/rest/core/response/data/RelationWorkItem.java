@@ -14,6 +14,11 @@ public class RelationWorkItem {
 	
 	private RelationWorkItemData data;
 	
+	// for testing purposes only
+	public RelationWorkItem (RelationWorkItemData data) {
+		this.data = data;
+	}
+	
 	public RelationWorkItemData getData() {
 		return data;
 	}

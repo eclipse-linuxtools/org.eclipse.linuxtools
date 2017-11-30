@@ -16,6 +16,11 @@ public class UsersResponse implements RestResponse<User> {
 	
 	private User[] data;
 	
+	// for testing purposes only
+	public UsersResponse (User[] data) {
+		this.data = data;
+	}
+	
 	@Override
 	public User[] getArray() {
 		return data;

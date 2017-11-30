@@ -24,6 +24,13 @@ public class WorkItemLinkTypeAttributes implements Named {
 	
 	private int version;
 	
+	// for testing purposes only
+	public WorkItemLinkTypeAttributes (String name, String description, int version) {
+		this.name = name;
+		this.description = description;
+		this.version = version;
+	}
+	
 	@SerializedName("created-at")
 	private String created_at;
 	

@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+@SuppressWarnings("restriction")
 public class OSIORestTaskEditorAttributePart extends TaskEditorAttributePart {
 
 	private static final int LABEL_WIDTH = 220;

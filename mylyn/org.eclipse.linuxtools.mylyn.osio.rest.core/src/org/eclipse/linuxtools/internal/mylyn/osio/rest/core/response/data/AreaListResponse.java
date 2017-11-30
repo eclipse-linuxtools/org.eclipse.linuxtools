@@ -18,6 +18,13 @@ public class AreaListResponse implements RestResponse<Area> {
 	private PagingLinks links;
 	
 	private SpaceListMeta meta;
+	
+	// for testing purposes only
+	public AreaListResponse (Area[] data, PagingLinks links, SpaceListMeta meta) {
+		this.data = data;
+		this.links = links;
+		this.meta = meta;
+	}
 
 	@Override
 	public Area[] getArray() {

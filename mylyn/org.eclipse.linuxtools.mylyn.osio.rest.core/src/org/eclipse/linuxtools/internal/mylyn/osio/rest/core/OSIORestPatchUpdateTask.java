@@ -44,7 +44,6 @@ import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
 import org.eclipse.mylyn.tasks.core.data.TaskAttribute;
 import org.eclipse.mylyn.tasks.core.data.TaskData;
 
-import com.google.common.base.Function;
 import com.google.common.base.Throwables;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -73,6 +72,10 @@ public class OSIORestPatchUpdateTask extends OSIORestPatchRequest<TaskData> {
 			super();
 			this.oldAttributes = oldAttributes;
 		}
+		
+		public Set<TaskAttribute> getOldAttributes() {
+			return oldAttributes;
+		}
 
 	}
 
@@ -86,14 +89,6 @@ public class OSIORestPatchUpdateTask extends OSIORestPatchRequest<TaskData> {
 			super();
 			this.location = location;
 		}
-
-		private final Function<String, String> function = new Function<String, String>() {
-
-			@Override
-			public String apply(String input) {
-				return OSIORestGsonUtil.convertString2GSonString(input);
-			}
-		};
 
 		@Override
 		public void write(JsonWriter out, OldAttributes oldValues) throws IOException {
@@ -131,7 +126,6 @@ public class OSIORestPatchUpdateTask extends OSIORestPatchRequest<TaskData> {
 			out.name("data"); //$NON-NLS-1$
 			out.beginObject();
 			attribute = taskData.getRoot().getAttribute(taskSchema.SPACE.getKey());
-			String spaceName = attribute.getValue();
 			out.name("id").value(space.getId()); //$NON-NLS-1$
 			out.name("type").value("spaces"); //$NON-NLS-1$ //$NON-NLS-2$
 			out.endObject(); // space data
@@ -307,6 +301,7 @@ public class OSIORestPatchUpdateTask extends OSIORestPatchRequest<TaskData> {
 
 	List<NameValuePair> requestParameters;
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void addHttpRequestEntities(HttpRequestBase request) throws OSIORestException {
 		super.addHttpRequestEntities(request);
@@ -352,6 +347,7 @@ public class OSIORestPatchUpdateTask extends OSIORestPatchRequest<TaskData> {
 
 	private class JSonTaskDataDeserializer implements JsonDeserializer<TaskData> {
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public TaskData deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {

@@ -37,6 +37,19 @@ public class WorkItemTypeAttributes {
 	
 	private String icon;
 	
+	// for testing purposes only
+	public WorkItemTypeAttributes (String name, String description, int version,
+			String extendedTypeName, String created_at, String updated_at,
+			Map<String, WorkItemTypeField> fields) {
+		this.name = name;
+		this.description = description;
+		this.version = version;
+		this.extendedTypeName = extendedTypeName;
+		this.created_at = created_at;
+		this.updated_at = updated_at;
+		this.fields = fields;
+	}
+	
 	public String getName() {
 		return name;
 	}

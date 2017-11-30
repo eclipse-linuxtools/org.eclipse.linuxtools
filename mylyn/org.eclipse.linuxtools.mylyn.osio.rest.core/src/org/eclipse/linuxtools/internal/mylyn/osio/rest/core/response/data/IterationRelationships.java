@@ -18,6 +18,14 @@ public class IterationRelationships {
 	
 	private RelationGeneric workitems;
 	
+	// for testing purposes only
+	public IterationRelationships (RelationGeneric space, RelationGeneric parent,
+			RelationGeneric workitems) {
+		this.space = space;
+		this.parent = parent;
+		this.workitems = workitems;
+	}
+	
 	public RelationGeneric getSpace() {
 		return space;
 	}

@@ -13,6 +13,11 @@ package org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data;
 
 public class UserSingleResponse implements SingleRestResponse<User> {
 	private User data;
+	
+	// for testing purposes only
+	public UserSingleResponse (User data) {
+		this.data = data;
+	}
 
 	public User getData() {
 		return data;

@@ -16,6 +16,7 @@ import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
 
+@SuppressWarnings("restriction")
 public abstract class OSIORestPatchRequest<T> extends OSIORestRequest<T> {
 
 	public OSIORestPatchRequest(CommonHttpClient client, String urlSuffix, boolean authenticationRequired) {

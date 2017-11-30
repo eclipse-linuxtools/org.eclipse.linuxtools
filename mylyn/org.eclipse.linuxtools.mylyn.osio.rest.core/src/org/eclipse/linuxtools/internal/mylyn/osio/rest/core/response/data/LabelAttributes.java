@@ -37,6 +37,19 @@ public class LabelAttributes implements Named {
 	@SerializedName("border-color")
 	private String border_color;
 	
+	// for testing purposes only
+	public LabelAttributes (String name, String created_at, String updated_at,
+			String version, String text_color, String background_color,
+			String border_color) {
+		this.name = name;
+		this.created_at = created_at;
+		this.updated_at = updated_at;
+		this.version = version;
+		this.text_color = text_color;
+		this.background_color = background_color;
+		this.border_color = border_color;
+	}
+	
 	public String getName() {
 		return name;
 	}

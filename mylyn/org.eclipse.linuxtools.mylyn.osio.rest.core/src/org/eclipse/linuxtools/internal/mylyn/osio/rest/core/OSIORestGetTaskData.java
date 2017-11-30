@@ -58,6 +58,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
+@SuppressWarnings("restriction")
 public class OSIORestGetTaskData extends OSIORestGetRequest<List<TaskData>> {
 
 	private final TaskRepository taskRepository;
@@ -66,7 +67,7 @@ public class OSIORestGetTaskData extends OSIORestGetRequest<List<TaskData>> {
 
 	private final OSIORestConnector connector;
 
-	public OSIORestGetTaskData(@SuppressWarnings("restriction") CommonHttpClient client, OSIORestConnector connector, String urlSuffix,
+	public OSIORestGetTaskData(CommonHttpClient client, OSIORestConnector connector, String urlSuffix,
 			TaskRepository taskRepository) throws CoreException {
 		super(client, urlSuffix, null); //$NON-NLS-1$
 		this.client = client;
@@ -111,6 +112,7 @@ public class OSIORestGetTaskData extends OSIORestGetRequest<List<TaskData>> {
 
 	private class JSonTaskDataDeserializer implements JsonDeserializer<ArrayList<TaskData>> {
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public ArrayList<TaskData> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {

@@ -18,6 +18,13 @@ public class IterationListResponse implements RestResponse<Iteration> {
 	private PagingLinks links;
 	
 	private SpaceListMeta meta;
+	
+	// for testing purposes only
+	public IterationListResponse (Iteration[] data, PagingLinks links, SpaceListMeta meta) {
+		this.data = data;
+		this.links = links;
+		this.meta = meta;
+	}
 
 	@Override
 	public Iteration[] getArray() {

@@ -16,6 +16,12 @@ public class RelationWorkItemLinkTypeData {
 	
 	private String type;
 	
+	// for testing purposes only
+	public RelationWorkItemLinkTypeData (String id, String type) {
+		this.id = id;
+		this.type = type;
+	}
+	
 	public String getId() {
 		return id;
 	}

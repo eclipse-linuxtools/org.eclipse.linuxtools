@@ -18,6 +18,13 @@ public class GenericLinks {
 	
 	private Object meta;
 	
+	// for testing purposes only
+	public GenericLinks (String self, String related, Object meta) {
+		this.self = self;
+		this.related = related;
+		this.meta = meta;
+	}
+	
 	public String getSelf() {
 		return self;
 	}

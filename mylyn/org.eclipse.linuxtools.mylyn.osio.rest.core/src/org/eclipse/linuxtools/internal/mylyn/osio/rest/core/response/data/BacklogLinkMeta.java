@@ -14,6 +14,11 @@ public class BacklogLinkMeta {
 	
 	public int totalCount;
 	
+	// for testing purposes only
+	public BacklogLinkMeta (int totalCount) {
+		this.totalCount = totalCount;
+	}
+	
 	public int getTotalCount() {
 		return totalCount;
 	}

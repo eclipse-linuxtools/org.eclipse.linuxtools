@@ -14,6 +14,11 @@ package org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data;
 public class LabelResponse implements SingleRestResponse<Label> {
 	private Label data;
 	
+	// for testing purposes only
+	public LabelResponse (Label data) {
+		this.data = data;
+	}
+	
 	@Override
 	public Label getData() {
 		return data;

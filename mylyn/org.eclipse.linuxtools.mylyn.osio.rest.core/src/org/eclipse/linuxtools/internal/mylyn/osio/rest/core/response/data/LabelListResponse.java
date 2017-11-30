@@ -18,6 +18,13 @@ public class LabelListResponse implements RestResponse<Label> {
 	private PagingLinks links;
 	
 	private SpaceListMeta meta;
+	
+	// for testing purposes only
+	public LabelListResponse (Label[] data, PagingLinks links, SpaceListMeta meta) {
+		this.data = data;
+		this.links = links;
+		this.meta = meta;
+	}
 
 	@Override
 	public Label[] getArray() {

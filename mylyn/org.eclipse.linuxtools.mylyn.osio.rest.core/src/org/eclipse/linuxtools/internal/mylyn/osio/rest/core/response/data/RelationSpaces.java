@@ -12,10 +12,15 @@ package org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data;
 
 public class RelationSpaces {
 	
-	private RelationSpaces relationspaces;
+	private RelationSpacesData data;
 	
-	public RelationSpaces getRelationSpaces() {
-		return relationspaces;
+	// for testing purposes only
+	public RelationSpaces (RelationSpacesData data) {
+		this.data = data;
+	}
+	
+	public RelationSpacesData getRelationSpacesData() {
+		return data;
 	}
 
 }

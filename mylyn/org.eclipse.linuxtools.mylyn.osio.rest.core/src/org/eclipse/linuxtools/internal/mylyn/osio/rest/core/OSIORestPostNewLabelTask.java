@@ -31,7 +31,6 @@ import org.eclipse.mylyn.commons.core.operations.IOperationMonitor;
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpResponse;
 
-import com.google.common.base.Function;
 import com.google.common.base.Throwables;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -40,9 +39,9 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+@SuppressWarnings("restriction")
 public class OSIORestPostNewLabelTask extends OSIORestPostRequest<LabelResponse> {
 
-	private final CommonHttpClient client;
 	private final String newLabel;
 
 	class TaskAttributeTypeAdapter extends TypeAdapter<String> {
@@ -50,14 +49,6 @@ public class OSIORestPostNewLabelTask extends OSIORestPostRequest<LabelResponse>
 		public TaskAttributeTypeAdapter() {
 			super();
 		}
-
-		private final Function<String, String> function = new Function<String, String>() {
-
-			@Override
-			public String apply(String input) {
-				return OSIORestGsonUtil.convertString2GSonString(input);
-			}
-		};
 
 		@Override
 		public void write(JsonWriter out, String newLabel) throws IOException {
@@ -89,12 +80,12 @@ public class OSIORestPostNewLabelTask extends OSIORestPostRequest<LabelResponse>
 		super(client, "/spaces/" + //$NON-NLS-1$ 
 				space.getId() + 
 				"/labels", true); //$NON-NLS-1$
-		this.client = client;
 		this.newLabel = newLabel;
 	}
 
 	List<NameValuePair> requestParameters;
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void addHttpRequestEntities(HttpRequestBase request) throws OSIORestException {
 		super.addHttpRequestEntities(request);

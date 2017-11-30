@@ -20,6 +20,15 @@ public class WorkItemTypeData implements IdNamed {
 	
 	private WorkItemTypeRelationships relationships;
 	
+	// for testing purposes only
+	public WorkItemTypeData (String id, String type, WorkItemTypeAttributes attributes,
+			WorkItemTypeRelationships relationships) {
+		this.id = id;
+		this.type = type;
+		this.attributes = attributes;
+		this.relationships = relationships;
+	}
+	
 	public String getId() {
 		return id;
 	}

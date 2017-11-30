@@ -28,6 +28,20 @@ public class WorkItemTypeRelationships {
 	
 	private RelationGeneric children;
 	
+	// for testing purposes only
+	public WorkItemTypeRelationships (RelationSpaces space, RelationGenericList assignees,
+			RelationGeneric creator, RelationBaseType baseType, RelationGeneric comments,
+			RelationGeneric iteration, RelationGeneric area, RelationGeneric children) {
+		this.space = space;
+		this.assignees = assignees;
+		this.creator = creator;
+		this.baseType = baseType;
+		this.comments = comments;
+		this.iteration = iteration;
+		this.area = area;
+		this.children = children;
+	}
+	
 	public RelationSpaces getSpace() {
 		return space;
 	}

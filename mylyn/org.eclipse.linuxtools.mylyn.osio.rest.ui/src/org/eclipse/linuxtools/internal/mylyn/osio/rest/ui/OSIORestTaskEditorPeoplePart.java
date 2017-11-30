@@ -27,6 +27,7 @@ import org.eclipse.mylyn.tasks.ui.editors.LayoutHint;
 import org.eclipse.mylyn.tasks.ui.editors.LayoutHint.RowSpan;
 import org.eclipse.swt.SWT;
 
+@SuppressWarnings("restriction")
 public class OSIORestTaskEditorPeoplePart extends TaskEditorPeoplePart {
 
 	@Override

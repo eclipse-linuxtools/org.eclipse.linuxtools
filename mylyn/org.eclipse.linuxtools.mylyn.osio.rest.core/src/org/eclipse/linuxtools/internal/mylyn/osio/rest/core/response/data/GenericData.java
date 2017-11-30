@@ -18,6 +18,13 @@ public class GenericData {
 	
 	private GenericLinks links;
 	
+	// for testing purposes only
+	public GenericData (String id, String type, GenericLinks links) {
+		this.id = id;
+		this.type = type;
+		this.links = links;
+	}
+	
 	public String getId() {
 		return id;
 	}

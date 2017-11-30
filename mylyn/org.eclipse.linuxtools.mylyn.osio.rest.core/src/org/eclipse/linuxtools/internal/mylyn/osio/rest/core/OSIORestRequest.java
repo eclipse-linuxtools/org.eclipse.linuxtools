@@ -45,6 +45,7 @@ import org.eclipse.osgi.util.NLS;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+@SuppressWarnings("restriction")
 public abstract class OSIORestRequest<T> extends CommonHttpOperation<T> {
 	protected static final String ACCEPT = "Accept"; //$NON-NLS-1$
 
@@ -108,6 +109,7 @@ public abstract class OSIORestRequest<T> extends CommonHttpOperation<T> {
 		return baseUrl() + urlSuffix;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private Function<IResource, String> getProvider() {
 		IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor("org.jboss.tools.openshift.io.core.tokenProvider"); //$NON-NLS-1$
 		for(IConfigurationElement element : elements) {

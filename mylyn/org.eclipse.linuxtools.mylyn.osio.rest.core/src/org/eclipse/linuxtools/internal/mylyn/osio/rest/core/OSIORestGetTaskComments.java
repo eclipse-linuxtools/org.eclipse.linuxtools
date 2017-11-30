@@ -42,14 +42,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
+@SuppressWarnings("restriction")
 public class OSIORestGetTaskComments extends OSIORestGetRequest<ArrayList<TaskAttribute>> {
 	
 	private final TaskData taskData;
 	private final Space space;
-	@SuppressWarnings("restriction")
 	private final CommonHttpClient client;
 
-	public OSIORestGetTaskComments(@SuppressWarnings("restriction") CommonHttpClient client, Space space, TaskData taskData) {
+	public OSIORestGetTaskComments(CommonHttpClient client, Space space, TaskData taskData) {
 		super(client, "/workitems/" + taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().UUID.getKey()).getValue() + "/comments", null); //$NON-NLS-1$ //$NON-NLS-2$
 		this.taskData = taskData;
 		this.space = space;
@@ -69,6 +69,7 @@ public class OSIORestGetTaskComments extends OSIORestGetRequest<ArrayList<TaskAt
 
 	private class JSonTaskDataDeserializer implements JsonDeserializer<ArrayList<TaskAttribute>> {
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public ArrayList<TaskAttribute> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {

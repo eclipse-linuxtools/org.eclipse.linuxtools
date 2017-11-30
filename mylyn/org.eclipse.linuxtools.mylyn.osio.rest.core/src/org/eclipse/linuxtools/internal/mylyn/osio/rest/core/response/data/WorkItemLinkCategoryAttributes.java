@@ -18,6 +18,13 @@ public class WorkItemLinkCategoryAttributes {
 	
 	private int version;
 	
+	// for testing purposes only
+	public WorkItemLinkCategoryAttributes (String name, String description, int version) {
+		this.name = name;
+		this.description = description;
+		this.version = version;
+	}
+	
 	public String getName() {
 		return name;
 	}

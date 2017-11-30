@@ -20,6 +20,15 @@ public class GenericLinksForWorkItem {
 	
 	private Object meta;
 	
+	// for testing purposes only
+	public GenericLinksForWorkItem (String self, String related, String editCodebase,
+			Object meta) {
+		this.self = self;
+		this.related = related;
+		this.editCodebase = editCodebase;
+		this.meta = meta;
+	}
+	
 	public String getSelf() {
 		return self;
 	}

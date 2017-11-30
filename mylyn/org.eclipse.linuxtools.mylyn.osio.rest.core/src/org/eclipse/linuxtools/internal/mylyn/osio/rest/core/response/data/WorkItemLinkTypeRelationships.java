@@ -16,6 +16,13 @@ public class WorkItemLinkTypeRelationships {
 	
 	private RelationSpaces spaces;
 	
+	// for testing purposes only
+	public WorkItemLinkTypeRelationships (RelationWorkItemLinkCategory link_category,
+			RelationSpaces spaces) {
+		this.link_category = link_category;
+		this.spaces = spaces;
+	}
+	
 	public RelationWorkItemLinkCategory getLinkCategory() {
 		return link_category;
 	}

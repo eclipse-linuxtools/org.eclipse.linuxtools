@@ -14,6 +14,11 @@ package org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data;
 public class SpaceSingleResponse implements SingleRestResponse<Space> {
 	private Space data;
 
+	// for testing purposes only
+	public SpaceSingleResponse (Space data) {
+		this.data = data;
+	}
+	
 	public Space getData() {
 		return data;
 	}

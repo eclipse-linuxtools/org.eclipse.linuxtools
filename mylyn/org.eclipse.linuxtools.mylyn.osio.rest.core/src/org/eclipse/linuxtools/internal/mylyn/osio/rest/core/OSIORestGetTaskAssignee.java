@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
 import org.eclipse.mylyn.tasks.core.data.TaskAttribute;
-import org.eclipse.mylyn.tasks.core.data.TaskAttributeMetaData;
 import org.eclipse.mylyn.tasks.core.data.TaskData;
 
 import com.google.gson.GsonBuilder;
@@ -29,18 +28,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
+@SuppressWarnings("restriction")
 public class OSIORestGetTaskAssignee extends OSIORestGetRequest<TaskAttribute> {
 	
 	private final TaskData taskData;
-	private final String id;
-	@SuppressWarnings("restriction")
-	private final CommonHttpClient client;
 
-	public OSIORestGetTaskAssignee(@SuppressWarnings("restriction") CommonHttpClient client, String id, TaskData taskData) {
+	public OSIORestGetTaskAssignee(CommonHttpClient client, String id, TaskData taskData) {
 		super(client, "/users/" + id, null); //$NON-NLS-1$
 		this.taskData = taskData;
-		this.id = id;
-		this.client = client;
 	}
 
 	@Override

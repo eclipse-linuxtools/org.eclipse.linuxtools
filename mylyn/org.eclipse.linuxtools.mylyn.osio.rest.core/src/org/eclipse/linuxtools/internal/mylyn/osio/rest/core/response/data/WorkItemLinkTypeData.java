@@ -22,6 +22,16 @@ public class WorkItemLinkTypeData implements IdNamed {
 	
 	private GenericLinks links;
 	
+	// for testing purposes only
+	public WorkItemLinkTypeData (String id, String type, WorkItemLinkTypeAttributes attributes,
+			WorkItemLinkTypeRelationships relationships, GenericLinks links) {
+		this.id = id;
+		this.type = type;
+		this.attributes = attributes;
+		this.relationships = relationships;
+		this.links = links;
+	}
+	
 	public String getType() {
 		return type;
 	}

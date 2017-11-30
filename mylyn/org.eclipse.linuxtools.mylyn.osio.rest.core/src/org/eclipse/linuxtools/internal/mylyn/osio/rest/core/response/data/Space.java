@@ -68,6 +68,16 @@ public class Space implements IdNamed {
 		}
 	}
 		
+	// for testing purposes only
+	public Space(String id, String type, SpaceAttributes attributes, SpaceRelationships relationships,
+			GenericLinksForSpace links) {
+		this.id = id;
+		this.type = type;
+		this.attributes = attributes;
+		this.relationships = relationships;
+		this.links = links;
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -169,6 +179,8 @@ public class Space implements IdNamed {
 				statusNamed.put("closed", new Status("closed")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			return statusNamed;
+		} else if ("labels".equals(member)) {
+			return labelsIdNamed;
 		}
 		return null;
 	}

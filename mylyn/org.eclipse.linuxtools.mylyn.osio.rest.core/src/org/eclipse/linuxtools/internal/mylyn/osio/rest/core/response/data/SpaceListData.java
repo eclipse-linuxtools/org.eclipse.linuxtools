@@ -24,6 +24,17 @@ public class SpaceListData implements IdNamed {
 	
 	private SpaceListMeta spaceListMeta;
 	
+	// for testing purposes only
+	public SpaceListData (String id, SpaceAttributes attributes, GenericLinksForSpace spaceLinks,
+			SpaceRelationships relationships, PagingLinks pagingLinks, SpaceListMeta spaceListMeta) {
+		this.id = id;
+		this.attributes = attributes;
+		this.spaceLinks = spaceLinks;
+		this.relationships = relationships;
+		this.pagingLinks = pagingLinks;
+		this.spaceListMeta = spaceListMeta;
+	}
+	
 	public String getId() {
 		return id; 
 	}

@@ -122,6 +122,7 @@ public class OSIORestPostNewLink extends OSIORestPostRequest<LinkResponse> {
 
 	List<NameValuePair> requestParameters;
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void addHttpRequestEntities(HttpRequestBase request) throws OSIORestException {
 		super.addHttpRequestEntities(request);

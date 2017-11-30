@@ -20,6 +20,15 @@ public class RelationWorkItemLinkCategoryData {
 	
 	private GenericLinks links;
 	
+	// for testing purposes only
+	public RelationWorkItemLinkCategoryData (String id, String type,
+			WorkItemLinkCategoryAttributes attributes, GenericLinks links) {
+		this.id = id;
+		this.type = type;
+		this.attributes = attributes;
+		this.links = links;
+	}
+	
 	public String getType() {
 		return type;
 	}

@@ -16,6 +16,7 @@ import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
 
 import com.google.gson.reflect.TypeToken;
 
+@SuppressWarnings("restriction")
 public class OSIORestUnauthenticatedGetRequest<T> extends OSIORestGetRequest<T> {
 
 	public OSIORestUnauthenticatedGetRequest(CommonHttpClient client, String urlSuffix, TypeToken<?> responseType) {

@@ -22,6 +22,16 @@ public class Iteration implements IdNamed {
 	
 	private GenericLinks links;
 	
+	// for testing purposes only
+	public Iteration (String id, String type, IterationAttributes attributes,
+			IterationRelationships relationships, GenericLinks links) {
+		this.id = id;
+		this.type = type;
+		this.attributes = attributes;
+		this.relationships = relationships;
+		this.links = links;
+	}
+	
 	public String getType() {
 		return type;
 	}

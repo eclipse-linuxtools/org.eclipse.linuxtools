@@ -38,7 +38,6 @@ import org.eclipse.mylyn.tasks.core.data.TaskAttribute;
 import org.eclipse.mylyn.tasks.core.data.TaskCommentMapper;
 import org.eclipse.mylyn.tasks.core.data.TaskData;
 
-import com.google.common.base.Function;
 import com.google.common.base.Throwables;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -52,6 +51,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+@SuppressWarnings("restriction")
 public class OSIORestPostNewCommentTask extends OSIORestPostRequest<TaskAttribute> {
 
 	private final TaskData taskData;
@@ -77,14 +77,6 @@ public class OSIORestPostNewCommentTask extends OSIORestPostRequest<TaskAttribut
 			super();
 			this.location = location;
 		}
-
-		private final Function<String, String> function = new Function<String, String>() {
-
-			@Override
-			public String apply(String input) {
-				return OSIORestGsonUtil.convertString2GSonString(input);
-			}
-		};
 
 		@Override
 		public void write(JsonWriter out, OldAttributes oldValues) throws IOException {
@@ -130,6 +122,7 @@ public class OSIORestPostNewCommentTask extends OSIORestPostRequest<TaskAttribut
 
 	List<NameValuePair> requestParameters;
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void addHttpRequestEntities(HttpRequestBase request) throws OSIORestException {
 		super.addHttpRequestEntities(request);
@@ -177,6 +170,7 @@ public class OSIORestPostNewCommentTask extends OSIORestPostRequest<TaskAttribut
 
 	private class JSonTaskDataDeserializer implements JsonDeserializer<TaskAttribute> {
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public TaskAttribute deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {

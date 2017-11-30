@@ -46,6 +46,25 @@ public class UserAttributes implements Named {
 	
 	private String providerType;
 	
+	// for testing purposes only
+	public UserAttributes (String userID, String identityID, Date created_at, Date updated_at,
+			String fullName, String imageURL, String username, Boolean registrationCompleted,
+			String email, String company, String bio, String url, String providerType) {
+		this.userID = userID;
+		this.identityID = identityID;
+		this.created_at = created_at;
+		this.updated_at = updated_at;
+		this.fullName = fullName;
+		this.imageURL = imageURL;
+		this.username = username;
+		this.registrationCompleted = registrationCompleted;
+		this.email = email;
+		this.company = company;
+		this.bio = bio;
+		this.url = url;
+		this.providerType = providerType;
+	}
+	
 	public String getName() {
 		return username;
 	}

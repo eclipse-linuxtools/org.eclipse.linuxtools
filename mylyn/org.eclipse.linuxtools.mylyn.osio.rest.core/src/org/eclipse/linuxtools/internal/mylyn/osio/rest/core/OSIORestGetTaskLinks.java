@@ -68,6 +68,7 @@ public class OSIORestGetTaskLinks extends OSIORestGetRequest<TaskAttribute> {
 
 	private class JSonTaskDataDeserializer implements JsonDeserializer<TaskAttribute> {
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public TaskAttribute deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {

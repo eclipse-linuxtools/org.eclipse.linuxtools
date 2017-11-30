@@ -28,6 +28,7 @@ import org.eclipse.osgi.util.NLS;
 /**
  * @author Rob Elves
  */
+@SuppressWarnings("restriction")
 public class OSIOKeywordAttributeEditor extends CheckboxMultiSelectAttributeEditor {
 
 	public OSIOKeywordAttributeEditor(TaskDataModel manager, TaskAttribute taskAttribute) {

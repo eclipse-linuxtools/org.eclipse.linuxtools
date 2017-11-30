@@ -20,6 +20,15 @@ public class WorkItemTypeFieldType {
 	
 	private String[] values;
 	
+	// for testing purposes only
+	public WorkItemTypeFieldType (String kind, String baseType, String componentType,
+			String[] values) {
+		this.kind = kind;
+		this.baseType = baseType;
+		this.componentType = componentType;
+		this.values = values;
+	}
+	
 	public String getKind() {
 		return kind;
 	}
