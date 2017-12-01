@@ -244,6 +244,10 @@ public class LibHover implements ICHelpProvider {
         }
     }
 
+    public LibHover () {
+    	getLibHoverDocs();
+    }
+    
     @Override
     public void initialize() {
         getLibHoverDocs();
