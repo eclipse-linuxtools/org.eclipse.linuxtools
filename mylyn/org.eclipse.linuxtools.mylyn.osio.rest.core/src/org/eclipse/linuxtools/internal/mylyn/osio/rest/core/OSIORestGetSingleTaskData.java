@@ -74,6 +74,11 @@ public class OSIORestGetSingleTaskData extends OSIORestGetRequest<TaskData> {
 		this.connector = connector;
 	}
 
+	// for testing purposes only
+	public TaskData testParseFromJson(InputStreamReader in) throws OSIORestException {
+		return parseFromJson(in);
+	}
+	
 	@Override
 	protected TaskData parseFromJson(InputStreamReader in) throws OSIORestException {
 		TypeToken<TaskData> type = new TypeToken<TaskData>() {
@@ -141,16 +146,11 @@ public class OSIORestGetSingleTaskData extends OSIORestGetRequest<TaskData> {
 			}
 			if (actualSpace == null) {
 				Map<String, Space> externalSpaces = taskConfiguration.getExternalSpaces();
-				for (Space entry : externalSpaces.values()) {
-					if (entry.getId().equals(spaceId)) {
-						actualSpace = entry;
-						break;
-					}
-				}
+				actualSpace = externalSpaces.get(spaceId);
 				if (actualSpace == null) {
 					SpaceSingleResponse spaceResponse = null;
 					try {
-						spaceResponse = new OSIORestGetRequest<SpaceSingleResponse>(client, "/spaces/" + spaceId, new TypeToken<SpaceSingleResponse>() {}).run(new NullOperationMonitor());
+						spaceResponse = restClient.getSpace(new NullOperationMonitor(), spaceId);
 						actualSpace = spaceResponse.getData();
 						Map<String, WorkItemTypeData> workItemTypes = restClient.getSpaceWorkItemTypes(new NullOperationMonitor(), actualSpace);
 						actualSpace.setWorkItemTypes(workItemTypes);
@@ -169,7 +169,7 @@ public class OSIORestGetSingleTaskData extends OSIORestGetRequest<TaskData> {
 								new CoreException(new Status(IStatus.ERROR, OSIORestCore.ID_PLUGIN,
 										"Can not find Space (" + spaceId + ")"))); //$NON-NLS-1$ //$NON-NLS-2$
 					}
-					externalSpaces.put(actualSpace.getName(), actualSpace);
+					externalSpaces.put(actualSpace.getId(), actualSpace);
 				}
 			}
 

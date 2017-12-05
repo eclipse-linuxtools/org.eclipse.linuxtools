@@ -210,6 +210,17 @@ public class OSIORestConnector extends AbstractRepositoryConnector {
 		}
 	}
 
+	public OSIORestClient getClient(TaskRepository repository, IOSIORestRequestProvider provider) throws CoreException {
+		try {
+			RepositoryLocation location = new RepositoryLocation(convertProperties(repository));
+			OSIORestClient newClient = new OSIORestClient(location, this, provider);
+			clientCache.put(new RepositoryKey(repository), newClient);
+			return newClient;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	@Override
 	public boolean canCreateNewTask(TaskRepository repository) {
@@ -445,7 +456,12 @@ public class OSIORestConnector extends AbstractRepositoryConnector {
 
 			@Override
 			public String getTaskUrl() {
-				return taskData.getRepositoryUrl();
+				TaskAttribute attribute = getTaskData().getRoot()
+						.getAttribute(OSIORestTaskSchema.getDefault().TASK_URL.getKey());
+				if (attribute != null) {
+					return attribute.getValue();
+				}
+				return super.getTaskUrl();
 			}
 		};
 	}

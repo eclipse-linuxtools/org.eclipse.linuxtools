@@ -102,6 +102,10 @@ public class OSIORestClient {
 	public CommonHttpClient getClient() {
 		return client;
 	}
+	
+	public IOSIORestRequestProvider getRequestProvider() {
+		return restRequestProvider;
+	}
 
 	public boolean validate(IOperationMonitor monitor) throws OSIORestException {
 		RepositoryLocation location = getClient().getLocation();
@@ -109,7 +113,7 @@ public class OSIORestClient {
 //			UserCredentials credentials = location.getCredentials(AuthenticationType.REPOSITORY);
 //			Preconditions.checkState(credentials != null, "Authentication requested without valid credentials");
 			String userName = location.getProperty(IOSIORestConstants.REPOSITORY_AUTH_ID);
-			OSIORestUser response = new OSIORestGetAuthUser(client).run(monitor);
+			OSIORestUser response = restRequestProvider.getAuthUser(monitor, client);
 			if (response.getUsername().equals(userName)) {
 				return true;
 			}
@@ -248,12 +252,7 @@ public class OSIORestClient {
 		if (space == null) {
 
 			Map<String, Space> externalSpaces = config.getExternalSpaces();
-			for (Space s : spaces.values()) {
-				if (s.getId().equals(spaceId)) {
-					space = s;
-					break;
-				}
-			}
+			space = externalSpaces.get(spaceId);
 			if (space == null) {
 				SpaceSingleResponse spaceResponse = null;
 				try {
@@ -277,10 +276,15 @@ public class OSIORestClient {
 							new CoreException(new Status(IStatus.ERROR, OSIORestCore.ID_PLUGIN,
 									"Can not find Space (" + spaceId + ")"))); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-				externalSpaces.put(space.getName(), space);
+				externalSpaces.put(space.getId(), space);
 			}
 		}
 		return space;
+	}
+	
+	public SpaceSingleResponse getSpace(IOperationMonitor monitor, String spaceId) throws OSIORestException {
+		SpaceSingleResponse response = restRequestProvider.getSingleRequest(monitor, client, "/spaces/" + spaceId, new TypeToken<SpaceSingleResponse>() {});
+		return response;
 	}
 	
 	public Map<String, String> getSpaceLinkTypes(String spaceId, TaskRepository taskRepository) {
@@ -437,7 +441,7 @@ public class OSIORestClient {
 				String spaceId = taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().SPACE_ID.getKey()).getValue();
 				space = getSpaceById(spaceId, taskRepository);
 				
-				restRequestProvider.getTaskComments(monitor, client, space,taskData);
+				restRequestProvider.getTaskComments(monitor, client, space, taskData);
 				restRequestProvider.getTaskCreator(monitor, client, taskData);
 				restRequestProvider.getTaskLabels(monitor, client, space, taskData);
 				restRequestProvider.getTaskLinks(monitor, client, this, space, taskData, config);

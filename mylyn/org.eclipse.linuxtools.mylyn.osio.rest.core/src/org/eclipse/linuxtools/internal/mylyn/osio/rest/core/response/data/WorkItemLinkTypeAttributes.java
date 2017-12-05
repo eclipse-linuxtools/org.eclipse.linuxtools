@@ -25,10 +25,16 @@ public class WorkItemLinkTypeAttributes implements Named {
 	private int version;
 	
 	// for testing purposes only
-	public WorkItemLinkTypeAttributes (String name, String description, int version) {
+	public WorkItemLinkTypeAttributes (String name, String description, int version, String created_at, String updated_at,
+			String forward_name, String reverse_name, String topology) {
 		this.name = name;
 		this.description = description;
 		this.version = version;
+		this.created_at = created_at;
+		this.updated_at = updated_at;
+		this.forward_name = forward_name;
+		this.reverse_name = reverse_name;
+		this.topology = topology;
 	}
 	
 	@SerializedName("created-at")

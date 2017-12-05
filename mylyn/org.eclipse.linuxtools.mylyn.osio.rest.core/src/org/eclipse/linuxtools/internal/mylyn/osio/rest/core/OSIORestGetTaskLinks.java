@@ -130,23 +130,19 @@ public class OSIORestGetTaskLinks extends OSIORestGetRequest<TaskAttribute> {
 					}
 					if (!haveOtherWorkItemName) {
 						Map<String, Space> externalSpaces = config.getExternalSpaces();
-						if (spaces != null) {
-							for (Space s : externalSpaces.values()) {
-								if (s.getId().equals(spaceId)) {
-									User owner = null;
-									try {
-										owner = osioClient.getOwnedByLink(new NullOperationMonitor(), s);
-									} catch (OSIORestException e1) {
-										com.google.common.base.Throwables.propagate(
-												new CoreException(new Status(IStatus.ERROR, OSIORestCore.ID_PLUGIN,
-														"Can not get owner of Space (" + spaceId + ")"))); //$NON-NLS-1$ //$NON-NLS-2$
-									}				
-									
-									int number = Integer.parseInt(workitem.getNumber());
-									otherWorkItem = owner.getName() + "/" + s.getName() + "#" + number; //$NON-NLS-1$ //$NON-NLS-2$
-								    break;
-								}
-							}
+						Space s = externalSpaces.get(spaceId);
+						if (s != null) {
+							User owner = null;
+							try {
+								owner = osioClient.getOwnedByLink(new NullOperationMonitor(), s);
+							} catch (OSIORestException e1) {
+								com.google.common.base.Throwables.propagate(
+										new CoreException(new Status(IStatus.ERROR, OSIORestCore.ID_PLUGIN,
+												"Can not get owner of Space (" + spaceId + ")"))); //$NON-NLS-1$ //$NON-NLS-2$
+							}				
+
+							int number = Integer.parseInt(workitem.getNumber());
+							otherWorkItem = owner.getName() + "/" + s.getName() + "#" + number; //$NON-NLS-1$ //$NON-NLS-2$
 						}
 
 					}

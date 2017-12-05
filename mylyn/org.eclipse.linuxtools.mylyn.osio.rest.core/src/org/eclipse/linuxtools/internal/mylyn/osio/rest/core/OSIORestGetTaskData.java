@@ -148,12 +148,7 @@ public class OSIORestGetTaskData extends OSIORestGetRequest<List<TaskData>> {
 				}
 				if (actualSpace == null) {
 					Map<String, Space> externalSpaces = taskConfiguration.getExternalSpaces();
-					for (Space entry : externalSpaces.values()) {
-						if (entry.getId().equals(spaceId)) {
-							actualSpace = entry;
-							break;
-						}
-					}
+					actualSpace = externalSpaces.get(spaceId);
 					if (actualSpace == null) {
 						SpaceSingleResponse spaceResponse = null;
 						try {
@@ -179,7 +174,7 @@ public class OSIORestGetTaskData extends OSIORestGetRequest<List<TaskData>> {
 							e.printStackTrace();
 							continue;
 						}
-						externalSpaces.put(actualSpace.getName(), actualSpace);
+						externalSpaces.put(actualSpace.getId(), actualSpace);
 					}
 				}
 				String spaceName = actualSpace.getName();

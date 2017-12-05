@@ -144,5 +144,10 @@ public class DefaultOSIORestRequestProvider implements IOSIORestRequestProvider 
 			String urlSuffix, TypeToken<?> responseType, boolean authrequired) throws OSIORestException {
 		return new OSIORestGetRequest<R>(client, urlSuffix, responseType, authrequired).run(monitor);
 	}
+
+	@Override
+	public OSIORestUser getAuthUser(IOperationMonitor monitor, CommonHttpClient client) throws OSIORestException {
+		return new OSIORestGetAuthUser(client).run(monitor);
+	}
 }
 

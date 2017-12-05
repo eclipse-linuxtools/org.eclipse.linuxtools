@@ -46,7 +46,7 @@ public class WorkItemResponse implements IdNamed {
 		return id;
 	}
 	
-	public Object getAttributes() {
+	public Map<String, Object> getAttributes() {
 		return attributes;
 	}
 	

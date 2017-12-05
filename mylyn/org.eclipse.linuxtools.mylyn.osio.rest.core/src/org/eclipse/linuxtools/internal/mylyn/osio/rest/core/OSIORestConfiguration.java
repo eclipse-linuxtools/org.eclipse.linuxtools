@@ -128,11 +128,7 @@ public class OSIORestConfiguration implements Serializable {
 				return space;
 			}
 		}
-		for (Space space : getExternalSpaces().values()) {
-			if (space.getId().equals(spaceId)) {
-				return space;
-			}
-		}
+		getExternalSpaces().get(spaceId);
 		return null;
 	}
 

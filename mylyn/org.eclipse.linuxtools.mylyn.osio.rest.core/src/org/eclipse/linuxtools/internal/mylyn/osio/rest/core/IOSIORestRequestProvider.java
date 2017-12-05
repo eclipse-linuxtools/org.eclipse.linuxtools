@@ -87,5 +87,7 @@ public interface IOSIORestRequestProvider {
 
 	public TaskAttribute getTaskAssignee(IOperationMonitor monitor, CommonHttpClient client, String id,
 			TaskData taskData) throws OSIORestException;
+	
+	public OSIORestUser getAuthUser(IOperationMonitor monitor, CommonHttpClient client) throws OSIORestException;
 
 }

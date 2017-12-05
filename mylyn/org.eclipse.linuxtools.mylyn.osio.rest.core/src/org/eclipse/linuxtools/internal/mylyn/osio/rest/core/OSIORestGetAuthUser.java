@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
+import org.eclipse.mylyn.tasks.core.data.TaskData;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -30,6 +31,11 @@ public class OSIORestGetAuthUser extends OSIORestGetRequest<OSIORestUser>{
 		super(client, "/user", null, true); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	// for testing purposes only
+	public OSIORestUser testParseFromJson(InputStreamReader in) throws OSIORestException {
+		return parseFromJson(in);
+	}
+	
 	@Override
 	protected OSIORestUser parseFromJson(InputStreamReader in) {
 		TypeToken<OSIORestUser> type = new TypeToken<OSIORestUser>() {
