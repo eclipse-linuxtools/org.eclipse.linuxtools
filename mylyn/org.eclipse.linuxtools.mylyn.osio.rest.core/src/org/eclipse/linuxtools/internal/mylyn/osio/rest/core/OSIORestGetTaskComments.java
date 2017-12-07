@@ -56,6 +56,11 @@ public class OSIORestGetTaskComments extends OSIORestGetRequest<ArrayList<TaskAt
 		this.client = client;
 	}
 
+	// for testing purposes only
+	public ArrayList<TaskAttribute> testParseFromJson(InputStreamReader in) {
+		return parseFromJson(in);
+	}
+	
 	@Override
 	protected ArrayList<TaskAttribute> parseFromJson(InputStreamReader in) {
 		TypeToken<ArrayList<TaskAttribute>> type = new TypeToken<ArrayList<TaskAttribute>>() {
