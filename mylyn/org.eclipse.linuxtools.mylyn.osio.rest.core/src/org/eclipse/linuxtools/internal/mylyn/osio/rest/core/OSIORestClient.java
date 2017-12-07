@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Area;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.AreaListResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.IdNamed;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Identity;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Iteration;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.IterationListResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Label;
@@ -113,7 +114,7 @@ public class OSIORestClient {
 //			UserCredentials credentials = location.getCredentials(AuthenticationType.REPOSITORY);
 //			Preconditions.checkState(credentials != null, "Authentication requested without valid credentials");
 			String userName = location.getProperty(IOSIORestConstants.REPOSITORY_AUTH_ID);
-			OSIORestUser response = restRequestProvider.getAuthUser(monitor, client);
+			Identity response = restRequestProvider.getAuthUser(monitor, client);
 			if (response.getUsername().equals(userName)) {
 				return true;
 			}

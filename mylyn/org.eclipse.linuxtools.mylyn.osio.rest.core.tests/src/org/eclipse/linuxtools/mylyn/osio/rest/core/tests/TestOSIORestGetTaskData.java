@@ -15,6 +15,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.FileReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -24,7 +25,7 @@ import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.NullOperationMonitor
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestClient;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestConfiguration;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestConnector;
-import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestGetSingleTaskData;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestGetTaskData;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestTaskSchema;
 import org.eclipse.linuxtools.mylyn.osio.rest.test.support.OSIOTestRestRequestProvider;
 import org.eclipse.linuxtools.mylyn.osio.rest.test.support.TestData;
@@ -37,7 +38,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 @SuppressWarnings("restriction")
-public class TestOSIORestGetSingleTask {
+public class TestOSIORestGetTaskData {
 	
 	private TestOSIORestConnector connector;
 
@@ -88,13 +89,17 @@ public class TestOSIORestGetSingleTask {
 		location.setProperty(IOSIORestConstants.REPOSITORY_AUTH_ID, "user");
 		location.setProperty(IOSIORestConstants.REPOSITORY_AUTH_TOKEN, "xxxxxxTokenxxxxxx");
 
-		OSIORestGetSingleTaskData data = new OSIORestGetSingleTaskData(client.getClient(), connector, "/workitems/WORKITEM-0001", repository);
+		OSIORestGetTaskData data = new OSIORestGetTaskData(client.getClient(), connector, "/workitems/QUERY", repository);
 		
 		String bundleLocation = Activator.getContext().getBundle().getLocation();
 		int index = bundleLocation.indexOf('/');
-		String fileName = bundleLocation.substring(index) + "/testjson/workitem.data";
+		String fileName = bundleLocation.substring(index) + "/testjson/workitems.data";
 		FileReader in = new FileReader(fileName);
-		TaskData taskData = data.testParseFromJson(in);
+		List<TaskData> taskDataList = data.testParseFromJson(in);
+		
+		assertEquals(2, taskDataList.size());
+		
+		TaskData taskData = taskDataList.get(0);
 		
 		TaskAttribute root = taskData.getRoot();
 		OSIORestTaskSchema schema = OSIORestTaskSchema.getDefault();
@@ -143,5 +148,53 @@ public class TestOSIORestGetSingleTask {
 		
 		TaskAttribute updated_at = root.getAttribute(schema.DATE_MODIFICATION.getKey());
 		assertEquals(getDate("2017-09-15T15:54:43.08915Z"), updated_at.getValue());
+		
+		taskData = taskDataList.get(1);
+		root = taskData.getRoot();
+		
+		space = root.getAttribute(schema.SPACE.getKey());
+		assertEquals("mywork", space.getValue());
+		
+		spaceid = root.getAttribute(schema.SPACE_ID.getKey());
+		assertEquals("SPACE-0001", spaceid.getValue());
+		
+		uuid = root.getAttribute(schema.UUID.getKey());
+		assertEquals("WORKITEM-0002", uuid.getValue());
+		
+		labelsLink = root.getAttribute(schema.LABELS_LINK.getKey());
+		assertEquals("https://openshift.io/api/workitems/WORKITEM-0002/labels", labelsLink.getValue());
+		
+		creatorId = root.getAttribute(schema.CREATOR_ID.getKey());
+		assertEquals("USER-0001", creatorId.getValue());
+		
+		taskUrl = root.getAttribute(schema.TASK_URL.getKey());
+		assertEquals("https://openshift.io/api/workitems/WORKITEM-0002", taskUrl.getValue());
+	
+		assigneeIds = root.getAttribute(schema.ASSIGNEE_IDS.getKey());
+		assertEquals("USER-0001", assigneeIds.getValue());
+		
+		id = root.getAttribute(schema.ID.getKey());
+		assertEquals("user/mywork#2", id.getValue());
+		
+		status = root.getAttribute(schema.STATUS.getKey());
+		assertEquals("open", status.getValue());
+		
+		title = root.getAttribute(schema.SUMMARY.getKey());
+		assertEquals("00002", title.getValue());
+		
+		description = root.getAttribute(schema.DESCRIPTION.getKey());
+		assertEquals("Test feature", description.getValue());
+		
+		version = root.getAttribute(schema.VERSION.getKey());
+		assertEquals("22", version.getValue());
+		
+		order = root.getAttribute(schema.ORDER.getKey());
+		assertEquals("2000", order.getValue());
+		
+		created_at = root.getAttribute(schema.DATE_CREATION.getKey());
+		assertEquals(getDate("2017-08-15T21:37:15.863435Z"), created_at.getValue());
+		
+		updated_at = root.getAttribute(schema.DATE_MODIFICATION.getKey());
+		assertEquals(getDate("2017-09-16T15:54:43.08915Z"), updated_at.getValue());
 	}
 }

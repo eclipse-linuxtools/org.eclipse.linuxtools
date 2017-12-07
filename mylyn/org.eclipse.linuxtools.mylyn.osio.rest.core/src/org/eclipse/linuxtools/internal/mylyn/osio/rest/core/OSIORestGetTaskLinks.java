@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Space;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.User;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.WorkItem;
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
 import org.eclipse.mylyn.tasks.core.data.TaskAttribute;
 import org.eclipse.mylyn.tasks.core.data.TaskAttributeMetaData;
@@ -97,7 +98,7 @@ public class OSIORestGetTaskLinks extends OSIORestGetRequest<TaskAttribute> {
 					link = space.getWorkItemLinkTypes().get(linkTypeId).getAttributes().getReverseName();
 					otherId = sourceId;
 				}
-				OSIORestWorkItem workitem = null;
+				WorkItem workitem = null;
 				try {
 					workitem = new OSIORestGetWorkItem(client, otherId).run(new NullOperationMonitor());
 				} catch (OSIORestException e1) {

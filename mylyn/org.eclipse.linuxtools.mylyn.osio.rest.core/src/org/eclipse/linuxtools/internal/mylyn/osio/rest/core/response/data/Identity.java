@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - Initial Contribution
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.mylyn.osio.rest.core;
+package org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,9 +16,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.IdNamed;
-
-public class OSIORestUser implements IdNamed {
+public class Identity implements IdNamed {
 
 	private String userID;
 	
@@ -47,7 +45,7 @@ public class OSIORestUser implements IdNamed {
 	private String providerType;
 	
 	// for testing purposes only
-	public OSIORestUser (String userID, String identityID, Date created_at, Date updated_at,
+	public Identity (String userID, String identityID, Date created_at, Date updated_at,
 			String fullName, String imageURL, String username, Boolean registrationCompleted,
 			String email, String company, String bio, String url, String providerType) {
 		this.userID = userID;
@@ -65,7 +63,7 @@ public class OSIORestUser implements IdNamed {
 		this.providerType = providerType;
 	}
 	
-	public OSIORestUser() {
+	public Identity() {
 		
 	}
 	

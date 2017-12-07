@@ -8,9 +8,9 @@
  * Contributors:
  *     Red Hat - Initial Contribution
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.mylyn.osio.rest.core;
+package org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data;
 
-public class OSIORestWorkItem {
+public class WorkItem {
 	
 	private String number;
 	

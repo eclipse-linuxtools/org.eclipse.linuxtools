@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Identity;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.LinkResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.RestResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.SingleRestResponse;
@@ -88,6 +89,6 @@ public interface IOSIORestRequestProvider {
 	public TaskAttribute getTaskAssignee(IOperationMonitor monitor, CommonHttpClient client, String id,
 			TaskData taskData) throws OSIORestException;
 	
-	public OSIORestUser getAuthUser(IOperationMonitor monitor, CommonHttpClient client) throws OSIORestException;
+	public Identity getAuthUser(IOperationMonitor monitor, CommonHttpClient client) throws OSIORestException;
 
 }

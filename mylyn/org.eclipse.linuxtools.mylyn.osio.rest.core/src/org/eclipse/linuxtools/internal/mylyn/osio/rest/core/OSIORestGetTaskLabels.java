@@ -38,6 +38,11 @@ public class OSIORestGetTaskLabels extends OSIORestGetRequest<TaskAttribute> {
 		taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().UUID.getKey()).getValue();
 	}
 
+	// for testing purposes only
+	public TaskAttribute testParseFromJson(InputStreamReader in) {
+		return parseFromJson(in);
+	}
+	
 	@Override
 	protected TaskAttribute parseFromJson(InputStreamReader in) {
 		TypeToken<TaskAttribute> type = new TypeToken<TaskAttribute>() {

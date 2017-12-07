@@ -31,6 +31,7 @@ import org.apache.http.entity.StringEntity;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Identity;
 import org.eclipse.mylyn.commons.repositories.core.RepositoryLocation;
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
 import org.eclipse.mylyn.tasks.core.IRepositoryPerson;
@@ -191,7 +192,7 @@ public class OSIORestPostNewCommentTask extends OSIORestPostRequest<TaskAttribut
 			taskComment.setNumber(i);
 			taskComment.setUrl(commentLinks.get("self").getAsString()); //$NON-NLS-1$
 			String id = creatorData.get("id").getAsString(); //$NON-NLS-1$
-			OSIORestUser user = null;
+			Identity user = null;
 			String email = "??????"; //$NON-NLS-1$
 			String fullName = "???"; //$NON-NLS-1$
 			try {

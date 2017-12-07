@@ -26,12 +26,12 @@ import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestConnector;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestException;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestResourceMovedPermanentlyException;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestTaskSchema;
-import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestUser;
-import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestWorkItem;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Identity;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.LinkResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.RestResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.SingleRestResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Space;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.WorkItem;
 import org.eclipse.mylyn.commons.core.operations.IOperationMonitor;
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
 import org.eclipse.mylyn.tasks.core.TaskRepository;
@@ -139,8 +139,8 @@ public class OSIOTestRestRequestProvider implements IOSIORestRequestProvider {
 				(isForward ? sourceid : targetid) + 
 				"/relationships/links";
 		LinkResponse response = (LinkResponse)postMap.get(query);
-		OSIORestWorkItem source = (OSIORestWorkItem)requestMap.get("/workitems/" + sourceid);
-		OSIORestWorkItem target = (OSIORestWorkItem)requestMap.get("/workitems/" + targetid);
+		WorkItem source = (WorkItem)requestMap.get("/workitems/" + sourceid);
+		WorkItem target = (WorkItem)requestMap.get("/workitems/" + targetid);
 		String sourceNum = (String)source.getNumber();
 		String targetNum = (String)target.getNumber();
 		requestMap.put(query, response);
@@ -287,8 +287,8 @@ public class OSIOTestRestRequestProvider implements IOSIORestRequestProvider {
 	}
 
 	@Override
-	public OSIORestUser getAuthUser(IOperationMonitor monitor, CommonHttpClient client) throws OSIORestException {
-		return (OSIORestUser)requestMap.get("/user");
+	public Identity getAuthUser(IOperationMonitor monitor, CommonHttpClient client) throws OSIORestException {
+		return (Identity)requestMap.get("/user");
 	}
 
 }

@@ -76,6 +76,11 @@ public class OSIORestGetTaskData extends OSIORestGetRequest<List<TaskData>> {
 		this.connector = connector;
 	}
 
+	// for testing purposes only
+	public List<TaskData> testParseFromJson(InputStreamReader in) throws OSIORestException {
+		return parseFromJson(in);
+	}
+	
 	@Override
 	protected List<TaskData> parseFromJson(InputStreamReader in) throws OSIORestException {
 		TypeToken<List<TaskData>> type = new TypeToken<List<TaskData>>() {

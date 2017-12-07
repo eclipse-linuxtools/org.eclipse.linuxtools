@@ -20,7 +20,7 @@ import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.NullOperationMonitor
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestClient;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestConfiguration;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestConnector;
-import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestGetAuthUser;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestGetUser;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Identity;
 import org.eclipse.linuxtools.mylyn.osio.rest.test.support.OSIOTestRestRequestProvider;
 import org.eclipse.linuxtools.mylyn.osio.rest.test.support.TestData;
@@ -31,7 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 @SuppressWarnings("restriction")
-public class TestOSIORestGetAuthUser {
+public class TestOSIORestGetUser {
 	
 	private TestOSIORestConnector connector;
 
@@ -74,11 +74,11 @@ public class TestOSIORestGetAuthUser {
 		location.setProperty(IOSIORestConstants.REPOSITORY_AUTH_ID, "user");
 		location.setProperty(IOSIORestConstants.REPOSITORY_AUTH_TOKEN, "xxxxxxTokenxxxxxx");
 
-		OSIORestGetAuthUser data = new OSIORestGetAuthUser(client.getClient());
+		OSIORestGetUser data = new OSIORestGetUser(client.getClient(), "USER-0001");
 		
 		String bundleLocation = Activator.getContext().getBundle().getLocation();
 		int index = bundleLocation.indexOf('/');
-		String fileName = bundleLocation.substring(index) + "/testjson/authuser.data";
+		String fileName = bundleLocation.substring(index) + "/testjson/user.data";
 		FileReader in = new FileReader(fileName);
 		Identity user = data.testParseFromJson(in);
 		

@@ -26,6 +26,7 @@ import java.util.TimeZone;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Identity;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Space;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.User;
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
@@ -114,7 +115,7 @@ public class OSIORestGetTaskComments extends OSIORestGetRequest<ArrayList<TaskAt
 					// a previous collaborator has been removed from the space and so we have
 					// to go fetch their data now
 					if (email.startsWith("?")) { //$NON-NLS-1$
-						OSIORestUser user = new OSIORestGetUser(client, id).run(new NullOperationMonitor());
+						Identity user = new OSIORestGetUser(client, id).run(new NullOperationMonitor());
 						email = user.getEmail();
 						fullName = user.getFullName();
 					}

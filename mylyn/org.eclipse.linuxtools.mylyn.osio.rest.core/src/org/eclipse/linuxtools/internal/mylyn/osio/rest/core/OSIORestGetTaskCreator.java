@@ -41,6 +41,11 @@ public class OSIORestGetTaskCreator extends OSIORestGetRequest<TaskAttribute> {
 		this.id = taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().CREATOR_ID.getKey()).getValue();
 	}
 
+	// for testing purposes only
+	public TaskAttribute testParseFromJson(InputStreamReader in) {
+		return parseFromJson(in);
+	}
+	
 	@Override
 	protected TaskAttribute parseFromJson(InputStreamReader in) {
 		TypeToken<ArrayList<TaskAttribute>> type = new TypeToken<ArrayList<TaskAttribute>>() {
