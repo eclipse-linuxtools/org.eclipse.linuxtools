@@ -108,7 +108,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>sonar-maven-plugin</artifactId>
-            <version>3.3.0.603</version>
+            <version>3.4.0.905</version>
           </plugin>
           <plugin>
             <groupId>org.eclipse.tycho.extras</groupId>
@@ -449,7 +449,7 @@
 	<plugin>
 	  <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-	  <version>3.0.0-M1</version>
+	  <version>3.0.0</version>
           <configuration>
             <excludePackageNames>org.eclipse.linuxtools.internal.*:*.test*:org.eclipse.linuxtools.docker.reddeer*</excludePackageNames>
           </configuration>
