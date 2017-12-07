@@ -58,6 +58,7 @@ public class ContainerLogTest extends AbstractImageBotTest {
 		pullImage(IMAGE_NAME);
 		new WaitWhile(new JobIsRunning());
 		DockerExplorerView explorer = new DockerExplorerView();
+		explorer.open();
 		getConnection().refresh();
 		getConnection().getImage(IMAGE_NAME).run();
 		ImageRunSelectionPage firstPage = new ImageRunSelectionPage(explorer);
