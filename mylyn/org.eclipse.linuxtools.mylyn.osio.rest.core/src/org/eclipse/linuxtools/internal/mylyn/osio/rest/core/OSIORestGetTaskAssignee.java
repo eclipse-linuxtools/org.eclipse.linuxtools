@@ -38,6 +38,11 @@ public class OSIORestGetTaskAssignee extends OSIORestGetRequest<TaskAttribute> {
 		this.taskData = taskData;
 	}
 
+	// for testing purposes only
+	public TaskAttribute testParseFromJson(InputStreamReader in) {
+		return parseFromJson(in);
+	}
+	
 	@Override
 	protected TaskAttribute parseFromJson(InputStreamReader in) {
 		TypeToken<ArrayList<TaskAttribute>> type = new TypeToken<ArrayList<TaskAttribute>>() {
