@@ -19,6 +19,7 @@ import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.LinkRe
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.RestResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.SingleRestResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Space;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.WorkItem;
 import org.eclipse.mylyn.commons.core.operations.IOperationMonitor;
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
 import org.eclipse.mylyn.tasks.core.TaskRepository;
@@ -149,6 +150,12 @@ public class DefaultOSIORestRequestProvider implements IOSIORestRequestProvider 
 	@Override
 	public Identity getAuthUser(IOperationMonitor monitor, CommonHttpClient client) throws OSIORestException {
 		return new OSIORestGetAuthUser(client).run(monitor);
+	}
+
+	@Override
+	public WorkItem getWorkItem(IOperationMonitor monitor, CommonHttpClient client, String id)
+			throws OSIORestException {
+		return new OSIORestGetWorkItem(client, id).run(monitor);
 	}
 }
 

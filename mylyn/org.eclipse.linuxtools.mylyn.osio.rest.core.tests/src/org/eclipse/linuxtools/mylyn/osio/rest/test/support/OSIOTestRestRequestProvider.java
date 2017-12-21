@@ -254,6 +254,12 @@ public class OSIOTestRestRequestProvider implements IOSIORestRequestProvider {
 	}
 
 	@Override
+	public WorkItem getWorkItem(IOperationMonitor monitor, CommonHttpClient client, String id) throws OSIORestException {
+		WorkItem workitem = (WorkItem)requestMap.get("/workitems/" + id);
+		return workitem; 
+	}
+	
+	@Override
 	public TaskAttribute getTaskCreator(IOperationMonitor monitor, CommonHttpClient client, TaskData taskData)
 			throws OSIORestException {
 		TaskAttribute creator = (TaskAttribute)requestMap.get("/users/" + taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().CREATOR_ID.getKey()).getValue());

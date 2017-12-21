@@ -19,6 +19,7 @@ import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.LinkRe
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.RestResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.SingleRestResponse;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Space;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.WorkItem;
 import org.eclipse.mylyn.commons.core.operations.IOperationMonitor;
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
 import org.eclipse.mylyn.tasks.core.TaskRepository;
@@ -67,6 +68,8 @@ public interface IOSIORestRequestProvider {
 
 	public String getWID(IOperationMonitor monitor, CommonHttpClient client, String query,
 			TaskRepository taskRepository) throws OSIORestException;
+	
+	public WorkItem getWorkItem(IOperationMonitor monitor, CommonHttpClient client, String id) throws OSIORestException;
 
 	public List<TaskData> getTaskData(IOperationMonitor monitor, CommonHttpClient client, OSIORestConnector connector,
 			String queryUrlSuffix, TaskRepository taskRepository) throws OSIORestException, CoreException;

@@ -58,7 +58,7 @@ public class OSIORestPostNewCommentTask extends OSIORestPostRequest<TaskAttribut
 	private final TaskData taskData;
 	private final CommonHttpClient client;
 
-	class OldAttributes {
+	public class OldAttributes {
 		private final Set<TaskAttribute> oldAttributes;
 
 		public OldAttributes(Set<TaskAttribute> oldAttributes) {
@@ -71,7 +71,7 @@ public class OSIORestPostNewCommentTask extends OSIORestPostRequest<TaskAttribut
 	OldAttributes oldAttributes;
 
 
-	class TaskAttributeTypeAdapter extends TypeAdapter<OldAttributes> {
+	public class TaskAttributeTypeAdapter extends TypeAdapter<OldAttributes> {
 		RepositoryLocation location;
 
 		public TaskAttributeTypeAdapter(RepositoryLocation location) {

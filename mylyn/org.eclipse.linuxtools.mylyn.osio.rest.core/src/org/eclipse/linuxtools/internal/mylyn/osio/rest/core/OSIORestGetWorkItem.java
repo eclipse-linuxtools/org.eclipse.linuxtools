@@ -31,6 +31,11 @@ public class OSIORestGetWorkItem extends OSIORestGetRequest<WorkItem>{
 		super(client, "/workitems/" + id, null); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	// for testing purposes only
+	public WorkItem testParseFromJson(InputStreamReader in) {
+		return parseFromJson(in);
+	}
+	
 	@Override
 	protected WorkItem parseFromJson(InputStreamReader in) {
 		TypeToken<WorkItem> type = new TypeToken<WorkItem>() {

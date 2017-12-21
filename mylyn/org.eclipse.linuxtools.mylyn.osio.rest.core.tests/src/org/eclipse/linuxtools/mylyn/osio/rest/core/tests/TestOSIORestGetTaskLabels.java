@@ -90,11 +90,10 @@ public class TestOSIORestGetTaskLabels {
 		int index = bundleLocation.indexOf('/');
 		String fileName = bundleLocation.substring(index) + "/testjson/labels.data";
 		FileReader in = new FileReader(fileName);
-		TaskAttribute original = taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().ASSIGNEES.getKey());
+		TaskAttribute original = taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().LABELS.getKey());
 		assertTrue(original == null || original.getValues().isEmpty());
 		TaskAttribute attribute = data.testParseFromJson(in);
 		assertEquals(2, attribute.getValues().size());
-		assertEquals(0,  original.getValues().size());
 		
 		List<String> values = attribute.getValues();
 		assertEquals("Label1", values.get(0));

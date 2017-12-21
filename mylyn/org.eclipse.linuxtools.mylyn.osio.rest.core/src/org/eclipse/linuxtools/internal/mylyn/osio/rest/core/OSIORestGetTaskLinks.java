@@ -56,6 +56,11 @@ public class OSIORestGetTaskLinks extends OSIORestGetRequest<TaskAttribute> {
 		this.config = config;
 	}
 
+	// for testing purposes only
+	public TaskAttribute testParseFromJson(InputStreamReader in) {
+		return parseFromJson(in);
+	}
+	
 	@Override
 	protected TaskAttribute parseFromJson(InputStreamReader in) {
 		TypeToken<TaskAttribute> type = new TypeToken<TaskAttribute>() {
@@ -100,7 +105,7 @@ public class OSIORestGetTaskLinks extends OSIORestGetRequest<TaskAttribute> {
 				}
 				WorkItem workitem = null;
 				try {
-					workitem = new OSIORestGetWorkItem(client, otherId).run(new NullOperationMonitor());
+					workitem = osioClient.getRequestProvider().getWorkItem(new NullOperationMonitor(), client, otherId);
 				} catch (OSIORestException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

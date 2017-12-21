@@ -65,7 +65,7 @@ public class OSIORestPatchUpdateTask extends OSIORestPatchRequest<TaskData> {
 	private final Space space;
 	private final CommonHttpClient client;
 
-	class OldAttributes {
+	public class OldAttributes {
 		private final Set<TaskAttribute> oldAttributes;
 
 		public OldAttributes(Set<TaskAttribute> oldAttributes) {
@@ -82,7 +82,7 @@ public class OSIORestPatchUpdateTask extends OSIORestPatchRequest<TaskData> {
 	OldAttributes oldAttributes;
 
 
-	class TaskAttributeTypeAdapter extends TypeAdapter<OldAttributes> {
+	public class TaskAttributeTypeAdapter extends TypeAdapter<OldAttributes> {
 		RepositoryLocation location;
 
 		public TaskAttributeTypeAdapter(RepositoryLocation location) {

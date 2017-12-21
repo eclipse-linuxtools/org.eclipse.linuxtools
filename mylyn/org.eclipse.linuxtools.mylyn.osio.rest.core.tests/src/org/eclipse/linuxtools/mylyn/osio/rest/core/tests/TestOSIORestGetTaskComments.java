@@ -84,7 +84,7 @@ public class TestOSIORestGetTaskComments {
 
 
 	@Test
-	public void testGetTaskAssignee() throws Exception {
+	public void testGetTaskComments() throws Exception {
 		TestData testData = new TestData();
 		TestUtils.initSpaces(requestProvider, testData);
 		OSIORestClient client = connector.getClient(repository, requestProvider);

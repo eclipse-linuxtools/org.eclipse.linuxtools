@@ -58,7 +58,7 @@ public class OSIORestPostNewTask extends OSIORestPostRequest<String> {
 	private final TaskRepository taskRepository;
 	private final OSIORestConnector connector;
 	private final OSIORestConfiguration taskConfiguration;
-	class TaskAttributeTypeAdapter extends TypeAdapter<TaskData> {
+	public class TaskAttributeTypeAdapter extends TypeAdapter<TaskData> {
 		RepositoryLocation location;
 
 		public TaskAttributeTypeAdapter(RepositoryLocation location) {

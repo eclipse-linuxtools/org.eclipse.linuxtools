@@ -12,7 +12,9 @@ package org.eclipse.linuxtools.mylyn.osio.rest.core.tests;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.FileReader;
+import java.io.StringWriter;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.IOSIORestConstants;
@@ -20,7 +22,7 @@ import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.NullOperationMonitor
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestClient;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestConfiguration;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestConnector;
-import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestGetTaskCreator;
+import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestPostNewCommentTask;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestTaskSchema;
 import org.eclipse.linuxtools.mylyn.osio.rest.test.support.OSIOTestRestRequestProvider;
 import org.eclipse.linuxtools.mylyn.osio.rest.test.support.TestData;
@@ -34,8 +36,10 @@ import org.eclipse.mylyn.tasks.core.data.TaskData;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.gson.stream.JsonWriter;
+
 @SuppressWarnings("restriction")
-public class TestOSIORestGetTaskCreator {
+public class TestOSIORestPostNewComment {
 	
 	private TestOSIORestConnector connector;
 
@@ -67,33 +71,37 @@ public class TestOSIORestGetTaskCreator {
 	}
 
 	@Test
-	public void testGetTaskCreator() throws Exception {
-		TestData spaceData = new TestData();
-		TestUtils.initSpaces(requestProvider, spaceData);
+	public void testPostNewComment() throws Exception {
+		TestData testData = new TestData();
+		TestUtils.initSpaces(requestProvider, testData);
 		OSIORestClient client = connector.getClient(repository, requestProvider);
-		AbstractTaskDataHandler taskDataHandler = connector.getTaskDataHandler();
-		TaskAttributeMapper mapper = taskDataHandler.getAttributeMapper(repository);
-		TaskData taskData = new TaskData(mapper, repository.getConnectorKind(), repository.getRepositoryUrl(), "");
-		OSIORestTaskSchema.getDefault().initialize(taskData);
 		OSIORestConfiguration config = client.getConfiguration(repository, new NullOperationMonitor());
-		config.setSpaces(spaceData.spaceMap);
+		config.setSpaces(testData.spaceMap);
 		connector.setConfiguration(config);
 		RepositoryLocation location = client.getClient().getLocation();
 		location.setProperty(IOSIORestConstants.REPOSITORY_AUTH_ID, "user");
 		location.setProperty(IOSIORestConstants.REPOSITORY_AUTH_TOKEN, "xxxxxxTokenxxxxxx");
+		
+		AbstractTaskDataHandler taskDataHandler = connector.getTaskDataHandler();
+		TaskAttributeMapper mapper = taskDataHandler.getAttributeMapper(repository);
+		TaskData taskData = new TaskData(mapper, repository.getConnectorKind(), repository.getRepositoryUrl(), "");
+		OSIORestTaskSchema.getDefault().initialize(taskData);
 
-		taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().CREATOR_ID.getKey()).setValue("USER-0001");
-		OSIORestGetTaskCreator data = new OSIORestGetTaskCreator(client.getClient(), taskData);
+		Set<TaskAttribute> attributes = new LinkedHashSet<>();
+		TaskAttribute newComment = taskData.getRoot().getAttribute(OSIORestTaskSchema.getDefault().NEW_COMMENT.getKey());
+		newComment.setValue("This is a test comment");
+		attributes.add(newComment);
 		
-		String bundleLocation = Activator.getContext().getBundle().getLocation();
-		int index = bundleLocation.indexOf('/');
-		String fileName = bundleLocation.substring(index) + "/testjson/user.data";
-		FileReader in = new FileReader(fileName);
-		TaskAttribute attr = data.testParseFromJson(in);
+		OSIORestPostNewCommentTask data = new OSIORestPostNewCommentTask(client.getClient(), taskData, attributes);
 		
-		assertEquals(OSIORestTaskSchema.getDefault().CREATOR.getKey(), attr.getId());
-		assertEquals("User 1", attr.getValue());
+		OSIORestPostNewCommentTask.TaskAttributeTypeAdapter adapter = data.new TaskAttributeTypeAdapter(location);
+		OSIORestPostNewCommentTask.OldAttributes oldAttributes = data.new OldAttributes(attributes);
+		StringWriter s = new StringWriter();
+		JsonWriter writer = new JsonWriter(s);
 		
+		adapter.write(writer, oldAttributes);
+		
+		assertEquals("{\"data\":{\"attributes\":{\"body\":\"This is a test comment\",\"markup\":\"Markdown\"},\"type\":\"comments\"},\"included\":[]}",s.getBuffer().toString());
 	}
 
 }

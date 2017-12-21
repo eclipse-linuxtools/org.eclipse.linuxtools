@@ -63,7 +63,7 @@ public class TestOSIORestGetUser {
 	}
 
 	@Test
-	public void testGetAuthUser() throws Exception {
+	public void testGetUser() throws Exception {
 		TestData testData = new TestData();
 		TestUtils.initSpaces(requestProvider, testData);
 		OSIORestClient client = connector.getClient(repository, requestProvider);

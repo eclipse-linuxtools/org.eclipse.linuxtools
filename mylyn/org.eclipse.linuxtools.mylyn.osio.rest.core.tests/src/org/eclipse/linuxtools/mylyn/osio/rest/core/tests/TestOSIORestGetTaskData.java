@@ -78,7 +78,7 @@ public class TestOSIORestGetTaskData {
 	}
 
 	@Test
-	public void testGetSingleTask() throws Exception {
+	public void testGetTaskData() throws Exception {
 		TestData testData = new TestData();
 		TestUtils.initSpaces(requestProvider, testData);
 		OSIORestClient client = connector.getClient(repository, requestProvider);

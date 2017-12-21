@@ -46,7 +46,7 @@ public class OSIORestPostNewLink extends OSIORestPostRequest<LinkResponse> {
 	private final String targetid;
 	private final boolean isForward;
 
-	class TaskAttributeTypeAdapter extends TypeAdapter<String> {
+	public class TaskAttributeTypeAdapter extends TypeAdapter<String> {
 
 		public TaskAttributeTypeAdapter() {
 			super();

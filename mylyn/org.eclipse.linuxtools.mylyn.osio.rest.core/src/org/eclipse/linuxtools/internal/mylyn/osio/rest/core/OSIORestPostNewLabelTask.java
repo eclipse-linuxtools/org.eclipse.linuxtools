@@ -44,7 +44,7 @@ public class OSIORestPostNewLabelTask extends OSIORestPostRequest<LabelResponse>
 
 	private final String newLabel;
 
-	class TaskAttributeTypeAdapter extends TypeAdapter<String> {
+	public class TaskAttributeTypeAdapter extends TypeAdapter<String> {
 
 		public TaskAttributeTypeAdapter() {
 			super();
