@@ -1,5 +1,5 @@
 /*******************************************************************************
- * (C) Copyright 2010 IBM Corp. 2010
+ * (C) Copyright 2010, 2018 IBM Corp. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.resources.IProject;
@@ -226,10 +228,12 @@ public class PerfCore {
         if (index > 0) {
             perfVersion = perfVersion.substring(0, index);
         }
-        perfVersion = perfVersion.replace("perf version", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-        if (perfVersion.isEmpty())
-        	return null;
-        return new PerfVersion(perfVersion);
+        Pattern pattern = Pattern.compile("\\D*((\\d|\\.)+)"); //$NON-NLS-1$
+        Matcher matcher = pattern.matcher(perfVersion);
+        if (matcher.matches()) {
+        	return new PerfVersion(matcher.group(1));
+        }
+       	return null;
     }
 
 
@@ -352,7 +356,13 @@ public class PerfCore {
 
         PerfVersion perfVersion = getPerfVersion(config);
         boolean oldPerfVersion = false;
-        if (!perfVersion.isNewer(new PerfVersion(0, 0, 2))) {
+
+        if (perfVersion == null) {
+        	if (print != null) {
+        		print.println("ERROR: Unable to find Perf version, please verify it is installed and on the run path"); //$NON-NLS-1$
+        		return;
+        	}
+        } else if (!perfVersion.isNewer(new PerfVersion(0, 0, 2))) {
             oldPerfVersion = true;
             if (print != null) { print.println("WARNING: You are running an older version of Perf, please update if you can. The plugin may produce unpredictable results."); } //$NON-NLS-1$
         }
