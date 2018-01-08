@@ -138,9 +138,9 @@ public class SystemTapErrorHandler {
         if (!isErrorRecognized()) {
             errorMessage.append(Messages.getString("SystemTapErrorHandler.NoErrRecognized") + //$NON-NLS-1$
                     Messages.getString("SystemTapErrorHandler.NoErrRecognizedMsg")); //$NON-NLS-1$
+            writeToLog();
         }
 
-        writeToLog();
     }
 
     /**
