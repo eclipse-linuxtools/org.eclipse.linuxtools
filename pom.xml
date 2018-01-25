@@ -52,9 +52,9 @@
     <mirror-repo-name>updates-nightly</mirror-repo-name>
     <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
     <mirror-mylyn-repo-name>updates-mylyn-nightly</mirror-mylyn-repo-name>
-    <tycho-version>1.0.0</tycho-version>
-    <tycho-extras-version>1.0.0</tycho-extras-version>
-    <target-platform>linuxtools-e4.7</target-platform>
+    <tycho-version>1.1.0-SNAPSHOT</tycho-version>
+    <tycho-extras-version>1.1.0-SNAPSHOT</tycho-extras-version>
+    <target-platform>linuxtools-e4.8</target-platform>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../../target/jacoco.exec</sonar.jacoco.reportPath>
@@ -70,6 +70,17 @@
       <id>Maven Central Proxy</id>
       <url>https://repo.eclipse.org/content/repositories/maven_central/</url>
     </pluginRepository>
+    <pluginRepository>
+      <id>tycho-snapshots</id>
+      <url>https://repo.eclipse.org/content/repositories/tycho-snapshots/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+
   </pluginRepositories>
 
   <profiles>

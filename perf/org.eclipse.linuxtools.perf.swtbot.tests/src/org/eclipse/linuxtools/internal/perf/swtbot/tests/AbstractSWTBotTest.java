@@ -128,7 +128,7 @@ public abstract class AbstractSWTBotTest extends AbstractTest {
         // Create new Perf configuration
         SWTBotTree profilingConfigs = bot.tree();
         SWTBotTree perfNode = profilingConfigs.select("Profile with Perf");
-        perfNode.contextMenu("New").click();
+        perfNode.contextMenu("New configuration").click();
 
         // Activate options tab
         bot.cTabItem("Perf Options").activate();
