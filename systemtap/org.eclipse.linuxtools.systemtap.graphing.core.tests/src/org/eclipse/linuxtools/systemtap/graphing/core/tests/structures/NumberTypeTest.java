@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+ * Copyright (c) 2006, 2018 IBM Corporation.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -62,7 +62,7 @@ public class NumberTypeTest {
     public void testCleanObj2Num() {
         assertEquals(3, NumberType.cleanObj2Num("3").intValue());
         assertEquals(3.2, NumberType.cleanObj2Num("3.2").doubleValue(), 0.00001);
-        assertEquals(3, NumberType.cleanObj2Num(new Integer(3)).intValue());
+        assertEquals(3, NumberType.cleanObj2Num(3).intValue());
     }
 
 }

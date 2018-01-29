@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2017 Red Hat Inc. and others.
+ * Copyright (c) 2014, 2018 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -1853,23 +1853,23 @@ public class DockerConnection
 	public boolean isLocal() {
 		if (isLocalConnection != null)
 			return isLocalConnection.booleanValue();
-		isLocalConnection = new Boolean(false);
+		isLocalConnection = false;
 		if (connectionSettings
 				.getType() == BindingType.UNIX_SOCKET_CONNECTION) {
-			isLocalConnection = new Boolean(true);
+			isLocalConnection = true;
 		} else if (connectionSettings.getType() == BindingType.TCP_CONNECTION) {
 			TCPConnectionSettings settings = (TCPConnectionSettings) connectionSettings;
 			try {
 				InetAddress addr = InetAddress.getByName(settings.getAddr());
 				if (addr.isAnyLocalAddress() || addr.isLoopbackAddress()) {
-					isLocalConnection = new Boolean(true);
+					isLocalConnection = true;
 				} else {
 					// Check if the address is defined on any interface
 					try {
-						isLocalConnection = new Boolean(NetworkInterface
-								.getByInetAddress(addr) != null);
+						isLocalConnection = NetworkInterface
+								.getByInetAddress(addr) != null;
 					} catch (SocketException e) {
-						isLocalConnection = new Boolean(false);
+						isLocalConnection = false;
 					}
 				}
 			} catch (UnknownHostException e) {

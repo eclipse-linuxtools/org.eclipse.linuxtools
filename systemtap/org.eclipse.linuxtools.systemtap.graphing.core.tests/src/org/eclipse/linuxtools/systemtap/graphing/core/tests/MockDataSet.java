@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+ * Copyright (c) 2006, 2018 IBM Corporation.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ public final class MockDataSet {
         for(i=0; i<rows; i++) {
             Object[] d = new Object[cols];
             for(j=0; j< cols; j++) {
-                d[j] = new Double(i*cols + j);
+                d[j] = i*cols + j;
             }
             entry = new RowEntry();
             entry.putRow(0, d);

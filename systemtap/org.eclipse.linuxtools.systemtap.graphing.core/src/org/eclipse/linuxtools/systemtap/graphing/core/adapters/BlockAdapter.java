@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+ * Copyright (c) 2006, 2018 IBM Corporation.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,13 +34,13 @@ public class BlockAdapter implements IAdapter {
         if(start < 0 || end > data.getRowCount() || start > end)
             return null;
 
-        Number max = new Double(Double.NEGATIVE_INFINITY);
+        Number max = Double.NEGATIVE_INFINITY;
         Number cur;
 
         Object[] dataColumn = data.getColumn(series, start, end);
         for(int i=0; i<dataColumn.length; i++) {
             try {
-                cur = new Double(Double.parseDouble(dataColumn[i].toString()));
+                cur = Double.parseDouble(dataColumn[i].toString());
                 if(max.doubleValue() < cur.doubleValue())
                     max = cur;
             } catch (NumberFormatException e) {}
