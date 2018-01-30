@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 IBM Corporation and others
+ * Copyright (c) 2011, 2018 IBM Corporation and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.linuxtools.tools.launch.core.factory;
 
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -70,8 +71,9 @@ public abstract class LinuxtoolsProcessFactory {
         Map<String, String> envMap = new HashMap<>();
         if (project != null) {
             try {
-                envMap.putAll(RemoteEnvProxyManager.class.newInstance().getEnv(project));
-            } catch (InstantiationException|IllegalAccessException|CoreException e) {
+                envMap.putAll(RemoteEnvProxyManager.class.getDeclaredConstructor().newInstance().getEnv(project));
+			} catch (InstantiationException | IllegalAccessException | CoreException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 e.printStackTrace();
             }
         }
