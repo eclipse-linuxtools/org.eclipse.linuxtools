@@ -59,9 +59,9 @@
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20170919201930/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="com.spotify.docker.client" version="6.1.1.v20171124-1825"/>
-<unit id="com.spotify.docker.client.source" version="6.1.1.v20171124-1825"/>
-<repository location="http://download.eclipse.org/linuxtools/docker-client-6.1.1a"/>
+<unit id="com.spotify.docker.client" version="6.1.1.v20180130-1657"/>
+<unit id="com.spotify.docker.client.source" version="6.1.1.v20180130-1657"/>
+<repository location="http://download.eclipse.org/linuxtools/docker-client-6.1.1b"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.cdt.autotools.feature.group" version="0.0.0"/>
