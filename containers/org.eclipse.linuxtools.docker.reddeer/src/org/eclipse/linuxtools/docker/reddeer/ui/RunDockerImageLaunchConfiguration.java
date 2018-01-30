@@ -20,8 +20,12 @@ import org.eclipse.linuxtools.docker.reddeer.perspective.DockerPerspective;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.condition.WidgetIsFound;
+import org.eclipse.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.eclipse.reddeer.eclipse.debug.ui.launchConfigurations.LaunchConfiguration;
 import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
+import org.eclipse.reddeer.swt.api.Button;
+import org.eclipse.reddeer.swt.api.Shell;
 import org.eclipse.reddeer.swt.api.Table;
 import org.eclipse.reddeer.swt.condition.ShellIsActive;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
@@ -29,6 +33,7 @@ import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.button.YesButton;
 import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
@@ -375,8 +380,20 @@ public class RunDockerImageLaunchConfiguration extends LaunchConfiguration {
 	public void deleteRunConfiguration(String configuratioName) {
 		selectConfiguration(configuratioName);
 		new DefaultToolItem(DELETE_LAUNCH_CONFIGURATION_LABEL).click();
-		new WaitUntil(new ShellIsAvailable("Confirm Launch Configuration Deletion"));
-		new PushButton("Yes").click();
+		Shell deleteShell = new DefaultShell("Confirm Launch Configuration Deletion");
+
+		WidgetIsFound deleteButton = new WidgetIsFound(org.eclipse.swt.widgets.Button.class, deleteShell.getSWTWidget(),
+				new WithMnemonicTextMatcher("Delete"));
+
+		Button button;
+		if (deleteButton.test()) {
+			button = new PushButton(deleteShell, "Delete"); // photon changed button text
+		} else {
+			button = new YesButton(deleteShell);
+		}
+		button.click();
+		new WaitWhile(new ShellIsAvailable(deleteShell));
+
 		new WaitUntil(new ShellIsAvailable("Run Configurations"));
 	}
 
