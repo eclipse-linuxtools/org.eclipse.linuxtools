@@ -369,7 +369,19 @@ public abstract class AbstractProfilingOptionsTab extends AbstractLaunchConfigur
                     return false;
                 }
             }
+        } else {
+            if (tabs != null) {
+                // even though not initialized, tabs should exist
+                // use their state to determine whether config is valid
+                for (AbstractLaunchConfigurationTab tab : tabs) {
+                    if (!tab.isValid(config)) {
+                        return false;
+                    }
+                }
+            }
         }
+
+        setErrorMessage(null);
         return true;
     }
 
