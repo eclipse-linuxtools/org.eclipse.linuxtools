@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.commands;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -98,7 +99,8 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 				monitor.beginTask(
 						CommandMessages.getString(COPY_FROM_CONTAINER_JOB_TASK),
 						files.size());
-				try {
+				try (Closeable token = ((DockerConnection) connection)
+						.getOperationToken()) {
 					for (ContainerFileProxy proxy : files) {
 						if (monitor.isCanceled()) {
 							monitor.done();
@@ -111,7 +113,7 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 											proxy.getFullPath()));
 							monitor.worked(1);
 							InputStream in = ((DockerConnection) connection)
-									.copyContainer(container.id(),
+									.copyContainer(token, container.id(),
 											proxy.getLink());
 							/*
 							 * The input stream from copyContainer might be
@@ -120,7 +122,7 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 							 * data is available.
 							 */
 							TarArchiveInputStream k = new TarArchiveInputStream(
-									new BlockingInputStream(in));
+									in);
 							TarArchiveEntry te = null;
 							while ((te = k.getNextTarEntry()) != null) {
 								long size = te.getSize();
@@ -170,6 +172,8 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 					// do nothing
 				} catch (IOException e) {
 					Activator.log(e);
+				} catch (DockerException e1) {
+					Activator.log(e1);
 				} finally {
 					monitor.done();
 				}
@@ -179,23 +183,6 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 		};
 
 		copyFromContainerJob.schedule();
-
-	}
-
-	/**
-	 * A blocking input stream that waits until data is available.
-	 */
-	public class BlockingInputStream extends InputStream {
-		private InputStream in;
-
-		public BlockingInputStream(InputStream in) {
-			this.in = in;
-		}
-
-		@Override
-		public int read() throws IOException {
-			return in.read();
-		}
 	}
 
 }

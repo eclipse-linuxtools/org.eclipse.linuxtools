@@ -502,7 +502,7 @@ public class DockerConnection
 	 * 
 	 * @return copy of client
 	 * @throws DockerException
-	 * @throws DockerCertificateException
+	 *             - general Docker client exception
 	 * @see DockerConnection#open(boolean)
 	 */
 	private DockerClient getClientCopy() throws DockerException {
@@ -512,6 +512,15 @@ public class DockerConnection
 			throw new DockerException(NLS.bind(Messages.Open_Connection_Failure,
 					this.name, this.getUri()));
 		}
+	}
+
+	public Closeable getOperationToken() throws DockerException {
+		return getClientCopy();
+	}
+
+	public void closeOperationToken(Object token) {
+		DockerClient client = (DockerClient) token;
+		client.close();
 	}
 
 	// TODO: we might need something more fine grained, to indicate which
@@ -1833,6 +1842,19 @@ public class DockerConnection
 		return stream;
 	}
 
+	public InputStream copyContainer(final Closeable token,
+			final String id, final String path)
+			throws DockerException, InterruptedException {
+		InputStream stream;
+		DockerClient clientCopy = (DockerClient) token;
+		try {
+			stream = clientCopy.archiveContainer(id, path);
+		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+			throw new DockerException(e.getMessage(), e.getCause());
+		}
+		return stream;
+	}
+
 	@Override
 	public List<IDockerContainerChange> containerChanges(final String id)
 			throws DockerException, InterruptedException {
@@ -1886,6 +1908,20 @@ public class DockerConnection
 			throws DockerException, InterruptedException, IOException {
 		try {
 			DockerClient copy = getClientCopy();
+			java.nio.file.Path dirPath = FileSystems.getDefault()
+					.getPath(directory);
+			copy.copyToContainer(dirPath, id, path);
+			copy.close(); /* dispose of client copy now that we are done */
+		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+			throw new DockerException(e.getMessage(), e.getCause());
+		}
+	}
+
+	public void copyToContainer(final Closeable token, final String directory,
+			final String id, final String path)
+			throws DockerException, InterruptedException, IOException {
+		try {
+			DockerClient copy = (DockerClient) token;
 			java.nio.file.Path dirPath = FileSystems.getDefault()
 					.getPath(directory);
 			copy.copyToContainer(dirPath, id, path);
