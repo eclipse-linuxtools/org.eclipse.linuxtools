@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.internal.docker.ui.launch;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -166,22 +167,6 @@ public class ContainerCommandProcess extends Process {
 		return new ByteArrayOutputStream();
 	}
 
-	/**
-	 * A blocking input stream that waits until data is available.
-	 */
-	private class BlockingInputStream extends InputStream {
-		private InputStream in;
-
-		public BlockingInputStream(InputStream in) {
-			this.in = in;
-		}
-
-		@Override
-		public int read() throws IOException {
-			return in.read();
-		}
-	}
-
 	private class CopyVolumesFromImageJob extends Job {
 
 		private static final String COPY_VOLUMES_FROM_JOB_TITLE = "ContainerLaunch.copyVolumesFromJob.title"; //$NON-NLS-1$
@@ -214,13 +199,14 @@ public class ContainerCommandProcess extends Process {
 				containerId = ((DockerConnection) connection)
 						.createContainer(config, hostConfig, null);
 				for (String volume : remoteVolumes.keySet()) {
-					try {
+					try (Closeable token = ((DockerConnection) connection)
+							.getOperationToken()) {
 						monitor.setTaskName(Messages.getFormattedString(
 								COPY_VOLUMES_FROM_TASK, volume));
 						monitor.worked(1);
 
 						InputStream in = ((DockerConnection) connection)
-								.copyContainer(containerId,
+								.copyContainer(token, containerId,
 										remoteVolumes.get(volume));
 
 						/*
@@ -229,8 +215,7 @@ public class ContainerCommandProcess extends Process {
 						 * stream that is guaranteed to block until data is
 						 * available.
 						 */
-						TarArchiveInputStream k = new TarArchiveInputStream(
-								new BlockingInputStream(in));
+						TarArchiveInputStream k = new TarArchiveInputStream(in);
 						TarArchiveEntry te = null;
 						IPath currDir = new Path(volume).removeLastSegments(1);
 						currDir.toFile().mkdirs();

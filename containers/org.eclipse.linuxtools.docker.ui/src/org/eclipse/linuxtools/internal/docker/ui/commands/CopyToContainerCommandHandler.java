@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.commands;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -99,7 +100,8 @@ public class CopyToContainerCommandHandler extends AbstractHandler {
 						CommandMessages.getString(COPY_TO_CONTAINER_JOB_TASK),
 						files.size() + 1);
 				java.nio.file.Path tmpDir = null;
-				try {
+				try (Closeable token = ((DockerConnection) connection)
+						.getOperationToken()) {
 					for (Object proxy : files) {
 						File file = (File) proxy;
 						if (monitor.isCanceled()) {
@@ -188,7 +190,8 @@ public class CopyToContainerCommandHandler extends AbstractHandler {
 					// via the temporary directory
 					try {
 						((DockerConnection) connection).copyToContainer(
-								tmpDir.toString(), container.id(), target);
+								token, tmpDir.toString(), container.id(),
+								target);
 						deleteTmpDir(tmpDir);
 					} catch (final DockerException | IOException e) {
 						Display.getDefault()
@@ -206,6 +209,10 @@ public class CopyToContainerCommandHandler extends AbstractHandler {
 					}
 				} catch (InterruptedException e) {
 					// do nothing
+				} catch (IOException e1) {
+					Activator.log(e1);
+				} catch (DockerException e1) {
+					Activator.log(e1);
 				} finally {
 					monitor.done();
 				}

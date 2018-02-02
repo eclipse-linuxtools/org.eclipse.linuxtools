@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.docker.ui.launch;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -264,14 +265,15 @@ public class ContainerLauncher {
 							continue;
 						}
 					}
-					try {
+					try (Closeable token = ((DockerConnection) connection)
+							.getOperationToken()) {
 						monitor.setTaskName(Messages.getFormattedString(
 								COPY_VOLUMES_FROM_TASK, volume));
 						monitor.worked(1);
 
 
 						InputStream in = ((DockerConnection) connection)
-								.copyContainer(containerId, volume);
+								.copyContainer(token, containerId, volume);
 
 						synchronized (lockObject) {
 							dirList.add(volume);
@@ -283,8 +285,7 @@ public class ContainerLauncher {
 						 * stream that is guaranteed to block until data is
 						 * available.
 						 */
-						TarArchiveInputStream k = new TarArchiveInputStream(
-								new BlockingInputStream(in));
+						TarArchiveInputStream k = new TarArchiveInputStream(in);
 						TarArchiveEntry te = null;
 						target.toFile().mkdirs();
 						IPath currDir = target.append(volume)
@@ -341,22 +342,6 @@ public class ContainerLauncher {
 				monitor.done();
 			}
 			return Status.OK_STATUS;
-		}
-	}
-
-	/**
-	 * A blocking input stream that waits until data is available.
-	 */
-	private class BlockingInputStream extends InputStream {
-		private InputStream in;
-
-		public BlockingInputStream(InputStream in) {
-			this.in = in;
-		}
-
-		@Override
-		public int read() throws IOException {
-			return in.read();
 		}
 	}
 
