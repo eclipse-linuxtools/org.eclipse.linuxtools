@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.docker.feature"
+      id="org.eclipse.linuxtools.jdt.docker.launcher.feature"
       label="%featureName"
       version="4.0.0.qualifier"
       provider-name="%featureProvider"
@@ -23,29 +23,12 @@
       <update label="Linux Tools Docker Update Site" url="http://download.eclipse.org/linuxtools/update-docker"/>
    </url>
 
-   <plugin
-         id="org.eclipse.linuxtools.docker.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <requires>
+      <import feature="org.eclipse.linuxtools.docker.feature" version="4.0.0" match="greaterOrEqual"/>
+   </requires>
 
    <plugin
-         id="org.eclipse.linuxtools.docker.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.docker.docs"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.docker.editor"
+         id="org.eclipse.linuxtools.jdt.docker.launcher"
          download-size="0"
          install-size="0"
          version="0.0.0"
