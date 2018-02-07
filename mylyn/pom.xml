@@ -9,7 +9,7 @@
         <parent>
           <groupId>org.eclipse.linuxtools</groupId>
           <artifactId>linuxtools-parent</artifactId>
-          <version>6.2.0</version>
+          <version>6.2.1</version>
         </parent>
 
 	<properties>
