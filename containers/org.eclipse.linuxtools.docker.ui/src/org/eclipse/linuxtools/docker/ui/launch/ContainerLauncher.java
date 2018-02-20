@@ -595,7 +595,60 @@ public class ContainerLauncher {
 	 */
 	public void launch(String id, IContainerLaunchListener listener,
 			final String connectionUri, String image, String command,
-			String commandDir, String workingDir, List<String> additionalDirs,
+			@SuppressWarnings("unused") String commandDir, String workingDir,
+			List<String> additionalDirs,
+			Map<String, String> origEnv, Map<String, String> envMap,
+			List<String> ports, boolean keep, boolean stdinSupport,
+			boolean privilegedMode, Map<String, String> labels,
+			String seccomp) {
+
+		final List<String> cmdList = getCmdList(command);
+
+		launch(id, listener, connectionUri, image, cmdList, workingDir,
+				additionalDirs, origEnv, envMap, ports, keep, stdinSupport,
+				privilegedMode, labels, seccomp);
+	}
+
+	/**
+	 * Perform a launch of a command in a container and output stdout/stderr to
+	 * console.
+	 * 
+	 * @param id
+	 *            - id of caller to use to distinguish console owner
+	 * @param listener
+	 *            - optional listener of the run console
+	 * @param connectionUri
+	 *            - the specified connection to use
+	 * @param image
+	 *            - the image to use
+	 * @param cmdList
+	 *            - command to run as list of String
+	 * @param workingDir
+	 *            - working directory or null
+	 * @param additionalDirs
+	 *            - additional directories to mount or null
+	 * @param origEnv
+	 *            - original environment if we are appending to our existing
+	 *            environment
+	 * @param envMap
+	 *            - map of environment variable settings
+	 * @param ports
+	 *            - ports to expose
+	 * @param keep
+	 *            - keep container after running
+	 * @param stdinSupport
+	 *            - true if stdin support is required, false otherwise
+	 * @param privilegedMode
+	 *            - true if privileged mode is required, false otherwise
+	 * @param labels
+	 *            - Map of labels for the container
+	 * @param seccomp
+	 *            - seccomp profile
+	 * @since 4.0
+	 */
+	public void launch(String id, IContainerLaunchListener listener,
+			final String connectionUri, String image, List<String> cmdList,
+			String workingDir, List<String> additionalDirs,
 			Map<String, String> origEnv, Map<String, String> envMap,
 			List<String> ports, boolean keep, boolean stdinSupport,
 			boolean privilegedMode, Map<String, String> labels,
@@ -607,9 +660,6 @@ public class ContainerLauncher {
 		final List<String> env = new ArrayList<>();
 		env.addAll(toList(origEnv));
 		env.addAll(toList(envMap));
-
-
-		final List<String> cmdList = getCmdList(command);
 
 		final Set<String> exposedPorts = new HashSet<>();
 		final Map<String, List<IDockerPortBinding>> portBindingsMap = new HashMap<>();
@@ -738,10 +788,6 @@ public class ContainerLauncher {
 				remoteVolumes.put(workingDir, workingDir); // $NON-NLS-1$
 				volumes.add(workingDir);
 			}
-			if (commandDir != null) {
-				remoteVolumes.put(commandDir, commandDir); // $NON-NLS-1$
-				volumes.add(commandDir);
-			}
 			builder = builder.volumes(volumes);
 		} else {
 			// Running daemon on local host.
@@ -758,9 +804,6 @@ public class ContainerLauncher {
 			}
 			if (workingDir != null) {
 				volumes.add(workingDir + ":" + workingDir + ":Z"); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-			if (commandDir != null) {
-				volumes.add(commandDir + ":" + commandDir + ":Z"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			hostBuilder = hostBuilder.binds(volumes);
 		}
@@ -1052,7 +1095,7 @@ public class ContainerLauncher {
 	 * @param command
 	 *            - command to run
 	 * @param commandDir
-	 *            - directory path to command
+	 *            - directory path to command (unused)
 	 * @param workingDir
 	 *            - where to run command
 	 * @param additionalDirs
@@ -1076,13 +1119,61 @@ public class ContainerLauncher {
 	 */
 	public Process runCommand(String connectionName, String imageName, IProject project, 
 			IErrorMessageHolder errMsgHolder, String command,
-			String commandDir,
+			@SuppressWarnings("unused") String commandDir,
 			String workingDir,
 			List<String> additionalDirs, Map<String, String> origEnv,
 			Properties envMap, boolean supportStdin,
 			boolean privilegedMode, HashMap<String, String> labels,
 			boolean keepContainer) {
+		
+		final List<String> cmdList = getCmdList(command);
+		return runCommand(connectionName, imageName, project, errMsgHolder,
+				cmdList, workingDir, additionalDirs, origEnv, envMap,
+				supportStdin, privilegedMode, labels, keepContainer);
+	}
 
+	/**
+	 * Create a Process to run an arbitrary command in a Container with uid of
+	 * caller so any files created are accessible to user.
+	 * 
+	 * @param connectionName
+	 *            - uri of connection to use
+	 * @param imageName
+	 *            - name of image to use
+	 * @param project
+	 *            - Eclipse project
+	 * @param errMsgHolder
+	 *            - holder for any error messages
+	 * @param cmdList
+	 *            - command to run as list of String
+	 * @param workingDir
+	 *            - where to run command
+	 * @param additionalDirs
+	 *            - additional directories to mount
+	 * @param origEnv
+	 *            - original environment if we are appending to existing
+	 * @param envMap
+	 *            - new environment
+	 * @param supportStdin
+	 *            - support using stdin
+	 * @param privilegedMode
+	 *            - run in privileged mode
+	 * @param labels
+	 *            - labels to apply to Container
+	 * @param keepContainer
+	 *            - boolean whether to keep Container when done
+	 * @return Process that can be used to check for completion and for routing
+	 *         stdout/stderr
+	 * 
+	 * @since 4.0
+	 */
+	public Process runCommand(String connectionName, String imageName,
+			IProject project, IErrorMessageHolder errMsgHolder,
+			List<String> cmdList,
+			String workingDir, List<String> additionalDirs,
+			Map<String, String> origEnv, Properties envMap,
+			boolean supportStdin, boolean privilegedMode,
+			HashMap<String, String> labels, boolean keepContainer) {
 		Integer uid = null;
 		Integer gid = null;
 		// For Unix, make sure that the user id is passed with the run
@@ -1116,7 +1207,6 @@ public class ContainerLauncher {
 		env.addAll(toList(origEnv));
 		env.addAll(toList(envMap));
 
-		final List<String> cmdList = getCmdList(command);
 
 		final Map<String, List<IDockerPortBinding>> portBindingsMap = new HashMap<>();
 
@@ -1218,12 +1308,6 @@ public class ContainerLauncher {
 				remoteDataVolumes.put(p.toPortableString(),
 						p.toPortableString());
 			}
-			if (commandDir != null) {
-				IPath p = new Path(commandDir).removeTrailingSeparator();
-				remoteVolumes.add(p.toPortableString());
-				remoteDataVolumes.put(p.toPortableString(),
-						p.toPortableString());
-			}
 			builder = builder.volumes(remoteVolumes);
 		} else {
 			// Running daemon on local host.
@@ -1264,11 +1348,6 @@ public class ContainerLauncher {
 			}
 			if (workingDir != null) {
 				IPath p = new Path(workingDir).removeTrailingSeparator();
-				volumes.add(p.toPortableString() + ":" + p.toPortableString() //$NON-NLS-1$
-						+ ":Z"); //$NON-NLS-1$
-			}
-			if (commandDir != null) {
-				IPath p = new Path(commandDir).removeTrailingSeparator();
 				volumes.add(p.toPortableString() + ":" + p.toPortableString() //$NON-NLS-1$
 						+ ":Z"); //$NON-NLS-1$
 			}
