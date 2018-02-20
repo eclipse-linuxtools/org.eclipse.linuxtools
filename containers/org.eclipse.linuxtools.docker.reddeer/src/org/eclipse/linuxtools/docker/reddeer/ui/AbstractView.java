@@ -19,13 +19,16 @@ import org.eclipse.reddeer.common.util.Display;
 import org.eclipse.reddeer.common.util.ResultRunnable;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.lookup.MenuLookup;
 import org.eclipse.reddeer.core.lookup.WidgetLookup;
 import org.eclipse.reddeer.core.matcher.WithTextMatcher;
 import org.eclipse.reddeer.core.matcher.WithTextMatchers;
 import org.eclipse.reddeer.swt.api.CTabItem;
+import org.eclipse.reddeer.swt.api.Menu;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.menu.DefaultMenu;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenu;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -326,5 +329,15 @@ public class AbstractView implements View {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public Menu getContextMenu() {
+		Control registeredControl = cTabItem.getControl();
+		if (registeredControl == null) {
+			throw new WorkbenchLayerException("No control is registered with the workbench");
+		}
+		return new DefaultMenu(MenuLookup.getInstance().getControlMenu(registeredControl));
+	}
+
 
 }
