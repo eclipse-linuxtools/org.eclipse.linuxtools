@@ -167,6 +167,22 @@ public class ContainerCommandProcess extends Process {
 		return new ByteArrayOutputStream();
 	}
 
+	/**
+	 * A blocking input stream that waits until data is available.
+	 */
+	private class BlockingInputStream extends InputStream {
+		private InputStream in;
+
+		public BlockingInputStream(InputStream in) {
+			this.in = in;
+		}
+
+		@Override
+		public int read() throws IOException {
+			return in.read();
+		}
+	}
+
 	private class CopyVolumesFromImageJob extends Job {
 
 		private static final String COPY_VOLUMES_FROM_JOB_TITLE = "ContainerLaunch.copyVolumesFromJob.title"; //$NON-NLS-1$
@@ -215,7 +231,8 @@ public class ContainerCommandProcess extends Process {
 						 * stream that is guaranteed to block until data is
 						 * available.
 						 */
-						TarArchiveInputStream k = new TarArchiveInputStream(in);
+						TarArchiveInputStream k = new TarArchiveInputStream(
+								new BlockingInputStream(in));
 						TarArchiveEntry te = null;
 						IPath currDir = new Path(volume).removeLastSegments(1);
 						currDir.toFile().mkdirs();

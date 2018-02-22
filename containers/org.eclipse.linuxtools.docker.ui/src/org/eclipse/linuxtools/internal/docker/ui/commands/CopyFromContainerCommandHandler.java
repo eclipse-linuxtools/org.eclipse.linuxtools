@@ -87,6 +87,22 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 		return null;
 	}
 
+	/**
+	 * A blocking input stream that waits until data is available.
+	 */
+	private class BlockingInputStream extends InputStream {
+		private InputStream in;
+
+		public BlockingInputStream(InputStream in) {
+			this.in = in;
+		}
+
+		@Override
+		public int read() throws IOException {
+			return in.read();
+		}
+	}
+
 	private void performCopyFromContainer(final IDockerConnection connection,
 			final IDockerContainer container, final String target,
 			final List<ContainerFileProxy> files) {
@@ -122,7 +138,7 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 							 * data is available.
 							 */
 							TarArchiveInputStream k = new TarArchiveInputStream(
-									in);
+									new BlockingInputStream(in));
 							TarArchiveEntry te = null;
 							while ((te = k.getNextTarEntry()) != null) {
 								long size = te.getSize();
