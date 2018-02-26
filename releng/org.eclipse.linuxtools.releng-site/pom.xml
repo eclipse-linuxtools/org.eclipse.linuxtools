@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-   Copyright (C) 2011, Red Hat, Inc. and others
+   Copyright (C) 2011, 2018 Red Hat, Inc. and others
 
    All rights reserved. This program and the accompanying materials
    are made available under the terms of the Eclipse Public License v1.0
@@ -148,12 +148,12 @@
               <repositories>
                 <repository>
                   <id>cbi-reports</id>
-                  <url>http://download.eclipse.org/cbi/updates/analyzers/4.7/I20170727-1641/</url>
+                  <url>http://download.eclipse.org/cbi/updates/analyzers/4.7/I20180130-1734/</url>
                   <layout>p2</layout>
                 </repository>
                 <repository>
-                  <id>eclipse-4.7.1</id>
-                  <url>http://download.eclipse.org/eclipse/updates/4.7/R-4.7.1a-201710090410/</url>
+                  <id>eclipse-4.7.2</id>
+                  <url>http://download.eclipse.org/eclipse/updates/4.7/R-4.7.2-201711300510/</url>
                   <layout>p2</layout>
                 </repository>
               </repositories>
