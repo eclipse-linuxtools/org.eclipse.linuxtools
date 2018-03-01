@@ -318,9 +318,13 @@ public class DockerConnection
 		switch (state) {
 		case UNKNOWN:
 		case CLOSED:
-			this.images = Collections.emptyList();
-			this.containers = Collections.emptyList();
-			this.containersById = new HashMap<>();
+			synchronized (imageLock) {
+				this.images = Collections.emptyList();
+			}
+			synchronized (containerLock) {
+				this.containers = Collections.emptyList();
+				this.containersById = new HashMap<>();
+			}
 			notifyContainerListeners(this.containers);
 			notifyImageListeners(this.images);
 			break;
@@ -372,8 +376,8 @@ public class DockerConnection
 				this.client.close();
 				this.client = null;
 			}
-			setState(EnumDockerConnectionState.CLOSED);
 		}
+		setState(EnumDockerConnectionState.CLOSED);
 	}
 
 	@Override
