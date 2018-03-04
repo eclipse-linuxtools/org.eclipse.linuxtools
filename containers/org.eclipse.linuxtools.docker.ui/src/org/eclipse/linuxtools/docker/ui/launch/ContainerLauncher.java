@@ -1099,6 +1099,51 @@ public class ContainerLauncher {
 	}
 
 	/**
+	 * Fetch directories from Container and place them in a specified location.
+	 * This method will wait for copy job to complete before returning.
+	 * 
+	 * @param connectionUri
+	 *            - uri of connection to use
+	 * @param imageName
+	 *            - name of image to use
+	 * @param containerDirs
+	 *            - list of directories to copy
+	 * @param hostDir
+	 *            - host directory to copy directories to
+	 * @return 0 if successful, -1 if failure occurred
+	 * 
+	 * @since 4.0
+	 */
+	public int fetchContainerDirsSync(String connectionUri, String imageName,
+			List<String> containerDirs, IPath hostDir) {
+		// Try and use the specified connection that was used before,
+		// otherwise, open an error
+		final IDockerConnection connection = DockerConnectionManager
+				.getInstance().getConnectionByUri(connectionUri);
+		if (connection == null) {
+			Display.getDefault()
+					.syncExec(() -> MessageDialog.openError(
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+									.getShell(),
+							DVMessages.getString(ERROR_LAUNCHING_CONTAINER),
+							DVMessages.getFormattedString(
+									ERROR_NO_CONNECTION_WITH_URI,
+									connectionUri)));
+			return -1;
+		}
+
+		CopyVolumesFromImageJob job = new CopyVolumesFromImageJob(connection,
+				imageName, containerDirs, hostDir);
+		job.schedule();
+		try {
+			job.join();
+		} catch (InterruptedException e) {
+			return -1;
+		}
+		return 0;
+	}
+
+	/**
 	 * Create a Process to run an arbitrary command in a Container with uid of
 	 * caller so any files created are accessible to user.
 	 * 
