@@ -54,6 +54,7 @@ public class ContainerCommandProcess extends Process {
 	private Thread thread;
 	private boolean containerRemoved;
 	private int exitValue;
+	private boolean done;
 
 	public ContainerCommandProcess(IDockerConnection connection,
 			String imageName, String containerId,
@@ -95,6 +96,7 @@ public class ContainerCommandProcess extends Process {
 					}
 				}
 			}
+			done = true;
 		};
 
 		// start the thread
@@ -115,9 +117,11 @@ public class ContainerCommandProcess extends Process {
 				// ignore
 			}
 			thread.interrupt();
-			while (thread.isAlive()) {
+			int count = 0;
+			while (thread.isAlive() && count++ < 5) {
 				try {
 					Thread.sleep(500);
+					thread.interrupt();
 				} catch (InterruptedException e) {
 					// ignore
 				}
@@ -294,12 +298,19 @@ public class ContainerCommandProcess extends Process {
 	@Override
 	public int waitFor() throws InterruptedException {
 		try {
+			if (!done) {
+				while (!thread.isAlive() && !done) {
+					Thread.sleep(200);
+				}
+			}
 			IDockerContainerExit exit = connection
 					.waitForContainer(containerId);
 			thread.interrupt();
-			while (thread.isAlive()) {
+			int count = 0;
+			while (thread.isAlive() && count++ < 5) {
 				try {
 					Thread.sleep(500);
+					thread.interrupt();
 				} catch (InterruptedException e) {
 					// ignore
 				}
