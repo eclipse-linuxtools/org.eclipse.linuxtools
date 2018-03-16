@@ -42,8 +42,8 @@ import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig;
 import org.eclipse.linuxtools.internal.docker.core.DockerHostConfig;
 
-public class ContainerCommandProcess extends Process {
 
+public class ContainerCommandProcess extends Process {
 	private String containerId;
 	private IDockerConnection connection;
 	private String imageName;
@@ -55,6 +55,8 @@ public class ContainerCommandProcess extends Process {
 	private boolean containerRemoved;
 	private int exitValue;
 	private boolean done;
+	private boolean threadDone;
+	private boolean threadStarted;
 
 	public ContainerCommandProcess(IDockerConnection connection,
 			String imageName, String containerId,
@@ -73,14 +75,20 @@ public class ContainerCommandProcess extends Process {
 			PipedOutputStream pipedErr = null;
 			try (PipedOutputStream pipedStdout = new PipedOutputStream(stdout);
 					PipedOutputStream pipedStderr = new PipedOutputStream(
-							stderr)) {
+							stderr);
+					Closeable token = ((DockerConnection) connection)
+							.getOperationToken()) {
 				pipedOut = pipedStdout;
 				pipedErr = pipedStderr;
-				connection.attachLog(containerId, pipedStdout, pipedStderr);
+				connection.startContainer(containerId, null);
+				threadStarted = true;
+				((DockerConnection) connection).attachLog(token, containerId,
+						pipedStdout, pipedStderr);
 				pipedStdout.flush();
 				pipedStderr.flush();
 			} catch (DockerException | InterruptedException | IOException e) {
 				// do nothing but flush/close output streams
+				e.printStackTrace();
 				if (pipedOut != null) {
 					try {
 						pipedOut.flush();
@@ -95,17 +103,27 @@ public class ContainerCommandProcess extends Process {
 						// ignore
 					}
 				}
+			} finally {
+				threadDone = true;
 			}
-			done = true;
 		};
 
 		// start the thread
 		this.thread = new Thread(logContainer);
 		this.thread.start();
+		// ensure we have piped streams set up before allowing exit of
+		// constructor
+		while (!threadStarted && !threadDone) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+		}
 	}
 
 	@Override
-	public void destroy() {
+	public synchronized void destroy() {
 		try {
 			try {
 				// TODO: see if there is a better way of draining the
@@ -116,12 +134,11 @@ public class ContainerCommandProcess extends Process {
 			} catch (InterruptedException e1) {
 				// ignore
 			}
-			thread.interrupt();
+			// give logging thread at most 5 seconds to terminate
 			int count = 0;
-			while (thread.isAlive() && count++ < 5) {
+			while (thread.isAlive() && count++ < 10) {
 				try {
 					Thread.sleep(500);
-					thread.interrupt();
 				} catch (InterruptedException e) {
 					// ignore
 				}
@@ -134,7 +151,7 @@ public class ContainerCommandProcess extends Process {
 	}
 
 	@Override
-	public int exitValue() {
+	public synchronized int exitValue() {
 		// if container has been removed, we need to return
 		// the exit value that we cached before removal
 		if (containerRemoved) {
@@ -154,6 +171,58 @@ public class ContainerCommandProcess extends Process {
 			}
 		}
 		return -1;
+	}
+
+	@Override
+	public synchronized int waitFor() throws InterruptedException {
+		if (done) {
+			return 0;
+		}
+		try {
+			if (!threadDone) {
+				while (!threadStarted) {
+					Thread.sleep(200);
+				}
+			}
+			IDockerContainerExit exit = connection
+					.waitForContainer(containerId);
+			done = true;
+			// give logging thread at most 5 seconds to finish
+			int i = 0;
+			while (!threadDone && i++ < 10) {
+				Thread.sleep(500);
+			}
+			if (!threadDone) {
+				// we are stuck
+				try {
+					Activator.logWarningMessage(
+							LaunchMessages.getFormattedString(
+									"ContainerLoggingNotResponding.msg", //$NON-NLS-1$
+									containerId.substring(0, 8)));
+					this.stdout.close();
+					this.stderr.close();
+				} catch (IOException e) {
+					// do nothing
+				}
+			}
+			if (!containerRemoved) {
+				connection.stopLoggingThread(containerId);
+			}
+			if (!containerRemoved && !keepContainer) {
+				exitValue = exitValue();
+				containerRemoved = true;
+				connection.removeContainer(containerId);
+			}
+			if (!((DockerConnection) connection).isLocal()) {
+				CopyVolumesFromImageJob job = new CopyVolumesFromImageJob(
+						connection, imageName, remoteVolumes);
+				job.schedule();
+				job.join();
+			}
+			return exit.statusCode();
+		} catch (DockerException e) {
+			return -1;
+		}
 	}
 
 	@Override
@@ -295,43 +364,6 @@ public class ContainerCommandProcess extends Process {
 		}
 	}
 
-	@Override
-	public int waitFor() throws InterruptedException {
-		try {
-			if (!done) {
-				while (!thread.isAlive() && !done) {
-					Thread.sleep(200);
-				}
-			}
-			IDockerContainerExit exit = connection
-					.waitForContainer(containerId);
-			thread.interrupt();
-			int count = 0;
-			while (thread.isAlive() && count++ < 5) {
-				try {
-					Thread.sleep(500);
-					thread.interrupt();
-				} catch (InterruptedException e) {
-					// ignore
-				}
-			}
-			connection.stopLoggingThread(containerId);
-			if (!keepContainer) {
-				exitValue = exitValue();
-				containerRemoved = true;
-				connection.removeContainer(containerId);
-			}
-			if (!((DockerConnection) connection).isLocal()) {
-				CopyVolumesFromImageJob job = new CopyVolumesFromImageJob(
-						connection, imageName, remoteVolumes);
-				job.schedule();
-				job.join();
-			}
-			return exit.statusCode();
-		} catch (DockerException e) {
-			return -1;
-		}
-	}
 
 	public String getImage() {
 		return imageName;

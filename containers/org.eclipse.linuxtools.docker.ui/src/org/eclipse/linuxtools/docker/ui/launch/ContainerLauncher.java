@@ -186,6 +186,7 @@ public class ContainerLauncher {
 		private static final String COPY_VOLUMES_FROM_TASK = "ContainerLaunch.copyVolumesFromJob.task"; //$NON-NLS-1$
 
 		private final List<String> volumes;
+		private final List<String> excludedDirs;
 		private final IDockerConnection connection;
 		private final String image;
 		private final IPath target;
@@ -194,9 +195,11 @@ public class ContainerLauncher {
 
 		public CopyVolumesFromImageJob(
 				IDockerConnection connection,
-				String image, List<String> volumes, IPath target) {
+				String image, List<String> volumes, List<String> excludedDirs,
+				IPath target) {
 			super(Messages.getString(COPY_VOLUMES_FROM_JOB_TITLE));
 			this.volumes = volumes;
+			this.excludedDirs = excludedDirs;
 			this.connection = connection;
 			this.image = image;
 			this.target = target;
@@ -285,6 +288,17 @@ public class ContainerLauncher {
 				boolean somethingToCopy = false;
 				synchronized (lockObject) {
 					for (String volume : volumes) {
+						boolean excluded = false;
+						for (String dir : excludedDirs) {
+							if (volume.startsWith(dir) && volume.charAt(
+									dir.length()) == File.separatorChar) {
+								excluded = true;
+								break;
+							}
+						}
+						if (excluded) {
+							continue;
+						}
 						boolean alreadyCopied = false;
 						for (String path : dirList) {
 							if (volume.equals(path) || (volume.startsWith(path)
@@ -330,6 +344,16 @@ public class ContainerLauncher {
 						monitor.worked(1);
 						continue;
 					}
+					// don't copy directories that are excluded
+					for (String dir : excludedDirs) {
+						if (volume.equals(dir)
+								|| (volume.startsWith(dir) && volume.charAt(
+										dir.length()) == File.separatorChar)) {
+							monitor.worked(1);
+							continue;
+						}
+
+					}
 					// if we have already copied the directory either directly
 					// or as part of a parent directory copy, then skip to next
 					// volume.
@@ -340,6 +364,9 @@ public class ContainerLauncher {
 									&& volume.charAt(path
 											.length()) == File.separatorChar)) {
 								alreadyCopied = path;
+								if (!dirList.contains(volume)) {
+									dirList.add(volume);
+								}
 								break;
 							}
 						}
@@ -463,8 +490,7 @@ public class ContainerLauncher {
 						// do something so synchronization will occur
 						synchronized (lockObject) {
 							if (!dirList.contains(copiedVolume)) {
-								return Status.CANCEL_STATUS; // should never
-																// happen
+								dirList.add(copiedVolume);
 							}
 						}
 					}
@@ -906,6 +932,7 @@ public class ContainerLauncher {
 
 		final Map<String, String> remoteVolumes = new HashMap<>();
 		if (!((DockerConnection) connection).isLocal()) {
+			@SuppressWarnings("rawtypes")
 			final Map<String,Map> volumes = new HashMap<>();
 			// if using remote daemon, we have to
 			// handle volume mounting differently.
@@ -1208,7 +1235,48 @@ public class ContainerLauncher {
 		}
 
 		CopyVolumesFromImageJob job = new CopyVolumesFromImageJob(connection,
-				imageName, containerDirs, hostDir);
+				imageName, containerDirs, new ArrayList<String>(), hostDir);
+		job.schedule();
+		return 0;
+	}
+
+	/**
+	 * Fetch directories from Container and place them in a specified location.
+	 * 
+	 * @param connectionUri
+	 *            - uri of connection to use
+	 * @param imageName
+	 *            - name of image to use
+	 * @param containerDirs
+	 *            - list of directories to copy
+	 * @param excludedDirs
+	 *            - list of directories not to copy
+	 * @param hostDir
+	 *            - host directory to copy directories to
+	 * @return 0 if successful, -1 if failure occurred
+	 * 
+	 * @since 4.0
+	 */
+	public int fetchContainerDirs(String connectionUri, String imageName,
+			List<String> containerDirs, List<String> excludedDirs, IPath hostDir) {
+		// Try and use the specified connection that was used before,
+		// otherwise, open an error
+		final IDockerConnection connection = DockerConnectionManager
+				.getInstance().getConnectionByUri(connectionUri);
+		if (connection == null) {
+			Display.getDefault()
+					.syncExec(() -> MessageDialog.openError(
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+									.getShell(),
+							DVMessages.getString(ERROR_LAUNCHING_CONTAINER),
+							DVMessages.getFormattedString(
+									ERROR_NO_CONNECTION_WITH_URI,
+									connectionUri)));
+			return -1;
+		}
+
+		CopyVolumesFromImageJob job = new CopyVolumesFromImageJob(connection,
+				imageName, containerDirs, excludedDirs, hostDir);
 		job.schedule();
 		return 0;
 	}
@@ -1248,7 +1316,53 @@ public class ContainerLauncher {
 		}
 
 		CopyVolumesFromImageJob job = new CopyVolumesFromImageJob(connection,
-				imageName, containerDirs, hostDir);
+				imageName, containerDirs, new ArrayList<String>(), hostDir);
+		job.schedule();
+		try {
+			job.join();
+		} catch (InterruptedException e) {
+			return -1;
+		}
+		return 0;
+	}
+
+	/**
+	 * Fetch directories from Container and place them in a specified location.
+	 * This method will wait for copy job to complete before returning.
+	 * 
+	 * @param connectionUri
+	 *            - uri of connection to use
+	 * @param imageName
+	 *            - name of image to use
+	 * @param containerDirs
+	 *            - list of directories to copy
+	 * @param hostDir
+	 *            - host directory to copy directories to
+	 * @return 0 if successful, -1 if failure occurred
+	 * 
+	 * @since 4.0
+	 */
+	public int fetchContainerDirsSync(String connectionUri, String imageName,
+			List<String> containerDirs, List<String> excludedDirs,
+			IPath hostDir) {
+		// Try and use the specified connection that was used before,
+		// otherwise, open an error
+		final IDockerConnection connection = DockerConnectionManager
+				.getInstance().getConnectionByUri(connectionUri);
+		if (connection == null) {
+			Display.getDefault()
+					.syncExec(() -> MessageDialog.openError(
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+									.getShell(),
+							DVMessages.getString(ERROR_LAUNCHING_CONTAINER),
+							DVMessages.getFormattedString(
+									ERROR_NO_CONNECTION_WITH_URI,
+									connectionUri)));
+			return -1;
+		}
+
+		CopyVolumesFromImageJob job = new CopyVolumesFromImageJob(connection,
+				imageName, containerDirs, excludedDirs, hostDir);
 		job.schedule();
 		try {
 			job.join();
@@ -1447,6 +1561,7 @@ public class ContainerLauncher {
 		// Note we only pass volumes to the config if we have a
 		// remote daemon. Local mounted volumes are passed
 		// via the HostConfig binds setting
+		@SuppressWarnings("rawtypes")
 		final Map<String, Map> remoteVolumes = new HashMap<>();
 		final Map<String, String> remoteDataVolumes = new HashMap<>();
 		final Set<String> readOnlyVolumes = new TreeSet<>();
@@ -1569,11 +1684,6 @@ public class ContainerLauncher {
 					// ignore
 				}
 			}
-		}
-		try {
-			((DockerConnection) conn).startContainer(id, null);
-		} catch (DockerException | InterruptedException e) {
-			Activator.log(e);
 		}
 
 		// remove all read-only remote volumes from our list of remote

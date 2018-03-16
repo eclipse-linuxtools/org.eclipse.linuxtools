@@ -2028,6 +2028,19 @@ public class DockerConnection
 		}
 	}
 
+	public void attachLog(final Closeable token, final String id,
+			final OutputStream out, final OutputStream err)
+			throws DockerException, InterruptedException, IOException {
+		try {
+			LogStream stream = ((DockerClient) token).logs(id,
+					LogsParam.follow(), LogsParam.stdout(), LogsParam.stderr());
+			stream.attach(out, err);
+			stream.close();
+		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+			throw new DockerException(e.getMessage(), e.getCause());
+		}
+	}
+
 	@Override
 	public IDockerContainerExit waitForContainer(final String id)
 			throws DockerException, InterruptedException {
