@@ -44,6 +44,7 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 	private String rawcmd;
 	private final List<String> cmd;
 	private final String image;
+	@SuppressWarnings("rawtypes")
 	private final Map<String, Map> volumes;
 	private final String workingDir;
 	private final List<String> entrypoint;
@@ -94,6 +95,7 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 		 * volumes.keySet() which might be null. For now we need to guard
 		 * against this.
 		 */
+		@SuppressWarnings("rawtypes")
 		Map<String, Map> res = null;
 		try {
 			res = containerConfig != null ? containerConfig.volumes() : null;
@@ -260,6 +262,7 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 		return image;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Map<String, Map> volumes() {
 		if (volumes == null) {
@@ -324,6 +327,7 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 		private String rawcmd;
 		private List<String> cmd;
 		private String image;
+		@SuppressWarnings("rawtypes")
 		private Map<String, Map> volumes;
 		private String workingDir;
 		private List<String> entrypoint;
@@ -518,11 +522,13 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 			return image;
 		}
 
-		public Builder volumes(final Map<String, Map> volumes) {
+		public Builder volumes(
+				@SuppressWarnings("rawtypes") final Map<String, Map> volumes) {
 			this.volumes = volumes;
 			return this;
 		}
 
+		@SuppressWarnings("rawtypes")
 		public Map<String, Map> volumes() {
 			return volumes;
 		}

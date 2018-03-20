@@ -52,6 +52,10 @@ public interface IDockerContainerConfig {
 
 	String image();
 
+	/**
+	 * @since 4.0
+	 */
+	@SuppressWarnings("rawtypes")
 	Map<String, Map> volumes();
 
 	String workingDir();
