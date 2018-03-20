@@ -345,14 +345,18 @@ public class ContainerLauncher {
 						continue;
 					}
 					// don't copy directories that are excluded
+					boolean excluded = false;
 					for (String dir : excludedDirs) {
 						if (volume.equals(dir)
 								|| (volume.startsWith(dir) && volume.charAt(
 										dir.length()) == File.separatorChar)) {
-							monitor.worked(1);
-							continue;
+							excluded = true;
+							break;
 						}
-
+					}
+					if (excluded) {
+						monitor.worked(1);
+						continue;
 					}
 					// if we have already copied the directory either directly
 					// or as part of a parent directory copy, then skip to next
