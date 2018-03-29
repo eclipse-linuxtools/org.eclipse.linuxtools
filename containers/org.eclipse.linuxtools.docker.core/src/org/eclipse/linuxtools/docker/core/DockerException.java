@@ -41,9 +41,7 @@ public class DockerException extends Exception {
 		// 1.12.0 and beyond.
 		if (s.startsWith(JSON_MESSAGE_PREFIX)) {
 			s = s.substring(JSON_MESSAGE_PREFIX.length());
-			if (s.endsWith(JSON_MESSAGE_SUFFIX)) {
-				s = s.substring(0, s.indexOf(JSON_MESSAGE_SUFFIX));
-			}
+			s = s.replaceAll(JSON_MESSAGE_SUFFIX, ""); //$NON-NLS-1$
 			return s;
 		}
 		return super.getMessage();
