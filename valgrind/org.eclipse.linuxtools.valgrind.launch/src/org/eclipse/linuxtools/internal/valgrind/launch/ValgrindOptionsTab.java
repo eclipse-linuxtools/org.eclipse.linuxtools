@@ -562,6 +562,15 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
     public boolean isValid(ILaunchConfiguration launchConfig) {
         setErrorMessage(null);
 
+        // Try to initialize the dynamic tab for validation
+        if (dynamicTab == null) {
+            try {
+                loadDynamicTab();
+            } catch (CoreException e) {
+                // Do nothing
+            }
+        }
+
         boolean result = false;
         if (ex != null) {
             setErrorMessage(ex.getLocalizedMessage());
