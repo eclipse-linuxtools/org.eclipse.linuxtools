@@ -31,6 +31,7 @@ public class Messages extends NLS {
 	public static String Open_Connection;
 	public static String Open_Connection_Failure;
 	public static String Docker_Daemon_Ping_Failure;
+	public static String Docker_Daemon_No_Unix_Socket;
 	public static String Retrieve_Docker_Certificates_Failure;
 	public static String List_Docker_Containers_Failure;
 	public static String List_Docker_Images_Failure;

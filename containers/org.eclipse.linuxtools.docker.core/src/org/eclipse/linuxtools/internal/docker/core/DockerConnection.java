@@ -340,6 +340,25 @@ public class DockerConnection
 	@Override
 	public void ping() throws DockerException {
 		try {
+			// for a unix socket, if it doesn't exist (i.e. daemon not up)
+			// then any request will result in stderr messages as retries will
+			// occur...check for socket existence before trying the ping
+			if (getState() == EnumDockerConnectionState.CLOSED
+					|| getState() == EnumDockerConnectionState.UNKNOWN) {
+				if (connectionSettings
+						.getType() == IDockerConnectionSettings.BindingType.UNIX_SOCKET_CONNECTION) {
+					// try this before pinging to avoid retry
+					UnixSocketConnectionSettings settings = (UnixSocketConnectionSettings) connectionSettings;
+					String path = settings.getPath();
+					String socket = path.replaceAll("unix://", ""); //$NON-NLS-1$ //$NON-NLS-2$
+					java.io.File f = new java.io.File(socket);
+					if (!f.exists()) {
+						throw new com.spotify.docker.client.exceptions.DockerException(
+								NLS.bind(Messages.Docker_Daemon_No_Unix_Socket,
+										socket));
+					}
+				}
+			}
 			if (this.client != null) {
 				this.client.ping();
 			} else {
