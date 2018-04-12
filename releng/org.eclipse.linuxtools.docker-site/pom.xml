@@ -128,7 +128,7 @@
               <jvmArgs>
                 <arg>-DreportRepoDir=${project.build.directory}/repository</arg>
                 <arg>-DreportOutputDir=${project.build.directory}/repository/buildInfo</arg>
-              <arg>-DreferenceRepo=/home/data/httpd/download.eclipse.org/staging/oxygen/</arg>
+              <arg>-DreferenceRepo=/home/data/httpd/download.eclipse.org/releases/oxygen/</arg>
               </jvmArgs>
               <executionEnvironment>JavaSE-1.8</executionEnvironment>
               <dependencies>
@@ -152,8 +152,8 @@
                   <layout>p2</layout>
                 </repository>
                 <repository>
-                  <id>eclipse-4.7.2</id>
-                  <url>http://download.eclipse.org/eclipse/updates/4.7/R-4.7.2-201711300510/</url>
+                  <id>eclipse-4.7.3a</id>
+                  <url>http://download.eclipse.org/eclipse/updates/4.7/R-4.7.3a-201803300640/</url>
                   <layout>p2</layout>
                 </repository>
               </repositories>
