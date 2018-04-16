@@ -60,6 +60,7 @@ import org.eclipse.linuxtools.docker.core.IDockerConfParameter;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerConnection2;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionInfo;
+import org.eclipse.linuxtools.docker.core.IDockerConnectionManagerListener;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings.BindingType;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
@@ -314,6 +315,7 @@ public class DockerConnection
 	}
 
 	public void setState(final EnumDockerConnectionState state) {
+		EnumDockerConnectionState oldState = this.state;
 		this.state = state;
 		switch (state) {
 		case UNKNOWN:
@@ -327,12 +329,20 @@ public class DockerConnection
 			}
 			notifyContainerListeners(this.containers);
 			notifyImageListeners(this.images);
+			if (oldState == EnumDockerConnectionState.ESTABLISHED) {
+				DockerConnectionManager.getInstance().notifyListeners(this,
+						IDockerConnectionManagerListener.DISABLE_EVENT);
+			}
 			break;
 		case ESTABLISHED:
 			this.getContainers(true);
 			this.getImages(true);
 			notifyContainerListeners(this.containers);
 			notifyImageListeners(this.images);
+			if (oldState != EnumDockerConnectionState.ESTABLISHED) {
+				DockerConnectionManager.getInstance().notifyListeners(this,
+						IDockerConnectionManagerListener.ENABLE_EVENT);
+			}
 			break;
 		}
 	}

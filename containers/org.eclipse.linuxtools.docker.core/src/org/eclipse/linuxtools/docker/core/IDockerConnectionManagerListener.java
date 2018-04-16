@@ -16,6 +16,14 @@ public interface IDockerConnectionManagerListener {
 	int REMOVE_EVENT = 1;
 	int RENAME_EVENT = 2;
 	int UPDATE_SETTINGS_EVENT = 3;
+	/**
+	 * @since 4.0
+	 */
+	int ENABLE_EVENT = 4;
+	/**
+	 * @since 4.0
+	 */
+	int DISABLE_EVENT = 5;
 
 	/**
 	 * Notifies the listener that the given {@link IDockerConnection} changed.
