@@ -106,8 +106,8 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 				.grab(true, false).span(COLUMNS, 1).applyTo(volumesLabel);
 		final CheckboxTableViewer dataVolumesTableViewer = createVolumesTable(
 				container);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP)
-				.grab(true, false).hint(200, 100)
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
+				.grab(true, true).hint(200, 100)
 				.applyTo(dataVolumesTableViewer.getTable());
 		// update table content when selected image changes
 		bind(dataVolumesTableViewer, model.getDataVolumes(),

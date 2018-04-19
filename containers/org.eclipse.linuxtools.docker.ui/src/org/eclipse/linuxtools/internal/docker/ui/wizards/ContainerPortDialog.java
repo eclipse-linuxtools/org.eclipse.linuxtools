@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class ContainerPortDialog extends Dialog {
 
-	private static final String PORT_TYPE = "/tcp"; //$NON-NLS-1$
+	private static final String PORT_TYPE = "tcp"; //$NON-NLS-1$
 
 	private final ContainerPortDialogModel model;
 

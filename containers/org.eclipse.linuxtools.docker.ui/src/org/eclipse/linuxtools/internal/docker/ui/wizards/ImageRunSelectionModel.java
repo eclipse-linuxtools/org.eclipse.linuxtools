@@ -640,7 +640,8 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 		public String toString() {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append(containerPort + CONTAINER_TYPE_SEPARATOR + portType
-					+ SEPARATOR + hostAddress + SEPARATOR + hostPort
+					+ SEPARATOR + (hostAddress != null ? hostAddress : "")
+					+ SEPARATOR + hostPort
 					+ SEPARATOR + selected);
 			return buffer.toString();
 		}

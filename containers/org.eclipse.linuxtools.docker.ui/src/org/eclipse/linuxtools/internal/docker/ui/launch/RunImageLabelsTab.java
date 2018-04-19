@@ -86,8 +86,8 @@ public class RunImageLabelsTab extends AbstractLaunchConfigurationTab {
 				.grab(true, false).span(COLUMNS, 1).applyTo(envVarLabel);
 		final TableViewer labelVariablesTableViewer = createLabelVariablesTable(
 				container);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP)
-				.grab(true, false).hint(200, 100)
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
+				.grab(true, true).hint(200, 100)
 				.applyTo(labelVariablesTableViewer.getTable());
 		// buttons
 		final Composite buttonsContainers = new Composite(container, SWT.NONE);

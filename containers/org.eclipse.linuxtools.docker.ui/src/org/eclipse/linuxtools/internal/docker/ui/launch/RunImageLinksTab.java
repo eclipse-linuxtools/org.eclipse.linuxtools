@@ -96,7 +96,8 @@ public class RunImageLinksTab extends AbstractLaunchConfigurationTab {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).span(COLUMNS, 1).applyTo(linksLabel);
 		final TableViewer linksTableViewer = createLinksTable(container);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, true)
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
+				.grab(true, true)
 				.hint(200, 100).applyTo(linksTableViewer.getTable());
 		// buttons
 		final Composite buttonsContainers = new Composite(container, SWT.NONE);

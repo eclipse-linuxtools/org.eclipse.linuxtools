@@ -86,8 +86,8 @@ public class RunImageEnvironmentTab extends AbstractLaunchConfigurationTab {
 				.grab(true, false).span(COLUMNS, 1).applyTo(envVarLabel);
 		final TableViewer environmentVariablesTableViewer = createEnvironmentVariablesTable(
 				container);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP)
-				.grab(true, false).hint(200, 100)
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
+				.grab(true, true).hint(200, 100)
 				.applyTo(environmentVariablesTableViewer.getTable());
 		// buttons
 		final Composite buttonsContainers = new Composite(container, SWT.NONE);
@@ -250,15 +250,11 @@ public class RunImageEnvironmentTab extends AbstractLaunchConfigurationTab {
 		if (model == null)
 			return;
 		try {
-			model.removeEnvironmentVariables();
 			final List<String> environmentVariables = configuration
 					.getAttribute(
 					IRunDockerImageLaunchConfigurationConstants.ENV_VARIABLES,
 					new ArrayList<String>());
-			for (String environmenVariable : environmentVariables) {
-				model.addEnvironmentVariable(EnvironmentVariableModel
-						.createEnvironmentVariableModel(environmenVariable));
-			}
+			model.setEnvironmentVariables(environmentVariables);
 		} catch (CoreException e) {
 			Activator.logErrorMessage(
 					LaunchMessages.getString(

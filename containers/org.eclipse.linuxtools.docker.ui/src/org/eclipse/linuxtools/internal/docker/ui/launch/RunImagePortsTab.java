@@ -112,8 +112,8 @@ public class RunImagePortsTab extends AbstractLaunchConfigurationTab
 				.applyTo(portSettingsLabel);
 		final CheckboxTableViewer exposedPortsTableViewer = createPortSettingsTable(
 				container);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP)
-				.grab(true, false).span(COLUMNS - 1, 1).indent(INDENT, 0)
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
+				.grab(true, true).span(COLUMNS - 1, 1).indent(INDENT, 0)
 				.hint(200, 70).applyTo(exposedPortsTableViewer.getTable());
 		// buttons
 		final Composite buttonsContainers = new Composite(container, SWT.NONE);
