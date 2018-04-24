@@ -252,6 +252,25 @@ public class DockerConnectionManager {
 	}
 
 	/**
+	 * Notifies all listeners that a change occurred on the given connection but
+	 * does nothing if DockerConnectionManager isn't instantiated
+	 * 
+	 * @param connection
+	 *                       the connection that changed
+	 * @param type
+	 *                       the type of change
+	 * 
+	 * @since 4.0
+	 */
+	public static void instanceNotifyListeners(
+			final IDockerConnection connection,
+			final int type) {
+		if (instance != null) {
+			instance.notifyListeners(connection, type);
+		}
+	}
+
+	/**
 	 * Finds the default {@link IDockerConnectionSettings}
 	 * 
 	 * @return the default {@link IDockerConnectionSettings} or

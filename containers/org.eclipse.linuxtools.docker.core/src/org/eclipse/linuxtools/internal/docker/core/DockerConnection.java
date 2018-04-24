@@ -330,7 +330,7 @@ public class DockerConnection
 			notifyContainerListeners(this.containers);
 			notifyImageListeners(this.images);
 			if (oldState == EnumDockerConnectionState.ESTABLISHED) {
-				DockerConnectionManager.getInstance().notifyListeners(this,
+				DockerConnectionManager.instanceNotifyListeners(this,
 						IDockerConnectionManagerListener.DISABLE_EVENT);
 			}
 			break;
@@ -340,7 +340,7 @@ public class DockerConnection
 			notifyContainerListeners(this.containers);
 			notifyImageListeners(this.images);
 			if (oldState != EnumDockerConnectionState.ESTABLISHED) {
-				DockerConnectionManager.getInstance().notifyListeners(this,
+				DockerConnectionManager.instanceNotifyListeners(this,
 						IDockerConnectionManagerListener.ENABLE_EVENT);
 			}
 			break;
