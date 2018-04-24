@@ -131,9 +131,8 @@ public class InfoAdapter extends AbstractDataAdapter {
 	/**
 	 * Set up the DOM for later manipulation
 	 * 
-	 * @param is
-	 *            the InpuStream resulting from running the ophelp command. This
-	 *            will be passed in as null for timer mode.
+	 * @param is the InpuStream resulting from running the ophelp command. This will
+	 *           be passed in as null for timer mode.
 	 */
 	private void createDOM(InputStream is) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -405,12 +404,15 @@ public class InfoAdapter extends AbstractDataAdapter {
 					Element unitMask = (Element) unitMaskList.item(j);
 					String maskVal = unitMask.getAttribute(MASK);
 					String maskDesc = unitMask.getAttribute(DESC);
+					String maskName = unitMask.getAttribute(NAME);
 
 					Element newMask = newDoc.createElement(MASK);
 					Element newVal = newDoc.createElement(VALUE);
 					newVal.setTextContent(maskVal);
 					Element newDesc = newDoc.createElement(DESCRIPTION);
 					newDesc.setTextContent(maskDesc);
+					Element newName = newDoc.createElement(NAME);
+					newName.setTextContent(maskName);
 
 					newMask.appendChild(newVal);
 					newMask.appendChild(newDesc);

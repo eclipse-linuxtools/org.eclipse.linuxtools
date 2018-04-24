@@ -130,6 +130,12 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
                 spec.append(event.getResetCount());
                 spec.append(OPD_SETUP_EVENT_SEPARATOR);
                 spec.append(event.getEvent().getUnitMask().getMaskValue());
+                // Some platforms allow EXCLUSIVE masks with same bit value, but
+                // different names and thus, the name is needed when specifying.
+                if (event.getEvent().getUnitMask().getMaskName() != null) {
+                	spec.append(OPD_SETUP_EVENT_SEPARATOR);
+                	spec.append(event.getEvent().getUnitMask().getMaskName());
+                }
                 spec.append(OPD_SETUP_EVENT_SEPARATOR);
                 spec.append((event.getProfileKernel() ? OPD_SETUP_EVENT_TRUE : OPD_SETUP_EVENT_FALSE));
                 spec.append(OPD_SETUP_EVENT_SEPARATOR);

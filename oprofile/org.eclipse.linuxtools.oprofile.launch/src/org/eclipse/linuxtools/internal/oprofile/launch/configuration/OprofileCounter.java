@@ -154,6 +154,7 @@ public class OprofileCounter {
             if (daemonEvent[i].getEvent() != null) {
                 config.setAttribute(OprofileLaunchPlugin.attrConterEvent(number, i), daemonEvent[i].getEvent().getText());
                 config.setAttribute(OprofileLaunchPlugin.attrCounterUnitMask(number), daemonEvent[i].getEvent().getUnitMask().getMaskValue());
+                config.setAttribute(OprofileLaunchPlugin.attrCounterUnitMaskName(number), daemonEvent[i].getEvent().getUnitMask().getMaskName());
             }
             config.setAttribute(OprofileLaunchPlugin.attrCounterProfileKernel(number), daemonEvent[i].getProfileKernel());
             config.setAttribute(OprofileLaunchPlugin.attrCounterProfileUser(number), daemonEvent[i].getProfileUser());
@@ -174,6 +175,7 @@ public class OprofileCounter {
             for (int i = 0; i < numEvents; i++) {
                 String str = config.getAttribute(OprofileLaunchPlugin.attrConterEvent(number, i), ""); //$NON-NLS-1$
                 int maskValue = config.getAttribute(OprofileLaunchPlugin.attrCounterUnitMask(number), OpUnitMask.SET_DEFAULT_MASK);
+                String maskName = config.getAttribute(OprofileLaunchPlugin.attrCounterUnitMaskName(number), ""); //$NON-NLS-1$
 
                 daemonEvent[i] = new OprofileDaemonEvent();
                 daemonEvent[i].setEvent(eventFromString(str));
@@ -183,6 +185,7 @@ public class OprofileCounter {
                 }
 
                 daemonEvent[i].getEvent().getUnitMask().setMaskValue(maskValue);
+                daemonEvent[i].getEvent().getUnitMask().setMaskName(maskName);
                 daemonEvent[i].setProfileKernel(config.getAttribute(OprofileLaunchPlugin.attrCounterProfileKernel(number), false));
                 daemonEvent[i].setProfileUser(config.getAttribute(OprofileLaunchPlugin.attrCounterProfileUser(number), false));
 

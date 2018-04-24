@@ -52,6 +52,7 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
     public static final String attrCounterProfileUser(int nr) { return attrCounter(nr) + ".PROFILE_USER"; }         //$NON-NLS-1$
     public static final String attrCounterCount(int nr) { return attrCounter(nr) + ".COUNT"; }                         //$NON-NLS-1$
     public static final String attrCounterUnitMask(int nr) { return  attrCounter(nr) + ".UNIT_MASK"; }                 //$NON-NLS-1$
+    public static final String attrCounterUnitMaskName(int nr) { return attrCounter(nr) + ".UNIT_MASK_NAME"; }        //$NON-NLS-1$
     public static final String attrNumberOfEvents(int nr) { return attrCounter(nr) + ".EVENTS"; }                    //$NON-NLS-1$
 
 
