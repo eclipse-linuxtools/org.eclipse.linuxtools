@@ -65,7 +65,10 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 	public void dispose() {
 		Collection<Job> jobs = Collections.emptyList();
 		synchronized (openRetryJobs) {
-			jobs = openRetryJobs.values();
+			// make copy of jobs list to avoid ConcurrentModificationException
+			// because the jobs remove themselves from openRetryJobs
+			// as part of success and failure
+			jobs = new ArrayList<>(openRetryJobs.values());
 		}
 		for (Job job : jobs) {
 			LoadingJob loadingJob = (LoadingJob) job;
