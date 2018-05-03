@@ -41,6 +41,9 @@
    <iu id="org.eclipse.reddeer.eclipse" version="0.0.0">
 	<category name="Docker Test Dependencies"/>
    </iu>
+   <iu id="org.eclipse.reddeer.jdt.junit" version="0.0.0">
+	<category name="Docker Test Dependencies"/>
+   </iu>
    <iu id="org.eclipse.reddeer.jface" version="0.0.0">
 	<category name="Docker Test Dependencies"/>
    </iu>
@@ -72,6 +75,9 @@
 	<category name="Docker Test Dependencies"/>
    </iu>
    <iu id="org.assertj" version="0.0.0">
+	<category name="Docker Test Dependencies"/>
+   </iu>
+   <iu id="org.objenesis" version="0.0.0">
 	<category name="Docker Test Dependencies"/>
    </iu>
 
