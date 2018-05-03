@@ -71,6 +71,9 @@
    <iu id="org.mockito" version="0.0.0">
 	<category name="Docker Test Dependencies"/>
    </iu>
+   <iu id="org.assertj" version="0.0.0">
+	<category name="Docker Test Dependencies"/>
+   </iu>
 
    <!-- Orbit Dependencies -->
    <iu id="com.spotify.docker.client" version="0.0.0">
