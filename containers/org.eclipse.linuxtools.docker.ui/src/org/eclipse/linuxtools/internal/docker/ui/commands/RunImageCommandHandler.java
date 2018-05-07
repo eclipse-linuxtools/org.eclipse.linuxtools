@@ -13,6 +13,8 @@ package org.eclipse.linuxtools.internal.docker.ui.commands;
 
 import static org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils.getRunConsole;
 
+import java.io.OutputStream;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.CoreException;
@@ -21,6 +23,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.model.RuntimeProcess;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.docker.core.DockerContainerNotFoundException;
 import org.eclipse.linuxtools.docker.core.DockerException;
@@ -33,6 +37,7 @@ import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.consoles.RunConsole;
+import org.eclipse.linuxtools.internal.docker.ui.launch.ContainerCommandProcess;
 import org.eclipse.linuxtools.internal.docker.ui.launch.LaunchConfigurationUtils;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRun;
@@ -69,7 +74,7 @@ public class RunImageCommandHandler extends AbstractHandler {
 							.getDockerContainerConfig();
 					final IDockerHostConfig hostConfig = wizard
 							.getDockerHostConfig();
-					runImage(selectedImage, containerConfig,
+					runImage(selectedImage, containerConfig, null,
 							hostConfig, wizard.getDockerContainerName(),
 							wizard.removeWhenExits());
 				}
@@ -91,6 +96,7 @@ public class RunImageCommandHandler extends AbstractHandler {
 	 */
 	public static void runImage(final IDockerImage image,
 			final IDockerContainerConfig containerConfig,
+			final ILaunch launch,
 			final IDockerHostConfig hostConfig, final String containerName,
 			final boolean removeWhenExits) {
 		final IDockerConnection connection = image.getConnection();
@@ -140,14 +146,21 @@ public class RunImageCommandHandler extends AbstractHandler {
 					startContainerMonitor.beginTask(DVMessages
 							.getString("RunImageStartingContainerTask.msg"), 1); //$NON-NLS-1$
 					console = getRunConsole(connection,	container);
+					OutputStream outputStream = null;
 					if (console != null) {
 						// if we are auto-logging, show the console
 						console.showConsole();
-						((DockerConnection) connection).startContainer(
-								containerId, console.getOutputStream());
-					} else {
-						((DockerConnection) connection)
-								.startContainer(containerId, null);
+						outputStream = console.getOutputStream();
+					}
+					// Start the Container and create a process we can wrap with
+					// a RuntimeProcess and set into the ILaunch
+					ContainerCommandProcess commandProcess = new ContainerCommandProcess(
+							connection, container.image(), containerId,
+							outputStream, null,
+							true);
+					if (launch != null) {
+						new RuntimeProcess(launch, commandProcess,
+								container.name(), null);
 					}
 					startContainerMonitor.done();
 					// create a launch configuration from the container

@@ -198,13 +198,17 @@ public class RunConsole extends IOConsole {
 				} else {
 					// notify any console listener that there is no more output
 					// going to follow
-					out.notifyConsoleListeners(new byte[] { 0 }, 0, 0);
+					if (out != null) {
+						out.notifyConsoleListeners(new byte[] { 0 }, 0, 0);
+					}
 				}
 			} catch (Exception e) {
 				Activator.log(e);
 				// notify any console listener that there is no more output
 				// going to follow
-				out.notifyConsoleListeners(new byte[] { 0 }, 0, 0);
+				if (out != null) {
+					out.notifyConsoleListeners(new byte[] { 0 }, 0, 0);
+				}
 			}
 		});
 		t.start();

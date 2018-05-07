@@ -1750,7 +1750,9 @@ public class DockerConnection
 			throw new DockerException(DockerMessages.getFormattedString(
 					"DockerStartContainer.error", getCmdString(containerInfo))); //$NON-NLS-1$
 		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
-			throw new DockerException(e.message());
+			if (e.status() != 304) {
+				throw new DockerException(e.getMessage());
+			}
 		} catch (com.spotify.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
@@ -1795,7 +1797,9 @@ public class DockerConnection
 			throw new DockerException(DockerMessages.getFormattedString(
 					"DockerStartContainer.error", getCmdString(containerInfo))); //$NON-NLS-1$
 		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
-			throw new DockerException(e.message());
+			if (e.status() != 304) {
+				throw new DockerException(e.getMessage());
+			}
 		} catch (com.spotify.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e);
 		}

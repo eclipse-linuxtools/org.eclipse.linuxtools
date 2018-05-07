@@ -65,6 +65,7 @@ public class RunDockerImageLaunchConfigurationDelegate
 			final IDockerImage image = getDockerImage(config, connection);
 			RunImageCommandHandler.runImage(image,
 					containerConfig,
+					launch,
 					hostConfig,
 					config.getAttribute(
 							IRunDockerImageLaunchConfigurationConstants.CONTAINER_NAME,

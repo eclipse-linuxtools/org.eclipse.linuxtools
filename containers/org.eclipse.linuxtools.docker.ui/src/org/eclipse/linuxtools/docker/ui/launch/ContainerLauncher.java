@@ -290,8 +290,9 @@ public class ContainerLauncher {
 					for (String volume : volumes) {
 						boolean excluded = false;
 						for (String dir : excludedDirs) {
-							if (volume.startsWith(dir) && volume.charAt(
-									dir.length()) == File.separatorChar) {
+							if (volume.equals(dir) || (volume.startsWith(dir)
+									&& volume.charAt(dir
+											.length()) == File.separatorChar)) {
 								excluded = true;
 								break;
 							}
@@ -1696,6 +1697,7 @@ public class ContainerLauncher {
 			remoteDataVolumes.remove(readonly);
 		}
 		return new ContainerCommandProcess(connection, imageName, containerId,
+				null,
 				remoteDataVolumes,
 				keepContainer);
 	}

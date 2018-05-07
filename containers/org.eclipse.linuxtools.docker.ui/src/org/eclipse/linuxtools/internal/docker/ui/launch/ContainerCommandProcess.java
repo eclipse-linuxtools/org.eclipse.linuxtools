@@ -60,6 +60,7 @@ public class ContainerCommandProcess extends Process {
 
 	public ContainerCommandProcess(IDockerConnection connection,
 			String imageName, String containerId,
+			OutputStream outputStream,
 			Map<String, String> remoteVolumes,
 			boolean keepContainer) {
 		this.connection = connection;
@@ -80,7 +81,7 @@ public class ContainerCommandProcess extends Process {
 							.getOperationToken()) {
 				pipedOut = pipedStdout;
 				pipedErr = pipedStderr;
-				connection.startContainer(containerId, null);
+				connection.startContainer(containerId, outputStream);
 				threadStarted = true;
 				((DockerConnection) connection).attachLog(token, containerId,
 						pipedStdout, pipedStderr);
@@ -213,7 +214,8 @@ public class ContainerCommandProcess extends Process {
 				containerRemoved = true;
 				connection.removeContainer(containerId);
 			}
-			if (!((DockerConnection) connection).isLocal()) {
+			if (!((DockerConnection) connection).isLocal()
+					&& remoteVolumes != null && !remoteVolumes.isEmpty()) {
 				CopyVolumesFromImageJob job = new CopyVolumesFromImageJob(
 						connection, imageName, remoteVolumes);
 				job.schedule();
