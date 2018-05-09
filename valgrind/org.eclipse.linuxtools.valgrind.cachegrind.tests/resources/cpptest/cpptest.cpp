@@ -7,8 +7,6 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors:
- *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
  *******************************************************************************/
 #include "cpptest.h"
 
