@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2016 STMicroelectronics and others.
+ * Copyright (c) 2009, 2018 STMicroelectronics and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -384,8 +384,7 @@ public class CovManager implements Serializable {
         String binaryPath = binaryObject.getPath().toOSString();
         STStrings strings = STSymbolManager.sharedInstance.getStrings(binaryObject, project);
         List<String> l = new LinkedList<>();
-        Process p;
-        p = getStringsProcess(strings.getName(), strings.getArgs(), binaryPath);
+        Process p = getStringsProcess(strings.getName(), strings.getArgs(), binaryPath);
         if (p == null) {
             Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR,
                     Messages.CovManager_Retrieval_Error, new IOException());
