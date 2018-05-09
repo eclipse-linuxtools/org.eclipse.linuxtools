@@ -2,9 +2,9 @@
 <!-- Schema file written by PDE -->
 <schema targetNamespace="org.eclipse.linuxtools.valgrind.launch" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appinfo>
+      <appInfo>
          <meta.schema plugin="org.eclipse.linuxtools.valgrind.launch" id="valgrindTool" name="Valgrind Tool"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          This extension point provides Valgrind tools the ability to contribute options to the Valgrind &lt;code&gt;ILaunchConfigurationTab&lt;/code&gt; and to deploy UI to the Valgrind view.
       </documentation>
@@ -12,9 +12,9 @@
 
    <element name="extension">
       <annotation>
-         <appinfo>
+         <appInfo>
             <meta.element />
-         </appinfo>
+         </appInfo>
       </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
@@ -39,9 +39,9 @@
                <documentation>
                   
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
@@ -69,9 +69,9 @@
                   Class to contribute controls used to add options for this tool in the &lt;code&gt;ILaunchConfigurationTab&lt;/code&gt; for Valgrind.
 Must implement &lt;code&gt;IValgrindToolPage&lt;/code&gt;
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="delegate" type="string" use="required">
@@ -79,27 +79,27 @@ Must implement &lt;code&gt;IValgrindToolPage&lt;/code&gt;
                <documentation>
                   The class that will receive control from the &lt;code&gt;ValgrindLaunchConfigurationDelegate&lt;/code&gt; once Valgrind has launched.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
    </element>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="since"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          0.1
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="examples"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          &lt;pre&gt;
 &lt;extension point=&quot;org.eclipse.linuxtools.valgrind.launch.valgrindTools&quot;&gt;
@@ -114,33 +114,35 @@ Must implement &lt;code&gt;IValgrindToolPage&lt;/code&gt;
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="apiinfo"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          Plug-ins that want to extend this extension point must implement &lt;samp&gt;org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate&lt;/samp&gt; and &lt;samp&gt;org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage&lt;/samp&gt; interfaces.
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="implementation"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          org.eclipse.linuxtools.valgrind.memcheck
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="copyright"/>
-      </appinfo>
+      </appInfo>
       <documentation>
-         Copyright (c) 2008, 2009 Red Hat, Inc.
-All rights reserved. This program and the accompanying materials
-are made available under the terms of the Eclipse Public License v1.0
-which accompanies this distribution, and is available at
-http://www.eclipse.org/legal/epl-v10.html
+         Copyright (c) 2008, 2018 Red Hat, Inc.
+
+This program and the accompanying materials are made
+available under the terms of the Eclipse Public License 2.0
+which is available at https://www.eclipse.org/legal/epl-2.0/
+  
+SPDX-License-Identifier: EPL-2.0
 
 Contributors:
  Elliott Baron &lt;ebaron@redhat.com&gt; - initial API and implementation

@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2009, 2018 Red Hat, Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
@@ -17,18 +19,18 @@ import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
 
 public class ValgrindStubCommand extends ValgrindCommand {
 
-    @Override
-    public String whichVersion(IProject project) {
-        return "valgrind-3.4.0"; //$NON-NLS-1$
-    }
+	@Override
+	public String whichVersion(IProject project) {
+		return "valgrind-3.4.0"; //$NON-NLS-1$
+	}
 
-    @Override
-    public void execute(String[] commandArray, String[] env, File wd, boolean usePty, IProject project) {
-        args = commandArray;
-    }
+	@Override
+	public void execute(String[] commandArray, String[] env, File wd, boolean usePty, IProject project) {
+		args = commandArray;
+	}
 
-    @Override
-    public Process getProcess() {
-        return null;
-    }
+	@Override
+	public Process getProcess() {
+		return null;
+	}
 }
