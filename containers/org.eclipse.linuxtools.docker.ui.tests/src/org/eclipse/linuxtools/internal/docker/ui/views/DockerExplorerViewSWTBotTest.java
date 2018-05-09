@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2018 Red Hat.
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -631,7 +632,7 @@ public class DockerExplorerViewSWTBotTest {
 	}
 
 	@Test
-	public void shouldRemoveAllConnectionsSimultaneously() throws DockerException, InterruptedException {
+	public void shouldRemoveAllConnectionsSimultaneously() {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();
 		final DockerConnection dockerConnection1 = MockDockerConnectionFactory.from("Test1", client)
