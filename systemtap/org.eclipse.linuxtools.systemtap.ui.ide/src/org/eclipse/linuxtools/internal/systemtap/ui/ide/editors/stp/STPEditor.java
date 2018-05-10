@@ -1,10 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2017 Phil Muldoon and others.
+ * Copyright (c) 2008, 2018 Phil Muldoon and others.
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Phil Muldoon <pkmuldoon@picobot.org> - initial API.
@@ -104,7 +105,7 @@ public class STPEditor extends TextEditor {
 	public ISourceViewer getMySourceViewer() {
 		return this.getSourceViewer();
 	}
-	
+
 	 /**
      * Inserts text into the IDocument.
      * @param text string to insert
@@ -135,7 +136,7 @@ public class STPEditor extends TextEditor {
             this.setHighlightRange(s.getOffset() + text.trim().length(), 0, true);
         }
     }
-    
+
     /**
      * Jumps to the location in the IDocument.
      * @param line The line you wish to jump to.
@@ -165,7 +166,7 @@ public class STPEditor extends TextEditor {
             // Pass
         }
     }
-    
+
     /**
      * Performs a SaveAs on the IDocument.
      */

@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2006, 2018 IBM Corporation and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
@@ -32,7 +34,6 @@ import org.eclipse.ui.XMLMemento;
  * on startup, writing the cache to disk when the cache is initially generated, checking to make sure
  * that the cache is up-to-date, and providing accessor methods to the rest of the IDE that allow other
  * classes to use the cached tree data.
- * @author Ryan Morse
  */
 public final class TreeSettings {
     private static final String FILE_NAME = "TreeSettings"; //$NON-NLS-1$

@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2006, 2018 IBM Corporation and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
@@ -19,13 +21,9 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.tparsers.Func
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
 import org.eclipse.swt.graphics.Image;
 
-
-
 /**
  * This class is the Function Tapset Browser, which provides a list of all of the functions
  * defined in the tapset library for the user to browse through.
- * @author Ryan Morse
- * @author Henry Hughes
  */
 public class FunctionBrowserView extends TapsetBrowserView {
     public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.views.FunctionBrowserView"; //$NON-NLS-1$

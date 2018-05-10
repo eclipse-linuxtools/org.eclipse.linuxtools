@@ -1,15 +1,15 @@
 /****************************************************************
- * Copyright (c) 2006-2013 IBM Corp.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2006, 2018 IBM Corp. and others.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     IBM - initial API and implementation
- *
- ****************************************************************
- */
+ ****************************************************************/
 package org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts;
 
 import org.eclipse.linuxtools.systemtap.graphing.core.adapters.IAdapter;
@@ -21,8 +21,6 @@ import org.swtchart.LineStyle;
 
 /**
  * Builds line chart.
- *
- * @author Qi Liang
  */
 
 public class LineChartBuilder extends AbstractChartWithAxisBuilder {

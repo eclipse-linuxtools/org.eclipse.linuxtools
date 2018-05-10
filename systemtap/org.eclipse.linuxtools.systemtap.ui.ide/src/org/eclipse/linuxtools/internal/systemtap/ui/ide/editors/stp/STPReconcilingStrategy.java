@@ -1,10 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2008 Phil Muldoon <pkmuldoon@picobot.org>.
+ * Copyright (c) 2008, 2018 Phil Muldoon <pkmuldoon@picobot.org>.
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Phil Muldoon <pkmuldoon@picobot.org> - initial API and implementation.
@@ -25,10 +26,8 @@ import org.eclipse.jface.text.reconciler.IReconcilingStrategyExtension;
 import org.eclipse.swt.widgets.Display;
 
 /**
- *
  * Reconciling strategy for Systemtap editor code folding positions. The positional aspects
  * of document tag discovery should really be placed with a position builder
- *
  */
 public class STPReconcilingStrategy  implements IReconcilingStrategy,
                IReconcilingStrategyExtension {

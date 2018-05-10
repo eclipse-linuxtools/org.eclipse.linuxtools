@@ -1,14 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2006, 2018 IBM Corporation and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
-
 package org.eclipse.linuxtools.internal.systemtap.ui.ide.views;
 
 import java.util.List;
@@ -24,13 +25,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
-
 /**
  * The Probe Alias Browser module of the SystemTap GUI. This class provides a list of all probe aliases
  * defined in the tapset (both the standard, and user-specified tapsets), and allows the user to insert
  * template probes into an editor.
- * @author Henry Hughes
- * @author Ryan Morse
  */
 public class ProbeAliasBrowserView extends TapsetBrowserView {
     public static final String ID = "org.eclipse.linuxtools.internal.systemtap.ui.ide.views.ProbeAliasBrowserView"; //$NON-NLS-1$
