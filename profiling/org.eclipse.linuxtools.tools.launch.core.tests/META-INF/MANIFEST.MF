@@ -13,3 +13,4 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.eclipse.debug.core,
  org.eclipse.linuxtools.remote.proxy.tests
+Automatic-Module-Name: org.eclipse.linuxtools.tools.launch.core.tests
