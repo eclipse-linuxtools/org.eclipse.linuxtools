@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat Inc. and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2010, 2018 Red Hat Inc. and others.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core.tests;
 
@@ -29,10 +31,6 @@ import org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper;
 import org.eclipse.linuxtools.internal.changelog.core.ChangeLogWriter;
 import org.eclipse.linuxtools.internal.changelog.core.formatters.GNUFormat;
 
-/**
- * @author Severin Gehwolf <sgehwolf@redhat.com>
- *
- */
 public class ChangeLogWriterTest {
 
     // The instance of the class under test
@@ -50,9 +48,6 @@ public class ChangeLogWriterTest {
             "\t* this/file/does/not/really/exist/SpringRoll.java: new file\n\n";
 
 
-    /**
-     * @throws java.lang.Exception
-     */
     @Before
     public void setUp() throws Exception {
         clogWriter = new ChangeLogWriter();
@@ -68,9 +63,6 @@ public class ChangeLogWriterTest {
                 newFileInputStream);
     }
 
-    /**
-     * @throws java.lang.Exception
-     */
     @After
     public void tearDown() throws CoreException {
         // dispose testproject

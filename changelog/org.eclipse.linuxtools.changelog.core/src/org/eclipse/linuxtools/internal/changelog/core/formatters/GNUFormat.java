@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007, 2011 Phil Muldoon <pkmuldoon@picobot.org>.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2004, 2007, 2018 Phil Muldoon <pkmuldoon@picobot.org>.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Phil Muldoon <pmuldoon@redhat.com> - initial API and implementation
@@ -32,16 +34,11 @@ import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-
-/**
- * @author pmuldoon (Phil Muldoon)
- */
 public class GNUFormat implements IFormatterChangeLogContrib {
 
     final String line_sep = System.getProperty("line.separator"); //$NON-NLS-1$
 
     final static String TAB = "\t"; // $NON-NLS-1$
-
 
     @Override
     public String formatDateLine(String authorName, String authorEmail) {
@@ -50,7 +47,6 @@ public class GNUFormat implements IFormatterChangeLogContrib {
         line_sep;
         return detail;
     }
-
 
     @Override
     public String mergeChangelog(String dateLine, String functionGuess,String defaultContent,
