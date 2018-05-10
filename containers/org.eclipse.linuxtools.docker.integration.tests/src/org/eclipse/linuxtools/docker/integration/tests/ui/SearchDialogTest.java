@@ -61,6 +61,7 @@ public class SearchDialogTest extends AbstractImageBotTest {
 	@Test
 	public void testSearchDialog() {
 		DockerExplorerView explorer = new DockerExplorerView();
+		explorer.open();
 		getConnection().openImageSearchDialog(IMAGE_NAME, null, REGISTRY_URL);
 		ImageSearchPage pageOne = new ImageSearchPage(explorer);
 		pageOne.searchImage();

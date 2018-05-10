@@ -60,6 +60,7 @@ public class NetworkModeTest extends AbstractImageBotTest {
 		pullImage(IMAGE_NAME, IMAGE_TAG);
 		new WaitWhile(new JobIsRunning());
 		DockerExplorerView explorer = new DockerExplorerView();
+		explorer.open();
 		getConnection().getImage(IMAGE_NAME).run();
 		firstPage = new ImageRunSelectionPage(explorer);
 		firstPage.setContainerName(CONTAINER_NAME);

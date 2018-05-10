@@ -49,6 +49,7 @@ public class DockerContainerTest extends AbstractImageBotTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		assertTrue("Image has not been found!", imageIsDeployed(getCompleteImageName(IMAGE_NAME)));
 		DockerExplorerView explorer = new DockerExplorerView();
+		explorer.open();
 		getConnection().getImage(getCompleteImageName(IMAGE_NAME)).run();
 		ImageRunSelectionPage firstPage = new ImageRunSelectionPage(explorer);
 		firstPage.setContainerName(CONTAINER_NAME);

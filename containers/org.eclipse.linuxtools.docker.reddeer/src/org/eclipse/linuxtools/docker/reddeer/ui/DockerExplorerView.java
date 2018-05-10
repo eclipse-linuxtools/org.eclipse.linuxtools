@@ -65,10 +65,12 @@ public class DockerExplorerView extends WorkbenchView {
 	}
 
 	private String getName(TreeItem item) {
+		activate();
 		return treeViewerHandler.getNonStyledText(item);
 	}
 
 	private String getHost(TreeItem item) {
+		activate();
 		String[] styledTexts = treeViewerHandler.getStyledTexts(item);
 		if (styledTexts == null || styledTexts.length == 0) {
 			return null;
@@ -77,14 +79,17 @@ public class DockerExplorerView extends WorkbenchView {
 	}
 
 	public boolean connectionExistForName(String connectionName) {
+		activate();
 		return getDockerConnectionByName(connectionName) != null;
 	}
 
 	public boolean connectionExistForHost(String host) {
+		activate();
 		return getDockerConnectionByHost(host) != null;
 	}
 
 	public void refreshView() {
+		activate();
 		List<String> connections = getDockerConnectionNames();
 		for (String connection : connections) {
 			getDockerConnectionByName(connection).refresh();
@@ -112,6 +117,7 @@ public class DockerExplorerView extends WorkbenchView {
 	 *            unix socket of a docker daemon
 	 */
 	public void createDockerConnectionUnix(String connectionName, String unixSocket) {
+		activate();
 		createDockerConnection(AuthenticationMethod.UNIX_SOCKET, unixSocket, null, connectionName);
 	}
 
@@ -124,6 +130,7 @@ public class DockerExplorerView extends WorkbenchView {
 	 */
 	
 	public void createDockerConnectionUnix(final IDockerConnection... connections) {
+		activate();
 		final IDockerConnectionStorageManager connectionStorageManager = MockDockerConnectionStorageManagerFactory
 				.providing(connections);
 		DockerConnectionManager.getInstance().setConnectionStorageManager(connectionStorageManager);
@@ -139,6 +146,7 @@ public class DockerExplorerView extends WorkbenchView {
 	 *            path to a certificate
 	 */
 	public void createDockerConnectionURI(String connectionName, String tcpURI, String certificatePath) {
+		activate();
 		createDockerConnection(AuthenticationMethod.TCP_CONNECTION, tcpURI, certificatePath, connectionName);
 	}
 
