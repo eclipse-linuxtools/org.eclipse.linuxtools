@@ -53,16 +53,6 @@
                contentTypeId="org.eclipse.linuxtools.rpm.editor.content-type">
          </contentTypeBinding>
       </editor>
-      <editor
-            name="%editor.name.0"
-            icon="icons/rpm.gif"
-            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            class="org.eclipse.linuxtools.internal.rpm.ui.editor.forms.SpecfileFormEditor"
-            id="org.eclipse.linuxtools.rpm.ui.editor.forms.SpecfileFormEditor">
-         <contentTypeBinding
-               contentTypeId="org.eclipse.linuxtools.rpm.editor.content-type">
-         </contentTypeBinding>
-      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.genericeditor.presentationReconcilers">
