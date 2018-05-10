@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
+ * Copyright (c) 2015, 2018 Red Hat.
+ * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -56,11 +57,10 @@ public class ImageBuild extends Wizard {
 
 	private int numberOfLines() throws IOException {
 		String fileName = directory.append("Dockerfile").toString(); //$NON-NLS-1$
-		InputStream is = null;
 		int count = 0;
 		boolean empty = false;
-		try {
-			is = new BufferedInputStream(new FileInputStream(fileName));
+		try (InputStream is = new BufferedInputStream(
+				new FileInputStream(fileName))) {
 			byte[] c = new byte[1024];
 			int readChars = 0;
 			while ((readChars = is.read(c)) != -1) {
@@ -71,9 +71,6 @@ public class ImageBuild extends Wizard {
 					}
 				}
 			}
-		} finally {
-			if (is != null)
-				is.close();
 		}
 		return (count == 0 && !empty) ? 1 : count;
 	}

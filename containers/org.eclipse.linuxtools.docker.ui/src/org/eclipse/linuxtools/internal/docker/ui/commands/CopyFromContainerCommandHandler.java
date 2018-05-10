@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat Inc. and others.
+ * Copyright (c) 2016, 2018 Red Hat Inc. and others.
+ * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -103,85 +104,67 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 		}
 	}
 
-	private void performCopyFromContainer(final IDockerConnection connection,
-			final IDockerContainer container, final String target,
-			final List<ContainerFileProxy> files) {
+	private void performCopyFromContainer(final IDockerConnection connection, final IDockerContainer container,
+			final String target, final List<ContainerFileProxy> files) {
 		final Job copyFromContainerJob = new Job(
-				CommandMessages.getFormattedString(
-				COPY_FROM_CONTAINER_JOB_TITLE, container.name())) {
+				CommandMessages.getFormattedString(COPY_FROM_CONTAINER_JOB_TITLE, container.name())) {
 
 			@Override
 			protected IStatus run(final IProgressMonitor monitor) {
-				monitor.beginTask(
-						CommandMessages.getString(COPY_FROM_CONTAINER_JOB_TASK),
-						files.size());
-				try (Closeable token = ((DockerConnection) connection)
-						.getOperationToken()) {
+				monitor.beginTask(CommandMessages.getString(COPY_FROM_CONTAINER_JOB_TASK), files.size());
+				try (Closeable token = ((DockerConnection) connection).getOperationToken()) {
 					for (ContainerFileProxy proxy : files) {
 						if (monitor.isCanceled()) {
 							monitor.done();
 							return Status.CANCEL_STATUS;
 						}
 						try {
-							monitor.setTaskName(
-									CommandMessages.getFormattedString(
-											COPY_FROM_CONTAINER_JOB_SUBTASK,
-											proxy.getFullPath()));
+							monitor.setTaskName(CommandMessages.getFormattedString(COPY_FROM_CONTAINER_JOB_SUBTASK,
+									proxy.getFullPath()));
 							monitor.worked(1);
-							InputStream in = ((DockerConnection) connection)
-									.copyContainer(token, container.id(),
-											proxy.getLink());
+							InputStream in = ((DockerConnection) connection).copyContainer(token, container.id(),
+									proxy.getLink());
 							/*
-							 * The input stream from copyContainer might be
-							 * incomplete or non-blocking so we should wrap it
-							 * in a stream that is guaranteed to block until
-							 * data is available.
+							 * The input stream from copyContainer might be incomplete or non-blocking so we
+							 * should wrap it in a stream that is guaranteed to block until data is
+							 * available.
 							 */
-							TarArchiveInputStream k = new TarArchiveInputStream(
-									new BlockingInputStream(in));
-							TarArchiveEntry te = null;
-							while ((te = k.getNextTarEntry()) != null) {
-								long size = te.getSize();
-								IPath path = new Path(target);
-								path = path.append(te.getName());
-								File f = new File(path.toOSString());
-								if (te.isDirectory()) {
-									f.mkdir();
-									continue;
-								} else {
-									f.createNewFile();
-								}
-								FileOutputStream os = new FileOutputStream(f);
-								int bufferSize = ((int) size > 4096 ? 4096
-										: (int) size);
-								byte[] barray = new byte[bufferSize];
-								int result = -1;
-								while ((result = k.read(barray, 0,
-										bufferSize)) > -1) {
-									if (monitor.isCanceled()) {
-										monitor.done();
-										k.close();
-										os.close();
-										return Status.CANCEL_STATUS;
+							try (TarArchiveInputStream k = new TarArchiveInputStream(new BlockingInputStream(in))) {
+								TarArchiveEntry te = null;
+								while ((te = k.getNextTarEntry()) != null) {
+									long size = te.getSize();
+									IPath path = new Path(target);
+									path = path.append(te.getName());
+									File f = new File(path.toOSString());
+									if (te.isDirectory()) {
+										f.mkdir();
+										continue;
+									} else {
+										f.createNewFile();
 									}
-									os.write(barray, 0, result);
+									try (FileOutputStream os = new FileOutputStream(f)) {
+										int bufferSize = ((int) size > 4096 ? 4096 : (int) size);
+										byte[] barray = new byte[bufferSize];
+										int result = -1;
+										while ((result = k.read(barray, 0, bufferSize)) > -1) {
+											if (monitor.isCanceled()) {
+												monitor.done();
+												k.close();
+												os.close();
+												return Status.CANCEL_STATUS;
+											}
+											os.write(barray, 0, result);
+										}
+									}
 								}
-								os.close();
 							}
-							k.close();
 						} catch (final DockerException e) {
 							Display.getDefault()
 									.syncExec(() -> MessageDialog.openError(
-											PlatformUI.getWorkbench()
-													.getActiveWorkbenchWindow()
-													.getShell(),
-											CommandMessages.getFormattedString(
-													ERROR_COPYING_FROM_CONTAINER,
-													proxy.getLink(),
-													container.name()),
-											e.getCause() != null
-													? e.getCause().getMessage()
-													: e.getMessage()));
+											PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+											CommandMessages.getFormattedString(ERROR_COPYING_FROM_CONTAINER,
+													proxy.getLink(), container.name()),
+											e.getCause() != null ? e.getCause().getMessage() : e.getMessage()));
 						}
 					}
 				} catch (InterruptedException e) {

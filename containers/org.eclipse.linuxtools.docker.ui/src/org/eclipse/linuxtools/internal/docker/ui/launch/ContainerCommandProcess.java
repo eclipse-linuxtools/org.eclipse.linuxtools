@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2017 Red Hat Inc. and others.
+ * Copyright (c) 2017, 2018 Red Hat Inc. and others.
+ * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -278,68 +279,59 @@ public class ContainerCommandProcess extends Process {
 
 		@Override
 		protected IStatus run(final IProgressMonitor monitor) {
-			monitor.beginTask(Messages.getFormattedString(
-					COPY_VOLUMES_FROM_DESC, imageName), remoteVolumes.size());
+			monitor.beginTask(Messages.getFormattedString(COPY_VOLUMES_FROM_DESC, imageName), remoteVolumes.size());
 			String containerId = null;
 			try {
-				DockerContainerConfig.Builder builder = new DockerContainerConfig.Builder()
-						.cmd("/bin/sh").image(imageName); //$NON-NLS-1$
+				DockerContainerConfig.Builder builder = new DockerContainerConfig.Builder().cmd("/bin/sh") //$NON-NLS-1$
+						.image(imageName);
 				IDockerContainerConfig config = builder.build();
 				DockerHostConfig.Builder hostBuilder = new DockerHostConfig.Builder();
 				IDockerHostConfig hostConfig = hostBuilder.build();
-				containerId = ((DockerConnection) connection)
-						.createContainer(config, hostConfig, null);
+				containerId = ((DockerConnection) connection).createContainer(config, hostConfig, null);
 				for (String volume : remoteVolumes.keySet()) {
-					try (Closeable token = ((DockerConnection) connection)
-							.getOperationToken()) {
-						monitor.setTaskName(Messages.getFormattedString(
-								COPY_VOLUMES_FROM_TASK, volume));
+					try (Closeable token = ((DockerConnection) connection).getOperationToken()) {
+						monitor.setTaskName(Messages.getFormattedString(COPY_VOLUMES_FROM_TASK, volume));
 						monitor.worked(1);
 
-						InputStream in = ((DockerConnection) connection)
-								.copyContainer(token, containerId,
-										remoteVolumes.get(volume));
+						InputStream in = ((DockerConnection) connection).copyContainer(token, containerId,
+								remoteVolumes.get(volume));
 
 						/*
-						 * The input stream from copyContainer might be
-						 * incomplete or non-blocking so we should wrap it in a
-						 * stream that is guaranteed to block until data is
+						 * The input stream from copyContainer might be incomplete or non-blocking so we
+						 * should wrap it in a stream that is guaranteed to block until data is
 						 * available.
 						 */
-						TarArchiveInputStream k = new TarArchiveInputStream(
-								new BlockingInputStream(in));
-						TarArchiveEntry te = null;
-						IPath currDir = new Path(volume).removeLastSegments(1);
-						currDir.toFile().mkdirs();
-						while ((te = k.getNextTarEntry()) != null) {
-							long size = te.getSize();
-							IPath path = currDir;
-							path = path.append(te.getName());
-							File f = new File(path.toOSString());
-							if (te.isDirectory()) {
-								f.mkdir();
-								continue;
-							} else {
-								f.createNewFile();
-							}
-							FileOutputStream os = new FileOutputStream(f);
-							int bufferSize = ((int) size > 4096 ? 4096
-									: (int) size);
-							byte[] barray = new byte[bufferSize];
-							int result = -1;
-							while ((result = k.read(barray, 0,
-									bufferSize)) > -1) {
-								if (monitor.isCanceled()) {
-									monitor.done();
-									k.close();
-									os.close();
-									return Status.CANCEL_STATUS;
+						try (TarArchiveInputStream k = new TarArchiveInputStream(new BlockingInputStream(in))) {
+							TarArchiveEntry te = null;
+							IPath currDir = new Path(volume).removeLastSegments(1);
+							currDir.toFile().mkdirs();
+							while ((te = k.getNextTarEntry()) != null) {
+								long size = te.getSize();
+								IPath path = currDir;
+								path = path.append(te.getName());
+								File f = new File(path.toOSString());
+								if (te.isDirectory()) {
+									f.mkdir();
+									continue;
+								} else {
+									f.createNewFile();
 								}
-								os.write(barray, 0, result);
+								try (FileOutputStream os = new FileOutputStream(f)) {
+									int bufferSize = ((int) size > 4096 ? 4096 : (int) size);
+									byte[] barray = new byte[bufferSize];
+									int result = -1;
+									while ((result = k.read(barray, 0, bufferSize)) > -1) {
+										if (monitor.isCanceled()) {
+											monitor.done();
+											k.close();
+											os.close();
+											return Status.CANCEL_STATUS;
+										}
+										os.write(barray, 0, result);
+									}
+								}
 							}
-							os.close();
 						}
-						k.close();
 					} catch (final DockerException e) {
 						// ignore
 					}
@@ -353,8 +345,7 @@ public class ContainerCommandProcess extends Process {
 			} finally {
 				if (containerId != null) {
 					try {
-						((DockerConnection) connection)
-								.removeContainer(containerId);
+						((DockerConnection) connection).removeContainer(containerId);
 					} catch (DockerException | InterruptedException e) {
 						// ignore
 					}

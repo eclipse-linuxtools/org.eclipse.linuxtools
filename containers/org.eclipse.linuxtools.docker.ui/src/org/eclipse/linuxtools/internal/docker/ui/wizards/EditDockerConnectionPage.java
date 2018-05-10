@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2016 Red Hat Inc. and others.
+ * Copyright (c) 2014, 2018 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -406,10 +406,8 @@ public class EditDockerConnectionPage extends WizardPage {
 						monitor.beginTask(WizardMessages.getString(
 										"DockerConnectionPage.pingTask"), //$NON-NLS-1$
 								IProgressMonitor.UNKNOWN);
-						try {
-							final DockerConnection dockerConnection = getDockerConnection();
+						try (DockerConnection dockerConnection = getDockerConnection()) {
 							dockerConnection.open(false);
-							dockerConnection.close();
 							// ping succeeded
 							displaySuccessDialog();
 						} catch (DockerException e) {

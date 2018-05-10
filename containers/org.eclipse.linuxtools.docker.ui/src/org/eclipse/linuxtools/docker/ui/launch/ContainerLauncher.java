@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2016, 2017 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2018 Red Hat Inc. and others.
+ * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -232,19 +233,17 @@ public class ContainerLauncher {
 
 		@Override
 		protected IStatus run(final IProgressMonitor monitor) {
-			monitor.beginTask(
-					Messages.getFormattedString(COPY_VOLUMES_FROM_DESC, image),
-					volumes.size());
+			monitor.beginTask(Messages.getFormattedString(COPY_VOLUMES_FROM_DESC, image), volumes.size());
 			String containerId = null;
 			String currentVolume = null;
-			
-			// keep a list of already copied/being copied volumes so we can skip them and wait at the end to
+
+			// keep a list of already copied/being copied volumes so we can skip them and
+			// wait at the end to
 			// make sure if another job was copying them, it has finished
 			List<String> alreadyCopiedList = new ArrayList<>();
-			
+
 			try {
-				IDockerImage dockerImage = ((DockerConnection) connection)
-						.getImageByTag(image);
+				IDockerImage dockerImage = ((DockerConnection) connection).getImageByTag(image);
 				// if there is a .image_id file, check the image id to ensure
 				// the user hasn't loaded a new version which may have
 				// different header files installed.
@@ -253,8 +252,7 @@ public class ContainerLauncher {
 				boolean needImageIdFile = !imageFile.exists();
 				if (!needImageIdFile) {
 					try (FileReader reader = new FileReader(imageFile);
-							BufferedReader bufferReader = new BufferedReader(
-									reader);) {
+							BufferedReader bufferReader = new BufferedReader(reader);) {
 						String imageId = bufferReader.readLine();
 						if (!dockerImage.id().equals(imageId)) {
 							// if image id has changed...all bets are off
@@ -271,8 +269,7 @@ public class ContainerLauncher {
 				}
 				if (needImageIdFile) {
 					try (FileWriter writer = new FileWriter(imageFile);
-							BufferedWriter bufferedWriter = new BufferedWriter(
-									writer);) {
+							BufferedWriter bufferedWriter = new BufferedWriter(writer);) {
 						bufferedWriter.write(dockerImage.id());
 						bufferedWriter.newLine();
 						synchronized (lockObject) {
@@ -290,9 +287,8 @@ public class ContainerLauncher {
 					for (String volume : volumes) {
 						boolean excluded = false;
 						for (String dir : excludedDirs) {
-							if (volume.equals(dir) || (volume.startsWith(dir)
-									&& volume.charAt(dir
-											.length()) == File.separatorChar)) {
+							if (volume.equals(dir)
+									|| (volume.startsWith(dir) && volume.charAt(dir.length()) == File.separatorChar)) {
 								excluded = true;
 								break;
 							}
@@ -303,8 +299,7 @@ public class ContainerLauncher {
 						boolean alreadyCopied = false;
 						for (String path : dirList) {
 							if (volume.equals(path) || (volume.startsWith(path)
-									&& volume.charAt(path
-											.length()) == File.separatorChar)) {
+									&& volume.charAt(path.length()) == File.separatorChar)) {
 								if (!copyingList.contains(path)) {
 									alreadyCopied = true;
 									break;
@@ -325,14 +320,12 @@ public class ContainerLauncher {
 				}
 
 				// create base container to use for copying
-				DockerContainerConfig.Builder builder = new DockerContainerConfig.Builder()
-						.cmd("/bin/sh").image(image); //$NON-NLS-1$
+				DockerContainerConfig.Builder builder = new DockerContainerConfig.Builder().cmd("/bin/sh").image(image); //$NON-NLS-1$
 				IDockerContainerConfig config = builder.build();
 				DockerHostConfig.Builder hostBuilder = new DockerHostConfig.Builder();
 				IDockerHostConfig hostConfig = hostBuilder.build();
-				containerId = ((DockerConnection) connection)
-						.createContainer(config, hostConfig, null);
-				
+				containerId = ((DockerConnection) connection).createContainer(config, hostConfig, null);
+
 				// copy each volume if it exists and is not copied over yet
 				for (String volume : volumes) {
 					currentVolume = volume;
@@ -349,8 +342,7 @@ public class ContainerLauncher {
 					boolean excluded = false;
 					for (String dir : excludedDirs) {
 						if (volume.equals(dir)
-								|| (volume.startsWith(dir) && volume.charAt(
-										dir.length()) == File.separatorChar)) {
+								|| (volume.startsWith(dir) && volume.charAt(dir.length()) == File.separatorChar)) {
 							excluded = true;
 							break;
 						}
@@ -366,8 +358,7 @@ public class ContainerLauncher {
 					synchronized (lockObject) {
 						for (String path : dirList) {
 							if (volume.equals(path) || (volume.startsWith(path)
-									&& volume.charAt(path
-											.length()) == File.separatorChar)) {
+									&& volume.charAt(path.length()) == File.separatorChar)) {
 								alreadyCopied = path;
 								if (!dirList.contains(volume)) {
 									dirList.add(volume);
@@ -390,15 +381,11 @@ public class ContainerLauncher {
 					// instead of returning too fast and the headers won't be
 					// there
 					synchronized (volume) {
-						try (Closeable token = ((DockerConnection) connection)
-								.getOperationToken()) {
-							monitor.setTaskName(Messages.getFormattedString(
-									COPY_VOLUMES_FROM_TASK, volume));
+						try (Closeable token = ((DockerConnection) connection).getOperationToken()) {
+							monitor.setTaskName(Messages.getFormattedString(COPY_VOLUMES_FROM_TASK, volume));
 							monitor.worked(1);
 
-
-							InputStream in = ((DockerConnection) connection)
-									.copyContainer(token, containerId, volume);
+							InputStream in = ((DockerConnection) connection).copyContainer(token, containerId, volume);
 
 							synchronized (lockObject) {
 								if (!dirList.contains(volume)) {
@@ -410,47 +397,42 @@ public class ContainerLauncher {
 							}
 
 							/*
-							 * The input stream from copyContainer might be
-							 * incomplete or non-blocking so we should wrap it
-							 * in a stream that is guaranteed to block until
-							 * data is available.
+							 * The input stream from copyContainer might be incomplete or non-blocking so we
+							 * should wrap it in a stream that is guaranteed to block until data is
+							 * available.
 							 */
-							TarArchiveInputStream k = new TarArchiveInputStream(
-									new BlockingInputStream(in));
-							TarArchiveEntry te = null;
-							target.toFile().mkdirs();
-							IPath currDir = target.append(volume)
-									.removeLastSegments(1);
-							currDir.toFile().mkdirs();
-							while ((te = k.getNextTarEntry()) != null) {
-								long size = te.getSize();
-								IPath path = currDir;
-								path = path.append(te.getName());
-								File f = new File(path.toOSString());
-								if (te.isDirectory()) {
-									f.mkdir();
-									continue;
-								} else {
-									f.createNewFile();
-								}
-								FileOutputStream os = new FileOutputStream(f);
-								int bufferSize = ((int) size > 4096 ? 4096
-										: (int) size);
-								byte[] barray = new byte[bufferSize];
-								int result = -1;
-								while ((result = k.read(barray, 0,
-										bufferSize)) > -1) {
-									if (monitor.isCanceled()) {
-										monitor.done();
-										k.close();
-										os.close();
-										return Status.CANCEL_STATUS;
+							try (TarArchiveInputStream k = new TarArchiveInputStream(new BlockingInputStream(in))) {
+								TarArchiveEntry te = null;
+								target.toFile().mkdirs();
+								IPath currDir = target.append(volume).removeLastSegments(1);
+								currDir.toFile().mkdirs();
+								while ((te = k.getNextTarEntry()) != null) {
+									long size = te.getSize();
+									IPath path = currDir;
+									path = path.append(te.getName());
+									File f = new File(path.toOSString());
+									if (te.isDirectory()) {
+										f.mkdir();
+										continue;
+									} else {
+										f.createNewFile();
 									}
-									os.write(barray, 0, result);
+									try (FileOutputStream os = new FileOutputStream(f)) {
+										int bufferSize = ((int) size > 4096 ? 4096 : (int) size);
+										byte[] barray = new byte[bufferSize];
+										int result = -1;
+										while ((result = k.read(barray, 0, bufferSize)) > -1) {
+											if (monitor.isCanceled()) {
+												monitor.done();
+												k.close();
+												os.close();
+												return Status.CANCEL_STATUS;
+											}
+											os.write(barray, 0, result);
+										}
+									}
 								}
-								os.close();
 							}
-							k.close();
 							// remove from copying list so subsequent jobs might
 							// know that the volume
 							// is fully copied
@@ -484,8 +466,7 @@ public class ContainerLauncher {
 				// remove the container used for copying
 				if (containerId != null) {
 					try {
-						((DockerConnection) connection)
-								.removeContainer(containerId);
+						((DockerConnection) connection).removeContainer(containerId);
 					} catch (DockerException | InterruptedException e) {
 						// ignore
 					}
