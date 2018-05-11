@@ -14,11 +14,11 @@ import org.eclipse.linuxtools.docker.core.IDockerProgressDetail;
 
 public class DockerProgressDetail implements IDockerProgressDetail {
 
-	private long current;
-	private long start;
-	private long total;
+	private Long current;
+	private Long start;
+	private Long total;
 
-	public DockerProgressDetail(long current, long start, long total) {
+	public DockerProgressDetail(Long current, Long start, Long total) {
 		this.current = current;
 		this.start = start;
 		this.total = total;
@@ -26,24 +26,23 @@ public class DockerProgressDetail implements IDockerProgressDetail {
 
 	@Override
 	public long current() {
-		return current;
+		return current == null ? 0 : current;
 	}
 
 	@Override
 	public long start() {
-		return start;
+		return start == null ? 0 : start;
 	}
 
 	@Override
 	public long total() {
-		return total;
+		return total == null ? 0 : total;
 	}
 
 	@Override
 	public String toString() {
-		return "Progress Detail: current=" + Long.toString(current) + "\n"
-				+ "  start=" + Long.toString(start) + "\n" + "  total="
-				+ Long.toString(total) + "\n";
+		return "Progress Detail: current=" + current + "\n" + "  start=" + start
+				+ "\n" + "  total=" + total + "\n";
 	}
 
 	@Override
