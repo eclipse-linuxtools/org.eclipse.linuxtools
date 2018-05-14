@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2015 Tasktop Technologies and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2004, 2018 Tasktop Technologies and others.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     Tasktop Technologies - initial API and implementation
@@ -75,11 +77,6 @@ import org.eclipse.ui.forms.widgets.Section;
 
 import com.google.common.base.Strings;
 
-/**
- * @author Robert Elves
- * @author Steffen Pingel
- * @author Jingwen Ou
- */
 @SuppressWarnings("restriction")
 public class OSIOWorkitemLinkAttributeEditor extends AbstractTaskEditorPart {
 
