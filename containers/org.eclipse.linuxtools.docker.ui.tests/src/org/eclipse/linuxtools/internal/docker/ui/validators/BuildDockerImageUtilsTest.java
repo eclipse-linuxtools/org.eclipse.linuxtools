@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2015, 2018 Red Hat.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     Red Hat - Initial Contribution
@@ -42,7 +44,7 @@ public class BuildDockerImageUtilsTest {
 			match("localhost/jboss/wildfly", "localhost/jboss", "wildfly", null),
 			match("localhost/jboss/wildfly:", null, null, null), // because registry is missing port number
 			match("localhost/jboss/wildfly:latest", "localhost/jboss", "wildfly", "latest"),
-			match("localhost/jboss/wildfly:9", "localhost/jboss", "wildfly", "9"), 
+			match("localhost/jboss/wildfly:9", "localhost/jboss", "wildfly", "9"),
 			match("localhost/jboss/wildfly:9.", null, null, null), // because . is invalid for tag end
 			match("localhost/jboss/wildfly:9.0.1.Final", "localhost/jboss", "wildfly", "9.0.1.Final"),
 			match("localhost:", null, null, null), // because trailing ':' causes invalid value
@@ -80,7 +82,7 @@ public class BuildDockerImageUtilsTest {
 		// then
 		Assert.assertEquals(expectedName, actualName);
 	}
-	
+
 	@Test
 	public void verifyTag() {
 		// when
@@ -88,5 +90,5 @@ public class BuildDockerImageUtilsTest {
 		// then
 		Assert.assertEquals(expectedTag, actualTagName);
 	}
-	
+
 }

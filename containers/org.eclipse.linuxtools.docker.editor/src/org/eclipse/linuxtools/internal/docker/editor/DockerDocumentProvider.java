@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2015-2016 Open Analytics NV and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2015, 2018 Open Analytics NV and others.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.editor;
 
@@ -145,10 +147,8 @@ public class DockerDocumentProvider extends FileDocumentProvider {
 				stream = new ByteArrayInputStream(bytes, 0, byteBuffer.limit());
 			} catch (CharacterCodingException ex) {
 				Assert.isTrue(ex instanceof UnmappableCharacterException);
-				String message = NLS.bind(
-						Messages.DockerDocumentProvider_cannot_be_mapped
-								+ Messages.DockerDocumentProvider_chars_not_supported,
-						encoding);
+				String message = NLS.bind(Messages.DockerDocumentProvider_cannot_be_mapped
+						+ Messages.DockerDocumentProvider_chars_not_supported, encoding);
 				IStatus s = new Status(IStatus.ERROR, EditorsUI.PLUGIN_ID, EditorsUI.CHARSET_MAPPING_FAILED, message,
 						null);
 				throw new CoreException(s);

@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2017 Red Hat, Inc.
- * Distributed under license by Red Hat, Inc. All rights reserved.
- * This program is made available under the terms of the
- * Eclipse Public License v1.0 which accompanies this distribution,
- * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2017,2018 Red Hat, Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
@@ -24,13 +26,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * 
- * @author jkopriva@redhat.com
- * @contributor adietish@redhat.com
- *
- */
-
 public class PushImageTest extends AbstractImageBotTest {
 
 	private static final String DOCKERFILE_FOLDER = "resources/test-variables";
@@ -43,7 +38,7 @@ public class PushImageTest extends AbstractImageBotTest {
 	private static String IMAGE_TAG = System.getProperty(DOCKER_HUB_USERNAME) + "/variables";
 
 	private String imageNewTag = "";
-	
+
 	private String dockerHubUsername = "";
 	private String dockerHubEmail = "";
 	private String dockerHubPassword = "";
@@ -60,7 +55,7 @@ public class PushImageTest extends AbstractImageBotTest {
 			getConnection().refresh();
 		}
 	}
-	
+
 	@Test
 	public void pushImage() {
 		DockerImagesTab imagesTab = openDockerImagesTab();
@@ -83,7 +78,7 @@ public class PushImageTest extends AbstractImageBotTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		assertTrue("Image has not been pushed/pulled!", imageIsDeployed(IMAGE_TAG));
 	}
-	
+
 	private void checkCredentials(){
 		dockerHubUsername = System.getProperty(DOCKER_HUB_USERNAME);
 		dockerHubEmail = System.getProperty(DOCKER_HUB_EMAIL);
@@ -101,6 +96,7 @@ public class PushImageTest extends AbstractImageBotTest {
 		}
 	}
 
+	@Override
 	@After
 	public void after() {
 		deleteRegister(REGISTRY_URL);

@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2016, 2018 Red Hat.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     Red Hat - Initial Contribution
@@ -28,7 +30,7 @@ import org.eclipse.ui.wizards.datatransfer.IImportStructureProvider;
  * with the following changes : - Removed the singleton nature of the original
  * class - Only returns modified files between source and destination
  * directories
- * 
+ *
  */
 @SuppressWarnings("restriction")
 public class SyncFileSystemStructureProvider implements IImportStructureProvider {
@@ -41,7 +43,7 @@ public class SyncFileSystemStructureProvider implements IImportStructureProvider
 
 	/**
 	 * Creates an instance of <code>SyncFileSystemStructureProvider</code>.
-	 * 
+	 *
 	 * @param source
 	 */
 	private SyncFileSystemStructureProvider(final IPath source, final IPath destination, final List<String> ignoredRelativePaths) {
@@ -116,14 +118,14 @@ public class SyncFileSystemStructureProvider implements IImportStructureProvider
 	public boolean isFolder(Object element) {
 		return ((File) element).isDirectory();
 	}
-	
+
 	public static class Builder {
 		private final IPath source;
-		
+
 		private final IPath destination;
-		
+
 		private final List<String> ignoredRelativePaths = new ArrayList<>();
-	
+
 		public Builder(final IPath source, final IPath destination) {
 			super();
 			this.source = source;
@@ -134,10 +136,10 @@ public class SyncFileSystemStructureProvider implements IImportStructureProvider
 			this.ignoredRelativePaths.addAll(Arrays.asList(relativePaths));
 			return this;
 		}
-		
+
 		public SyncFileSystemStructureProvider build() {
 			return new SyncFileSystemStructureProvider(source, destination, ignoredRelativePaths);
 		}
 	}
-	
+
 }

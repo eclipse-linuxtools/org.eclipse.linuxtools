@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2017 Red Hat, Inc.
- * Distributed under license by Red Hat, Inc. All rights reserved.
- * This program is made available under the terms of the
- * Eclipse Public License v1.0 which accompanies this distribution,
- * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2017, 2018 Red Hat, Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
@@ -17,12 +19,10 @@ import org.junit.Test;
 /**
  * This class is deleting all used images in tests. Images are not deleted after
  * every test to speed up the suite.
- * 
- * @author jkopriva@redhat.com
- * 
+ *
  */
 public class DeleteImagesAfter extends AbstractImageBotTest {
-	
+
 	@Before
 	public void before (){
 		prepareConnections();

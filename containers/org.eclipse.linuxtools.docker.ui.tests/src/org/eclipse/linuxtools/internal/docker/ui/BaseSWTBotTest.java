@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2015 Red Hat.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2015, 2018 Red Hat.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     Red Hat - Initial Contribution
@@ -35,7 +37,7 @@ public abstract class BaseSWTBotTest {
 		bot.views().stream().filter(v -> v.getReference().getTitle().equals("Welcome")).forEach(v -> v.close());
 		bot.perspectiveById("org.eclipse.linuxtools.docker.ui.perspective").activate();
 	}
-	
+
 	public static void configureConnectionManager(final DockerExplorerView dockerExplorerView, final IDockerConnection... connections) {
 		DockerConnectionManager.getInstance()
 				.setConnectionStorageManager(MockDockerConnectionStorageManagerFactory.providing(connections));
@@ -45,5 +47,5 @@ public abstract class BaseSWTBotTest {
 		});
 
 	}
-	
+
 }

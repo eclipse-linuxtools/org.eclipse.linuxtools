@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2017 Red Hat Inc. and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2017, 2018 Red Hat Inc. and others.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     Red Hat - Initial Contribution
@@ -53,9 +55,6 @@ import org.eclipse.swt.widgets.Display;
 
 public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigurationDelegate {
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration, java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
-	 */
 	@Override
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 

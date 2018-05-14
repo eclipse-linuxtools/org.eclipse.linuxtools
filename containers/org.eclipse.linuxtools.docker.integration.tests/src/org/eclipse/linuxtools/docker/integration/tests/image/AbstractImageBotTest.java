@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2017 Red Hat, Inc.
- * Distributed under license by Red Hat, Inc. All rights reserved.
- * This program is made available under the terms of the
- * Eclipse Public License v1.0 which accompanies this distribution,
- * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2017, 2018 Red Hat, Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
@@ -40,7 +42,7 @@ import org.junit.After;
 
 /**
  * A base class tests that build docker images
- * 
+ *
  * @author adietish@redhat.com
  */
 public class AbstractImageBotTest extends AbstractDockerBotTest {
@@ -67,7 +69,7 @@ public class AbstractImageBotTest extends AbstractDockerBotTest {
 	protected static final String IMAGE_RHEL = "rhel7.2";
 
 	protected static final String DOCKERFILE_FOLDER = "resources/test-build";
-	
+
 	protected static final String EDIT_DOCKERFILE_FOLDER = "resources/test-edit-dockerfile";
 
 	protected static final String REGISTRY_URL = "https://index.docker.io";
@@ -254,7 +256,7 @@ public class AbstractImageBotTest extends AbstractDockerBotTest {
 	/**
 	 * Deletes the given images. Image names may be provided with tag (ex.
 	 * "alpine:3.3"). Also kills all jobs that are still running.
-	 * 
+	 *
 	 * @param the
 	 *            names of the image that will be deleted
 	 */
@@ -266,7 +268,7 @@ public class AbstractImageBotTest extends AbstractDockerBotTest {
 	/**
 	 * Deletes the given images. Image names may be provided with tag (ex.
 	 * "alpine:3.3").
-	 * 
+	 *
 	 * @param the
 	 *            names of the image that will be deleted
 	 */
@@ -290,7 +292,7 @@ public class AbstractImageBotTest extends AbstractDockerBotTest {
 		PropertySheet propertiesView = openPropertiesTabForContainer("Inspect", containerName);
 		return propertiesView.getProperty("NetworkSettings", "IPAddress").getPropertyValue();
 	}
-	
+
 	protected void addTagToImage(String imageName, String imageTag){
 		DockerImagesTab imagesTab = openDockerImagesTab();
 		imagesTab.activate();
@@ -300,7 +302,7 @@ public class AbstractImageBotTest extends AbstractDockerBotTest {
 			imagesTab.addTagToImage(imageName, imageTag);
 		}
 	}
-	
+
 	protected void removeTagFromImage(String imageName, String imageTagToRemove){
 		DockerImagesTab imagesTab = openDockerImagesTab();
 		imagesTab.activate();
