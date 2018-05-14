@@ -27,7 +27,6 @@ import org.eclipse.mylyn.tasks.core.data.TaskAttribute;
 import org.eclipse.mylyn.tasks.core.data.TaskAttributeMetaData;
 import org.eclipse.mylyn.tasks.core.data.TaskData;
 
-@SuppressWarnings("nls")
 public class AbstractQueryPageSchema {
 
 	public static class Field {

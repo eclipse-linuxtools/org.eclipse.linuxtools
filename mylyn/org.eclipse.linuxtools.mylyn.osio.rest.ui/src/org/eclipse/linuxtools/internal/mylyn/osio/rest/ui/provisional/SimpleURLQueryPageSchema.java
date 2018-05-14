@@ -15,7 +15,6 @@ package org.eclipse.linuxtools.internal.mylyn.osio.rest.ui.provisional;
 
 import org.eclipse.mylyn.tasks.core.data.TaskAttribute;
 
-@SuppressWarnings("nls")
 public class SimpleURLQueryPageSchema extends AbstractQueryPageSchema {
 	private static final SimpleURLQueryPageSchema instance = new SimpleURLQueryPageSchema();
 

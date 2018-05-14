@@ -2097,7 +2097,7 @@ public class DockerConnection
 	}
 
 	public void attachCommand(final String id, final InputStream in,
-			@SuppressWarnings("unused") final DockerConsoleOutputStream out)
+			final DockerConsoleOutputStream out)
 					throws DockerException {
 
 		final byte[] prevCmd = new byte[1024];

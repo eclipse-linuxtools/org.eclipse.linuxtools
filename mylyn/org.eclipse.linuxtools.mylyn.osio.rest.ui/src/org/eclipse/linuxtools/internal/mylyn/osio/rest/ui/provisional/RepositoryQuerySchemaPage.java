@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-@SuppressWarnings({ "nls", "restriction" })
+@SuppressWarnings({ "restriction" })
 public class RepositoryQuerySchemaPage extends AbstractRepositoryQueryPage2 {
 
 	private static final int LABEL_WIDTH = 100;
