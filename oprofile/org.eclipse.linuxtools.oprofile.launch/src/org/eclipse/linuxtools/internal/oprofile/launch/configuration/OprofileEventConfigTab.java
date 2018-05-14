@@ -1,22 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008, 2009 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2004, 2018 Red Hat, Inc.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
  *    Kent Sebastian <ksebasti@redhat.com> -
- *
- * CounterSubTab Contributors:
- *    Keith Seitz <keiths@redhat.com> - initial API and implementation (before subclassing)
- *    Kent Sebastian <ksebasti@redhat.com> - turned into a sub class,
- *          changed layouts, fixed up some interactivity issues, ..
- *
- * UnitMaskViewer Contributors:
- *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *    Kent Sebastian <ksebasti@redhat.com>
  *******************************************************************************/
 
 package org.eclipse.linuxtools.internal.oprofile.launch.configuration;

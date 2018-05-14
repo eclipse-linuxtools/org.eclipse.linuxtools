@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2016 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2004, 2018 Red Hat, Inc.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
@@ -102,12 +104,11 @@ public class OpInfo {
 	}
 
 	/**
-	 * Sets the number of counters allowed by Oprofile. This method is called
-	 * after this object is contstructed, while opxml is run (the first tag
-	 * output is num-counters). Only called from XML parsers.
+	 * Sets the number of counters allowed by Oprofile. This method is called after
+	 * this object is contstructed, while opxml is run (the first tag output is
+	 * num-counters). Only called from XML parsers.
 	 * 
-	 * @param ctrs
-	 *            the number of counters
+	 * @param ctrs the number of counters
 	 */
 	public void setNrCounters(int ctrs) {
 		nrCounters = ctrs;
@@ -119,32 +120,28 @@ public class OpInfo {
 	/**
 	 * Set the CPU frequency (in MHz). Only called from the XML parsers.
 	 * 
-	 * @param freq
-	 *            the frequency
+	 * @param freq the frequency
 	 */
 	public void setCPUSpeed(double freq) {
 		cpuSpeed = freq;
 	}
 
 	/**
-	 * Sets the defaults associated with this configuration of Oprofile. Only
-	 * called from XML parsers.
+	 * Sets the defaults associated with this configuration of Oprofile. Only called
+	 * from XML parsers.
 	 * 
-	 * @param map
-	 *            the <code>HashMap</code> containing the defaults
+	 * @param map the <code>HashMap</code> containing the defaults
 	 */
 	public void setDefaults(HashMap<String, String> map) {
 		defaults = map;
 	}
 
 	/**
-	 * Adds the events of the counter counterNum into the list of all events.
-	 * Note they are sorted here. Only called from XML parsers.
+	 * Adds the events of the counter counterNum into the list of all events. Note
+	 * they are sorted here. Only called from XML parsers.
 	 * 
-	 * @param counterNum
-	 *            the counter with the events
-	 * @param events
-	 *            an array of OpEvent events belonging to this counter
+	 * @param counterNum the counter with the events
+	 * @param events     an array of OpEvent events belonging to this counter
 	 */
 	public void setEvents(int counterNum, OpEvent[] events) {
 		if (counterNum < eventList.length) {
@@ -154,11 +151,10 @@ public class OpInfo {
 	}
 
 	/**
-	 * Sets whether or not oprofile is operating in timer mode. Only called from
-	 * XML parsers.
+	 * Sets whether or not oprofile is operating in timer mode. Only called from XML
+	 * parsers.
 	 * 
-	 * @param timerMode
-	 *            true if oprofile is in timer mode, false if not
+	 * @param timerMode true if oprofile is in timer mode, false if not
 	 */
 	public void setTimerMode(boolean timerMode) {
 		this.timerMode = timerMode;
@@ -187,8 +183,7 @@ public class OpInfo {
 	 * <code>DEFAULT_DUMP_STATUS</code>, <code>DEFAULT_LOCK_FILE</code>,
 	 * <code>DEFAULT_LOG_FILE</code>, and <code>DEFAULT_SAMPLE_DIR</code>.
 	 * 
-	 * @param what
-	 *            which default to return
+	 * @param what which default to return
 	 * @return the requested default or <code>null</code> if not known
 	 */
 	public String getDefault(String what) {
@@ -198,8 +193,7 @@ public class OpInfo {
 	/**
 	 * Returns an array of events valid for the given counter number.
 	 * 
-	 * @param num
-	 *            the counter number
+	 * @param num the counter number
 	 * @return an array of valid events
 	 */
 	public OpEvent[] getEvents(int num) {
@@ -222,8 +216,7 @@ public class OpInfo {
 	/**
 	 * Searches the for the event with the given name
 	 * 
-	 * @param name
-	 *            the name of the event (e.g., CPU_CLK_UNHALTED)
+	 * @param name the name of the event (e.g., CPU_CLK_UNHALTED)
 	 * @return the event or <code>null</code> if not found
 	 */
 	public OpEvent findEvent(String name) {

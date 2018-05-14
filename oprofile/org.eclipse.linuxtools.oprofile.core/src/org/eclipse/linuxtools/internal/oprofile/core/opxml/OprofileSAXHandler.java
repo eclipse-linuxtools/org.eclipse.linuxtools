@@ -1,9 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2018 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
@@ -94,8 +96,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	/**
 	 * Sets the calldata for the processor.
 	 * 
-	 * @param callData
-	 *            the calldata to pass to the processor
+	 * @param callData the calldata to pass to the processor
 	 */
 	private void setCallData(Object callData) {
 		this.callData = callData;
@@ -104,8 +105,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	/**
 	 * Returns the processor for a given request type.
 	 * 
-	 * @param type
-	 *            the name of the processor
+	 * @param type the name of the processor
 	 * @return the requested processor or null
 	 */
 	private static XMLProcessor getProcessor(String type) {
@@ -170,8 +170,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	 * Pushes the current XMLProcessor onto the stack and installs the given
 	 * processor as the document's parser/handler.
 	 * 
-	 * @param proc
-	 *            the processor to continue parsing the document
+	 * @param proc the processor to continue parsing the document
 	 */
 	public void push(XMLProcessor proc) {
 		processorStack.add(processor);
@@ -184,8 +183,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	 * This assumes that endElement caused the pop, so it calls endElement in the
 	 * parent processor.
 	 * 
-	 * @param tag
-	 *            the XML tag to pass to the parent processor
+	 * @param tag the XML tag to pass to the parent processor
 	 */
 	public void pop(String tag) {
 		processor = processorStack.pop();

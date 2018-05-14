@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2016 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2004, 2018 Red Hat, Inc.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
@@ -64,10 +66,8 @@ public class OpxmlRunner {
 	/**
 	 * Runs opxml with the given arguments.
 	 * 
-	 * @param args
-	 *            the arguments to pass to opxml
-	 * @param callData
-	 *            any callData to pass to the processor
+	 * @param args     the arguments to pass to opxml
+	 * @param callData any callData to pass to the processor
 	 * @return boolean indicating the success/failure of opxml
 	 */
 	public boolean run(String[] args, Object callData) {
@@ -204,8 +204,7 @@ public class OpxmlRunner {
 	 * Add the current session to the session manager for each event that it was
 	 * profiled under.
 	 * 
-	 * @param session
-	 *            the session manager to populate
+	 * @param session the session manager to populate
 	 */
 	private void populateWithCurrentSession(SessionManager session) {
 		session.removeAllCurrentSessions();
@@ -268,8 +267,7 @@ public class OpxmlRunner {
 	 * Run opreport with specified arguments <code>args</code> and return
 	 * InputStream to output of report for parsing.
 	 *
-	 * @param args
-	 *            arguments to run with opreport
+	 * @param args arguments to run with opreport
 	 * @return InputStream to output of report
 	 */
 	private InputStream runOpReport(String[] args) {
@@ -278,9 +276,9 @@ public class OpxmlRunner {
 		cmd.add("opreport"); //$NON-NLS-1$
 		if (OprofileProject.getProfilingBinary().equals(OprofileProject.OPERF_BINARY)) {
 			/*
-			 * The session-dir parameter is relative to project's working dir,
-			 * which might be local or remote. So it should use the proxy
-			 * manager to determine working dir.
+			 * The session-dir parameter is relative to project's working dir, which might
+			 * be local or remote. So it should use the proxy manager to determine working
+			 * dir.
 			 */
 			String workingDir = ""; //$NON-NLS-1$
 			RemoteProxyManager proxy = RemoteProxyManager.getInstance();

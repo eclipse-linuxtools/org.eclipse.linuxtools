@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008, 2009 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2004, 2018 Red Hat, Inc.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
@@ -81,10 +83,8 @@ public class OprofileCorePlugin extends Plugin {
 	/**
 	 * Creates an error status object
 	 * 
-	 * @param errorClassString
-	 *            A string of the error class
-	 * @param e
-	 *            The type of exception
+	 * @param errorClassString A string of the error class
+	 * @param e                The type of exception
 	 * @return the status object of the error
 	 */
 	public static IStatus createErrorStatus(String errorClassString, Exception e) {
@@ -100,10 +100,8 @@ public class OprofileCorePlugin extends Plugin {
 	/**
 	 * Shows an error Dialog
 	 * 
-	 * @param errorClassString
-	 *            A string of the error class
-	 * @param ex
-	 *            The type of exception
+	 * @param errorClassString A string of the error class
+	 * @param ex               The type of exception
 	 */
 	public static void showErrorDialog(String errorClassString, CoreException ex) {
 		final IStatus status;
@@ -135,10 +133,8 @@ public class OprofileCorePlugin extends Plugin {
 	/**
 	 * Log a string message with the given severity in the error log.
 	 *
-	 * @param severity
-	 *            the severity of this exception
-	 * @param msg
-	 *            the string message to be logged
+	 * @param severity the severity of this exception
+	 * @param msg      the string message to be logged
 	 */
 	public static void log(int severity, String msg) {
 		plugin.getLog().log(new Status(severity, PLUGIN_ID, IStatus.OK, msg, null));

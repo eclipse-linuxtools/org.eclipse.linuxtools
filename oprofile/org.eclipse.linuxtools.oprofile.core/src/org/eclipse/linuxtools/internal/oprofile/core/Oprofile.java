@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008, 2009 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2004, 2018 Red Hat, Inc.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
@@ -134,8 +136,7 @@ public class Oprofile {
 	/**
 	 * Get all the events that may be collected on the given counter.
 	 * 
-	 * @param num
-	 *            the counter number
+	 * @param num the counter number
 	 * @return an array of all valid events -- NEVER RETURNS NULL!
 	 */
 	public static OpEvent[] getEvents(int num) {
@@ -173,12 +174,9 @@ public class Oprofile {
 	/**
 	 * Checks the requested counter, event, and unit mask for validity.
 	 * 
-	 * @param ctr
-	 *            the counter
-	 * @param event
-	 *            the event name
-	 * @param um
-	 *            the unit mask
+	 * @param ctr   the counter
+	 * @param event the event name
+	 * @param um    the unit mask
 	 * @return whether the requested event is valid
 	 */
 	public static Boolean checkEvent(int ctr, String event, int um) {
@@ -217,10 +215,8 @@ public class Oprofile {
 	/**
 	 * Return a list of all the Samples in the given session.
 	 * 
-	 * @param session
-	 *            the session for which to get samples
-	 * @param shell
-	 *            the composite shell to use for the progress dialog
+	 * @param session the session for which to get samples
+	 * @param shell   the composite shell to use for the progress dialog
 	 */
 	public static OpModelImage getModelData(String eventName, String sessionName) {
 		OpModelImage image = new OpModelImage();

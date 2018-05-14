@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2004 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2004, 2018 Red Hat, Inc.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
@@ -17,77 +19,77 @@ import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelSession;
 import org.eclipse.linuxtools.internal.oprofile.core.opxml.XMLProcessor;
 import org.xml.sax.Attributes;
 
-
 /**
  * A processor for sessions.
+ * 
  * @see org.eclipse.linuxtools.internal.oprofile.core.opxml.OpxmlRunner
  */
 public class SessionsProcessor extends XMLProcessor {
-    public static class SessionInfo {
-        /**
-         *  A list of Session as well as Events under each of them
-         */
-        public ArrayList<OpModelSession> list;
+	public static class SessionInfo {
+		/**
+		 * A list of Session as well as Events under each of them
+		 */
+		public ArrayList<OpModelSession> list;
 
-        public SessionInfo(ArrayList<OpModelSession> session){
-            this.list = session;
-        }
-    }
+		public SessionInfo(ArrayList<OpModelSession> session) {
+			this.list = session;
+		}
+	}
 
-    // XML tags recognized by this processor
-    public static final String SESSION_TAG = "session"; //$NON-NLS-1$
-    private static final String SESSION_NAME_ATTR = "name"; //$NON-NLS-1$
-    public static final String SAMPLE_COUNT_TAG = "count"; //$NON-NLS-1$
-    public static final String EVENT_TAG = "event"; //$NON-NLS-1$
-    private static final String EVENT_NAME_ATTR = "name"; //$NON-NLS-1$
+	// XML tags recognized by this processor
+	public static final String SESSION_TAG = "session"; //$NON-NLS-1$
+	private static final String SESSION_NAME_ATTR = "name"; //$NON-NLS-1$
+	public static final String SAMPLE_COUNT_TAG = "count"; //$NON-NLS-1$
+	public static final String EVENT_TAG = "event"; //$NON-NLS-1$
+	private static final String EVENT_NAME_ATTR = "name"; //$NON-NLS-1$
 
-    /**
-     *  The current session being constructed
-     */
-    private OpModelSession currentSession;
+	/**
+	 * The current session being constructed
+	 */
+	private OpModelSession currentSession;
 
-    /**
-     *  The current event being constructed
-     */
-    private OpModelEvent currentEvent;
+	/**
+	 * The current event being constructed
+	 */
+	private OpModelEvent currentEvent;
 
-    /**
-     *  A list of all sessions
-     */
-    private ArrayList<OpModelEvent> eventList;
+	/**
+	 * A list of all sessions
+	 */
+	private ArrayList<OpModelEvent> eventList;
 
-    @Override
-    public void startElement(String name, Attributes attrs, Object callData) {
-        if (name.equals(SESSION_TAG)) {
-            String sessionName = validString(attrs.getValue(SESSION_NAME_ATTR));
-            currentSession = new OpModelSession(sessionName);
-            eventList = new ArrayList<>();
-        } else if (name.equals(EVENT_TAG)) {
-            String eventName = attrs.getValue(EVENT_NAME_ATTR);
-            currentEvent = new OpModelEvent(currentSession,eventName);
-        } else {
-            super.startElement(name, attrs, callData);
-        }
-    }
+	@Override
+	public void startElement(String name, Attributes attrs, Object callData) {
+		if (name.equals(SESSION_TAG)) {
+			String sessionName = validString(attrs.getValue(SESSION_NAME_ATTR));
+			currentSession = new OpModelSession(sessionName);
+			eventList = new ArrayList<>();
+		} else if (name.equals(EVENT_TAG)) {
+			String eventName = attrs.getValue(EVENT_NAME_ATTR);
+			currentEvent = new OpModelEvent(currentSession, eventName);
+		} else {
+			super.startElement(name, attrs, callData);
+		}
+	}
 
-    @Override
-    public void endElement(String name, Object callData) {
-        if (name.equals(SESSION_TAG)) {
-            // Got end of session -- save in session list
-            OpModelEvent[] s = new OpModelEvent[eventList.size()];
-            eventList.toArray(s);
-            currentSession.setEvents(s);
-            SessionInfo info = (SessionInfo) callData;
-            info.list.add(currentSession);
-            currentSession = null;
-            eventList = null;
-        } else if (name.equals(EVENT_TAG)) {
-            // Got end of event -- save session list into current OpModelEvent and
-            // save current event into call data
-            eventList.add(currentEvent);
-            currentEvent = null;
-        } else {
-            super.endElement(name, callData);
-        }
-    }
+	@Override
+	public void endElement(String name, Object callData) {
+		if (name.equals(SESSION_TAG)) {
+			// Got end of session -- save in session list
+			OpModelEvent[] s = new OpModelEvent[eventList.size()];
+			eventList.toArray(s);
+			currentSession.setEvents(s);
+			SessionInfo info = (SessionInfo) callData;
+			info.list.add(currentSession);
+			currentSession = null;
+			eventList = null;
+		} else if (name.equals(EVENT_TAG)) {
+			// Got end of event -- save session list into current OpModelEvent and
+			// save current event into call data
+			eventList.add(currentEvent);
+			currentEvent = null;
+		} else {
+			super.endElement(name, callData);
+		}
+	}
 }

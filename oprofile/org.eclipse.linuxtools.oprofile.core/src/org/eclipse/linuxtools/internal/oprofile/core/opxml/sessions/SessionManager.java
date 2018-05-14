@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2010, 2018 Red Hat, Inc.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Red Hat - initial API and implementation
@@ -61,8 +63,7 @@ public class SessionManager {
 	/**
 	 * Session manager class constructor to manipulate the XML data
 	 *
-	 * @param file
-	 *            the xml file
+	 * @param file the xml file
 	 */
 	public SessionManager(File file) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -88,10 +89,8 @@ public class SessionManager {
 	/**
 	 * Add a session to the specified event element if it does not exist.
 	 *
-	 * @param sessionName
-	 *            the name of the session
-	 * @param eventName
-	 *            the name of the event
+	 * @param sessionName the name of the session
+	 * @param eventName   the name of the event
 	 */
 	public void addSession(String sessionName, String eventName) {
 		Element event = null;
@@ -114,8 +113,7 @@ public class SessionManager {
 	/**
 	 * Check if a session exists
 	 *
-	 * @param sessionName
-	 *            the name of the session
+	 * @param sessionName the name of the session
 	 * @return true if the session exists, otherwise false
 	 */
 	public boolean existsSession(String sessionName) {
@@ -125,14 +123,10 @@ public class SessionManager {
 	/**
 	 * Find an element in the XML
 	 *
-	 * @param elem
-	 *            the element to look under
-	 * @param tagName
-	 *            the name of the tag
-	 * @param attName
-	 *            the name of the attribute
-	 * @param attVal
-	 *            the name of the attribute value
+	 * @param elem    the element to look under
+	 * @param tagName the name of the tag
+	 * @param attName the name of the attribute
+	 * @param attVal  the name of the attribute value
 	 * @return the element that matches the search, or null if none is found.
 	 */
 	private Element find(Element elem, String tagName, String attName, String attVal) {
@@ -227,8 +221,7 @@ public class SessionManager {
 	/**
 	 * Return a list of the events run with the given session
 	 *
-	 * @param sessionName
-	 *            the name of the session
+	 * @param sessionName the name of the session
 	 * @return A String ArrayList of event names that were run with the given
 	 *         session.
 	 */
