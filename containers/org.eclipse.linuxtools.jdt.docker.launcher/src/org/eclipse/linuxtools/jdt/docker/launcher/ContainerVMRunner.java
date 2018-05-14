@@ -24,7 +24,6 @@ import org.eclipse.jdt.internal.launching.StandardVMRunner;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
-import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.docker.ui.launch.ContainerLauncher;
 import org.eclipse.linuxtools.docker.ui.launch.IContainerLaunchListener;

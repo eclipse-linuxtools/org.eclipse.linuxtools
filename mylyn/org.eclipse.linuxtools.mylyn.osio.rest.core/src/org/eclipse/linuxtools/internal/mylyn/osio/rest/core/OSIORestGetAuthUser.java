@@ -17,7 +17,6 @@ import java.lang.reflect.Type;
 
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.Identity;
 import org.eclipse.mylyn.commons.repositories.http.core.CommonHttpClient;
-import org.eclipse.mylyn.tasks.core.data.TaskData;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;

@@ -13,12 +13,9 @@
 package org.eclipse.linuxtools.jdt.docker.launcher;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.DockerException;
-import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainerConfig;
 import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;

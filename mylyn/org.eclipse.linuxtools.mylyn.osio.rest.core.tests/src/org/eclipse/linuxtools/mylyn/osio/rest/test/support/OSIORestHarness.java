@@ -33,7 +33,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestConnector;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestCore;
-import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestCreateTaskSchema;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.OSIORestException;
 import org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data.SingleTaskDataCollector;
 import org.eclipse.mylyn.internal.tasks.core.RepositoryQuery;
