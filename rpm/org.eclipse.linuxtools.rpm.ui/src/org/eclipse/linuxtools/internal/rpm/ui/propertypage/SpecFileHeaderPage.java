@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2014 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2004, 2018 Red Hat, Inc.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     Red Hat - initial API and implementation
@@ -24,28 +26,26 @@ import org.eclipse.swt.widgets.Text;
  */
 public class SpecFileHeaderPage extends AbstractRPMPropertyPage {
 
-    private static final int QI_FIELD_WIDTH = 80;
+	private static final int QI_FIELD_WIDTH = 80;
 
-    private static final int QI_FIELD_HEIGHT = 40;
+	private static final int QI_FIELD_HEIGHT = 40;
 
-    @Override
-    protected void addFields(Composite composite) {
+	@Override
+	protected void addFields(Composite composite) {
 
-        // RPM labels and text fields setup
+		// RPM labels and text fields setup
 
-        Label rpmDescriptionLabel = new Label(composite, SWT.NONE);
-        rpmDescriptionLabel.setText(Messages
-                .getString("SpecFileHeaderPage.info")); //$NON-NLS-1$
-        Text rpmQiText = new Text(composite, SWT.MULTI | SWT.BORDER
-                | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
-        GridData gdQI = new GridData();
-        gdQI.widthHint = convertWidthInCharsToPixels(QI_FIELD_WIDTH);
-        gdQI.heightHint = convertWidthInCharsToPixels(QI_FIELD_HEIGHT);
-        rpmQiText.setLayoutData(gdQI);
+		Label rpmDescriptionLabel = new Label(composite, SWT.NONE);
+		rpmDescriptionLabel.setText(Messages.getString("SpecFileHeaderPage.info")); //$NON-NLS-1$
+		Text rpmQiText = new Text(composite, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL | SWT.WRAP);
+		GridData gdQI = new GridData();
+		gdQI.widthHint = convertWidthInCharsToPixels(QI_FIELD_WIDTH);
+		gdQI.heightHint = convertWidthInCharsToPixels(QI_FIELD_HEIGHT);
+		rpmQiText.setLayoutData(gdQI);
 
-        // Populate RPM text field
-        String rpm_qi = RPMQuery.getHeaderInfo((IFile) getElement());
-        rpmQiText.setText(rpm_qi);
-    }
+		// Populate RPM text field
+		String rpm_qi = RPMQuery.getHeaderInfo((IFile) getElement());
+		rpmQiText.setText(rpm_qi);
+	}
 
 }

@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2008 Alphonse Van Assche.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2008, 2018 Alphonse Van Assche and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
@@ -20,22 +22,20 @@ import org.eclipse.swt.program.Program;
  */
 public class MailHyperlink extends URLHyperlink {
 
+	private String fURLString;
 
-    private String fURLString;
+	public MailHyperlink(IRegion region, String urlString) {
+		super(region, urlString);
+		fURLString = urlString;
+	}
 
-
-    public MailHyperlink(IRegion region, String urlString) {
-        super(region, urlString);
-        fURLString = urlString;
-    }
-
-    @Override
-    public void open() {
-        if (fURLString != null) {
-            Program.launch(fURLString);
-            fURLString= null;
-            return;
-        }
-    }
+	@Override
+	public void open() {
+		if (fURLString != null) {
+			Program.launch(fURLString);
+			fURLString = null;
+			return;
+		}
+	}
 
 }

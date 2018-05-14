@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2013 Alexander Kurtakov, Neil Guzman.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2013, 2018 Alexander Kurtakov, Neil Guzman.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Alexander Kurtakov - initial API and implementation
@@ -40,60 +42,60 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class SpecfileEditorDownloadSourcesActionDelegate extends AbstractHandler {
 
-    @Override
-    public Object execute(ExecutionEvent event) throws ExecutionException {
-        final Shell shell =  HandlerUtil.getActiveShellChecked(event);
-        final SpecfileParser specparser = new SpecfileParser();
-        final IResource resource = RPMHandlerUtils.getResource(event);
-        final RPMProject rpj = RPMHandlerUtils.getRPMProject(resource);
-        final IFile workFile = (IFile) rpj.getSpecFile();
-        final Specfile specfile = workFile != null ? specparser.parse(workFile) : null;
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final Shell shell = HandlerUtil.getActiveShellChecked(event);
+		final SpecfileParser specparser = new SpecfileParser();
+		final IResource resource = RPMHandlerUtils.getResource(event);
+		final RPMProject rpj = RPMHandlerUtils.getRPMProject(resource);
+		final IFile workFile = (IFile) rpj.getSpecFile();
+		final Specfile specfile = workFile != null ? specparser.parse(workFile) : null;
 
-        // retrieve source(s) from specfile
-        final List<SpecfileSource> sourceURLList = specfile != null ? (List<SpecfileSource>) specfile
-                .getSources() : null;
+		// retrieve source(s) from specfile
+		final List<SpecfileSource> sourceURLList = specfile != null ? (List<SpecfileSource>) specfile.getSources()
+				: null;
 
-        // go through each source, resolve the defines, and then download the file
-        // currently stops immediately once an invalid source URL is encountered
-        for (final SpecfileSource sourceurls : sourceURLList) {
-            try {
-                String rawURL = sourceurls.getFileName();
-                String resolvedURL = UiUtils.resolveDefines(specfile, rawURL);
-                URL url = null;
-                try {
-                    url = new URL(resolvedURL);
-                } catch(MalformedURLException e) {
-                    SpecfileLog.logError(NLS.bind(Messages.DownloadSources_malformedURL, resolvedURL), e);
-                    RPMUtils.showErrorDialog(shell, "Error", //$NON-NLS-1$
-                            NLS.bind(Messages.DownloadSources_malformedURL, resolvedURL));
-                    return null;
-                }
+		// go through each source, resolve the defines, and then download the file
+		// currently stops immediately once an invalid source URL is encountered
+		for (final SpecfileSource sourceurls : sourceURLList) {
+			try {
+				String rawURL = sourceurls.getFileName();
+				String resolvedURL = UiUtils.resolveDefines(specfile, rawURL);
+				URL url = null;
+				try {
+					url = new URL(resolvedURL);
+				} catch (MalformedURLException e) {
+					SpecfileLog.logError(NLS.bind(Messages.DownloadSources_malformedURL, resolvedURL), e);
+					RPMUtils.showErrorDialog(shell, "Error", //$NON-NLS-1$
+							NLS.bind(Messages.DownloadSources_malformedURL, resolvedURL));
+					return null;
+				}
 
-                URLConnection connection = url.openConnection();
+				URLConnection connection = url.openConnection();
 
-                if (!(connection instanceof HttpURLConnection) ||
-                        ((HttpURLConnection) connection).getResponseCode() != HttpURLConnection.HTTP_NOT_FOUND) {
-                    connection.connect();
-                    // grab the name of the file from the URL
-                    int offset = url.toString().lastIndexOf("/"); //$NON-NLS-1$
-                    String filename = url.toString().substring(offset + 1);
+				if (!(connection instanceof HttpURLConnection)
+						|| ((HttpURLConnection) connection).getResponseCode() != HttpURLConnection.HTTP_NOT_FOUND) {
+					connection.connect();
+					// grab the name of the file from the URL
+					int offset = url.toString().lastIndexOf("/"); //$NON-NLS-1$
+					String filename = url.toString().substring(offset + 1);
 
-                    // create the path to the "to be downloaded" file
-                    IFile file = rpj.getConfiguration().getSourcesFolder().getFile(new Path(filename));
+					// create the path to the "to be downloaded" file
+					IFile file = rpj.getConfiguration().getSourcesFolder().getFile(new Path(filename));
 
-                    Job downloadJob = new DownloadJob(file, connection);
-                    downloadJob.setUser(true);
-                    downloadJob.schedule();
-                }
-            } catch (IOException e) {
-                SpecfileLog.logError(Messages.DownloadSources_cannotConnectToURL, e);
-                RPMUtils.showErrorDialog(shell, "Error", //$NON-NLS-1$
-                        Messages.DownloadSources_cannotConnectToURL);
-                return null;
-            }
-        }
+					Job downloadJob = new DownloadJob(file, connection);
+					downloadJob.setUser(true);
+					downloadJob.schedule();
+				}
+			} catch (IOException e) {
+				SpecfileLog.logError(Messages.DownloadSources_cannotConnectToURL, e);
+				RPMUtils.showErrorDialog(shell, "Error", //$NON-NLS-1$
+						Messages.DownloadSources_cannotConnectToURL);
+				return null;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
 }

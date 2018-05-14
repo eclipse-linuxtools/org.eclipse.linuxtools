@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2008, 2018 Red Hat, Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Red Hat - initial API and implementation
@@ -27,69 +29,68 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
  *
  * @since 1.2
  */
-public class SpecfileTaskHandler extends SpecfileMarkerHandler{
-    public static final String SPECFILE_TASK_MARKER_ID = Activator.PLUGIN_ID
-            + ".specfiletask"; //$NON-NLS-1$
+public class SpecfileTaskHandler extends SpecfileMarkerHandler {
+	public static final String SPECFILE_TASK_MARKER_ID = Activator.PLUGIN_ID + ".specfiletask"; //$NON-NLS-1$
 
-    /**
-     * Construct a specfile task handler given a IFile.
-     *
-     * @param file The specfile file.
-     * @param document The specfile document.
-     */
-    public SpecfileTaskHandler(IFile file, IDocument document) {
-        super(file, document);
-    }
+	/**
+	 * Construct a specfile task handler given a IFile.
+	 *
+	 * @param file     The specfile file.
+	 * @param document The specfile document.
+	 */
+	public SpecfileTaskHandler(IFile file, IDocument document) {
+		super(file, document);
+	}
 
-    /**
-     * Construct a specfile task handler given a FileEditorInput.
-     *
-     * @param file The FileEditorInput to get the file from.
-     * @param document The specfile document.
-     *
-     * @since 2.0
-     */
-    public SpecfileTaskHandler(FileEditorInput file, IDocument document) {
-        this(file.getFile(), document);
-    }
+	/**
+	 * Construct a specfile task handler given a FileEditorInput.
+	 *
+	 * @param file     The FileEditorInput to get the file from.
+	 * @param document The specfile document.
+	 *
+	 * @since 2.0
+	 */
+	public SpecfileTaskHandler(FileEditorInput file, IDocument document) {
+		this(file.getFile(), document);
+	}
 
-    /**
-     * Handle the task of the specfile.
-     *
-     * @param lineNumber The line number of the task.
-     * @param line The line contents.
-     * @param taskType The task type.
-     */
-    public void handleTask(int lineNumber, String line, String taskType) {
-        if (file == null) {
-            return;
-        }
+	/**
+	 * Handle the task of the specfile.
+	 *
+	 * @param lineNumber The line number of the task.
+	 * @param line       The line contents.
+	 * @param taskType   The task type.
+	 */
+	public void handleTask(int lineNumber, String line, String taskType) {
+		if (file == null) {
+			return;
+		}
 
-        String message = line.substring(line.indexOf(taskType));
-        Map<String, Object> map = new HashMap<>();
-        MarkerUtilities.setLineNumber(map, lineNumber);
-        MarkerUtilities.setMessage(map, message);
-        map.put(IMarker.MESSAGE, message);
-        map.put(IMarker.LOCATION, file.getFullPath().toString());
-        map.put(IMarker.USER_EDITABLE, false);
-        Integer charStart = getCharOffset(lineNumber, 0);
-        if (charStart != null) {
-            map.put(IMarker.CHAR_START, charStart);
-        }
-        Integer charEnd = getCharOffset(lineNumber, line.length());
-        if (charEnd != null) {
-            map.put(IMarker.CHAR_END, charEnd);
-        }
+		String message = line.substring(line.indexOf(taskType));
+		Map<String, Object> map = new HashMap<>();
+		MarkerUtilities.setLineNumber(map, lineNumber);
+		MarkerUtilities.setMessage(map, message);
+		map.put(IMarker.MESSAGE, message);
+		map.put(IMarker.LOCATION, file.getFullPath().toString());
+		map.put(IMarker.USER_EDITABLE, false);
+		Integer charStart = getCharOffset(lineNumber, 0);
+		if (charStart != null) {
+			map.put(IMarker.CHAR_START, charStart);
+		}
+		Integer charEnd = getCharOffset(lineNumber, line.length());
+		if (charEnd != null) {
+			map.put(IMarker.CHAR_END, charEnd);
+		}
 
-        try {
-            MarkerUtilities.createMarker(file, map, SPECFILE_TASK_MARKER_ID);
-        } catch (CoreException ee) {
-            SpecfileLog.logError(ee);
-        }
-    }
+		try {
+			MarkerUtilities.createMarker(file, map, SPECFILE_TASK_MARKER_ID);
+		} catch (CoreException ee) {
+			SpecfileLog.logError(ee);
+		}
+	}
 
-    @Override
-    String getMarkerID() {
-        return SPECFILE_TASK_MARKER_ID;
-    }
+	@Override
+	String getMarkerID() {
+		return SPECFILE_TASK_MARKER_ID;
+	}
 }

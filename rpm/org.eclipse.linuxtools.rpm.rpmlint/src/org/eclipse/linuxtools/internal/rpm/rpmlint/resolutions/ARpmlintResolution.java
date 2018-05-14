@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2017 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007, 2018 Red Hat, Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Red Hat - initial API and implementation
@@ -26,34 +28,32 @@ import org.eclipse.ui.ide.IDE;
  */
 public abstract class ARpmlintResolution implements IMarkerResolution2 {
 
+	/**
+	 * No image for rpmlint resolutions for now.
+	 *
+	 * @see org.eclipse.ui.IMarkerResolution2#getImage()
+	 */
+	@Override
+	public Image getImage() {
+		return null;
+	}
 
-    /**
-     * No image for rpmlint resolutions for now.
-     *
-     * @see org.eclipse.ui.IMarkerResolution2#getImage()
-     */
-    @Override
-    public Image getImage() {
-        return null;
-    }
-
-    /**
-     * Returns the SpecfileEditor for the given IMarker if any.
-     *
-     * @param marker The marker to use for retrieving the editor.
-     * @return The IEditorPart this marker is from or null.
-     */
-    protected IEditorPart getEditor(IMarker marker) {
-        // Open or activate the editor.
-        IWorkbenchPage page = PlatformUI.getWorkbench()
-                .getActiveWorkbenchWindow().getActivePage();
-        IEditorPart part;
-        try {
-            part = IDE.openEditor(page, marker);
-        } catch (PartInitException e) {
-            RpmlintLog.logError(e);
-            return null;
-        }
-        return part;
-    }
+	/**
+	 * Returns the SpecfileEditor for the given IMarker if any.
+	 *
+	 * @param marker The marker to use for retrieving the editor.
+	 * @return The IEditorPart this marker is from or null.
+	 */
+	protected IEditorPart getEditor(IMarker marker) {
+		// Open or activate the editor.
+		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		IEditorPart part;
+		try {
+			part = IDE.openEditor(page, marker);
+		} catch (PartInitException e) {
+			RpmlintLog.logError(e);
+			return null;
+		}
+		return part;
+	}
 }

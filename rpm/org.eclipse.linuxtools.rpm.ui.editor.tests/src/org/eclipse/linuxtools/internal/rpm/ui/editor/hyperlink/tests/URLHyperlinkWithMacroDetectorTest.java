@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2017 Red Hat Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2006, 2018 Red Hat Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     Red Hat Incorporated - initial API and implementation
@@ -27,22 +29,20 @@ import org.junit.Test;
 
 public class URLHyperlinkWithMacroDetectorTest extends FileTestCase {
 
-    @Test
-    public void testDetectHyperlinks() throws PartInitException {
-        String testText = "Name: eclipse\nURL: http://www.%{name}.org/";
-        newFile(testText);
-        URLHyperlinkWithMacroDetector macroDetector = new URLHyperlinkWithMacroDetector();
-        macroDetector.setSpecfile(specfile);
-        IRegion region = new Region(20, 0);
-        IEditorPart openEditor = IDE.openEditor(PlatformUI.getWorkbench()
-                .getActiveWorkbenchWindow().getActivePage(), testFile,
-                "org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
+	@Test
+	public void testDetectHyperlinks() throws PartInitException {
+		String testText = "Name: eclipse\nURL: http://www.%{name}.org/";
+		newFile(testText);
+		URLHyperlinkWithMacroDetector macroDetector = new URLHyperlinkWithMacroDetector();
+		macroDetector.setSpecfile(specfile);
+		IRegion region = new Region(20, 0);
+		IEditorPart openEditor = IDE.openEditor(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(),
+				testFile, "org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
 
-        editor = (SpecfileEditor) openEditor;
-        editor.doRevertToSaved();
-        IHyperlink[] returned = macroDetector.detectHyperlinks(
-                editor.getSpecfileSourceViewer(), region, false);
-        URLHyperlink url = (URLHyperlink) returned[0];
-        assertEquals("http://www.eclipse.org/", url.getURLString());
-    }
+		editor = (SpecfileEditor) openEditor;
+		editor.doRevertToSaved();
+		IHyperlink[] returned = macroDetector.detectHyperlinks(editor.getSpecfileSourceViewer(), region, false);
+		URLHyperlink url = (URLHyperlink) returned[0];
+		assertEquals("http://www.eclipse.org/", url.getURLString());
+	}
 }

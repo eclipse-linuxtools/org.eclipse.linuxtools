@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2017 Alphonse Van Assche and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
@@ -188,8 +190,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage impl
 		/**
 		 * Creates the Add, Remove, Up, and Down button in the given button box.
 		 *
-		 * @param box
-		 *            the box for the buttons
+		 * @param box the box for the buttons
 		 */
 		private void createButtons(Composite box) {
 			addFileButton = createPushButton(box, Messages.MacroProposalsPreferencePage_4);
@@ -202,10 +203,8 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage impl
 		/**
 		 * Helper method to create a push button.
 		 *
-		 * @param parent
-		 *            the parent control
-		 * @param key
-		 *            the resource name used to supply the button's label text
+		 * @param parent the parent control
+		 * @param key    the resource name used to supply the button's label text
 		 * @return Button
 		 */
 		private Button createPushButton(Composite parent, String key) {
@@ -254,8 +253,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage impl
 		 * Returns this field editor's button box containing the Add, Remove, Up, and
 		 * Down button.
 		 *
-		 * @param parent
-		 *            The parent control
+		 * @param parent The parent control
 		 * @return the button box
 		 */
 		@Override
@@ -286,8 +284,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage impl
 		/**
 		 * Returns this field editor's list control.
 		 *
-		 * @param parent
-		 *            The parent control
+		 * @param parent The parent control
 		 * @return the list control
 		 */
 		@Override
@@ -362,9 +359,8 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage impl
 		/**
 		 * Moves the currently selected item up or down.
 		 *
-		 * @param up
-		 *            <code>true</code> if the item should move up, and
-		 *            <code>false</code> if it should move down
+		 * @param up <code>true</code> if the item should move up, and
+		 *           <code>false</code> if it should move down
 		 */
 		private void swap(boolean up) {
 			setPresentsDefaultValue(false);

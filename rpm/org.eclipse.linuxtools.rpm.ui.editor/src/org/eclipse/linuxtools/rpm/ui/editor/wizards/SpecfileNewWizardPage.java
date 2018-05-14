@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2017 Alphonse Van Assche and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
@@ -87,8 +89,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 	/**
 	 * Constructor for SpecfileNewWizardPage.
 	 *
-	 * @param selection
-	 *            The selection to put the new spec file in.
+	 * @param selection The selection to put the new spec file in.
 	 */
 	public SpecfileNewWizardPage(ISelection selection) {
 		super("wizardPage"); //$NON-NLS-1$
@@ -290,8 +291,8 @@ public class SpecfileNewWizardPage extends WizardPage {
 	}
 
 	/**
-	 * Uses the standard container selection dialog to choose the new value for
-	 * the container field.
+	 * Uses the standard container selection dialog to choose the new value for the
+	 * container field.
 	 */
 	private void handleBrowse() {
 		ContainerSelectionDialog dialog = new ContainerSelectionDialog(getShell(),
@@ -328,10 +329,10 @@ public class SpecfileNewWizardPage extends WizardPage {
 		}
 
 		/*
-		 * Current RPM doc content (4.4.2): Names must not include whitespace
-		 * and may include a hyphen '-' (unlike version and releasetags). Names
-		 * should not include any numeric operators ('<', '>','=') as future
-		 * versions of rpm may need to reserve characters other than '-'.
+		 * Current RPM doc content (4.4.2): Names must not include whitespace and may
+		 * include a hyphen '-' (unlike version and releasetags). Names should not
+		 * include any numeric operators ('<', '>','=') as future versions of rpm may
+		 * need to reserve characters other than '-'.
 		 */
 		String packageName = nameText.getText();
 		if (packageName.indexOf(' ') != -1 || packageName.indexOf('<') != -1 || packageName.indexOf('>') != -1

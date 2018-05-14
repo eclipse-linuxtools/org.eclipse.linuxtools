@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2008, 2018 Red Hat, Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Red Hat - initial API and implementation
@@ -19,43 +21,42 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
 
 public abstract class SpecfileMarkerHandler {
 
-    IDocument document;
-    IFile file;
+	IDocument document;
+	IFile file;
 
-    public SpecfileMarkerHandler(IFile file, IDocument document) {
-        this.file = file;
-        this.document = document;
-    }
+	public SpecfileMarkerHandler(IFile file, IDocument document) {
+		this.file = file;
+		this.document = document;
+	}
 
-    abstract String getMarkerID();
+	abstract String getMarkerID();
 
-    protected Integer getCharOffset(int lineNumber, int columnNumber) {
-        try {
-            return document.getLineOffset(lineNumber)
-                    + columnNumber;
-        } catch (BadLocationException e) {
-            SpecfileLog.logError(e);
-            return null;
-        }
-    }
+	protected Integer getCharOffset(int lineNumber, int columnNumber) {
+		try {
+			return document.getLineOffset(lineNumber) + columnNumber;
+		} catch (BadLocationException e) {
+			SpecfileLog.logError(e);
+			return null;
+		}
+	}
 
-    public void removeExistingMarkers() {
-        if (file == null || !file.exists()) {
-            return;
-        }
+	public void removeExistingMarkers() {
+		if (file == null || !file.exists()) {
+			return;
+		}
 
-        try {
-            file.deleteMarkers(getMarkerID(), true, IResource.DEPTH_ZERO);
-        } catch (CoreException e1) {
-            SpecfileLog.logError(e1);
-        }
-    }
+		try {
+			file.deleteMarkers(getMarkerID(), true, IResource.DEPTH_ZERO);
+		} catch (CoreException e1) {
+			SpecfileLog.logError(e1);
+		}
+	}
 
-    public void setFile(IFile file) {
-        this.file = file;
-    }
+	public void setFile(IFile file) {
+		this.file = file;
+	}
 
-    public void setDocument(IDocument document) {
-        this.document = document;
-    }
+	public void setDocument(IDocument document) {
+		this.document = document;
+	}
 }

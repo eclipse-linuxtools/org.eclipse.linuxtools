@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2016 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2009, 2018 Red Hat, Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     Red Hat - initial API and implementation
@@ -18,21 +20,21 @@ import org.junit.Test;
 
 public class SpecfileChangelogParserTest {
 
-    private static SpecfileChangelogParser parser;
+	private static SpecfileChangelogParser parser;
 
-    @BeforeClass
-    public static void setUp() {
-        parser = new SpecfileChangelogParser();
-    }
+	@BeforeClass
+	public static void setUp() {
+		parser = new SpecfileChangelogParser();
+	}
 
-    @Test
-    public void testParseCurrentFunctionIEditorPart() {
-        assertEquals("", parser.parseCurrentFunction(null));
-    }
+	@Test
+	public void testParseCurrentFunctionIEditorPart() {
+		assertEquals("", parser.parseCurrentFunction(null));
+	}
 
-    @Test
-    public void testParseCurrentFunctionIEditorInputInt() {
-        assertEquals("", parser.parseCurrentFunction(null, 0));
-    }
+	@Test
+	public void testParseCurrentFunctionIEditorInputInt() {
+		assertEquals("", parser.parseCurrentFunction(null, 0));
+	}
 
 }

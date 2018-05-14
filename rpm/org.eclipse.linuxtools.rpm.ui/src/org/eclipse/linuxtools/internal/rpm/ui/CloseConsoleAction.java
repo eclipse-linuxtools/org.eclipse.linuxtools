@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2014 Red Hat Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2014, 2018 Red Hat Inc.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     Red Hat - initial API and implementation
@@ -22,35 +24,36 @@ import org.eclipse.ui.console.IConsole;
  */
 public class CloseConsoleAction extends Action implements RpmConsoleObserver {
 
-    RpmConsole fConsole;
+	RpmConsole fConsole;
 
-    /**
-     * Creates a new stop button for the given console.
-     * @param console The console that this button will control.
-     */
-    public CloseConsoleAction(RpmConsole console) {
-        fConsole = console;
-        setImageDescriptor(
-                PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_ELCL_REMOVE));
-        setToolTipText(Messages.getString("RPMConsoleAction.Close")); //$NON-NLS-1$
-        fConsole.addConsoleObserver(this);
-    }
+	/**
+	 * Creates a new stop button for the given console.
+	 * 
+	 * @param console The console that this button will control.
+	 */
+	public CloseConsoleAction(RpmConsole console) {
+		fConsole = console;
+		setImageDescriptor(
+				PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_ELCL_REMOVE));
+		setToolTipText(Messages.getString("RPMConsoleAction.Close")); //$NON-NLS-1$
+		fConsole.addConsoleObserver(this);
+	}
 
-    /**
-     * Closes the console.
-     */
-    @Override
-    public void run() {
-        PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
-		    if(fConsole != null){
-		        ConsolePlugin.getDefault().getConsoleManager().removeConsoles(new IConsole[]{fConsole});
-		    }
+	/**
+	 * Closes the console.
+	 */
+	@Override
+	public void run() {
+		PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
+			if (fConsole != null) {
+				ConsolePlugin.getDefault().getConsoleManager().removeConsoles(new IConsole[] { fConsole });
+			}
 		});
-    }
+	}
 
-    @Override
-    public void runningStateChanged(boolean running) {
-        setEnabled(!running);
-    }
+	@Override
+	public void runningStateChanged(boolean running) {
+		setEnabled(!running);
+	}
 
 }

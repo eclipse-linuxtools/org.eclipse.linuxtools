@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Red Hat Inc. and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2010, 2018 Red Hat Inc. and others.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     Alexander Kurtakov - initial API and implementation
@@ -24,36 +26,32 @@ import org.eclipse.ui.console.TextConsole;
  */
 public class ErrorLineMatcher implements IPatternMatchListenerDelegate {
 
-    private static final String LINE = "line"; //$NON-NLS-1$
-    private RpmConsole console;
+	private static final String LINE = "line"; //$NON-NLS-1$
+	private RpmConsole console;
 
-    @Override
-    public void connect(TextConsole console) {
-        this.console = (RpmConsole) console;
-    }
+	@Override
+	public void connect(TextConsole console) {
+		this.console = (RpmConsole) console;
+	}
 
-    @Override
-    public void disconnect() {
-        this.console = null;
-    }
+	@Override
+	public void disconnect() {
+		this.console = null;
+	}
 
-    @Override
-    public void matchFound(PatternMatchEvent event) {
-        String line = null;
-        try {
-            line = console.getDocument().get(event.getOffset(),
-                    event.getLength());
-            int lineNumber = Integer.parseInt(line.substring(12,
-                    line.indexOf(':', line.indexOf(LINE))).trim());
-            FileLink fileLink = new FileLink(
-                    console.getSpecfile().getAdapter(IFile.class),
-                    "org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor", -1, -1, lineNumber); //$NON-NLS-1$
-            console.addHyperlink(fileLink, 7,
-                    line.indexOf(':', line.indexOf(LINE)) - 7);
-        } catch (BadLocationException e1) {
-            return;
-        }
+	@Override
+	public void matchFound(PatternMatchEvent event) {
+		String line = null;
+		try {
+			line = console.getDocument().get(event.getOffset(), event.getLength());
+			int lineNumber = Integer.parseInt(line.substring(12, line.indexOf(':', line.indexOf(LINE))).trim());
+			FileLink fileLink = new FileLink(console.getSpecfile().getAdapter(IFile.class),
+					"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor", -1, -1, lineNumber); //$NON-NLS-1$
+			console.addHyperlink(fileLink, 7, line.indexOf(':', line.indexOf(LINE)) - 7);
+		} catch (BadLocationException e1) {
+			return;
+		}
 
-    }
+	}
 
 }

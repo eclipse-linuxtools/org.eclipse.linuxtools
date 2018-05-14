@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2017 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2008, 2018 Red Hat, Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Red Hat - initial API and implementation
@@ -38,68 +40,65 @@ import org.junit.Before;
  */
 public abstract class FileTestCase {
 
-    protected SpecfileParser parser;
-    protected Specfile specfile;
-    protected IFile testFile;
-    protected Document testDocument;
-    SpecfileErrorHandler errorHandler;
-    SpecfileTestProject testProject;
-    FileEditorInput fei;
-    protected SpecfileEditor editor;
+	protected SpecfileParser parser;
+	protected Specfile specfile;
+	protected IFile testFile;
+	protected Document testDocument;
+	SpecfileErrorHandler errorHandler;
+	SpecfileTestProject testProject;
+	FileEditorInput fei;
+	protected SpecfileEditor editor;
 
-    @Before
-    public void setUp() throws CoreException {
-        testProject = new SpecfileTestProject();
-        String fileName = "test" + this.getClass().getSimpleName() + ".spec";
-        testFile = testProject.createFile(fileName);
-        editor = new SpecfileEditor();
-        parser = new SpecfileParser();
-        specfile = new Specfile();
-    }
+	@Before
+	public void setUp() throws CoreException {
+		testProject = new SpecfileTestProject();
+		String fileName = "test" + this.getClass().getSimpleName() + ".spec";
+		testFile = testProject.createFile(fileName);
+		editor = new SpecfileEditor();
+		parser = new SpecfileParser();
+		specfile = new Specfile();
+	}
 
-    @After
-    public void tearDown() throws CoreException {
-        testProject.dispose();
-    }
+	@After
+	public void tearDown() throws CoreException {
+		testProject.dispose();
+	}
 
-    public static void closeEditor(final IEditorPart editor) {
-        if (editor.getSite().getWorkbenchWindow().getActivePage() != null) {
-            PlatformUI.getWorkbench().getDisplay().syncExec(() -> editor.getSite().getWorkbenchWindow().getActivePage()
-			        .closeEditor(editor, false));
-        }
-    }
+	public static void closeEditor(final IEditorPart editor) {
+		if (editor.getSite().getWorkbenchWindow().getActivePage() != null) {
+			PlatformUI.getWorkbench().getDisplay()
+					.syncExec(() -> editor.getSite().getWorkbenchWindow().getActivePage().closeEditor(editor, false));
+		}
+	}
 
-    protected ArrayList<SpecfileTestFailure> getFailures() {
-        ArrayList<SpecfileTestFailure> failures = new ArrayList<>();
-        IAnnotationModel model = SpecfileEditor.getSpecfileDocumentProvider()
-                .getAnnotationModel(fei);
-        for (Iterator<Annotation> i = model.getAnnotationIterator(); i
-                .hasNext();) {
-            Annotation annotation = i.next();
-            Position p = model.getPosition(annotation);
-            SpecfileTestFailure t = new SpecfileTestFailure(annotation, p);
-            failures.add(t);
-        }
-        return failures;
-    }
+	protected ArrayList<SpecfileTestFailure> getFailures() {
+		ArrayList<SpecfileTestFailure> failures = new ArrayList<>();
+		IAnnotationModel model = SpecfileEditor.getSpecfileDocumentProvider().getAnnotationModel(fei);
+		for (Iterator<Annotation> i = model.getAnnotationIterator(); i.hasNext();) {
+			Annotation annotation = i.next();
+			Position p = model.getPosition(annotation);
+			SpecfileTestFailure t = new SpecfileTestFailure(annotation, p);
+			failures.add(t);
+		}
+		return failures;
+	}
 
-    protected void newFile(String contents) {
-        try {
-            testFile.setContents(new ByteArrayInputStream(contents.getBytes()),
-                    false, false, null);
-        } catch (CoreException e) {
-            fail(e.getMessage());
-        }
-        testDocument = new Document(contents);
-        fei = new FileEditorInput(testFile);
-        try {
-            SpecfileEditor.getSpecfileDocumentProvider().disconnect(fei);
-            SpecfileEditor.getSpecfileDocumentProvider().connect(fei);
-        } catch (CoreException e) {
-            // let failures occur
-        }
-        errorHandler = new SpecfileErrorHandler(fei, testDocument);
-        parser.setErrorHandler(errorHandler);
-        specfile = parser.parse(testDocument);
-    }
+	protected void newFile(String contents) {
+		try {
+			testFile.setContents(new ByteArrayInputStream(contents.getBytes()), false, false, null);
+		} catch (CoreException e) {
+			fail(e.getMessage());
+		}
+		testDocument = new Document(contents);
+		fei = new FileEditorInput(testFile);
+		try {
+			SpecfileEditor.getSpecfileDocumentProvider().disconnect(fei);
+			SpecfileEditor.getSpecfileDocumentProvider().connect(fei);
+		} catch (CoreException e) {
+			// let failures occur
+		}
+		errorHandler = new SpecfileErrorHandler(fei, testDocument);
+		parser.setErrorHandler(errorHandler);
+		specfile = parser.parse(testDocument);
+	}
 }

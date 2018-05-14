@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2016 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2013, 2018 Red Hat, Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Red Hat - initial API and implementation
@@ -147,8 +149,7 @@ public class SpecfileEditorPrepareSourcesActionDelegate extends AbstractHandler 
 	/**
 	 * Get the console.
 	 *
-	 * @param packageName
-	 *            The name of the package(RPM) this console will be for.
+	 * @param packageName The name of the package(RPM) this console will be for.
 	 * @return A console instance.
 	 */
 	public MessageConsole getConsole(String packageName) {

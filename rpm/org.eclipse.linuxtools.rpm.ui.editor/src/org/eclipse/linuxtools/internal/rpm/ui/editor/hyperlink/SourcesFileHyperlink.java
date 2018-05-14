@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007, 2018 Red Hat, Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Red Hat - initial API and implementation
@@ -32,62 +34,60 @@ import org.eclipse.ui.ide.IDE;
  */
 public class SourcesFileHyperlink implements IHyperlink {
 
-    private String fileName;
-    private IFile original;
-    private IRegion region;
+	private String fileName;
+	private IFile original;
+	private IRegion region;
 
-    /**
-     * Creates hyperlink for the following file name, region and file whether
-     * the file name is found.
-     *
-     * @param original The file where the reference to this file name is.
-     * @param fileName The name of the file to open.
-     * @param region The hyperlink region.
-     */
-    public SourcesFileHyperlink(IFile original, String fileName, IRegion region) {
-        this.fileName = fileName;
-        this.original = original;
-        this.region = region;
-    }
+	/**
+	 * Creates hyperlink for the following file name, region and file whether the
+	 * file name is found.
+	 *
+	 * @param original The file where the reference to this file name is.
+	 * @param fileName The name of the file to open.
+	 * @param region   The hyperlink region.
+	 */
+	public SourcesFileHyperlink(IFile original, String fileName, IRegion region) {
+		this.fileName = fileName;
+		this.original = original;
+		this.region = region;
+	}
 
-    @Override
-    public IRegion getHyperlinkRegion() {
-        return region;
-    }
+	@Override
+	public IRegion getHyperlinkRegion() {
+		return region;
+	}
 
-    @Override
-    public String getHyperlinkText() {
-        return NLS.bind(Messages.SourcesFileHyperlink_0, fileName);
-    }
+	@Override
+	public String getHyperlinkText() {
+		return NLS.bind(Messages.SourcesFileHyperlink_0, fileName);
+	}
 
-    @Override
-    public String getTypeLabel() {
-        return null;
-    }
+	@Override
+	public String getTypeLabel() {
+		return null;
+	}
 
-    /**
-     * Tries to open the given file name looking for it in the current directory
-     * and in ../SOURCES.
-     *
-     * @see org.eclipse.jface.text.hyperlink.IHyperlink#open()
-     */
-    @Override
-    public void open() {
-        IContainer container = original.getParent();
-        IResource resourceToOpen = container.findMember(fileName);
-        if (resourceToOpen == null) {
-            IResource sourcesFolder = container.getParent().findMember(
-                    "SOURCES"); //$NON-NLS-1$
-            resourceToOpen = ((IFolder) sourcesFolder).getFile(fileName);
-        }
-        IWorkbenchPage page = PlatformUI.getWorkbench()
-                .getActiveWorkbenchWindow().getActivePage();
-        try {
-            if (resourceToOpen.getType() == IResource.FILE) {
-                IDE.openEditor(page, (IFile) resourceToOpen);
-            }
-        } catch (PartInitException e) {
-            SpecfileLog.logError(e);
-        }
-    }
+	/**
+	 * Tries to open the given file name looking for it in the current directory and
+	 * in ../SOURCES.
+	 *
+	 * @see org.eclipse.jface.text.hyperlink.IHyperlink#open()
+	 */
+	@Override
+	public void open() {
+		IContainer container = original.getParent();
+		IResource resourceToOpen = container.findMember(fileName);
+		if (resourceToOpen == null) {
+			IResource sourcesFolder = container.getParent().findMember("SOURCES"); //$NON-NLS-1$
+			resourceToOpen = ((IFolder) sourcesFolder).getFile(fileName);
+		}
+		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		try {
+			if (resourceToOpen.getType() == IResource.FILE) {
+				IDE.openEditor(page, (IFile) resourceToOpen);
+			}
+		} catch (PartInitException e) {
+			SpecfileLog.logError(e);
+		}
+	}
 }

@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2017 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007, 2018 Red Hat, Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Red Hat - initial API and implementation
@@ -62,18 +64,18 @@ public class SpecfileParser {
 	private static final String SPACE_REGEX = "\\s+"; //$NON-NLS-1$
 
 	/**
-	 * These are SRPM-wide sections, and they also cannot have any flags like -n
-	 * or -f. Hence they are called simple. This is probably a misleading name
-	 * and it should be renamed to reflect that they are SRPM-wide sections.
+	 * These are SRPM-wide sections, and they also cannot have any flags like -n or
+	 * -f. Hence they are called simple. This is probably a misleading name and it
+	 * should be renamed to reflect that they are SRPM-wide sections.
 	 */
 	public static final String[] simpleSections = { PREP_SECTION, BUILD_SECTION, INSTALL_SECTION, CLEAN_SECTION,
 			CHANGELOG_SECTION };
 
 	/**
-	 * These are sections that apply to a particular sub-package (i.e. binary
-	 * RPM), including the main package. These can also have flags like -f or -n
-	 * appended to them, hence they are called complex. This should probably be
-	 * renamed to reflect that they are in fact per-RPM sections.
+	 * These are sections that apply to a particular sub-package (i.e. binary RPM),
+	 * including the main package. These can also have flags like -f or -n appended
+	 * to them, hence they are called complex. This should probably be renamed to
+	 * reflect that they are in fact per-RPM sections.
 	 */
 	private static String[] complexSections = { PRETRANS_SECTION, PRE_SECTION, PREUN_SECTION, POST_SECTION,
 			POSTUN_SECTION, POSTTRANS_SECTION, FILES_SECTION, PACKAGE_SECTION, DESCRIPTION_SECTION };
@@ -172,8 +174,7 @@ public class SpecfileParser {
 	/**
 	 * Parse a File into a specfile
 	 *
-	 * @param file
-	 *            The File to be parsed
+	 * @param file The File to be parsed
 	 * @return A Specfile object
 	 */
 	public Specfile parse(IFile file) {

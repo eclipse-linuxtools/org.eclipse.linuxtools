@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2007 Alphonse Van Assche and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
@@ -24,22 +26,19 @@ import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
  */
 public class RpmlintMarkerRemoveVisitor implements IResourceVisitor {
 
-    /**
-     * Removes all rpmlint markers for spec and rpm files.
-     *
-     * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
-     */
-    @Override
-    public boolean visit(IResource resource) throws CoreException {
-        if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())
-                || Activator.RPMFILE_EXTENSION.equals(resource
-                        .getFileExtension())) {
-            RpmlintParser.deleteMarkers(resource);
-            // remove internal marks
-            resource.deleteMarkers(
-                    SpecfileErrorHandler.SPECFILE_ERROR_MARKER_ID, false,
-                    IResource.DEPTH_ZERO);
-        }
-        return true;
-    }
+	/**
+	 * Removes all rpmlint markers for spec and rpm files.
+	 *
+	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
+	 */
+	@Override
+	public boolean visit(IResource resource) throws CoreException {
+		if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())
+				|| Activator.RPMFILE_EXTENSION.equals(resource.getFileExtension())) {
+			RpmlintParser.deleteMarkers(resource);
+			// remove internal marks
+			resource.deleteMarkers(SpecfileErrorHandler.SPECFILE_ERROR_MARKER_ID, false, IResource.DEPTH_ZERO);
+		}
+		return true;
+	}
 }

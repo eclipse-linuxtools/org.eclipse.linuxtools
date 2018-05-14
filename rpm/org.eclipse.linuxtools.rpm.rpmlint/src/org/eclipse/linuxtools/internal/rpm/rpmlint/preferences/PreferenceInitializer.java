@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2007 Alphonse Van Assche.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
@@ -17,18 +19,17 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.rpm.rpmlint.Activator;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
-
 /**
  * Class used to initialize default preference values.
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
-    @Override
-    public void initializeDefaultPreferences() {
-        IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,Activator.PLUGIN_ID);
-        store.setDefault(PreferenceConstants.P_RPMLINT_PATH, PreferenceConstants.DP_RPMLINT_PATH);
-        store.setDefault(PreferenceConstants.P_RPMLINT_TABS_AND_SPACES, PreferenceConstants.P_RPMLINT_SPACES);
+	@Override
+	public void initializeDefaultPreferences() {
+		IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, Activator.PLUGIN_ID);
+		store.setDefault(PreferenceConstants.P_RPMLINT_PATH, PreferenceConstants.DP_RPMLINT_PATH);
+		store.setDefault(PreferenceConstants.P_RPMLINT_TABS_AND_SPACES, PreferenceConstants.P_RPMLINT_SPACES);
 
-    }
+	}
 
 }

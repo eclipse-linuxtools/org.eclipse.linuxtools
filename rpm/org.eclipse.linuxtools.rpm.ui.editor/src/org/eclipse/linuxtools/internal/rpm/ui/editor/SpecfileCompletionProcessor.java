@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2017 Alphonse Van Assche and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
@@ -125,19 +127,15 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	}
 
 	/**
-	 * Compute the templates proposals, these proposals are contextual on
-	 * sections. Return an array of template proposals for the given viewer,
-	 * region, specfile, prefix.
+	 * Compute the templates proposals, these proposals are contextual on sections.
+	 * Return an array of template proposals for the given viewer, region, specfile,
+	 * prefix.
 	 *
-	 * @param viewer
-	 *            the viewer for which the context is created
-	 * @param region
-	 *            the region into <code>document</code> for which the context is
-	 *            created
-	 * @param specfile
-	 *            the specfile element
-	 * @param prefix
-	 *            the prefix string
+	 * @param viewer   the viewer for which the context is created
+	 * @param region   the region into <code>document</code> for which the context
+	 *                 is created
+	 * @param specfile the specfile element
+	 * @param prefix   the prefix string
 	 * @return a ICompletionProposal[]
 	 */
 	private List<? extends ICompletionProposal> computeTemplateProposals(ITextViewer viewer, IRegion region,
@@ -172,13 +170,10 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * document. Return an array of RPM macro proposals for the given viewer,
 	 * region, prefix.
 	 *
-	 * @param viewer
-	 *            the viewer for which the context is created
-	 * @param region
-	 *            the region into <code>document</code> for which the context is
-	 *            created
-	 * @param prefix
-	 *            the prefix string to find
+	 * @param viewer the viewer for which the context is created
+	 * @param region the region into <code>document</code> for which the context is
+	 *               created
+	 * @param prefix the prefix string to find
 	 * @return a ICompletionProposal[]
 	 */
 	private List<ICompletionProposal> computeRpmMacroProposals(IRegion region, Specfile specfile, String prefix) {
@@ -201,17 +196,13 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	}
 
 	/**
-	 * Compute patches proposals, these proposals are usable in the whole
-	 * document. Return an array of patches proposals for the given viewer,
-	 * region, prefix.
+	 * Compute patches proposals, these proposals are usable in the whole document.
+	 * Return an array of patches proposals for the given viewer, region, prefix.
 	 *
-	 * @param viewer
-	 *            the viewer for which the context is created
-	 * @param region
-	 *            the region into <code>document</code> for which the context is
-	 *            created
-	 * @param prefix
-	 *            the prefix string to find
+	 * @param viewer the viewer for which the context is created
+	 * @param region the region into <code>document</code> for which the context is
+	 *               created
+	 * @param prefix the prefix string to find
 	 * @return a ICompletionProposal[]
 	 */
 	private List<ICompletionProposal> computePatchesProposals(IRegion region, Specfile specfile, String prefix) {
@@ -229,17 +220,13 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	}
 
 	/**
-	 * Compute sources proposals, these proposals are usable in the whole
-	 * document. Return an array of sources proposals for the given viewer,
-	 * region, prefix.
+	 * Compute sources proposals, these proposals are usable in the whole document.
+	 * Return an array of sources proposals for the given viewer, region, prefix.
 	 *
-	 * @param viewer
-	 *            the viewer for which the context is created
-	 * @param region
-	 *            the region into <code>document</code> for which the context is
-	 *            created
-	 * @param prefix
-	 *            the prefix string to find
+	 * @param viewer the viewer for which the context is created
+	 * @param region the region into <code>document</code> for which the context is
+	 *               created
+	 * @param prefix the prefix string to find
 	 * @return a ICompletionProposal[]
 	 */
 	private List<ICompletionProposal> computeSourcesProposals(IRegion region, Specfile specfile, String prefix) {
@@ -261,13 +248,10 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * preambule section. Return an array of RPM macro proposals for the given
 	 * viewer, region, specfile, prefix.
 	 *
-	 * @param viewer
-	 *            the viewer for which the context is created
-	 * @param region
-	 *            the region into <code>document</code> for which the context is
-	 *            created
-	 * @param prefix
-	 *            the prefix string
+	 * @param viewer the viewer for which the context is created
+	 * @param region the region into <code>document</code> for which the context is
+	 *               created
+	 * @param prefix the prefix string
 	 * @return a ICompletionProposal[]
 	 */
 	private List<ICompletionProposal> computeRpmPackageProposals(IRegion region, String prefix) {
@@ -299,10 +283,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	/**
 	 * Create a template context for the givens Specfile, offset.
 	 *
-	 * @param specfile
-	 *            the sepcfile element
-	 * @param offset
-	 *            the offset of the <code>documment</code>
+	 * @param specfile the sepcfile element
+	 * @param offset   the offset of the <code>documment</code>
 	 * @return a TemplateContextType
 	 */
 	private TemplateContextType getContextType(Specfile specfile, int offset) {
@@ -324,13 +306,10 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	/**
 	 * Create a template context for the given Specfile and offset.
 	 *
-	 * @param viewer
-	 *            the viewer for which the context is created
-	 * @param region
-	 *            the region into <code>document</code> for which the context is
-	 *            created
-	 * @param specfile
-	 *            the specfile element
+	 * @param viewer   the viewer for which the context is created
+	 * @param region   the region into <code>document</code> for which the context
+	 *                 is created
+	 * @param specfile the specfile element
 	 * @return a TemplateContextType
 	 */
 	private TemplateContext createContext(ITextViewer viewer, IRegion region, Specfile specfile) {
@@ -345,10 +324,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	/**
 	 * Get relevance on templates for the given template and prefix.
 	 *
-	 * @param template
-	 *            the <code>Template</code> to get relevance
-	 * @param prefix
-	 *            the prefix <code>String</code> to check.
+	 * @param template the <code>Template</code> to get relevance
+	 * @param prefix   the prefix <code>String</code> to check.
 	 * @return a relevant code (90 if <code>true</code> and 0 if not)
 	 */
 	private int getRelevance(Template template, String prefix) {
@@ -361,11 +338,9 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	/**
 	 * Get the prefix for a given viewer, offset.
 	 *
-	 * @param viewer
-	 *            the viewer for which the context is created
-	 * @param offset
-	 *            the offset into <code>document</code> for which the prefix is
-	 *            research
+	 * @param viewer the viewer for which the context is created
+	 * @param offset the offset into <code>document</code> for which the prefix is
+	 *               research
 	 * @return the prefix
 	 */
 	private String getGroupPrefix(ITextViewer viewer, int offset) {
@@ -392,10 +367,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	/**
 	 * Get defines as a String key->value pair for a given specfile and prefix.
 	 *
-	 * @param specfile
-	 *            to get defines from.
-	 * @param prefix
-	 *            used to find defines.
+	 * @param specfile to get defines from.
+	 * @param prefix   used to find defines.
 	 * @return a <code>HashMap</code> of defines.
 	 *
 	 */
@@ -415,10 +388,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	/**
 	 * Get patches as a String key->value pair for a given specfile and prefix.
 	 *
-	 * @param specfile
-	 *            to get defines from.
-	 * @param prefix
-	 *            used to find defines.
+	 * @param specfile to get defines from.
+	 * @param prefix   used to find defines.
 	 * @return a <code>HashMap</code> of defines.
 	 *
 	 */
@@ -439,10 +410,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	/**
 	 * Get sources as a String key->value pair for a given specfile and prefix.
 	 *
-	 * @param specfile
-	 *            to get defines from.
-	 * @param prefix
-	 *            used to find defines.
+	 * @param specfile to get defines from.
+	 * @param prefix   used to find defines.
 	 * @return a <code>HashMap</code> of defines.
 	 *
 	 */

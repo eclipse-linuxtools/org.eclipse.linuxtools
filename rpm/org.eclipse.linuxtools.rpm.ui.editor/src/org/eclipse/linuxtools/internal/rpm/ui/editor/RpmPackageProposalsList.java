@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2016 Alphonse Van Assche.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
@@ -73,8 +75,8 @@ public class RpmPackageProposalsList {
 			}
 		}
 		/*
-		 * Show RPM informations only if the proposal list is less than the
-		 * limit set in the RPM proposals preference page.
+		 * Show RPM informations only if the proposal list is less than the limit set in
+		 * the RPM proposals preference page.
 		 */
 		if (proposalsList.size() < rpmpkgsMaxProposals) {
 			List<String[]> proposalsListWithInfo = new ArrayList<>(proposalsList.size());

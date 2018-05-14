@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2017 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2011, 2018 Red Hat, Inc.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     Alexander Kurtakov - initial API and implementation
@@ -42,8 +44,7 @@ public class RPMDetailsPanel {
 	/**
 	 * Initializes the panel with all the needed components and listeners.
 	 *
-	 * @param parent
-	 *            The composite that will handle the childrens
+	 * @param parent The composite that will handle the childrens
 	 */
 	public RPMDetailsPanel(Composite parent) {
 		this.parent = parent;
@@ -116,8 +117,7 @@ public class RPMDetailsPanel {
 	/**
 	 * Sets the location path to given absolute path.
 	 *
-	 * @param absolutePath
-	 *            The path to be shown.
+	 * @param absolutePath The path to be shown.
 	 */
 	public void setLocationPath(String absolutePath) {
 		locationPath.setText(absolutePath);

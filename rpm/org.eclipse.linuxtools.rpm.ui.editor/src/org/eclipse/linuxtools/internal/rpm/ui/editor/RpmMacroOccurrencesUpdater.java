@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2017 Alphonse Van Assche and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
@@ -39,8 +41,7 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	/**
 	 * Creates a new instance on editor <code>specfileEditor</code>.
 	 *
-	 * @param specfileEditor
-	 *            The editor to mark occurrences on.
+	 * @param specfileEditor The editor to mark occurrences on.
 	 */
 	public RpmMacroOccurrencesUpdater(SpecfileEditor specfileEditor) {
 		((IPostSelectionProvider) specfileEditor.getSelectionProvider()).addPostSelectionChangedListener(this);
@@ -55,8 +56,7 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	/**
 	 * Updates the drawn annotations.
 	 *
-	 * @param viewer
-	 *            The viewer to get the document and annotation model from
+	 * @param viewer The viewer to get the document and annotation model from
 	 */
 	public void update(ISourceViewer viewer) {
 		try {
@@ -100,8 +100,7 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	/**
 	 * Removes the previous set of annotations from the annotation model.
 	 *
-	 * @param model
-	 *            the annotation model
+	 * @param model the annotation model
 	 */
 	private void removeOldAnnotations(IAnnotationModel model) {
 		for (Annotation annotation : fOldAnnotations) {
@@ -113,8 +112,7 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	/**
 	 * Checks if <code>word</code> is an macro.
 	 *
-	 * @param word
-	 *            the word to check
+	 * @param word the word to check
 	 *
 	 * @return <code>true</code> if <code>word</code> is an macro,
 	 *         <code>false</code> otherwise
@@ -154,10 +152,8 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	 * Returns <code>true</code> if <code>macro</code> equals the word
 	 * <code>current</code>.
 	 *
-	 * @param macro
-	 *            the <code>macro</code> to check
-	 * @param current
-	 *            the word to look for
+	 * @param macro   the <code>macro</code> to check
+	 * @param current the word to look for
 	 *
 	 * @return <code>true</code> if <code>macro</code> contains the word
 	 *         <code>current</code>,<code>false</code> if not
@@ -169,14 +165,11 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	/**
 	 * Returns the word at the current selection / caret position.
 	 *
-	 * @param selection
-	 *            the selection
-	 * @param document
-	 *            the document
+	 * @param selection the selection
+	 * @param document  the document
 	 * @return the currently selected text, or the word at the caret if the
 	 *         selection has length 0
-	 * @throws BadLocationException
-	 *             if accessing the document fails
+	 * @throws BadLocationException if accessing the document fails
 	 */
 	private String getWordAtSelection(ISelection selection, IDocument document) throws BadLocationException {
 		String word;
@@ -213,12 +206,9 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	 * document. Also stores the created annotations in
 	 * <code>fOldAnnotations</code>.
 	 *
-	 * @param macro
-	 *            the word to look for
-	 * @param document
-	 *            the document
-	 * @param model
-	 *            the annotation model
+	 * @param macro    the word to look for
+	 * @param document the document
+	 * @param model    the annotation model
 	 */
 	private void createNewAnnotations(String macro, String hoverContent, IDocument document, IAnnotationModel model) {
 		String content = document.get().toLowerCase();

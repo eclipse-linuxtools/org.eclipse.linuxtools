@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2007 Alphonse Van Assche.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
@@ -20,48 +22,57 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmTags;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-public class RpmInformationsPreferencePage extends FieldEditorPreferencePage implements
-IWorkbenchPreferencePage{
+public class RpmInformationsPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-        /**
-         * Default constructor
-         */
-        public RpmInformationsPreferencePage() {
-            super(GRID);
-            setDescription(Messages.RpmInformationsPreferencePage_0);
-            setPreferenceStore(Activator.getDefault().getPreferenceStore());
-        }
+	/**
+	 * Default constructor
+	 */
+	public RpmInformationsPreferencePage() {
+		super(GRID);
+		setDescription(Messages.RpmInformationsPreferencePage_0);
+		setPreferenceStore(Activator.getDefault().getPreferenceStore());
+	}
 
-        @Override
-        public void createFieldEditors() {
-            addField(maxProposalsIntegerFieldEditor());
-            addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_NAME, RpmTags.NAME, getFieldEditorParent()));
-            addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_VERSION, RpmTags.VERSION, getFieldEditorParent()));
-            addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_RELEASE, RpmTags.RELEASE, getFieldEditorParent()));
-            addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_SUMMARY, RpmTags.SUMMARY, getFieldEditorParent()));
-            addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_LICENSE, RpmTags.LICENSE, getFieldEditorParent()));
-            addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_GROUP, RpmTags.GROUP, getFieldEditorParent()));
-            addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_URL, RpmTags.URL, getFieldEditorParent()));
-            addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_INSTALLTIME, Messages.RpmInformationsPreferencePage_1, getFieldEditorParent()));
-            addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_DESCRIPTION, Messages.RpmInformationsPreferencePage_2, getFieldEditorParent()));
-            addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_PACKAGER, RpmTags.PACKAGER, getFieldEditorParent()));
-            addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_VENDOR, RpmTags.VENDOR, getFieldEditorParent()));
-            addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_SIZE, Messages.RpmInformationsPreferencePage_3, getFieldEditorParent()));
-            addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_BUILDTIME, Messages.RpmInformationsPreferencePage_4, getFieldEditorParent()));
-            addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_SOURCERPM, Messages.RpmInformationsPreferencePage_5, getFieldEditorParent()));
-        }
+	@Override
+	public void createFieldEditors() {
+		addField(maxProposalsIntegerFieldEditor());
+		addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_NAME, RpmTags.NAME, getFieldEditorParent()));
+		addField(
+				new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_VERSION, RpmTags.VERSION, getFieldEditorParent()));
+		addField(
+				new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_RELEASE, RpmTags.RELEASE, getFieldEditorParent()));
+		addField(
+				new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_SUMMARY, RpmTags.SUMMARY, getFieldEditorParent()));
+		addField(
+				new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_LICENSE, RpmTags.LICENSE, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_GROUP, RpmTags.GROUP, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_URL, RpmTags.URL, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_INSTALLTIME,
+				Messages.RpmInformationsPreferencePage_1, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_DESCRIPTION,
+				Messages.RpmInformationsPreferencePage_2, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_PACKAGER, RpmTags.PACKAGER,
+				getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_VENDOR, RpmTags.VENDOR, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_SIZE, Messages.RpmInformationsPreferencePage_3,
+				getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_BUILDTIME,
+				Messages.RpmInformationsPreferencePage_4, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_SOURCERPM,
+				Messages.RpmInformationsPreferencePage_5, getFieldEditorParent()));
+	}
 
-        private FieldEditor maxProposalsIntegerFieldEditor() {
-            IntegerFieldEditor maxProposalsFieldEditor = new IntegerFieldEditor(
-                    PreferenceConstants.P_RPM_LIST_MAX_PROPOSALS,
-                    Messages.RpmInformationsPreferencePage_6, getFieldEditorParent());
-            maxProposalsFieldEditor.setValidRange(1, 40);
-            maxProposalsFieldEditor.setErrorMessage(Messages.RpmInformationsPreferencePage_7);
-            return maxProposalsFieldEditor;
-        }
+	private FieldEditor maxProposalsIntegerFieldEditor() {
+		IntegerFieldEditor maxProposalsFieldEditor = new IntegerFieldEditor(
+				PreferenceConstants.P_RPM_LIST_MAX_PROPOSALS, Messages.RpmInformationsPreferencePage_6,
+				getFieldEditorParent());
+		maxProposalsFieldEditor.setValidRange(1, 40);
+		maxProposalsFieldEditor.setErrorMessage(Messages.RpmInformationsPreferencePage_7);
+		return maxProposalsFieldEditor;
+	}
 
-        @Override
-        public void init(IWorkbench workbench) {
-        }
+	@Override
+	public void init(IWorkbench workbench) {
+	}
 
 }

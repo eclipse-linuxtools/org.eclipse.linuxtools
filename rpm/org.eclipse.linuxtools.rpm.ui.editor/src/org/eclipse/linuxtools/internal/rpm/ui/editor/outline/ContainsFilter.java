@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2008 Alexander Kurtakov.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2008, 2018 Alexander Kurtakov.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Alexander Kurtakov - initial API and implementation
@@ -22,37 +24,35 @@ import org.eclipse.jface.viewers.ViewerFilter;
  */
 public class ContainsFilter extends ViewerFilter {
 
-    private String lookFor;
+	private String lookFor;
 
-    public void setLookFor(String lookFor) {
-        this.lookFor = lookFor;
-    }
+	public void setLookFor(String lookFor) {
+		this.lookFor = lookFor;
+	}
 
-    @Override
-    public boolean select(Viewer viewer, Object parentElement, Object element) {
-        if (!(viewer instanceof TreeViewer)) {
-            return true;
-        }
-        TreeViewer treeViewer = (TreeViewer) viewer;
-        String currentLabel = ((ILabelProvider) treeViewer.getLabelProvider())
-                .getText(element);
-        if (lookFor == null) {
-            return true;
-        }
-        if (currentLabel != null && currentLabel.contains(lookFor)) {
-            return true;
-        }
-        return hasUnfilteredChild(treeViewer, element);
-    }
+	@Override
+	public boolean select(Viewer viewer, Object parentElement, Object element) {
+		if (!(viewer instanceof TreeViewer)) {
+			return true;
+		}
+		TreeViewer treeViewer = (TreeViewer) viewer;
+		String currentLabel = ((ILabelProvider) treeViewer.getLabelProvider()).getText(element);
+		if (lookFor == null) {
+			return true;
+		}
+		if (currentLabel != null && currentLabel.contains(lookFor)) {
+			return true;
+		}
+		return hasUnfilteredChild(treeViewer, element);
+	}
 
-    private boolean hasUnfilteredChild(TreeViewer viewer, Object element) {
-        Object[] children = ((ITreeContentProvider) viewer.getContentProvider())
-                .getChildren(element);
-        for (Object child :children) {
-            if (select(viewer, element, child)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	private boolean hasUnfilteredChild(TreeViewer viewer, Object element) {
+		Object[] children = ((ITreeContentProvider) viewer.getContentProvider()).getChildren(element);
+		for (Object child : children) {
+			if (select(viewer, element, child)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

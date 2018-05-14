@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2017 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2013, 2018 Red Hat, Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Red Hat - initial API and implementation
@@ -42,12 +44,9 @@ public class RPMUtils {
 	/**
 	 * Show an error dialog.
 	 *
-	 * @param shell
-	 *            A valid shell
-	 * @param title
-	 *            The error dialog title
-	 * @param message
-	 *            The message to be displayed.
+	 * @param shell   A valid shell
+	 * @param title   The error dialog title
+	 * @param message The message to be displayed.
 	 */
 	public static void showErrorDialog(final Shell shell, final String title, final String message) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(() -> MessageDialog.openError(shell, title, message));
@@ -56,8 +55,7 @@ public class RPMUtils {
 	/**
 	 * Check if the line passed in is a valid URL.
 	 *
-	 * @param line
-	 *            The line to check if is a valid URL.
+	 * @param line The line to check if is a valid URL.
 	 * @return True if valid URL, false otherwise.
 	 */
 	public static boolean isValidUrl(String line) {
@@ -72,8 +70,7 @@ public class RPMUtils {
 	/**
 	 * Get the file from the URL if any.
 	 *
-	 * @param url
-	 *            The URL to get the file from.
+	 * @param url The URL to get the file from.
 	 * @return Return the filename.
 	 */
 	public static String getURLFilename(String url) {
@@ -92,15 +89,12 @@ public class RPMUtils {
 	}
 
 	/**
-	 * Check if the file exists within the current project. It will first check
-	 * the root of the project and then the sources. If the file cannot be found
-	 * in either, return false. An empty file name would immediately return
-	 * false.
+	 * Check if the file exists within the current project. It will first check the
+	 * root of the project and then the sources. If the file cannot be found in
+	 * either, return false. An empty file name would immediately return false.
 	 *
-	 * @param original
-	 *            A file in the project.
-	 * @param fileName
-	 *            The file name being searched.
+	 * @param original A file in the project.
+	 * @param fileName The file name being searched.
 	 *
 	 * @return True if the file exists.
 	 */

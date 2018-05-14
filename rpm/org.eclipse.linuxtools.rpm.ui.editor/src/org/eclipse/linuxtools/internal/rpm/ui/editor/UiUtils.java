@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2016 Alphonse Van Assche.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
@@ -60,14 +62,11 @@ public class UiUtils {
 	}
 
 	/**
-	 * Resolve defines for a given string. Defines in the string that are not
-	 * found or have some other error will remain unchanged in the returned
-	 * string.
+	 * Resolve defines for a given string. Defines in the string that are not found
+	 * or have some other error will remain unchanged in the returned string.
 	 *
-	 * @param specfile
-	 *            The specfile containing the string to resolve.
-	 * @param stringToResolve
-	 *            The string to resolve.
+	 * @param specfile        The specfile containing the string to resolve.
+	 * @param stringToResolve The string to resolve.
 	 * @return The resolved string.
 	 */
 	public static String resolveDefines(Specfile specfile, String stringToResolve) {

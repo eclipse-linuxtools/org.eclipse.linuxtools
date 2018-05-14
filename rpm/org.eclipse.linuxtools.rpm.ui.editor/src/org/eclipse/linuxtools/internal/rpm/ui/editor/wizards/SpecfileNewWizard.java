@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2016 Alphonse Van Assche and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
@@ -71,8 +73,8 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 	}
 
 	/**
-	 * This method is called when 'Finish' button is pressed in the wizard. We
-	 * will create an operation and run it using wizard as execution context.
+	 * This method is called when 'Finish' button is pressed in the wizard. We will
+	 * create an operation and run it using wizard as execution context.
 	 */
 	@Override
 	public boolean performFinish() {
@@ -102,9 +104,8 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 	}
 
 	/**
-	 * The worker method. It will find the container, create the file if missing
-	 * or just replace its contents, and open the editor on the newly created
-	 * file.
+	 * The worker method. It will find the container, create the file if missing or
+	 * just replace its contents, and open the editor on the newly created file.
 	 */
 	private void doFinish(String projectName, String fileName, InputStream contentInputStream, IProgressMonitor monitor)
 			throws CoreException {

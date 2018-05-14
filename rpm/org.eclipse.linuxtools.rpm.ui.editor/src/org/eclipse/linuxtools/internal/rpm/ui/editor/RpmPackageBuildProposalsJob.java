@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2016 Alphonse Van Assche.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
@@ -130,8 +132,7 @@ public final class RpmPackageBuildProposalsJob extends Job {
 	 * Run the Job if it's needed according with the configuration set in the
 	 * preference page.
 	 *
-	 * @param async
-	 *            Whether to run synchronously or asynchronously.
+	 * @param async Whether to run synchronously or asynchronously.
 	 */
 	public static void update(boolean async) {
 		boolean runJob = false;
@@ -199,9 +200,8 @@ public final class RpmPackageBuildProposalsJob extends Job {
 	/**
 	 * Enable and disable the property change listener.
 	 *
-	 * @param activated
-	 *            Flag indicating whether the listener to be enabled or
-	 *            disabled.
+	 * @param activated Flag indicating whether the listener to be enabled or
+	 *                  disabled.
 	 */
 	public static void setPropertyChangeListener(boolean activated) {
 		if (activated) {

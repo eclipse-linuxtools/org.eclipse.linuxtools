@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2017 Red Hat Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007, 2018 Red Hat Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Red Hat - initial API and implementation
@@ -26,65 +28,63 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 public class SpecfileReconcilingStrategy implements IReconcilingStrategy, IReconcilingStrategyExtension {
 
-    private SpecfileFoldingStructureProvider sFoldingStructureProvider;
+	private SpecfileFoldingStructureProvider sFoldingStructureProvider;
 
-    SpecfileContentOutlinePage outline;
-    SpecfileEditor editor;
-    IDocumentProvider documentProvider;
+	SpecfileContentOutlinePage outline;
+	SpecfileEditor editor;
+	IDocumentProvider documentProvider;
 
-    public SpecfileReconcilingStrategy(SpecfileEditor editor) {
-        outline= (SpecfileContentOutlinePage) editor.getAdapter(IContentOutlinePage.class);
-        this.editor = editor;
-        documentProvider = editor.getDocumentProvider();
-        sFoldingStructureProvider= new SpecfileFoldingStructureProvider(editor);
-    }
+	public SpecfileReconcilingStrategy(SpecfileEditor editor) {
+		outline = (SpecfileContentOutlinePage) editor.getAdapter(IContentOutlinePage.class);
+		this.editor = editor;
+		documentProvider = editor.getDocumentProvider();
+		sFoldingStructureProvider = new SpecfileFoldingStructureProvider(editor);
+	}
 
+	@Override
+	public void setDocument(IDocument document) {
+		sFoldingStructureProvider.setDocument(document);
+	}
 
-    @Override
-    public void setDocument(IDocument document) {
-        sFoldingStructureProvider.setDocument(document);
-    }
+	@Override
+	public void setProgressMonitor(IProgressMonitor monitor) {
+		sFoldingStructureProvider.setProgressMonitor(monitor);
+	}
 
-    @Override
-    public void setProgressMonitor(IProgressMonitor monitor) {
-        sFoldingStructureProvider.setProgressMonitor(monitor);
-    }
+	@Override
+	public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {
+		reconcile();
+	}
 
-    @Override
-    public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {
-        reconcile();
-    }
+	@Override
+	public void initialReconcile() {
+		reconcile();
+	}
 
-    @Override
-    public void initialReconcile() {
-        reconcile();
-    }
+	private void reconcile() {
+		Specfile specfile = editor.getSpecfile();
+		if (specfile != null) {
+			editor.setSpecfile(editor.getParser().parse(documentProvider.getDocument(editor.getEditorInput())));
+			outline.update();
+			updateFolding();
+			updateEditor();
+		}
+	}
 
-    private void reconcile() {
-        Specfile specfile = editor.getSpecfile();
-        if (specfile != null) {
-            editor.setSpecfile(editor.getParser().parse(documentProvider
-                    .getDocument(editor.getEditorInput())));
-            outline.update();
-            updateFolding();
-            updateEditor();
-        }
-    }
+	@Override
+	public void reconcile(IRegion partition) {
+		reconcile();
+	}
 
-    @Override
-    public void reconcile(IRegion partition) {
-        reconcile();
-    }
+	private void updateEditor() {
+		Shell shell = editor.getSite().getShell();
+		if (!(shell == null || shell.isDisposed())) {
+			shell.getDisplay().asyncExec(() -> editor
+					.setSpecfile(editor.getParser().parse(documentProvider.getDocument(editor.getEditorInput()))));
+		}
+	}
 
-    private void updateEditor() {
-        Shell shell= editor.getSite().getShell();
-        if (!(shell == null || shell.isDisposed())) {
-            shell.getDisplay().asyncExec(() -> editor.setSpecfile(editor.getParser().parse(documentProvider
-			        .getDocument(editor.getEditorInput()))));
-        }
-    }
-
-    private void updateFolding() {
-        sFoldingStructureProvider.updateFoldingRegions();
-    }
+	private void updateFolding() {
+		sFoldingStructureProvider.updateFoldingRegions();
+	}
 }

@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2013 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2013, 2018 Red Hat, Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *    Red Hat - initial API and implementation
@@ -38,82 +40,76 @@ import org.eclipse.ui.ide.IDE;
  */
 public class SourcesFileCreateHyperlink implements IHyperlink {
 
-    private String fileName;
-    private IFile original;
-    private IRegion region;
+	private String fileName;
+	private IFile original;
+	private IRegion region;
 
-    /**
-     * Creates hyperlink for the following file name, region and file whether
-     * the file name is found.
-     *
-     * @param original
-     *            The file where the reference to this file name is.
-     * @param fileName
-     *            The name of the file to open.
-     * @param region
-     *            The hyperlink region.
-     */
-    public SourcesFileCreateHyperlink(IFile original, String fileName,
-            IRegion region) {
-        this.fileName = fileName;
-        this.original = original;
-        this.region = region;
-    }
+	/**
+	 * Creates hyperlink for the following file name, region and file whether the
+	 * file name is found.
+	 *
+	 * @param original The file where the reference to this file name is.
+	 * @param fileName The name of the file to open.
+	 * @param region   The hyperlink region.
+	 */
+	public SourcesFileCreateHyperlink(IFile original, String fileName, IRegion region) {
+		this.fileName = fileName;
+		this.original = original;
+		this.region = region;
+	}
 
-    @Override
-    public IRegion getHyperlinkRegion() {
-        return region;
-    }
+	@Override
+	public IRegion getHyperlinkRegion() {
+		return region;
+	}
 
-    @Override
-    public String getHyperlinkText() {
-        return NLS.bind(Messages.SourcesFileHyperlink_2, fileName);
-    }
+	@Override
+	public String getHyperlinkText() {
+		return NLS.bind(Messages.SourcesFileHyperlink_2, fileName);
+	}
 
-    @Override
-    public String getTypeLabel() {
-        return null;
-    }
+	@Override
+	public String getTypeLabel() {
+		return null;
+	}
 
-    /**
-     * Tries to create the given file name looking for it in the current
-     * directory and in ../SOURCES.
-     *
-     * @see org.eclipse.jface.text.hyperlink.IHyperlink#open()
-     */
-    @Override
-    public void open() {
-        IContainer container = original.getParent();
-        IResource resourceToOpen = container.findMember(fileName);
-        final InputStream source = new ByteArrayInputStream("".getBytes()); //$NON-NLS-1$
-        IFile file = null;
+	/**
+	 * Tries to create the given file name looking for it in the current directory
+	 * and in ../SOURCES.
+	 *
+	 * @see org.eclipse.jface.text.hyperlink.IHyperlink#open()
+	 */
+	@Override
+	public void open() {
+		IContainer container = original.getParent();
+		IResource resourceToOpen = container.findMember(fileName);
+		final InputStream source = new ByteArrayInputStream("".getBytes()); //$NON-NLS-1$
+		IFile file = null;
 
-        if (resourceToOpen == null) {
-            IResource sourcesFolder = container.getProject().findMember(
-                    "SOURCES"); //$NON-NLS-1$
-            file = container.getFile(new Path(fileName));
-            if (sourcesFolder != null) {
-                file = ((IFolder) sourcesFolder).getFile(new Path(fileName));
-            }
-            if (!file.exists()) {
-                try {
-                    file.create(source, IResource.NONE, null);
-                } catch (CoreException e) {
-                    SpecfileLog.logError(e);
-                }
-            }
-            resourceToOpen = file;
-        }
-        if (resourceToOpen != null) {
-            IWorkbenchPage page = PlatformUI.getWorkbench()
-                    .getActiveWorkbenchWindow().getActivePage();
-            try {
-                if (resourceToOpen.getType() == IResource.FILE) {
-                    IDE.openEditor(page, (IFile) resourceToOpen);
-                }
-            } catch (PartInitException e) {
-                SpecfileLog.logError(e);
-            }
-        }
-    }
+		if (resourceToOpen == null) {
+			IResource sourcesFolder = container.getProject().findMember("SOURCES"); //$NON-NLS-1$
+			file = container.getFile(new Path(fileName));
+			if (sourcesFolder != null) {
+				file = ((IFolder) sourcesFolder).getFile(new Path(fileName));
+			}
+			if (!file.exists()) {
+				try {
+					file.create(source, IResource.NONE, null);
+				} catch (CoreException e) {
+					SpecfileLog.logError(e);
+				}
+			}
+			resourceToOpen = file;
+		}
+		if (resourceToOpen != null) {
+			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			try {
+				if (resourceToOpen.getType() == IResource.FILE) {
+					IDE.openEditor(page, (IFile) resourceToOpen);
+				}
+			} catch (PartInitException e) {
+				SpecfileLog.logError(e);
+			}
+		}
+	}
 }
