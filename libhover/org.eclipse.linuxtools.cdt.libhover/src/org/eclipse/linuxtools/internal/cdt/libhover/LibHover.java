@@ -1,23 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2016 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2004, 2018 Red Hat, Inc.
+ * 
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     Red Hat Incorporated - initial API and implementation
  *******************************************************************************/
-/*
- * Initially created on Jul 8, 2004
- */
-
-/**
- * @author Chris Moller, Red Hat, Inc.
- * @author Jeff Johnston, Red Hat, Inc.  (rewrite to use ICHelpProvider)
- * Modified to be org.eclipse.linuxtools.cdt.libhover package.
- */
-
 package org.eclipse.linuxtools.internal.cdt.libhover;
 
 import java.io.File;
