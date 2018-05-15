@@ -21,7 +21,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -51,6 +53,9 @@ public class ContainerCommandProcess extends Process {
 	private String imageName;
 	private PipedInputStream stdout;
 	private PipedInputStream stderr;
+	private OutputStream stdin;
+	private PipedInputStream pipedStdinIn;
+	final private Set<Closeable> toClose = new HashSet<>();
 	private Map<String, String> remoteVolumes;
 	private boolean keepContainer;
 	private Thread thread;
@@ -72,6 +77,25 @@ public class ContainerCommandProcess extends Process {
 		this.stdout = new PipedInputStream();
 		this.stderr = new PipedInputStream();
 		this.keepContainer = keepContainer;
+		final IDockerContainerInfo info = connection.getContainerInfo(containerId);
+		if (info.config().openStdin()) {
+			try {
+				PipedOutputStream pipedStdinOut = new PipedOutputStream();
+				toClose.add(pipedStdinOut);
+				pipedStdinIn = new PipedInputStream(pipedStdinOut);
+				toClose.add(pipedStdinIn);
+				this.stdin = new OutputStream() {
+					@Override
+					public void write(int b) throws IOException {
+						pipedStdinOut.write(b);
+					}
+				};
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		} else {
+			this.stdin = new ByteArrayOutputStream();
+		}
 		// Lambda Runnable
 		Runnable logContainer = () -> {
 			PipedOutputStream pipedOut = null;
@@ -85,8 +109,23 @@ public class ContainerCommandProcess extends Process {
 				pipedErr = pipedStderr;
 				connection.startContainer(containerId, outputStream);
 				threadStarted = true;
-				((DockerConnection) connection).attachLog(token, containerId,
-						pipedStdout, pipedStderr);
+				if (info.config().openStdin()) {
+					IDockerContainerState state = connection.getContainerInfo(containerId).state();
+					do {
+						if (!state.running()
+								&& (state.finishDate() == null || state.finishDate().before(state.startDate()))) {
+							Thread.sleep(50);
+						}
+						state = info.state();
+					} while (!state.running()
+							&& (state.finishDate() == null || state.finishDate().before(state.startDate())));
+					Thread.sleep(50);
+					state = connection.getContainerInfo(containerId).state();
+					if (state.running()) {
+						((DockerConnection) connection).attachCommand(containerId, pipedStdinIn, null);
+					}
+				}
+				((DockerConnection) connection).attachLog(token, containerId, pipedStdout, pipedStderr);
 				pipedStdout.flush();
 				pipedStderr.flush();
 			} catch (DockerException | InterruptedException | IOException e) {
@@ -146,6 +185,10 @@ public class ContainerCommandProcess extends Process {
 			}
 			this.stdout.close();
 			this.stderr.close();
+			this.stdin.close();
+			for (Closeable close : toClose) {
+				close.close();
+			}
 		} catch (IOException e) {
 			// ignore
 		}
@@ -242,7 +285,7 @@ public class ContainerCommandProcess extends Process {
 
 	@Override
 	public OutputStream getOutputStream() {
-		return new ByteArrayOutputStream();
+		return this.stdin;
 	}
 
 	/**
