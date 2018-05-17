@@ -12,10 +12,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.core.tests;
 
+import org.eclipse.linuxtools.rpm.core.utils.tests.RPMQueryTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ RPMProjectTest.class, RPMProjectNatureTest.class, RPMProjectCreatorTest.class })
+@Suite.SuiteClasses({ RPMProjectTest.class, RPMProjectNatureTest.class, RPMProjectCreatorTest.class,
+		DownloadPrepareSourcesTest.class, RPMQueryTest.class })
 public class AllTests {
 }
