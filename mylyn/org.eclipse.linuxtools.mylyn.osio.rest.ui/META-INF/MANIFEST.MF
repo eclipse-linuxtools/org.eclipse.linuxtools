@@ -18,3 +18,4 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.jdt.annotation
+Automatic-Module-Name: org.eclipse.linuxtools.mylyn.osio.rest.ui

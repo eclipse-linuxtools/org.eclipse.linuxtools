@@ -22,3 +22,4 @@ Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.jdt.annotation
 Export-Package: org.eclipse.linuxtools.internal.mylyn.osio.rest.core;x-friends:="org.eclipse.linuxtools.mylyn.osio.rest.ui,org.eclipse.linuxtools.mylyn.osio.rest.core.tests",
  org.eclipse.linuxtools.internal.mylyn.osio.rest.core.response.data;x-friends:="org.eclipse.linuxtools.mylyn.osio.rest.ui,org.eclipse.linuxtools.mylyn.osio.rest.core.tests"
+Automatic-Module-Name: org.eclipse.linuxtools.mylyn.osio.rest.core
