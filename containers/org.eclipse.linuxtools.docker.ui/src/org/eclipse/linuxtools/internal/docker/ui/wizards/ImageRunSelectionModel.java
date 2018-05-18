@@ -26,7 +26,9 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
+import org.eclipse.linuxtools.docker.core.IDockerConnection2;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
+import org.eclipse.linuxtools.docker.core.IDockerImageInfo;
 import org.eclipse.linuxtools.internal.docker.ui.databinding.BaseDatabindingModel;
 
 /**
@@ -235,6 +237,12 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 	 *         was found.
 	 */
 	public IDockerImage getSelectedImage() {
+		if (this.images.get(selectedImageName) == null && selectedImageName != null && selectedImageName.length() > 5) {
+			IDockerImageInfo info = getSelectedConnection().getImageInfo(selectedImageName);
+			if (info != null) {
+				return ((IDockerConnection2) getSelectedConnection()).getImage(info.id());
+			}
+		}
 		return this.images.get(selectedImageName);
 	}
 

@@ -945,6 +945,8 @@ public class DockerConnection
 			Activator.logErrorMessage(
 					ProcessMessages.getString("Image_Info_Exception"), e); //$NON-NLS-1$
 			return null;
+		} catch (com.spotify.docker.client.exceptions.ImageNotFoundException e) {
+			return null;
 		} catch (com.spotify.docker.client.exceptions.DockerException
 				| InterruptedException e) {
 			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
@@ -1005,7 +1007,7 @@ public class DockerConnection
 	 * @param id
 	 *            the {@link IDockerImage} id
 	 */
-	// TODO: declare the method in the interface to make it part of the API.
+	@Override
 	public IDockerImage getImage(String id) {
 		List<IDockerImage> images = getImages();
 		for (IDockerImage image : images) {

@@ -73,4 +73,13 @@ public interface IDockerConnection2 {
 	 */
 	IDockerImageHierarchyNode resolveImageHierarchy(IDockerContainer container);
 
+	/**
+	 * Retrieve an Image by id
+	 *
+	 * @param id
+	 *               of Image
+	 * @return the IDockerImage or null if not found
+	 */
+	IDockerImage getImage(String id);
+
 }
