@@ -126,15 +126,13 @@ public class ContainerCommandProcess extends Process {
 	}
 
 	@Override
-	public synchronized void destroy() {
+	public void destroy() {
 		try {
+			// kill the container
 			try {
-				// TODO: see if there is a better way of draining the
-				// container output before closing the streams. Note
-				// that trying to join the attachLog thread does not
-				// work.
+				connection.killContainer(containerId);
 				Thread.sleep(1000);
-			} catch (InterruptedException e1) {
+			} catch (DockerException | InterruptedException e) {
 				// ignore
 			}
 			// give logging thread at most 5 seconds to terminate
@@ -154,7 +152,7 @@ public class ContainerCommandProcess extends Process {
 	}
 
 	@Override
-	public synchronized int exitValue() {
+	public int exitValue() {
 		// if container has been removed, we need to return
 		// the exit value that we cached before removal
 		if (containerRemoved) {
@@ -172,6 +170,9 @@ public class ContainerCommandProcess extends Process {
 				}
 				return state.exitCode();
 			}
+		}
+		if (containerRemoved) {
+			return exitValue;
 		}
 		return -1;
 	}
