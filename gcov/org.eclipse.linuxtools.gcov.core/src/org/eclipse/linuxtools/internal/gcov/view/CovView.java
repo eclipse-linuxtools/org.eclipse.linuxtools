@@ -20,11 +20,13 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -34,6 +36,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.dataviewers.abstractview.AbstractSTDataView;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.TreeColumnViewerFilter;
@@ -144,8 +147,9 @@ public class CovView extends AbstractSTDataView {
 
     public static void displayCovDetailedResult(String binaryPath, String gcda) {
         try {
-            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-            IFile binary = root.getFileForLocation(new Path(binaryPath));
+        	//FIXME EK-LINUXTOOLS: IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+            //FIXME EK-LINUXTOOLS: IFile binary = root.getFileForLocation(new Path(binaryPath));
+            IFile binary = STSymbolManager.sharedInstance.findFileFromPath(new Path(binaryPath));
             IProject project = null;
             if (binary != null) {
                 project = binary.getProject();
@@ -169,8 +173,9 @@ public class CovView extends AbstractSTDataView {
 
     public static void displayCovResults(String binaryPath, String gcda) {
         try {
-            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-            IFile binary = root.getFileForLocation(new Path(binaryPath));
+        	//FIXME EK-LINUXTOOLS: IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+            //FIXME EK-LINUXTOOLS: IFile binary = root.getFileForLocation(new Path(binaryPath));
+            IFile binary = STSymbolManager.sharedInstance.findFileFromPath(new Path(binaryPath));
             IProject project = null;
             if (binary != null) {
                 project = binary.getProject();

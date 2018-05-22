@@ -15,6 +15,7 @@
 package org.eclipse.linuxtools.binutils.utils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -36,9 +37,11 @@ import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.core.settings.model.ICProjectDescription;
 import org.eclipse.cdt.utils.Addr2line;
 import org.eclipse.cdt.utils.CPPFilt;
+import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -381,7 +384,8 @@ public class STSymbolManager {
      * @return a IBinaryObject
      */
     private IBinaryObject getBinaryObject(IPath path, IBinaryParser defaultparser) {
-        IFile c = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(path);
+        //FIXME EK-LINUXTOOLS: IFile c = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(path);
+        IFile c = findFileFromPath(path);
         List<IBinaryParser> parsers;
         if (c != null) {
             IBinaryObject object = getAlreadyExistingBinaryObject(c);
@@ -426,6 +430,148 @@ public class STSymbolManager {
             ret = buildBinaryObject(path, parsers);
         }
         return ret;
+    }
+
+    //FIXME EK-LINUXTOOLS: Search workspace for one binary
+    /**
+     * Searches workspace and tries to find one-and-only binary which could have
+     * created GCOV files.
+     * 	1. Look in the project where .gcda or .gcna file are registered
+     * 	2. Search workspace and list all binaries
+     * 	3. If there is only one binary found then return it
+     *
+     * @param file
+     * @return Binary path or null
+     * @since 6.0
+     */
+    public IResource findOneAndOnlyBinary(IPath file)
+    {
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        IResource project;
+        IResource binary = null;
+
+        project = STSymbolManager.sharedInstance.getProjectFromFile(file);
+        if (project != null && project.exists())
+        {
+            ICProject cproject = (ICProject)CoreModel.getDefault().create(project);
+            if (cproject != null)
+            {
+                try
+                {
+                    IBinary[] bs = cproject.getBinaryContainer().getBinaries();
+                    if (bs.length == 1)
+                    {
+                        binary = bs[0].getResource();
+                    }
+                }
+                catch (CModelException e)
+                {
+                    String message = 
+                       "Error getting binaries for [" + cproject.toString() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+                    CCorePlugin.log(message, e);
+                }
+            }
+        }
+
+        if (binary == null)
+        {
+            /*
+             * Apparently we did not find one binary in the project
+             * where GCOV files are located.
+             * Search workspace in hopes that there will be only one binary there
+             */
+            ArrayList<IResource> binaries = new ArrayList<>();
+            IProject projects[] = root.getProjects();
+            for (IProject prj : projects)
+            {
+                ICProject cproject = CoreModel.getDefault().create(prj);
+                if (cproject != null)
+                {
+                    try
+                    {
+                        IBinary[] bs = cproject.getBinaryContainer().getBinaries();
+                        if (bs.length == 1)
+                        {
+                            /*
+                             * Validate binary. Not tested
+                             */
+                            IBinaryObject binObj =
+                                    STSymbolManager.sharedInstance.getBinaryObject(bs[0].getPath());
+                            if (binObj != null)
+                            {
+                                binaries.add(bs[0].getResource());
+                            }
+                        }
+                    }
+                    catch (CModelException e)
+                    {
+                        String message = 
+                           "Error getting binaries for [" + cproject.toString() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+                        CCorePlugin.log(message, e);
+                    }
+                }
+
+            }
+
+            if (binaries.size() == 1)
+            {
+                binary = binaries.get(0);
+            }
+        }
+
+        return (binary);
+    }
+
+    //FIXME EK-LINUXTOOLS: New method to get location for linked binary resource
+    /**
+	 * @param file 
+     * @return 
+     * @since 6.0
+	 */
+    public IFile findFileFromPath(IPath file)
+    {
+    	// can't use a null or empty path below
+    	if (file == null || file.isEmpty()) {
+    		return null;
+    	}
+    	
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        /*
+         * Find resource to which this GCOV file maps to in workspace
+         */
+        IFile files[] = root.findFilesForLocationURI(URIUtil.toURI(file));
+        if ((files.length == 0) || (files.length > 1))
+        {
+            /*
+             * Nothing found or more than one GCOV output file
+             * Let user decide what to use as binary
+             */
+            return (null);
+        }
+        return files[0];   	
+    }
+    
+    //FIXME EK-LINUXTOOLS: IProject file resolution for linked resources
+    /**
+	 * @param file 
+     * @return 
+     * @since 6.0
+	 */
+    public IProject getProjectFromFile(IPath file)
+    {
+        IFile ifile = findFileFromPath(file);
+        if (ifile == null)
+        {
+            /*
+             * Nothing found or more than one GCOV output file
+             * Let upstream processing handle this exception
+             */
+            return (null);
+        }
+        /*
+         * Find project this resource belongs to
+         */
+        return (ifile.getProject());   	
     }
 
     /**

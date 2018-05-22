@@ -45,6 +45,7 @@ import org.eclipse.debug.core.sourcelookup.ISourceContainer;
 import org.eclipse.debug.core.sourcelookup.containers.LocalFileStorage;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.internal.Activator;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -74,7 +75,8 @@ public final class STLink2SourceSupport {
      */
     private static boolean openSourceFileAtLocation(IPath binaryLoc, IPath sourceLoc, int lineNumber) {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        IFile binary = root.getFileForLocation(binaryLoc);
+        //FIXME EK-LINUXTOOLS: IFile binary = root.getFileForLocation(binaryLoc);
+        IFile binary = STSymbolManager.sharedInstance.findFileFromPath(binaryLoc);
         IProject project = null;
         if (binary != null) {
             project = binary.getProject();
@@ -257,7 +259,8 @@ public final class STLink2SourceSupport {
    private static IFile getFileForPathImpl(IPath path, IProject project) {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         if (path.isAbsolute()) {
-            return root.getFileForLocation(path);
+        	//FIXME EK-LINUXTOOLS: return root.getFileForLocation(path);
+            return STSymbolManager.sharedInstance.findFileFromPath(path);
         }
         if (project != null && project.exists()) {
 

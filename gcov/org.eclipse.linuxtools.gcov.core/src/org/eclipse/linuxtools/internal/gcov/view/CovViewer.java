@@ -22,6 +22,7 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.OpenEvent;
+import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTreeViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField;
 import org.eclipse.linuxtools.internal.gcov.model.CovFileTreeElement;
@@ -96,7 +97,8 @@ public class CovViewer extends AbstractSTTreeViewer {
                     IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
                     String binaryLoc = cvm.getBinaryPath();
                     IPath binaryPath = new Path(binaryLoc);
-                    IFile binary = root.getFileForLocation(binaryPath);
+                    //FIXME EK-LINUXTOOLS: IFile binary = root.getFileForLocation(binaryPath);
+                    IFile binary = STSymbolManager.sharedInstance.findFileFromPath(binaryPath);
                     IProject project = null;
                     if (binary != null) {
                         project = binary.getProject();

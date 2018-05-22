@@ -17,7 +17,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.IBinary;
@@ -26,7 +25,6 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -114,7 +112,9 @@ public class OpenGCAction implements IEditorLauncher {
         }
         String defaultBinary = defaultMapping.get(file.toOSString());
         if (defaultBinary == null || defaultBinary.isEmpty() || !exists(defaultBinary)) {
-            defaultBinary = getDefaultBinary(file);
+        	//FIXME EK-LINUXTOOLS: defaultBinary = getDefaultBinary(file);
+        	defaultBinary = 
+        	   STSymbolManager.sharedInstance.findOneAndOnlyBinary(file).getLocation().toOSString();
         }
 
         OpenGCDialog d = new OpenGCDialog(shell, defaultBinary, file);
@@ -128,8 +128,12 @@ public class OpenGCAction implements IEditorLauncher {
         t.start();
     }
 
-    private void displayCoverage(IPath file, String binaryPath, File gcda, boolean isCompleteCoverageResultWanted) {
-        IProject project = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(file).getProject();
+    private void displayCoverage(IPath file, String binaryPath, File gcda, boolean isCompleteCoverageResultWanted) 
+    {
+    	//FIXME EK-LINUXTOOLS: IProject project = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(file).getProject();
+    	IProject project = STSymbolManager.sharedInstance.getProjectFromFile(file);
+    	//FIXME EK-LINUXTOOLS: Need check for null and correct action
+    	
         GcovAnnotationModelTracker.getInstance().addProject(project, new Path(binaryPath));
         PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
         	GcovAnnotationModelTracker.getInstance().annotateAllCEditors();
@@ -172,7 +176,8 @@ public class OpenGCAction implements IEditorLauncher {
     }
 
     private String getDefaultBinary(IPath file) {
-        IFile c = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(file);
+        //FIXME EK-LINUXTOOLS: IFile c = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(file);
+        IFile c = STSymbolManager.sharedInstance.findFileFromPath(file);
         if (c != null) {
             IProject project = c.getProject();
             if (project != null && project.exists()) {

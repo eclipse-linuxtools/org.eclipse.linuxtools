@@ -74,7 +74,9 @@ public class CovManager implements Serializable {
     private long nbrPgmRuns = 0;
     // for view
     private CovRootTreeElement rootNode;
-    private final IProject project;
+	//FIXME EK-LINUXTOOLS: private final IProject project;
+	//FIXME EK-LINUXTOOLS: Need project for finding local STRINGS etc. Can't be final
+    private IProject project;
 
     /**
      * Constructor
@@ -91,8 +93,11 @@ public class CovManager implements Serializable {
      * Constructor
      * @param binaryPath
      */
-    public CovManager(String binaryPath) {
+    public CovManager(String binaryPath) 
+    {
         this(binaryPath, null);
+    	//FIXME EK-LINUXTOOLS: Need project for finding local STRINGS etc.
+        this.project = STSymbolManager.sharedInstance.getProjectFromFile(new Path(binaryPath));;
     }
 
     /**
