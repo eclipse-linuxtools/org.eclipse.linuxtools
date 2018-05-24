@@ -2101,10 +2101,17 @@ public class DockerConnection
 	public void attachCommand(final String id, final InputStream in,
 			final DockerConsoleOutputStream out)
 					throws DockerException {
+		attachCommand(client, id, in, out);
+	}
+
+	public void attachCommand(final Closeable token, final String id,
+			final InputStream in, final DockerConsoleOutputStream out)
+			throws DockerException {
 
 		final byte[] prevCmd = new byte[1024];
 		try {
-			final LogStream pty_stream = client.attachContainer(id,
+			final LogStream pty_stream = ((DockerClient) token).attachContainer(
+					id,
 					AttachParameter.STDIN, AttachParameter.STDOUT,
 					AttachParameter.STDERR, AttachParameter.STREAM,
 					AttachParameter.LOGS);

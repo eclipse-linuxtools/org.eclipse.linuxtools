@@ -77,8 +77,9 @@ public interface IDockerConnection2 {
 	 * Retrieve an Image by id
 	 *
 	 * @param id
-	 *               of Image
+	 *            of Image
 	 * @return the IDockerImage or null if not found
+	 * @since 4.0
 	 */
 	IDockerImage getImage(String id);
 

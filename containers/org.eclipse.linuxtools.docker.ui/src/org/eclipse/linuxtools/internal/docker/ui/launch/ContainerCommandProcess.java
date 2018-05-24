@@ -103,6 +103,7 @@ public class ContainerCommandProcess extends Process {
 			try (PipedOutputStream pipedStdout = new PipedOutputStream(stdout);
 					PipedOutputStream pipedStderr = new PipedOutputStream(
 							stderr);
+					Closeable inputToken = ((DockerConnection) connection).getOperationToken();
 					Closeable token = ((DockerConnection) connection)
 							.getOperationToken()) {
 				pipedOut = pipedStdout;
@@ -122,7 +123,7 @@ public class ContainerCommandProcess extends Process {
 					Thread.sleep(50);
 					state = connection.getContainerInfo(containerId).state();
 					if (state.running()) {
-						((DockerConnection) connection).attachCommand(containerId, pipedStdinIn, null);
+						((DockerConnection) connection).attachCommand(inputToken, containerId, pipedStdinIn, null);
 					}
 				}
 				((DockerConnection) connection).attachLog(token, containerId, pipedStdout, pipedStderr);
