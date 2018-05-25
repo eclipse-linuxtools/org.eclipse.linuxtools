@@ -126,7 +126,7 @@ public class ContainerCommandProcess extends Process {
 						((DockerConnection) connection).attachCommand(inputToken, containerId, pipedStdinIn, null);
 					}
 				}
-				((DockerConnection) connection).attachLog(token, containerId, pipedStdout, pipedStderr);
+				((DockerConnection) connection).attachContainerOutput(token, containerId, pipedStdout, pipedStderr);
 				pipedStdout.flush();
 				pipedStderr.flush();
 			} catch (DockerException | InterruptedException | IOException e) {

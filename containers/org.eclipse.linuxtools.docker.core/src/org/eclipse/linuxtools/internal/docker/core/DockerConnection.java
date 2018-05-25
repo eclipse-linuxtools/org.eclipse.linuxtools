@@ -2153,6 +2153,18 @@ public class DockerConnection
 		}
 	}
 
+	public void attachContainerOutput(final Closeable token, final String id,
+			OutputStream stdout, OutputStream stderr) throws DockerException {
+		try {
+			final LogStream logstream = ((DockerClient) token).attachContainer(
+					id, AttachParameter.STDOUT, AttachParameter.STDERR,
+					AttachParameter.STREAM);
+			logstream.attach(stdout, stderr);
+		} catch (Exception e) {
+			throw new DockerException(e.getMessage(), e.getCause());
+		}
+	}
+
 	@SuppressWarnings("unused")
 	public List<ContainerFileProxy> readContainerDirectory(final String id,
 			final String path) throws DockerException {
