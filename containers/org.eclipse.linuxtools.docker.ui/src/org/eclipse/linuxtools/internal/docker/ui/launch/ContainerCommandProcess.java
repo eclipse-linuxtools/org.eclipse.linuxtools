@@ -124,9 +124,12 @@ public class ContainerCommandProcess extends Process {
 					state = connection.getContainerInfo(containerId).state();
 					if (state.running()) {
 						((DockerConnection) connection).attachCommand(inputToken, containerId, pipedStdinIn, null);
+						((DockerConnection) connection).attachContainerOutput(token, containerId, pipedStdout,
+								pipedStderr);
 					}
+				} else {
+					((DockerConnection) connection).attachLog(token, containerId, pipedStdout, pipedStderr);
 				}
-				((DockerConnection) connection).attachContainerOutput(token, containerId, pipedStdout, pipedStderr);
 				pipedStdout.flush();
 				pipedStderr.flush();
 			} catch (DockerException | InterruptedException | IOException e) {
