@@ -58,8 +58,8 @@ public class EnableConnectionCommandHandler extends AbstractHandler {
 							} catch (DockerException e) {
 								Activator
 								.logErrorMessage(
-										CommandMessages.getString(
-												"command.enableconnection.failure"), //$NON-NLS-1$
+												CommandMessages.getFormattedString("command.enableconnection.failure", //$NON-NLS-1$
+														conn.getUri()), 
 										e);
 								return Status.CANCEL_STATUS;
 							}
