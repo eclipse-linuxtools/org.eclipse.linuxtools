@@ -38,6 +38,9 @@ public interface IBuildDockerImageLaunchConfigurationConstants
 	 */
 	String SOURCE_PATH_WORKSPACE_RELATIVE_LOCATION = "sourcePathWorkspaceRelativeLocation"; //$NON-NLS-1$
 
+	/** the name of the dockerfile. */
+	String DOCKERFILE_NAME = "dockerfileName"; //$NON-NLS-1$
+
 	/** the path to the dockerfile. */
 	String DOCKERFILE_PATH = "dockerfilePath"; //$NON-NLS-1$
 

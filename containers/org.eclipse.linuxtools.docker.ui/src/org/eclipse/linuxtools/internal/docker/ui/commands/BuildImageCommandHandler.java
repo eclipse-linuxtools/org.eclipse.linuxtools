@@ -103,6 +103,7 @@ public class BuildImageCommandHandler extends AbstractHandler {
 				@SuppressWarnings("unused")
 				final int lines = wizard.getNumberOfLines();
 				final IPath path = wizard.getDirectory();
+				final String dockerfileName = "Dockerfile"; //$NON-NLS-1$
 
 				monitor.beginTask(DVMessages.getString(BUILD_IMAGE_JOB_TITLE),
 						2);
@@ -157,7 +158,7 @@ public class BuildImageCommandHandler extends AbstractHandler {
 					monitor.subTask(
 							DVMessages.getString(BUILD_IMAGE_JOB_TITLE));
 					final Job buildImageJob = new BuildDockerImageJob(
-							connection, path, id, null);
+							connection, path, dockerfileName, id, null);
 					buildImageJob.schedule();
 					monitor.worked(1);
 				} finally {

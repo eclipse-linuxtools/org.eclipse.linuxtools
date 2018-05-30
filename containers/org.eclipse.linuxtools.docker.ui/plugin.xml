@@ -2706,11 +2706,18 @@
                    <adapt
                          type="org.eclipse.core.resources.IResource">
                       <and>
-                         <test
+                         <or>
+                         	<test
                                forcePluginActivation="true"
                                property="org.eclipse.core.resources.name"
                                value="Dockerfile">
-                         </test>
+                         	</test>
+                         	<test
+                               forcePluginActivation="true"
+                               property="org.eclipse.core.resources.extension"
+                               value="dockerfile">
+                         	</test>
+                         </or>
                       </and>
                    </adapt>
                 </iterate>

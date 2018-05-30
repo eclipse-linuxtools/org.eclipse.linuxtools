@@ -25,6 +25,9 @@ public interface IDockerImageBuildOptions {
 	/** repo and optionally tag of Image to build. */
 	String REPO_NAME = "repoName"; //$NON-NLS-1$
 
+	/** dockerfile name. */
+	String DOCKERFILE_NAME = "dockerfileName"; //$NON-NLS-1$
+
 	/** quiet build option. */
 	String QUIET_BUILD = "quietBuild"; //$NON-NLS-1$
 

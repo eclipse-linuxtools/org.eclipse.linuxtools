@@ -640,6 +640,8 @@ public class LaunchConfigurationUtils {
 		wc.setAttribute(
 				IBuildDockerImageLaunchConfigurationConstants.SOURCE_PATH_LOCATION,
 				dockerfile.getFullPath().removeLastSegments(1).toString());
+		wc.setAttribute(IBuildDockerImageLaunchConfigurationConstants.DOCKERFILE_NAME,
+				dockerfile.getFullPath().lastSegment());
 		wc.setAttribute(
 				IBuildDockerImageLaunchConfigurationConstants.SOURCE_PATH_WORKSPACE_RELATIVE_LOCATION,
 				true);

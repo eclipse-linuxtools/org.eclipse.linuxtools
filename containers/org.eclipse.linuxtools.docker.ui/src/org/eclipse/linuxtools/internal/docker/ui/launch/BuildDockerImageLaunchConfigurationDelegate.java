@@ -19,6 +19,7 @@ import static org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions.NO_CAC
 import static org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions.QUIET_BUILD;
 import static org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions.REPO_NAME;
 import static org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions.RM_INTERMEDIATE_CONTAINERS;
+import static org.eclipse.linuxtools.internal.docker.ui.launch.IBuildDockerImageLaunchConfigurationConstants.DOCKERFILE_NAME;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IBuildDockerImageLaunchConfigurationConstants.SOURCE_PATH_LOCATION;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IBuildDockerImageLaunchConfigurationConstants.SOURCE_PATH_WORKSPACE_RELATIVE_LOCATION;
 
@@ -57,6 +58,7 @@ public class BuildDockerImageLaunchConfigurationDelegate
 		final boolean sourcePathWorkspaceRelativeLocation = configuration
 				.getAttribute(SOURCE_PATH_WORKSPACE_RELATIVE_LOCATION,
 						false);
+		final String dockerfileName = configuration.getAttribute(DOCKERFILE_NAME, "Dockerfile"); //$NON-NLS-1$
 		final IPath sourcePath = BuildDockerImageUtils.getPath(
 				sourcePathLocation,
 				sourcePathWorkspaceRelativeLocation);
@@ -76,7 +78,7 @@ public class BuildDockerImageLaunchConfigurationDelegate
 				.getAttribute(FORCE_RM_INTERMEDIATE_CONTAINERS, false));
 		if (connection != null && sourcePath != null) {
 			final Job buildImageJob = new BuildDockerImageJob(connection,
-					sourcePath, repoName, buildOptions);
+					sourcePath, dockerfileName, repoName, buildOptions);
 			buildImageJob.schedule();
 		} else {
 			final ILaunchGroup launchGroup = DebugUITools

@@ -51,10 +51,11 @@ public class BuildDockerImageShortcut
 				final boolean workspaceRelative = config.getAttribute(
 						IBuildDockerImageLaunchConfigurationConstants.SOURCE_PATH_WORKSPACE_RELATIVE_LOCATION,
 						false);
-				final IPath dockerfilePath = getPath(sourcePath,
-						workspaceRelative);
+				final String dockerfileName = config
+						.getAttribute(IBuildDockerImageLaunchConfigurationConstants.DOCKERFILE_NAME, "Dockerfile"); //$NON-NLS-1$
+				final IPath dockerfilePath = getPath(sourcePath, workspaceRelative).append(dockerfileName);
 				return dockerfilePath
-						.equals(resource.getLocation().removeLastSegments(1));
+						.equals(resource.getLocation());
 			} catch (CoreException e) {
 				Activator.log(e);
 				return false;

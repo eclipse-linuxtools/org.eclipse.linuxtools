@@ -1420,6 +1420,46 @@ public class DockerConnection
 	}
 
 	/**
+	 * Builds an {@link IDockerImage}
+	 * 
+	 * @param path
+	 *            path to the build context
+	 * @param name
+	 *            optional name and tag of the image to build
+	 * @param dockerFileName
+	 *            name of dockerfile
+	 * @param handler
+	 *            progress handler
+	 * @param buildOptions
+	 *            build options
+	 * @return the id of the {@link IDockerImage} that was build
+	 * @throws DockerException
+	 *             if building image failed
+	 * @throws InterruptedException
+	 *             if the thread was interrupted
+	 */
+	// TODO: add this method in the public interface
+	public String buildImage(final IPath path, final String name,
+			final String dockerFileName, final IDockerProgressHandler handler,
+			final Map<String, Object> buildOptions)
+			throws DockerException, InterruptedException {
+		try {
+			final DockerProgressHandler d = new DockerProgressHandler(handler);
+			final java.nio.file.Path p = FileSystems.getDefault()
+					.getPath(path.makeAbsolute().toOSString());
+			String res = getClientCopy().build(p, name, dockerFileName, d,
+					getBuildParameters(buildOptions));
+			return res;
+		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+			throw new DockerException(e.message());
+		} catch (com.spotify.docker.client.exceptions.DockerException
+				| IOException e) {
+			DockerException f = new DockerException(e);
+			throw f;
+		}
+	}
+
+	/**
 	 * Converts the given {@link Map} of build options into an array of
 	 * {@link BuildParameter} when the build options are set a value different
 	 * from the default value.

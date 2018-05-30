@@ -13,6 +13,7 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.launch;
 
+import static org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions.DOCKERFILE_NAME;
 import static org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions.DOCKER_CONNECTION;
 import static org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions.FORCE_RM_INTERMEDIATE_CONTAINERS;
 import static org.eclipse.linuxtools.docker.core.IDockerImageBuildOptions.NO_CACHE;
@@ -72,6 +73,7 @@ public class BuildDockerImageLaunchConfigurationMainTab
 	private final String BROWSE_WORKSPACE = "BuildDockerImageLaunchConfigurationMainTab.buildContextPath.browseworkspace.button.label"; //$NON-NLS-1$
 	private final String BROWSE_WORKSPACE_DIALOG_TITLE = "BuildDockerImageLaunchConfigurationMainTab.buildContextPath.browseworkspace.dialog.title"; //$NON-NLS-1$
 	private final String BROWSE_FILESYSTEM = "BuildDockerImageLaunchConfigurationMainTab.buildContextPath.browsefilesystem.button.label"; //$NON-NLS-1$
+	private final String DOCKERFILE_NAME_LABEL = "BuildDockerImageLaunchConfigurationMainTab.dockerfileName.label"; //$NON-NLS-1$
 	private final String REPO_NAME_LABEL = "BuildDockerImageLaunchConfigurationMainTab.repoName.label"; //$NON-NLS-1$
 	private final String REPO_NAME_MISSING = "BuildDockerImageLaunchConfigurationMainTab.repoName.missing"; //$NON-NLS-1$
 	private final String OPTIONS_LABEL = "BuildDockerImageLaunchConfigurationMainTab.options.group.label"; //$NON-NLS-1$
@@ -88,6 +90,8 @@ public class BuildDockerImageLaunchConfigurationMainTab
 	private boolean buildContextPathWorkspaceRelative;
 	/** build option: name and optional tag. */
 	private Text repoNameText;
+	/** build option: dockerfile name. */
+	private Text dockerfileNameText;
 	/** build option: do not use cache. */
 	private Button noCacheButton;
 	/** build option: quiet mode. */
@@ -130,8 +134,8 @@ public class BuildDockerImageLaunchConfigurationMainTab
 		createBuildContextPathGroup(container);
 		// repository name
 		createRepoNameGroup(container);
-		// dockerfile path
-		// createDockerfilePathGroup(container);
+		// dockerfile name
+		createDockerfileNameGroup(container);
 		// build options
 		createBuildOptionsGroup(container);
 	}
@@ -186,6 +190,17 @@ public class BuildDockerImageLaunchConfigurationMainTab
 				.grab(true, false).applyTo(this.repoNameText);
 		this.repoNameText
 				.addModifyListener(new LaunchConfigurationChangeListener());
+	}
+
+	private void createDockerfileNameGroup(final Composite container) {
+		final Group dockerfileNameGroup = new Group(container, SWT.NONE);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, false).applyTo(dockerfileNameGroup);
+		GridLayoutFactory.fillDefaults().margins(6, 6).numColumns(1).applyTo(dockerfileNameGroup);
+		dockerfileNameGroup.setText(LaunchMessages.getString(DOCKERFILE_NAME_LABEL));
+
+		this.dockerfileNameText = new Text(dockerfileNameGroup, SWT.BORDER);
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).applyTo(this.dockerfileNameText);
+		this.dockerfileNameText.addModifyListener(new LaunchConfigurationChangeListener());
 	}
 
 	private void createBuildOptionsGroup(final Composite container) {
@@ -303,6 +318,7 @@ public class BuildDockerImageLaunchConfigurationMainTab
 					configuration.getAttribute(SOURCE_PATH_LOCATION, ""));
 			this.buildContextPathWorkspaceRelative = configuration.getAttribute(
 					SOURCE_PATH_WORKSPACE_RELATIVE_LOCATION, false);
+			this.dockerfileNameText.setText(configuration.getAttribute(DOCKERFILE_NAME, "Dockerfile")); //$NON-NLS-1$
 			this.repoNameText
 					.setText(configuration.getAttribute(REPO_NAME, ""));
 			this.quietBuildButton.setSelection(
@@ -329,6 +345,7 @@ public class BuildDockerImageLaunchConfigurationMainTab
 			// verify the source path
 			final String sourcePathLocation = launchConfig
 					.getAttribute(SOURCE_PATH_LOCATION, ""); // $NON-NLS-1$
+			final String dockerfileName = launchConfig.getAttribute(DOCKERFILE_NAME, "Dockerfile"); //$NON-NLS-1$
 			final boolean sourcePathWorkspaceRelativeLocation = launchConfig.getAttribute(SOURCE_PATH_WORKSPACE_RELATIVE_LOCATION, false);
 			final IPath sourcePath = BuildDockerImageUtils.getPath(
 					sourcePathLocation, sourcePathWorkspaceRelativeLocation);
@@ -341,7 +358,7 @@ public class BuildDockerImageLaunchConfigurationMainTab
 				setErrorMessage(
 						LaunchMessages.getString(BUILD_CONTEXT_PATH_MISSING));
 				return false;
-			} else if (!sourcePath.append("Dockerfile").toFile().exists()) {
+			} else if (!sourcePath.append(dockerfileName).toFile().exists()) {
 				setErrorMessage(LaunchMessages.getString(BUILD_CONTEXT_PATH_MISSING_DOCKERFILE));
 				return false;
 			} else {
@@ -374,6 +391,9 @@ public class BuildDockerImageLaunchConfigurationMainTab
 				this.buildContextPathWorkspaceRelative);
 		if (!this.repoNameText.getText().isEmpty()) {
 			configuration.setAttribute(REPO_NAME, this.repoNameText.getText());
+		}
+		if (!this.dockerfileNameText.getText().isEmpty()) {
+			configuration.setAttribute(DOCKERFILE_NAME, this.dockerfileNameText.getText());
 		}
 		configuration.setAttribute(QUIET_BUILD,
 				this.quietBuildButton.getSelection());

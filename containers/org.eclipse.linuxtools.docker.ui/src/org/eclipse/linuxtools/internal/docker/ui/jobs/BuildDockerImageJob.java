@@ -61,6 +61,9 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 	/** the build options. */
 	private final Map<String, Object> buildOptions;
 
+	/** The name of the dockerfile (defaults to Dockerfile) */
+	private final String dockerfileName;
+
 	/** the optional repoName (i.e., repo[tag]) for the image to build */
 	private final String repoName;
 
@@ -88,11 +91,12 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 	 *      options.
 	 */
 	public BuildDockerImageJob(final IDockerConnection connection,
-			final IPath path, final String repoName,
+			final IPath path, final String dockerfileName, final String repoName,
 			final Map<String, Object> buildOptions) {
 		super(JobMessages.getString(BUILD_IMAGE_JOB_TITLE));
 		this.connection = connection;
 		this.path = path;
+		this.dockerfileName = dockerfileName;
 		this.repoName = repoName;
 		this.buildOptions = buildOptions;
 		this.console = BuildConsole.findConsole();
@@ -127,8 +131,9 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 	protected IStatus run(final IProgressMonitor progressMonitor) {
 		try {
 			this.progressMonitor = progressMonitor;
-			final IPath pathToDockerfile = path.addTrailingSeparator()
-					.append("Dockerfile"); //$NON-NLS-1$
+
+			final IPath pathToDockerfile = path.append(dockerfileName);
+
 			if (verifyPathToDockerfile(pathToDockerfile)) {
 				final int numberOfBuildOperations = countLines(
 						pathToDockerfile.toOSString()); // $NON-NLS-1$
@@ -154,11 +159,11 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 						// unique.
 						final String name = "dockerfile:" //$NON-NLS-1$
 								+ Long.toHexString(System.currentTimeMillis());
-						((DockerConnection) connection).buildImage(this.path,
-								name, this, this.buildOptions);
+						((DockerConnection) connection).buildImage(pathToDockerfile.removeLastSegments(1),
+								name, this.dockerfileName, this, this.buildOptions);
 					} else {
-						((DockerConnection) connection).buildImage(this.path,
-								this.repoName, this, this.buildOptions);
+						((DockerConnection) connection).buildImage(pathToDockerfile.removeLastSegments(1),
+								this.repoName, this.dockerfileName, this, this.buildOptions);
 					}
 					connection.getImages(true);
 				}
