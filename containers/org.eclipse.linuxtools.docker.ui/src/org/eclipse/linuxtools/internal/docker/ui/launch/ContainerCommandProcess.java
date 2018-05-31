@@ -59,6 +59,7 @@ public class ContainerCommandProcess extends Process {
 	private Map<String, String> remoteVolumes;
 	private boolean keepContainer;
 	private Thread thread;
+	private Closeable token;
 	private boolean containerRemoved;
 	private int exitValue;
 	private boolean done;
@@ -106,6 +107,7 @@ public class ContainerCommandProcess extends Process {
 					Closeable inputToken = ((DockerConnection) connection).getOperationToken();
 					Closeable token = ((DockerConnection) connection)
 							.getOperationToken()) {
+				this.token = token;
 				pipedOut = pipedStdout;
 				pipedErr = pipedStderr;
 				connection.startContainer(containerId, outputStream);
@@ -134,7 +136,6 @@ public class ContainerCommandProcess extends Process {
 				pipedStderr.flush();
 			} catch (DockerException | InterruptedException | IOException e) {
 				// do nothing but flush/close output streams
-				e.printStackTrace();
 				if (pipedOut != null) {
 					try {
 						pipedOut.flush();
@@ -149,6 +150,9 @@ public class ContainerCommandProcess extends Process {
 						// ignore
 					}
 				}
+			} catch (Exception e) {
+				// do nothing as this will occur if we forcefully stop the attachLog via closing
+				// the copy client token
 			} finally {
 				threadDone = true;
 			}
@@ -190,6 +194,7 @@ public class ContainerCommandProcess extends Process {
 			this.stdout.close();
 			this.stderr.close();
 			this.stdin.close();
+			this.token.close();
 			for (Closeable close : toClose) {
 				close.close();
 			}
@@ -252,6 +257,8 @@ public class ContainerCommandProcess extends Process {
 									containerId.substring(0, 8)));
 					this.stdout.close();
 					this.stderr.close();
+					this.stdin.close();
+					this.token.close();
 				} catch (IOException e) {
 					// do nothing
 				}
