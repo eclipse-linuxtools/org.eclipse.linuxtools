@@ -125,7 +125,8 @@ public class ContainerCommandProcess extends Process {
 					Thread.sleep(50);
 					state = connection.getContainerInfo(containerId).state();
 					if (state.running()) {
-						((DockerConnection) connection).attachCommand(inputToken, containerId, pipedStdinIn, null);
+						((DockerConnection) connection).attachCommand(inputToken, containerId, pipedStdinIn, null,
+								false);
 						((DockerConnection) connection).attachContainerOutput(token, containerId, pipedStdout,
 								pipedStderr);
 					}
@@ -251,10 +252,6 @@ public class ContainerCommandProcess extends Process {
 			if (!threadDone) {
 				// we are stuck
 				try {
-					Activator.logWarningMessage(
-							LaunchMessages.getFormattedString(
-									"ContainerLoggingNotResponding.msg", //$NON-NLS-1$
-									containerId.substring(0, 8)));
 					this.stdout.close();
 					this.stderr.close();
 					this.stdin.close();

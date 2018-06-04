@@ -1762,6 +1762,12 @@ public class DockerConnection
 	@Override
 	public void startContainer(final String id, final OutputStream stream)
 			throws DockerException, InterruptedException {
+		startContainer(client, id, stream);
+	}
+
+	public void startContainer(final Closeable token, final String id,
+			final OutputStream stream)
+			throws DockerException, InterruptedException {
 		final IDockerContainerInfo containerInfo = getContainerInfo(id);
 		if (containerInfo == null) {
 			throw new DockerException(DockerMessages
@@ -1769,7 +1775,7 @@ public class DockerConnection
 		}
 		try {
 			// start container
-			client.startContainer(id);
+			((DockerClient) token).startContainer(id);
 			// Log the started container if a stream is provided
 			if (stream != null && containerInfo != null
 					&& containerInfo.config() != null
@@ -2141,11 +2147,12 @@ public class DockerConnection
 	public void attachCommand(final String id, final InputStream in,
 			final DockerConsoleOutputStream out)
 					throws DockerException {
-		attachCommand(client, id, in, out);
+		attachCommand(client, id, in, out, true);
 	}
 
 	public void attachCommand(final Closeable token, final String id,
-			final InputStream in, final DockerConsoleOutputStream out)
+			final InputStream in, final DockerConsoleOutputStream out,
+			final boolean openTTY)
 			throws DockerException {
 
 		final byte[] prevCmd = new byte[1024];
@@ -2159,7 +2166,7 @@ public class DockerConnection
 			final boolean isTtyEnabled = info.config().tty();
 			final boolean isOpenStdin = info.config().openStdin();
 
-			if (isTtyEnabled) {
+			if (isTtyEnabled && openTTY) {
 				openTerminal(pty_stream, info.name(), out);
 			}
 
