@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -93,11 +93,11 @@ public class CovManager implements Serializable {
      * Constructor
      * @param binaryPath
      */
-    public CovManager(String binaryPath) 
+    public CovManager(String binaryPath)
     {
         this(binaryPath, null);
     	//FIXME EK-LINUXTOOLS: Need project for finding local STRINGS etc.
-        this.project = STSymbolManager.sharedInstance.getProjectFromFile(new Path(binaryPath));;
+		this.project = STSymbolManager.sharedInstance.getProjectFromFile(new Path(binaryPath));
     }
 
     /**
@@ -270,7 +270,7 @@ public class CovManager implements Serializable {
         if (winOSType.equals("")) { //$NON-NLS-1$
             try {
                 Process process = Runtime.getRuntime().exec(new String[] {"sh", "-c", "echo $OSTYPE"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                
+
                 String firstLine = null;
                 try (BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                     firstLine = stdout.readLine();
