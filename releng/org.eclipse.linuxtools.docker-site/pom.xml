@@ -149,7 +149,7 @@
               <repositories>
                 <repository>
                   <id>cbi-reports</id>
-                  <url>http://download.eclipse.org/cbi/updates/analyzers/4.7/I20180130-1734</url>
+                  <url>http://download.eclipse.org/cbi/updates/analyzers/4.7/I20180525-1502</url>
                   <layout>p2</layout>
                 </repository>
                 <repository>

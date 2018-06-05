@@ -51,8 +51,8 @@
     <mirror-repo-name>updates-nightly</mirror-repo-name>
     <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
     <mirror-mylyn-repo-name>updates-mylyn-nightly</mirror-mylyn-repo-name>
-    <tycho-version>1.1.0</tycho-version>
-    <tycho-extras-version>1.1.0</tycho-extras-version>
+    <tycho-version>1.2.0</tycho-version>
+    <tycho-extras-version>1.2.0</tycho-extras-version>
     <target-platform>linuxtools-e4.8</target-platform>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
@@ -459,7 +459,7 @@
 	<plugin>
 	  <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-	  <version>3.0.0</version>
+	  <version>3.0.1</version>
           <configuration>
             <excludePackageNames>org.eclipse.linuxtools.internal.*:*.test*:org.eclipse.linuxtools.docker.reddeer*</excludePackageNames>
           </configuration>
