@@ -44,12 +44,12 @@
                    <target>
                     <delete includeemptydirs="false">
                        <fileset
-                         dir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly">
+                         dir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly-photon">
                          <include name="**" />
                        </fileset>
                      </delete>
                      <copy includeemptydirs="false"
-                       todir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly">
+                       todir="/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly-photon">
                        <fileset dir="target/repository">
                          <include name="**" />
                        </fileset>

@@ -48,9 +48,9 @@
   </distributionManagement>
 
   <properties>
-    <mirror-repo-name>updates-nightly</mirror-repo-name>
-    <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
-    <mirror-mylyn-repo-name>updates-mylyn-nightly</mirror-mylyn-repo-name>
+    <mirror-repo-name>update-7.0</mirror-repo-name>
+    <mirror-docker-repo-name>update-docker-4.0</mirror-docker-repo-name>
+    <mirror-mylyn-repo-name>update-mylyn-2.0</mirror-mylyn-repo-name>
     <tycho-version>1.2.0</tycho-version>
     <tycho-extras-version>1.2.0</tycho-extras-version>
     <target-platform>linuxtools-e4.8</target-platform>
