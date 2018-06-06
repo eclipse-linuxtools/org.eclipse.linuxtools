@@ -37,6 +37,9 @@ public class GcnoRecordsParser {
     private static final int GCOV_TAG_ARCS = 0x01430000;
     private static final int GCOV_TAG_LINES = 0x01450000;
 
+    private static final int GCC_VER_810R = 1094201682; // GCC 8.1.0 Release
+    private static final int GCC_VER_407 = 875575082; // GCC 4.0.7
+
     private GcnoFunction fnctn = null;
     private final ArrayList<GcnoFunction> fnctns = new ArrayList<>();
     private final ArrayList<SourceFile> currentAllSrcs;
@@ -117,13 +120,23 @@ public class GcnoRecordsParser {
                      * announce_function: header int32:ident int32:lineno_checksum int32:cfg_checksum TL;DR Need to
                      * consume the extra long value.
                      */
-                    if (version >= 875575082) {
+                    if (version >= GCC_VER_407) {
                         // long cfgChksm = (stream.readInt()&MasksGenerator.UNSIGNED_INT_MASK);
                         stream.readInt();
                     }
                     String fnctnName = GcovStringReader.readString(stream);
+                    if (version >= GCC_VER_810R) {
+                        // long artificial = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
+                        stream.readInt();
+                    }
                     String fnctnSrcFle = GcovStringReader.readString(stream);
                     long fnctnFrstLnNmbr = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
+                    if (version >= GCC_VER_810R) {
+                        // long fnctnFrstColumnLnNmbr = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
+                        stream.readInt();
+                        // long fnctnLastLnNmbr = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
+                        stream.readInt();
+                    }
 
                     fnctn = new GcnoFunction(fnctnIdent, fnctnChksm, fnctnName, fnctnSrcFle, fnctnFrstLnNmbr);
                     SourceFile srcFle2 = findOrAdd(fnctn.getSrcFile());
@@ -136,10 +149,18 @@ public class GcnoRecordsParser {
                 }
 
                 else if (tag == GCOV_TAG_BLOCKS) {
+                    if (version >= GCC_VER_810R) {
+                        length = stream.readInt();
+                    }
                     blocks = new ArrayList<>();
+                    Block blck;
                     for (int i = 0; i < length; i++) {
-                        long BlckFlag = stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK;
-                        Block blck = new Block(BlckFlag);
+                        if (version >= GCC_VER_810R) {
+                            blck = new Block(0); // value not used anywhere
+                        } else {
+                            long BlckFlag = stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK;
+                            blck = new Block(BlckFlag);
+                        }
                         blocks.add(blck);
                     }
                     fnctn.setNumBlocks(length);
