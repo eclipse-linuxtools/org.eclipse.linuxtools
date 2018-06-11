@@ -379,7 +379,7 @@ public class DockerConnection
 			}
 			setState(EnumDockerConnectionState.ESTABLISHED);
 		} catch (com.spotify.docker.client.exceptions.DockerException
-				| InterruptedException e) {
+				| InterruptedException | IllegalArgumentException e) {
 			setState(EnumDockerConnectionState.CLOSED);
 			throw new DockerPingConnectionException(NLS.bind(
 					Messages.Docker_Daemon_Ping_Failure, this.getName()), e);
