@@ -853,6 +853,7 @@ public class ContainerLauncher {
 		// via the HostConfig binds setting
 
 		DockerContainerConfig.Builder builder = new DockerContainerConfig.Builder()
+				.env(env)
 				.openStdin(stdinSupport)
 				.cmd(cmdList)
 				.image(image)
