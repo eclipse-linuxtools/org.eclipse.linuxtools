@@ -55,9 +55,11 @@ public class RefreshCommandHandler extends AbstractHandler {
 		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		final List<Job> jobs = getRefreshJobs(activePart);
 		for (Job job : jobs) {
-			job.setPriority(Job.LONG);
-			job.setUser(true);
-			job.schedule();
+			if (job != null) {
+				job.setPriority(Job.LONG);
+				job.setUser(true);
+				job.schedule();
+			}
 		}
 		return null;
 	}
