@@ -14,7 +14,7 @@
 <feature
       id="org.eclipse.linuxtools.rpm"
       label="%featureName"
-      version="7.0.0.qualifier"
+      version="7.1.0.qualifier"
       provider-name="%provider"
       license-feature="org.eclipse.license"
       license-feature-version="0.0.0">
