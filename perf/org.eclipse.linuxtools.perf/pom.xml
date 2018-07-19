@@ -15,7 +15,7 @@
   <parent>
     <artifactId>linuxtools-perf-parent</artifactId>
     <groupId>org.eclipse.linuxtools.perf-parent</groupId>
-    <version>7.0.0</version>
+    <version>7.0.1</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.perf</artifactId>

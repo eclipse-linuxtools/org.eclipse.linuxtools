@@ -15,7 +15,7 @@
   <parent>
     <artifactId>linuxtools-rpm-parent</artifactId>
     <groupId>org.eclipse.linuxtools.rpm</groupId>
-    <version>7.0.0</version>
+    <version>7.0.1</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.rpm.ui.editor.tests</artifactId>

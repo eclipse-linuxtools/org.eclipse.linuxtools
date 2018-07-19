@@ -15,7 +15,7 @@
   <parent>
     <artifactId>linuxtools-systemtap-parent</artifactId>
     <groupId>org.eclipse.linuxtools.systemtap</groupId>
-    <version>7.0.0</version>
+    <version>7.0.1</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.systemtap.ui.doc</artifactId>

@@ -15,7 +15,7 @@
   <parent>
     <artifactId>linuxtools-libhover-parent</artifactId>
     <groupId>org.eclipse.linuxtools.cdt.libhover</groupId>
-    <version>7.0.0</version>
+    <version>7.0.1</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.cdt.libhover.devhelp.tests</artifactId>
