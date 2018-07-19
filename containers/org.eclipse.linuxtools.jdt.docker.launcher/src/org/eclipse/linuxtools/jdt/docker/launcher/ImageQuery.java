@@ -120,9 +120,13 @@ public class ImageQuery {
 		String result = exec(new String [] {"sh", "-c", "java -version 2>&1 | grep version | cut -d\\\" -f2 | cut -d_ -f1"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		if (result != null) {
 			result = result.replaceAll("\n", ""); //$NON-NLS-1$ //$NON-NLS-2$
-			Version v = new Version(result);
-			String newV = v.getMajor() + "." + v.getMinor(); //$NON-NLS-1$
-			return Double.valueOf(newV);
+			try {
+				Version v = new Version(result);
+				String newV = v.getMajor() + "." + v.getMinor(); //$NON-NLS-1$
+				return Double.valueOf(newV);
+			} catch (Exception e) {
+				return 0;
+			}
 		} else {
 			return 0;
 		}
