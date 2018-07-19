@@ -17,6 +17,7 @@ import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
@@ -111,7 +112,8 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
 			line = line.replaceAll("\\\\(.)", "$1");
 
 			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-			IFile fileLoc = (IFile) root.findMember(documentLocation.append(line));
+			IResource resource = root.findMember(documentLocation.append(line));
+			IFile fileLoc = resource.getAdapter(IFile.class);
 			if (fileLoc != null && fileLoc.exists()) {
 				return new IHyperlink[] { new FileHyperlink(pathRegion, fileLoc) };
 			}
