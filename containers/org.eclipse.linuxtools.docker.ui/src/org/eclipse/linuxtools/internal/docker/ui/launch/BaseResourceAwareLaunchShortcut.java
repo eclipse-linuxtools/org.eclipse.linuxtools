@@ -79,7 +79,7 @@ public abstract class BaseResourceAwareLaunchShortcut implements ILaunchShortcut
 			return (IResource) selectedElement;
 		} else if (selectedElement instanceof IAdaptable) {
 			// may return null, which will be dealt with in the caller method
-			return ((IAdaptable) selection).getAdapter(IResource.class);
+			return ((IAdaptable) selectedElement).getAdapter(IResource.class);
 		}
 		// if the selected element is neither a resource nor an 'adaptable'
 		return null;
