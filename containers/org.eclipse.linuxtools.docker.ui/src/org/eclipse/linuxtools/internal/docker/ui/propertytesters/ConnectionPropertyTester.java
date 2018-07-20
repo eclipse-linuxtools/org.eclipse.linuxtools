@@ -47,28 +47,27 @@ public class ConnectionPropertyTester extends PropertyTester {
 
 	private boolean isConnectionEstablished(Object receiver, String property,
 			Object[] args, Object expectedValue) {
-		if (receiver instanceof List) {
-			if (!((List<?>) receiver).isEmpty()) {
-				return isConnectionEstablished(((List<?>) receiver).get(0),
-						property, args, expectedValue);
-			} else {
-				return isConnectionEstablished(
-						DockerConnectionWatcher.getInstance().getConnection(),
-						property, args,
-						expectedValue);
+		try {
+			if (receiver instanceof List) {
+				if (!((List<?>) receiver).isEmpty()) {
+					return isConnectionEstablished(((List<?>) receiver).get(0), property, args, expectedValue);
+				} else {
+					return isConnectionEstablished(DockerConnectionWatcher.getInstance().getConnection(), property,
+							args, expectedValue);
+				}
 			}
-		}
-		if (receiver instanceof IAdaptable) {
-			final IDockerConnection connection = ((IAdaptable) receiver)
-					.getAdapter(IDockerConnection.class);
-			if (connection != null) {
-				return isConnectionEstablished(connection, property, args,
-						expectedValue);
+			if (receiver instanceof IAdaptable) {
+				final IDockerConnection connection = ((IAdaptable) receiver).getAdapter(IDockerConnection.class);
+				if (connection != null) {
+					return isConnectionEstablished(connection, property, args, expectedValue);
+				}
 			}
-		}
-		if (receiver instanceof IDockerConnection) {
-			return expectedValue.equals(((IDockerConnection) receiver)
-					.getState() == EnumDockerConnectionState.ESTABLISHED);
+			if (receiver instanceof IDockerConnection) {
+				return expectedValue
+						.equals(((IDockerConnection) receiver).getState() == EnumDockerConnectionState.ESTABLISHED);
+			}
+		} catch (Exception e) {
+			// do nothing and fall through
 		}
 		return false;
 	}

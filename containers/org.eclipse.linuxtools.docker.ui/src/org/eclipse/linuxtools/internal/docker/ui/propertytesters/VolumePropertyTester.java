@@ -27,15 +27,17 @@ public class VolumePropertyTester extends PropertyTester {
 	@Override
 	public boolean test(Object receiver, String property, Object[] args,
 			Object expectedValue) {
-		if (receiver instanceof DockerContainerVolume) {
-			final DockerContainerVolume volume = (DockerContainerVolume) receiver;
-			switch (property) {
-			case HAS_HOST_PATH:
-				DockerConnection connection = (DockerConnection) volume
-						.getContainer().getConnection();
-				return connection.isLocal() && volume.getHostPath() != null
-						&& !volume.getHostPath().isEmpty();
+		try {
+			if (receiver instanceof DockerContainerVolume) {
+				final DockerContainerVolume volume = (DockerContainerVolume) receiver;
+				switch (property) {
+				case HAS_HOST_PATH:
+					DockerConnection connection = (DockerConnection) volume.getContainer().getConnection();
+					return connection.isLocal() && volume.getHostPath() != null && !volume.getHostPath().isEmpty();
+				}
 			}
+		} catch (Exception e) {
+			// fall-through
 		}
 		return false;
 	}
