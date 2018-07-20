@@ -150,7 +150,7 @@ public class SystemTapErrorHandler {
      * time.
      */
     private void writeToLog() {
-        IStatus status = new Status(IStatus.ERROR,CallgraphCorePlugin.PLUGIN_ID,logContents.toString());
+        IStatus status = new Status(IStatus.INFO,CallgraphCorePlugin.PLUGIN_ID,logContents.toString());
         CallgraphCorePlugin.getDefault().getLog().log(status);
 
         logContents = new StringBuilder();
