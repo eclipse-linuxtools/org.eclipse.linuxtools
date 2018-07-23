@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.internal.docker.core;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -91,16 +92,13 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 		this.env = containerConfig != null ? containerConfig.env() : null;
 		this.cmd = containerConfig != null ? containerConfig.cmd() : null;
 		this.image = containerConfig != null ? containerConfig.image() : null;
-		/*
-		 * This is a bug in spotify/docker-client 6.1.1.
-		 * com.spotify.docker.client.ContainerConfig.volumes() tries
-		 * volumes.keySet() which might be null. For now we need to guard
-		 * against this.
-		 */
+
 		@SuppressWarnings("rawtypes")
-		Map<String, Map> res = null;
+		Map<String, Map> res = new HashMap<>();
 		try {
-			res = containerConfig != null ? containerConfig.volumes() : null;
+			if (containerConfig != null && containerConfig.volumes() != null) {
+				containerConfig.volumes().forEach(v -> res.put(v, Collections.emptyMap()));
+			}
 		} catch (NullPointerException e) {
 		}
 		this.volumes = res;
