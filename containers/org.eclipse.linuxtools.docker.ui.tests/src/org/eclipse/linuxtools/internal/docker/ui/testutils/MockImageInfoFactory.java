@@ -13,14 +13,12 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.mockito.Mockito;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.spotify.docker.client.messages.ContainerConfig;
 import com.spotify.docker.client.messages.ImageInfo;
 
@@ -37,7 +35,7 @@ public class MockImageInfoFactory {
 
 		private final ImageInfo imageInfo;
 
-		private Map<String, Map> volumes;
+		private ImmutableSet<String> volumes;
 
 		private List<String> command;
 
@@ -51,9 +49,9 @@ public class MockImageInfoFactory {
 
 		public Builder volume(final String volume) {
 			if (this.volumes == null) {
-				this.volumes = new HashMap<>();
+				this.volumes = new ImmutableSet.Builder<String>().add(volume).build();
 			}
-			this.volumes.put(volume, new HashMap<>());
+			this.volumes = new ImmutableSet.Builder<String>().addAll(this.volumes).add(volume).build();
 			return this;
 		}
 
@@ -79,7 +77,7 @@ public class MockImageInfoFactory {
 			Mockito.when(this.imageInfo.containerConfig()).thenReturn(containerConfig);
 			Mockito.when(config.cmd()).thenReturn(ImmutableList.copyOf(this.command));
 			Mockito.when(config.entrypoint()).thenReturn(ImmutableList.copyOf(this.entrypoint));
-			Mockito.when(config.volumes()).thenReturn(ImmutableMap.copyOf(this.volumes));
+			Mockito.when(config.volumes()).thenReturn(ImmutableSet.copyOf(this.volumes));
 			Mockito.when(config.env()).thenReturn(ImmutableList.copyOf(this.env));
 			return imageInfo;
 		}
