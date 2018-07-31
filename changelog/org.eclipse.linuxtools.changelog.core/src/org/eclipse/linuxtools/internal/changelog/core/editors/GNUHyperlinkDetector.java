@@ -45,7 +45,11 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
 			if (buffer == null) {
 				return null;
 			}
-			documentLocation = buffer.getLocation().removeLastSegments(1);
+			IPath p = buffer.getLocation();
+			if (p == null) {
+				return null;
+			}
+			documentLocation = p.removeLastSegments(1);
 		}
 
 		IDocument thisDoc = textViewer.getDocument();
