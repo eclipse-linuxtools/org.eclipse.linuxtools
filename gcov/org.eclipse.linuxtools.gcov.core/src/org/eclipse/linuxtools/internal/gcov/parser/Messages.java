@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2013, 2018 Red Hat Inc.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -18,10 +18,12 @@ public class Messages extends NLS {
     private static final String BUNDLE_NAME = "org.eclipse.linuxtools.internal.gcov.parser.messages"; //$NON-NLS-1$
     public static String CovManager_Parsing_Done;
     public static String CovManager_Retrieval_Error;
+	public static String CovManager_Retrieval_Error_title;
     public static String CovManager_Strings;
     public static String CovManager_Summary;
     public static String CovManager_No_Funcs_Error;
     public static String CovManager_No_FilePath_Error;
+	public static String CovManager_No_Strings_Windows_Error;
 
     public static String GcdaRecordsParser_content_inconsistent;
     public static String GcdaRecordsParser_func_block_empty;

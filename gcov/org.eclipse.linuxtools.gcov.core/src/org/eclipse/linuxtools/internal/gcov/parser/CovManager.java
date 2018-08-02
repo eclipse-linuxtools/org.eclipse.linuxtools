@@ -39,6 +39,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.binutils.utils.STStrings;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.internal.gcov.Activator;
@@ -48,6 +49,7 @@ import org.eclipse.linuxtools.internal.gcov.model.CovFunctionTreeElement;
 import org.eclipse.linuxtools.internal.gcov.model.CovRootTreeElement;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -393,9 +395,16 @@ public class CovManager implements Serializable {
         List<String> l = new LinkedList<>();
         Process p = getStringsProcess(strings.getName(), strings.getArgs(), binaryPath);
         if (p == null) {
-            Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR,
-                    Messages.CovManager_Retrieval_Error, new IOException());
-            Activator.getDefault().getLog().log(status);
+			if (Platform.getOS().equals(Platform.OS_WIN32)) {
+				Display.getDefault().syncExec(() -> {
+					MessageDialog.openError(new Shell(), Messages.CovManager_Retrieval_Error_title,
+							Messages.CovManager_No_Strings_Windows_Error);
+				});
+			} else {
+				Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR,
+						Messages.CovManager_Retrieval_Error, new IOException());
+				Activator.getDefault().getLog().log(status);
+			}
             return l;
         }
         ThreadConsumer t = new ThreadConsumer(p, l);
