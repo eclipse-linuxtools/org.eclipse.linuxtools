@@ -19,6 +19,7 @@ import java.io.OutputStream;
 
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
+import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.docker.core.IDockerContainerState;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
@@ -150,19 +151,36 @@ public class RunConsole extends IOConsole {
 			try {
 				DockerConnection conn = (DockerConnection) connection;
 				if (conn.getContainerInfo(containerId).config().openStdin()) {
-					IDockerContainerState state = conn
-							.getContainerInfo(containerId).state();
+					IDockerContainerInfo info = conn.getContainerInfo(containerId);
+					IDockerContainerState state = null;
+					if (info != null) {
+						state = info.state();
+					}
+					int sleepCounter = 0;
 					do {
-						if (!state.running() && (state.finishDate() == null
+						if (state == null || (!state.running() && (state.finishDate() == null
 								|| state.finishDate()
-										.before(state.startDate()))) {
+										.before(state.startDate())))) {
 							Thread.sleep(300);
+							++sleepCounter;
 						}
-						state = conn.getContainerInfo(containerId).state();
-					} while (!state.running() && (state.finishDate() == null
-							|| state.finishDate().before(state.startDate())));
+						state = null;
+						info = conn.getContainerInfo(containerId);
+						if (info != null) {
+							state = info.state();
+						} else {
+							if (sleepCounter > 2) {
+								break;
+							}
+						}
+					} while (state == null || (!state.running()
+							&& (state.finishDate() == null || state.finishDate().before(state.startDate()))));
 					Thread.sleep(300);
-					state = conn.getContainerInfo(containerId).state();
+					info = conn.getContainerInfo(containerId);
+					if (info == null) {
+						return;
+					}
+					state = info.state();
 					if (state.running()) {
 						conn.attachCommand(containerId, in, null);
 					}
@@ -180,22 +198,37 @@ public class RunConsole extends IOConsole {
 		Thread t = new Thread(() -> {
 			try {
 				DockerConnection conn = (DockerConnection) connection;
-				IDockerContainerState state = conn.getContainerInfo(containerId)
-						.state();
+				IDockerContainerInfo info = conn.getContainerInfo(containerId);
+				IDockerContainerState state = null;
+				if (info != null) {
+					state = info.state();
+				}
+				int sleepCounter = 0;
 				do {
-					if (!state.running() && (state.finishDate() == null
-							|| state.finishDate().before(state.startDate()))) {
+					if (state == null || (!state.running()
+							&& (state.finishDate() == null || state.finishDate().before(state.startDate())))) {
 						Thread.sleep(300);
+						++sleepCounter;
 					}
-					state = conn.getContainerInfo(containerId).state();
-				} while (!state.running() && (state.finishDate() == null
-						|| state.finishDate().before(state.startDate())));
+					state = null;
+					info = conn.getContainerInfo(containerId);
+					if (info != null) {
+						state = info.state();
+					} else if (sleepCounter > 2) {
+						break;
+					}
+				} while (state == null || (!state.running()
+						&& (state.finishDate() == null || state.finishDate().before(state.startDate()))));
 				// Pause as there appears to be some timing issue with regards
 				// to the Container saying it is running, but an exception
 				// thrown when we try and attach.
 				Thread.sleep(300);
-				state = conn.getContainerInfo(containerId).state();
-				if (state.running()) {
+				state = null;
+				info = conn.getContainerInfo(containerId);
+				if (info != null) {
+					state = info.state();
+				}
+				if (state != null && state.running()) {
 					conn.attachCommand(containerId, null, out);
 				} else {
 					// notify any console listener that there is no more output
@@ -203,6 +236,7 @@ public class RunConsole extends IOConsole {
 					if (out != null) {
 						out.notifyConsoleListeners(new byte[] { 0 }, 0, 0);
 					}
+					return;
 				}
 			} catch (Exception e) {
 				Activator.log(e);
