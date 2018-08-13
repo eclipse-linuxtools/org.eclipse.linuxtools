@@ -18,6 +18,7 @@ import java.net.URL;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.IVMInstall2;
 import org.eclipse.jdt.launching.IVMInstallType;
 import org.eclipse.jdt.launching.IVMRunner;
 import org.eclipse.jdt.launching.LibraryLocation;
@@ -25,13 +26,14 @@ import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 
-public class ContainerVMInstall implements IVMInstall {
+public class ContainerVMInstall implements IVMInstall, IVMInstall2 {
 
 	private ILaunchConfiguration config;
 	private String name;
 	private File installLocation;
 	private IDockerImage image;
 	private int port;
+	private String javaVersion;
 
 	public ContainerVMInstall (ILaunchConfiguration cfg, IDockerImage img, int port) {
 		this.config = cfg;
@@ -159,6 +161,26 @@ public class ContainerVMInstall implements IVMInstall {
 		} catch (CoreException e) {
 		}
 		return null;
+	}
+
+	@Override
+	public String getVMArgs() {
+		return null;
+	}
+
+	@Override
+	public void setVMArgs(String vmArgs) {
+	}
+
+	@Override
+	public String getJavaVersion() {
+		if (javaVersion == null) {
+			DockerConnection conn = getConnection();
+			ImageQuery q = new ImageQuery(conn, image.id());
+			javaVersion = String.valueOf(q.getJavaVersion());
+			q.destroy();
+		}
+		return javaVersion;
 	}
 
 }
