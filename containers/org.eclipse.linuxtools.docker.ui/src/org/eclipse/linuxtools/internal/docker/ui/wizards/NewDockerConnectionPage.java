@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.IChangeListener;
+import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -895,8 +896,8 @@ public class NewDockerConnectionPage extends WizardPage {
 		}
 
 		@Override
-		public IObservableList<IObservableValue<String>> getTargets() {
-			WritableList<IObservableValue<String>> targets = new WritableList<>();
+		public IObservableList<IObservable> getTargets() {
+			WritableList<IObservable> targets = new WritableList<>();
 			targets.add(connectionNameModelObservable);
 			return targets;
 		}
@@ -932,8 +933,8 @@ public class NewDockerConnectionPage extends WizardPage {
 		}
 
 		@Override
-		public IObservableList<IObservableValue<String>> getTargets() {
-			WritableList<IObservableValue<String>> targets = new WritableList<>();
+		public IObservableList<IObservable> getTargets() {
+			WritableList<IObservable> targets = new WritableList<>();
 			targets.add(getConnectionNameModelObservable());
 			targets.add(unixSocketPathModelObservable);
 			return targets;
@@ -1014,8 +1015,8 @@ public class NewDockerConnectionPage extends WizardPage {
 		}
 
 		@Override
-		public IObservableList<IObservableValue<String>> getTargets() {
-			WritableList<IObservableValue<String>> targets = new WritableList<>();
+		public IObservableList<IObservable> getTargets() {
+			WritableList<IObservable> targets = new WritableList<>();
 			targets.add(getConnectionNameModelObservable());
 			targets.add(tcpHostModelObservable);
 			return targets;
@@ -1094,8 +1095,8 @@ public class NewDockerConnectionPage extends WizardPage {
 		}
 
 		@Override
-		public IObservableList<IObservableValue<String>> getTargets() {
-			WritableList<IObservableValue<String>> targets = new WritableList<>();
+		public IObservableList<IObservable> getTargets() {
+			WritableList<IObservable> targets = new WritableList<>();
 			targets.add(tcpCertPathModelObservable);
 			return targets;
 		}

@@ -13,6 +13,7 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
+import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -109,8 +110,8 @@ public class ImagePushPageModel extends ImagePullPushPageModel {
 		}
 
 		@Override
-		public IObservableList<?> getTargets() {
-			final WritableList<IObservableValue<?>> targets = new WritableList<>();
+		public IObservableList<IObservable> getTargets() {
+			final WritableList<IObservable> targets = new WritableList<>();
 			targets.add(this.imageNameObservable);
 			targets.add(this.registryAccountObservable);
 			return targets;

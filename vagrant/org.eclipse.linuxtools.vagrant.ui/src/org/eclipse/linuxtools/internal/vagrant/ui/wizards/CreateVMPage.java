@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -274,7 +275,7 @@ public class CreateVMPage extends WizardPage {
 		}
 
 		@Override
-		public IObservableList<String> getTargets() {
+		public IObservableList<IObservable> getTargets() {
 			// Work around for NPE triggered by DialogPageSupport.dispose()
 			return new WritableList<>();
 		}

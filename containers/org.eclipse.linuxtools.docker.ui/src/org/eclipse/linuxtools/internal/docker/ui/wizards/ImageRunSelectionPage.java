@@ -33,6 +33,7 @@ import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.ObservableTracker;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
@@ -1013,8 +1014,8 @@ public class ImageRunSelectionPage extends WizardPage {
 		}
 
 		@Override
-		public IObservableList<IObservableValue<String>> getTargets() {
-			WritableList<IObservableValue<String>> targets = new WritableList<>();
+		public IObservableList<IObservable> getTargets() {
+			WritableList<IObservable> targets = new WritableList<>();
 			targets.add(imageSelectionObservable);
 			return targets;
 		}
@@ -1047,8 +1048,8 @@ public class ImageRunSelectionPage extends WizardPage {
 		}
 
 		@Override
-		public IObservableList<IObservableValue<String>> getTargets() {
-			WritableList<IObservableValue<String>> targets = new WritableList<>();
+		public IObservableList<IObservable> getTargets() {
+			WritableList<IObservable> targets = new WritableList<>();
 			targets.add(containerNameObservable);
 			return targets;
 		}

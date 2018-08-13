@@ -17,6 +17,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.linuxtools.docker.integration.tests.image.AbstractImageBotTest;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class DifferentRegistryTest extends AbstractImageBotTest {
@@ -35,6 +36,7 @@ public class DifferentRegistryTest extends AbstractImageBotTest {
 	}
 
 	@Test
+	@Ignore
 	public void testDifferentRegistry() {
 		clearConsole();
 		setUpRegister(REGISTRY_SERVER_ADDRESS, EMAIL, USERNAME, PASSWORD);

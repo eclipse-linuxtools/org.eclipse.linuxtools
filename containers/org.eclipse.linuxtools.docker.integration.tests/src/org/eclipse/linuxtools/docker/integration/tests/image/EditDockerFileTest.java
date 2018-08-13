@@ -37,6 +37,7 @@ import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.swt.SWT;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class EditDockerFileTest extends AbstractImageBotTest {
@@ -44,6 +45,7 @@ public class EditDockerFileTest extends AbstractImageBotTest {
 	private static final String BUILD_IMAGE = "FROM alpine:latest\nMAINTAINER Josef Kopriva <jkopriva@redhat.com>";
 
 	@Test
+    @Ignore
 	public void testEditDockerFile() {
 		getConnection();
 		DockerImagesTab imageTab = openDockerImagesTab();
