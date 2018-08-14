@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -140,12 +140,6 @@ public class GcdaRecordsParser {
                 case GCOV_COUNTER_ARCS: {
                     if (currentFnctn == null) {
                         String message = Messages.GcdaRecordsParser_func_counter_error;
-                        Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
-                        throw new CoreException(status);
-                    }
-
-                    if (length != 2 * (currentFnctn.getNumCounts())) {
-                        String message = Messages.GcdaRecordsParser_content_inconsistent;
                         Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
                         throw new CoreException(status);
                     }
