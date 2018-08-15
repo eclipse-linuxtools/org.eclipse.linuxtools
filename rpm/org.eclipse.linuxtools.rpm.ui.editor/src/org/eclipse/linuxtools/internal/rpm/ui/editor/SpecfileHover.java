@@ -97,7 +97,7 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 				return new Region(selectedRange.x, selectedRange.y);
 			} else {
 				IRegion region = findWord(textViewer.getDocument(), offset);
-				if (region.equals(new Region(offset, 0))) {
+				if (region != null && region.equals(new Region(offset, 0))) {
 					region = findPackages(textViewer.getDocument(), offset);
 				}
 				return region;
