@@ -38,10 +38,13 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IModuleDescription;
 import org.eclipse.jdt.launching.AbstractJavaLaunchConfigurationDelegate;
 import org.eclipse.jdt.launching.ExecutionArguments;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
@@ -153,12 +156,17 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 				}
 			}
 
+			// Bug 522333 :to be used for modulepath only for 4.7.*
+			String[][] paths = getClasspathAndModulepath(configuration);
+
 			// Create VM config
 			VMRunnerConfiguration runConfig = new VMRunnerConfiguration(mainTypeName, classpath);
 			runConfig.setProgramArguments(execArgs.getProgramArgumentsArray());
 			runConfig.setEnvironment(envp);
 
 			List<String> finalVMArgs = new ArrayList<> (Arrays.asList(execArgs.getVMArgumentsArray()));
+
+			// See org.eclipse.jdt.internal.launching.StandardVMDebugger#run()
 			if (ILaunchManager.DEBUG_MODE.equals(mode)) {
 				double version = getJavaVersion(conn, img);
 				if (version < 1.5) {
@@ -173,7 +181,7 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 				if (version < 1.5) {
 					finalVMArgs.add("-Xrunjdwp:transport=dt_socket,server=y,address=" + port); //$NON-NLS-1$
 				} else {
-					finalVMArgs.add("-agentlib:jdwp=transport=dt_socket,server=y,address=" + port); //$NON-NLS-1$
+					finalVMArgs.add("-agentlib:jdwp=transport=dt_socket,server=y,address=*:" + port); //$NON-NLS-1$
 				}
 			}
 
@@ -181,8 +189,31 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 			runConfig.setWorkingDirectory(workingDirName);
 			runConfig.setVMSpecificAttributesMap(vmAttributesMap);
 
-			// Bootpath
-			runConfig.setBootClassPath(getBootpath(configuration));
+			try {
+				IJavaProject proj = JavaRuntime.getJavaProject(configuration);
+				if (proj != null) {
+					IModuleDescription module = proj == null ? null : proj.getModuleDescription();
+					String modName = module == null ? null : module.getElementName();
+					if (modName != null) {
+						runConfig.setModuleDescription(modName);
+					}
+				}
+			} catch (CoreException e) {
+				// Not a java Project so no need to set module description
+			}
+
+			if (!JavaRuntime.isModularConfiguration(configuration)) {
+				// Bootpath
+				runConfig.setBootClassPath(getBootpath(configuration));
+			} else {
+				// module path
+				runConfig.setModulepath(paths[1]);
+				if (!configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_MODULE_CLI_OPTIONS, true)) {
+					runConfig.setOverrideDependencies(configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_MODULE_CLI_OPTIONS, "")); //$NON-NLS-1$
+				} else {
+					runConfig.setOverrideDependencies(getModuleCLIOptions(configuration));
+				}
+			}
 
 			// check for cancellation
 			if (monitor.isCanceled()) {
