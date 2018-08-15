@@ -302,7 +302,18 @@ public class CovManager implements Serializable {
         return s;
     }
 
-    // transform String path to stream
+	private class StringHolder {
+		private String s;
+
+		public String getString() {
+			return s;
+		}
+
+		public void setString(String s) {
+			this.s = s;
+		}
+	}
+
     private DataInput openTraceFileStream(String filePath, String extension, Map<File, File> sourcePath)
             throws FileNotFoundException {
         Path p = new Path(filePath);
@@ -338,22 +349,30 @@ public class CovManager implements Serializable {
                 }
             }
 
-            Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-            FileDialog fg = new FileDialog(shell, SWT.OPEN);
-            fg.setFilterExtensions(new String[] { "*" + extension, "*.*", "*" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            fg.setFileName(filename);
-            fg.setText(NLS.bind(Messages.CovManager_No_FilePath_Error, new Object[] { filePath, filename }));
-            String s = fg.open();
+			// We need to ask user for location. Open up a dialog.
+			final StringHolder holder = new StringHolder();
+			final String filePathToUse = filePath;
+			Display.getDefault().syncExec(() -> {
+				Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+				FileDialog fg = new FileDialog(shell, SWT.OPEN);
+				fg.setFilterExtensions(new String[] { "*" + extension, "*.*", "*" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				fg.setFileName(filename);
+				fg.setText(NLS.bind(Messages.CovManager_No_FilePath_Error, new Object[] { filePathToUse, filename }));
+				String s = fg.open();
+				holder.setString(s);
+			});
+			// transform String path to stream
+			String s = holder.getString();
             if (s == null) {
-                return null;
+				return null;
             } else {
-                f = new File(s).getAbsoluteFile();
-                addSourceLookup(sourcePath, f, new File(filePath).getAbsoluteFile());
-                if (f.isFile() && f.canRead()) {
-                    FileInputStream fis = new FileInputStream(f);
-                    InputStream inputStream = new BufferedInputStream(fis);
-                    return new DataInputStream(inputStream);
-                }
+				f = new File(s).getAbsoluteFile();
+				addSourceLookup(sourcePath, f, new File(filePath).getAbsoluteFile());
+				if (f.isFile() && f.canRead()) {
+					FileInputStream fis = new FileInputStream(f);
+					InputStream inputStream = new BufferedInputStream(fis);
+					return new DataInputStream(inputStream);
+				}
             }
         }
         return null;
