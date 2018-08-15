@@ -17,8 +17,8 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.jdt.launching.IVMInstall;
-import org.eclipse.jdt.launching.IVMInstall2;
+import org.eclipse.jdt.internal.launching.StandardVMType;
+import org.eclipse.jdt.launching.AbstractVMInstall;
 import org.eclipse.jdt.launching.IVMInstallType;
 import org.eclipse.jdt.launching.IVMRunner;
 import org.eclipse.jdt.launching.LibraryLocation;
@@ -26,7 +26,7 @@ import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 
-public class ContainerVMInstall implements IVMInstall, IVMInstall2 {
+public class ContainerVMInstall extends AbstractVMInstall {
 
 	private ILaunchConfiguration config;
 	private String name;
@@ -36,6 +36,8 @@ public class ContainerVMInstall implements IVMInstall, IVMInstall2 {
 	private String javaVersion;
 
 	public ContainerVMInstall (ILaunchConfiguration cfg, IDockerImage img, int port) {
+		// values are ignored (overriden by getVMInstallType() and getId()
+		super(new StandardVMType(), img.id());
 		this.config = cfg;
 		this.image = img;
 		this.port = port;
