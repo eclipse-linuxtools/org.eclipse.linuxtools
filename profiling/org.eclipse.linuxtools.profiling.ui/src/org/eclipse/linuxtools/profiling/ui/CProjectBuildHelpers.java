@@ -18,9 +18,11 @@ import org.eclipse.cdt.core.CCProjectNature;
 import org.eclipse.cdt.core.CProjectNature;
 import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
+import org.eclipse.cdt.core.settings.model.extension.CConfigurationData;
 import org.eclipse.cdt.internal.autotools.core.configure.AutotoolsConfigurationManager;
 import org.eclipse.cdt.internal.autotools.core.configure.IAConfiguration;
 import org.eclipse.cdt.internal.autotools.core.configure.IConfigureOption;
+import org.eclipse.cdt.internal.core.settings.model.CConfigurationDescriptionCache;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IBuilder;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
@@ -29,6 +31,7 @@ import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IResourceInfo;
 import org.eclipse.cdt.managedbuilder.core.ITool;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
+import org.eclipse.cdt.managedbuilder.internal.dataprovider.BuildConfigurationData;
 import org.eclipse.core.resources.IBuildConfiguration;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -458,9 +461,33 @@ public class CProjectBuildHelpers {
      * @param project IProject for which to get the configuration.
      * @return IConfiguration of that project.
      */
-    private static IConfiguration helperGetActiveConfiguration(IProject project) {
-        IManagedBuildInfo buildInfo = ManagedBuildManager.getBuildInfo(project);
-        return buildInfo.getDefaultConfiguration();
+    @SuppressWarnings("restriction")
+	private static IConfiguration helperGetActiveConfiguration(IProject project) {
+		ICConfigurationDescription cfgd = CoreModel.getDefault()
+				.getProjectDescription(project, false)
+					.getActiveConfiguration();
+
+		IConfiguration cfg = null;
+
+		try {
+			if (cfgd instanceof CConfigurationDescriptionCache) {
+				CConfigurationData data = ((CConfigurationDescriptionCache) cfgd)
+						.getConfigurationData();
+				if (data instanceof BuildConfigurationData) {
+					cfg = ((BuildConfigurationData) data).getConfiguration();
+				}
+			}
+
+			if (cfg == null) {
+				IManagedBuildInfo buildInfo = ManagedBuildManager.getBuildInfo(project);
+				if (buildInfo != null) {
+					return buildInfo.getDefaultConfiguration();
+				}
+			}
+		} catch (Exception e) {
+			// ignore
+		}
+		return cfg;
     }
 
     /**
