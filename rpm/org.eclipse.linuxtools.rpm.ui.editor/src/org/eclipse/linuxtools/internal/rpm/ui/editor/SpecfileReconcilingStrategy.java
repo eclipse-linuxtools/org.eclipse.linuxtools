@@ -79,8 +79,11 @@ public class SpecfileReconcilingStrategy implements IReconcilingStrategy, IRecon
 	private void updateEditor() {
 		Shell shell = editor.getSite().getShell();
 		if (!(shell == null || shell.isDisposed())) {
-			shell.getDisplay().asyncExec(() -> editor
-					.setSpecfile(editor.getParser().parse(documentProvider.getDocument(editor.getEditorInput()))));
+			// Bug 538050
+			if (documentProvider != null && documentProvider.getDocument(editor.getEditorInput()) != null) {
+				shell.getDisplay().asyncExec(() -> editor
+						.setSpecfile(editor.getParser().parse(documentProvider.getDocument(editor.getEditorInput()))));
+			}
 		}
 	}
 
