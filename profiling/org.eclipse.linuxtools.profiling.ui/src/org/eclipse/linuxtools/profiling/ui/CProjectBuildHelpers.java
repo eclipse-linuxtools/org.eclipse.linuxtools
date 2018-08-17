@@ -236,6 +236,11 @@ public class CProjectBuildHelpers {
 
         //Get Compiler tool.
         ITool gccCompileriTool = helperGetGccCompilerToolBySuperClass(toolSuperClassId, activeConf);
+        
+        if (gccCompileriTool == null) {
+            MessageDialogSyncedRunnable.openErrorSyncedRunnable(ProfilingMessages.errorTitle, ProfilingMessages.errorGetProjectToolname);
+            return false;
+        }
 
         //(Get immutable option: This is like a 'template' that we will use to get the actual option)
         IOption optionTemplate = gccCompileriTool.getOptionById(optionIDString);
