@@ -37,7 +37,7 @@ public class GcnoRecordsParser {
     private static final int GCOV_TAG_ARCS = 0x01430000;
     private static final int GCOV_TAG_LINES = 0x01450000;
 
-    private static final int GCC_VER_810R = 1094201682; // GCC 8.1.0 Release
+    private static final int GCC_VER_810 = 1094201642; // GCC 8.1.0 ('A81*')
     private static final int GCC_VER_407 = 875575082; // GCC 4.0.7
 
     private GcnoFunction fnctn = null;
@@ -125,13 +125,13 @@ public class GcnoRecordsParser {
                         stream.readInt();
                     }
                     String fnctnName = GcovStringReader.readString(stream);
-                    if (version >= GCC_VER_810R) {
+                    if (version >= GCC_VER_810) {
                         // long artificial = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
                         stream.readInt();
                     }
                     String fnctnSrcFle = GcovStringReader.readString(stream);
                     long fnctnFrstLnNmbr = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
-                    if (version >= GCC_VER_810R) {
+                    if (version >= GCC_VER_810) {
                         // long fnctnFrstColumnLnNmbr = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
                         stream.readInt();
                         // long fnctnLastLnNmbr = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
@@ -149,13 +149,13 @@ public class GcnoRecordsParser {
                 }
 
                 else if (tag == GCOV_TAG_BLOCKS) {
-                    if (version >= GCC_VER_810R) {
+                    if (version >= GCC_VER_810) {
                         length = stream.readInt();
                     }
                     blocks = new ArrayList<>();
                     Block blck;
                     for (int i = 0; i < length; i++) {
-                        if (version >= GCC_VER_810R) {
+                        if (version >= GCC_VER_810) {
                             blck = new Block(0); // value not used anywhere
                         } else {
                             long BlckFlag = stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK;
