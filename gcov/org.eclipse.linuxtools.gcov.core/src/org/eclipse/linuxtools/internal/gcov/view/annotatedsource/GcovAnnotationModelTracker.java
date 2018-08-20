@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2018 Red Hat, Inc.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -159,6 +159,9 @@ public final class GcovAnnotationModelTracker {
         if (part instanceof ICEditor) {
             ICEditor editor = (ICEditor) part;
             ICElement element = CDTUITools.getEditorInputCElement(editor.getEditorInput());
+			if (element == null) {
+				return;
+			}
             IProject project = element.getCProject().getProject();
 
             // Attach our annotation model to any compatible editor. (ICEditor)
