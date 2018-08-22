@@ -180,6 +180,8 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 				}
 				if (version < 1.5) {
 					finalVMArgs.add("-Xrunjdwp:transport=dt_socket,server=y,address=" + port); //$NON-NLS-1$
+				} else if (version < 9) {
+					finalVMArgs.add("-agentlib:jdwp=transport=dt_socket,server=y,address=" + port); //$NON-NLS-1$
 				} else {
 					finalVMArgs.add("-agentlib:jdwp=transport=dt_socket,server=y,address=*:" + port); //$NON-NLS-1$
 				}
