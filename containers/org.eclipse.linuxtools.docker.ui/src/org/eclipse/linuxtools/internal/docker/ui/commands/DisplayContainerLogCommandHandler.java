@@ -22,6 +22,8 @@ import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.EnumDockerLoggingStatus;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
+import org.eclipse.linuxtools.docker.core.IDockerContainerConfig;
+import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.consoles.RunConsole;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
@@ -50,9 +52,14 @@ public class DisplayContainerLogCommandHandler extends AbstractHandler {
 		final String id = container.id();
 		final String name = container.name();
 
-		if (connection.getContainerInfo(id).config().tty()) {
-			RunConsole.attachToTerminal(connection, id, null);
-			return null;
+		IDockerContainerInfo info = connection.getContainerInfo(id);
+
+		if (info != null) {
+			IDockerContainerConfig config = info.config();
+			if (config != null && config.tty()) {
+				RunConsole.attachToTerminal(connection, id, null);
+				return null;
+			}
 		}
 		try {
 			final RunConsole rc = RunConsole.findConsole(id);
