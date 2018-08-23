@@ -34,6 +34,8 @@ import javax.xml.parsers.SAXParserFactory;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile.OprofileProject;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
@@ -48,6 +50,7 @@ import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Display;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -317,8 +320,13 @@ public class OpxmlRunner {
 					errorOutput.append(s + System.getProperty("line.separator")); //$NON-NLS-1$
 				}
 				if (!errorOutput.toString().trim().equals("")) { //$NON-NLS-1$
-					OprofileCorePlugin.log(IStatus.ERROR, NLS.bind(OprofileProperties.getString("process.log.stderr"), //$NON-NLS-1$
-							"opreport", errorOutput.toString().trim())); //$NON-NLS-1$
+					// needs to be run in the ui thread otherwise swt throws invalid thread access
+					final String dialogTitle = NLS.bind(OprofileProperties.getString("process.log.stderr.dialog.title"), //$NON-NLS-1$
+							"opreport"); //$NON-NLS-1$
+					final String errorMessage = NLS.bind(OprofileProperties.getString("process.log.stderr"), //$NON-NLS-1$
+							"opreport", errorOutput.toString().trim()); //$NON-NLS-1$
+					Display.getDefault().asyncExec(() -> ErrorDialog.openError(null, dialogTitle, errorMessage,
+							new Status(IStatus.ERROR, OprofileCorePlugin.getId(), IStatus.OK, errorMessage, null)));
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
