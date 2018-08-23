@@ -67,6 +67,7 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
     private Composite result;
     private Button systemEnvButton, customButton;
     private boolean customSelected;
+    private boolean initialized = false;
 
     private String [][]fillPaths() {
         LinkedList<String[]> list = new LinkedList<>();
@@ -157,6 +158,7 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
         linuxtoolsPathCombo.setSelectedValue(linuxtoolsPath.getStringValue());
         Dialog.applyDialogFont(result);
         updateOptionsEnable();
+        initialized = true;
         return result;
     }
 
@@ -172,26 +174,32 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
 
     @Override
     protected void performDefaults() {
-        linuxtoolsPath.loadDefault();
-        linuxtoolsPathCombo.loadDefault();
-        customButton.setSelection(!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathSystemDefault());
-        systemEnvButton.setSelection(LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathSystemDefault());
-        updateOptionsEnable();
+    	if (initialized) {
+    		linuxtoolsPath.loadDefault();
+    		linuxtoolsPathCombo.loadDefault();
+    		customButton.setSelection(!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathSystemDefault());
+    		systemEnvButton.setSelection(LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathSystemDefault());
+    		updateOptionsEnable();
+    	}
     }
 
     @Override
     public boolean performOk() {
-        linuxtoolsPath.store();
-        linuxtoolsPathCombo.store();
-        getPreferenceStore().setValue(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME, systemEnvButton.getSelection());
+    	if (initialized) {
+    		linuxtoolsPath.store();
+    		linuxtoolsPathCombo.store();
+    		getPreferenceStore().setValue(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME, systemEnvButton.getSelection());
+    	}
         return super.performOk();
     }
 
     @Override
     protected void performApply() {
-        linuxtoolsPath.store();
-        linuxtoolsPathCombo.store();
-        getPreferenceStore().setValue(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME, systemEnvButton.getSelection());
+    	if (initialized) {
+    		linuxtoolsPath.store();
+    		linuxtoolsPathCombo.store();
+    		getPreferenceStore().setValue(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME, systemEnvButton.getSelection());
+    	}
         super.performApply();
     }
 
