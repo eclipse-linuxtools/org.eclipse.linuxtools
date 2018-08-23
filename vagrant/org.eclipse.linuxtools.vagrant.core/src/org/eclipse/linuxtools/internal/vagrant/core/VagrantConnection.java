@@ -506,6 +506,12 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 		final String envPath = System.getenv("PATH"); //$NON-NLS-1$
 		if (envPath != null) {
 			for (String dir : envPath.split(File.pathSeparator)) {
+				// On Windows, we might get back a String with quotes so we must
+				// remove them (Bug 538217)
+				if ('"' == dir.charAt(0) // $NON-NLS-1$
+						&& '"' == dir.charAt(dir.length() - 1)) { // $NON-NLS-1$
+					dir = dir.substring(1, dir.length() - 1);
+				}
 				Path vgPath = Paths.get(dir, vgName);
 				if (vgPath.toFile().exists()) {
 					return vgPath.toString();
