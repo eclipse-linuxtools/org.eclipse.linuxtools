@@ -30,7 +30,7 @@ public class SpecOutlinePageAdapterFactory implements IAdapterFactory {
 			if (adaptableObject instanceof ExtensionBasedTextEditor || adaptableObject instanceof SpecfileEditor) {
 				ITextEditor specEditor = (ITextEditor) adaptableObject;
 				IFile editorFile = specEditor.getEditorInput().getAdapter(IFile.class);
-				if (editorFile.getLocation().toOSString().endsWith(".spec")) { //$NON-NLS-1$
+				if (editorFile != null && editorFile.getLocation().toOSString().endsWith(".spec")) { //$NON-NLS-1$
 					SpecfileContentOutlinePage page = new SpecfileContentOutlinePage(specEditor);
 					page.setInput(specEditor.getEditorInput());
 					return (T) page;
