@@ -76,8 +76,8 @@ public class ManParser {
 			}
 		} catch (IOException e) {
 			Bundle bundle = FrameworkUtil.getBundle(ManParser.class);
-			Status status = new Status(IStatus.ERROR, e.getMessage(),
-					bundle.getSymbolicName());
+			Status status = new Status(IStatus.ERROR, bundle.getSymbolicName(),
+					e.getMessage());
 			Platform.getLog(bundle).log(status);
 		}
 		return manPaths;
@@ -126,8 +126,8 @@ public class ManParser {
 			stdout = process.getInputStream();
 		} catch (IOException e) {
 			Bundle bundle = FrameworkUtil.getBundle(this.getClass());
-			Status status = new Status(IStatus.ERROR, e.getMessage(),
-					bundle.getSymbolicName());
+			Status status = new Status(IStatus.ERROR, bundle.getSymbolicName(),
+					e.getMessage());
 			Platform.getLog(bundle).log(status);
 		}
 		return stdout;
@@ -152,8 +152,8 @@ public class ManParser {
 			}
 		} catch (IOException e) {
 			Bundle bundle = FrameworkUtil.getBundle(this.getClass());
-			Status status = new Status(IStatus.ERROR, e.getMessage(),
-					bundle.getSymbolicName());
+			Status status = new Status(IStatus.ERROR, bundle.getSymbolicName(),
+					e.getMessage());
 			Platform.getLog(bundle).log(status);
 		}
 		return sb;
