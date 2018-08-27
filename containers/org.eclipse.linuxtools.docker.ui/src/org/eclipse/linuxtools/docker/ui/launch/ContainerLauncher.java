@@ -1532,6 +1532,13 @@ public class ContainerLauncher {
 				.openStdin(supportStdin).cmd(cmdList).image(imageName)
 				.workingDir(workingDir);
 
+		// preserve any entry point specified in the image
+		if (info.containerConfig() != null) {
+			List<String> entrypoint = info.containerConfig().entrypoint();
+			if (entrypoint != null && !entrypoint.isEmpty()) {
+				builder = builder.entryPoint(entrypoint);
+			}
+		}
 		// switch to user id for Linux so output is accessible
 		if (uid != null) {
 			builder = builder.user(uid.toString());
