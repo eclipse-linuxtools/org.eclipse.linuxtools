@@ -908,6 +908,21 @@ public class ContainerLauncher {
 			connection.getImages();
 		}
 
+		IDockerImageInfo imageInfo = connection.getImageInfo(image);
+		if (imageInfo == null) {
+			Display.getDefault()
+					.syncExec(() -> MessageDialog.openError(
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+							DVMessages.getString(ERROR_LAUNCHING_CONTAINER),
+							Messages.getFormattedString("ContainerLaunch.imageNotFound.error", image)));
+			return;
+		}
+
+		IDockerContainerConfig imageConfig = imageInfo.config();
+		if (imageConfig != null && imageConfig.entrypoint() != null) {
+			builder = builder.entryPoint(imageConfig.entrypoint());
+		}
+
 		DockerHostConfig.Builder hostBuilder = new DockerHostConfig.Builder()
 				.privileged(privilegedMode);
 
