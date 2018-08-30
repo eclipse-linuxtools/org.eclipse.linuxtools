@@ -121,7 +121,7 @@ public class PerfCore {
 
     }
 
-    private static IProject getProject(ILaunchConfiguration config){
+    public static IProject getProject(ILaunchConfiguration config){
         if(config == null){
             return null;
         } else {
@@ -217,8 +217,12 @@ public class PerfCore {
         try {
             p = RuntimeProcessFactory.getFactory().exec(new String [] {PerfPlugin.PERF_COMMAND, "--version"}, project); //$NON-NLS-1$
         } catch (IOException e) {
-            logException(e);
+        	// Issue warning to avoid AERI reports whenever user is missing perf
+            Status status = new Status(IStatus.WARNING, PerfPlugin.PLUGIN_ID,
+                    e.getMessage());
+            PerfPlugin.getDefault().getLog().log(status);
         }
+
         if (p == null) {
             return null;
         }

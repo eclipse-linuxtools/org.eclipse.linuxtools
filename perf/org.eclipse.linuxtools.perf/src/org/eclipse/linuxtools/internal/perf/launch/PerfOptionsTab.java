@@ -284,7 +284,14 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
 
         // Keep track of the last configuration loaded
         lastConfig = config;
+
         PerfVersion perfVersion = PerfCore.getPerfVersion(config);
+
+        if (perfVersion == null) {
+        	setErrorMessage(Messages.PerfLaunchConfigDelegate_perf_not_found);
+        } else {
+        	setErrorMessage(null);
+        }
 
         try {
 
