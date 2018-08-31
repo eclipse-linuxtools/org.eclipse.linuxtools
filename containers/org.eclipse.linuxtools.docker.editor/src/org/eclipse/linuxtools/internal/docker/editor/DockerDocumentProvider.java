@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -41,6 +42,7 @@ import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.linuxtools.internal.docker.editor.scanner.DockerPartitionScanner;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
 import org.eclipse.ui.ide.FileStoreEditorInput;
@@ -99,6 +101,12 @@ public class DockerDocumentProvider extends FileDocumentProvider {
 			}
 			super.setDocumentContent(document, in, encoding);
 			return true;
+		} else if (editorInput instanceof IFileEditorInput) {
+			IFile f = ((IFileEditorInput)editorInput).getFile();
+			if (!f.exists()) {
+				return false;
+			}
+			return super.setDocumentContent(document, editorInput, encoding);
 		} else {
 			return super.setDocumentContent(document, editorInput, encoding);
 		}
