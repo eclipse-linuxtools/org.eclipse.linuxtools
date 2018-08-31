@@ -16,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,6 +44,7 @@ import org.eclipse.linuxtools.internal.perf.model.TreeParent;
 import org.eclipse.linuxtools.internal.perf.ui.PerfProfileView;
 import org.eclipse.linuxtools.profiling.launch.ConfigUtils;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -115,6 +117,14 @@ public class PerfCore {
         }
         IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
         if(project == null){
+            return null;
+        }
+
+        URI projectURI = project.getLocationURI();
+        if (projectURI == null) {
+        	Status status = new Status(IStatus.WARNING, PerfPlugin.PLUGIN_ID,
+                    NLS.bind(Messages.MsgNoProjectError, projectName));
+            PerfPlugin.getDefault().getLog().log(status);
             return null;
         }
         return project.getLocationURI().getHost();
