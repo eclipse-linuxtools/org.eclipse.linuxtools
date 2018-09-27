@@ -15,12 +15,12 @@
   <parent>
     <artifactId>linuxtools-rpm-parent</artifactId>
     <groupId>org.eclipse.linuxtools.rpm</groupId>
-    <version>7.0.1</version>
+    <version>7.0.2</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.rpm</artifactId>
   <packaging>eclipse-feature</packaging>
-  <version>7.0.1-SNAPSHOT</version>
+  <version>7.0.2-SNAPSHOT</version>
 
   <name>Linux Tools RPM Tools Feature</name>
 

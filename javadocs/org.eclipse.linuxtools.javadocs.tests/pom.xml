@@ -15,7 +15,7 @@
   <parent>
     <artifactId>linuxtools-javadocs-parent</artifactId>
     <groupId>org.eclipse.linuxtools.javadocs</groupId>
-    <version>7.0.1</version>
+    <version>7.0.2</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.javadocs.tests</artifactId>

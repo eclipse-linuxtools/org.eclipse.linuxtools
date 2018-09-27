@@ -15,7 +15,7 @@
   <parent>
     <artifactId>linuxtools-rpm-parent</artifactId>
     <groupId>org.eclipse.linuxtools.rpm</groupId>
-    <version>7.0.1</version>
+    <version>7.0.2</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.rpm.core</artifactId>
