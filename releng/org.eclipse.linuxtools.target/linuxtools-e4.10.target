@@ -54,7 +54,7 @@
 <unit id="org.objectweb.asm.util" version="6.2.1.v20180823-1831"/>
 <unit id="org.slf4j.api" version="1.7.10.v20170428-1633"/>
 <unit id="org.swtchart" version="0.10.0.v201605200358"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/S20180829155938/repository"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
@@ -67,15 +67,12 @@
 <repository location="http://download.eclipse.org/eclipse/updates/4.10-I-builds/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.swtbot.eclipse.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.swtbot.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/technology/swtbot/releases/latest"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
 <repository location="http://download.eclipse.org/cbi/updates/license"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.swtbot.eclipse.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.swtbot.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.dstore.core" version="0.0.0"/>
 <unit id="org.eclipse.jgit.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.mylyn.commons.feature.group" version="0.0.0"/>
