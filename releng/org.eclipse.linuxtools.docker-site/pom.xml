@@ -92,24 +92,15 @@
         </executions>
       </plugin>
       <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>prepare-promotion</id>
-            <phase>package</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target>
-                <!-- copy scripts to build directory and execute -->
-                <copy file="p2.xsl" todir="${project.build.directory}"/>
-                <copy file="promoter.xml" todir="${project.build.directory}"/>
-                <ant antfile="${project.build.directory}/promoter.xml"/>
-              </target>
-            </configuration>
-          </execution>
-        </executions>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-repository-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <extraArtifactRepositoryProperties>
+            <p2.statsURI>http://download.eclipse.org/stats</p2.statsURI>
+            <p2.mirrorsURL>http://www.eclipse.org/downloads/download.php?file=/linuxtools/${mirror-docker-repo-name}</p2.mirrorsURL>
+          </extraArtifactRepositoryProperties>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.eclipse.tycho.extras</groupId>
