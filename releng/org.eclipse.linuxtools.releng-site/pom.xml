@@ -90,11 +90,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-p2-repository-plugin</artifactId>
-        <version>${tycho-version}</version>
         <configuration>
           <extraArtifactRepositoryProperties>
             <p2.statsURI>http://download.eclipse.org/stats</p2.statsURI>
@@ -120,7 +115,7 @@
               <jvmArgs>
                 <arg>-DreportRepoDir=${project.build.directory}/repository</arg>
                 <arg>-DreportOutputDir=${project.build.directory}/repository/buildInfo</arg>
-              <arg>-DreferenceRepo=/home/data/httpd/download.eclipse.org/releases/oxygen/</arg>
+              <arg>-DreferenceRepo=/home/data/httpd/download.eclipse.org/releases/2018-09/</arg>
               </jvmArgs>
               <executionEnvironment>JavaSE-1.8</executionEnvironment>
               <dependencies>
@@ -144,8 +139,8 @@
                   <layout>p2</layout>
                 </repository>
                 <repository>
-                  <id>eclipse-4.7.3a</id>
-                  <url>http://download.eclipse.org/eclipse/updates/4.7/R-4.7.3a-201803300640/</url>
+                  <id>eclipse-4.9</id>
+                  <url>http://download.eclipse.org/eclipse/updates/4.9/R-4.9-201809060745/</url>
                   <layout>p2</layout>
                 </repository>
               </repositories>
