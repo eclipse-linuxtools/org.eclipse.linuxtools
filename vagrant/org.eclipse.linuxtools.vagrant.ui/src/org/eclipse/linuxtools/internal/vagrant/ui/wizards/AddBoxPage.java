@@ -94,7 +94,7 @@ public class AddBoxPage extends WizardPage {
 				.value(AddBoxPageModel.class, AddBoxPageModel.BOX_NAME)
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(boxNameText),
-				boxNameObservable, new UpdateValueStrategy(), null);
+				boxNameObservable, new UpdateValueStrategy<>(), null);
 
 		// Box location
 		final Label boxLocLabel = new Label(container, SWT.NONE);
@@ -113,7 +113,7 @@ public class AddBoxPage extends WizardPage {
 				.value(AddBoxPageModel.class, AddBoxPageModel.BOX_LOC)
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(boxLocText),
-				imageNameObservable, new UpdateValueStrategy(), null);
+				imageNameObservable, new UpdateValueStrategy<>(), null);
 		// search
 		final Button searchButton = new Button(container, SWT.NONE);
 		searchButton

@@ -14,7 +14,6 @@
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.databinding.Binding;
@@ -157,12 +156,8 @@ public class DockerComposeUpDialog extends Dialog {
 
 	private void setupValidationSupport(final Label errorMessageIcon,
 			final Label errorMessageLabel) {
-		for (@SuppressWarnings("unchecked")
-		Iterator<Binding> iterator = dbc.getBindings().iterator(); iterator
-				.hasNext();) {
-			final Binding binding = iterator.next();
-			binding.getModel().addChangeListener(onSettingsChanged(
-					errorMessageIcon, errorMessageLabel));
+		for (Binding binding : dbc.getBindings()) {
+			binding.getModel().addChangeListener(onSettingsChanged(errorMessageIcon, errorMessageLabel));
 		}
 	}
 

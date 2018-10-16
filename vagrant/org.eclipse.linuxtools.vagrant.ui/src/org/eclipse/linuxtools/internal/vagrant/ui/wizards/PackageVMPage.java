@@ -98,7 +98,7 @@ public class PackageVMPage extends WizardPage {
 				.value(PackageVMPageModel.class, PackageVMPageModel.BOX_NAME)
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(boxNameText),
-				boxNameObservable, new UpdateValueStrategy(), null);
+				boxNameObservable, new UpdateValueStrategy<>(), null);
 
 		// Box folder
 		final Label boxFolderLabel = new Label(container, SWT.NONE);
@@ -116,7 +116,7 @@ public class PackageVMPage extends WizardPage {
 				.value(PackageVMPageModel.class, PackageVMPageModel.BOX_FOLDER)
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(boxFolderText),
-				boxFolderObservable, new UpdateValueStrategy(), null);
+				boxFolderObservable, new UpdateValueStrategy<>(), null);
 		// search
 		final Button searchButton = new Button(container, SWT.NONE);
 		searchButton

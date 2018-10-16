@@ -217,18 +217,15 @@ public class RunImageNetworkTab extends AbstractLaunchConfigurationTab
 	 */
 	private Binding bindButton(final Button button, final String strValue) {
 		return dbc.bindValue(WidgetProperties.selection().observe(button),
-				BeanProperties
-						.value(ImageRunNetworkModel.class,
-								ImageRunNetworkModel.NETWORK_MODE)
-						.observe(model),
+				BeanProperties.value(ImageRunNetworkModel.class, ImageRunNetworkModel.NETWORK_MODE).observe(model),
 				new UpdateValueStrategy() {
-			@Override
+					@Override
 					public Object convert(Object value) {
 						if (value.equals(Boolean.TRUE)) {
 							return strValue;
-				}
+						}
 						return null;
-			}
+					}
 
 				}, new UpdateValueStrategy() {
 					@Override
