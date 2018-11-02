@@ -119,7 +119,7 @@ public class ImagePullPage extends ImagePullPushPage<ImagePullPageModel> {
 						ImagePullPushPageModel.SELECTED_IMAGE_NAME)
 				.observe(getModel());
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(imageNameText),
-				imgeNameObservable, new UpdateValueStrategy<>()
+				imgeNameObservable, new UpdateValueStrategy()
 						.setAfterConvertValidator(new ImageNameValidator()),
 				null);
 	}

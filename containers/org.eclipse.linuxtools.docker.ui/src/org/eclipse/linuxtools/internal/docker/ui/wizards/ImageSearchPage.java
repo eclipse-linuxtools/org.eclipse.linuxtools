@@ -180,7 +180,7 @@ public class ImageSearchPage extends WizardPage {
 		final ISWTObservableValue imageSearchTextObservable = WidgetProperties
 				.text(SWT.Modify).observe(searchImageText);
 		ctx.bindValue(imageSearchTextObservable, observableTermModel,
-				new UpdateValueStrategy<>().setBeforeSetValidator(
+				new UpdateValueStrategy().setBeforeSetValidator(
 						new SearchTermValidator(searchImageButton)),
 				null);
 		// observe the viewer content
