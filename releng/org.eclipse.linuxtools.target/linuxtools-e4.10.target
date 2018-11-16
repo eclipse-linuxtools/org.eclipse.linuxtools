@@ -22,6 +22,7 @@
 <unit id="javassist" version="3.13.0.GA_v201209210905"/>
 <unit id="javax.ws.rs" version="2.0.1.v201504171603"/>
 <unit id="javax.xml.bind" version="2.2.0.v201105210648"/>
+<unit id="javax.xml.stream" version="1.0.1.v201004272200"/>
 <unit id="jnr.x86asm" version="1.0.2.v201505052040"/>
 <unit id="org.aopalliance" version="1.0.0.v201105210816"/>
 <unit id="org.apache.commons.codec" version="1.10.0.v20180409-1845"/>

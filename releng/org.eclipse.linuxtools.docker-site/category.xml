@@ -119,6 +119,9 @@
    <iu id="javax.xml.bind" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
+   <iu id="javax.xml.stream" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
    <iu id="com.github.jnr.jffi" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>

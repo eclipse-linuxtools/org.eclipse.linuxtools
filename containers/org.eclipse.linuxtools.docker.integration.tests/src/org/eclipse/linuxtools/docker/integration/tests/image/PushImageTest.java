@@ -24,8 +24,10 @@ import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class PushImageTest extends AbstractImageBotTest {
 
 	private static final String DOCKERFILE_FOLDER = "resources/test-variables";
