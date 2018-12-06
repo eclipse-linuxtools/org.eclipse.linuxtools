@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Mylyn OSIO Rest Connector Core Tests
 Bundle-SymbolicName: org.eclipse.linuxtools.mylyn.osio.rest.core.tests;singleton:=true
 Bundle-Activator: org.eclipse.linuxtools.mylyn.osio.rest.core.tests.Activator
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-Vendor: Eclipse Linux Tools
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
