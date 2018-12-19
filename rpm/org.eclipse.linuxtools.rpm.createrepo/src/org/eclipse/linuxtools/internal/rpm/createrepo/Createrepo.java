@@ -34,7 +34,7 @@ public class Createrepo {
      * Default commands that every execution will have.
      */
     private static final String[] DEFAULT_ARGUMENTS = {
-        CreaterepoPreferenceConstants.PREF_VERBOSE, CreaterepoPreferenceConstants.PREF_PROFILE};
+        CreaterepoPreferenceConstants.PREF_VERBOSE};
 
     /**
      * Holds the command line switches.
