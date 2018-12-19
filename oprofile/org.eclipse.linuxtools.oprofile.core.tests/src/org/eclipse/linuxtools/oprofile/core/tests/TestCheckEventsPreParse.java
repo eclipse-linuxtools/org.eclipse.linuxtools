@@ -49,7 +49,6 @@ import org.xml.sax.SAXException;
 public class TestCheckEventsPreParse {
 
     private static final String REL_PATH_TO_CHECKEVENT_BAD_UMASK = "resources/test_check-event_invalid_umask.xml";
-    private static final String REL_PATH_TO_CHECKEVENT_OK = "resources/test_check-event_ok.xml";
     private static final String REL_PATH_TO_INFO_PRE_PARSE_RAW = "resources/test_info_pre_parse_raw.xml";
 
     // the values are checked for validity in the order they
