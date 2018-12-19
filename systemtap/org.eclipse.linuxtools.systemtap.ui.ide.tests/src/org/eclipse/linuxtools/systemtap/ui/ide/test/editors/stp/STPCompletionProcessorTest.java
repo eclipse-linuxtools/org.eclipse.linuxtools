@@ -18,12 +18,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -75,30 +75,20 @@ public class STPCompletionProcessorTest {
      * Use pre-written contents to populate the Function & Probe views.
      */
     @BeforeClass
-    public static void prepareTrees() {
-        TapsetLibrary.stop();
-        IPath path = new Path(System.getenv("HOME")). //$NON-NLS-1$
-                append(".systemtapgui").append("TreeSettings").
-                addFileExtension("xml"); //$NON-NLS-1$
+	public static void prepareTrees() {
+		TapsetLibrary.stop();
+		IPath path = new Path(System.getenv("HOME")). //$NON-NLS-1$
+				append(".systemtapgui").append("TreeSettings").addFileExtension("xml"); //$NON-NLS-3$
 
-        try (InputStream is = FileLocator.openStream(
-                FrameworkUtil.getBundle(STPCompletionProcessorTest.class),
-                new Path("helpers/TreeSettings.xml"), false);
-                BufferedReader br = new BufferedReader(
-                        new InputStreamReader(is));
-                BufferedWriter writer = new BufferedWriter(new FileWriter(path.toFile()))) {
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                writer.write(line);
-                writer.newLine();
-            }
-            writer.flush();
-            TapsetLibrary.readTreeFile();
-        } catch (IOException e) {
-            fail("Unable to read dummy function/probe tree file for testing");
-        }
-    }
+		try (InputStream is = FileLocator.openStream(FrameworkUtil.getBundle(STPCompletionProcessorTest.class),
+				new Path("helpers/TreeSettings.xml"), false);
+				OutputStream outStream = new FileOutputStream(path.toFile())) {
+			Files.copy(is, path.toFile().toPath(), StandardCopyOption.REPLACE_EXISTING);
+			TapsetLibrary.readTreeFile();
+		} catch (IOException e) {
+			fail("Unable to read dummy function/probe tree file for testing");
+		}
+	}
 
     @Test
     public void testCompletionRequest() {
