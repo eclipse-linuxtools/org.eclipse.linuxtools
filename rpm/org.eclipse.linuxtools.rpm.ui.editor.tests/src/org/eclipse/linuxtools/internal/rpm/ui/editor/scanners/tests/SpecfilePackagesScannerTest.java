@@ -16,10 +16,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.text.TextAttribute;
@@ -52,9 +51,8 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 				P_RPM_LIST_FILEPATH);
 		Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD, false);
 
-		try (BufferedWriter out = new BufferedWriter(new FileWriter(P_RPM_LIST_FILEPATH))) {
-			out.write("setup\ntest_underscore\n");
-			out.close();
+		try {
+			Files.write(Paths.get(P_RPM_LIST_FILEPATH), "setup\ntest_underscore\n".getBytes());
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}
@@ -66,9 +64,10 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 
 	@AfterClass
 	public static void cleanUp() {
-		File file = new File(P_RPM_LIST_FILEPATH);
-		if (file.exists()) {
-			file.delete();
+		try {
+			Files.deleteIfExists(Paths.get(P_RPM_LIST_FILEPATH));
+		} catch (IOException e) {
+			fail(e.getMessage());
 		}
 	}
 
