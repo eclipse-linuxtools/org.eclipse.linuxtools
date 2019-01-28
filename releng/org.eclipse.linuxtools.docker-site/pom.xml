@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-   Copyright (C) 2011, 2018 Red Hat, Inc. and others
+   Copyright (C) 2011, 2019 Red Hat, Inc. and others
 
    This program and the accompanying materials are made
    available under the terms of the Eclipse Public License 2.0
@@ -115,7 +115,7 @@
               <jvmArgs>
                 <arg>-DreportRepoDir=${project.build.directory}/repository</arg>
                 <arg>-DreportOutputDir=${project.build.directory}/repository/buildInfo</arg>
-              <arg>-DreferenceRepo=/home/data/httpd/download.eclipse.org/releases/2018-09/</arg>
+              <arg>-DreferenceRepo=/home/data/httpd/download.eclipse.org/releases/2018-12/</arg>
               </jvmArgs>
               <executionEnvironment>JavaSE-1.8</executionEnvironment>
               <dependencies>
@@ -139,8 +139,8 @@
                   <layout>p2</layout>
                 </repository>
                 <repository>
-                  <id>eclipse-4.9</id>
-                  <url>http://download.eclipse.org/eclipse/updates/4.9/R-4.9-201809060745/</url>
+                  <id>eclipse-4.10</id>
+                  <url>https://download.eclipse.org/eclipse/updates/4.10/R-4.10-201812060815/</url>
                   <layout>p2</layout>
                 </repository>
               </repositories>
