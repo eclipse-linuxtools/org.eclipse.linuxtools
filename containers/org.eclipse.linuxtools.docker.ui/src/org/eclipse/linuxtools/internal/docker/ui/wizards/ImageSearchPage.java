@@ -263,7 +263,7 @@ public class ImageSearchPage extends WizardPage {
 		try {
 			final BlockingQueue<List<IDockerImageSearchResult>> searchResultQueue = new ArrayBlockingQueue<>(
 					1);
-			ImageSearchPage.this.getContainer().run(true, true,
+			ImageSearchPage.this.getContainer().run(false, true,
 					monitor -> {
 						monitor.beginTask(WizardMessages
 								.getString("ImageSearchPage.searchTask"), 1); //$NON-NLS-1$
