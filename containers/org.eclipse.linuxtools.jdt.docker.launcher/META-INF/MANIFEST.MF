@@ -18,5 +18,6 @@ Require-Bundle: org.eclipse.debug.core,
  org.eclipse.linuxtools.docker.ui,
  org.eclipse.linuxtools.docker.core,
  com.spotify.docker.client,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ javax.xml.bind;bundle-version="2.2.0"
 Automatic-Module-Name: org.eclipse.linuxtools.jdt.docker.launcher
