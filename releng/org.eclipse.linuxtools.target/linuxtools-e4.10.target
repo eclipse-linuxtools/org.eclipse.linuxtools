@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="linuxtools-e4.10" sequenceNumber="1">
+<?pde version="3.8"?><target name="linuxtools-e4.10" sequenceNumber="2">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.9.2.v20180207-1730"/>
@@ -76,10 +76,6 @@
 <unit id="org.eclipse.swtbot.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.dstore.core" version="0.0.0"/>
 <unit id="org.eclipse.jgit.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.mylyn.commons.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.mylyn.commons.repositories.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.mylyn.commons.repositories.http.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.mylyn.tasks.ide.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.ptp.rdt.sync.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.remote.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.tm.terminal.feature.feature.group" version="0.0.0"/>
