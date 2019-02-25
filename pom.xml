@@ -295,7 +295,6 @@
     <module>valgrind</module>
     <module>containers</module>
     <module>vagrant</module>
-    <module>mylyn</module>
     <module>releng</module>
   </modules>
 
