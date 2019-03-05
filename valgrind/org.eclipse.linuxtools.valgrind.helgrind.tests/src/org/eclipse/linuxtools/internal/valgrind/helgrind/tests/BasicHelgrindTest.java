@@ -24,6 +24,7 @@ import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class BasicHelgrindTest extends AbstractHelgrindTest {
@@ -39,6 +40,8 @@ public class BasicHelgrindTest extends AbstractHelgrindTest {
         deleteProject(proj);
         super.tearDown();
     }
+
+    @Ignore
     @Test
     public void testNumErrors() throws CoreException, URISyntaxException, IOException   {
         ILaunchConfiguration config = createConfiguration(proj.getProject());
