@@ -60,6 +60,7 @@ import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerImageInfo;
 import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
+import org.eclipse.linuxtools.docker.core.IDockerVolume;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerConsoleOutputStream;
@@ -1611,7 +1612,48 @@ public class ContainerLauncher {
 				remoteDataVolumes.put(p.toPortableString(),
 						p.toPortableString());
 			}
-			builder = builder.volumes(remoteVolumes);
+			// Check volumes known by the connection to see if user has specified a
+			// volume_name:container_dir as an additional dir. In such a case, we
+			// don't need to copy data over and can simply bind to the volume.
+			try {
+				final List<String> volumes = new ArrayList<>();
+				List<IDockerVolume> volumeList = ((DockerConnection) connection).getVolumes();
+				for (IDockerVolume volume : volumeList) {
+					String name = volume.name();
+					String containerDir = remoteDataVolumes.get(name);
+					if (containerDir != null) {
+						if (readOnlyVolumes.contains(name)) {
+							volumes.add(name + ":" + containerDir + ":Z,ro"); //$NON-NLS-1$ //$NON-NLS-2$
+							readOnlyVolumes.remove(name);
+						} else {
+							volumes.add(name + ":" + containerDir + ":Z"); //$NON-NLS-1$ //$NON-NLS-2$
+						}
+						remoteVolumes.remove(name);
+						remoteDataVolumes.remove(name);
+						IPath p = new Path(containerDir);
+						// if the working dir is a subdirectory of the volume mount, we don't need to
+						// copy it
+						// forward or back
+						if (workingDir != null) {
+							IPath working = new Path(workingDir);
+							if (p.isPrefixOf(working)) {
+								String s = working.removeTrailingSeparator().toPortableString();
+								remoteVolumes.remove(s);
+								remoteDataVolumes.remove(s);
+							}
+						}
+					}
+				}
+				// bind any volumes we found above
+				if (!volumes.isEmpty()) {
+					hostBuilder = hostBuilder.binds(volumes);
+				}
+			} catch (DockerException e) {
+				Activator.log(e);
+			}
+			if (!remoteVolumes.isEmpty()) {
+				builder = builder.volumes(remoteVolumes);
+			}
 		} else {
 			// Running daemon on local host.
 			// Add mounts for any directories we need to run the executable.

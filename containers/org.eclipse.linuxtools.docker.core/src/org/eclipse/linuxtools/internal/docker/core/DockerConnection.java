@@ -85,6 +85,7 @@ import org.eclipse.linuxtools.docker.core.IDockerNetworkCreation;
 import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
 import org.eclipse.linuxtools.docker.core.IDockerProgressHandler;
 import org.eclipse.linuxtools.docker.core.IDockerVersion;
+import org.eclipse.linuxtools.docker.core.IDockerVolume;
 import org.eclipse.linuxtools.docker.core.ILogger;
 import org.eclipse.linuxtools.docker.core.IRegistryAccount;
 import org.eclipse.linuxtools.docker.core.Messages;
@@ -124,6 +125,8 @@ import com.spotify.docker.client.messages.NetworkConfig;
 import com.spotify.docker.client.messages.PortBinding;
 import com.spotify.docker.client.messages.RegistryAuth;
 import com.spotify.docker.client.messages.Version;
+import com.spotify.docker.client.messages.Volume;
+import com.spotify.docker.client.messages.VolumeList;
 
 /**
  * A connection to a Docker daemon. The connection may rely on Unix Socket or TCP connection (using the REST API). 
@@ -514,6 +517,24 @@ public class DockerConnection
 				| InterruptedException e) {
 			throw new DockerException(Messages.Docker_General_Info_Failure, e);
 		}
+	}
+
+	public List<IDockerVolume> getVolumes() throws DockerException {
+		List<IDockerVolume> volumeList = new ArrayList<>();
+		try {
+			VolumeList list = client
+					.listVolumes(new DockerClient.ListVolumesParam[0]);
+			List<Volume> volumes = list.volumes();
+			for (Volume volume : volumes) {
+				DockerVolume v = new DockerVolume(volume);
+				volumeList.add(v);
+			}
+		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+			throw new DockerException(e.getMessage());
+		} catch (InterruptedException e) {
+			return Collections.emptyList();
+		}
+		return volumeList;
 	}
 
 	@Override
