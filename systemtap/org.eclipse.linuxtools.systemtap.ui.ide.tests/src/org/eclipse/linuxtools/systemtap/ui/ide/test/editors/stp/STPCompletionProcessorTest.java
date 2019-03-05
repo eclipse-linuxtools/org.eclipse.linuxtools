@@ -77,8 +77,9 @@ public class STPCompletionProcessorTest {
     @BeforeClass
 	public static void prepareTrees() {
 		TapsetLibrary.stop();
-		IPath path = new Path(System.getenv("HOME")). //$NON-NLS-1$
-				append(".systemtapgui").append("TreeSettings").addFileExtension("xml"); //$NON-NLS-3$
+		IPath path = new Path(System.getenv("HOME")).append(".systemtapgui"); //$NON-NLS-1$ //$NON-NLS-2$
+		path.toFile().mkdirs(); // ensure folder will exist
+		path = path.append("TreeSettings").addFileExtension("xml"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		try (InputStream is = FileLocator.openStream(FrameworkUtil.getBundle(STPCompletionProcessorTest.class),
 				new Path("helpers/TreeSettings.xml"), false);
