@@ -48,8 +48,8 @@
   </distributionManagement>
 
   <properties>
-    <mirror-repo-name>update-7.2</mirror-repo-name>
-    <mirror-docker-repo-name>update-docker-4.2</mirror-docker-repo-name>
+    <mirror-repo-name>update-7.2.0</mirror-repo-name>
+    <mirror-docker-repo-name>update-docker-4.2.0</mirror-docker-repo-name>
     <mirror-mylyn-repo-name>update-mylyn-2.2</mirror-mylyn-repo-name>
     <tycho-version>1.3.0</tycho-version>
     <tycho-extras-version>1.3.0</tycho-extras-version>
