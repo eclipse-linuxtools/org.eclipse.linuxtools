@@ -57,7 +57,7 @@ import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -116,9 +116,13 @@ public class DockerComposeSWTBotTest {
 				.thenReturn(new ByteArrayInputStream("up!\n".getBytes()));
 		Mockito.when(mockDockerComposeUpProcess.getErrorStream()).thenReturn(new ByteArrayInputStream("".getBytes()));
 		Mockito.when(mockDockerComposeUpProcess.getOutputStream()).thenReturn(new ByteArrayOutputStream());
-		Mockito.when(mockProcessLauncher.processBuilder(Matchers.anyString(),
-				Matchers.eq(DockerCompose.getDockerComposeCommandName()), CustomMatchers.arrayContains("up"))
-				.workingDir(Matchers.anyString()).start()).thenReturn(mockDockerComposeUpProcess);
+		Mockito.when(
+				mockProcessLauncher
+						.processBuilder(ArgumentMatchers.anyString(),
+								ArgumentMatchers.eq(DockerCompose.getDockerComposeCommandName()),
+								CustomMatchers.arrayContains("up"))
+						.workingDir(ArgumentMatchers.anyString()).start())
+				.thenReturn(mockDockerComposeUpProcess);
 		latch = new CountDownLatch(1);
 		Mockito.when(mockDockerComposeUpProcess.waitFor()).then(new Answer<Object>() {
 
@@ -138,9 +142,13 @@ public class DockerComposeSWTBotTest {
 		Mockito.when(mockDockerComposeStopProcess.getErrorStream()).thenReturn(new ByteArrayInputStream("".getBytes()));
 		Mockito.when(mockDockerComposeStopProcess.getOutputStream()).thenReturn(new ByteArrayOutputStream());
 
-		Mockito.when(mockProcessLauncher.processBuilder(Matchers.anyString(),
-				Matchers.eq(DockerCompose.getDockerComposeCommandName()), CustomMatchers.arrayContains("stop"))
-				.workingDir(Matchers.anyString()).start()).thenReturn(mockDockerComposeStopProcess);
+		Mockito.when(
+				mockProcessLauncher
+						.processBuilder(ArgumentMatchers.anyString(),
+								ArgumentMatchers.eq(DockerCompose.getDockerComposeCommandName()),
+								CustomMatchers.arrayContains("stop"))
+						.workingDir(ArgumentMatchers.anyString()).start())
+				.thenReturn(mockDockerComposeStopProcess);
 		Mockito.when(mockDockerComposeStopProcess.waitFor()).then(invocation -> {
 			latch.countDown();
 			return 0;

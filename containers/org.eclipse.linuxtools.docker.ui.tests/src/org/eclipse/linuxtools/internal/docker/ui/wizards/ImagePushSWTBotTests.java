@@ -43,7 +43,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import com.spotify.docker.client.DockerClient;
@@ -133,8 +133,8 @@ public class ImagePushSWTBotTests {
 		// then the 'push()' method on the client should have been called
 		SWTUtils.wait(1, TimeUnit.SECONDS);
 		Mockito.verify(client, Mockito.times(1)).tag("foo/bar:latest", "foo.com/foo/bar:latest", false);
-		Mockito.verify(client, Mockito.times(1)).push(Matchers.eq("foo.com/foo/bar:latest"),
-				Matchers.any(ProgressHandler.class));
+		Mockito.verify(client, Mockito.times(1)).push(ArgumentMatchers.eq("foo.com/foo/bar:latest"),
+				ArgumentMatchers.any(ProgressHandler.class));
 		Mockito.verify(client, Mockito.times(1)).removeImage("foo.com/foo/bar:latest", false, false);
 	}
 
@@ -147,11 +147,12 @@ public class ImagePushSWTBotTests {
 		// wait for the push job to complete
 		// then the 'push()' method on the client should have been called
 		SWTUtils.wait(1, TimeUnit.SECONDS);
-		Mockito.verify(client, Mockito.never()).tag(Matchers.anyString(), Matchers.anyString(), Matchers.anyBoolean());
-		Mockito.verify(client, Mockito.times(1)).push(Matchers.eq("foo/bar:latest"),
-				Matchers.any(ProgressHandler.class));
-		Mockito.verify(client, Mockito.never()).removeImage(Matchers.anyString(), Matchers.anyBoolean(),
-				Matchers.anyBoolean());
+		Mockito.verify(client, Mockito.never()).tag(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(),
+				ArgumentMatchers.anyBoolean());
+		Mockito.verify(client, Mockito.times(1)).push(ArgumentMatchers.eq("foo/bar:latest"),
+				ArgumentMatchers.any(ProgressHandler.class));
+		Mockito.verify(client, Mockito.never()).removeImage(ArgumentMatchers.anyString(), ArgumentMatchers.anyBoolean(),
+				ArgumentMatchers.anyBoolean());
 	}
 
 	@Test
@@ -168,8 +169,8 @@ public class ImagePushSWTBotTests {
 		// then the 'push()' method on the client should have been called
 		SWTUtils.wait(1, TimeUnit.SECONDS);
 		Mockito.verify(client, Mockito.times(1)).tag("foo/bar:latest", "localhost:5000/foo/bar:latest", false);
-		Mockito.verify(client, Mockito.times(1)).push(Matchers.eq("localhost:5000/foo/bar:latest"),
-				Matchers.any(ProgressHandler.class));
+		Mockito.verify(client, Mockito.times(1)).push(ArgumentMatchers.eq("localhost:5000/foo/bar:latest"),
+				ArgumentMatchers.any(ProgressHandler.class));
 		Mockito.verify(client, Mockito.times(1)).removeImage("localhost:5000/foo/bar:latest", false, false);
 	}
 
@@ -191,7 +192,8 @@ public class ImagePushSWTBotTests {
 		// then the 'push()' method on the client should have been called
 		SWTUtils.wait(1, TimeUnit.SECONDS);
 		Mockito.verify(client, Mockito.times(1)).tag("foo/bar:latest", "foo.com/foo/bar:latest", true);
-		Mockito.verify(client, Mockito.times(1)).push(Matchers.any(), Matchers.any(ProgressHandler.class));
+		Mockito.verify(client, Mockito.times(1)).push(ArgumentMatchers.any(),
+				ArgumentMatchers.any(ProgressHandler.class));
 		Mockito.verify(client, Mockito.times(1)).removeImage("foo.com/foo/bar:latest", false, false);
 	}
 
@@ -212,9 +214,10 @@ public class ImagePushSWTBotTests {
 		// then the 'push()' method on the client should have been called
 		SWTUtils.wait(1, TimeUnit.SECONDS);
 		Mockito.verify(client, Mockito.times(1)).tag("foo/bar:latest", "foo.com/foo/bar:latest", false);
-		Mockito.verify(client, Mockito.times(1)).push(Matchers.any(), Matchers.any(ProgressHandler.class));
-		Mockito.verify(client, Mockito.never()).removeImage(Matchers.anyString(), Matchers.anyBoolean(),
-				Matchers.anyBoolean());
+		Mockito.verify(client, Mockito.times(1)).push(ArgumentMatchers.any(),
+				ArgumentMatchers.any(ProgressHandler.class));
+		Mockito.verify(client, Mockito.never()).removeImage(ArgumentMatchers.anyString(), ArgumentMatchers.anyBoolean(),
+				ArgumentMatchers.anyBoolean());
 	}
 
 	@Test
@@ -229,9 +232,10 @@ public class ImagePushSWTBotTests {
 		// then the 'push()' method on the client should have been called
 		SWTUtils.wait(1, TimeUnit.SECONDS);
 		Mockito.verify(client, Mockito.times(1)).tag("foo/bar:latest", "another/name:latest", false);
-		Mockito.verify(client, Mockito.times(1)).push(Matchers.any(), Matchers.any(ProgressHandler.class));
-		Mockito.verify(client, Mockito.times(1)).removeImage(Matchers.anyString(), Matchers.anyBoolean(),
-				Matchers.anyBoolean());
+		Mockito.verify(client, Mockito.times(1)).push(ArgumentMatchers.any(),
+				ArgumentMatchers.any(ProgressHandler.class));
+		Mockito.verify(client, Mockito.times(1)).removeImage(ArgumentMatchers.anyString(),
+				ArgumentMatchers.anyBoolean(), ArgumentMatchers.anyBoolean());
 	}
 
 	@Test
@@ -251,9 +255,10 @@ public class ImagePushSWTBotTests {
 		// then the 'push()' method on the client should have been called
 		SWTUtils.wait(1, TimeUnit.SECONDS);
 		Mockito.verify(client, Mockito.times(1)).tag("foo/bar:latest", "foo.com/another/name:latest", false);
-		Mockito.verify(client, Mockito.times(1)).push(Matchers.any(), Matchers.any(ProgressHandler.class));
-		Mockito.verify(client, Mockito.times(1)).removeImage(Matchers.anyString(), Matchers.anyBoolean(),
-				Matchers.anyBoolean());
+		Mockito.verify(client, Mockito.times(1)).push(ArgumentMatchers.any(),
+				ArgumentMatchers.any(ProgressHandler.class));
+		Mockito.verify(client, Mockito.times(1)).removeImage(ArgumentMatchers.anyString(),
+				ArgumentMatchers.anyBoolean(), ArgumentMatchers.anyBoolean());
 	}
 
 	@Test

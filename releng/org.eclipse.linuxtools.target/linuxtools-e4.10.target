@@ -48,7 +48,7 @@
 <unit id="org.glassfish.jersey.core.jersey-server" version="2.22.1.v20161103-1916"/>
 <unit id="org.glassfish.jersey.ext.entityfiltering" version="2.22.1.v20161103-0227"/>
 <unit id="org.glassfish.jersey.media.jersey-media-json-jackson" version="2.22.1.v20161117-2005"/>
-<unit id="org.mockito" version="1.9.5.v201605172210"/>
+<unit id="org.mockito" version="2.13.0.v20180426-1843"/>
 <unit id="org.objectweb.asm" version="6.2.1.v20180823-1831"/>
 <unit id="org.objectweb.asm.analysis" version="6.2.1.v20180823-1831"/>
 <unit id="org.objectweb.asm.tree" version="6.2.1.v20180823-1831"/>

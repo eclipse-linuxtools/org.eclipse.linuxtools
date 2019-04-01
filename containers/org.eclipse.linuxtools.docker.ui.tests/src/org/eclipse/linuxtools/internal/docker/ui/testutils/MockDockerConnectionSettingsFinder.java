@@ -18,7 +18,7 @@ import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettingsFinder;
 import org.eclipse.linuxtools.internal.docker.core.TCPConnectionSettings;
 import org.eclipse.linuxtools.internal.docker.core.UnixSocketConnectionSettings;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 /**
@@ -57,7 +57,8 @@ public class MockDockerConnectionSettingsFinder {
 		unixSocketConnectionSettings.setSettingsResolved(true);
 		Mockito.when(validUnixSocketConnectionAvailable.findDefaultConnectionSettings()).thenReturn(unixSocketConnectionSettings);
 		Mockito.when(
-				validUnixSocketConnectionAvailable.resolveConnectionName(Matchers.any(IDockerConnectionSettings.class)))
+				validUnixSocketConnectionAvailable
+						.resolveConnectionName(ArgumentMatchers.any(IDockerConnectionSettings.class)))
 				.thenReturn(connectionName);
 		DockerConnectionManager.getInstance().setConnectionSettingsFinder(validUnixSocketConnectionAvailable);
 	}
@@ -80,7 +81,8 @@ public class MockDockerConnectionSettingsFinder {
 		tcpConnectionSettings.setSettingsResolved(true);
 		Mockito.when(validTCPSocketConnectionAvailable.findDefaultConnectionSettings()).thenReturn(tcpConnectionSettings);
 		Mockito.when(
-				validTCPSocketConnectionAvailable.resolveConnectionName(Matchers.any(IDockerConnectionSettings.class)))
+				validTCPSocketConnectionAvailable
+						.resolveConnectionName(ArgumentMatchers.any(IDockerConnectionSettings.class)))
 				.thenReturn(connectionName);
 		DockerConnectionManager.getInstance().setConnectionSettingsFinder(validTCPSocketConnectionAvailable);
 	}

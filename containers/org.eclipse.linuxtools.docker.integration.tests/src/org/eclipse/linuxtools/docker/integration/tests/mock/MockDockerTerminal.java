@@ -13,7 +13,7 @@
 package org.eclipse.linuxtools.docker.integration.tests.mock;
 
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerTerminal;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 public class MockDockerTerminal {
@@ -33,7 +33,7 @@ public class MockDockerTerminal {
 
 		public DockerTerminal build() {
 			final DockerTerminal dockerTerminal = Mockito.mock(DockerTerminal.class);
-			Mockito.when(dockerTerminal.getTextFromPage(Matchers.anyString())).thenReturn(this.text);
+			Mockito.when(dockerTerminal.getTextFromPage(ArgumentMatchers.anyString())).thenReturn(this.text);
 			return dockerTerminal;
 		}
 

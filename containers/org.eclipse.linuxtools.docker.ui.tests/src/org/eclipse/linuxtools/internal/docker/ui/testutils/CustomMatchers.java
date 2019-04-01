@@ -17,8 +17,7 @@ import java.util.stream.Stream;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.mockito.Matchers;
+import org.mockito.hamcrest.MockitoHamcrest;
 
 /**
  * Custom {@link Matcher}
@@ -26,7 +25,7 @@ import org.mockito.Matchers;
 public class CustomMatchers {
 
 	public static String[] arrayContains(final String expectation) {
-		return Matchers.argThat(new BaseMatcher<String[]>() {
+		return MockitoHamcrest.argThat(new BaseMatcher<String[]>() {
 
 			@Override
 			public boolean matches(Object items) {

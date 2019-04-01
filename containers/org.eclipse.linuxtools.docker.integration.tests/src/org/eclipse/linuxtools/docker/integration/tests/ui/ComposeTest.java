@@ -53,7 +53,7 @@ import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 public class ComposeTest extends AbstractImageBotTest {
@@ -165,9 +165,9 @@ public class ComposeTest extends AbstractImageBotTest {
 				.thenReturn(new ByteArrayInputStream("up!\n".getBytes()));
 		Mockito.when(mockDockerComposeUpProcess.getErrorStream()).thenReturn(new ByteArrayInputStream("".getBytes()));
 		Mockito.when(mockDockerComposeUpProcess.getOutputStream()).thenReturn(new ByteArrayOutputStream());
-		Mockito.when(mockProcessLauncher.processBuilder(Matchers.anyString(),
-				Matchers.eq(DockerCompose.getDockerComposeCommandName()), CustomMatchers.arrayContains("up"))
-				.workingDir(Matchers.anyString()).start()).thenReturn(mockDockerComposeUpProcess);
+		Mockito.when(mockProcessLauncher.processBuilder(ArgumentMatchers.anyString(),
+				ArgumentMatchers.eq(DockerCompose.getDockerComposeCommandName()), CustomMatchers.arrayContains("up"))
+				.workingDir(ArgumentMatchers.anyString()).start()).thenReturn(mockDockerComposeUpProcess);
 		latch = new CountDownLatch(1);
 		Mockito.when(mockDockerComposeUpProcess.waitFor()).then(invocation -> {
 			latch.await(5, TimeUnit.SECONDS);
@@ -183,9 +183,9 @@ public class ComposeTest extends AbstractImageBotTest {
 		Mockito.when(mockDockerComposeStopProcess.getErrorStream()).thenReturn(new ByteArrayInputStream("".getBytes()));
 		Mockito.when(mockDockerComposeStopProcess.getOutputStream()).thenReturn(new ByteArrayOutputStream());
 
-		Mockito.when(mockProcessLauncher.processBuilder(Matchers.anyString(),
-				Matchers.eq(DockerCompose.getDockerComposeCommandName()), CustomMatchers.arrayContains("stop"))
-				.workingDir(Matchers.anyString()).start()).thenReturn(mockDockerComposeStopProcess);
+		Mockito.when(mockProcessLauncher.processBuilder(ArgumentMatchers.anyString(),
+				ArgumentMatchers.eq(DockerCompose.getDockerComposeCommandName()), CustomMatchers.arrayContains("stop"))
+				.workingDir(ArgumentMatchers.anyString()).start()).thenReturn(mockDockerComposeStopProcess);
 		Mockito.when(mockDockerComposeStopProcess.waitFor()).then(invocation -> {
 			latch.countDown();
 			return 0;

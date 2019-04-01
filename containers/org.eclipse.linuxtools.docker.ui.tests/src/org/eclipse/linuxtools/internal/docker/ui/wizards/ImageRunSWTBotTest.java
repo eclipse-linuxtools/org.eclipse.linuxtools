@@ -52,7 +52,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import com.spotify.docker.client.DockerClient;
@@ -247,7 +247,8 @@ public class ImageRunSWTBotTest {
 		// expected response when creating the container
 		final ContainerCreation containerCreation = Mockito.mock(ContainerCreation.class);
 		Mockito.when(containerCreation.id()).thenReturn("MockContainer");
-		Mockito.when(client.createContainer(Matchers.any(), Matchers.any())).thenReturn(containerCreation);
+		Mockito.when(client.createContainer(ArgumentMatchers.any(), ArgumentMatchers.any()))
+				.thenReturn(containerCreation);
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		// configure the Connection Manager
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
@@ -266,7 +267,7 @@ public class ImageRunSWTBotTest {
 
 		// then
 		// check that the client was called
-		Mockito.verify(client).createContainer(Matchers.any(), Matchers.eq(containerName));
+		Mockito.verify(client).createContainer(ArgumentMatchers.any(), ArgumentMatchers.eq(containerName));
 		// check that a launch configuration was created
 		final ILaunchConfiguration launchConfiguration = LaunchConfigurationUtils.getLaunchConfigurationByName(
 				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, "foo_bar_latest");

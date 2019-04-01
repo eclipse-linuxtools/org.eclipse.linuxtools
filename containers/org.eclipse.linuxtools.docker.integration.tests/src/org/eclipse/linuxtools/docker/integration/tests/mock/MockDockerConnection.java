@@ -19,7 +19,7 @@ import org.eclipse.linuxtools.internal.docker.core.DockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.TCPConnectionSettings;
 import org.eclipse.linuxtools.internal.docker.core.UnixSocketConnectionSettings;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import com.spotify.docker.client.DockerClient;
@@ -74,7 +74,7 @@ public class MockDockerConnection {
 
 		private static void configureMockBehaviour(final DockerConnection connection) {
 			final IDockerImageInfo imageInfo = Mockito.mock(IDockerImageInfo.class, Mockito.RETURNS_DEEP_STUBS);
-			Mockito.when(connection.getImageInfo(Matchers.anyString())).thenReturn(imageInfo);
+			Mockito.when(connection.getImageInfo(ArgumentMatchers.anyString())).thenReturn(imageInfo);
 			// Mockito.when(connection.isOpen()).thenReturn(state ==
 			// EnumDockerConnectionState.ESTABLISHED);
 		}
@@ -85,9 +85,9 @@ public class MockDockerConnection {
 			connection.setDockerClientFactory(dockerClientFactory);
 			try {
 				// return dockerClient without auth
-				Mockito.when(dockerClientFactory.getClient(Matchers.any())).thenReturn(dockerClient);
+				Mockito.when(dockerClientFactory.getClient(ArgumentMatchers.any())).thenReturn(dockerClient);
 				// return same dockerClient with auth arg
-				Mockito.when(dockerClientFactory.getClient(Matchers.any(), Matchers.any())).thenReturn(dockerClient);
+				Mockito.when(dockerClientFactory.getClient(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(dockerClient);
 			} catch (DockerCertificateException e) {
 				// rest assured, nothing will happen while mocking the
 				// DockerClientFactory

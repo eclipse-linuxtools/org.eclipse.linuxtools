@@ -43,7 +43,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import com.spotify.docker.client.DockerClient;
@@ -127,8 +127,8 @@ public class BuildDockerImageShortcutSWTBotTest {
 		// then the 'DockerConnection#buildImage(...) method should have been
 		// called within the specified timeout
 		Mockito.verify(client, Mockito.timeout((int) TimeUnit.SECONDS.toMillis(3)).times(1)).build(
-				Matchers.any(Path.class), Matchers.any(String.class), Matchers.any(ProgressHandler.class),
-				Matchers.anyVararg());
+				ArgumentMatchers.any(Path.class), ArgumentMatchers.any(String.class),
+				ArgumentMatchers.any(ProgressHandler.class), ArgumentMatchers.any());
 	}
 
 	@Test
@@ -151,14 +151,14 @@ public class BuildDockerImageShortcutSWTBotTest {
 		// then the 'DockerConnection#buildImage(...) method should have been
 		// called within the specified timeout
 		Mockito.verify(client, Mockito.timeout((int) TimeUnit.SECONDS.toMillis(3)).times(1)).build(
-				Matchers.any(Path.class), Matchers.any(String.class), Matchers.any(ProgressHandler.class),
-				Matchers.anyVararg());
+				ArgumentMatchers.any(Path.class), ArgumentMatchers.any(String.class),
+				ArgumentMatchers.any(ProgressHandler.class), ArgumentMatchers.any());
 		// when trying to call again, there should be no dialog
 		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
 		// then a second call should have been done
 		Mockito.verify(client, Mockito.timeout((int) TimeUnit.SECONDS.toMillis(3)).times(2)).build(
-				Matchers.any(Path.class), Matchers.any(String.class), Matchers.any(ProgressHandler.class),
-				Matchers.anyVararg());
+				ArgumentMatchers.any(Path.class), ArgumentMatchers.any(String.class),
+				ArgumentMatchers.any(ProgressHandler.class), ArgumentMatchers.any());
 	}
 
 	@Test
@@ -181,8 +181,8 @@ public class BuildDockerImageShortcutSWTBotTest {
 		// then the 'DockerConnection#buildImage(...) method should have been
 		// called within the specified timeout
 		Mockito.verify(client, Mockito.timeout((int) TimeUnit.SECONDS.toMillis(30)).times(1)).build(
-				Matchers.any(Path.class), Matchers.any(String.class), Matchers.any(ProgressHandler.class),
-				Matchers.anyVararg());
+				ArgumentMatchers.any(Path.class), ArgumentMatchers.any(String.class),
+				ArgumentMatchers.any(ProgressHandler.class), ArgumentMatchers.any());
 		// when trying to call again after connection was removed, there should
 		// be an error dialog
 		DockerConnectionManager.getInstance().removeConnection(dockerConnection);
@@ -219,8 +219,8 @@ public class BuildDockerImageShortcutSWTBotTest {
 		// then the 'DockerConnection#buildImage(...) method should have been
 		// called within the specified timeout
 		Mockito.verify(client, Mockito.timeout((int) TimeUnit.SECONDS.toMillis(3)).times(1)).build(
-				Matchers.any(Path.class), Matchers.any(String.class), Matchers.any(ProgressHandler.class),
-				Matchers.anyVararg());
+				ArgumentMatchers.any(Path.class), ArgumentMatchers.any(String.class),
+				ArgumentMatchers.any(ProgressHandler.class), ArgumentMatchers.any());
 		// when trying to call again after connection was replaced, there should
 		// be an error dialog
 		final DockerConnection dockerConnection2 = MockDockerConnectionFactory.from("Test 2", client).withDefaultTCPConnectionSettings();
@@ -236,8 +236,8 @@ public class BuildDockerImageShortcutSWTBotTest {
 		// then the 'DockerConnection#buildImage(...) method should have been
 		// called within the specified timeout
 		Mockito.verify(client, Mockito.timeout((int) TimeUnit.SECONDS.toMillis(3)).times(2)).build(
-				Matchers.any(Path.class), Matchers.any(String.class), Matchers.any(ProgressHandler.class),
-				Matchers.anyVararg());
+				ArgumentMatchers.any(Path.class), ArgumentMatchers.any(String.class),
+				ArgumentMatchers.any(ProgressHandler.class), ArgumentMatchers.any());
 	}
 
 	@Test
@@ -261,8 +261,8 @@ public class BuildDockerImageShortcutSWTBotTest {
 		// then the 'DockerConnection#buildImage(...) method should have been
 		// called within the specified timeout
 		Mockito.verify(client, Mockito.timeout((int) TimeUnit.SECONDS.toMillis(30)).times(1)).build(
-				Matchers.any(Path.class), Matchers.any(String.class), Matchers.any(ProgressHandler.class),
-				Matchers.anyVararg());
+				ArgumentMatchers.any(Path.class), ArgumentMatchers.any(String.class),
+				ArgumentMatchers.any(ProgressHandler.class), ArgumentMatchers.any());
 		// when trying to call again after file was removed, there should
 		// be an error dialog
 		projectInit.getProject().findMember("Dockerfile").delete(true, new NullProgressMonitor());

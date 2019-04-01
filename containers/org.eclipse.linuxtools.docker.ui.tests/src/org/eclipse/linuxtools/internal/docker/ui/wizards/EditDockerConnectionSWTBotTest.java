@@ -68,7 +68,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import com.spotify.docker.client.DockerClient;
@@ -156,7 +156,7 @@ public class EditDockerConnectionSWTBotTest {
 		final IResource mockDockerFile = Mockito.mock(IResource.class, Mockito.RETURNS_DEEP_STUBS);
 		final IPath mockDockerFilePath = Mockito.mock(IPath.class, Mockito.RETURNS_DEEP_STUBS);
 		Mockito.when(mockDockerFile.getFullPath()).thenReturn(mockDockerFilePath);
-		Mockito.when(mockDockerFilePath.removeLastSegments(Matchers.anyInt())).thenReturn(mockDockerFilePath);
+		Mockito.when(mockDockerFilePath.removeLastSegments(ArgumentMatchers.anyInt())).thenReturn(mockDockerFilePath);
 		Mockito.when(mockDockerFilePath.toString()).thenReturn("/path/to/dockerfile");
 		final ILaunchConfiguration buildImageLaunchConfiguration = LaunchConfigurationUtils
 				.createBuildImageLaunchConfiguration(connection, "foo/bar:latest", mockDockerFile);
@@ -519,7 +519,7 @@ public class EditDockerConnectionSWTBotTest {
 		// then
 		final IDockerConnection foundConnection = DockerConnectionManager.getInstance().findConnection("foo");
 		assertThat(foundConnection).isNotNull();
-		Mockito.verify(connectionStorageManager).saveConnections(Matchers.anyList());
+		Mockito.verify(connectionStorageManager).saveConnections(ArgumentMatchers.anyList());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -545,7 +545,7 @@ public class EditDockerConnectionSWTBotTest {
 		assertThat(foundConnection).isNotNull();
 		assertThat(foundConnection.getSettings()).isNotNull()
 				.isEqualTo(new UnixSocketConnectionSettings(tmpDockerSocketFile.getAbsolutePath()));
-		Mockito.verify(connectionStorageManager).saveConnections(Matchers.anyList());
+		Mockito.verify(connectionStorageManager).saveConnections(ArgumentMatchers.anyList());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -570,7 +570,7 @@ public class EditDockerConnectionSWTBotTest {
 		assertThat(foundConnection).isNotNull();
 		assertThat(foundConnection.getSettings()).isNotNull()
 				.isEqualTo(new TCPConnectionSettings("https://foo.bar:1234", PATH_TO_CERTS));
-		Mockito.verify(connectionStorageManager).saveConnections(Matchers.anyList());
+		Mockito.verify(connectionStorageManager).saveConnections(ArgumentMatchers.anyList());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -596,7 +596,7 @@ public class EditDockerConnectionSWTBotTest {
 		assertThat(foundConnection).isNotNull();
 		assertThat(foundConnection.getSettings()).isNotNull()
 				.isEqualTo(new TCPConnectionSettings("https://foo.bar:1234", PATH_TO_CERTS));
-		Mockito.verify(connectionStorageManager).saveConnections(Matchers.anyList());
+		Mockito.verify(connectionStorageManager).saveConnections(ArgumentMatchers.anyList());
 	}
 
 	@Test

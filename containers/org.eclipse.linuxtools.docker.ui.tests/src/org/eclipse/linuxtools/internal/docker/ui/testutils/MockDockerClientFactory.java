@@ -25,7 +25,7 @@ import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import com.spotify.docker.client.DockerClient;
@@ -178,8 +178,9 @@ public class MockDockerClientFactory {
 
 		public DockerClient build() {
 			try {
-				Mockito.when(this.dockerClient.listImages(Matchers.any())).thenReturn(this.images);
-				Mockito.when(this.dockerClient.listContainers(Matchers.any())).thenAnswer(invocation -> containers);
+				Mockito.when(this.dockerClient.listImages(ArgumentMatchers.any())).thenReturn(this.images);
+				Mockito.when(this.dockerClient.listContainers(ArgumentMatchers.any()))
+						.thenAnswer(invocation -> containers);
 				for(Entry<String, List<ImageSearchResult>> searchResult : this.searchResults.entrySet()) {
 					Mockito.when(this.dockerClient.searchImages(searchResult.getKey())).thenReturn(searchResult.getValue());
 				}
@@ -201,7 +202,7 @@ public class MockDockerClientFactory {
 			final List<Container> containers = dockerClient.listContainers(new DockerClient.ListContainersParam[0]);
 		containers.add(container);
 		Mockito.when(dockerClient.inspectContainer(container.id())).thenReturn(containerInfo);
-		Mockito.when(dockerClient.listContainers(Matchers.any())).thenReturn(containers);
+			Mockito.when(dockerClient.listContainers(ArgumentMatchers.any())).thenReturn(containers);
 		} catch (DockerException | InterruptedException e) {
 			// nothing may happen when mocking the method call
 		}
