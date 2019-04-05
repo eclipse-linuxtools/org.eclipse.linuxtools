@@ -29,8 +29,12 @@ public class DockerConnectionManager {
 
 	private static DockerConnectionManager instance;
 
+	private final static int MAX_TIME = 40000;
+
 	private List<IDockerConnection> connections;
 	private ListenerList<IDockerConnectionManagerListener> connectionManagerListeners;
+
+	Thread reloadThread = null;
 
 	private IDockerConnectionSettingsFinder connectionSettingsFinder = new DefaultDockerConnectionSettingsFinder();
 	private IDockerConnectionStorageManager connectionStorageManager = new DefaultDockerConnectionStorageManager();
@@ -47,43 +51,78 @@ public class DockerConnectionManager {
 	}
 
 	public void reloadConnections() {
-		this.connections = connectionStorageManager.loadConnections();
-		for (IDockerConnection connection : connections) {
+		reloadThread = new Thread(() -> {
+			this.connections = connectionStorageManager.loadConnections();
+			for (IDockerConnection connection : connections) {
 				notifyListeners(connection,
 						IDockerConnectionManagerListener.ADD_EVENT);
-		}
-		List<IDockerConnectionSettings> settings = connectionSettingsFinder
-				.getKnownConnectionSettings();
-		for (IDockerConnectionSettings setting : settings) {
-			if (setting != null) {
-				IDockerConnection conn;
-				if (setting.getType().equals(BindingType.UNIX_SOCKET_CONNECTION)) {
-					UnixSocketConnectionSettings usetting = (UnixSocketConnectionSettings) setting;
-					conn = new DockerConnection.Builder().name(usetting.getName())
-							.unixSocketConnection(usetting);
-				} else {
-					TCPConnectionSettings tsetting = (TCPConnectionSettings) setting;
-					conn = new DockerConnection.Builder().name(tsetting.getName())
-							.tcpConnection(tsetting);
-				}
-				// add the connection but do not notify the listeners to avoid
-				// flickering on the Docker Explorer view for each entry
-				addConnection(conn, false);
 			}
-		}
+			List<IDockerConnectionSettings> settings = connectionSettingsFinder
+					.getKnownConnectionSettings();
+			for (IDockerConnectionSettings setting : settings) {
+				if (setting != null) {
+					IDockerConnection conn;
+					if (setting.getType()
+							.equals(BindingType.UNIX_SOCKET_CONNECTION)) {
+						UnixSocketConnectionSettings usetting = (UnixSocketConnectionSettings) setting;
+						conn = new DockerConnection.Builder()
+								.name(usetting.getName())
+								.unixSocketConnection(usetting);
+					} else {
+						TCPConnectionSettings tsetting = (TCPConnectionSettings) setting;
+						conn = new DockerConnection.Builder()
+								.name(tsetting.getName())
+								.tcpConnection(tsetting);
+					}
+					// add the connection but do not notify the listeners to
+					// avoid
+					// flickering on the Docker Explorer view for each entry
+					addConnectionUnchecked(conn, false);
+				}
+			}
+		});
+		reloadThread.start();
 	}
 
 	public void setConnectionSettingsFinder(
 			final IDockerConnectionSettingsFinder connectionSettingsFinder) {
+		if (reloadThread != null) {
+			try {
+				reloadThread.join(MAX_TIME);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			reloadThread = null;
+		}
 		this.connectionSettingsFinder = connectionSettingsFinder;
 	}
 
 	public void setConnectionStorageManager(
 			final IDockerConnectionStorageManager connectionStorageManager) {
+		if (reloadThread != null) {
+			try {
+				reloadThread.join(MAX_TIME);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			reloadThread = null;
+		}
 		this.connectionStorageManager = connectionStorageManager;
 	}
 
 	public void saveConnections() {
+		if (reloadThread != null) {
+			try {
+				reloadThread.join(MAX_TIME);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			reloadThread = null;
+		}
+		saveConnectionsUnchecked();
+	}
+
+	private void saveConnectionsUnchecked() {
 		this.connectionStorageManager.saveConnections(this.connections);
 	}
 
@@ -91,6 +130,14 @@ public class DockerConnectionManager {
 	 * @return an unmodifiable and non-null array of {@link IDockerConnection}
 	 */
 	public IDockerConnection[] getConnections() {
+		if (reloadThread != null) {
+			try {
+				reloadThread.join(MAX_TIME);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			reloadThread = null;
+		}
 		if (this.connections == null) {
 			return new IDockerConnection[0];
 		}
@@ -101,6 +148,14 @@ public class DockerConnectionManager {
 	 * @return an unmodifiable and non-null list of {@link IDockerConnection}
 	 */
 	public List<IDockerConnection> getAllConnections() {
+		if (reloadThread != null) {
+			try {
+				reloadThread.join(MAX_TIME);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			reloadThread = null;
+		}
 		if (this.connections == null) {
 			return Collections.emptyList();
 		}
@@ -112,6 +167,14 @@ public class DockerConnectionManager {
 	 *         exists yet.
 	 */
 	public IDockerConnection getFirstConnection() {
+		if (reloadThread != null) {
+			try {
+				reloadThread.join(MAX_TIME);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			reloadThread = null;
+		}
 		if (!hasConnections()) {
 			return null;
 		}
@@ -124,6 +187,14 @@ public class DockerConnectionManager {
 	 *         {@link DockerConnectionManager}, <code>false</code> otherwise.
 	 */
 	public boolean hasConnections() {
+		if (reloadThread != null) {
+			try {
+				reloadThread.join(MAX_TIME);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			reloadThread = null;
+		}
 		return connections != null && !connections.isEmpty();
 	}
 
@@ -135,7 +206,16 @@ public class DockerConnectionManager {
 	 * @return the {@link IDockerConnection} or <code>null</code> if none
 	 *         matched.
 	 */
-	public IDockerConnection getConnectionByName(final String connectionName) {
+	public IDockerConnection getConnectionByName(
+			final String connectionName) {
+		if (reloadThread != null) {
+			try {
+				reloadThread.join(MAX_TIME);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			reloadThread = null;
+		}
 		return this.connections.stream().filter(
 				connection -> connection.getName().equals(connectionName))
 				.findFirst().orElse(null);
@@ -149,7 +229,16 @@ public class DockerConnectionManager {
 	 * @return the {@link IDockerConnection} or <code>null</code> if none
 	 *         matched.
 	 */
-	public IDockerConnection getConnectionByUri(String connectionUri) {
+	public IDockerConnection getConnectionByUri(
+			String connectionUri) {
+		if (reloadThread != null) {
+			try {
+				reloadThread.join(MAX_TIME);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			reloadThread = null;
+		}
 		return DockerConnectionManager.getInstance().getAllConnections()
 				.stream()
 				.filter(c -> c.getUri().equals(connectionUri)).findFirst()
@@ -160,6 +249,14 @@ public class DockerConnectionManager {
 	 * @return an immutable {@link List} of the {@link IDockerConnection} names
 	 */
 	public List<String> getConnectionNames() {
+		if (reloadThread != null) {
+			try {
+				reloadThread.join();
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			reloadThread = null;
+		}
 		return Collections.unmodifiableList(getAllConnections().stream()
 				.map(c -> c.getName())
 				// making sure that no 'null' name is returned in the list of
@@ -169,6 +266,14 @@ public class DockerConnectionManager {
 	}
 
 	public IDockerConnection findConnection(final String name) {
+		if (reloadThread != null) {
+			try {
+				reloadThread.join();
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			reloadThread = null;
+		}
 		if (name != null) {
 			for (IDockerConnection connection : connections) {
 				if (connection.getName() != null
@@ -186,7 +291,16 @@ public class DockerConnectionManager {
 	 * @param dockerConnection
 	 *            the connection to add
 	 */
-	public void addConnection(final IDockerConnection dockerConnection) {
+	public void addConnection(
+			final IDockerConnection dockerConnection) {
+		if (reloadThread != null) {
+			try {
+				reloadThread.join();
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			reloadThread = null;
+		}
 		addConnection(dockerConnection, true);
 	}
 
@@ -201,11 +315,26 @@ public class DockerConnectionManager {
 	 *            {@link IDockerConnectionManagerListener} should be notified
 	 *            about the {@link IDockerConnection} addition.
 	 */
-	public void addConnection(final IDockerConnection dockerConnection,
+	public void addConnection(
+			final IDockerConnection dockerConnection,
+			final boolean notifyListeners) {
+		if (reloadThread != null) {
+			try {
+				reloadThread.join();
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			reloadThread = null;
+		}
+		addConnectionUnchecked(dockerConnection, notifyListeners);
+	}
+
+	private void addConnectionUnchecked(
+			final IDockerConnection dockerConnection,
 			final boolean notifyListeners) {
 		if (!connections.contains(dockerConnection)) {
 			connections.add(dockerConnection);
-			saveConnections();
+			saveConnectionsUnchecked();
 			if (notifyListeners) {
 				notifyListeners(dockerConnection,
 						IDockerConnectionManagerListener.ADD_EVENT);
@@ -213,7 +342,16 @@ public class DockerConnectionManager {
 		}
 	}
 
-	public void removeConnection(final IDockerConnection connection) {
+	public void removeConnection(
+			final IDockerConnection connection) {
+		if (reloadThread != null) {
+			try {
+				reloadThread.join();
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			reloadThread = null;
+		}
 		connections.remove(connection);
 		saveConnections();
 		notifyListeners(connection,
