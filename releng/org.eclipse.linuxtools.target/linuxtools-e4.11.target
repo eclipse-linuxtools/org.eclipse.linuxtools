@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?><target name="linuxtools-e4.11" sequenceNumber="1">
+<locations>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.9.2.v20180207-1730"/>
+<unit id="com.fasterxml.jackson.core.jackson-core" version="2.9.2.v20180207-1730"/>
+<unit id="com.fasterxml.jackson.core.jackson-databind" version="2.9.2.v20180207-1730"/>
+<unit id="com.fasterxml.jackson.datatype.jackson-datatype-guava" version="2.9.2.v20180207-1730"/>
+<unit id="com.fasterxml.jackson.jaxrs.jackson-jaxrs-base" version="2.9.2.v20180207-1730"/>
+<unit id="com.fasterxml.jackson.jaxrs.jackson-jaxrs-json-provider" version="2.9.2.v20180207-1730"/>
+<unit id="com.github.jnr.constants" version="0.9.8.v20180207-1730"/>
+<unit id="com.github.jnr.enxio" version="0.16.0.v20180207-1730"/>
+<unit id="com.github.jnr.ffi" version="2.1.4.v20180207-1730"/>
+<unit id="com.github.jnr.jffi" version="1.2.15.v20180207-1730"/>
+<unit id="com.github.jnr.jffi.native" version="1.2.15.v20180207-1730"/>
+<unit id="com.github.jnr.posix" version="3.0.35.v20180207-1730"/>
+<unit id="com.github.jnr.unixsocket" version="0.18.0.v20180207-1730"/>
+<unit id="com.google.gson" version="2.7.0.v20170129-0911"/>
+<unit id="com.google.guava" version="21.0.0.v20170206-1425"/>
+<unit id="com.spotify.docker.client" version="8.11.7.v20180731-1413"/>
+<unit id="com.spotify.docker.client.source" version="8.11.7.v20180731-1413"/>
+<unit id="javassist" version="3.13.0.GA_v201209210905"/>
+<unit id="javax.ws.rs" version="2.0.1.v201504171603"/>
+<unit id="javax.xml.bind" version="2.2.0.v201105210648"/>
+<unit id="javax.xml.stream" version="1.0.1.v201004272200"/>
+<unit id="jnr.x86asm" version="1.0.2.v201505052040"/>
+<unit id="org.aopalliance" version="1.0.0.v201105210816"/>
+<unit id="org.apache.commons.codec" version="1.10.0.v20180409-1845"/>
+<unit id="org.apache.commons.compress" version="1.6.0.v201310281400"/>
+<unit id="org.apache.commons.io" version="2.2.0.v201405211200"/>
+<unit id="org.apache.commons.lang" version="2.6.0.v201404270220"/>
+<unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
+<unit id="org.apache.httpcomponents.httpclient" version="4.5.6.v20190213-1430"/>
+<unit id="org.apache.httpcomponents.httpcore" version="4.4.10.v20190123-2214"/>
+<unit id="org.apache.xerces" version="2.9.0.v201101211617"/>
+<unit id="org.assertj" version="1.7.1.v20170413-2026"/>
+<unit id="org.bouncycastle.bcpkix" version="1.60.0.v20181210-2057"/>
+<unit id="org.bouncycastle.bcprov" version="1.60.0.v20181210-2057"/>
+<unit id="org.cyberneko.html" version="1.9.14.v201105210654"/>
+<unit id="org.glassfish.hk2.api" version="2.5.0.v20161103-0227"/>
+<unit id="org.glassfish.hk2.locator" version="2.5.0.v20161103-0227"/>
+<unit id="org.glassfish.hk2.osgi-resource-locator" version="2.5.0.v20161103-1916"/>
+<unit id="org.glassfish.hk2.utils" version="2.5.0.v20160210-1508"/>
+<unit id="org.glassfish.jersey.apache.connector" version="2.22.1.v20161103-1916"/>
+<unit id="org.glassfish.jersey.bundles.repackaged.jersey-guava" version="2.22.1.v20161103-1916"/>
+<unit id="org.glassfish.jersey.core.jersey-client" version="2.22.1.v20161103-1916"/>
+<unit id="org.glassfish.jersey.core.jersey-common" version="2.22.1.v20181004-1955"/>
+<unit id="org.glassfish.jersey.core.jersey-server" version="2.22.1.v20181004-1955"/>
+<unit id="org.glassfish.jersey.ext.entityfiltering" version="2.22.1.v20181004-1955"/>
+<unit id="org.glassfish.jersey.media.jersey-media-json-jackson" version="2.22.1.v20161117-2005"/>
+<unit id="org.mockito" version="2.13.0.v20180426-1843"/>
+<unit id="org.objectweb.asm" version="6.2.1.v20181030-2244"/>
+<unit id="org.objectweb.asm.analysis" version="6.2.1.v20181030-2244"/>
+<unit id="org.objectweb.asm.tree" version="6.2.1.v20181030-2244"/>
+<unit id="org.objectweb.asm.util" version="6.2.1.v20181030-2244"/>
+<unit id="org.slf4j.api" version="1.7.10.v20170428-1633"/>
+<unit id="org.swtchart" version="0.10.0.v201605200358"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20190226160451/repository"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
+<unit id="org.eclipse.jdt.core" version="0.0.0"/>
+<unit id="org.eclipse.jdt.debug.ui" version="0.0.0"/>
+<unit id="org.eclipse.jdt.ui" version="0.0.0"/>
+<unit id="org.eclipse.pde.runtime" version="0.0.0"/>
+<unit id="org.eclipse.platform.ide" version="0.0.0"/>
+<unit id="org.eclipse.equinox.core.feature.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.11/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.license.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/cbi/updates/license"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.swtbot.eclipse.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.swtbot.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.dstore.core" version="0.0.0"/>
+<unit id="org.eclipse.jgit.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.ptp.rdt.sync.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.remote.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.tm.terminal.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.zest.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.cdt.autotools.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.cdt.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.launchbar.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/releases/2019-03/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.reddeer.eclipse.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.reddeer.tests.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.reddeer.ui.feature.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/reddeer/snapshots/"/>
+</location>
+</locations>
+<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+<launcherArgs>
+<vmArgs>-Xms40m
+-Xmx512M</vmArgs>
+<programArgs>-consolelog</programArgs>
+</launcherArgs>
+</target>

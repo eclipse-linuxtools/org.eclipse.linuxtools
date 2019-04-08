@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2010, 2019 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.ChangeLogTestProject;
+import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorer;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
@@ -59,6 +60,7 @@ public class AddChangelogEntrySWTBotTest extends AbstractSWTBotTest {
         // Create an empty test project
         project = new ChangeLogTestProject(PROJECT_NAME);
         project.addJavaNature(); // make it a Java project
+		projectExplorerViewTree = ProjectExplorer.getTree();
     }
 
     @After
