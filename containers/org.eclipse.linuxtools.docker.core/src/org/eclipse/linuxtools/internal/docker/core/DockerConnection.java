@@ -525,9 +525,11 @@ public class DockerConnection
 			VolumeList list = client
 					.listVolumes(new DockerClient.ListVolumesParam[0]);
 			List<Volume> volumes = list.volumes();
-			for (Volume volume : volumes) {
-				DockerVolume v = new DockerVolume(volume);
-				volumeList.add(v);
+			if (volumes != null) {
+				for (Volume volume : volumes) {
+					DockerVolume v = new DockerVolume(volume);
+					volumeList.add(v);
+				}
 			}
 		} catch (com.spotify.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage());
