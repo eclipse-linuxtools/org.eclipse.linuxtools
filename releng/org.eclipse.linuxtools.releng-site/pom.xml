@@ -59,57 +59,6 @@
           </extraArtifactRepositoryProperties>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho.extras</groupId>
-        <artifactId>tycho-eclipserun-plugin</artifactId>
-        <version>${tycho-version}</version>
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>eclipse-run</goal>
-            </goals>
-            <configuration>
-              <applicationsArgs>
-                <arg>-application</arg>
-                <arg>org.eclipse.cbi.p2repo.analyzers.repoReport</arg>
-              </applicationsArgs>
-              <jvmArgs>
-                <arg>-DreportRepoDir=${project.build.directory}/repository</arg>
-                <arg>-DreportOutputDir=${project.build.directory}/repository/buildInfo</arg>
-              <arg>-DreferenceRepo=/home/data/httpd/download.eclipse.org/releases/2018-12/</arg>
-              </jvmArgs>
-              <executionEnvironment>JavaSE-1.8</executionEnvironment>
-              <dependencies>
-              <dependency>
-                <artifactId>org.eclipse.cbi.p2repo.analyzers</artifactId>
-                <type>eclipse-plugin</type>
-              </dependency>
-              <dependency>
-                <artifactId>org.eclipse.equinox.p2.core.feature</artifactId>
-                <type>eclipse-feature</type>
-              </dependency>
-              <dependency>
-                <artifactId>org.eclipse.e4.rcp</artifactId>
-                <type>eclipse-feature</type>
-              </dependency>
-            </dependencies>
-              <repositories>
-                <repository>
-                  <id>cbi-reports</id>
-                  <url>http://download.eclipse.org/cbi/updates/analyzers/4.7/I20180525-1502/</url>
-                  <layout>p2</layout>
-                </repository>
-                <repository>
-                  <id>eclipse-4.10</id>
-                  <url>https://download.eclipse.org/eclipse/updates/4.10/R-4.10-201812060815/</url>
-                  <layout>p2</layout>
-                </repository>
-              </repositories>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
