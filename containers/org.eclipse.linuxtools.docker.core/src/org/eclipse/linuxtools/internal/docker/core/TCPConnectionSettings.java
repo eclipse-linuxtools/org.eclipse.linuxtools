@@ -13,6 +13,8 @@
 
 package org.eclipse.linuxtools.internal.docker.core;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +32,9 @@ public class TCPConnectionSettings extends BaseConnectionSettings {
 
 	public final Pattern ipaddrPattern = Pattern
 			.compile("[a-z]*://([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)[:]*[0-9]*");
+
+	public final Pattern httpPattern = Pattern.compile(
+			"^(https?)://([-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]):[0-9]*");
 
 	/**
 	 * absolute path to folder containing the certificates (ca.pem, key.pem and
@@ -75,7 +80,17 @@ public class TCPConnectionSettings extends BaseConnectionSettings {
 			if (m.matches()) {
 				ipaddr = m.group(1);
 			} else {
-				ipaddr = "";
+				Matcher m2 = httpPattern.matcher(host);
+				if (m2.matches()) {
+					try {
+						ipaddr = InetAddress.getByName(m2.group(2))
+								.getHostAddress();
+					} catch (UnknownHostException e) {
+						return ""; //$NON-NLS-1$
+					}
+				} else {
+					return ""; //$NON-NLS-1$
+				}
 			}
 		}
 		return ipaddr;

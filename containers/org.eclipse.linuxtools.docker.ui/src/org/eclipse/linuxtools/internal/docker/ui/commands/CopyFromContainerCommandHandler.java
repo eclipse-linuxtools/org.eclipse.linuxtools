@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2016, 2019 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,7 +17,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -27,6 +32,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -105,6 +111,38 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 		}
 	}
 
+	private static Set<PosixFilePermission> toPerms(int mode) {
+		Set<PosixFilePermission> perms = new HashSet<>();
+		if ((mode & 0400) != 0) {
+			perms.add(PosixFilePermission.OWNER_READ);
+		}
+		if ((mode & 0200) != 0) {
+			perms.add(PosixFilePermission.OWNER_WRITE);
+		}
+		if ((mode & 0100) != 0) {
+			perms.add(PosixFilePermission.OWNER_EXECUTE);
+		}
+		if ((mode & 0040) != 0) {
+			perms.add(PosixFilePermission.GROUP_READ);
+		}
+		if ((mode & 0020) != 0) {
+			perms.add(PosixFilePermission.GROUP_WRITE);
+		}
+		if ((mode & 0010) != 0) {
+			perms.add(PosixFilePermission.GROUP_EXECUTE);
+		}
+		if ((mode & 0004) != 0) {
+			perms.add(PosixFilePermission.OTHERS_READ);
+		}
+		if ((mode & 0002) != 0) {
+			perms.add(PosixFilePermission.OTHERS_WRITE);
+		}
+		if ((mode & 0001) != 0) {
+			perms.add(PosixFilePermission.OTHERS_EXECUTE);
+		}
+		return perms;
+	}
+
 	private void performCopyFromContainer(final IDockerConnection connection, final IDockerContainer container,
 			final String target, final List<ContainerFileProxy> files) {
 		final Job copyFromContainerJob = new Job(
@@ -113,6 +151,7 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 			@Override
 			protected IStatus run(final IProgressMonitor monitor) {
 				monitor.beginTask(CommandMessages.getString(COPY_FROM_CONTAINER_JOB_TASK), files.size());
+				boolean isWin = Platform.getOS().equals(Platform.OS_WIN32);
 				try (Closeable token = ((DockerConnection) connection).getOperationToken()) {
 					for (ContainerFileProxy proxy : files) {
 						if (monitor.isCanceled()) {
@@ -137,11 +176,18 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 									IPath path = new Path(target);
 									path = path.append(te.getName());
 									File f = new File(path.toOSString());
+									int mode = te.getMode();
 									if (te.isDirectory()) {
 										f.mkdir();
+										if (!isWin && !te.isSymbolicLink()) {
+											Files.setPosixFilePermissions(Paths.get(path.toOSString()), toPerms(mode));
+										}
 										continue;
 									} else {
 										f.createNewFile();
+										if (!isWin && !te.isSymbolicLink()) {
+											Files.setPosixFilePermissions(Paths.get(path.toOSString()), toPerms(mode));
+										}
 									}
 									try (FileOutputStream os = new FileOutputStream(f)) {
 										int bufferSize = ((int) size > 4096 ? 4096 : (int) size);

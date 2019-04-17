@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2019 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -27,6 +27,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -97,6 +99,38 @@ public class ContainerLauncher {
 	private static Object lockObject = new Object();
 	private static Map<String, Map<String, Set<String>>> copiedVolumesMap = null;
 	private static Map<String, Map<String, Set<String>>> copyingVolumesMap = null;
+
+	private static Set<PosixFilePermission> toPerms(int mode) {
+		Set<PosixFilePermission> perms = new HashSet<>();
+		if ((mode & 0400) != 0) {
+			perms.add(PosixFilePermission.OWNER_READ);
+		}
+		if ((mode & 0200) != 0) {
+			perms.add(PosixFilePermission.OWNER_WRITE);
+		}
+		if ((mode & 0100) != 0) {
+			perms.add(PosixFilePermission.OWNER_EXECUTE);
+		}
+		if ((mode & 0040) != 0) {
+			perms.add(PosixFilePermission.GROUP_READ);
+		}
+		if ((mode & 0020) != 0) {
+			perms.add(PosixFilePermission.GROUP_WRITE);
+		}
+		if ((mode & 0010) != 0) {
+			perms.add(PosixFilePermission.GROUP_EXECUTE);
+		}
+		if ((mode & 0004) != 0) {
+			perms.add(PosixFilePermission.OTHERS_READ);
+		}
+		if ((mode & 0002) != 0) {
+			perms.add(PosixFilePermission.OTHERS_WRITE);
+		}
+		if ((mode & 0001) != 0) {
+			perms.add(PosixFilePermission.OTHERS_EXECUTE);
+		}
+		return perms;
+	}
 
 	private class CopyVolumesJob extends Job {
 
@@ -238,6 +272,7 @@ public class ContainerLauncher {
 			monitor.beginTask(Messages.getFormattedString(COPY_VOLUMES_FROM_DESC, image), volumes.size());
 			String containerId = null;
 			String currentVolume = null;
+			boolean isWin = Platform.getOS().equals(Platform.OS_WIN32);
 
 			// keep a list of already copied/being copied volumes so we can skip them and
 			// wait at the end to
@@ -413,11 +448,21 @@ public class ContainerLauncher {
 									IPath path = currDir;
 									path = path.append(te.getName());
 									File f = new File(path.toOSString());
+									int mode = te.getMode();
 									if (te.isDirectory()) {
 										f.mkdir();
+										if (!isWin && !te.isSymbolicLink()) {
+											Files.setPosixFilePermissions(Paths.get(path.toOSString()), toPerms(mode));
+										}
 										continue;
 									} else {
+										if (".project".equals(te.getName())) { //$NON-NLS-1$
+											continue;
+										}
 										f.createNewFile();
+										if (!isWin && !te.isSymbolicLink()) {
+											Files.setPosixFilePermissions(Paths.get(path.toOSString()), toPerms(mode));
+										}
 									}
 									try (FileOutputStream os = new FileOutputStream(f)) {
 										int bufferSize = ((int) size > 4096 ? 4096 : (int) size);

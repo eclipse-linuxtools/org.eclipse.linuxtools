@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2017, 2019 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -21,6 +21,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -31,20 +34,17 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
-import org.eclipse.linuxtools.docker.core.IDockerContainerConfig;
 import org.eclipse.linuxtools.docker.core.IDockerContainerExit;
 import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.docker.core.IDockerContainerState;
-import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.docker.ui.launch.Messages;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
-import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig;
-import org.eclipse.linuxtools.internal.docker.core.DockerHostConfig;
 
 
 public class ContainerCommandProcess extends Process {
@@ -263,17 +263,18 @@ public class ContainerCommandProcess extends Process {
 			if (!containerRemoved) {
 				connection.stopLoggingThread(containerId);
 			}
+			if (!((DockerConnection) connection).isLocal()
+					&& remoteVolumes != null && !remoteVolumes.isEmpty()) {
+				CopyVolumesFromImageJob job = new CopyVolumesFromImageJob(
+						connection, containerId, remoteVolumes);
+				job.schedule();
+				job.join();
+				remoteVolumes.clear();
+			}
 			if (!containerRemoved && !keepContainer) {
 				exitValue = exitValue();
 				containerRemoved = true;
 				connection.removeContainer(containerId);
-			}
-			if (!((DockerConnection) connection).isLocal()
-					&& remoteVolumes != null && !remoteVolumes.isEmpty()) {
-				CopyVolumesFromImageJob job = new CopyVolumesFromImageJob(
-						connection, imageName, remoteVolumes);
-				job.schedule();
-				job.join();
 			}
 			return exit.statusCode();
 		} catch (DockerException e) {
@@ -312,6 +313,38 @@ public class ContainerCommandProcess extends Process {
 		}
 	}
 
+	private static Set<PosixFilePermission> toPerms(int mode) {
+		Set<PosixFilePermission> perms = new HashSet<>();
+		if ((mode & 0400) != 0) {
+			perms.add(PosixFilePermission.OWNER_READ);
+		}
+		if ((mode & 0200) != 0) {
+			perms.add(PosixFilePermission.OWNER_WRITE);
+		}
+		if ((mode & 0100) != 0) {
+			perms.add(PosixFilePermission.OWNER_EXECUTE);
+		}
+		if ((mode & 0040) != 0) {
+			perms.add(PosixFilePermission.GROUP_READ);
+		}
+		if ((mode & 0020) != 0) {
+			perms.add(PosixFilePermission.GROUP_WRITE);
+		}
+		if ((mode & 0010) != 0) {
+			perms.add(PosixFilePermission.GROUP_EXECUTE);
+		}
+		if ((mode & 0004) != 0) {
+			perms.add(PosixFilePermission.OTHERS_READ);
+		}
+		if ((mode & 0002) != 0) {
+			perms.add(PosixFilePermission.OTHERS_WRITE);
+		}
+		if ((mode & 0001) != 0) {
+			perms.add(PosixFilePermission.OTHERS_EXECUTE);
+		}
+		return perms;
+	}
+
 	private class CopyVolumesFromImageJob extends Job {
 
 		private static final String COPY_VOLUMES_FROM_JOB_TITLE = "ContainerLaunch.copyVolumesFromJob.title"; //$NON-NLS-1$
@@ -320,27 +353,21 @@ public class ContainerCommandProcess extends Process {
 
 		private final Map<String, String> remoteVolumes;
 		private final IDockerConnection connection;
-		private final String imageName;
+		private final String containerId;
 
 		public CopyVolumesFromImageJob(IDockerConnection connection,
-				String imageName, Map<String, String> remoteVolumes) {
+				String containerId, Map<String, String> remoteVolumes) {
 			super(Messages.getString(COPY_VOLUMES_FROM_JOB_TITLE));
 			this.remoteVolumes = remoteVolumes;
 			this.connection = connection;
-			this.imageName = imageName;
+			this.containerId = containerId;
 		}
 
 		@Override
 		protected IStatus run(final IProgressMonitor monitor) {
 			monitor.beginTask(Messages.getFormattedString(COPY_VOLUMES_FROM_DESC, imageName), remoteVolumes.size());
-			String containerId = null;
+			boolean isWin = Platform.getOS().equals(Platform.OS_WIN32);
 			try {
-				DockerContainerConfig.Builder builder = new DockerContainerConfig.Builder().cmd("/bin/sh") //$NON-NLS-1$
-						.image(imageName);
-				IDockerContainerConfig config = builder.build();
-				DockerHostConfig.Builder hostBuilder = new DockerHostConfig.Builder();
-				IDockerHostConfig hostConfig = hostBuilder.build();
-				containerId = ((DockerConnection) connection).createContainer(config, hostConfig, null);
 				for (String volume : remoteVolumes.keySet()) {
 					try (Closeable token = ((DockerConnection) connection).getOperationToken()) {
 						monitor.setTaskName(Messages.getFormattedString(COPY_VOLUMES_FROM_TASK, volume));
@@ -363,11 +390,22 @@ public class ContainerCommandProcess extends Process {
 								IPath path = currDir;
 								path = path.append(te.getName());
 								File f = new File(path.toOSString());
+								int mode = te.getMode();
 								if (te.isDirectory()) {
 									f.mkdir();
+									if (!isWin && !te.isSymbolicLink()) {
+										Files.setPosixFilePermissions(Paths.get(path.toOSString()), toPerms(mode));
+									}
 									continue;
 								} else {
+									// don't copy back .project file as this causes sync issues
+									if (".project".equals(te.getName())) { //$NON-NLS-1$
+										continue;
+									}
 									f.createNewFile();
+									if (!isWin && !te.isSymbolicLink()) {
+										Files.setPosixFilePermissions(Paths.get(path.toOSString()), toPerms(mode));
+									}
 								}
 								try (FileOutputStream os = new FileOutputStream(f)) {
 									int bufferSize = ((int) size > 4096 ? 4096 : (int) size);
@@ -393,16 +431,7 @@ public class ContainerCommandProcess extends Process {
 				// do nothing
 			} catch (IOException e) {
 				Activator.log(e);
-			} catch (DockerException e1) {
-				Activator.log(e1);
 			} finally {
-				if (containerId != null) {
-					try {
-						((DockerConnection) connection).removeContainer(containerId);
-					} catch (DockerException | InterruptedException e) {
-						// ignore
-					}
-				}
 				monitor.done();
 			}
 			return Status.OK_STATUS;
