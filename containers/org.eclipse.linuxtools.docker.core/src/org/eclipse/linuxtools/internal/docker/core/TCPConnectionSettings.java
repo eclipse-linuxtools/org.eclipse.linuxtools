@@ -111,7 +111,8 @@ public class TCPConnectionSettings extends BaseConnectionSettings {
 	 * @return the tlsVerify
 	 */
 	public boolean isTlsVerify() {
-		return this.pathToCertificates != null;
+		return this.pathToCertificates != null
+				&& !this.pathToCertificates.isEmpty();
 	}
 
 	/**
