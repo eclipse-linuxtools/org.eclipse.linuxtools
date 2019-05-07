@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="linuxtools-e4.11" sequenceNumber="1">
+<?pde version="3.8"?><target name="linuxtools-e4.11" sequenceNumber="2">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.9.2.v20180207-1730"/>
@@ -15,7 +15,7 @@
 <unit id="com.github.jnr.jffi.native" version="1.2.15.v20180207-1730"/>
 <unit id="com.github.jnr.posix" version="3.0.35.v20180207-1730"/>
 <unit id="com.github.jnr.unixsocket" version="0.18.0.v20180207-1730"/>
-<unit id="com.google.gson" version="2.7.0.v20170129-0911"/>
+<unit id="com.google.gson" version="2.8.2.v20180104-1110"/>
 <unit id="com.google.guava" version="21.0.0.v20170206-1425"/>
 <unit id="com.spotify.docker.client" version="8.11.7.v20180731-1413"/>
 <unit id="com.spotify.docker.client.source" version="8.11.7.v20180731-1413"/>
@@ -26,8 +26,8 @@
 <unit id="jnr.x86asm" version="1.0.2.v201505052040"/>
 <unit id="org.aopalliance" version="1.0.0.v201105210816"/>
 <unit id="org.apache.commons.codec" version="1.10.0.v20180409-1845"/>
-<unit id="org.apache.commons.compress" version="1.6.0.v201310281400"/>
-<unit id="org.apache.commons.io" version="2.2.0.v201405211200"/>
+<unit id="org.apache.commons.compress" version="1.18.0.v20181121-2221"/>
+<unit id="org.apache.commons.io" version="2.6.0.v20190123-2029"/>
 <unit id="org.apache.commons.lang" version="2.6.0.v201404270220"/>
 <unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
 <unit id="org.apache.httpcomponents.httpclient" version="4.5.6.v20190213-1430"/>
@@ -48,14 +48,14 @@
 <unit id="org.glassfish.jersey.core.jersey-server" version="2.22.1.v20181004-1955"/>
 <unit id="org.glassfish.jersey.ext.entityfiltering" version="2.22.1.v20181004-1955"/>
 <unit id="org.glassfish.jersey.media.jersey-media-json-jackson" version="2.22.1.v20161117-2005"/>
-<unit id="org.mockito" version="2.13.0.v20180426-1843"/>
-<unit id="org.objectweb.asm" version="6.2.1.v20181030-2244"/>
-<unit id="org.objectweb.asm.analysis" version="6.2.1.v20181030-2244"/>
-<unit id="org.objectweb.asm.tree" version="6.2.1.v20181030-2244"/>
-<unit id="org.objectweb.asm.util" version="6.2.1.v20181030-2244"/>
+<unit id="org.mockito" version="2.23.0.v20181106-1534"/>
+<unit id="org.objectweb.asm" version="7.1.0.v20190412-2143"/>
+<unit id="org.objectweb.asm.analysis" version="7.1.0.v20190412-2143"/>
+<unit id="org.objectweb.asm.tree" version="7.1.0.v20190412-2143"/>
+<unit id="org.objectweb.asm.util" version="7.1.0.v20190412-2143"/>
 <unit id="org.slf4j.api" version="1.7.10.v20170428-1633"/>
 <unit id="org.swtchart" version="0.10.0.v201605200358"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20190226160451/repository"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/S20190501151401/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
