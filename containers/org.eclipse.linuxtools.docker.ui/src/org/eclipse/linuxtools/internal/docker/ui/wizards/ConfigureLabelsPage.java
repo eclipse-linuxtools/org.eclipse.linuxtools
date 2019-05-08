@@ -15,7 +15,7 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
