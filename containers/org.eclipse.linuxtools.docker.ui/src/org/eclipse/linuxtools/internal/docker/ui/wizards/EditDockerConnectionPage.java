@@ -21,7 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.list.IObservableList;
@@ -127,7 +127,6 @@ public class EditDockerConnectionPage extends WizardPage {
 	 *            the parent container (ie, the main container in the preference
 	 *            page)
 	 */
-	@SuppressWarnings("unchecked")
 	private void createConnectionSettingsContainer(final Composite parent) {
 		final int COLUMNS = 3;
 		final int INDENT = 20;
@@ -232,32 +231,32 @@ public class EditDockerConnectionPage extends WizardPage {
 		// observe
 		final IObservableValue<String> connectionNameModelObservable = BeanProperties
 				.value(EditDockerConnectionPageModel.class,
-						EditDockerConnectionPageModel.CONNECTION_NAME)
+						EditDockerConnectionPageModel.CONNECTION_NAME, String.class)
 				.observe(model);
 		final IObservableValue<Boolean> unixSocketBindingModeModelObservable = BeanProperties
 				.value(EditDockerConnectionPageModel.class,
-						EditDockerConnectionPageModel.UNIX_SOCKET_BINDING_MODE)
+						EditDockerConnectionPageModel.UNIX_SOCKET_BINDING_MODE, Boolean.class)
 				.observe(model);
 		final IObservableValue<String> unixSocketPathModelObservable = BeanProperties
 				.value(EditDockerConnectionPageModel.class,
-						EditDockerConnectionPageModel.UNIX_SOCKET_PATH)
+						EditDockerConnectionPageModel.UNIX_SOCKET_PATH, String.class)
 				.observe(model);
 
 		final IObservableValue<Boolean> tcpConnectionBindingModeModelObservable = BeanProperties
 				.value(EditDockerConnectionPageModel.class,
-						EditDockerConnectionPageModel.TCP_CONNECTION_BINDING_MODE)
+						EditDockerConnectionPageModel.TCP_CONNECTION_BINDING_MODE, Boolean.class)
 				.observe(model);
 		final IObservableValue<String> tcpCertPathModelObservable = BeanProperties
 				.value(EditDockerConnectionPageModel.class,
-						EditDockerConnectionPageModel.TCP_CERT_PATH)
+						EditDockerConnectionPageModel.TCP_CERT_PATH, String.class)
 				.observe(model);
 		final IObservableValue<Boolean> tcpTlsVerifyModelObservable = BeanProperties
 				.value(EditDockerConnectionPageModel.class,
-						EditDockerConnectionPageModel.TCP_TLS_VERIFY)
+						EditDockerConnectionPageModel.TCP_TLS_VERIFY, Boolean.class)
 				.observe(model);
 		final IObservableValue<String> tcpHostModelObservable = BeanProperties
 				.value(EditDockerConnectionPageModel.class,
-						EditDockerConnectionPageModel.TCP_HOST)
+						EditDockerConnectionPageModel.TCP_HOST, String.class)
 				.observe(model);
 
 		// group controls to easily enable/disable them

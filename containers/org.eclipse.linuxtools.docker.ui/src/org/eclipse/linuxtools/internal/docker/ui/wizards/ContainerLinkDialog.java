@@ -154,7 +154,7 @@ public class ContainerLinkDialog extends Dialog {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.span(COLUMNS, 1).grab(true, false).applyTo(errorMessageLabel);
 
-		final ISWTObservableValue containerNameObservable = WidgetProperties
+		final ISWTObservableValue<?> containerNameObservable = WidgetProperties
 				.selection().observe(containerSelectionComboViewer.getCombo());
 
 		dbc.bindValue(containerNameObservable,
@@ -162,18 +162,13 @@ public class ContainerLinkDialog extends Dialog {
 						.value(ContainerLinkDialogModel.class,
 								ContainerLinkDialogModel.CONTAINER_NAME)
 						.observe(model));
-		final ISWTObservableValue containerAliasObservable = WidgetProperties
+		final ISWTObservableValue<?> containerAliasObservable = WidgetProperties
 				.text(SWT.Modify).observe(containerAliasText);
 
-		dbc.bindValue(containerAliasObservable,
-				BeanProperties
-						.value(ContainerLinkDialogModel.class,
-								ContainerLinkDialogModel.CONTAINER_ALIAS)
-						.observe(model));
-		containerNameObservable.addValueChangeListener(
-onContainerLinkSettingsChanged());
-		containerAliasObservable.addValueChangeListener(
-onContainerLinkSettingsChanged());
+		dbc.bindValue(containerAliasObservable, BeanProperties
+				.value(ContainerLinkDialogModel.class, ContainerLinkDialogModel.CONTAINER_ALIAS).observe(model));
+		containerNameObservable.addValueChangeListener(onContainerLinkSettingsChanged());
+		containerAliasObservable.addValueChangeListener(onContainerLinkSettingsChanged());
 		return container;
 	}
 

@@ -163,7 +163,7 @@ public class RunImageLinksTab extends AbstractLaunchConfigurationTab {
 		createTableViewerColumn(tableViewer,
 				WizardMessages.getString("ImageRunSelectionPage.aliasColumn"), //$NON-NLS-1$
 				150);
-		tableViewer.setContentProvider(new ObservableListContentProvider());
+		tableViewer.setContentProvider(new ObservableListContentProvider<>());
 		return tableViewer;
 	}
 

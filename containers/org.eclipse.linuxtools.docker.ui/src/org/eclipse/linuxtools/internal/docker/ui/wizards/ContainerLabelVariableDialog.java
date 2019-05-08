@@ -110,12 +110,12 @@ public class ContainerLabelVariableDialog extends Dialog {
 				.span(COLUMNS, 1).grab(true, false).applyTo(errorMessageLabel);
 
 		// listening to changes
-		final ISWTObservableValue variableNameObservable = WidgetProperties
+		final ISWTObservableValue<?> variableNameObservable = WidgetProperties
 				.text(SWT.Modify).observe(variableNameText);
 		dbc.bindValue(variableNameObservable,
 				BeanProperties.value(LabelVariableModel.class,
 						LabelVariableModel.NAME).observe(model));
-		final ISWTObservableValue variableValueObservable = WidgetProperties
+		final ISWTObservableValue<?> variableValueObservable = WidgetProperties
 				.text(SWT.Modify).observe(variableValueText);
 		dbc.bindValue(variableValueObservable,
 				BeanProperties.value(LabelVariableModel.class,

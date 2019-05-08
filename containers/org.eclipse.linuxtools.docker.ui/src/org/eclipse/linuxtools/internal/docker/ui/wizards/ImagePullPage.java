@@ -14,7 +14,7 @@
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
@@ -116,10 +116,10 @@ public class ImagePullPage extends ImagePullPushPage<ImagePullPageModel> {
 		// binding
 		final IObservableValue<String> imgeNameObservable = BeanProperties
 				.value(ImagePullPushPageModel.class,
-						ImagePullPushPageModel.SELECTED_IMAGE_NAME)
+						ImagePullPushPageModel.SELECTED_IMAGE_NAME, String.class)
 				.observe(getModel());
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(imageNameText),
-				imgeNameObservable, new UpdateValueStrategy()
+				imgeNameObservable, new UpdateValueStrategy<String, String>()
 						.setAfterConvertValidator(new ImageNameValidator()),
 				null);
 	}

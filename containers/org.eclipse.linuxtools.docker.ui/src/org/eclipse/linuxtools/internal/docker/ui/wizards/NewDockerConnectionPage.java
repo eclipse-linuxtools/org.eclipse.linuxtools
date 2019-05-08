@@ -26,7 +26,7 @@ import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.list.IObservableList;
@@ -293,46 +293,38 @@ public class NewDockerConnectionPage extends WizardPage {
 				.addSelectionListener(onTestConnectionButtonSelection());
 
 		// observe
-		@SuppressWarnings("unchecked")
 		final IObservableValue<String> connectionNameModelObservable = BeanProperties
 				.value(NewDockerConnectionPageModel.class,
-						NewDockerConnectionPageModel.CONNECTION_NAME)
+						NewDockerConnectionPageModel.CONNECTION_NAME, String.class)
 				.observe(model);
-		@SuppressWarnings("unchecked")
 		final IObservableValue<Boolean> unixSocketBindingModeModelObservable = BeanProperties
 				.value(NewDockerConnectionPageModel.class,
-						NewDockerConnectionPageModel.UNIX_SOCKET_BINDING_MODE)
+						NewDockerConnectionPageModel.UNIX_SOCKET_BINDING_MODE, Boolean.class)
 				.observe(model);
-		@SuppressWarnings("unchecked")
 		final IObservableValue<String> unixSocketPathModelObservable = BeanProperties
 				.value(NewDockerConnectionPageModel.class,
-						NewDockerConnectionPageModel.UNIX_SOCKET_PATH)
+						NewDockerConnectionPageModel.UNIX_SOCKET_PATH, String.class)
 				.observe(model);
 
-		@SuppressWarnings("unchecked")
 		final IObservableValue<Boolean> customConnectionSettingsModelObservable = BeanProperties
 				.value(NewDockerConnectionPageModel.class,
-						NewDockerConnectionPageModel.CUSTOM_SETTINGS)
+						NewDockerConnectionPageModel.CUSTOM_SETTINGS, Boolean.class)
 				.observe(model);
-		@SuppressWarnings("unchecked")
 		final IObservableValue<Boolean> tcpConnectionBindingModeModelObservable = BeanProperties
 				.value(NewDockerConnectionPageModel.class,
-						NewDockerConnectionPageModel.TCP_CONNECTION_BINDING_MODE)
+						NewDockerConnectionPageModel.TCP_CONNECTION_BINDING_MODE, Boolean.class)
 				.observe(model);
-		@SuppressWarnings("unchecked")
 		final IObservableValue<String> tcpCertPathModelObservable = BeanProperties
 				.value(NewDockerConnectionPageModel.class,
-						NewDockerConnectionPageModel.TCP_CERT_PATH)
+						NewDockerConnectionPageModel.TCP_CERT_PATH, String.class)
 				.observe(model);
-		@SuppressWarnings("unchecked")
 		final IObservableValue<Boolean> tcpTlsVerifyModelObservable = BeanProperties
 				.value(NewDockerConnectionPageModel.class,
-						NewDockerConnectionPageModel.TCP_TLS_VERIFY)
+						NewDockerConnectionPageModel.TCP_TLS_VERIFY, Boolean.class)
 				.observe(model);
-		@SuppressWarnings("unchecked")
 		final IObservableValue<String> tcpHostModelObservable = BeanProperties
 				.value(NewDockerConnectionPageModel.class,
-						NewDockerConnectionPageModel.TCP_HOST)
+						NewDockerConnectionPageModel.TCP_HOST, String.class)
 				.observe(model);
 
 		// group controls to easily enable/disable them

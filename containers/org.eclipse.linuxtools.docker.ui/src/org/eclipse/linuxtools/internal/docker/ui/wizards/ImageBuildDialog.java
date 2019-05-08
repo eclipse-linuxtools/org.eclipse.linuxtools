@@ -143,7 +143,7 @@ public class ImageBuildDialog extends Dialog {
 				WizardMessages.getString("ImageBuildName.toolTip")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).applyTo(repoNameText);
-		final ISWTObservableValue connnectionNameObservable = WidgetProperties
+		final ISWTObservableValue<?> connnectionNameObservable = WidgetProperties
 				.selection().observe(connectionSelectionComboViewer.getCombo());
 		// pre-select with first connection
 		if (!connectionNames.isEmpty()) {
@@ -167,7 +167,7 @@ public class ImageBuildDialog extends Dialog {
 						.value(ImageBuildDialogModel.class,
 								ImageBuildDialogModel.CONNECTION_NAME)
 						.observe(model));
-		final ISWTObservableValue repoNameObservable = WidgetProperties
+		final ISWTObservableValue<?> repoNameObservable = WidgetProperties
 				.text(SWT.Modify).observe(repoNameText);
 
 		dbc.bindValue(repoNameObservable,

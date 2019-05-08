@@ -125,7 +125,6 @@ public class ImageRunNetworkPage extends WizardPage {
 		setControl(scrollTop);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void createNetworkModeContainer(final Composite parent) {
 		final Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new GridLayout());

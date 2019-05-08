@@ -326,7 +326,7 @@ public class ImageRunSelectionPage extends WizardPage {
 						.observe(model));
 		// bind combo with model (for values and selection)
 		imageSelectionComboViewer
-				.setContentProvider(new ObservableListContentProvider());
+				.setContentProvider(new ObservableListContentProvider<>());
 		dbc.bindList(WidgetProperties.items().observe(imageSelectionCombo),
 				BeanProperties
 						.list(ImageRunSelectionModel.class,
@@ -516,7 +516,7 @@ public class ImageRunSelectionPage extends WizardPage {
 				WizardMessages
 						.getString("ImageRunSelectionPage.hostPortColumn"), //$NON-NLS-1$
 				100);
-		tableViewer.setContentProvider(new ObservableListContentProvider());
+		tableViewer.setContentProvider(new ObservableListContentProvider<>());
 		return tableViewer;
 	}
 

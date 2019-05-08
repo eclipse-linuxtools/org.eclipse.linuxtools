@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
-import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
@@ -87,7 +87,6 @@ public class ImagePushPage extends ImagePullPushPage<ImagePushPageModel> {
 	}
 
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void createControl(final Composite parent) {
 		parent.setLayout(new GridLayout());
@@ -134,7 +133,6 @@ public class ImagePushPage extends ImagePullPushPage<ImagePushPageModel> {
 		setControl(container);
 	}
 
-	@SuppressWarnings("unchecked")
 	private IObservableValue<String> createImageSelectionControls(
 			final Composite container) {
 		final Label nameLabel = new Label(container, SWT.NULL);
@@ -155,7 +153,7 @@ public class ImagePushPage extends ImagePullPushPage<ImagePushPageModel> {
 		// repo/name can be selected.
 		final IObservableValue<String> imageNameObservable = BeanProperties
 				.value(ImagePushPageModel.class,
-						ImagePullPushPageModel.SELECTED_IMAGE_NAME)
+						ImagePullPushPageModel.SELECTED_IMAGE_NAME, String.class)
 				.observe(getModel());
 		dbc.bindValue(WidgetProperties.selection().observe(imageNameCombo),
 				imageNameObservable);

@@ -172,7 +172,7 @@ public class RunImageLabelsTab extends AbstractLaunchConfigurationTab {
 				WizardMessages
 						.getString("ImageRunResourceVolVarPage.valueColumn"), //$NON-NLS-1$
 				200);
-		tableViewer.setContentProvider(new ObservableListContentProvider());
+		tableViewer.setContentProvider(new ObservableListContentProvider<>());
 		return tableViewer;
 	}
 

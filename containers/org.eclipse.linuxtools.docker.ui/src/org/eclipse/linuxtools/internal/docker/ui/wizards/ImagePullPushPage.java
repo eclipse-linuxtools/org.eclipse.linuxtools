@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.viewers.typed.ViewerProperties;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -79,7 +79,6 @@ public abstract class ImagePullPushPage<M extends ImagePullPushPageModel>
 		return this.model;
 	}
 
-	@SuppressWarnings("unchecked")
 	IObservableValue<IRegistry> createRegistrySelectionControls(
 			Composite parent) {
 		// registry selection
@@ -121,8 +120,7 @@ public abstract class ImagePullPushPage<M extends ImagePullPushPageModel>
 			getModel().setSelectedRegistry(selectedRegistry);
 		}
 		final IObservableValue<IRegistry> registryAccountObservable = BeanProperties
-				.value(ImagePushPageModel.class,
-						ImagePullPushPageModel.SELECTED_REGISTRY)
+				.value(ImagePullPushPageModel.SELECTED_REGISTRY, IRegistry.class)
 				.observe(model);
 		dbc.bindValue(ViewerProperties.singleSelection().observe(
 				registryAccountComboViewer), registryAccountObservable);

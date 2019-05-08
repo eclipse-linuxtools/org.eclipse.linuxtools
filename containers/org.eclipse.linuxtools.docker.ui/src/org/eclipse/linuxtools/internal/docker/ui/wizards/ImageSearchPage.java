@@ -174,10 +174,10 @@ public class ImageSearchPage extends WizardPage {
 				.grab(true, true).hint(200, 100)
 				.applyTo(selectedImageDescription);
 		// bind the search term
-		final IObservableValue observableTermModel = BeanProperties
+		final IObservableValue<?> observableTermModel = BeanProperties
 				.value(ImageSearchModel.class, ImageSearchModel.TERM)
 				.observe(model);
-		final ISWTObservableValue imageSearchTextObservable = WidgetProperties
+		final ISWTObservableValue<String> imageSearchTextObservable = WidgetProperties
 				.text(SWT.Modify).observe(searchImageText);
 		ctx.bindValue(imageSearchTextObservable, observableTermModel,
 				new UpdateValueStrategy().setBeforeSetValidator(
@@ -185,7 +185,7 @@ public class ImageSearchPage extends WizardPage {
 				null);
 		// observe the viewer content
 		searchResultTableViewer
-				.setContentProvider(new ObservableListContentProvider());
+				.setContentProvider(new ObservableListContentProvider<>());
 		// observe the viewer content
 		final IObservableList observableSearchResultModel = BeanProperties
 				.list(ImageSearchModel.class,
@@ -200,7 +200,7 @@ public class ImageSearchPage extends WizardPage {
 				BeanProperties.value(ImageSearchModel.SELECTED_IMAGE)
 						.observe(model));
 		// observe the viewer selection to update the description label
-		final IObservableValue observableSelectedImageDescription = PojoProperties
+		final IObservableValue<String> observableSelectedImageDescription = PojoProperties
 				.value("description", String.class) // $NON-NLS-1$
 				.observeDetail(ViewerProperties.singleSelection()
 						.observe(searchResultTableViewer));

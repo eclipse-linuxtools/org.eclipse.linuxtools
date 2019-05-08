@@ -176,7 +176,7 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 				.grab(false, false).applyTo(memoryLimitValueLabel);
 
 		// enable/disable controls
-		final IObservableValue enableResourceLimitationsObservable = BeanProperties
+		final IObservableValue<?> enableResourceLimitationsObservable = BeanProperties
 				.value(ImageRunResourceVolumesVariablesModel.class,
 						ImageRunResourceVolumesVariablesModel.ENABLE_RESOURCE_LIMITATIONS)
 				.observe(model);

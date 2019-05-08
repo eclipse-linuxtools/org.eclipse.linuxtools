@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
@@ -95,7 +95,8 @@ public class PackageVMPage extends WizardPage {
 				WizardMessages.getString("ImagePull.name.tooltip")); //$NON-NLS-1$
 		// Name binding
 		final IObservableValue<String> boxNameObservable = BeanProperties
-				.value(PackageVMPageModel.class, PackageVMPageModel.BOX_NAME)
+				.value(PackageVMPageModel.class, PackageVMPageModel.BOX_NAME,
+						String.class)
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(boxNameText),
 				boxNameObservable, new UpdateValueStrategy<>(), null);
@@ -113,7 +114,8 @@ public class PackageVMPage extends WizardPage {
 				WizardMessages.getString("PackageVMPage.folder.desc")); //$NON-NLS-1$
 		// Folder binding
 		final IObservableValue<String> boxFolderObservable = BeanProperties
-				.value(PackageVMPageModel.class, PackageVMPageModel.BOX_FOLDER)
+				.value(PackageVMPageModel.class, PackageVMPageModel.BOX_FOLDER,
+						String.class)
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(boxFolderText),
 				boxFolderObservable, new UpdateValueStrategy<>(), null);

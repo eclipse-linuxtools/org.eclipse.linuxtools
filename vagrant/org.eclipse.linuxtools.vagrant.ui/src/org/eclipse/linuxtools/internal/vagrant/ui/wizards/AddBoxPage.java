@@ -15,7 +15,7 @@ package org.eclipse.linuxtools.internal.vagrant.ui.wizards;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
@@ -91,7 +91,8 @@ public class AddBoxPage extends WizardPage {
 				WizardMessages.getString("ImagePull.name.tooltip")); //$NON-NLS-1$
 		// Name binding
 		final IObservableValue<String> boxNameObservable = BeanProperties
-				.value(AddBoxPageModel.class, AddBoxPageModel.BOX_NAME)
+				.value(AddBoxPageModel.class, AddBoxPageModel.BOX_NAME,
+						String.class)
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(boxNameText),
 				boxNameObservable, new UpdateValueStrategy<>(), null);
@@ -110,7 +111,8 @@ public class AddBoxPage extends WizardPage {
 				WizardMessages.getString("ImagePull.loc.tooltip")); //$NON-NLS-1$
 		// Location binding
 		final IObservableValue<String> imageNameObservable = BeanProperties
-				.value(AddBoxPageModel.class, AddBoxPageModel.BOX_LOC)
+				.value(AddBoxPageModel.class, AddBoxPageModel.BOX_LOC,
+						String.class)
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(boxLocText),
 				imageNameObservable, new UpdateValueStrategy<>(), null);

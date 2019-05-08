@@ -176,7 +176,6 @@ public class ImageTagSelectionPage extends WizardPage {
 		super.dispose();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void createControl(final Composite parent) {
 		final int COLUMNS = 1;
@@ -207,7 +206,7 @@ public class ImageTagSelectionPage extends WizardPage {
 				WizardMessages
 						.getString("ImageTagSelectionPage.column.localcopy"), //$NON-NLS-1$
 				SWT.NONE, SWT.LEFT, 75, new ImagePulledColumnLabelProvider());
-		tableViewer.setContentProvider(new ObservableListContentProvider());
+		tableViewer.setContentProvider(new ObservableListContentProvider<>());
 		// observe the viewer content
 		final IObservableList<?> observableSearchResultModel = BeanProperties
 				.list(ImageSearchModel.class,

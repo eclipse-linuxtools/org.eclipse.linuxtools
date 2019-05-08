@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
@@ -110,7 +110,8 @@ public class CreateVMPage extends WizardPage {
 				WizardMessages.getString("CreateVMPage.name.tooltip")); //$NON-NLS-1$
 		// VM Name binding
 		final IObservableValue<String> vmmNameObservable = BeanProperties
-				.value(CreateVMPageModel.class, CreateVMPageModel.VM_NAME)
+				.value(CreateVMPageModel.class, CreateVMPageModel.VM_NAME,
+						String.class)
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(vmNameText),
 				vmmNameObservable);
@@ -129,7 +130,8 @@ public class CreateVMPage extends WizardPage {
 				WizardMessages.getString("CreateVMPage.boxRef.tooltip")); //$NON-NLS-1$
 		// Box Name binding
 		final IObservableValue<String> boxRefObservable = BeanProperties
-				.value(CreateVMPageModel.class, CreateVMPageModel.BOX_REF)
+				.value(CreateVMPageModel.class, CreateVMPageModel.BOX_REF,
+						String.class)
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(boxRefText),
 				boxRefObservable);
@@ -149,7 +151,8 @@ public class CreateVMPage extends WizardPage {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(false, false).span(3, 1).applyTo(customVMFileButton);
 		final IObservableValue<String> customVMFileObservable = BeanProperties
-				.value(CreateVMPageModel.class, CreateVMPageModel.V_FILE_MODE)
+				.value(CreateVMPageModel.class, CreateVMPageModel.V_FILE_MODE,
+						String.class)
 				.observe(model);
 		dbc.bindValue(WidgetProperties.selection().observe(customVMFileButton),
 				customVMFileObservable);
@@ -169,7 +172,8 @@ public class CreateVMPage extends WizardPage {
 		boxLocText.setEnabled(false);
 		// Location binding
 		final IObservableValue<String> boxLocObservable = BeanProperties
-				.value(CreateVMPageModel.class, CreateVMPageModel.VM_FILE)
+				.value(CreateVMPageModel.class, CreateVMPageModel.VM_FILE,
+						String.class)
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(boxLocText),
 				boxLocObservable);

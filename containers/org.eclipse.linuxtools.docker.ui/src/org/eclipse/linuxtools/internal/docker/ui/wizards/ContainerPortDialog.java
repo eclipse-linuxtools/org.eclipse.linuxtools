@@ -129,34 +129,27 @@ public class ContainerPortDialog extends Dialog {
 				.span(COLUMNS, 1).grab(true, false).applyTo(errorMessageLabel);
 
 		// listening to changes
-		final ISWTObservableValue containerPortObservable = WidgetProperties
+		final ISWTObservableValue<?> containerPortObservable = WidgetProperties
 				.text(SWT.Modify).observe(containerPortText);
 		dbc.bindValue(containerPortObservable,
 				BeanProperties
 						.value(ContainerPortDialogModel.class,
 								ContainerPortDialogModel.CONTAINER_PORT)
 						.observe(model));
-		final ISWTObservableValue hostAddressObservable = WidgetProperties
+		final ISWTObservableValue<?> hostAddressObservable = WidgetProperties
 				.text(SWT.Modify).observe(hostAddressText);
 		dbc.bindValue(hostAddressObservable,
 				BeanProperties
 						.value(ContainerPortDialogModel.class,
 								ContainerPortDialogModel.HOST_ADDRESS)
 						.observe(model));
-		final ISWTObservableValue hostPortObservable = WidgetProperties
-				.text(SWT.Modify).observe(hostPortText);
-		dbc.bindValue(hostPortObservable,
-				BeanProperties
-						.value(ContainerPortDialogModel.class,
-								ContainerPortDialogModel.HOST_PORT)
-						.observe(model));
+		final ISWTObservableValue<?> hostPortObservable = WidgetProperties.text(SWT.Modify).observe(hostPortText);
+		dbc.bindValue(hostPortObservable, BeanProperties
+				.value(ContainerPortDialogModel.class, ContainerPortDialogModel.HOST_PORT).observe(model));
 
-		containerPortObservable.addValueChangeListener(
-onContainerPortSettingsChanged());
-		hostPortObservable.addValueChangeListener(
-onContainerPortSettingsChanged());
-		hostAddressObservable.addValueChangeListener(
-onContainerPortSettingsChanged());
+		containerPortObservable.addValueChangeListener(onContainerPortSettingsChanged());
+		hostPortObservable.addValueChangeListener(onContainerPortSettingsChanged());
+		hostAddressObservable.addValueChangeListener(onContainerPortSettingsChanged());
 		return container;
 	}
 

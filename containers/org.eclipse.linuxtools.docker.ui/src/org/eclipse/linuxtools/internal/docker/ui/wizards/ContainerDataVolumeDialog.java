@@ -138,7 +138,7 @@ public class ContainerDataVolumeDialog extends Dialog {
 		final Text containerPathText = new Text(container, SWT.BORDER);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).applyTo(containerPathText);
-		final IObservableValue containerPathObservable = BeanProperties
+		final IObservableValue<?> containerPathObservable = BeanProperties
 				.value(DataVolumeModel.class, DataVolumeModel.CONTAINER_PATH)
 				.observe(model);
 		dbc.bindValue(
@@ -175,7 +175,7 @@ public class ContainerDataVolumeDialog extends Dialog {
 		final Text hostPathText = new Text(container, SWT.BORDER);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).applyTo(hostPathText);
-		final IObservableValue hostPathObservable = BeanProperties
+		final IObservableValue<?> hostPathObservable = BeanProperties
 				.value(DataVolumeModel.class, DataVolumeModel.HOST_PATH_MOUNT)
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(hostPathText),
@@ -197,7 +197,7 @@ public class ContainerDataVolumeDialog extends Dialog {
 				.getString("ContainerDataVolumeDialog.readOnlyButtonTooltip")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.span(COLUMNS - 2, 1).grab(true, false).applyTo(readOnlyButton);
-		final ISWTObservableValue readOnlyButtonObservable = WidgetProperties
+		final ISWTObservableValue<?> readOnlyButtonObservable = WidgetProperties
 				.selection().observe(readOnlyButton);
 		dbc.bindValue(readOnlyButtonObservable,
 				BeanProperties
@@ -241,7 +241,7 @@ public class ContainerDataVolumeDialog extends Dialog {
 		containerSelectionComboViewer
 				.setContentProvider(new ArrayContentProvider());
 		containerSelectionComboViewer.setInput(this.containerNames);
-		final IObservableValue selectedContainerObservable = BeanProperties
+		final IObservableValue<?> selectedContainerObservable = BeanProperties
 				.value(DataVolumeModel.class, DataVolumeModel.CONTAINER_MOUNT)
 				.observe(model);
 		dbc.bindValue(

@@ -228,7 +228,7 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 				.applyTo(searchImageButton);
 		searchImageButton.addSelectionListener(onSearchImage());
 		imageSelectionComboViewer
-				.setContentProvider(new ObservableListContentProvider());
+				.setContentProvider(new ObservableListContentProvider<>());
 		dbc.bindList(WidgetProperties.items().observe(imageSelectionCombo),
 				BeanProperties
 						.list(ImageRunSelectionModel.class,

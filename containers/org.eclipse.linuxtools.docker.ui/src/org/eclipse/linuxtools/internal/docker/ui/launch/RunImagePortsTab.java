@@ -227,7 +227,7 @@ public class RunImagePortsTab extends AbstractLaunchConfigurationTab
 				WizardMessages
 						.getString("ImageRunSelectionPage.hostPortColumn"), //$NON-NLS-1$
 				100);
-		tableViewer.setContentProvider(new ObservableListContentProvider());
+		tableViewer.setContentProvider(new ObservableListContentProvider<>());
 		return tableViewer;
 	}
 
