@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat.
+ * Copyright (c) 2015, 2019 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -499,7 +499,6 @@ public class EditDockerConnectionSWTBotTest {
 		Mockito.verify(connection, Mockito.times(0)).getImages(true);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void shouldSaveConnectionWhenNameChanged() {
 		// given
@@ -522,7 +521,6 @@ public class EditDockerConnectionSWTBotTest {
 		Mockito.verify(connectionStorageManager).saveConnections(ArgumentMatchers.anyList());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void shouldSaveConnectionWhenUnixSocketConnectionSettingsChanged() throws IOException {
 		// given
@@ -548,7 +546,6 @@ public class EditDockerConnectionSWTBotTest {
 		Mockito.verify(connectionStorageManager).saveConnections(ArgumentMatchers.anyList());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void shouldSaveConnectionWhenTCPConnectionSettingsChanged() {
 		// given
@@ -573,7 +570,6 @@ public class EditDockerConnectionSWTBotTest {
 		Mockito.verify(connectionStorageManager).saveConnections(ArgumentMatchers.anyList());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void shouldSaveConnectionWhenNameAndTCPConnectionSettingsChanged() {
 		// given
