@@ -28,7 +28,6 @@
 <unit id="org.apache.commons.codec" version="1.10.0.v20180409-1845"/>
 <unit id="org.apache.commons.compress" version="1.18.0.v20181121-2221"/>
 <unit id="org.apache.commons.io" version="2.6.0.v20190123-2029"/>
-<unit id="org.apache.commons.lang" version="2.6.0.v201404270220"/>
 <unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
 <unit id="org.apache.httpcomponents.httpclient" version="4.5.6.v20190213-1430"/>
 <unit id="org.apache.httpcomponents.httpcore" version="4.4.10.v20190123-2214"/>
