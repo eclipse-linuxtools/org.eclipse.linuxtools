@@ -57,7 +57,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
 public class RunImagePortsTab extends AbstractLaunchConfigurationTab
-		implements PropertyChangeListener {
+{
 
 	private static final String TAB_NAME = "RunPortsTab.name"; //$NON-NLS-1$
 
@@ -372,8 +372,7 @@ public class RunImagePortsTab extends AbstractLaunchConfigurationTab
 				IRunDockerImageLaunchConfigurationConstants.PUBLISH_ALL_PORTS,
 				model.isPublishAllPorts());
 		List<String> portsList = new ArrayList<>();
-		for (Object o : model.getExposedPorts().toArray()) {
-			ImageRunSelectionModel.ExposedPortModel m = (ImageRunSelectionModel.ExposedPortModel) o;
+		for (ImageRunSelectionModel.ExposedPortModel m : model.getExposedPorts()) {
 			portsList.add(m.toString());
 		}
 		configuration.setAttribute(
@@ -384,12 +383,6 @@ public class RunImagePortsTab extends AbstractLaunchConfigurationTab
 	@Override
 	public String getName() {
 		return LaunchMessages.getString(TAB_NAME);
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		// TODO Auto-generated method stub
-
 	}
 
 	private class LaunchConfigurationChangeListener

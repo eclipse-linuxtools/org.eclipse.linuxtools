@@ -284,8 +284,7 @@ public class RunImageEnvironmentTab extends AbstractLaunchConfigurationTab {
 		if (model == null)
 			return;
 		ArrayList<String> envList = new ArrayList<>();
-		for (Object o : model.getEnvironmentVariables()) {
-			EnvironmentVariableModel m = (EnvironmentVariableModel) o;
+		for (EnvironmentVariableModel m : model.getEnvironmentVariables()) {
 			envList.add(m.toString());
 		}
 		configuration.setAttribute(

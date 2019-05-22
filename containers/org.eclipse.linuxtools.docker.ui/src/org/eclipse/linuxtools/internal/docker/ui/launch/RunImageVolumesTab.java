@@ -457,24 +457,19 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 		ArrayList<String> volumesList = new ArrayList<>();
 		Set<String> selectedVolumesSet = new TreeSet<>();
 
-		for (Iterator<DataVolumeModel> iterator = volumes.iterator(); iterator
-				.hasNext();) {
-			DataVolumeModel volume = iterator.next();
+		for (DataVolumeModel volume : volumes) {
 			StringBuffer buffer = new StringBuffer();
 			volumesList.add(volume.toString());
 			switch (volume.getMountType()) {
 			case HOST_FILE_SYSTEM:
-				buffer.append(volume.getHostPathMount() + ","
-						+ volume.getHostPathMount() + ","
-						+ volume.isReadOnly());
+				buffer.append(volume.getHostPathMount() + "," + volume.getHostPathMount() + "," + volume.isReadOnly());
 				if (selectedVolumes.contains(volume)) {
 					selectedVolumesSet.add(volume.toString());
-					String bind = LaunchConfigurationUtils
-							.convertToUnixPath(volume.getHostPathMount())
-							+ ':' + volume.getContainerPath() + ':' + 'Z';
+					String bind = LaunchConfigurationUtils.convertToUnixPath(volume.getHostPathMount()) + ':'
+							+ volume.getContainerPath() + ':' + 'Z';
 					if (volume.isReadOnly()) {
 						bind += ",ro"; //$NON-NLS-1$
-					}
+			}
 					binds.add(bind);
 				}
 				break;
@@ -482,7 +477,7 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 				if (selectedVolumes.contains(volume)) {
 					selectedVolumesSet.add(volume.toString());
 					volumesFrom.add(volume.getContainerMount());
-				}
+		}
 				break;
 			default:
 				break;

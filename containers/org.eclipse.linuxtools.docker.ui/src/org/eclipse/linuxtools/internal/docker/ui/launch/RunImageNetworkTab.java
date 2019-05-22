@@ -41,12 +41,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class RunImageNetworkTab extends AbstractLaunchConfigurationTab
-		implements PropertyChangeListener {
+public class RunImageNetworkTab extends AbstractLaunchConfigurationTab {
 
 	private static final String TAB_NAME = "RunNetworkTab.name"; //$NON-NLS-1$
-
-	private static final int INDENT = 30;
 
 	private static final int COLUMNS = 3;
 
@@ -345,11 +342,6 @@ public class RunImageNetworkTab extends AbstractLaunchConfigurationTab
 	@Override
 	public String getName() {
 		return LaunchMessages.getString(TAB_NAME);
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		// TODO Auto-generated method stub
 	}
 
 	private class LaunchConfigurationChangeListener

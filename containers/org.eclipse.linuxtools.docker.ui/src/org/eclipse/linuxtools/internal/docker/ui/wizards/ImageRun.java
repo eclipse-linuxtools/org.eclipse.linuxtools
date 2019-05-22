@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -139,28 +138,21 @@ public class ImageRun extends Wizard {
 			hostConfigBuilder.publishAllPorts(true);
 		} else {
 			final Map<String, List<IDockerPortBinding>> portBindings = new HashMap<>();
-			for (Iterator<ExposedPortModel> iterator = selectionModel
-					.getExposedPorts().iterator(); iterator.hasNext();) {
-				final ExposedPortModel exposedPort = iterator.next();
+			for (ExposedPortModel exposedPort : selectionModel.getExposedPorts()) {
 				// only selected Ports in the CheckboxTableViewer are exposed.
 				if (!selectionModel.getSelectedPorts().contains(exposedPort)) {
 					continue;
 				}
-				final DockerPortBinding portBinding = new DockerPortBinding(
-						exposedPort.getHostAddress(),
+				final DockerPortBinding portBinding = new DockerPortBinding(exposedPort.getHostAddress(),
 						exposedPort.getHostPort());
-				portBindings.put(
-						exposedPort.getContainerPort()
-								+ exposedPort.getPortType(),
-						Arrays.<IDockerPortBinding> asList(portBinding));
+				portBindings.put(exposedPort.getContainerPort() + exposedPort.getPortType(),
+						Arrays.<IDockerPortBinding>asList(portBinding));
 			}
 			hostConfigBuilder.portBindings(portBindings);
 		}
 		// container links
 		final List<String> links = new ArrayList<>();
-		for (Iterator<ContainerLinkModel> iterator = selectionModel.getLinks()
-				.iterator(); iterator.hasNext();) {
-			final ContainerLinkModel link = iterator.next();
+		for (ContainerLinkModel link : selectionModel.getLinks()) {
 			links.add(link.getContainerName() + ':' + link.getContainerAlias());
 		}
 		hostConfigBuilder.links(links);
@@ -168,9 +160,7 @@ public class ImageRun extends Wizard {
 		// data volumes
 		final List<String> volumesFrom = new ArrayList<>();
 		final List<String> binds = new ArrayList<>();
-		for (Iterator<DataVolumeModel> iterator = resourcesModel
-				.getDataVolumes().iterator(); iterator.hasNext();) {
-			final DataVolumeModel dataVolume = iterator.next();
+		for (DataVolumeModel dataVolume : resourcesModel.getDataVolumes()) {
 			// only data volumes selected in the CheckBoxTableViewer are
 			// included.
 			if (!resourcesModel.getSelectedDataVolumes().contains(dataVolume)) {
@@ -179,9 +169,8 @@ public class ImageRun extends Wizard {
 
 			switch (dataVolume.getMountType()) {
 			case HOST_FILE_SYSTEM:
-				String bind = LaunchConfigurationUtils
-						.convertToUnixPath(dataVolume.getHostPathMount())
-						+ ':' + dataVolume.getContainerPath() + ":Z"; //$NON-NLS-1$ //$NON-NLS-2$
+				String bind = LaunchConfigurationUtils.convertToUnixPath(dataVolume.getHostPathMount()) + ':'
+						+ dataVolume.getContainerPath() + ":Z"; //$NON-NLS-1$ //$NON-NLS-2$
 				if (dataVolume.isReadOnly()) {
 					bind += ",ro"; //$NON-NLS-1$
 				}
@@ -247,33 +236,26 @@ public class ImageRun extends Wizard {
 		}
 		// environment variables
 		final List<String> environmentVariables = new ArrayList<>();
-		for (Iterator<EnvironmentVariableModel> iterator = resourcesModel
-				.getEnvironmentVariables().iterator(); iterator.hasNext();) {
-			final EnvironmentVariableModel var = iterator.next();
+		for (EnvironmentVariableModel var : resourcesModel.getEnvironmentVariables()) {
 			environmentVariables.add(var.getName() + "=" + var.getValue()); //$NON-NLS-1$
 		}
 		config.env(environmentVariables);
 
 		// container labels
 		final Map<String, String> labelVariables = new HashMap<>();
-		for (Iterator<LabelVariableModel> iterator = resourcesModel
-				.getLabelVariables().iterator(); iterator.hasNext();) {
-			final LabelVariableModel var = iterator.next();
+		for (LabelVariableModel var : resourcesModel.getLabelVariables()) {
 			labelVariables.put(var.getName(), var.getValue()); // $NON-NLS-1$
 		}
 		config.labels(labelVariables);
 
 		if (!selectionModel.isPublishAllPorts()) {
 			final Set<String> exposedPorts = new HashSet<>();
-			for (Iterator<ExposedPortModel> iterator = selectionModel
-					.getExposedPorts().iterator(); iterator.hasNext();) {
-				final ExposedPortModel exposedPort = iterator.next();
+			for (ExposedPortModel exposedPort : selectionModel.getExposedPorts()) {
 				// only selected Ports in the CheckboxTableViewer are exposed.
 				if (!selectionModel.getSelectedPorts().contains(exposedPort)) {
 					continue;
 				}
-				exposedPorts.add(exposedPort.getContainerPort()
-						+ exposedPort.getPortType());
+				exposedPorts.add(exposedPort.getContainerPort() + exposedPort.getPortType());
 			}
 			config.exposedPorts(exposedPorts);
 		}

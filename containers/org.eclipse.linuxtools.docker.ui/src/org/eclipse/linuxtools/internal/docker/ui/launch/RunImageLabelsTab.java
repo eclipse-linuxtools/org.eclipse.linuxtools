@@ -287,8 +287,7 @@ public class RunImageLabelsTab extends AbstractLaunchConfigurationTab {
 		if (model == null)
 			return;
 		Map<String, String> labelMap = new HashMap<>();
-		for (Object o : model.getLabelVariables()) {
-			LabelVariableModel m = (LabelVariableModel) o;
+		for (LabelVariableModel m : model.getLabelVariables()) {
 			labelMap.put(m.getName(), m.getValue());
 		}
 		configuration.setAttribute(
