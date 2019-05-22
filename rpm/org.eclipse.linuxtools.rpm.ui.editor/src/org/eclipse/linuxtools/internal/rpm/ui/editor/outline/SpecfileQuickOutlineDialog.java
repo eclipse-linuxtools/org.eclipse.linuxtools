@@ -16,7 +16,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.PopupDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.swt.SWT;
@@ -143,6 +142,6 @@ public class SpecfileQuickOutlineDialog extends PopupDialog {
 		if (treeViewer == null) {
 			return null;
 		}
-		return ((IStructuredSelection) treeViewer.getSelection()).getFirstElement();
+		return treeViewer.getStructuredSelection().getFirstElement();
 	}
 }

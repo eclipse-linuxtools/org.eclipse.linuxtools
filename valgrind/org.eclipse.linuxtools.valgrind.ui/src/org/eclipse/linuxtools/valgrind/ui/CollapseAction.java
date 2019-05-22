@@ -39,7 +39,7 @@ public class CollapseAction extends Action {
 
     @Override
     public void run() {
-        IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+        IStructuredSelection selection = viewer.getStructuredSelection();
         Object element = selection.getFirstElement();
         viewer.collapseToLevel(element, AbstractTreeViewer.ALL_LEVELS);
     }

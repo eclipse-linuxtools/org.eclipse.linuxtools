@@ -16,6 +16,7 @@ import java.util.Iterator;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.linuxtools.dataviewers.STDataViewersActivator;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTreeViewer;
@@ -45,7 +46,7 @@ public class STExpandSelectionAction extends Action {
 
     @Override
     public void run() {
-        TreeSelection selection = (TreeSelection) stViewer.getViewer().getSelection();
+        IStructuredSelection selection = stViewer.getViewer().getStructuredSelection();
         if (selection != null && selection != TreeSelection.EMPTY) {
             for (Iterator<?> itSel = selection.iterator(); itSel.hasNext();) {
                 stViewer.getViewer().expandToLevel(itSel.next(), AbstractTreeViewer.ALL_LEVELS);

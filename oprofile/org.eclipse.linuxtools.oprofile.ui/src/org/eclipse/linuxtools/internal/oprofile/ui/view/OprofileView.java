@@ -20,8 +20,8 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.internal.oprofile.core.model.OpModelRoot;
 import org.eclipse.linuxtools.internal.oprofile.ui.OprofileUiMessages;
@@ -145,7 +145,7 @@ public class OprofileView extends ViewPart implements ISelectionChangedListener 
 
     @Override
     public void selectionChanged(SelectionChangedEvent event) {
-        TreeSelection tsl = (TreeSelection) viewer.getSelection();
+        ITreeSelection tsl = viewer.getStructuredSelection();
         if (tsl.getFirstElement() instanceof UiModelSession) {
             if (!deleteSessionAction.isEnabled()) {
                 deleteSessionAction.setEnabled(true);

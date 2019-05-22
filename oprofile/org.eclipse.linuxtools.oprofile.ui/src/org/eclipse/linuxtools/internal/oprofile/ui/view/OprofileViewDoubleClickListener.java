@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.oprofile.ui.model.IUiModelElement;
@@ -44,7 +44,7 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
     @Override
     public void doubleClick(DoubleClickEvent event) {
         TreeViewer tv = (TreeViewer) event.getSource();
-        TreeSelection tsl = (TreeSelection) tv.getSelection();
+        ITreeSelection tsl = tv.getStructuredSelection();
         IUiModelElement element = (IUiModelElement) tsl.getFirstElement();
 
         try {

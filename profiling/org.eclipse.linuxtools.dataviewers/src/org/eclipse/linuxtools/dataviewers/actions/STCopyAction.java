@@ -44,7 +44,7 @@ public class STCopyAction extends Action {
     @Override
     public void run() {
         Clipboard cb = new Clipboard(Display.getDefault());
-        IStructuredSelection selections = (IStructuredSelection) stViewer.getViewer().getSelection();
+        IStructuredSelection selections = stViewer.getViewer().getStructuredSelection();
         Iterator<?> iterator = selections.iterator();
         StringBuilder sb = new StringBuilder();
 

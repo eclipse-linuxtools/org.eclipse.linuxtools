@@ -150,7 +150,7 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 
         MenuManager manager = new MenuManager();
         manager.addMenuListener(manager1 -> {
-		    ITreeSelection selection = (ITreeSelection) viewer.getSelection();
+		    ITreeSelection selection = viewer.getStructuredSelection();
 		    ICachegrindElement element = (ICachegrindElement) selection.getFirstElement();
 		    if (contentProvider.hasChildren(element)) {
 		        manager1.add(expandAction);

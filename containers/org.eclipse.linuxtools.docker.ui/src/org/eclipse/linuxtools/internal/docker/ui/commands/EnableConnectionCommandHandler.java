@@ -39,7 +39,7 @@ public class EnableConnectionCommandHandler extends AbstractHandler {
 		final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		if(activePart instanceof CommonNavigator) {
 			final CommonViewer viewer = ((CommonNavigator)activePart).getCommonViewer();
-			final ITreeSelection selection = (ITreeSelection) viewer.getSelection();
+			final ITreeSelection selection = viewer.getStructuredSelection();
 			for (TreePath treePath : selection.getPaths()) {
 				final IDockerConnection conn = (IDockerConnection) treePath
 						.getLastSegment();

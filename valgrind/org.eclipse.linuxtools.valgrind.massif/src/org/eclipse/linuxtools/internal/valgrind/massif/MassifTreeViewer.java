@@ -88,7 +88,7 @@ public class MassifTreeViewer {
 
         MenuManager manager = new MenuManager();
         manager.addMenuListener(manager1 -> {
-		    ITreeSelection selection = (ITreeSelection) viewer.getSelection();
+		    ITreeSelection selection = viewer.getStructuredSelection();
 		    MassifHeapTreeNode element = (MassifHeapTreeNode) selection.getFirstElement();
 		    if (contentProvider.hasChildren(element)) {
 		        manager1.add(expandAction);

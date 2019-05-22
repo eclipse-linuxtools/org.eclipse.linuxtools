@@ -37,7 +37,7 @@ public class CopyValueAction extends Action {
 
 	@Override
 	public void run() {
-		IStructuredSelection selection = (IStructuredSelection)treeViewer.getSelection();
+		IStructuredSelection selection = treeViewer.getStructuredSelection();
 		if (!selection.isEmpty()) {
 			StringBuilder sb = new StringBuilder();
 			boolean needEOL = false;

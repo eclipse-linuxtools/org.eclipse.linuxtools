@@ -15,7 +15,7 @@ package org.eclipse.linuxtools.internal.oprofile.ui.view;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.internal.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.internal.oprofile.core.OprofileCorePlugin;
@@ -36,7 +36,7 @@ public class OprofileViewDeleteSessionAction extends Action {
 
     @Override
     public void run() {
-        TreeSelection tsl = (TreeSelection) treeViewer.getSelection();
+        ITreeSelection tsl = treeViewer.getStructuredSelection();
         if (tsl.getFirstElement() instanceof UiModelSession) {
             UiModelSession sess = (UiModelSession) tsl.getFirstElement();
             deleteSession(sess);

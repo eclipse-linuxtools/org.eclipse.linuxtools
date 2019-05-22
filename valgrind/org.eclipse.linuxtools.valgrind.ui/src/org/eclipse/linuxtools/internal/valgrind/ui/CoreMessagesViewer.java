@@ -171,7 +171,7 @@ public class CoreMessagesViewer {
 
         MenuManager manager = new MenuManager();
         manager.addMenuListener(manager1 -> {
-		    ITreeSelection selection = (ITreeSelection) viewer.getSelection();
+		    ITreeSelection selection = viewer.getStructuredSelection();
 		    Object element = selection.getFirstElement();
 		    if (contentProvider.hasChildren(element)) {
 		        manager1.add(expandAction);

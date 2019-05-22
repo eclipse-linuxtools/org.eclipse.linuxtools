@@ -164,7 +164,7 @@ public class MetadataPage extends FormPage {
 		});
         // expand or shrink a category
         tagsTreeViewer.addDoubleClickListener(event -> {
-		    IStructuredSelection selection = (IStructuredSelection) tagsTreeViewer.getSelection();
+		    IStructuredSelection selection = tagsTreeViewer.getStructuredSelection();
 		    if (selection.getFirstElement() instanceof CreaterepoTreeCategory) {
 		        CreaterepoTreeCategory category = (CreaterepoTreeCategory) selection.getFirstElement();
 		        tagsTreeViewer.setExpandedState(category, !tagsTreeViewer.getExpandedState(category));
@@ -322,7 +322,7 @@ public class MetadataPage extends FormPage {
      * in the tag text field.
      */
     private void addTag() {
-        IStructuredSelection selection = (IStructuredSelection) tagsTreeViewer.getSelection();
+        IStructuredSelection selection = tagsTreeViewer.getStructuredSelection();
         if (selection.getFirstElement() instanceof CreaterepoTreeCategory) {
             CreaterepoTreeCategory category = (CreaterepoTreeCategory) selection.getFirstElement();
             String text = tagTxt.getText().trim();

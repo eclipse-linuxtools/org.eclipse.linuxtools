@@ -357,7 +357,7 @@ public class ChartDialog extends Dialog {
      * @return a new chart
      */
     private Chart produceChart() {
-        IStructuredSelection selection = (IStructuredSelection) stViewer.getViewer().getSelection();
+        IStructuredSelection selection = stViewer.getViewer().getStructuredSelection();
         if (selection == StructuredSelection.EMPTY)
             return null;
         Object[] objects = selection.toArray();

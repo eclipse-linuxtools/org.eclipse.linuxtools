@@ -60,7 +60,7 @@ public class DockerImageHierarchyViewAssertions
 
 	public void hasSelectedElement(final IDockerImage expectedSelection) {
 		notNullValue();
-		final IStructuredSelection selection = (IStructuredSelection) actual.getCommonViewer().getSelection();
+		final IStructuredSelection selection = actual.getCommonViewer().getStructuredSelection();
 		if (selection.size() != 1) {
 			failWithMessage("Expected Docker Image Hierarchy view to have <%s> selected elements, but there was <%s>",
 					1, selection.size());
@@ -84,7 +84,7 @@ public class DockerImageHierarchyViewAssertions
 
 	public void hasSelectedElement(final Object expectedSelection) {
 		notNullValue();
-		final IStructuredSelection selection = (IStructuredSelection) actual.getCommonViewer().getSelection();
+		final IStructuredSelection selection = actual.getCommonViewer().getStructuredSelection();
 		if (selection.size() != 1) {
 			failWithMessage("Expected Docker Image Hierarchy view to have <%s> selected elements, but there was <%s>",
 					1, selection.size());

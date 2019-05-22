@@ -38,7 +38,7 @@ public class ExpandAction extends Action {
 
     @Override
     public void run() {
-        IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+        IStructuredSelection selection = viewer.getStructuredSelection();
         Object element = selection.getFirstElement();
         viewer.expandToLevel(element, AbstractTreeViewer.ALL_LEVELS);
     }
