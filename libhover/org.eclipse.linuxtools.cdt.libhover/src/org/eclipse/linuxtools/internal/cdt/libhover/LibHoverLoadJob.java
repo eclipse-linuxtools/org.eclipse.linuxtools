@@ -13,7 +13,6 @@
 package org.eclipse.linuxtools.internal.cdt.libhover;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -35,8 +34,7 @@ public class LibHoverLoadJob extends Job {
         monitor.worked(1);
         LibHover.getLibHoverDocs();
         Collection<LibHoverLibrary> c = LibHover.getLibraries();
-        for (Iterator<LibHoverLibrary> i = c.iterator(); i.hasNext();) {
-            LibHoverLibrary l = i.next();
+        for (LibHoverLibrary l : c) {
             l.getHoverInfo();
         }
         monitor.done();

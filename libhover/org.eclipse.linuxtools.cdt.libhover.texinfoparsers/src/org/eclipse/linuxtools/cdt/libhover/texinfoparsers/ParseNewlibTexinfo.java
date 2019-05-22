@@ -19,7 +19,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
@@ -160,8 +159,7 @@ public class ParseNewlibTexinfo {
     }
 
     private static FunctionDef FindFunctionDef(String name, List<FunctionDef> FDefs) {
-        for (Iterator<FunctionDef> iterator = FDefs.iterator(); iterator.hasNext();) {
-            FunctionDef k = iterator.next();
+        for (FunctionDef k : FDefs) {
             if (k.FunctionName.equals(name)) {
                 return k;
             }

@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -112,8 +111,7 @@ public class LibHover implements ICHelpProvider {
         // If user preference is to cache libhover data, then save any un-saved
         // library hover data.
         if (ps.getBoolean(PreferenceConstants.CACHE_EXT_LIBHOVER)) {
-            for (Iterator<LibHoverLibrary> i = libraries.values().iterator(); i.hasNext();) {
-                LibHoverLibrary l = i.next();
+            for (LibHoverLibrary l : libraries.values()) {
                 try {
                     // Now, output the LibHoverInfo for caching later
                     IPath locationDir = locationBase;
@@ -661,8 +659,7 @@ public class LibHover implements ICHelpProvider {
                 LibHoverInfo cppInfo = l.getHoverInfo();
                 SortedMap<String, FunctionInfo> map = cppInfo.functions.tailMap(prefix);
                 Set<Map.Entry<String, FunctionInfo>> c = map.entrySet();
-                for (Iterator<Entry<String, FunctionInfo>> i = c.iterator(); i.hasNext();) {
-                    Map.Entry<String, FunctionInfo> e = i.next();
+                for (Entry<String, FunctionInfo> e : c) {
                     FunctionInfo x = e.getValue();
                     String name = x.getName();
                     // Look for names that start with prefix, but ignore names that
