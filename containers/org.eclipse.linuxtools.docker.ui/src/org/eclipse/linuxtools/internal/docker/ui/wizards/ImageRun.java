@@ -145,8 +145,10 @@ public class ImageRun extends Wizard {
 				}
 				final DockerPortBinding portBinding = new DockerPortBinding(exposedPort.getHostAddress(),
 						exposedPort.getHostPort());
-				portBindings.put(exposedPort.getContainerPort() + exposedPort.getPortType(),
-						Arrays.<IDockerPortBinding>asList(portBinding));
+				portBindings.put(
+						exposedPort.getContainerPort()
+								+ "/" + exposedPort.getPortType(), //$NON-NLS-1$
+						Arrays.<IDockerPortBinding> asList(portBinding));
 			}
 			hostConfigBuilder.portBindings(portBindings);
 		}
@@ -255,7 +257,8 @@ public class ImageRun extends Wizard {
 				if (!selectionModel.getSelectedPorts().contains(exposedPort)) {
 					continue;
 				}
-				exposedPorts.add(exposedPort.getContainerPort() + exposedPort.getPortType());
+				exposedPorts.add(exposedPort.getContainerPort()
+						+ "/" + exposedPort.getPortType()); //$NON-NLS-1$
 			}
 			config.exposedPorts(exposedPorts);
 		}
