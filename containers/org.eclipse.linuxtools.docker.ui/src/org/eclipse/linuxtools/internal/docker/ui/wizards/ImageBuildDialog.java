@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2019 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -144,7 +144,7 @@ public class ImageBuildDialog extends Dialog {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).applyTo(repoNameText);
 		final ISWTObservableValue<?> connnectionNameObservable = WidgetProperties
-				.selection().observe(connectionSelectionComboViewer.getCombo());
+				.widgetSelection().observe(connectionSelectionComboViewer.getCombo());
 		// pre-select with first connection
 		if (!connectionNames.isEmpty()) {
 			model.setConnectionName(connectionNames.get(0));

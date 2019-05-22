@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2019 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -87,7 +87,7 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.applyTo(enableResourceLimitationButton);
 		dbc.bindValue(
-				WidgetProperties.selection()
+				WidgetProperties.widgetSelection()
 						.observe(enableResourceLimitationButton),
 				BeanProperties
 						.value(ImageRunResourceVolumesVariablesModel.class,
@@ -149,7 +149,7 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 		memoryLimitSpinner.setMinimum(0);
 		memoryLimitSpinner.setMaximum(this.model.getTotalMemory());
 		memoryLimitSpinner.setPageIncrement(64);
-		dbc.bindValue(WidgetProperties.selection().observe(memoryLimitSpinner),
+		dbc.bindValue(WidgetProperties.widgetSelection().observe(memoryLimitSpinner),
 				BeanProperties
 						.value(ImageRunResourceVolumesVariablesModel.class,
 								ImageRunResourceVolumesVariablesModel.MEMORY_LIMIT)
@@ -165,7 +165,7 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 						.value(ImageRunResourceVolumesVariablesModel.class,
 								ImageRunResourceVolumesVariablesModel.MEMORY_LIMIT)
 						.observe(model));
-		dbc.bindValue(WidgetProperties.selection().observe(memoryLimitSpinner),
+		dbc.bindValue(WidgetProperties.widgetSelection().observe(memoryLimitSpinner),
 				BeanProperties
 						.value(ImageRunResourceVolumesVariablesModel.class,
 								ImageRunResourceVolumesVariablesModel.MEMORY_LIMIT)
@@ -181,7 +181,7 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 						ImageRunResourceVolumesVariablesModel.ENABLE_RESOURCE_LIMITATIONS)
 				.observe(model);
 		dbc.bindValue(
-				WidgetProperties.selection()
+				WidgetProperties.widgetSelection()
 						.observe(enableResourceLimitationButton),
 				enableResourceLimitationsObservable);
 		enableResourceLimitationsObservable
@@ -209,7 +209,7 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 	 * @return
 	 */
 	private Binding bindButton(final Button button, final long cpuShares) {
-		return dbc.bindValue(WidgetProperties.selection().observe(button),
+		return dbc.bindValue(WidgetProperties.widgetSelection().observe(button),
 				BeanProperties
 						.value(ImageRunResourceVolumesVariablesModel.class,
 								ImageRunResourceVolumesVariablesModel.CPU_SHARE_WEIGHT)

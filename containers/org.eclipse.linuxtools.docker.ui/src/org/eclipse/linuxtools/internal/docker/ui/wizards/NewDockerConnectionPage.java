@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat Inc. and others
+ * Copyright (c) 2014, 2019 Red Hat Inc. and others
  * .
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -353,23 +353,23 @@ public class NewDockerConnectionPage extends WizardPage {
 				WidgetProperties.text(SWT.Modify).observe(connectionNameText),
 				connectionNameModelObservable);
 		dbc.bindValue(
-				WidgetProperties.selection()
+				WidgetProperties.widgetSelection()
 						.observe(customConnectionSettingsButton),
 				customConnectionSettingsModelObservable);
 		dbc.bindValue(
-				WidgetProperties.selection()
+				WidgetProperties.widgetSelection()
 						.observe(unixSocketBindingModeButton),
 				unixSocketBindingModeModelObservable);
 		dbc.bindValue(
 				WidgetProperties.text(SWT.Modify).observe(unixSocketPathText),
 				unixSocketPathModelObservable);
 		dbc.bindValue(
-				WidgetProperties.selection()
+				WidgetProperties.widgetSelection()
 						.observe(tcpConnectionBindingModeButton),
 				tcpConnectionBindingModeModelObservable);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(tcpHostText),
 				tcpHostModelObservable);
-		dbc.bindValue(WidgetProperties.selection().observe(tcpAuthButton),
+		dbc.bindValue(WidgetProperties.widgetSelection().observe(tcpAuthButton),
 				tcpTlsVerifyModelObservable);
 		dbc.bindValue(
 				WidgetProperties.text(SWT.Modify).observe(tcpCertPathText),

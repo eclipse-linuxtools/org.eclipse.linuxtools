@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2014, 2019 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -331,7 +331,7 @@ public class ImageSearchPage extends WizardPage {
 		return this.model.getSelectedImage() != null;
 	}
 
-	static class SearchTermValidator implements IValidator {
+	static class SearchTermValidator implements IValidator<String> {
 
 		private static final String REPOSITORY = "[a-z0-9]+([._-][a-z0-9]+)*";
 		private static final String NAME = "[a-z0-9]+([._-][a-z0-9]+)*";
@@ -345,8 +345,7 @@ public class ImageSearchPage extends WizardPage {
 		}
 
 		@Override
-		public IStatus validate(final Object value) {
-			final String term = (String) value;
+		public IStatus validate(final String term) {
 			if (term == null || term.isEmpty()) {
 				this.searchImageButton.setEnabled(false);
 				return ValidationStatus.info(WizardMessages

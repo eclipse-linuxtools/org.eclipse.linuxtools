@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2014, 2019 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -332,7 +332,7 @@ public class ImageRunSelectionPage extends WizardPage {
 						.list(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.IMAGE_NAMES)
 						.observe(model));
-		dbc.bindValue(WidgetProperties.selection().observe(imageSelectionCombo),
+		dbc.bindValue(WidgetProperties.widgetSelection().observe(imageSelectionCombo),
 				BeanProperties
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.SELECTED_IMAGE_NAME)
@@ -403,7 +403,7 @@ public class ImageRunSelectionPage extends WizardPage {
 				.span(COLUMNS, 1).grab(true, false)
 				.applyTo(publishAllPortsButton);
 		dbc.bindValue(
-				WidgetProperties.selection().observe(publishAllPortsButton),
+				WidgetProperties.widgetSelection().observe(publishAllPortsButton),
 				BeanProperties
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.PUBLISH_ALL_PORTS)
@@ -649,7 +649,7 @@ public class ImageRunSelectionPage extends WizardPage {
 				WizardMessages.getString("ImageRunSelectionPage.openStdin")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.span(COLUMNS, 1).grab(true, false).applyTo(interactiveButton);
-		dbc.bindValue(WidgetProperties.selection().observe(interactiveButton),
+		dbc.bindValue(WidgetProperties.widgetSelection().observe(interactiveButton),
 				BeanProperties
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.INTERACTIVE_MODE)
@@ -660,7 +660,7 @@ public class ImageRunSelectionPage extends WizardPage {
 				.setText(WizardMessages.getString("ImageRunSelectionPage.tty")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.span(COLUMNS, 1).grab(true, false).applyTo(allocatePseudoTTY);
-		dbc.bindValue(WidgetProperties.selection().observe(allocatePseudoTTY),
+		dbc.bindValue(WidgetProperties.widgetSelection().observe(allocatePseudoTTY),
 				BeanProperties
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.ALLOCATE_PSEUDO_TTY)
@@ -674,7 +674,7 @@ public class ImageRunSelectionPage extends WizardPage {
 				.span(COLUMNS, 1).grab(true, false)
 				.applyTo(removeWhenExitsButton);
 		dbc.bindValue(
-				WidgetProperties.selection().observe(removeWhenExitsButton),
+				WidgetProperties.widgetSelection().observe(removeWhenExitsButton),
 				BeanProperties
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.REMOVE_WHEN_EXITS)
@@ -686,7 +686,7 @@ public class ImageRunSelectionPage extends WizardPage {
 				WizardMessages.getString("ImageRunSelectionPage.privileged")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.span(COLUMNS, 1).grab(true, false).applyTo(privilegedButton);
-		dbc.bindValue(WidgetProperties.selection().observe(privilegedButton),
+		dbc.bindValue(WidgetProperties.widgetSelection().observe(privilegedButton),
 				BeanProperties
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.PRIVILEGED)
@@ -698,7 +698,7 @@ public class ImageRunSelectionPage extends WizardPage {
 				WizardMessages.getString("ImageRunSelectionPage.unconfined")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.span(COLUMNS, 1).grab(true, false).applyTo(unconfinedButton);
-		dbc.bindValue(WidgetProperties.selection().observe(unconfinedButton),
+		dbc.bindValue(WidgetProperties.widgetSelection().observe(unconfinedButton),
 				BeanProperties
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.UNCONFINED)
@@ -711,7 +711,7 @@ public class ImageRunSelectionPage extends WizardPage {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.span(COLUMNS, 1).grab(true, false)
 				.applyTo(basicSecurityButton);
-		dbc.bindValue(WidgetProperties.selection().observe(basicSecurityButton),
+		dbc.bindValue(WidgetProperties.widgetSelection().observe(basicSecurityButton),
 				BeanProperties
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.BASIC_SECURITY)

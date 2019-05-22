@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat.
+ * Copyright (c) 2015, 2019 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -90,7 +90,6 @@ public class ImagePullPage extends ImagePullPushPage<ImagePullPageModel> {
 		setControl(container);
 	}
 
-	@SuppressWarnings("unchecked")
 	void createImageNameSelectionControls(final Composite parent) {
 		// Image name
 		final Label imageNameLabel = new Label(parent, SWT.NONE);

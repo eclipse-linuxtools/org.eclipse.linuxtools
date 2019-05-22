@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2019 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -100,7 +100,7 @@ public class RunImagePortsTab extends AbstractLaunchConfigurationTab
 				.span(COLUMNS, 1).grab(true, false)
 				.applyTo(publishAllPortsButton);
 		dbc.bindValue(
-				WidgetProperties.selection().observe(publishAllPortsButton),
+				WidgetProperties.widgetSelection().observe(publishAllPortsButton),
 				BeanProperties
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.PUBLISH_ALL_PORTS)

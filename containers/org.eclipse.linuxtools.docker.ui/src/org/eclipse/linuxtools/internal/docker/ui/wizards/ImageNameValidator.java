@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2019 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -24,7 +24,7 @@ import org.eclipse.linuxtools.internal.docker.core.DockerImage;
  * Validates that the image name matches
  * [REGISTRY_HOST[:REGISTRY_PORT]/]IMAGE_NAME[:TAG]
  */
-public class ImageNameValidator implements IValidator {
+public class ImageNameValidator implements IValidator<String> {
 
 	public static enum ImageNameStatus {
 		// status when image name is valid and complete
@@ -38,8 +38,7 @@ public class ImageNameValidator implements IValidator {
 	}
 
 	@Override
-	public IStatus validate(final Object value) {
-		final String imageName = (String) value;
+	public IStatus validate(final String imageName) {
 		final ImageNameStatus imageNameStatus = getStatus(imageName);
 		switch (imageNameStatus) {
 		case EMPTY:

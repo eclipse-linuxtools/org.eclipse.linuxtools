@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat.
+ * Copyright (c) 2015, 2019 Red Hat.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -154,7 +154,8 @@ public class CreateVMPage extends WizardPage {
 				.value(CreateVMPageModel.class, CreateVMPageModel.V_FILE_MODE,
 						String.class)
 				.observe(model);
-		dbc.bindValue(WidgetProperties.selection().observe(customVMFileButton),
+		dbc.bindValue(
+				WidgetProperties.widgetSelection().observe(customVMFileButton),
 				customVMFileObservable);
 
 		// VM File

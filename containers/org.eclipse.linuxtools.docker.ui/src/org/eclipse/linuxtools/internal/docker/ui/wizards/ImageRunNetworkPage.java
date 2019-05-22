@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2017, 2019 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -197,7 +197,7 @@ public class ImageRunNetworkPage extends WizardPage {
 		containerList.setEnabled(false);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).applyTo(containerList);
-		dbc.bindValue(WidgetProperties.selection().observe(containerList),
+		dbc.bindValue(WidgetProperties.widgetSelection().observe(containerList),
 				BeanProperties
 						.value(ImageRunNetworkModel.class,
 								ImageRunNetworkModel.SELECTED_CONTAINER)
@@ -287,7 +287,7 @@ public class ImageRunNetworkPage extends WizardPage {
 	 */
 	@SuppressWarnings("unchecked")
 	private Binding bindButton(final Button button, final String strValue) {
-		return dbc.bindValue(WidgetProperties.selection().observe(button),
+		return dbc.bindValue(WidgetProperties.widgetSelection().observe(button),
 				BeanProperties
 						.value(ImageRunNetworkModel.class,
 								ImageRunNetworkModel.NETWORK_MODE)

@@ -198,7 +198,7 @@ public class ContainerDataVolumeDialog extends Dialog {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.span(COLUMNS - 2, 1).grab(true, false).applyTo(readOnlyButton);
 		final ISWTObservableValue<?> readOnlyButtonObservable = WidgetProperties
-				.selection().observe(readOnlyButton);
+				.widgetSelection().observe(readOnlyButton);
 		dbc.bindValue(readOnlyButtonObservable,
 				BeanProperties
 						.value(DataVolumeModel.class,
@@ -245,7 +245,7 @@ public class ContainerDataVolumeDialog extends Dialog {
 				.value(DataVolumeModel.class, DataVolumeModel.CONTAINER_MOUNT)
 				.observe(model);
 		dbc.bindValue(
-				WidgetProperties.selection().observe(containerSelectionCombo),
+				WidgetProperties.widgetSelection().observe(containerSelectionCombo),
 				selectedContainerObservable);
 		new ContentProposalAdapter(containerSelectionCombo,
 				new ComboContentAdapter() {
@@ -306,7 +306,7 @@ public class ContainerDataVolumeDialog extends Dialog {
 	 */
 	private Binding bindButton(final Button button, final MountType mountType,
 			final Control... controls) {
-		return dbc.bindValue(WidgetProperties.selection().observe(button),
+		return dbc.bindValue(WidgetProperties.widgetSelection().observe(button),
 				BeanProperties.value(DataVolumeModel.class,
 						DataVolumeModel.MOUNT_TYPE).observe(model),
 				new UpdateValueStrategy() {

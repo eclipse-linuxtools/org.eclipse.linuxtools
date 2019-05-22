@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2019 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -109,7 +109,7 @@ public class ImagePushPage extends ImagePullPushPage<ImagePushPageModel> {
 				.getString("ImagePushPage.forcetagging.label")); //$NON-NLS-1$ );
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).span(2, 1).applyTo(forceTaggingButton);
-		dbc.bindValue(WidgetProperties.selection().observe(forceTaggingButton),
+		dbc.bindValue(WidgetProperties.widgetSelection().observe(forceTaggingButton),
 				BeanProperties.value(ImagePushPageModel.class,
 						ImagePushPageModel.FORCE_TAGGING).observe(getModel()));
 
@@ -120,7 +120,7 @@ public class ImagePushPage extends ImagePullPushPage<ImagePushPageModel> {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.grab(true, false).span(2, 1).applyTo(keepTaggedImageButton);
 		dbc.bindValue(
-				WidgetProperties.selection().observe(keepTaggedImageButton),
+				WidgetProperties.widgetSelection().observe(keepTaggedImageButton),
 				BeanProperties
 						.value(ImagePushPageModel.class,
 								ImagePushPageModel.KEEP_TAGGED_IMAGE)
@@ -155,7 +155,7 @@ public class ImagePushPage extends ImagePullPushPage<ImagePushPageModel> {
 				.value(ImagePushPageModel.class,
 						ImagePullPushPageModel.SELECTED_IMAGE_NAME, String.class)
 				.observe(getModel());
-		dbc.bindValue(WidgetProperties.selection().observe(imageNameCombo),
+		dbc.bindValue(WidgetProperties.widgetSelection().observe(imageNameCombo),
 				imageNameObservable);
 		// filler for the last column
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)

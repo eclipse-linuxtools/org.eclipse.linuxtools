@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2019 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -185,7 +185,7 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 		connectionSelectionComboViewer.setInput(DockerConnectionManager
 				.getInstance().getConnectionNames().toArray());
 		dbc.bindValue(
-				WidgetProperties.selection().observe(connectionSelectionCombo),
+				WidgetProperties.widgetSelection().observe(connectionSelectionCombo),
 				BeanProperties
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.SELECTED_CONNECTION_NAME)
@@ -234,7 +234,7 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 						.list(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.IMAGE_NAMES)
 						.observe(model));
-		dbc.bindValue(WidgetProperties.selection().observe(imageSelectionCombo),
+		dbc.bindValue(WidgetProperties.widgetSelection().observe(imageSelectionCombo),
 				BeanProperties
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.SELECTED_IMAGE_NAME)
@@ -412,7 +412,7 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 				WizardMessages.getString("ImageRunSelectionPage.openStdin")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.span(COLUMNS, 1).grab(true, false).applyTo(interactiveButton);
-		dbc.bindValue(WidgetProperties.selection().observe(interactiveButton),
+		dbc.bindValue(WidgetProperties.widgetSelection().observe(interactiveButton),
 				BeanProperties
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.INTERACTIVE_MODE)
@@ -423,7 +423,7 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 				.setText(WizardMessages.getString("ImageRunSelectionPage.tty")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.span(COLUMNS, 1).grab(true, false).applyTo(allocatePseudoTTY);
-		dbc.bindValue(WidgetProperties.selection().observe(allocatePseudoTTY),
+		dbc.bindValue(WidgetProperties.widgetSelection().observe(allocatePseudoTTY),
 				BeanProperties
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.ALLOCATE_PSEUDO_TTY)
@@ -437,7 +437,7 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 				.span(COLUMNS, 1).grab(true, false)
 				.applyTo(removeWhenExitsButton);
 		dbc.bindValue(
-				WidgetProperties.selection().observe(removeWhenExitsButton),
+				WidgetProperties.widgetSelection().observe(removeWhenExitsButton),
 				BeanProperties
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.REMOVE_WHEN_EXITS)
@@ -449,7 +449,7 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 				WizardMessages.getString("ImageRunSelectionPage.privileged")); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER)
 				.span(COLUMNS, 1).grab(true, false).applyTo(privilegedButton);
-		dbc.bindValue(WidgetProperties.selection().observe(privilegedButton),
+		dbc.bindValue(WidgetProperties.widgetSelection().observe(privilegedButton),
 				BeanProperties
 						.value(ImageRunSelectionModel.class,
 								ImageRunSelectionModel.PRIVILEGED)
@@ -642,11 +642,10 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 		}
 	}
 
-	private class ImageSelectionValidator implements IValidator {
+	private class ImageSelectionValidator implements IValidator<String> {
 
 		@Override
-		public IStatus validate(final Object value) {
-			final String selectedImageName = (String) value;
+		public IStatus validate(final String selectedImageName) {
 			if (selectedImageName.isEmpty()) {
 				model.setSelectedImageNeedsPulling(false);
 				return ValidationStatus.error(WizardMessages
@@ -664,11 +663,10 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 
 	}
 
-	private class ContainerNameValidator implements IValidator {
+	private class ContainerNameValidator implements IValidator<String> {
 
 		@Override
-		public IStatus validate(Object value) {
-			final String containerName = (String) value;
+		public IStatus validate(String containerName) {
 
 			for (IDockerContainer container : model.getSelectedConnection()
 					.getContainers()) {
