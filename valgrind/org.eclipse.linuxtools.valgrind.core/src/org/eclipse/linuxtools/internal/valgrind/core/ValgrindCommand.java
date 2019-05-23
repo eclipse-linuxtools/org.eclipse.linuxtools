@@ -51,7 +51,7 @@ public class ValgrindCommand {
 		Process p = RuntimeProcessFactory.getFactory()
 				.exec(new String[] { getValgrindCommand(), CommandLineConstants.OPT_VERSION }, project);
 		try {
-			StringBuffer out = new StringBuffer();
+			StringBuilder out = new StringBuilder();
 			readIntoBuffer(out, p);
 			return out.toString().trim();
 		} catch (IOException e) {
@@ -94,7 +94,7 @@ public class ValgrindCommand {
      * @return process
      */
     public String getCommandLine() {
-        StringBuffer ret = new StringBuffer();
+    	StringBuilder ret = new StringBuilder();
         for (String arg : args) {
             ret.append(arg).append(" "); //$NON-NLS-1$
         }
@@ -112,7 +112,7 @@ public class ValgrindCommand {
         }
     }
 
-	private void readIntoBuffer(StringBuffer out, Process p) throws IOException {
+	private void readIntoBuffer(StringBuilder out, Process p) throws IOException {
 		if (p == null) {
 			throw new IOException("Null Process object: unabled to read input into buffer"); //$NON-NLS-1$
 		}

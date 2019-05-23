@@ -48,7 +48,7 @@ public class GNUFileEntryRule implements IPredicateRule {
     protected static final int UNDEFINED = -1;
 
     /** Buffer used for pattern detection */
-    private StringBuffer fBuffer = new StringBuffer();
+    private StringBuilder fBuffer = new StringBuilder();
 
     private String fStartingSequence = "* ";
 

@@ -68,8 +68,8 @@ public class SuppressionKindRule implements IRule {
     @Override
     public IToken evaluate(ICharacterScanner scanner) {
         IToken result = subrule.evaluate(scanner);
-        StringBuffer tool = new StringBuffer();
-        StringBuffer kind = new StringBuffer();
+        StringBuilder tool = new StringBuilder();
+        StringBuilder kind = new StringBuilder();
 
         if (!result.isUndefined()) {
             boolean match = true;

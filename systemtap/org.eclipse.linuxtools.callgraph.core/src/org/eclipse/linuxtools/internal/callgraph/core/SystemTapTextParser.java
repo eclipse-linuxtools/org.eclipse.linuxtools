@@ -36,7 +36,7 @@ public class SystemTapTextParser extends SystemTapParser{
     @Override
     public IStatus realTimeParsing() {
         BufferedReader buff = internalData;
-        StringBuffer text = new StringBuffer();
+        StringBuilder text = new StringBuilder();
 
         String line;
         try {

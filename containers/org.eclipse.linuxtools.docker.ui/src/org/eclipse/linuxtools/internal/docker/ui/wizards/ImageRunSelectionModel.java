@@ -648,7 +648,7 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 		// FIXME we should have a dedicated method to serialize the bean
 		@Override
 		public String toString() {
-			StringBuffer buffer = new StringBuffer();
+			StringBuilder buffer = new StringBuilder();
 			buffer.append(containerPort + CONTAINER_TYPE_SEPARATOR + portType
 					+ SEPARATOR + (hostAddress != null ? hostAddress : "")
 					+ SEPARATOR + hostPort

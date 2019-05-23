@@ -192,7 +192,7 @@ public class CreateVmCommandHandler extends AbstractHandler {
 
 		Path vagrantFilePath = Paths.get(stateLoc, vmName, "Vagrantfile"); //$NON-NLS-1$
 		String defaultContent;
-		StringBuffer bcontent = new StringBuffer();
+		StringBuilder bcontent = new StringBuilder();
 		try {
 			defaultContent = new String(Files.readAllBytes(vagrantFilePath),
 					StandardCharsets.UTF_8);

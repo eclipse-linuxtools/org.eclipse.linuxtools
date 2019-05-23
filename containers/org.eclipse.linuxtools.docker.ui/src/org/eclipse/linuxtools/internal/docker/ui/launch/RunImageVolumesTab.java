@@ -458,7 +458,7 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 		Set<String> selectedVolumesSet = new TreeSet<>();
 
 		for (DataVolumeModel volume : volumes) {
-			StringBuffer buffer = new StringBuffer();
+			StringBuilder buffer = new StringBuilder();
 			volumesList.add(volume.toString());
 			switch (volume.getMountType()) {
 			case HOST_FILE_SYSTEM:

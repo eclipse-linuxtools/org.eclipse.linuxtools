@@ -31,15 +31,15 @@ public class ListEditor extends org.eclipse.jface.preference.ListEditor {
     }
 
     /**
-     * Creates and populates a StringBuffer with the supplied items.
-     *
-     * @param items An array of strings to make the StringBuffer with.
-     *
-     * @return Returns the StringBuffer.
-     */
+	 * Creates and populates a StringBuilder with the supplied items.
+	 *
+	 * @param items An array of strings to make the StringBuilder with.
+	 *
+	 * @return Returns the StringBuilder.
+	 */
      @Override
     protected String createList(String[] items) {
-        StringBuffer path = new StringBuffer();
+		StringBuilder path = new StringBuilder();
 
         for (String item: items) {
             path.append(item);

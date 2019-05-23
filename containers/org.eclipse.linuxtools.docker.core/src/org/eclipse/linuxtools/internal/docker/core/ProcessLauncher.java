@@ -182,7 +182,7 @@ public class ProcessLauncher {
 				}
 				return result.toArray(new String[0]);
 			} else {
-				final StringBuffer errorMessage = new StringBuffer();
+					final StringBuilder errorMessage = new StringBuilder();
 				try (final InputStream errorStream = process.getErrorStream();
 						final BufferedReader buff = new BufferedReader(
 								new InputStreamReader(errorStream))) {

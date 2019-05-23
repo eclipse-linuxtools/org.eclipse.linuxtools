@@ -37,7 +37,7 @@ public class ConfigureLabelsCommandHandler extends AbstractHandler {
 				HandlerUtil.getActiveShell(event));
 		if (configureLabels) {
 			Map<String, String> labels = wizard.getConfigureLabels();
-			StringBuffer buffer = new StringBuffer();
+			StringBuilder buffer = new StringBuilder();
 			for (Entry<String, String> entry : labels.entrySet()) {
 				buffer.append(entry.getKey());
 				buffer.append('='); // $NON-NLS-1$

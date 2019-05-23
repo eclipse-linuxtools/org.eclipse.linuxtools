@@ -216,7 +216,7 @@ public class STPReconcilingStrategy  implements IReconcilingStrategy,
     }
 
     private boolean matchKeyWord(String word) throws BadLocationException {
-        StringBuffer keyWord = new StringBuffer();
+		StringBuilder keyWord = new StringBuilder();
         int location = nextCharPosition;
         while (location < endOfDocumentPostion) {
             char ch = currentDocument.getChar(location);

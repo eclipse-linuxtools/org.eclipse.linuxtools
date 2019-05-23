@@ -205,7 +205,7 @@ public class ChangeLogWriterTest {
         String expectedContent = expectedChangeLogEntry + changeLogContent;
 
         // Read in content written to file
-        StringBuffer actualContent = new StringBuffer();
+        StringBuilder actualContent = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(
                 new FileInputStream(changelogFile.getLocation().toFile())))) {
             String line;
@@ -273,7 +273,7 @@ public class ChangeLogWriterTest {
             + defaultContent + "\n";
 
         // Read in content written to file
-        StringBuffer actualContent = new StringBuffer();
+        StringBuilder actualContent = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(
                 new FileInputStream(emptyChangeLogFile.getLocation().toFile())))) {
             String line;

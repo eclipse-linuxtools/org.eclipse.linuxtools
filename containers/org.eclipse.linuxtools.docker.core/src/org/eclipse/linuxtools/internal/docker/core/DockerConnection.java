@@ -869,7 +869,7 @@ public class DockerConnection
 				// to do a kludge and put in control chars ourselves and pretend
 				// we have a label with no value.
 				String separator = ""; //$NON-NLS-1$
-				StringBuffer labelString = new StringBuffer();
+				StringBuilder labelString = new StringBuilder();
 				for (Entry<String, String> entry : labels.entrySet()) {
 					labelString.append(separator);
 					if (entry.getValue() == null || "".equals(entry.getValue())) //$NON-NLS-1$
@@ -1776,7 +1776,7 @@ public class DockerConnection
 			return "";
 		}
 		List<String> cmd = info.config().cmd();
-		StringBuffer b = new StringBuffer();
+		StringBuilder b = new StringBuilder();
 		cmd.stream().forEach(s -> b.append(s + " "));
 		b.deleteCharAt(b.length() - 1);
 		return b.toString();

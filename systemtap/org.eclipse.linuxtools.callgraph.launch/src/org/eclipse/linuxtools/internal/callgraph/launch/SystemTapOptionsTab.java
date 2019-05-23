@@ -648,7 +648,7 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
             public String getText(Object element) {
                 if (element instanceof IBinary) {
                     IBinary bin = (IBinary)element;
-                    StringBuffer name = new StringBuffer();
+                    StringBuilder name = new StringBuilder();
                     name.append(bin.getPath().lastSegment());
                     return name.toString();
                 }
@@ -661,7 +661,7 @@ public class SystemTapOptionsTab extends CLaunchConfigurationTab{
             public String getText(Object element) {
                 if (element instanceof IBinary) {
                     IBinary bin = (IBinary)element;
-                    StringBuffer name = new StringBuffer();
+                    StringBuilder name = new StringBuilder();
                     name.append(bin.getCPU() + (bin.isLittleEndian() ? "le" : "be")); //$NON-NLS-1$ //$NON-NLS-2$
                     name.append(" - "); //$NON-NLS-1$
                     name.append(bin.getPath().toString());

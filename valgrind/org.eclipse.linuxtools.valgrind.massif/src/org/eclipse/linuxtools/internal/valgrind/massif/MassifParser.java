@@ -155,7 +155,7 @@ public class MassifParser {
             node = new MassifHeapTreeNode(parent, percentage, numBytes, address, function, filename, lineNo);
         } else {
             // concatenate the rest
-            StringBuffer text = new StringBuffer();
+        	StringBuilder text = new StringBuilder();
             for (int i = 2; i < parts.length; i++) {
                 text.append(parts[i]);
                 text.append(" "); //$NON-NLS-1$

@@ -112,7 +112,7 @@ public class CDoxygenLibhoverGen extends LibhoverInfoGenerator{
     }
 
     private String getElementText(Node node) {
-        StringBuffer d = new StringBuffer();
+        StringBuilder d = new StringBuilder();
         NodeList nl = node.getChildNodes();
         for (int x = 0; x < nl.getLength(); ++x) {
             Node text = nl.item(x);

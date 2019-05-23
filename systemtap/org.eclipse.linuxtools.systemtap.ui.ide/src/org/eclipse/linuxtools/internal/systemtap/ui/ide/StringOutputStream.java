@@ -16,7 +16,7 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide;
 import java.io.OutputStream;
 
 public class StringOutputStream extends OutputStream {
-    private StringBuffer str = new StringBuffer();
+	private StringBuilder str = new StringBuilder();
 
     @Override
     public String toString() {

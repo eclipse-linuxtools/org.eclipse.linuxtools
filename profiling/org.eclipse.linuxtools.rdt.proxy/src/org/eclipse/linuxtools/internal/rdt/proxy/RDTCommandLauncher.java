@@ -209,7 +209,7 @@ public class RDTCommandLauncher implements IRemoteCommandLauncher {
     }
 
     private String getCommandLine(String[] commandArgs) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         if (fCommandArgs != null) {
             for (String commandArg : commandArgs) {
                 buf.append(commandArg);

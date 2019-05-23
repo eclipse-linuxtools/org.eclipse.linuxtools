@@ -64,7 +64,7 @@ public class ImageQuery {
 					ExecCreateParam.attachStdout(), ExecCreateParam.attachStderr(), ExecCreateParam.detach(),
 					ExecCreateParam.attachStdin()); // needed to avoid connection reset on unix socket
 			stream = client.execStart(exeCr.id());
-			StringBuffer res = new StringBuffer();
+			StringBuilder res = new StringBuilder();
 			while (stream.hasNext()) {
 				ByteBuffer b = stream.next().content();
 				byte[] buffer = new byte[b.remaining()];

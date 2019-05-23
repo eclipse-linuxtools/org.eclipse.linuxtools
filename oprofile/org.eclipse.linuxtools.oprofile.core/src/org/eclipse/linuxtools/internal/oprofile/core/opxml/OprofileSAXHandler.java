@@ -53,7 +53,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 	// handle this properly, it is needed to accumulate the text returned in each
 	// call
 	// until it recieves a callback that isn't characters.
-	private StringBuffer charactersBuffer;
+	private StringBuilder charactersBuffer;
 
 	// A convenience class for specifying XMLProcessors
 	private static class ProcessorItem {
@@ -147,7 +147,7 @@ public class OprofileSAXHandler extends DefaultHandler {
 		processor.startElement(qName, attrs, callData);
 
 		// Clean up the characters buffer
-		charactersBuffer = new StringBuffer();
+		charactersBuffer = new StringBuilder();
 	}
 
 	@Override

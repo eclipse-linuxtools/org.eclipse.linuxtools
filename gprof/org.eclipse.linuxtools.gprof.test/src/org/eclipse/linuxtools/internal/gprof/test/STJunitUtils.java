@@ -146,7 +146,7 @@ public class STJunitUtils {
             is1.close();
             is2.close();
             if (!equals) {
-                StringBuffer msg = new StringBuffer(message + ": not correspond ");
+                StringBuilder msg = new StringBuilder(message + ": not correspond ");
                  msg.append("\n========= begin dump file =========\n");
                 try (FileReader fr = new FileReader(dumpFile)) {
                     int c;

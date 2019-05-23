@@ -1845,7 +1845,7 @@ public class ContainerLauncher {
 		boolean insideQuote1 = false; // single-quote
 		boolean insideQuote2 = false; // double-quote
 		boolean escaped = false;
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		// Parse the string and break it up into chunks that are
 		// separated by white-space or are quoted. Ignore characters
 		// that have been escaped, including the escape character.

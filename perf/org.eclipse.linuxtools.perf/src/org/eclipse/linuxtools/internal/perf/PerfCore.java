@@ -53,7 +53,7 @@ public class PerfCore {
 
     private static String spitStream(BufferedReader br, String blockTitle, PrintStream print) {
 
-        StringBuffer strBuf = new StringBuffer();
+        StringBuilder strBuf = new StringBuilder();
         String line = null;
         try {
             while (( line = br.readLine()) != null){
@@ -574,7 +574,7 @@ public class PerfCore {
                                 if(project==null) {
                                     p = Runtime.getRuntime().exec(annotateCmd);
                                 } else {
-                                    StringBuffer sb = new StringBuffer();
+                                    StringBuilder sb = new StringBuilder();
                                     ArrayList<String> al = new ArrayList<>();
                                     /*
                                      *  Wrap the whole Perf annotate line as a single argument of sh command

@@ -256,7 +256,7 @@ public class PerfLaunchConfigDelegate extends AbstractCLaunchDelegate {
         // Get working directory
         int runCount = config.getAttribute(PerfPlugin.ATTR_StatRunCount,
                 PerfPlugin.ATTR_StatRunCount_default);
-        StringBuffer args = new StringBuffer();
+        StringBuilder args = new StringBuilder();
         for (String arg : arguments) {
             args.append(arg);
             args.append(" "); //$NON-NLS-1$

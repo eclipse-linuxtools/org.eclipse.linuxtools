@@ -32,7 +32,7 @@ public final class CommentRemover {
      */
     public static String execWithFile(String filename) {
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            StringBuffer buffer = new StringBuffer();
+			StringBuilder buffer = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
                 buffer.append(line.concat("\n")); //$NON-NLS-1$
@@ -66,7 +66,7 @@ public final class CommentRemover {
         boolean inComment = false;
 
         int c = 0;
-        StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
         do {
             curchar = contents.charAt(c++);

@@ -146,7 +146,7 @@ public class ShellConnectionSettingsProvider implements IDockerConnectionSetting
 
 	private String streamToString(InputStream stream) {
 		BufferedReader buff = new BufferedReader(new InputStreamReader(stream));
-		StringBuffer res = new StringBuffer();
+		StringBuilder res = new StringBuilder();
 		String line = ""; //$NON-NLS-1$
 		try {
 			while ((line = buff.readLine()) != null) {

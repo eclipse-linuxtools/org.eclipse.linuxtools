@@ -80,8 +80,8 @@ public abstract class AbstractDataManipulator extends BaseDataManipulator
             Process proc = null;
             IFileStore workDirStore = getWorkingDirStore();
             proc = RuntimeProcessFactory.getFactory().exec(cmd, null, workDirStore, project);
-            StringBuffer data = new StringBuffer();
-            StringBuffer temp = new StringBuffer();
+            StringBuilder data = new StringBuilder();
+            StringBuilder temp = new StringBuilder();
 
             switch (fd) {
             case 2:
@@ -132,7 +132,7 @@ public abstract class AbstractDataManipulator extends BaseDataManipulator
             DebugPlugin.newProcess(launch, proc, ""); //$NON-NLS-1$
             proc.waitFor();
 
-            StringBuffer data = new StringBuffer();
+            StringBuilder data = new StringBuilder();
             try (BufferedReader buffData = new BufferedReader(
                     new InputStreamReader(
                             fileProxy.getResource(file).openInputStream(EFS.NONE, null)))) {
@@ -148,13 +148,13 @@ public abstract class AbstractDataManipulator extends BaseDataManipulator
     }
 
     /**
-     * Write entire contents of BufferedReader into given StringBuffer.
+     * Write entire contents of BufferedReader into given StringBuilder.
      *
      * @param buff BufferedReader to read from.
-     * @param strBuff StringBuffer to write to.
+     * @param strBuff StringBuilder to write to.
      */
     private void readStream(final BufferedReader buff,
-            final StringBuffer strBuff) {
+            final StringBuilder strBuff) {
         Thread readThread = new Thread(() -> strBuff.append(getBufferContents(buff)));
         readThread.start();
         threads.add(readThread);

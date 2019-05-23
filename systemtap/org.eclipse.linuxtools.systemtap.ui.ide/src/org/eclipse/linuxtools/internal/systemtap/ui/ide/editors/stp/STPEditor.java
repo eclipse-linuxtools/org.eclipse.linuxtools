@@ -129,7 +129,7 @@ public class STPEditor extends TextEditor {
 
         if (selection instanceof ITextSelection) {
             ITextSelection s = (ITextSelection) selection;
-            StringBuffer sb = new StringBuffer(doc.get().substring(0, s.getOffset()));
+			StringBuilder sb = new StringBuilder(doc.get().substring(0, s.getOffset()));
             sb.append(text.trim());
             sb.append(doc.get().substring(s.getOffset() + s.getLength(), doc.get().length()));
             doc.set(sb.toString());

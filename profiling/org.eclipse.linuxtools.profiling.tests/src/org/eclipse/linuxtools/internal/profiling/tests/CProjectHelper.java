@@ -95,7 +95,7 @@ public class CProjectHelper {
 
 
     private static String getMessage(IStatus status) {
-        StringBuffer message = new StringBuffer("[");
+        StringBuilder message = new StringBuilder("[");
         message.append(status.getMessage());
         if (status.isMultiStatus()) {
             IStatus children[] = status.getChildren();

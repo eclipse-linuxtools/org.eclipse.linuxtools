@@ -240,7 +240,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
                 process.waitFor();
 
                 // Put the OCount data in a separate view
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
                 // Use remote file proxy to operate resources since the project may be either local or remote
                 IRemoteFileProxy proxy = RemoteProxyManager.getInstance().getFileProxy(OprofileProject.getProject());
 

@@ -288,7 +288,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 	}
 
 	private String removeFromKeys(String keys, String key) {
-		StringBuffer res = new StringBuffer();
+		StringBuilder res = new StringBuilder();
 		for (String k : keys.split(",")) {
 			if (!key.equals(k)) {
 				res.append(","); //$NON-NLS-1$

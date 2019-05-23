@@ -30,7 +30,7 @@ public class MassifHeapTreeNode {
     public MassifHeapTreeNode(MassifHeapTreeNode parent, double percent, long bytes, String address, String function, String filename, int line) {
         this.parent = parent;
 
-        StringBuffer nodeText = new StringBuffer();
+        StringBuilder nodeText = new StringBuilder();
         formatBytes(percent, bytes, nodeText);
         nodeText.append(address).append(":"); //$NON-NLS-1$
         if (function.length() > 0) {
@@ -57,7 +57,7 @@ public class MassifHeapTreeNode {
     public MassifHeapTreeNode(MassifHeapTreeNode parent, double percent, long bytes, String text) {
         this.parent = parent;
 
-        StringBuffer nodeText = new StringBuffer();
+        StringBuilder nodeText = new StringBuilder();
         formatBytes(percent, bytes, nodeText);
         nodeText.append(text);
         this.percent = percent;
@@ -70,7 +70,7 @@ public class MassifHeapTreeNode {
         children = new ArrayList<>();
     }
 
-    private void formatBytes(double percent, long bytes, StringBuffer buffer) {
+    private void formatBytes(double percent, long bytes, StringBuilder buffer) {
         buffer.append(new DecimalFormat("0.##").format(percent) + "%"); //$NON-NLS-1$ //$NON-NLS-2$
         buffer.append(" ("); //$NON-NLS-1$
         buffer.append(new DecimalFormat("#,##0").format(bytes) + "B"); //$NON-NLS-1$ //$NON-NLS-2$

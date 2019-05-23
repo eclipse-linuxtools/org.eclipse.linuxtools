@@ -93,7 +93,7 @@ public abstract class LinuxtoolsProcessFactory {
             systemPath = envMap.get(PATH);
         }
 
-        StringBuffer newPath = new StringBuffer();
+		StringBuilder newPath = new StringBuilder();
         newPath.append(PATH_EQUAL);
 
         if (ltPath != null && !ltPath.isEmpty()) {

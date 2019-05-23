@@ -276,7 +276,7 @@ public class DataVolumeModel extends BaseDatabindingModel
 	// FIXME we should have a dedicated method to serialize the bean
 	@Override
 	public String toString() {
-		final StringBuffer buffer = new StringBuffer();
+		final StringBuilder buffer = new StringBuilder();
 		buffer.append(
 				this.containerPath + SEPARATOR + getMountType() + SEPARATOR);
 		switch (getMountType()) {

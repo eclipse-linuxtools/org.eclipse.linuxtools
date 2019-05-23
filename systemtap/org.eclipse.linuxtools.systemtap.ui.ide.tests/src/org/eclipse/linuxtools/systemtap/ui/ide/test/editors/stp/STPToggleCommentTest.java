@@ -45,7 +45,7 @@ public class STPToggleCommentTest {
 
     @BeforeClass
     public static void setUp() {
-        StringBuffer stpScriptBuff = new StringBuffer();
+        StringBuilder stpScriptBuff = new StringBuilder();
         for (String scriptLine : PARTITIONED_SCRIPT) {
             stpScriptBuff.append(scriptLine);
         }

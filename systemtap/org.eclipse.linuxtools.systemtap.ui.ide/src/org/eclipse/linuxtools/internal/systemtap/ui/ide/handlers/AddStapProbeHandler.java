@@ -128,7 +128,7 @@ public class AddStapProbeHandler extends AbstractHandler {
                 String filepath = input.getURI().getPath();
                 String kernrelative = filepath.substring(
                         kernroot.length() + 1, filepath.length());
-                StringBuffer sb = new StringBuffer();
+				StringBuilder sb = new StringBuilder();
 
                 sb.append("probe kernel.statement(\"*@" + kernrelative + ":" + (lineno + 1) + "\")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 

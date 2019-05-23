@@ -182,7 +182,7 @@ public class SpecStructureCreator extends StructureCreator {
 		if (is == null) {
 			return null;
 		}
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		char[] part = new char[2048];
 		int read = 0;
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(is, encoding))) {

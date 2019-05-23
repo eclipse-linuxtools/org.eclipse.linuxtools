@@ -127,7 +127,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
             return null;
         }
 
-        StringBuffer output = new StringBuffer();
+        StringBuilder output = new StringBuilder();
 
         for (String func : toWrite.split(" ")) { //$NON-NLS-1$
             if (!func.isEmpty()
