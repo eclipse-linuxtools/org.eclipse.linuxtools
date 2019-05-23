@@ -398,7 +398,7 @@ public class DockerConnection
 	@Override
 	public void close() {
 		// stop and remove all logging threads
-		for (String key : loggingThreads.keySet()) {
+		for (String key : loggingThreads.keySet().toArray(new String[0])) {
 			LogThread t = loggingThreads.get(key);
 			if (t != null) {
 				t.kill();
