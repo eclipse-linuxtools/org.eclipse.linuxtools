@@ -1600,9 +1600,12 @@ public class ContainerLauncher {
 				builder = builder.entryPoint(entrypoint);
 			}
 		}
-		// switch to user id for Linux so output is accessible
+		// switch to user id and group id for Linux so output is accessible
 		if (uid != null) {
-			builder = builder.user(uid.toString());
+			String id = uid.toString();
+			if (gid != null)
+				id += ":" + gid.toString(); //$NON-NLS-1$
+			builder = builder.user(id);
 		}
 		
 		// TODO: add group id here when supported by DockerHostConfig.Builder
