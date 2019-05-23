@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -158,11 +157,9 @@ public class LaunchConfigurationUtils {
 			if (config.rawcmd() != null) {
 				workingCopy.setAttribute(COMMAND, config.rawcmd());
 			} else {
-				workingCopy.setAttribute(COMMAND,
-						toString(containerConfig.cmd()));
+				workingCopy.setAttribute(COMMAND, String.join(" ", containerConfig.cmd()));
 			}
-			workingCopy.setAttribute(ENTRYPOINT,
-					toString(containerConfig.entrypoint()));
+			workingCopy.setAttribute(ENTRYPOINT, String.join(" ", containerConfig.entrypoint()));
 			// selected ports
 			workingCopy.setAttribute(PUBLISH_ALL_PORTS,
 					hostConfig.publishAllPorts());
@@ -243,19 +240,6 @@ public class LaunchConfigurationUtils {
 	private static String createRunImageLaunchConfigurationName(
 			final IDockerImage image) {
 		return image.repoTags().get(0);
-	}
-
-	private static String toString(final List<String> input) {
-		final StringBuilder command = new StringBuilder();
-		for (Iterator<String> iterator = input.iterator(); iterator
-				.hasNext();) {
-			String fragment = iterator.next();
-			command.append(fragment);
-			if (iterator.hasNext()) {
-				command.append(" ");
-			}
-		}
-		return command.toString();
 	}
 
 	/**
