@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.ws.rs.ProcessingException;
 
@@ -1078,7 +1079,7 @@ public class DockerConnection
 	// TODO: remove this method from the API
 	@Override
 	public List<IDockerImage> listImages() throws DockerException {
-		final List<IDockerImage> tempImages = new ArrayList<>();
+		final List<IDockerImage> tempImages = new CopyOnWriteArrayList<>();
 		synchronized (imageLock) {
 			try {
 				final List<Image> nativeImages = new ArrayList<>();
