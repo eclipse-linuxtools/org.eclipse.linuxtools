@@ -432,8 +432,8 @@
 				       			property="org.eclipse.linuxtools.docker.propertytesters.container.isStopped" value="true"/>
 	                	</and>
 						<and>
-			            	<adapt
-			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+			            	<instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerImageHierarchyContainerNode" />
 		                  	<test
 				       	    	forcePluginActivation="true"
 				       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isStopped" value="true"/>
@@ -458,8 +458,8 @@
 				       			property="org.eclipse.linuxtools.docker.propertytesters.container.isRunning" value="true"/>
 	                	</and>
 						<and>
-			            	<adapt
-			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+			            	<instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerImageHierarchyContainerNode" />
 		                  	<test
 				       	    	forcePluginActivation="true"
 				       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isRunning" value="true"/>
@@ -484,8 +484,8 @@
 				       			property="org.eclipse.linuxtools.docker.propertytesters.container.isPaused" value="true"/>
 	                	</and>
 						<and>
-			            	<adapt
-			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+			            	<instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerImageHierarchyContainerNode" />
 		                  	<test
 				       	    	forcePluginActivation="true"
 				       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isPaused" value="true"/>
@@ -522,8 +522,8 @@
 					       	</or>
 	                	</and>
 						<and>
-			            	<adapt
-			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+			            	<instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerImageHierarchyContainerNode" />
 			                <or>
 			                    <and>
 			                  		<test
@@ -570,8 +570,8 @@
 					       	</or>
 	                	</and>
 						<and>
-			            	<adapt
-			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+			            	<instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerImageHierarchyContainerNode" />
 			                <or>
 			                    <and>
 			                  		<test
@@ -600,8 +600,8 @@
                      ifEmpty="false">
                     <or>
 						<and>
-							<adapt
-			                   type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+							<instanceof
+			                   value="org.eclipse.linuxtools.docker.core.IDockerContainer" />
 			            	<or>
 			                  	<test
 					       	    	forcePluginActivation="true"
@@ -612,8 +612,8 @@
 					    	</or>
 				    	</and>
 						<and>
-							<adapt
-			                   type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+							<instanceof
+			                   value="org.eclipse.linuxtools.docker.core.IDockerImageHierarchyContainerNode" />
 			            	<or>
 			                  	<test
 					       	    	forcePluginActivation="true"
@@ -643,8 +643,8 @@
 				       			property="org.eclipse.linuxtools.docker.propertytesters.container.isRemovable" value="true"/>
 	                	</and>
 						<and>
-			            	<adapt
-			                       type="org.eclipse.linuxtools.docker.core.IDockerContainer" />
+			            	<instanceof
+			                       value="org.eclipse.linuxtools.docker.core.IDockerImageHierarchyContainerNode" />
 		                  	<test
 				       	    	forcePluginActivation="true"
 				       			property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyContainerNode.isRemovable" value="true"/>
@@ -823,6 +823,7 @@
 				       		       property="org.eclipse.linuxtools.docker.propertytesters.image.canBeTagged" value="true"/>
 		                     </and>
 		                     <and>
+		                     	<instanceof value="org.eclipse.linuxtools.docker.core.IDockerImageHierarchyImageNode"></instanceof>
 			                    <adapt type="org.eclipse.linuxtools.docker.core.IDockerImage"></adapt>
 			                    <test
 				       	           forcePluginActivation="true"
@@ -848,7 +849,7 @@
 										property="org.eclipse.linuxtools.docker.propertytesters.image.hasMultipleTags" value="true"/>
 								</and>
 								<and>
-									<adapt type="org.eclipse.linuxtools.docker.core.IDockerImage"></adapt>
+								    <instanceof value="org.eclipse.linuxtools.docker.core.IDockerImageHierarchyImageNode"></instanceof>
 									<test
 										forcePluginActivation="true"
 										property="org.eclipse.linuxtools.docker.propertytesters.imageHierarchyImageNode.hasMultipleTags" value="true"/>
