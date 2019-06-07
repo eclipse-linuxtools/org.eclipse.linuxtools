@@ -338,7 +338,8 @@ public class DockerConnection
 			}
 			notifyContainerListeners(this.containers);
 			notifyImageListeners(this.images);
-			if (oldState == EnumDockerConnectionState.ESTABLISHED) {
+			if (!isFinalizing()
+					&& oldState == EnumDockerConnectionState.ESTABLISHED) {
 				DockerConnectionManager.instanceNotifyListeners(this,
 						IDockerConnectionManagerListener.DISABLE_EVENT);
 			}
