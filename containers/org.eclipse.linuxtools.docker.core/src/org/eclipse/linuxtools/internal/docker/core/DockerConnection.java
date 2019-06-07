@@ -62,6 +62,7 @@ import org.eclipse.linuxtools.docker.core.EnumDockerLoggingStatus;
 import org.eclipse.linuxtools.docker.core.IDockerConfParameter;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerConnection2;
+import org.eclipse.linuxtools.docker.core.IDockerConnection3;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionInfo;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionManagerListener;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
@@ -136,7 +137,8 @@ import com.spotify.docker.client.messages.VolumeList;
  *
  */
 public class DockerConnection
-		implements IDockerConnection, IDockerConnection2, Closeable {
+		implements IDockerConnection, IDockerConnection2, IDockerConnection3,
+		Closeable {
 
 	// Builder allowing different binding modes (unix socket vs TCP connection)
 	public static class Builder {
@@ -182,6 +184,7 @@ public class DockerConnection
 	@SuppressWarnings("unused")
 	private IDockerConnectionInfo connectionInfo;
 	private final String username;
+	private boolean finalizing;
 	private final Object imageLock = new Object();
 	private final Object containerLock = new Object();
 	private final Object actionLock = new Object();
@@ -392,8 +395,14 @@ public class DockerConnection
 
 	@Override
 	protected void finalize() throws Throwable {
+		this.finalizing = true;
 		close();
 		super.finalize();
+	}
+
+	@Override
+	public boolean isFinalizing() {
+		return this.finalizing;
 	}
 
 	@Override
@@ -820,14 +829,15 @@ public class DockerConnection
 					Activator.log(
 							new Status(IStatus.WARNING, Activator.PLUGIN_ID,
 									Messages.Docker_Connection_Timeout, e));
-					close();
 				}
 			} catch (com.spotify.docker.client.exceptions.DockerException
 					| InterruptedException e) {
 				if (isOpen() && e.getCause() != null
 						&& e.getCause().getCause() != null && e.getCause()
 								.getCause() instanceof ProcessingException) {
-					close();
+					Activator.log(new Status(IStatus.WARNING,
+							Activator.PLUGIN_ID,
+							Messages.List_Docker_Containers_Failure, e));
 				} else {
 					throw new DockerException(e.getMessage());
 				}
@@ -1125,7 +1135,6 @@ public class DockerConnection
 					Activator.log(
 							new Status(IStatus.WARNING, Activator.PLUGIN_ID,
 									Messages.Docker_Connection_Timeout, e));
-					close();
 				}
 			} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
 				throw new DockerException(e.getResponseBody());
@@ -1134,7 +1143,9 @@ public class DockerConnection
 				if (isOpen() && e.getCause() != null
 						&& e.getCause().getCause() != null && e.getCause()
 								.getCause() instanceof ProcessingException) {
-					close();
+					Activator.log(
+							new Status(IStatus.WARNING, Activator.PLUGIN_ID,
+									Messages.List_Docker_Images_Failure, e));
 				} else {
 					throw new DockerException(
 							NLS.bind(Messages.List_Docker_Images_Failure,
