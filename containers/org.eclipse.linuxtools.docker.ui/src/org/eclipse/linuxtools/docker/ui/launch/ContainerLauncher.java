@@ -1764,6 +1764,8 @@ public class ContainerLauncher {
 		try {
 			containerId = ((DockerConnection) connection)
 					.createContainer(config, hostConfig, null);
+			// Add delay after creating container to fix bug 546505
+			Thread.sleep(100);
 		} catch (DockerException | InterruptedException e) {
 			errMsgHolder.setErrorMessage(e.getMessage());
 			return null;
