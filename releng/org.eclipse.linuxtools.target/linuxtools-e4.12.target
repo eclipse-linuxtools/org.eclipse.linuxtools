@@ -29,12 +29,12 @@
 <unit id="org.apache.commons.compress" version="1.18.0.v20181121-2221"/>
 <unit id="org.apache.commons.io" version="2.6.0.v20190123-2029"/>
 <unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
-<unit id="org.apache.httpcomponents.httpclient" version="4.5.6.v20190213-1430"/>
+<unit id="org.apache.httpcomponents.httpclient" version="4.5.6.v20190503-0009"/>
 <unit id="org.apache.httpcomponents.httpcore" version="4.4.10.v20190123-2214"/>
 <unit id="org.apache.xerces" version="2.9.0.v201101211617"/>
 <unit id="org.assertj" version="1.7.1.v20170413-2026"/>
-<unit id="org.bouncycastle.bcpkix" version="1.60.0.v20181210-2057"/>
-<unit id="org.bouncycastle.bcprov" version="1.60.0.v20181210-2057"/>
+<unit id="org.bouncycastle.bcpkix" version="1.61.0.v20190602-1335"/>
+<unit id="org.bouncycastle.bcprov" version="1.61.0.v20190602-1335"/>
 <unit id="org.cyberneko.html" version="1.9.14.v201105210654"/>
 <unit id="org.glassfish.hk2.api" version="2.5.0.v20161103-0227"/>
 <unit id="org.glassfish.hk2.locator" version="2.5.0.v20161103-0227"/>
@@ -47,14 +47,14 @@
 <unit id="org.glassfish.jersey.core.jersey-server" version="2.22.1.v20181004-1955"/>
 <unit id="org.glassfish.jersey.ext.entityfiltering" version="2.22.1.v20181004-1955"/>
 <unit id="org.glassfish.jersey.media.jersey-media-json-jackson" version="2.22.1.v20161117-2005"/>
-<unit id="org.mockito" version="2.23.0.v20181106-1534"/>
+<unit id="org.mockito" version="2.23.0.v20190527-1420"/>
 <unit id="org.objectweb.asm" version="7.1.0.v20190412-2143"/>
 <unit id="org.objectweb.asm.analysis" version="7.1.0.v20190412-2143"/>
 <unit id="org.objectweb.asm.tree" version="7.1.0.v20190412-2143"/>
 <unit id="org.objectweb.asm.util" version="7.1.0.v20190412-2143"/>
 <unit id="org.slf4j.api" version="1.7.10.v20170428-1633"/>
 <unit id="org.swtchart" version="0.10.0.v201605200358"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/S20190501151401/repository"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20190602212107/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
