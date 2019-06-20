@@ -500,9 +500,14 @@
                      value="1">
                </count>
                <iterate>
-                  <test
-                     property="org.eclipse.linuxtools.systemtap.ui.ide.handlers.hasDefinition">
-               </test>
+                  <and>
+                     <instanceof
+                           value="org.eclipse.linuxtools.systemtap.structures.TreeDefinitionNode">
+                     </instanceof>
+                     <test
+                           property="org.eclipse.linuxtools.systemtap.ui.ide.handlers.hasDefinition">
+                     </test>
+                  </and>
                </iterate>
             </with>
          </enabledWhen>
