@@ -8,7 +8,7 @@
       license-feature-version="0.0.0">
 
    <description url="http://www.eclipse.org/linuxtools">
-      %featureDescription
+      %description
    </description>
 
    <copyright url="http://www.redhat.com">
