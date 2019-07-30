@@ -2,21 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.eclipse.ui.editors">
-      <editor
-            class="org.eclipse.linuxtools.internal.valgrind.ui.editor.SuppressionsEditor"
-            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            default="false"
-            extensions="supp"
-            icon="icons/valgrind-supp-icon.png"
-            id="org.eclipse.linuxtools.valgrind.editor.suppEditor"
-            name="%editor.name.0">
-         <contentTypeBinding
-               contentTypeId="org.eclipse.linuxtools.valgrind.editor.content-type">
-         </contentTypeBinding>
-      </editor>
-   </extension>
-   <extension
          point="org.eclipse.core.contenttype.contentTypes">
       <content-type
             base-type="org.eclipse.core.runtime.text"
@@ -27,18 +12,27 @@
       </content-type>
    </extension>
    <extension
-         point="org.eclipse.ui.genericeditor.presentationReconcilers">
-      <presentationReconciler
-            class="org.eclipse.linuxtools.internal.valgrind.ui.editor.SuppPresentationReconciler"
-            contentType="org.eclipse.linuxtools.valgrind.editor.content-type">
-      </presentationReconciler>
+         point="org.eclipse.ui.editors">
+      <editorContentTypeBinding
+            contentTypeId="org.eclipse.linuxtools.valgrind.editor.content-type"
+            editorId="org.eclipse.ui.genericeditor.GenericEditor">
+      </editorContentTypeBinding>
    </extension>
-   <extension point="org.eclipse.ui.genericeditor.contentAssistProcessors">
-   <contentAssistProcessor
-            class="org.eclipse.linuxtools.internal.valgrind.ui.editor.SuppressionsContentAssistProcessor"
-            contentType="org.eclipse.linuxtools.valgrind.editor.content-type">
-   </contentAssistProcessor>
-</extension>
+	<extension point="org.eclipse.ui.genericeditor.presentationReconcilers">
+		<presentationReconciler 
+			class="org.eclipse.linuxtools.internal.valgrind.ui.editor.SuppPresentationReconciler" 
+			contentType="org.eclipse.linuxtools.valgrind.editor.content-type">
+		</presentationReconciler>
+	</extension>
+	<extension point="org.eclipse.ui.genericeditor.contentAssistProcessors">
+		<contentAssistProcessor 
+			class="org.eclipse.linuxtools.internal.valgrind.ui.editor.SuppressionsContentAssistProcessor" 
+			contentType="org.eclipse.linuxtools.valgrind.editor.content-type">
+		</contentAssistProcessor>
+	</extension>
+	<extension point="org.eclipse.ui.genericeditor.icons">
+		<icon contentTypeId="org.eclipse.linuxtools.valgrind.editor.content-type" icon="icons/valgrind-supp-icon.png" />
+	</extension>
    <extension
          point="org.eclipse.ui.newWizards">
       <wizard

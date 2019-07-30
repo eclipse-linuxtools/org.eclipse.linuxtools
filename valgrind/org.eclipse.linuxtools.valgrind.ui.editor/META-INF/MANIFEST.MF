@@ -7,17 +7,14 @@ Bundle-Vendor: %Bundle-Vendor.0
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
- org.eclipse.ui.ide
+ org.eclipse.ui.ide,
+ org.eclipse.ui.genericeditor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.jface.text,
  org.eclipse.jface.text.contentassist,
  org.eclipse.jface.text.presentation,
- org.eclipse.jface.text.reconciler,
  org.eclipse.jface.text.rules,
- org.eclipse.jface.text.source,
- org.eclipse.jface.text.source.projection,
  org.eclipse.ui.editors.text,
- org.eclipse.ui.texteditor,
- org.eclipse.core.filebuffers
+ org.eclipse.ui.texteditor
 Automatic-Module-Name: org.eclipse.linuxtools.valgrind.ui.editor
