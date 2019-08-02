@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2018 Red Hat, Inc.
+ * Copyright (c) 2004, 2019 Red Hat, Inc.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -125,11 +125,11 @@ public class OpUnitMask {
 		Set<Integer> values = new HashSet<>();
 
 		for (int i = 0; i < masks.length; ++i) {
-			Integer val = new Integer(masks[i].value);
-			if (values.contains(new Integer(val))) {
-				nonUniqueValues.add(new Integer(val));
+			Integer val = Integer.valueOf(masks[i].value);
+			if (values.contains(Integer.valueOf(val))) {
+				nonUniqueValues.add(Integer.valueOf(val));
 			}
-			values.add(new Integer(val));
+			values.add(Integer.valueOf(val));
 			maskOptionDescriptions[i] = masks[i].description;
 			maskOptionValues[i] = masks[i].value;
 			maskOptionNames[i] = masks[i].name;
@@ -170,7 +170,7 @@ public class OpUnitMask {
 	 * otherwise returns null.
 	 */
 	public String getMaskName() {
-		if (nonUniqueValues.contains(new Integer(mask))) {
+		if (nonUniqueValues.contains(Integer.valueOf(mask))) {
 			return maskName;
 		}
 		return null;
