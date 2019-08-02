@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ * Copyright (c) 2007, 2019 Alphonse Van Assche and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -24,7 +24,6 @@ import java.util.Map;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
@@ -145,8 +144,6 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		if (context == null) {
 			return matches;
 		}
-		ITextSelection selection = (ITextSelection) viewer.getSelectionProvider().getSelection();
-		context.setVariable("selection", selection.getText()); //$NON-NLS-1$
 		String id = context.getContextType().getId();
 		Template[] templates = Activator.getDefault().getTemplateStore().getTemplates(id);
 		for (Template template : templates) {
