@@ -29,11 +29,11 @@ import org.junit.Test;
 
 public class CheckJavadoc {
 
-    /**
-    * 	Create a valid Toc (topic contribution) using JavaDocTocProvider
-    * 	@result  A valid Toc will be created, with all necessary attributes
-    *            created properly: locale, ID, and linkTo.
-    */
+	/**
+	 * Create a valid Toc (topic contribution) using JavaDocTocProvider. A valid Toc
+	 * will be created, with all necessary attributes created properly: locale, ID,
+	 * and linkTo.
+	 */
     @Test
     public void testTocProvider() {
         JavaDocTocProvider provider = new JavaDocTocProvider();
@@ -57,15 +57,15 @@ public class CheckJavadoc {
                 "org.eclipse.linuxtools.javadocs"); //$NON-NLS-1$
     }
 
-    /**
-     * 	Create a valid topic file given the sample Javadoc files provided
-     *  in the /javadoc_root directory.
-     *  @throws IOException
-     * 	@result  A valid topic will be created with the proper href and label.
-     *           Additionally this topic will be enabled correctly and will
-     *           contain no child topics (subtopics).
-     *
-     */
+	/**
+	 * Create a valid topic file given the sample Javadoc files provided in the
+	 * /javadoc_root directory. A valid topic will be created with the proper href
+	 * and label. Additionally this topic will be enabled correctly and will contain
+	 * no child topics (subtopics).
+	 * 
+	 * @throws IOException
+	 *
+	 */
     @Test
     public void testHelpTopic() throws IOException {
 
