@@ -31,7 +31,7 @@
 		</contentAssistProcessor>
 	</extension>
 	<extension point="org.eclipse.ui.genericeditor.icons">
-		<icon contentTypeId="org.eclipse.linuxtools.valgrind.editor.content-type" icon="icons/valgrind-supp-icon.png" />
+		<icon contentType="org.eclipse.linuxtools.valgrind.editor.content-type" icon="icons/valgrind-supp-icon.png" />
 	</extension>
    <extension
          point="org.eclipse.ui.newWizards">
