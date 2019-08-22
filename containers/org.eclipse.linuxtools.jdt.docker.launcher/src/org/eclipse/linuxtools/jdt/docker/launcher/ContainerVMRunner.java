@@ -48,6 +48,11 @@ public class ContainerVMRunner extends StandardVMRunner {
 
 	@Override
 	protected Process exec(String[] cmdLine, File workingDirectory, String[] envp) throws CoreException {
+		return exec(cmdLine, workingDirectory, envp, false);
+	}
+
+	@Override
+	protected Process exec(String[] cmdLine, File workingDirectory, String[] envp, boolean mergeOutput) throws CoreException {
 		String connectionUri = ((ContainerVMInstall) fVMInstance).getConnection().getUri();
 		String command = String.join(" ", cmdLine); //$NON-NLS-1$
 		String newWD = workingDirectory.getAbsolutePath();
