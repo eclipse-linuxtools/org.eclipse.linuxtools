@@ -956,11 +956,12 @@ public class ContainerLauncher {
 
 		IDockerImageInfo imageInfo = connection.getImageInfo(image);
 		if (imageInfo == null) {
+			final String name = image;
 			Display.getDefault()
 					.syncExec(() -> MessageDialog.openError(
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 							DVMessages.getString(ERROR_LAUNCHING_CONTAINER),
-							Messages.getFormattedString("ContainerLaunch.imageNotFound.error", image)));
+							Messages.getFormattedString("ContainerLaunch.imageNotFound.error", name)));
 			return;
 		}
 
@@ -1024,6 +1025,11 @@ public class ContainerLauncher {
 			hostBuilder = hostBuilder.portBindings(portBindingsMap);
 
 		final IDockerHostConfig hostConfig = hostBuilder.build();
+
+		if (image.equals(imageInfo.id())) {
+			IDockerImage dockerImage = ((DockerConnection) connection).getImage(image);
+			image = dockerImage.repoTags().get(0);
+		}
 
 		final String imageName = image;
 		final boolean keepContainer = keep;
