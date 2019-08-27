@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -38,6 +38,7 @@ public class GcnoRecordsParser {
     private static final int GCOV_TAG_LINES = 0x01450000;
 
     private static final int GCC_VER_810 = 1094201642; // GCC 8.1.0 ('A81*')
+	private static final int GCC_VER_910 = 1094267178; // GCC 9.1.0 ('A91*')
     private static final int GCC_VER_407 = 875575082; // GCC 4.0.7
 
     private GcnoFunction fnctn = null;
@@ -132,11 +133,18 @@ public class GcnoRecordsParser {
                     String fnctnSrcFle = GcovStringReader.readString(stream);
                     long fnctnFrstLnNmbr = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
                     if (version >= GCC_VER_810) {
-                        // long fnctnFrstColumnLnNmbr = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
+						// long fnctnFrstColumnNmbr = (stream.readInt() &
+						// MasksGenerator.UNSIGNED_INT_MASK);
                         stream.readInt();
                         // long fnctnLastLnNmbr = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
                         stream.readInt();
                     }
+
+					if (version >= GCC_VER_910) {
+						// long fnctnLastColumnNmbr = (stream.readInt() &
+						// MasksGenerator.UNSIGNED_INT_MASK);
+						stream.readInt();
+					}
 
                     fnctn = new GcnoFunction(fnctnIdent, fnctnChksm, fnctnName, fnctnSrcFle, fnctnFrstLnNmbr);
                     SourceFile srcFle2 = findOrAdd(fnctn.getSrcFile());

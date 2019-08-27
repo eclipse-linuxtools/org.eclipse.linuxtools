@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ * Copyright (c) 2009, 2019 STMicroelectronics and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -175,7 +175,7 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
                     invarc = null;
 
                     for (Arc entrAr : vb.getEntryArcs()) {
-                        total -= entrAr.getCount();
+						total -= entrAr.getCount(); /* total can end up negative here ?? */
                         if (!entrAr.isCountValid()) {
                             invarc = entrAr;
                         }
@@ -183,7 +183,7 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
 
                     blcksrc = invarc.getSrcBlock();
                     invarc.setCountValid(true);
-                    invarc.setCount(total);
+					invarc.setCount(total < 0 ? 0 : total); /* temporary kludge */
                     vb.decNumPreds();
                     blcksrc.decNumSuccs();
 
