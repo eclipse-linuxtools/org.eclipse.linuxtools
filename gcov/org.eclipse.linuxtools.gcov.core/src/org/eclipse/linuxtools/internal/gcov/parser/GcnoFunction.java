@@ -14,6 +14,8 @@ package org.eclipse.linuxtools.internal.gcov.parser;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
 
@@ -47,6 +49,7 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
     }
 
     public void addLineCounts(ArrayList<SourceFile> srcs) {
+		Set<Line> linesToCalculate = new HashSet<>();
         for (int i = 0; i != numBlocks; i++) {
             Block blk = functionBlocks.get(i);
             SourceFile fileSrc = null;
@@ -71,10 +74,28 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
                         cvrge.incLinesExecuted();
                     }
                     line.setExists(true);
-                    line.setCount(line.getCount() + blk.getCount());
+					if (line.getBlocks().size() > 1) {
+						// we can't count on the blk count to be accurate (multiple blocks have same
+						// line
+						linesToCalculate.add(line);
+						line.setCount(1); // to avoid counting it twice in execution total
+					} else {
+						line.setCount(line.getCount() + blk.getCount());
+					}
                 }
             }
         }
+		for (Line line : linesToCalculate) {
+			long count = 0;
+			for (Block b : line.getBlocks()) {
+				for (Arc arc : b.getEntryArcs()) {
+					if (!line.hasBlock(arc.getSrcBlock())) {
+						count += arc.getCount();
+					}
+				}
+			}
+			line.setCount(count);
+		}
     }
 
     public void solveGraphFnctn() {
@@ -108,7 +129,7 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
 
                     if (invb.getNumPreds() != 0 && invb.getNumSuccs() != 0)
                     	continue;
-                    
+
                     if (invb.getNumSuccs() == 0) {
                         ArrayList<Arc> extArcs = invb.getExitArcs();
                         for (Arc arc : extArcs) {
@@ -183,7 +204,7 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
 
                     blcksrc = invarc.getSrcBlock();
                     invarc.setCountValid(true);
-					invarc.setCount(total < 0 ? 0 : total); /* temporary kludge */
+					invarc.setCount(total); /* temporary kludge */
                     vb.decNumPreds();
                     blcksrc.decNumSuccs();
 

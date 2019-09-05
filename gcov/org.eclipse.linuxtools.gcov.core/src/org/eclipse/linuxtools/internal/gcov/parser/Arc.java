@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ * Copyright (c) 2009, 2019 STMicroelectronics and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -28,6 +28,7 @@ public class Arc implements Serializable{
 
     private final Block srcBlock;
     private final Block dstnatnBlock;
+	private final int dstnatnBlockIndice;
     private final long flag;
     private final boolean fake;
     private final boolean onTree;
@@ -44,6 +45,7 @@ public class Arc implements Serializable{
      */
     public Arc(int srcBlockIndice, int dstnatnBlockIndice, long flag, List<Block> otherArcParams) {
         this.flag = flag;
+		this.dstnatnBlockIndice = dstnatnBlockIndice;
         this.dstnatnBlock = otherArcParams.get(dstnatnBlockIndice);
         this.srcBlock = otherArcParams.get(srcBlockIndice);
         this.count = 0;
@@ -70,6 +72,10 @@ public class Arc implements Serializable{
     public Block getDstnatnBlock() {
         return dstnatnBlock;
     }
+
+	public int getDstnatnBlockIndice() {
+		return dstnatnBlockIndice;
+	}
 
     public long getFlag() {
         return flag;
