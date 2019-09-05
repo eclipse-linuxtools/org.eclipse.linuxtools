@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ * Copyright (c) 2009, 2019 STMicroelectronics and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -108,6 +108,21 @@ public class SourceFile implements Serializable {
         for (int j = 0; j < n; j++) {
             lines.add(new Line());
         }
+		for (GcnoFunction fn : getFnctns()) {
+			for (Block b : fn.getFunctionBlocks()) {
+				long[] blockLines = b.getEncoding();
+				if (blockLines == null) {
+					continue;
+				}
+				for (int i = 2; i < blockLines.length; ++i) {
+					long lineno = blockLines[i];
+					if (lineno == 0)
+						break;
+					Line line = lines.get((int) lineno);
+					line.addBlock(b);
+				}
+			}
+		}
     }
 
 

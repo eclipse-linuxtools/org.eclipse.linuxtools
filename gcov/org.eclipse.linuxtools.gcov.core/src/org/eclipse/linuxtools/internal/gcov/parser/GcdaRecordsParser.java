@@ -156,6 +156,9 @@ public class GcdaRecordsParser {
 
                     for (Block b : fnctnBlcks) {
                         int nonFakeExit = 0;
+						int prevBlockIndice = 0;
+						@SuppressWarnings("unused")
+						boolean outOfOrder = false;
 
                         ArrayList<Arc> arcsExit = b.getExitArcs();
                         for (Arc extArc : arcsExit) {
@@ -168,6 +171,11 @@ public class GcdaRecordsParser {
                                 extArc.setCountValid(true);
                                 b.decNumSuccs();
                                 extArc.getDstnatnBlock().decNumPreds();
+								if (prevBlockIndice > extArc.getDstnatnBlockIndice()) {
+//									System.err.println("out of order"); //$NON-NLS-1$
+									outOfOrder = true;
+								}
+								prevBlockIndice = extArc.getDstnatnBlockIndice();
                             }
                         }
 
