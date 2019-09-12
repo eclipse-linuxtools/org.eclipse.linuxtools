@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -17,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.IBinary;
@@ -113,8 +114,12 @@ public class OpenGCAction implements IEditorLauncher {
         String defaultBinary = defaultMapping.get(file.toOSString());
         if (defaultBinary == null || defaultBinary.isEmpty() || !exists(defaultBinary)) {
         	//FIXME EK-LINUXTOOLS: defaultBinary = getDefaultBinary(file);
-        	defaultBinary = 
-        	   STSymbolManager.sharedInstance.findOneAndOnlyBinary(file).getLocation().toOSString();
+			IResource bin_resource = STSymbolManager.sharedInstance.findOneAndOnlyBinary(file);
+			if (bin_resource != null) {
+				defaultBinary = bin_resource.getLocation().toOSString();
+			} else {
+				defaultBinary = ""; //$NON-NLS-1$
+			}
         }
 
         OpenGCDialog d = new OpenGCDialog(shell, defaultBinary, file);
@@ -128,12 +133,12 @@ public class OpenGCAction implements IEditorLauncher {
         t.start();
     }
 
-    private void displayCoverage(IPath file, String binaryPath, File gcda, boolean isCompleteCoverageResultWanted) 
+    private void displayCoverage(IPath file, String binaryPath, File gcda, boolean isCompleteCoverageResultWanted)
     {
     	//FIXME EK-LINUXTOOLS: IProject project = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(file).getProject();
     	IProject project = STSymbolManager.sharedInstance.getProjectFromFile(file);
     	//FIXME EK-LINUXTOOLS: Need check for null and correct action
-    	
+
         GcovAnnotationModelTracker.getInstance().addProject(project, new Path(binaryPath));
         PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
         	GcovAnnotationModelTracker.getInstance().annotateAllCEditors();
