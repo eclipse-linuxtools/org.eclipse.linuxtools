@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="linuxtools-e4.13" sequenceNumber="1">
+<?pde version="3.8"?><target name="linuxtools-e4.14" sequenceNumber="1">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.9.2.v20180207-1730"/>
@@ -64,7 +64,7 @@
 <unit id="org.eclipse.pde.runtime" version="0.0.0"/>
 <unit id="org.eclipse.platform.ide" version="0.0.0"/>
 <unit id="org.eclipse.equinox.core.feature.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.13/"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.14-I-builds/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.license.feature.group" version="0.0.0"/>

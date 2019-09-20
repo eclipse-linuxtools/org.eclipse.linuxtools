@@ -288,7 +288,6 @@
     <module>libhover</module>
     <module>javadocs</module>
     <module>man</module>
-    <module>oprofile</module>
     <module>perf</module>
     <module>rpm</module>
     <module>systemtap</module>

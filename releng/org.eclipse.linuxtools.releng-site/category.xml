@@ -34,9 +34,6 @@
    <feature url="features/org.eclipse.linuxtools.man_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.man" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.oprofile_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.oprofile.feature" version="0.0.0">
-      <category name="Linux Tools"/>
-   </feature>
    <feature url="features/org.eclipse.linuxtools.profiling_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.profiling" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
@@ -62,9 +59,6 @@
       <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.valgrind.remote_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.valgrind.remote" version="0.0.0">
-      <category name="Linux Tools"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.oprofile.remote_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.oprofile.remote.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.perf.remote_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.perf.remote.feature" version="0.0.0">
@@ -116,9 +110,6 @@
    <feature url="features/org.eclipse.linuxtools.man.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.man.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.oprofile.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.oprofile.feature.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
    <feature url="features/org.eclipse.linuxtools.profiling.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.profiling.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
@@ -144,9 +135,6 @@
       <category name="Linux Tools Sources"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.valgrind.remote.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.valgrind.remote.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.oprofile.remote.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.oprofile.remote.feature.source" version="0.0.0">
       <category name="Linux Tools Sources"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.perf.remote.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.perf.remote.feature.source" version="0.0.0">
