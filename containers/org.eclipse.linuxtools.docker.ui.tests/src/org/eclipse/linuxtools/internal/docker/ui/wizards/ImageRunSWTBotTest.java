@@ -43,7 +43,6 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseShellRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
@@ -69,7 +68,6 @@ import com.spotify.docker.client.messages.ImageInfo;
 public class ImageRunSWTBotTest {
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
-	private DockerExplorerView dockerExplorerView;
 	private SWTBotView dockerExplorerViewBot;
 
 	private String configureRunImageLaunchConfiguration(final IDockerConnection connection, final String networkMode) {
@@ -95,7 +93,6 @@ public class ImageRunSWTBotTest {
 	@Before
 	public void lookupDockerExplorerView() {
 		dockerExplorerViewBot = bot.viewById("org.eclipse.linuxtools.docker.ui.dockerExplorerView");
-		dockerExplorerView = (DockerExplorerView) (dockerExplorerViewBot.getViewReference().getView(true));
 		dockerExplorerViewBot.show();
 		dockerExplorerViewBot.setFocus();
 	}

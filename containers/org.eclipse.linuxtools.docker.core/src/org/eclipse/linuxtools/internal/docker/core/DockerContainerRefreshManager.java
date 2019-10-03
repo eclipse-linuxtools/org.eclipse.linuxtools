@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat.
- * 
+ * Copyright (c) 2014, 2019 Red Hat.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -58,7 +58,7 @@ public class DockerContainerRefreshManager implements IDockerContainerListener {
 			final List<IDockerContainer> dclist) {
 		if (!this.refreshThreadMap.containsKey(connection)) {
 			long refreshRateInSeconds = Platform.getPreferencesService()
-					.getLong("org.eclipse.linuxtools.docker.ui", //$NON-NLS-1$ 
+					.getLong("org.eclipse.linuxtools.docker.ui", //$NON-NLS-1$
 							"containerRefreshTime", DEFAULT_REFRESH_TIME, null); //$NON-NLS-1$
 			final ContainerRefreshThread rt = new ContainerRefreshThread(
 					connection,
@@ -71,7 +71,7 @@ public class DockerContainerRefreshManager implements IDockerContainerListener {
 	/**
 	 * Stops and remove the {@link ContainerRefreshThread} associated with the
 	 * given {@link IDockerConnection}.
-	 * 
+	 *
 	 * @param connection
 	 *            the connection that was monitored
 	 */
@@ -80,13 +80,13 @@ public class DockerContainerRefreshManager implements IDockerContainerListener {
 		if (this.refreshThreadMap.containsKey(connection)) {
 			final ContainerRefreshThread containerRefreshThread = refreshThreadMap.get(connection);
 			containerRefreshThread.stopMonitoring();
-			final ContainerRefreshThread removed = this.refreshThreadMap.remove(connection);
+			this.refreshThreadMap.remove(connection);
 		}
 	}
 
 	/**
 	 * Method to reset the refresh rate for updating container lists
-	 * 
+	 *
 	 * @param seconds
 	 *            - time to wait between refreshes
 	 */

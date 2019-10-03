@@ -386,7 +386,7 @@ public class EditDockerConnectionSWTBotTest {
 	@Test
 	public void shouldRefreshDockerExplorerViewWhenConnectionNameChanged() {
 		// given
-		final IDockerConnection connection = configureTCPConnection("Test");
+		configureTCPConnection("Test");
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
 		// when

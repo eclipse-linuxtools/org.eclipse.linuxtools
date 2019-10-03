@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ * Copyright (c) 2009, 2019 STMicroelectronics and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -66,16 +66,15 @@ public final class STLink2SourceSupport {
     }
 
     /**
-     * Open a C Editor at the given location.
-     *
-     * @param binaryLoc A path to a binary file.
-     * @param sourceLoc The location of the source file.
-     * @param lineNumber The line to open at.
-     * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
-     */
+	 * Open a C Editor at the given location.
+	 *
+	 * @param binaryLoc  A path to a binary file.
+	 * @param sourceLoc  The location of the source file.
+	 * @param lineNumber The line to open at.
+	 * @return <code>true</code> if the link-to-source was successful,
+	 *         <code>false</code> otherwise
+	 */
     private static boolean openSourceFileAtLocation(IPath binaryLoc, IPath sourceLoc, int lineNumber) {
-        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        //FIXME EK-LINUXTOOLS: IFile binary = root.getFileForLocation(binaryLoc);
         IFile binary = STSymbolManager.sharedInstance.findFileFromPath(binaryLoc);
         IProject project = null;
         if (binary != null) {
@@ -237,7 +236,7 @@ public final class STLink2SourceSupport {
         public IResource getResource() {
         	return resource;
         }
-        
+
         @Override
         public boolean visit(IResourceProxy proxy) {
         	// To correctly find a file in a linked directory, we cannot just look at the isLinked() attribute
@@ -255,7 +254,7 @@ public final class STLink2SourceSupport {
         }
 
     }
-    
+
    private static IFile getFileForPathImpl(IPath path, IProject project) {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         if (path.isAbsolute()) {
@@ -294,7 +293,7 @@ public final class STLink2SourceSupport {
                 }
             }
         }
-       
+
         // no match found...try and see if we are dealing with a link
     	IPath realPath = project.getLocation().append(path).makeAbsolute();
     	URI realURI = URIUtil.toURI(realPath.toString());

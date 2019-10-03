@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ * Copyright (c) 2009, 2019 STMicroelectronics and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -14,8 +14,6 @@ package org.eclipse.linuxtools.internal.gcov.view;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -94,7 +92,6 @@ public class CovViewer extends AbstractSTTreeViewer {
                 CovManager cvm = (CovManager) this.getInput();
                 SourceFile sourceFile = cvm.getSourceFile(sourceLoc);
                 if (sourceFile != null) {
-                    IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
                     String binaryLoc = cvm.getBinaryPath();
                     IPath binaryPath = new Path(binaryLoc);
                     //FIXME EK-LINUXTOOLS: IFile binary = root.getFileForLocation(binaryPath);

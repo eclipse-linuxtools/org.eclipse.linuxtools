@@ -19,7 +19,6 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
-import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.integration.tests.image.AbstractImageBotTest;
 import org.eclipse.linuxtools.docker.integration.tests.mock.MockDockerConnectionManager;
 import org.eclipse.linuxtools.docker.reddeer.core.ui.wizards.ImageSearchPage;
@@ -97,7 +96,7 @@ public class SearchDialogTest extends AbstractImageBotTest {
 				.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from(DEFAULT_CONNECTION_NAME, client)
 				.withDefaultTCPConnectionSettings();
-		final IDockerImage image = MockDockerImageFactory.name(IMAGE_NAME + ":" + IMAGE_TAG).connection(dockerConnection).build();
+		MockDockerImageFactory.name(IMAGE_NAME + ":" + IMAGE_TAG).connection(dockerConnection).build();
 		MockDockerConnectionManager.configureConnectionManager(dockerConnection);
 	}
 

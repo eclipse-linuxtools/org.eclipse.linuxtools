@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2015, 2019 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -30,7 +30,6 @@ public class DockerComposeConsolePageParticipant
 		implements IConsolePageParticipant, IDebugEventSetListener {
 
 	private DockerComposeConsole dockerComposeConsole;
-	private IPageBookViewPage dockerComposeConsolePage;
 	private DockerComposeStopAction stopAction;
 
 	private boolean dockerComposeConsoleTerminated = false;
@@ -43,7 +42,6 @@ public class DockerComposeConsolePageParticipant
 	@Override
 	public void init(final IPageBookViewPage dockerComposeConsolePage,
 			final IConsole console) {
-		this.dockerComposeConsolePage = dockerComposeConsolePage;
 		this.dockerComposeConsole = (DockerComposeConsole) console;
 		this.stopAction = new DockerComposeStopAction(
 				dockerComposeConsole.getConnection(),

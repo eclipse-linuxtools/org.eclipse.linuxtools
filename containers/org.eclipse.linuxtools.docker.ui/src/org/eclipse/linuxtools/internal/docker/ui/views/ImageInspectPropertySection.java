@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat.
- * 
+ * Copyright (c) 2015, 2019 Red Hat.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -36,15 +36,12 @@ public class ImageInspectPropertySection extends BasePropertySection {
 	private final static String PropertiesInfoError = "PropertiesInfoError.msg"; //$NON-NLS-1$
 	private final static String PropertiesLoadingImageInfo = "PropertiesLoadingImageInfo.msg"; //$NON-NLS-1$
 
-	private IDockerImage selectedImage;
-	private Object imageInfo;
-
 	@Override
 	public void createControls(Composite parent, TabbedPropertySheetPage aTabbedPropertySheetPage) {
 		super.createControls(parent, aTabbedPropertySheetPage);
 		getTreeViewer().setContentProvider(new ImageInspectContentProvider());
 	}
-	
+
 	@Override
 	public void setInput(final IWorkbenchPart part, final ISelection selection) {
 		super.setInput(part, selection);

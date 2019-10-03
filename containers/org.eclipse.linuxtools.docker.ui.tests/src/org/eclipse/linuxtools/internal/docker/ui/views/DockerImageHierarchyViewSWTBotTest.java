@@ -61,7 +61,6 @@ public class DockerImageHierarchyViewSWTBotTest {
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 	private SWTBotView dockerExplorerViewBot;
-	private DockerExplorerView dockerExplorerView;
 
 	@ClassRule
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
@@ -87,7 +86,6 @@ public class DockerImageHierarchyViewSWTBotTest {
 			}
 		});
 		this.dockerExplorerViewBot = bot.viewById(DockerExplorerView.VIEW_ID);
-		this.dockerExplorerView = (DockerExplorerView) (dockerExplorerViewBot.getViewReference().getView(true));
 		// make sure that the Docker Image Hierarchy view is closed
 		this.bot.views().stream().filter(v -> v.getReference().getId().equals(DockerImageHierarchyView.VIEW_ID))
 				.forEach(v -> v.close());

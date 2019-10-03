@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Red Hat.
+ * Copyright (c) 2016, 2019 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -26,7 +26,6 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseShellRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionManagerUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
@@ -44,7 +43,6 @@ import com.spotify.docker.client.DockerClient;
 public class ImageSearchSWTBotTest {
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
-	private DockerExplorerView dockerExplorerView;
 	private SWTBotView dockerExplorerViewBot;
 
 	@ClassRule
@@ -60,7 +58,6 @@ public class ImageSearchSWTBotTest {
 	@Before
 	public void lookupDockerExplorerView() {
 		dockerExplorerViewBot = bot.viewById("org.eclipse.linuxtools.docker.ui.dockerExplorerView");
-		dockerExplorerView = (DockerExplorerView) (dockerExplorerViewBot.getViewReference().getView(true));
 		dockerExplorerViewBot.show();
 		dockerExplorerViewBot.setFocus();
 	}
