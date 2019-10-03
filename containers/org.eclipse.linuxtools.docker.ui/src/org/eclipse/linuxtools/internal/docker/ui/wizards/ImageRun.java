@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2018 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -38,6 +38,7 @@ import org.eclipse.linuxtools.internal.docker.core.DockerHostConfig;
 import org.eclipse.linuxtools.internal.docker.core.DockerPortBinding;
 import org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.docker.ui.launch.LaunchConfigurationUtils;
+import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunResourceVolumesVariablesModel.MountType;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel.ContainerLinkModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunSelectionModel.ExposedPortModel;
 
@@ -53,7 +54,7 @@ public class ImageRun extends Wizard {
 	/**
 	 * Constructor when an {@link IDockerConnection} has been selected to run an
 	 * {@link IDockerImage}.
-	 * 
+	 *
 	 * @param connection
 	 *            the {@link IDockerConnection} pointing to a specific Docker
 	 *            daemon/host.
@@ -71,7 +72,7 @@ public class ImageRun extends Wizard {
 
 	/**
 	 * Full constructor with a selected {@link IDockerImage} to run.
-	 * 
+	 *
 	 * @param selectedImage
 	 *            the {@link IDockerImage} to use to fill the wizard pages
 	 * @throws DockerException
@@ -262,6 +263,24 @@ public class ImageRun extends Wizard {
 			}
 			config.exposedPorts(exposedPorts);
 		}
+
+		Map<String, String> emptyMap = new HashMap<>();
+		@SuppressWarnings("rawtypes")
+		Map<String, Map> volumes = new HashMap<>();
+		for (DataVolumeModel dataVolume : resourcesModel.getDataVolumes()) {
+			// only data volumes selected in the CheckBoxTableViewer are
+			// included.
+			if (!resourcesModel.getSelectedDataVolumes().contains(dataVolume)) {
+				continue;
+			}
+			if (dataVolume.getMountType() == MountType.NONE) {
+				volumes.put(dataVolume.getContainerPath(), emptyMap);
+			}
+		}
+		if (!volumes.isEmpty()) {
+			config.volumes(volumes);
+		}
+
 		return config.build();
 	}
 

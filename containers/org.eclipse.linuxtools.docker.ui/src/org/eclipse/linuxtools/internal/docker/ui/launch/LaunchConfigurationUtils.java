@@ -200,6 +200,11 @@ public class LaunchConfigurationUtils {
 					volumes.add(volume.toString());
 				}
 			}
+			// volumes with no external mount
+			for (String volumePath : containerConfig.volumes().keySet()) {
+				final DataVolumeModel volume = new DataVolumeModel(volumePath);
+				volumes.add(volume.toString());
+			}
 			// TODO: container path declaration
 
 			workingCopy.setAttribute(DATA_VOLUMES, volumes);
