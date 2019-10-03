@@ -59,6 +59,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.TwoPaneElementSelector;
 
 
@@ -132,15 +133,10 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
         Composite comp = new Composite(parent, SWT.NONE);
         setControl(comp);
 
-        ProfileLaunchPlugin
-        .getDefault()
-        .getWorkbench()
-        .getHelpSystem()
-        .setHelp(
-                getControl(),
-                ICDTLaunchHelpContextIds.LAUNCH_CONFIGURATION_DIALOG_MAIN_TAB);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(),
+				ICDTLaunchHelpContextIds.LAUNCH_CONFIGURATION_DIALOG_MAIN_TAB);
 
-        GridLayout topLayout = new GridLayout();
+		GridLayout topLayout = new GridLayout();
         comp.setLayout(topLayout);
 
         createVerticalSpacer(comp, 1);

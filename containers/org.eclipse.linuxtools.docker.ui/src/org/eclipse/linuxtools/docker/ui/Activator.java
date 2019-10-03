@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat Inc.
+ * Copyright (c) 2014, 2019 Red Hat Inc.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -81,7 +82,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	public static Shell getActiveWorkbenchShell() {
-		IWorkbenchWindow window = getDefault().getWorkbench()
+		IWorkbenchWindow window = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow();
 		if (window != null) {
 			return window.getShell();

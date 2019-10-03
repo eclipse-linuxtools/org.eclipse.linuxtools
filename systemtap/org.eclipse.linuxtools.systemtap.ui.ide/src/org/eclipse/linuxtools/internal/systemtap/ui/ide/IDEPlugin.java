@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2018 IBM Corporation and others.
+ * Copyright (c) 2006, 2019 IBM Corporation and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -28,6 +28,7 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.ui.IWorkbenchListener;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -56,7 +57,7 @@ public class IDEPlugin extends AbstractUIPlugin {
         super.start(context);
 
         workbenchListener = new IDECloseMonitor();
-        plugin.getWorkbench().addWorkbenchListener(workbenchListener);
+		PlatformUI.getWorkbench().addWorkbenchListener(workbenchListener);
         TapsetLibrary.init();
     }
 
@@ -68,7 +69,7 @@ public class IDEPlugin extends AbstractUIPlugin {
         super.stop(context);
         TapsetLibrary.stop();
         ScriptConsole.stopAll();
-        plugin.getWorkbench().removeWorkbenchListener(workbenchListener);
+		PlatformUI.getWorkbench().removeWorkbenchListener(workbenchListener);
         plugin = null;
     }
 

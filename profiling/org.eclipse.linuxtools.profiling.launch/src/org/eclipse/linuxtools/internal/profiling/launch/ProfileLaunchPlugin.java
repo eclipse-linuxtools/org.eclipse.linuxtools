@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -74,7 +75,7 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
     }
 
     public static Shell getActiveWorkbenchShell() {
-        IWorkbenchWindow window = getDefault().getWorkbench().getActiveWorkbenchWindow();
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         if (window != null) {
             return window.getShell();
         }
@@ -85,7 +86,7 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
         if (getActiveWorkbenchShell() != null) {
             return getActiveWorkbenchShell();
         }
-        IWorkbenchWindow[] windows = getDefault().getWorkbench().getWorkbenchWindows();
+        IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
         return windows[0].getShell();
     }
 

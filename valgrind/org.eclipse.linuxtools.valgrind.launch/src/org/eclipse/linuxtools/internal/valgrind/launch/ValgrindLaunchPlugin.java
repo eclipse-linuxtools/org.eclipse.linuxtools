@@ -38,6 +38,7 @@ import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Version;
@@ -229,7 +230,7 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
     }
 
     public static Shell getActiveWorkbenchShell() {
-        IWorkbenchWindow window = getDefault().getWorkbench().getActiveWorkbenchWindow();
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         if (window != null) {
             return window.getShell();
         }
@@ -240,7 +241,7 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
         if (getActiveWorkbenchShell() != null) {
             return getActiveWorkbenchShell();
         }
-        IWorkbenchWindow[] windows = getDefault().getWorkbench().getWorkbenchWindows();
+        IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
         return windows[0].getShell();
     }
 

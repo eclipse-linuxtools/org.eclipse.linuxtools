@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2018 Red Hat, Inc.
+ * Copyright (c) 2008, 2019 Red Hat, Inc.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -48,13 +48,13 @@ import org.eclipse.debug.ui.sourcelookup.ISourceLookupResult;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
-import org.eclipse.linuxtools.internal.profiling.ui.ProfileUIPlugin;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
@@ -73,7 +73,7 @@ public class ProfileUIUtils {
         Path p = new Path(path);
 
         if (p.toFile().exists()) {
-            IWorkbenchPage activePage = ProfileUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+            IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
             IFileStore file = EFS.getLocalFileSystem().getStore(p);
 
             IEditorPart editor = IDE.openEditorOnFileStore(activePage, file);
@@ -103,7 +103,7 @@ public class ProfileUIUtils {
      * @since 3.1
      */
     public static void openEditorAndSelect(String path, int line, IProject project) throws PartInitException, BadLocationException, CoreException {
-        IWorkbenchPage activePage = ProfileUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         IRemoteFileProxy proxy = null;
         proxy = RemoteProxyManager.getInstance().getFileProxy(project);
         IFileStore file = proxy.getResource(path);
@@ -135,7 +135,7 @@ public class ProfileUIUtils {
      */
     public static void openEditorAndSelect(IFile file, int line) throws PartInitException, BadLocationException {
         if (file.exists()) {
-            IWorkbenchPage activePage = ProfileUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+            IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
             IEditorPart editor = IDE.openEditor(activePage, file);
             if (editor instanceof ITextEditor) {
@@ -189,7 +189,7 @@ public class ProfileUIUtils {
         }
         if (input != null && editorID != null) {
             // Open the editor
-            IWorkbenchPage activePage = ProfileUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+            IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
             IEditorPart editor = IDE.openEditor(activePage, input, editorID);
             // Select the line
@@ -219,7 +219,7 @@ public class ProfileUIUtils {
         Path p = new Path (path);
 
         if (p.toFile().exists()) {
-            IWorkbenchPage activePage = ProfileUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+            IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
             IFileStore fileStore = EFS.getLocalFileSystem().getStore(p);
 
             IEditorPart editor = IDE.openEditorOnFileStore(activePage, fileStore);

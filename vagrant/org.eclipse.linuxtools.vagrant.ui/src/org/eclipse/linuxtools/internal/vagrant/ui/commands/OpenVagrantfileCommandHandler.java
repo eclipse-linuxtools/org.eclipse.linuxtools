@@ -25,6 +25,7 @@ import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
 public class OpenVagrantfileCommandHandler extends BaseVMCommandHandler {
@@ -46,10 +47,8 @@ public class OpenVagrantfileCommandHandler extends BaseVMCommandHandler {
 	@Override
 	void executeInJob(IVagrantVM vm, IProgressMonitor monitor) {
 		Display.getDefault().asyncExec(() -> {
-			IWorkbenchPage activePage = Activator.getDefault().getWorkbench()
-					.getActiveWorkbenchWindow().getActivePage();
-			IPath vgFilePath = new Path(vm.directory().getAbsolutePath())
-					.append("Vagrantfile"); //$NON-NLS-1$
+			IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			IPath vgFilePath = new Path(vm.directory().getAbsolutePath()).append("Vagrantfile"); //$NON-NLS-1$
 			IFileStore file = EFS.getLocalFileSystem().getStore(vgFilePath);
 			try {
 				IDE.openEditorOnFileStore(activePage, file);
