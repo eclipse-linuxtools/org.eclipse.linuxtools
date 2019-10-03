@@ -17,13 +17,13 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.dataviewers.STDataViewersActivator;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersCSVExporter;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersMessages;
 import org.eclipse.linuxtools.dataviewers.dialogs.STDataViewersExportToCSVDialog;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * This action export the STViewers data to CSV format file
@@ -47,9 +47,8 @@ public class STExportToCSVAction extends Action {
      *            the stViewer to export
      */
     public STExportToCSVAction(AbstractSTViewer stViewer) {
-        super(STDataViewersMessages.exportToCSVAction_title,
-                AbstractUIPlugin.imageDescriptorFromPlugin(STDataViewersActivator.PLUGIN_ID,
-                        "icons/export.gif")); //$NON-NLS-1$
+		super(STDataViewersMessages.exportToCSVAction_title,
+				ResourceLocator.imageDescriptorFromBundle(STDataViewersActivator.PLUGIN_ID, "icons/export.gif").get()); //$NON-NLS-1$
 
         this.stViewer = stViewer;
         this.exporter = new STDataViewersCSVExporter(stViewer);

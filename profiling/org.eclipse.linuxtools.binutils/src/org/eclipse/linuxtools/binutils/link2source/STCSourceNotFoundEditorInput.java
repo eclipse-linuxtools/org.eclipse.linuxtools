@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -15,10 +15,10 @@ package org.eclipse.linuxtools.binutils.link2source;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.linuxtools.internal.Activator;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * Editor Input used for source not found
@@ -49,7 +49,7 @@ public class STCSourceNotFoundEditorInput implements IEditorInput {
 
     @Override
     public ImageDescriptor getImageDescriptor() {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/c_file_obj.gif"); //$NON-NLS-1$
+		return ResourceLocator.imageDescriptorFromBundle(Activator.PLUGIN_ID, "icons/c_file_obj.gif").get(); //$NON-NLS-1$
     }
 
     @Override

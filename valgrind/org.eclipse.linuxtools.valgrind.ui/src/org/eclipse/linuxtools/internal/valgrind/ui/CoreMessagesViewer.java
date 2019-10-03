@@ -20,6 +20,7 @@ import org.eclipse.debug.ui.sourcelookup.ISourceLookupResult;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -40,7 +41,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * The inner tree view that holds the output messages to be displayed. Also hold
@@ -73,13 +73,13 @@ public class CoreMessagesViewer {
         viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | style);
         viewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
         if (imageRegistry.getDescriptor(VALGRIND_ERROR) == null) {
-            ImageDescriptor d = AbstractUIPlugin.imageDescriptorFromPlugin(ValgrindUIPlugin.PLUGIN_ID, VALGRIND_ERROR_IMAGE);
+            ImageDescriptor d = ResourceLocator.imageDescriptorFromBundle(ValgrindUIPlugin.PLUGIN_ID, VALGRIND_ERROR_IMAGE).get();
             if (d != null) {
                 imageRegistry.put(VALGRIND_ERROR, d);
             }
         }
         if (imageRegistry.getDescriptor(VALGRIND_INFO) == null) {
-            ImageDescriptor d = AbstractUIPlugin.imageDescriptorFromPlugin(ValgrindUIPlugin.PLUGIN_ID, VALGRIND_INFO_IMAGE);
+            ImageDescriptor d = ResourceLocator.imageDescriptorFromBundle(ValgrindUIPlugin.PLUGIN_ID, VALGRIND_INFO_IMAGE).get();
             if (d != null) {
                 imageRegistry.put(VALGRIND_INFO, d);
             }

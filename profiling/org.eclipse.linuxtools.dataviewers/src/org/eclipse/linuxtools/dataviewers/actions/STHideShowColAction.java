@@ -13,12 +13,12 @@
 package org.eclipse.linuxtools.dataviewers.actions;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.dataviewers.STDataViewersActivator;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersMessages;
 import org.eclipse.linuxtools.dataviewers.dialogs.STDataViewersHideShowColumnsDialog;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * This action allows the user to hide/show some columns.
@@ -32,12 +32,11 @@ public class STHideShowColAction extends Action {
      *
      * @param stViewer The AbstractSTViewer to create the action for.
      */
-    public STHideShowColAction(AbstractSTViewer stViewer) {
-        super(STDataViewersMessages.hideshowAction_title,
-                AbstractUIPlugin.imageDescriptorFromPlugin(STDataViewersActivator.PLUGIN_ID,
-                        "icons/prop_edt.gif")); //$NON-NLS-1$
-        this.stViewer = stViewer;
-        setEnabled(true);
+	public STHideShowColAction(AbstractSTViewer stViewer) {
+		super(STDataViewersMessages.hideshowAction_title, ResourceLocator
+				.imageDescriptorFromBundle(STDataViewersActivator.PLUGIN_ID, "icons/prop_edt.gif").get()); //$NON-NLS-1$
+		this.stViewer = stViewer;
+		setEnabled(true);
     }
 
     @Override

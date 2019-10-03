@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 Red Hat, Inc. and others.
- * 
+ * Copyright (c) 2009, 2019 Red Hat, Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -34,6 +34,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -43,7 +44,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.UIJob;
 
 public abstract class SystemTapView extends ViewPart {
@@ -268,13 +268,14 @@ public abstract class SystemTapView extends ViewPart {
 
     protected void addKillButton() {
         IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
-        kill = new Action(Messages.getString("SystemTapView.StopScript"), //$NON-NLS-1$
-                AbstractUIPlugin.imageDescriptorFromPlugin(CallgraphCorePlugin.PLUGIN_ID, "icons/progress_stop.gif")) { //$NON-NLS-1$
-            @Override
-            public void run() {
-                getParser().cancelJob();
-            }
-        };
+		kill = new Action(Messages.getString("SystemTapView.StopScript"), //$NON-NLS-1$
+				ResourceLocator.imageDescriptorFromBundle(CallgraphCorePlugin.PLUGIN_ID, "icons/progress_stop.gif") //$NON-NLS-1$
+						.get()) {
+			@Override
+			public void run() {
+				getParser().cancelJob();
+			}
+		};
         mgr.add(kill);
         setKillButtonEnabled(false);
     }

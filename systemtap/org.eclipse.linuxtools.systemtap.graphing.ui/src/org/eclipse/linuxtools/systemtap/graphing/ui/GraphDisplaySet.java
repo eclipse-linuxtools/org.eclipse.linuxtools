@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2018 IBM Corporation and others.
- * 
+ * Copyright (c) 2006, 2019 IBM Corporation and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.GraphingUIPlugin;
@@ -52,9 +53,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-
-
 
 /**
  * This class is used to contain all of the graphing components that can
@@ -139,10 +137,10 @@ public class GraphDisplaySet {
 
         //This is a tab/button for opening new graphs
         CTabItem newGraph = new CTabItem(folder, SWT.NONE);
-        newGraph.setImage(AbstractUIPlugin.imageDescriptorFromPlugin(GraphingUIPlugin.PLUGIN_ID, "icons/actions/new_wiz.gif").createImage()); //$NON-NLS-1$
+        newGraph.setImage(ResourceLocator.imageDescriptorFromBundle(GraphingUIPlugin.PLUGIN_ID, "icons/actions/new_wiz.gif").get().createImage()); //$NON-NLS-1$
         newGraph.setToolTipText(Localization.getString("GraphDisplaySet.CreateGraph")); //$NON-NLS-1$
 
-        //Tab containing the data table
+		// Tab containing the data table
         CTabItem item = new CTabItem(folder, SWT.NONE);
         item.setText(Localization.getString("GraphDisplaySet.DataView")); //$NON-NLS-1$
         Composite c = new Composite(folder, SWT.NONE);

@@ -12,22 +12,24 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.callgraph.treeviewer;
 
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.linuxtools.internal.callgraph.CallGraphConstants;
 import org.eclipse.linuxtools.internal.callgraph.StapData;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class StapTreeLabelProvider extends LabelProvider {
 
     @Override
     public Image getImage(Object element) {
         Image im = null;
-        if ( ((StapData) element).isMarked()) {
-            im = AbstractUIPlugin.imageDescriptorFromPlugin(CallGraphConstants.PLUGIN_ID, "/icons/public_co.gif").createImage(); //$NON-NLS-1$
-        } else {
-            im = AbstractUIPlugin.imageDescriptorFromPlugin(CallGraphConstants.PLUGIN_ID, "/icons/compare_method.gif").createImage(); //$NON-NLS-1$
-        }
+		if (((StapData) element).isMarked()) {
+			im = ResourceLocator.imageDescriptorFromBundle(CallGraphConstants.PLUGIN_ID, "/icons/public_co.gif").get() //$NON-NLS-1$
+					.createImage();
+		} else {
+			im = ResourceLocator.imageDescriptorFromBundle(CallGraphConstants.PLUGIN_ID, "/icons/compare_method.gif") //$NON-NLS-1$
+					.get().createImage();
+		}
         return im;
     }
 

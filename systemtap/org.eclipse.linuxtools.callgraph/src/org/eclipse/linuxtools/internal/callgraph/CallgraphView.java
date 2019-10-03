@@ -33,6 +33,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.linuxtools.internal.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapParser;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapUIErrorMessages;
@@ -52,7 +53,6 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  *    The SystemTap View for displaying output of the 'stap' command, and acts
@@ -1026,7 +1026,7 @@ public class CallgraphView extends SystemTapView {
     }
 
     private static ImageDescriptor getImageDescriptor(String path) {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(CallGraphConstants.PLUGIN_ID, path);
+        return ResourceLocator.imageDescriptorFromBundle(CallGraphConstants.PLUGIN_ID, path).get();
     }
 
 

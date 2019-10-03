@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2008, 2018 Red Hat, Inc.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -19,6 +19,7 @@ import java.util.List;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IFontProvider;
@@ -52,7 +53,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
@@ -114,9 +114,9 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
         String[] columnTitles = { TITLE_NUMBER, TITLE_TIME, TITLE_TOTAL,
                 TITLE_USEFUL, TITLE_EXTRA, TITLE_STACKS };
 
-        for (int i = 0; i < columnTitles.length; i++) {
+        for (String columnTitle : columnTitles) {
             TableViewerColumn column = new TableViewerColumn(viewer, SWT.NONE);
-            column.getColumn().setText(columnTitles[i]);
+            column.getColumn().setText(columnTitle);
             column.getColumn().setWidth(COLUMN_SIZE);
             column.getColumn().setResizable(true);
             column.getColumn().addSelectionListener(getHeaderListener());
@@ -229,8 +229,8 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
             }
         };
         chartAction.setId(CHART_ACTION);
-        chartAction.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
-                MassifPlugin.PLUGIN_ID, "icons/linecharticon.gif")); //$NON-NLS-1$
+		chartAction.setImageDescriptor(
+				ResourceLocator.imageDescriptorFromBundle(MassifPlugin.PLUGIN_ID, "icons/linecharticon.gif").get()); //$NON-NLS-1$
         chartAction.setToolTipText(Messages
                 .getString("MassifViewPart.Display_Heap_Allocation")); //$NON-NLS-1$
 
@@ -251,8 +251,8 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
             }
         };
         treeAction.setId(TREE_ACTION);
-        treeAction.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
-                MassifPlugin.PLUGIN_ID, "icons/call_hierarchy.gif")); //$NON-NLS-1$
+		treeAction.setImageDescriptor(
+				ResourceLocator.imageDescriptorFromBundle(MassifPlugin.PLUGIN_ID, "icons/call_hierarchy.gif").get()); //$NON-NLS-1$
         treeAction.setToolTipText(Messages
                 .getString("MassifViewPart.Show_Heap_Tree")); //$NON-NLS-1$
 
@@ -399,9 +399,9 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
                     break;
                 case PEAK:
                 case DETAILED:
-                    image = AbstractUIPlugin
-                    .imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID,
-                            "icons/call_hierarchy.gif").createImage(); //$NON-NLS-1$
+					image = ResourceLocator
+							.imageDescriptorFromBundle(MassifPlugin.PLUGIN_ID, "icons/call_hierarchy.gif").get() //$NON-NLS-1$
+							.createImage();
                 }
             }
             return image;
@@ -459,8 +459,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
     private ChartEditorInput getChartInput(Integer pid) {
         ChartEditorInput result = null;
-        for (int i = 0; i < chartInputs.size(); i++) {
-            ChartEditorInput input = chartInputs.get(i);
+        for (ChartEditorInput input : chartInputs) {
             if (input.getPid().equals(pid)) {
                 result = input;
             }

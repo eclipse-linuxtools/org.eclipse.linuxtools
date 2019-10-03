@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.jface.text.templates.ContextTypeRegistry;
 import org.eclipse.jface.text.templates.persistence.TemplateStore;
 import org.eclipse.swt.graphics.Image;
@@ -170,7 +171,7 @@ public class Activator extends AbstractUIPlugin {
 		ImageRegistry registry = getImageRegistry();
 		Image image = registry.get(imageRelativePath);
 		if (image == null) {
-			ImageDescriptor desc = AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, imageRelativePath);
+			ImageDescriptor desc = ResourceLocator.imageDescriptorFromBundle(PLUGIN_ID, imageRelativePath).get();
 			registry.put(imageRelativePath, desc);
 			image = registry.get(imageRelativePath);
 		}

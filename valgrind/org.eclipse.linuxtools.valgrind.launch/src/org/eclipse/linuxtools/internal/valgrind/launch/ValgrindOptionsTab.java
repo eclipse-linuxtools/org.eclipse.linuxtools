@@ -28,6 +28,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.linuxtools.profiling.launch.ConfigUtils;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.osgi.util.NLS;
@@ -54,7 +55,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.views.navigator.ResourceComparator;
 import org.osgi.framework.Version;
 
@@ -487,9 +487,10 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
     }
 
     @Override
-    public Image getImage() {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(ValgrindLaunchPlugin.PLUGIN_ID, "icons/valgrind-icon.png").createImage(); //$NON-NLS-1$
-    }
+	public Image getImage() {
+		return ResourceLocator.imageDescriptorFromBundle(ValgrindLaunchPlugin.PLUGIN_ID, "icons/valgrind-icon.png") //$NON-NLS-1$
+				.get().createImage();
+	}
 
     @Override
     public void initializeFrom(ILaunchConfiguration configuration) {

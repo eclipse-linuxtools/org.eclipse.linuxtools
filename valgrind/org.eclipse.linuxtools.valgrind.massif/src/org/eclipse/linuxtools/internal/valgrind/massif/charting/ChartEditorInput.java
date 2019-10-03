@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2018 Red Hat, Inc.
- * 
+ * Copyright (c) 2008, 2019 Red Hat, Inc.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -13,12 +13,12 @@
 package org.eclipse.linuxtools.internal.valgrind.massif.charting;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifPlugin;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifViewPart;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class ChartEditorInput implements IEditorInput {
 
@@ -41,7 +41,7 @@ public class ChartEditorInput implements IEditorInput {
 
     @Override
     public ImageDescriptor getImageDescriptor() {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID, "icons/linecharticon.gif"); //$NON-NLS-1$
+        return ResourceLocator.imageDescriptorFromBundle(MassifPlugin.PLUGIN_ID, "icons/linecharticon.gif").get(); //$NON-NLS-1$
     }
 
     @Override

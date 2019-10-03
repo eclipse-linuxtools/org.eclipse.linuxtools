@@ -15,13 +15,13 @@ package org.eclipse.linuxtools.dataviewers.actions;
 import java.util.Iterator;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.linuxtools.dataviewers.STDataViewersActivator;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTreeViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersMessages;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * This action collapse the selected items of the tree
@@ -38,9 +38,8 @@ public class STCollapseSelectionAction extends Action {
      *            the stViewer to collapse
      */
     public STCollapseSelectionAction(AbstractSTTreeViewer stViewer) {
-        super(STDataViewersMessages.collapseSelectionAction_title,
-                AbstractUIPlugin.imageDescriptorFromPlugin(STDataViewersActivator.PLUGIN_ID,
-                        "icons/collapse_all.gif")); //$NON-NLS-1$
+		super(STDataViewersMessages.collapseSelectionAction_title, ResourceLocator
+				.imageDescriptorFromBundle(STDataViewersActivator.PLUGIN_ID, "icons/collapse_all.gif").get()); //$NON-NLS-1$
         this.stViewer = stViewer;
     }
 

@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 Red Hat, Inc.
- * 
+ * Copyright (c) 2009, 2019 Red Hat, Inc.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -18,6 +18,7 @@ import org.eclipse.cdt.ui.CElementLabelProvider;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindFile;
@@ -29,7 +30,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class CachegrindLabelProvider extends CellLabelProvider {
 
@@ -39,14 +39,14 @@ public class CachegrindLabelProvider extends CellLabelProvider {
 
     protected DecimalFormat df = new DecimalFormat("#,##0"); //$NON-NLS-1$
 
-    private static final Image FUNC_IMG = AbstractUIPlugin.imageDescriptorFromPlugin(CachegrindPlugin.PLUGIN_ID, "icons/function_obj.gif").createImage(); //$NON-NLS-1$
+    private static final Image FUNC_IMG = ResourceLocator.imageDescriptorFromBundle(CachegrindPlugin.PLUGIN_ID, "icons/function_obj.gif").get().createImage(); //$NON-NLS-1$
 
     @Override
     public void update(ViewerCell cell) {
         ICachegrindElement element = ((ICachegrindElement) cell.getElement());
         int index = cell.getColumnIndex();
 
-        if (index == 0) {
+		if (index == 0) {
             if (element instanceof CachegrindFile) {
                 // Try to use the CElementLabelProvider
                 IAdaptable model = ((CachegrindFile) element).getModel();

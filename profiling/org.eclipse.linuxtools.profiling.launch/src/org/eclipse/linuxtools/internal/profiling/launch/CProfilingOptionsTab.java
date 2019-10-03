@@ -14,9 +14,9 @@ package org.eclipse.linuxtools.internal.profiling.launch;
 
 import java.util.SortedMap;
 
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderFramework;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 // Special profiling options tab to use with the org.eclipse.cdt.launch.profilingProvider extension
 // to extend the Local C/C++ Application configuration to handle profiling.  We do not rename
@@ -74,8 +74,8 @@ public class CProfilingOptionsTab extends AbstractProfilingOptionsTab {
     @Override
     public Image getImage() {
         if (img == null)
-           img = AbstractUIPlugin.imageDescriptorFromPlugin(ProfileLaunchPlugin.PLUGIN_ID,
-                "icons/time_obj.gif").createImage(); //$NON-NLS-1$
+           img = ResourceLocator.imageDescriptorFromBundle(ProfileLaunchPlugin.PLUGIN_ID,
+                "icons/time_obj.gif").get().createImage(); //$NON-NLS-1$
         return img;
     }
 }

@@ -22,6 +22,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
@@ -39,7 +40,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
 
@@ -266,8 +266,8 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
 
     @Override
     public Image getImage() {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(IDEPlugin.PLUGIN_ID,
-                "icons/smileytap_small.gif").createImage(); //$NON-NLS-1$
+		return ResourceLocator.imageDescriptorFromBundle(IDEPlugin.PLUGIN_ID, "icons/smileytap_small.gif").get() //$NON-NLS-1$
+				.createImage();
     }
 
 }

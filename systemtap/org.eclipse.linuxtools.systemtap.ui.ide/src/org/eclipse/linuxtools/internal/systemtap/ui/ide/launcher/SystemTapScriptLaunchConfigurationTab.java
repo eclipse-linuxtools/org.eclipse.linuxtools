@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -45,7 +46,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.ResourceUtil;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class SystemTapScriptLaunchConfigurationTab extends
         AbstractLaunchConfigurationTab {
@@ -347,7 +347,6 @@ public class SystemTapScriptLaunchConfigurationTab extends
 
     @Override
     public Image getImage() {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(IDEPlugin.PLUGIN_ID,
-                "icons/main_tab.gif").createImage(); //$NON-NLS-1$
+		return ResourceLocator.imageDescriptorFromBundle(IDEPlugin.PLUGIN_ID, "icons/main_tab.gif").get().createImage(); //$NON-NLS-1$
     }
 }

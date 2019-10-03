@@ -13,10 +13,10 @@
 package org.eclipse.linuxtools.dataviewers.actions;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.linuxtools.dataviewers.STDataViewersActivator;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTreeViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.STDataViewersMessages;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * This action expands all the tree
@@ -33,10 +33,9 @@ public class STExpandAllTreeAction extends Action {
      *            the stViewer to expand
      */
     public STExpandAllTreeAction(AbstractSTTreeViewer stViewer) {
-        super(STDataViewersMessages.expandAllAction_title,
-                AbstractUIPlugin.imageDescriptorFromPlugin(STDataViewersActivator.PLUGIN_ID,
-                        "icons/expand_all.gif")); //$NON-NLS-1$
-        this.stViewer = stViewer;
+		super(STDataViewersMessages.expandAllAction_title, ResourceLocator
+				.imageDescriptorFromBundle(STDataViewersActivator.PLUGIN_ID, "icons/expand_all.gif").get()); //$NON-NLS-1$
+		this.stViewer = stViewer;
     }
 
     @Override

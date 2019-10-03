@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2018 IBM Corporation and others.
- * 
+ * Copyright (c) 2006, 2019 IBM Corporation and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -14,6 +14,7 @@
 package org.eclipse.linuxtools.internal.systemtap.graphing.ui;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -57,6 +58,6 @@ public class GraphingUIPlugin extends AbstractUIPlugin {
      * @return the image descriptor
      */
     public static ImageDescriptor getImageDescriptor(String path) {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
+		return ResourceLocator.imageDescriptorFromBundle(PLUGIN_ID, path).get();
     }
 }

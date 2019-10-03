@@ -31,6 +31,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.IDEPlugin;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataSet;
@@ -62,7 +63,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class SystemTapScriptGraphOptionsTab extends
             AbstractLaunchConfigurationTab {
@@ -1384,8 +1384,8 @@ public class SystemTapScriptGraphOptionsTab extends
 
     @Override
     public Image getImage() {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(IDEPlugin.PLUGIN_ID,
-                "icons/graphing_tab.gif").createImage(); //$NON-NLS-1$
+		return ResourceLocator.imageDescriptorFromBundle(IDEPlugin.PLUGIN_ID, "icons/graphing_tab.gif").get() //$NON-NLS-1$
+				.createImage();
     }
 
     private void setGraphingEnabled(boolean enabled) {

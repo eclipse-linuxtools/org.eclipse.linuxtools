@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.linuxtools.internal.valgrind.ui.editor.ValgrindEditorPlugin;
@@ -40,7 +41,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * This is a sample new wizard. Its role is to create a new file
@@ -75,7 +75,7 @@ public class NewSuppressionWizard extends Wizard implements INewWizard {
         page = new WizardNewFileCreationPage("newSuppressionPage", selection); //$NON-NLS-1$
         page.setTitle(Messages.getString("NewSuppressionWizard.NewWizard_title")); //$NON-NLS-1$
         page.setDescription(Messages.getString("NewSuppressionWizard.NewWizard_description")); //$NON-NLS-1$
-        page.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(ValgrindEditorPlugin.PLUGIN_ID, "icons/newsupp_wiz.png")); //$NON-NLS-1$
+        page.setImageDescriptor(ResourceLocator.imageDescriptorFromBundle(ValgrindEditorPlugin.PLUGIN_ID, "icons/newsupp_wiz.png").get()); //$NON-NLS-1$
         page.setFileExtension(EXT_SUPP);
         addPage(page);
     }
