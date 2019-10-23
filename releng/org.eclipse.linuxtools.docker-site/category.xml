@@ -88,6 +88,11 @@
 	<category name="Docker Test Dependencies"/>
    </iu>
 
+   <!-- Docker Editor Dependencies -->
+   <iu id="org.eclipse.lsp4e" version="0.0.0">
+        <category name="Docker Editor Dependencies"/>
+   </iu>
+
    <!-- Orbit Dependencies -->
    <iu id="com.spotify.docker.client" version="0.0.0">
         <category name="Docker Client Dependencies"/>
@@ -235,6 +240,11 @@
    <category-def name="Docker Client Dependencies" label="Docker Client Dependencies">
       <description>
          Eclipse Linux Tools Docker Client Dependencies
+      </description>
+   </category-def>
+   <category-def name="Docker Editor Dependencies" label="Docker Editor Dependencies">
+      <description>
+         Eclipse Linux Tools Docker Editor Dependencies
       </description>
    </category-def>
    <category-def name="Docker Test Dependencies" label="Docker Test Dependencies">
