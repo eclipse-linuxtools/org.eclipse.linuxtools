@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2014, 2019 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -131,9 +131,9 @@ import com.spotify.docker.client.messages.Volume;
 import com.spotify.docker.client.messages.VolumeList;
 
 /**
- * A connection to a Docker daemon. The connection may rely on Unix Socket or TCP connection (using the REST API). 
+ * A connection to a Docker daemon. The connection may rely on Unix Socket or TCP connection (using the REST API).
  * All low-level communication is delegated to a wrapped {@link DockerClient}.
- * 
+ *
  *
  */
 public class DockerConnection
@@ -152,7 +152,7 @@ public class DockerConnection
 
 		/**
 		 * Creates a new {@link DockerConnection} using a Unix socket.
-		 * 
+		 *
 		 * @param unixSocketConnectionSettings
 		 *            the connection settings.
 		 * @return a new {@link DockerConnection}
@@ -165,7 +165,7 @@ public class DockerConnection
 
 		/**
 		 * Creates a {@link DockerConnection} using a TCP connection.
-		 * 
+		 *
 		 * @param tcpConnectionSettings
 		 *            the {@link TCPConnectionSettings}
 		 * @return a new {@link DockerConnection}
@@ -308,7 +308,7 @@ public class DockerConnection
 	}
 	/**
 	 * Change the default {@link DockerClientFactory}
-	 * 
+	 *
 	 * @param dockerClientFactory
 	 *            the new {@link DockerClientFactory} to use when opening a
 	 *            connection.
@@ -441,7 +441,7 @@ public class DockerConnection
 			throw new DockerException(Messages.Docker_General_Info_Failure, e);
 		}
 	}
-	
+
 	@Override
 	public String getName() {
 		if (name != null && !name.isEmpty()) {
@@ -568,7 +568,7 @@ public class DockerConnection
 	 * Get a copy of the client to use in parallel threads for long-standing
 	 * operations such as logging or waiting until finished. The user of the
 	 * copy should close it when the operation is complete.
-	 * 
+	 *
 	 * @return copy of client
 	 * @throws DockerException
 	 *             - general Docker client exception
@@ -924,7 +924,7 @@ public class DockerConnection
 	/**
 	 * Sorts the given values using the given comparator and returns the result
 	 * in a {@link List}
-	 * 
+	 *
 	 * @param values
 	 *            the values to sort
 	 * @param comparator
@@ -981,6 +981,13 @@ public class DockerConnection
 					ProcessMessages.getString("Image_Info_Exception"), e); //$NON-NLS-1$
 			return null;
 		} catch (com.spotify.docker.client.exceptions.ImageNotFoundException e) {
+			// we might have an id which contains a registry which is invalid
+			// for inspectImage() so
+			// see if we can find a local image with matching tag
+			IDockerImage image = getImageByTag(id);
+			if (image != null) {
+				return getImageInfo(image.id());
+			}
 			return null;
 		} catch (com.spotify.docker.client.exceptions.DockerException
 				| InterruptedException e) {
@@ -1166,7 +1173,7 @@ public class DockerConnection
 	/**
 	 * Resolves the {@link DockerImageQualifier} for the given
 	 * {@code nativeImage} in the context of all {@code nativeImages}
-	 * 
+	 *
 	 * @param nativeImage
 	 *            the image to analyze
 	 * @param nativeImages
@@ -1351,7 +1358,7 @@ public class DockerConnection
 	/**
 	 * Adds a tag to an existing image while specifying the <code>force</code>
 	 * flag.
-	 * 
+	 *
 	 * @param name
 	 *            the image id
 	 * @param newTag
@@ -1419,7 +1426,7 @@ public class DockerConnection
 
 	/**
 	 * Builds an {@link IDockerImage}
-	 * 
+	 *
 	 * @param path
 	 *            path to the build context
 	 * @param name
@@ -1457,7 +1464,7 @@ public class DockerConnection
 
 	/**
 	 * Builds an {@link IDockerImage}
-	 * 
+	 *
 	 * @param path
 	 *            path to the build context
 	 * @param name
@@ -1499,7 +1506,7 @@ public class DockerConnection
 	 * Converts the given {@link Map} of build options into an array of
 	 * {@link BuildParameter} when the build options are set a value different
 	 * from the default value.
-	 * 
+	 *
 	 * @param buildOptions
 	 *            the build options
 	 * @return an array of relevant {@link BuildParameter}, an empty array if
@@ -1538,7 +1545,7 @@ public class DockerConnection
 		// Currently we have to save all clouds instead of just this one
 		DockerConnectionManager.getInstance().saveConnections();
 	}
-	
+
 	@Override
 	public String createContainer(final IDockerContainerConfig c,
 			final IDockerHostConfig hc) throws DockerException,
@@ -1828,7 +1835,7 @@ public class DockerConnection
 				}
 			}
 			// list of containers needs to be refreshed once the container started, to reflect it new state.
-			listContainers(); 
+			listContainers();
 		} catch (ContainerNotFoundException e) {
 			// if we get here, it means that the command failed...the actual
 			// message is buried in the throwable cause and isn't actually
@@ -2358,9 +2365,9 @@ public class DockerConnection
 			OutputStream tout = noBlockingOutputStream(
 					HttpHijackWorkaround.getOutputStream(pty_stream, getUri()));
 			InputStream tin = HttpHijackWorkaround.getInputStream(pty_stream);
-			
+
 			TerminalOutputMonitorListener monitor = new TerminalOutputMonitorListener(out);
-			
+
 			// org.eclipse.tm.terminal.connector.ssh.controls.SshWizardConfigurationPanel
 			Map<String, Object> properties = new HashMap<>();
 			properties.put(ITerminalsConnectorConstants.PROP_DELEGATE_ID,
