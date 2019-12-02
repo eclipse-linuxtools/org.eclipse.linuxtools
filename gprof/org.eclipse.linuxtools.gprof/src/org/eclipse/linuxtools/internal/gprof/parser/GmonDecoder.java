@@ -88,7 +88,7 @@ public class GmonDecoder {
         this.project = project;
         program.getBinaryParser().getFormat();
         String cpu = program.getCPU();
-		if (Platform.ARCH_X86_64.equals(cpu) || "amd64".equals(cpu) || "aarch64".equals(cpu) || "ppc64".equals(cpu)) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	if (Platform.ARCH_X86_64.equals(cpu) || cpu.endsWith("64")) { //$NON-NLS-1$
             histo = new HistogramDecoder64(this);
             callGraph = new CallGraphDecoder64(this);
             _32_bit_platform = false;
