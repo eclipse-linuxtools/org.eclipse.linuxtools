@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
+ * Copyright (c) 2009, 2019 STMicroelectronics and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -24,10 +24,10 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.eclipse.cdt.core.IAddressFactory;
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
 import org.eclipse.cdt.core.IBinaryParser.ISymbol;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.internal.gprof.Messages;
 import org.eclipse.linuxtools.internal.gprof.utils.LEDataInputStream;
@@ -87,15 +87,20 @@ public class GmonDecoder {
         this.ps = ps;
         this.project = project;
         program.getBinaryParser().getFormat();
+		IAddressFactory factory = program.getAddressFactory();
+		int addrSize = 4;
+		if (factory != null) {
+			addrSize = factory.getMax().getSize();
+		}
         String cpu = program.getCPU();
-	if (Platform.ARCH_X86_64.equals(cpu) || cpu.endsWith("64")) { //$NON-NLS-1$
-            histo = new HistogramDecoder64(this);
-            callGraph = new CallGraphDecoder64(this);
-            _32_bit_platform = false;
+		if (addrSize > 4 || cpu.endsWith("64")) { //$NON-NLS-1$
+			histo = new HistogramDecoder64(this);
+			callGraph = new CallGraphDecoder64(this);
+			_32_bit_platform = false;
         } else {
-            _32_bit_platform = true;
-            histo = new HistogramDecoder(this);
-            callGraph = new CallGraphDecoder(this);
+			_32_bit_platform = true;
+			histo = new HistogramDecoder(this);
+			callGraph = new CallGraphDecoder(this);
         }
     }
 
