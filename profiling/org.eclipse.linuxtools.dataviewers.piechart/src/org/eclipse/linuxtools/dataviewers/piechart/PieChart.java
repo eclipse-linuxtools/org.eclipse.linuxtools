@@ -20,11 +20,11 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.swtchart.Chart;
-import org.swtchart.IAxis;
-import org.swtchart.IBarSeries;
-import org.swtchart.ISeries;
-import org.swtchart.ITitle;
+import org.eclipse.swtchart.Chart;
+import org.eclipse.swtchart.IAxis;
+import org.eclipse.swtchart.IBarSeries;
+import org.eclipse.swtchart.ISeries;
+import org.eclipse.swtchart.ITitle;
 
 public class PieChart extends Chart {
 
@@ -61,7 +61,7 @@ public class PieChart extends Chart {
 
     @Override
     public void addPaintListener(PaintListener listener) {
-        if (!listener.getClass().getName().startsWith("org.swtchart.internal.axis")) { //$NON-NLS-1$
+        if (!listener.getClass().getName().startsWith("org.eclipse.swtchart.internal.axis")) { //$NON-NLS-1$
             super.addPaintListener(listener);
         }
     }

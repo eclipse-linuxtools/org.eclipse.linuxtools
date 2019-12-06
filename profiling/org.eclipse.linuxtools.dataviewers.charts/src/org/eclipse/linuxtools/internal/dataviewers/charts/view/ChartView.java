@@ -24,7 +24,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-import org.swtchart.Chart;
+import org.eclipse.swtchart.Chart;
 
 /**
  * The chart view.

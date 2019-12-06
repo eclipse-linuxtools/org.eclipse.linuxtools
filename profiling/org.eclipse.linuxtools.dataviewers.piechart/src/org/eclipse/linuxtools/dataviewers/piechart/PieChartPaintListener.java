@@ -22,10 +22,10 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.swtchart.IBarSeries;
-import org.swtchart.ISeries;
-import org.swtchart.ITitle;
-import org.swtchart.Range;
+import org.eclipse.swtchart.IBarSeries;
+import org.eclipse.swtchart.ISeries;
+import org.eclipse.swtchart.ITitle;
+import org.eclipse.swtchart.Range;
 
 public class PieChartPaintListener implements PaintListener {
 

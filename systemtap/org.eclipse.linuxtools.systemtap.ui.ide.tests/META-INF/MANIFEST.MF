@@ -10,5 +10,5 @@ Require-Bundle: org.eclipse.swtbot.go,
  org.eclipse.linuxtools.systemtap.graphing.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Fragment-Host: org.eclipse.linuxtools.systemtap.ui.ide
-Import-Package: org.swtchart
+Import-Package: org.eclipse.swtchart
 Automatic-Module-Name: org.eclipse.linuxtools.systemtap.ui.ide.tests

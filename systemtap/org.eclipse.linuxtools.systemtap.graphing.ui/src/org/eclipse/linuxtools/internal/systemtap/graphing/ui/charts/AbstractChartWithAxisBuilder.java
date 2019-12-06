@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2010, 2018 IBM Corporation and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -25,11 +25,11 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.swtchart.IAxis;
-import org.swtchart.ISeries;
-import org.swtchart.ITitle;
-import org.swtchart.LineStyle;
-import org.swtchart.Range;
+import org.eclipse.swtchart.IAxis;
+import org.eclipse.swtchart.ISeries;
+import org.eclipse.swtchart.ITitle;
+import org.eclipse.swtchart.LineStyle;
+import org.eclipse.swtchart.Range;
 
 /**
  * A {@link AbstractChartBuilder} for building a chart with axes.

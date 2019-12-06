@@ -41,7 +41,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.swtchart.Chart;
+import org.eclipse.swtchart.Chart;
 
 /**
  * The dialog used to customize the chart before creating it.

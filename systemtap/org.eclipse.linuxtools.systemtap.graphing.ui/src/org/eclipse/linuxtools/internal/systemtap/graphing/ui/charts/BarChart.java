@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2013, 2018 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -13,10 +13,10 @@
 package org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts;
 
 import org.eclipse.swt.widgets.Composite;
-import org.swtchart.Chart;
-import org.swtchart.IAxis;
-import org.swtchart.ISeries;
-import org.swtchart.Range;
+import org.eclipse.swtchart.Chart;
+import org.eclipse.swtchart.IAxis;
+import org.eclipse.swtchart.ISeries;
+import org.eclipse.swtchart.Range;
 
 /**
  * @since 3.0

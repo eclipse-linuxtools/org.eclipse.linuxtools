@@ -35,13 +35,13 @@ import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swtchart.Chart;
+import org.eclipse.swtchart.ILineSeries;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.swtchart.Chart;
-import org.swtchart.ILineSeries;
 
 public class ChartTests extends AbstractMassifTest {
     @Before

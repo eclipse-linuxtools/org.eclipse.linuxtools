@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
-import org.swtchart.Chart;
+import org.eclipse.swtchart.Chart;
 
 /**
  * An action to save any {@link Composite} (typically a {@link Chart}) as an image (jpeg/jpg, bmp, png).

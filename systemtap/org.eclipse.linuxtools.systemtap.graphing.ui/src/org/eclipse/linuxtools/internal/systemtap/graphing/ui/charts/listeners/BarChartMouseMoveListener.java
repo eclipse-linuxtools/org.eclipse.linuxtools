@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2018 Red Hat, Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -18,8 +18,8 @@ import org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.BarChart;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.Messages;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
-import org.swtchart.IAxis;
-import org.swtchart.ISeries;
+import org.eclipse.swtchart.IAxis;
+import org.eclipse.swtchart.ISeries;
 
 /**
  * This is a specialized mouse listener for displaying the value of a category (bar)

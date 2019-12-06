@@ -75,6 +75,10 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
+import org.eclipse.swtchart.Chart;
+import org.eclipse.swtchart.IAxis;
+import org.eclipse.swtchart.ISeries;
+import org.eclipse.swtchart.Range;
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -82,10 +86,6 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.swtchart.Chart;
-import org.swtchart.IAxis;
-import org.swtchart.ISeries;
-import org.swtchart.Range;
 
 @RunWith(SWTBotJunit4ClassRunner.class)
 @Ignore("fails with Oxygen")

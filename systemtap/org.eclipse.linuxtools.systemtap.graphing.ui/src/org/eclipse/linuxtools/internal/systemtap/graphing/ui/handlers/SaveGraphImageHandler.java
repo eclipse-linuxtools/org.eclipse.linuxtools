@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2019 Red Hat, Inc.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -20,9 +20,9 @@ import org.eclipse.linuxtools.dataviewers.charts.actions.SaveChartAction;
 import org.eclipse.linuxtools.systemtap.graphing.ui.GraphDisplaySet;
 import org.eclipse.linuxtools.systemtap.graphing.ui.charts.AbstractChartBuilder;
 import org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditor;
+import org.eclipse.swtchart.Chart;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
-import org.swtchart.Chart;
 
 /**
  * This action is designed to allow for saving of the graph in the active window.

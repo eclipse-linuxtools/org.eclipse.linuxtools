@@ -18,8 +18,8 @@ import org.eclipse.linuxtools.dataviewers.piechart.PieChart;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.listeners.PieChartMouseMoveListener;
 import org.eclipse.linuxtools.systemtap.graphing.core.adapters.IAdapter;
 import org.eclipse.swt.widgets.Composite;
-import org.swtchart.IAxis;
-import org.swtchart.Range;
+import org.eclipse.swtchart.IAxis;
+import org.eclipse.swtchart.Range;
 
 /**
  * Builds Pie chart.

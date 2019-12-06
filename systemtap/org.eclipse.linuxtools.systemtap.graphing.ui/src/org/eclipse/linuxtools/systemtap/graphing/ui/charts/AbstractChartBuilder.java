@@ -1,6 +1,6 @@
 /****************************************************************
  * Copyright (c) 2006, 2018 IBM Corporation and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -32,8 +32,8 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.swtchart.Chart;
-import org.swtchart.ITitle;
+import org.eclipse.swtchart.Chart;
+import org.eclipse.swtchart.ITitle;
 
 /**
  * A {@link Composite} that provides the common members and the framework to build one chart.
