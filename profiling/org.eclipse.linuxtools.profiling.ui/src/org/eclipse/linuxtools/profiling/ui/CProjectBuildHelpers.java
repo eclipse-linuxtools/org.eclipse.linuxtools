@@ -118,6 +118,9 @@ public class CProjectBuildHelpers {
         }
 
         IConfiguration defaultConfiguration = helperGetActiveConfiguration(project);
+        if (defaultConfiguration == null) {
+        	return ProjectBuildType.OTHER;
+        }
         IBuilder builder = defaultConfiguration.getBuilder();
         Boolean projIsManaged = builder.isManagedBuildOn();
 
