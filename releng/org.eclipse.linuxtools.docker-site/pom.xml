@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.eclipse.linuxtools.releng</groupId>
     <artifactId>linuxtools-releng-parent</artifactId>
-    <version>7.5.0</version>
+    <version>7.5.1</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.docker-site</artifactId>
