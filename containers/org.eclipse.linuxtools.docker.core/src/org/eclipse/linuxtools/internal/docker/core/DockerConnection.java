@@ -2267,44 +2267,26 @@ public class DockerConnection
 					ExecCreateParam.attachStderr());
 			final String execId = execCreation.id();
 			final LogStream pty_stream = copyClient.execStart(execId);
+			String lastLine = ""; //$NON-NLS-1$
 			try {
 				while (pty_stream.hasNext()) {
 					ByteBuffer b = pty_stream.next().content();
 					byte[] buffer = new byte[b.remaining()];
 					b.get(buffer);
-					String s = new String(buffer);
+					String s = lastLine + new String(buffer);
 					String[] lines = s.split("\\r?\\n"); //$NON-NLS-1$
-					for (String line : lines) {
-						if (line.trim().startsWith("total")) //$NON-NLS-1$
-							continue; // ignore the total line
-						String[] token = line.split("\\s+"); //$NON-NLS-1$
-						boolean isDirectory = token[0].startsWith("d"); //$NON-NLS-1$
-						boolean isLink = token[0].startsWith("l"); //$NON-NLS-1$
-						if (token.length > 8) {
-							// last token depends on whether we have a link or not
-							String link = null;
-							if (isLink) {
-								String linkname = token[token.length - 1];
-								if (linkname.endsWith("/")) { //$NON-NLS-1$
-									linkname = linkname.substring(0, linkname.length() - 1);
-									isDirectory = true;
-								}
-								IPath linkPath = new Path(path);
-								linkPath = linkPath.append(linkname);
-								link = linkPath.toString();
-								String name = token[token.length - 3];
-								childList.add(new ContainerFileProxy(path, name,
-										isDirectory, isLink, link));
-							} else {
-								String name = token[token.length - 1];
-								// remove quotes and any indicator char
-								name = name.substring(1, name.length()
-										- (name.endsWith("\"") ? 1 : 2));
-								childList.add(new ContainerFileProxy(path, name,
-										isDirectory));
-							}
-						}
+					if (lines.length > 0) {
+						lastLine = lines[lines.length - 1];
+					} else {
+						lastLine = ""; //$NON-NLS-1$
 					}
+					for (int i = 0; i < lines.length - 1; ++i) {
+						String line = lines[i];
+						processDirectoryLine(line, path, childList);
+					}
+				}
+				if (!lastLine.isEmpty()) {
+					processDirectoryLine(lastLine, path, childList);
 				}
 			} finally {
 				if (pty_stream != null)
@@ -2313,9 +2295,46 @@ public class DockerConnection
 					copyClient.close();
 			}
 		} catch (Exception e) {
+			if (e.getCause() instanceof IOException) {
+				// ugly hack as we often get Connection reset by peer exceptions
+				// so retry
+				return readContainerDirectory(id, path);
+			}
 			// e.printStackTrace();
 		}
 		return childList;
+	}
+
+	private void processDirectoryLine(String line, String path,
+			List<ContainerFileProxy> childList) {
+		if (line.trim().startsWith("total")) //$NON-NLS-1$
+			return; // ignore the total line
+		String[] token = line.split("\\s+"); //$NON-NLS-1$
+		boolean isDirectory = token[0].startsWith("d"); //$NON-NLS-1$
+		boolean isLink = token[0].startsWith("l"); //$NON-NLS-1$
+		if (token.length > 8) {
+			// last token depends on whether we have a link or not
+			String link = null;
+			if (isLink) {
+				String linkname = token[token.length - 1];
+				if (linkname.endsWith("/")) { //$NON-NLS-1$
+					linkname = linkname.substring(0, linkname.length() - 1);
+					isDirectory = true;
+				}
+				IPath linkPath = new Path(path);
+				linkPath = linkPath.append(linkname);
+				link = linkPath.toString();
+				String name = token[token.length - 3];
+				childList.add(new ContainerFileProxy(path, name, isDirectory,
+						isLink, link));
+			} else {
+				String name = token[token.length - 1];
+				// remove quotes and any indicator char
+				name = name.substring(1,
+						name.length() - (name.endsWith("\"") ? 1 : 2));
+				childList.add(new ContainerFileProxy(path, name, isDirectory));
+			}
+		}
 	}
 
 	public void execShell(final String id) throws DockerException {
