@@ -51,7 +51,7 @@ public class HttpHijackWorkaround {
 				"in", //$NON-NLS-1$
 				"wrappedStream", //$NON-NLS-1$
 				"in", //$NON-NLS-1$
-				"instream" //$NON-NLS-1$
+				"inStream" //$NON-NLS-1$
 		};
 		final String[] declared = new String[] {
 				"com.spotify.docker.client.DefaultLogStream",
