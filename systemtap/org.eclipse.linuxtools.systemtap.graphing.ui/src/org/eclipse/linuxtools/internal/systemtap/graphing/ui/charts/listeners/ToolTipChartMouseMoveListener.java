@@ -19,7 +19,7 @@ import java.util.concurrent.RunnableFuture;
 import org.eclipse.linuxtools.systemtap.graphing.ui.charts.listeners.AbstractChartMouseMoveListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -33,7 +33,7 @@ public class ToolTipChartMouseMoveListener extends AbstractChartMouseMoveListene
     protected final Shell tipShell;
     protected final Text tipText;
 
-    public ToolTipChartMouseMoveListener(Chart chart, Composite parent) {
+	public ToolTipChartMouseMoveListener(Chart chart, Control parent) {
         super(chart, parent);
         tipShell = new Shell(Display.getCurrent().getActiveShell(), SWT.TOOL | SWT.ON_TOP);
         tipText = new Text(tipShell, SWT.MULTI | SWT.BOLD);

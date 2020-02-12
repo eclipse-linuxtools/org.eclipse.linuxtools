@@ -38,7 +38,7 @@ public class PieChart extends Chart {
         for (IAxis axis : getAxisSet().getAxes()) {
             axis.getTitle().setVisible(false);
         }
-        getPlotArea().setVisible(false);
+        getPlotArea().getControl().setVisible(false);
         // Make the title draw after the pie-chart itself so we can modify the title
         // to center over the pie-chart area
         ITitle title = getTitle();

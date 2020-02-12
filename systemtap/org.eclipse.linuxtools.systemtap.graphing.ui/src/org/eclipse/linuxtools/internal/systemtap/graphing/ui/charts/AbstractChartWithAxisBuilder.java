@@ -119,7 +119,7 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
     protected void createChart() {
         super.createChart();
         applyTitleBoundsListener();
-        chartMouseMoveListener = new ChartWithAxisMouseMoveListener(chart, chart.getPlotArea());
+		chartMouseMoveListener = new ChartWithAxisMouseMoveListener(chart, chart.getPlotArea().getControl());
     }
 
     /**

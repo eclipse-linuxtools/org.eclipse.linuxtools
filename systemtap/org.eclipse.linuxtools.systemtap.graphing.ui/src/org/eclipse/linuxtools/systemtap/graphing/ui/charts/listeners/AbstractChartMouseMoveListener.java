@@ -15,7 +15,7 @@ package org.eclipse.linuxtools.systemtap.graphing.ui.charts.listeners;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackAdapter;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swtchart.Chart;
 
 /**
@@ -36,7 +36,7 @@ public abstract class AbstractChartMouseMoveListener implements MouseMoveListene
      * @param hoverArea The plot area of the chart in which this listener will react
      * to mouse movement.
      */
-    public AbstractChartMouseMoveListener(Chart chart, final Composite hoverArea) {
+	public AbstractChartMouseMoveListener(Chart chart, final Control hoverArea) {
         this.chart = chart;
         final MouseMoveListener thisListener = this;
         hoverArea.addMouseTrackListener(new MouseTrackAdapter() {

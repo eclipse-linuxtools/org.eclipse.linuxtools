@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2008, 2018 Red Hat, Inc.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -178,7 +178,7 @@ public class ChartEditor extends EditorPart {
         axisSet.getYAxis(0).setRange(new Range(yRange.lower, yRange.upper + yExtra));
 
         // listeners
-        control.getPlotArea().addMouseListener(new MouseAdapter() {
+		control.getPlotArea().getControl().addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseDown(MouseEvent e) {

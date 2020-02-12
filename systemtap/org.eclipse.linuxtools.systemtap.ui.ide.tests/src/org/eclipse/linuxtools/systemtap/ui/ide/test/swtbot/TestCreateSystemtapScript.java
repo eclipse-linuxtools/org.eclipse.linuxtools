@@ -1305,7 +1305,7 @@ public class TestCreateSystemtapScript {
 				});
                 bot.sleep(100);
 				UIThreadRunnable.syncExec(() -> {
-					Point mousePoint = cb.getChart().getPlotArea()
+					Point mousePoint = cb.getChart().getPlotArea().getControl()
 							.toDisplay(cb.getChart().getSeriesSet().getSeries()[0].getPixelCoordinates(dataPoint));
 					event.x = mousePoint.x;
 					event.y = mousePoint.y;

@@ -17,7 +17,7 @@ import java.text.MessageFormat;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.Messages;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swtchart.Chart;
 import org.eclipse.swtchart.ISeries;
 
@@ -30,7 +30,7 @@ import org.eclipse.swtchart.ISeries;
 public class ChartWithAxisMouseMoveListener extends ToolTipChartMouseMoveListener {
     private static final double DIST_TOLERANCE = 20.0;
 
-    public ChartWithAxisMouseMoveListener(Chart chart, Composite hoverArea) {
+	public ChartWithAxisMouseMoveListener(Chart chart, Control hoverArea) {
         super(chart, hoverArea);
     }
 

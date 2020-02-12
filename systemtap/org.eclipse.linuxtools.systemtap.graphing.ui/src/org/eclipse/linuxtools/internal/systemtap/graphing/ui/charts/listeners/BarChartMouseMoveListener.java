@@ -17,7 +17,7 @@ import java.text.MessageFormat;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.BarChart;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.Messages;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swtchart.IAxis;
 import org.eclipse.swtchart.ISeries;
 
@@ -29,7 +29,7 @@ import org.eclipse.swtchart.ISeries;
  * @since 3.0
  */
 public class BarChartMouseMoveListener extends ToolTipChartMouseMoveListener {
-    public BarChartMouseMoveListener(BarChart chart, Composite parent) {
+	public BarChartMouseMoveListener(BarChart chart, Control parent) {
         super(chart, parent);
     }
 

@@ -53,7 +53,7 @@ public class PieChartPaintListener implements PaintListener {
      */
     public PieChartPaintListener(PieChart chart) {
         this.chart = chart;
-        this.plotArea = chart.getPlotArea();
+        this.plotArea = chart.getPlotArea().getControl();
     }
 
     @Override

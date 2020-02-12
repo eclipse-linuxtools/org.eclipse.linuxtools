@@ -42,7 +42,7 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
     protected void createChart() {
         this.chart = new BarChart(this, getStyle());
         applyTitleBoundsListener();
-        chartMouseMoveListener = new BarChartMouseMoveListener((BarChart) chart, chart.getPlotArea());
+		chartMouseMoveListener = new BarChartMouseMoveListener((BarChart) chart, chart.getPlotArea().getControl());
     }
 
     @Override
