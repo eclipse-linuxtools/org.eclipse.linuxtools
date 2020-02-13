@@ -36,6 +36,7 @@
       <import plugin="org.eclipse.cdt.core"/>
       <import plugin="org.eclipse.core.resources" version="3.4.2" match="greaterOrEqual"/>
       <import plugin="com.ibm.icu"/>
+      <import plugin="org.swtchart"/>
       <import plugin="org.eclipse.swtchart"/>
    </requires>
 

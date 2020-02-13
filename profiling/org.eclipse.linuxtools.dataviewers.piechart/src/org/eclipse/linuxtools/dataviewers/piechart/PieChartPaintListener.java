@@ -27,6 +27,12 @@ import org.swtchart.ISeries;
 import org.swtchart.ITitle;
 import org.swtchart.Range;
 
+/**
+ * @deprecated To be contributed to Eclipse.org SWTChart and removed in Linux Tools major release once in swtchart proper.
+ * 
+ * @see <a href="https://github.com/eclipse/swtchart/issues/114">https://github.com/eclipse/swtchart/issues/114</a>
+ */
+@Deprecated
 public class PieChartPaintListener implements PaintListener {
 
     private PieChart chart;

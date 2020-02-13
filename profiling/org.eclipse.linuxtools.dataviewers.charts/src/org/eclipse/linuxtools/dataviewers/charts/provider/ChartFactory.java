@@ -33,7 +33,10 @@ import org.swtchart.LineStyle;
 
 /**
  * A utility class that handles the charts creation (pie chart and bar chart)
+ * 
+ * @deprecated Functionality to be moved to Eclipse.org SWTChart project.
  */
+@Deprecated
 public final class ChartFactory {
 
     private ChartFactory() {}

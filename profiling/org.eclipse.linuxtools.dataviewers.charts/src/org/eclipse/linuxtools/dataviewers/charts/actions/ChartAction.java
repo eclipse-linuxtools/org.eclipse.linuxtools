@@ -25,7 +25,9 @@ import org.swtchart.Chart;
  * An action that open a chart dialog from an <code>AbstractSTViewer</code>.
  *
  * @see AbstractSTViewer
+ * @deprecated Functionality to be moved to Eclipse.org SWTChart project.
  */
+@Deprecated
 public class ChartAction extends Action {
 
     /** The dialog */

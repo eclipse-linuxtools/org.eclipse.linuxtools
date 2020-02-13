@@ -42,7 +42,9 @@ import org.swtchart.Chart;
  * An action to save any {@link Composite} (typically a {@link Chart}) as an image (jpeg/jpg, bmp, png).
  *
  * @since 6.0
+ * @deprecated Use org.eclipse.swtchart.extensions.charts.InteractiveChart and its builtin safe functionality.
  */
+@Deprecated
 public class SaveChartAction extends Action {
 
     private static final String[] EXTENSIONS =
