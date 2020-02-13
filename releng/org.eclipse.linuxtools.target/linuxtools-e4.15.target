@@ -93,7 +93,7 @@
 <repository location="http://download.eclipse.org/reddeer/snapshots/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.swtchart" version="0.12.0.202002120640"/>
+<unit id="org.eclipse.swtchart.feature.feature.group" version="0.0.0"/>
 <repository location="https://download.eclipse.org/swtchart/develop/repository"/>
 </location>
 </locations>

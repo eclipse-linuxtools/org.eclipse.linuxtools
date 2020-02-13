@@ -38,6 +38,7 @@ import org.eclipse.swtchart.ISeries.SeriesType;
 import org.eclipse.swtchart.ITitle;
 import org.eclipse.swtchart.LineStyle;
 import org.eclipse.swtchart.Range;
+import org.eclipse.swtchart.extensions.charts.InteractiveChart;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPage;
@@ -46,7 +47,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
 public class ChartEditor extends EditorPart {
-    private Chart control;
+	private InteractiveChart control;
 
     @Override
     public void doSave(IProgressMonitor monitor) {
@@ -83,7 +84,7 @@ public class ChartEditor extends EditorPart {
     public void createPartControl(Composite parent) {
         final ChartEditorInput input = (ChartEditorInput) getEditorInput();
         final HeapChart heapChart = input.getChart();
-        control = new Chart(parent, SWT.FILL);
+		control = new InteractiveChart(parent, SWT.FILL);
         heapChart.setChartControl(control);
 
         final Color LIGHTYELLOW = new Color(Display.getDefault(), 255, 255, 225);

@@ -22,10 +22,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.dataviewers.charts.actions.SaveChartAction;
-import org.eclipse.linuxtools.internal.valgrind.massif.MassifViewPart;
 import org.eclipse.linuxtools.internal.valgrind.massif.charting.ChartEditorInput;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swtchart.extensions.charts.InteractiveChart;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.junit.After;
@@ -79,16 +79,15 @@ public class ChartExportTest extends AbstractMassifTest {
             control.setSize(10, 10);
         }
 
-        SaveChartAction saveChartAction = (SaveChartAction) getToolbarAction(MassifViewPart.SAVE_CHART_ACTION);
-        assertNotNull(saveChartAction);
+        InteractiveChart intChart = (InteractiveChart)control;
 
         for (IPath path : paths) {
-            saveAsPath(saveChartAction, path);
+            saveAsPath(intChart, path);
         }
     }
 
-    private void saveAsPath(SaveChartAction saveChartAction, IPath path) {
-        saveChartAction.run(path.toString());
+    private void saveAsPath(InteractiveChart saveChartAction, IPath path) {
+        saveChartAction.save(path.toString(), SWT.IMAGE_PNG);
         File chartFile = path.toFile();
         assertTrue(chartFile.exists());
         assertTrue(chartFile.length() > 0);
