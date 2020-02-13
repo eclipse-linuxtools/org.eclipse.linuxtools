@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtchart.Chart;
 import org.eclipse.swtchart.ITitle;
+import org.eclipse.swtchart.extensions.charts.InteractiveChart;
 
 /**
  * A {@link Composite} that provides the common members and the framework to build one chart.
@@ -84,7 +85,7 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
     /**
      * Chart instance.
      */
-    protected Chart chart = null;
+	protected InteractiveChart chart = null;
 
     /**
      * Chart title.
@@ -179,7 +180,7 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
      * Creates chart instance.
      */
     protected void createChart() {
-        this.chart = new Chart(this, getStyle());
+		this.chart = new InteractiveChart(this, getStyle());
     }
 
     /**

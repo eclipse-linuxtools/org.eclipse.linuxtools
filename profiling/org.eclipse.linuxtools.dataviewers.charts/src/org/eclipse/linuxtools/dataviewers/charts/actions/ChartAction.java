@@ -13,10 +13,12 @@
 package org.eclipse.linuxtools.dataviewers.charts.actions;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.internal.dataviewers.charts.Activator;
 import org.eclipse.linuxtools.internal.dataviewers.charts.Messages;
 import org.eclipse.linuxtools.internal.dataviewers.charts.dialogs.ChartDialog;
+import org.eclipse.linuxtools.internal.dataviewers.charts.dialogs.ChartDialog2;
 import org.eclipse.linuxtools.internal.dataviewers.charts.view.ChartView;
 import org.eclipse.swt.widgets.Shell;
 import org.swtchart.Chart;
@@ -31,7 +33,8 @@ import org.swtchart.Chart;
 public class ChartAction extends Action {
 
     /** The dialog */
-    private final ChartDialog dialog;
+    private final Dialog dialog;
+    private final boolean useEclipseSwtChart;
 
     /**
      * The constructor.
@@ -46,15 +49,35 @@ public class ChartAction extends Action {
         dialog = new ChartDialog(shell, viewer);
         setEnabled(!viewer.getViewer().getSelection().isEmpty());
         viewer.getViewer().addSelectionChangedListener(event -> setEnabled(!event.getSelection().isEmpty()));
+        this.useEclipseSwtChart=false;
+    }
+    
+    /**
+     * The constructor.
+     *
+     * @param shell
+     *            the shell used by the dialog
+     * @param viewer
+     *            the viewer inputed to the disalog
+     * @param useEclipseSwtchart Whether Eclipse.org SWTChart to be used or the old Sourceforge library
+     * @since 6.1
+     */
+    public ChartAction(Shell shell, AbstractSTViewer viewer, boolean useEclipseSwtchart) {
+        super(Messages.ChartConstants_CREATE_CHART, Activator.getImageDescriptor("icons/chart_icon.png")); //$NON-NLS-1$
+        dialog = new ChartDialog2(shell, viewer);
+        setEnabled(!viewer.getViewer().getSelection().isEmpty());
+        viewer.getViewer().addSelectionChangedListener(event -> setEnabled(!event.getSelection().isEmpty()));
+        this.useEclipseSwtChart = useEclipseSwtchart;
     }
 
     @Override
     public void run() {
         dialog.open();
-        Chart chart = dialog.getValue();
-        if (chart != null) {
-            ChartView.createChartView(chart);
-
+        if (!useEclipseSwtChart) {
+        	Chart chart = ((ChartDialog)dialog).getValue();
+        	ChartView.createChartView(chart);
+        } else {
+        	ChartView.createChartView();
         }
     }
 }

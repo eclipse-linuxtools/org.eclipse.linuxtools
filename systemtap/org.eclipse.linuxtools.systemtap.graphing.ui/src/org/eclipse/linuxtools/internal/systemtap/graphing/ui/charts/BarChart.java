@@ -13,15 +13,15 @@
 package org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts;
 
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swtchart.Chart;
 import org.eclipse.swtchart.IAxis;
 import org.eclipse.swtchart.ISeries;
 import org.eclipse.swtchart.Range;
+import org.eclipse.swtchart.extensions.charts.InteractiveChart;
 
 /**
  * @since 3.0
  */
-public class BarChart extends Chart {
+public class BarChart extends InteractiveChart {
 
     private final static int MIN_LABEL_SIZE = Messages.BarChartBuilder_LabelTrimTag.length();
     private final int fontSize;

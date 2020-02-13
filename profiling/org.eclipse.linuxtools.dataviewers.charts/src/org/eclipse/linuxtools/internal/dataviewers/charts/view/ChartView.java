@@ -74,6 +74,30 @@ public class ChartView extends ViewPart {
 		});
 
     }
+    
+    /**
+     * Create and open a new chart view <br/>
+     * <br/>
+     * <u><b>Note</b></u>: this method uses the UI thread to open the view and then it sets the input chart. The UI
+     * thread execution is synchronized on internal Integer SEC_ID which is the secondary id of the chart view. Each new
+     * chart view has a secondary id equal to SEC_ID++.
+     *
+     */
+    public static void createChartView() {
+        PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
+		    try {
+		        synchronized (lock) {
+		            PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+		                    .getActivePage().showView(VIEW_ID, String.valueOf(SEC_ID++), IWorkbenchPage.VIEW_ACTIVATE);
+
+		        }
+		    } catch (PartInitException e) {
+		        Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e);
+		        Activator.getDefault().getLog().log(s);
+		    }
+		});
+
+    }
 
     @Override
     public void createPartControl(Composite parent) {

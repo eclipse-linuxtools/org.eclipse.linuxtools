@@ -24,3 +24,4 @@ Require-Bundle: org.eclipse.linuxtools.systemtap.graphing.core,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: org.eclipse.linuxtools.systemtap.graphing.ui
+Import-Package: org.eclipse.swtchart.extensions.charts

@@ -21,13 +21,13 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swtchart.Chart;
 import org.eclipse.swtchart.IAxis;
 import org.eclipse.swtchart.IBarSeries;
 import org.eclipse.swtchart.ISeries;
 import org.eclipse.swtchart.ITitle;
+import org.eclipse.swtchart.extensions.charts.InteractiveChart;
 
-public class PieChart extends Chart {
+public class PieChart extends InteractiveChart {
 
     protected List<RGB> colorList = new ArrayList<>();
     private Color[] customColors = null;

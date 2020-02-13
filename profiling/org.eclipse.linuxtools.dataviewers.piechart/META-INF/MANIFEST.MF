@@ -12,3 +12,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.dataviewers.piechart, org.eclipse.linuxtools.internal.dataviewers.piechart;x-internal:=true
 Automatic-Module-Name: org.eclipse.linuxtools.dataviewers.piechart
+Import-Package: org.eclipse.swtchart.extensions.charts
