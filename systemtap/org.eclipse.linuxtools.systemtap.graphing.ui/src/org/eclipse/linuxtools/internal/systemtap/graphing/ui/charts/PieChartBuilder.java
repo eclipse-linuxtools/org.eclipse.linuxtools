@@ -1,6 +1,6 @@
 /****************************************************************
  * Copyright (c) 2006, 2018 IBM Corp. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -14,7 +14,7 @@
  */
 package org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts;
 
-import org.eclipse.linuxtools.dataviewers.piechart.PieChart;
+import org.eclipse.linuxtools.internal.dataviewers.piechart.PieChart;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.listeners.PieChartMouseMoveListener;
 import org.eclipse.linuxtools.systemtap.graphing.core.adapters.IAdapter;
 import org.eclipse.swt.widgets.Composite;

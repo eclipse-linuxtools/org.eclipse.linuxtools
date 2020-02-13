@@ -24,12 +24,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.swtchart.Chart;
-import org.eclipse.swtchart.IAxis;
-import org.eclipse.swtchart.IBarSeries;
-import org.eclipse.swtchart.ISeries.SeriesType;
-import org.eclipse.swtchart.ITitle;
-import org.eclipse.swtchart.LineStyle;
+import org.swtchart.Chart;
+import org.swtchart.IAxis;
+import org.swtchart.IBarSeries;
+import org.swtchart.ISeries.SeriesType;
+import org.swtchart.ITitle;
+import org.swtchart.LineStyle;
 
 /**
  * A utility class that handles the charts creation (pie chart and bar chart)

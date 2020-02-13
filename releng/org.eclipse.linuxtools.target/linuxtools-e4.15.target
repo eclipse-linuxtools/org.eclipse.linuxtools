@@ -53,6 +53,7 @@
 <unit id="org.objectweb.asm.tree" version="7.2.0.v20191010-1910"/>
 <unit id="org.objectweb.asm.util" version="7.2.0.v20191010-1910"/>
 <unit id="org.slf4j.api" version="1.7.10.v20170428-1633"/>
+<unit id="org.swtchart" version="0.10.0.v201605200358"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/S20200128200239/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -94,6 +95,7 @@
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.swtchart.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.swtchart.feature.source.feature.group" version="0.0.0"/>
 <repository location="https://download.eclipse.org/swtchart/develop/repository"/>
 </location>
 </locations>

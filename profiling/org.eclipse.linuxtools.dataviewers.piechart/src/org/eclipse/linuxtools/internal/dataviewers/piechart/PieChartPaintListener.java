@@ -10,7 +10,7 @@
  * Contributors:
  *     IBM Corporation - Renato Stoffalette Joao <rsjoao@br.ibm.com>
  *******************************************************************************/
-package org.eclipse.linuxtools.dataviewers.piechart;
+package org.eclipse.linuxtools.internal.dataviewers.piechart;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -22,10 +22,10 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.swtchart.IBarSeries;
-import org.swtchart.ISeries;
-import org.swtchart.ITitle;
-import org.swtchart.Range;
+import org.eclipse.swtchart.IBarSeries;
+import org.eclipse.swtchart.ISeries;
+import org.eclipse.swtchart.ITitle;
+import org.eclipse.swtchart.Range;
 
 public class PieChartPaintListener implements PaintListener {
 
@@ -53,7 +53,7 @@ public class PieChartPaintListener implements PaintListener {
      */
     public PieChartPaintListener(PieChart chart) {
         this.chart = chart;
-        this.plotArea = chart.getPlotArea();
+        this.plotArea = chart.getPlotArea().getControl();
     }
 
     @Override

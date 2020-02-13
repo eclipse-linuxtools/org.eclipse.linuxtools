@@ -19,7 +19,7 @@ import org.eclipse.linuxtools.internal.dataviewers.charts.Messages;
 import org.eclipse.linuxtools.internal.dataviewers.charts.dialogs.ChartDialog;
 import org.eclipse.linuxtools.internal.dataviewers.charts.view.ChartView;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swtchart.Chart;
+import org.swtchart.Chart;
 
 /**
  * An action that open a chart dialog from an <code>AbstractSTViewer</code>.

@@ -14,7 +14,7 @@ package org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.listeners;
 
 import java.text.MessageFormat;
 
-import org.eclipse.linuxtools.dataviewers.piechart.PieChart;
+import org.eclipse.linuxtools.internal.dataviewers.piechart.PieChart;
 import org.eclipse.linuxtools.internal.systemtap.graphing.ui.charts.Messages;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
