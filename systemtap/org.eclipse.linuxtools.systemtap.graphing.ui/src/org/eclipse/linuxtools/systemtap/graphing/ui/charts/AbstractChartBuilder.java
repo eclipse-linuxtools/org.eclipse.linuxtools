@@ -188,7 +188,7 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
      */
     private void buildPlot() {
         this.chart.setBackground(WHITE);
-        this.chart.setBackgroundInPlotArea(WHITE);
+		this.chart.getPlotArea().setBackground(WHITE);
     }
 
     /**

@@ -65,7 +65,7 @@ public final class ChartFactory {
             PieChart chart = new PieChart(view.getParent(), SWT.NONE);
 
             chart.setBackground(WHITE);
-            chart.setBackgroundInPlotArea(GRAD);
+            chart.getPlotArea().setBackground(GRAD);
 
             chart.getTitle().setText(title);
             chart.getTitle().setForeground(BLACK);
@@ -129,7 +129,7 @@ public final class ChartFactory {
             InteractiveChart chart = new InteractiveChart(view.getParent(), SWT.NONE);
 
             chart.setBackground(WHITE);
-            chart.setBackgroundInPlotArea(GRAD);
+            chart.getPlotArea().setBackground(GRAD);
 
             chart.getTitle().setText(title);
             chart.getTitle().setForeground(BLACK);

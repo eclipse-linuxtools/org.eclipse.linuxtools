@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2018 IBM Corporation.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -112,7 +112,7 @@ public class GraphComposite extends Composite {
 
     public void addCheckOption(final String title, final SelectionListener listener) {
         Display.getDefault().syncExec(() -> {
-		    Button b = new Button(checkOptionComp, SWT.CHECK);
+			Button b = new Button(checkOptionComp, SWT.CHECK);
 		    b.setText(title);
 		    b.addSelectionListener(listener);
 		    checkOptions.add(b);

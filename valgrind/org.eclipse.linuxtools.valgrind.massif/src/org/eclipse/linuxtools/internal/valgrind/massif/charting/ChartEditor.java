@@ -97,7 +97,7 @@ public class ChartEditor extends EditorPart {
         final int TICK_GAP = 40;
 
         control.setBackground(WHITE);
-        control.setBackgroundInPlotArea(LIGHTYELLOW);
+		control.getPlotArea().setBackground(LIGHTYELLOW);
 
         FontData fd = JFaceResources.getDialogFont().getFontData()[0];
         fd.setStyle(SWT.BOLD);
