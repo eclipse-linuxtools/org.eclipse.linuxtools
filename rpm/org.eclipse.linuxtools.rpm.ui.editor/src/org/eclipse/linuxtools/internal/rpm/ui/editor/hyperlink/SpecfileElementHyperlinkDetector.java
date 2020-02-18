@@ -13,6 +13,7 @@
 
 package org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink;
 
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,8 +38,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
-
-import com.ibm.icu.util.StringTokenizer;
 
 /**
  * Hyperlink detector for source, patch and defines in the spec file.
