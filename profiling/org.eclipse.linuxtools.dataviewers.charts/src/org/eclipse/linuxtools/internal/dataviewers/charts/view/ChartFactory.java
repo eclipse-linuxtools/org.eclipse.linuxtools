@@ -133,6 +133,7 @@ public final class ChartFactory {
 
             chart.getTitle().setText(title);
             chart.getTitle().setForeground(BLACK);
+            chart.setProposedSaveAsFilename(title.replace(' ', '_'));
 
             // this is correct (refers to orientation of x-axis, not bars)
             if (horizontal) {

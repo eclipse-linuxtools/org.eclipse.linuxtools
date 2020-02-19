@@ -228,6 +228,7 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
         ITitle ctitle = chart.getTitle();
         ctitle.setForeground(BLACK);
         ctitle.setText(this.title);
+		chart.setProposedSaveAsFilename(this.title);
     }
 
     /**

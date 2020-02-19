@@ -98,6 +98,7 @@ public class ChartEditor extends EditorPart {
 
         control.setBackground(WHITE);
 		control.getPlotArea().setBackground(LIGHTYELLOW);
+		control.setProposedSaveAsFilename(heapChart.title.substring(0, heapChart.title.indexOf(' ')));
 
         FontData fd = JFaceResources.getDialogFont().getFontData()[0];
         fd.setStyle(SWT.BOLD);
