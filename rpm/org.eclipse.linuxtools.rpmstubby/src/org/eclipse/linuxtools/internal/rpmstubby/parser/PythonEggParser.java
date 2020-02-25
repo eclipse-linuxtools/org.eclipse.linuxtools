@@ -64,9 +64,7 @@ public class PythonEggParser {
         String setupLine = "";
         List<String> vars = new ArrayList<>();
         int offset = 0;
-        try {
-            RandomAccessFile raf = new RandomAccessFile(file.getRawLocation().makeAbsolute().toFile(), "r");
-
+        try (RandomAccessFile raf = new RandomAccessFile(file.getRawLocation().makeAbsolute().toFile(), "r")){
             // end if cannot find setup(
             long bytesToSkip = findStartSetup(raf);
             if (bytesToSkip == -1) {
@@ -116,8 +114,6 @@ public class PythonEggParser {
             }
 
             resolveVariables(variables, setupOptions);
-
-            raf.close();
         } catch (IOException e) {
             StubbyLog.logError(e);
         }
