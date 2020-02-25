@@ -20,7 +20,7 @@
 <unit id="com.spotify.docker.client" version="8.11.7.v20180731-1413"/>
 <unit id="com.spotify.docker.client.source" version="8.11.7.v20180731-1413"/>
 <unit id="javassist" version="3.13.0.GA_v201209210905"/>
-<unit id="javax.ws.rs" version="2.0.1.v201504171603"/>
+<unit id="javax.ws.rs" version="2.1.1.v20200204-1659"/>
 <unit id="javax.xml.bind" version="2.2.0.v201105210648"/>
 <unit id="javax.xml.stream" version="1.0.1.v201004272200"/>
 <unit id="jnr.x86asm" version="1.0.2.v201505052040"/>
@@ -52,9 +52,9 @@
 <unit id="org.objectweb.asm.analysis" version="7.2.0.v20191010-1910"/>
 <unit id="org.objectweb.asm.tree" version="7.2.0.v20191010-1910"/>
 <unit id="org.objectweb.asm.util" version="7.2.0.v20191010-1910"/>
-<unit id="org.slf4j.api" version="1.7.10.v20170428-1633"/>
+<unit id="org.slf4j.api" version="1.7.30.v20200204-2150"/>
 <unit id="org.swtchart" version="0.10.0.v201605200358"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/S20200128200239/repository"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/S20200219023850/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
