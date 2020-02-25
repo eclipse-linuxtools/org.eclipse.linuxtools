@@ -120,10 +120,12 @@ public class BrowserContentsCheck {
 			this.browser = browser;
 		}
 
+		@Override
 		public boolean test() {
 			return !browser.getText().equals("");
 		}
 
+		@Override
 		public String description() {
 			return "Browser is empty!";
 		}
