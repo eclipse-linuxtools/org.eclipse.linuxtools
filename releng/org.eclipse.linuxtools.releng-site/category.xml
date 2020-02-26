@@ -68,6 +68,12 @@
    <iu id="org.eclipse.swtchart" version="0.0.0">
       <category name="Linux Tools"/>
    </iu>
+   <iu id="org.eclipse.swtchart.extensions" version="0.0.0">
+      <category name="Linux Tools"/>
+   </iu>
+   <iu id="org.swtchart" version="0.0.0">
+      <category name="Linux Tools"/>
+   </iu>
    <iu id="org.cyberneko.html" version="0.0.0">
       <category name="Linux Tools"/>
    </iu>
