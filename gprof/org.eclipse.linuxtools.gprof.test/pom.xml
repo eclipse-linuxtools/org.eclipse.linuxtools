@@ -15,7 +15,7 @@
   <parent>
     <artifactId>linuxtools-gprof-parent</artifactId>
     <groupId>org.eclipse.linuxtools.gprof</groupId>
-    <version>7.6.0-SNAPSHOT</version>
+    <version>7.6.0</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.gprof.test</artifactId>
