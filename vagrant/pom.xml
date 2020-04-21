@@ -72,7 +72,7 @@
 					<dependency>
 						<groupId>org.eclipse.tycho.extras</groupId>
 						<artifactId>tycho-sourceref-jgit</artifactId>
-						<version>${tycho-extras-version}</version>
+						<version>${tycho-version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>
