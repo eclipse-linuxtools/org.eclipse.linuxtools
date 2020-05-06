@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Red Hat, Inc.
+ * Copyright (c) 2017, 2020 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -31,8 +31,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.messages.Image;
+import org.mandas.docker.client.DockerClient;
+import org.mandas.docker.client.messages.Image;
 
 public class HierarchyViewTest extends AbstractImageBotTest {
 	private static final int DAEMON_MAJOR_VERSION = 11;

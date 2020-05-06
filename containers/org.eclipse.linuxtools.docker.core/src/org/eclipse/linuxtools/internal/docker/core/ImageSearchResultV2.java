@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Red Hat.
- * 
+ * Copyright (c) 2016, 2020 Red Hat.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -18,14 +18,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mandas.docker.client.messages.ImageSearchResult;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
-import com.spotify.docker.client.messages.ImageSearchResult;
 
 /**
  * Binding for Image Search Results from a Registry V2.
- * 
+ *
  * Currently the returned image search results lack the same degree of
  * information returned from the V1 registries.
  */
@@ -49,7 +50,7 @@ public class ImageSearchResultV2 {
 				.add("results", getRepositories()).toString(); //$NON-NLS-1$
 	}
 
-	private class ImageResultV2 extends ImageSearchResult {
+	private class ImageResultV2 implements ImageSearchResult {
 
 		private String name;
 

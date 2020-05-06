@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat.
+ * Copyright (c) 2015, 2020 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -38,7 +38,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.spotify.docker.client.DockerClient;
+import org.mandas.docker.client.DockerClient;
 
 public class DockerConnectionManagerTest {
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat.
+ * Copyright (c) 2014, 2020 Red Hat.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,7 +17,7 @@ import java.util.Date;
 import org.eclipse.linuxtools.docker.core.IDockerContainerConfig;
 import org.eclipse.linuxtools.docker.core.IDockerImageInfo;
 
-import com.spotify.docker.client.messages.ImageInfo;
+import org.mandas.docker.client.messages.ImageInfo;
 
 public class DockerImageInfo implements IDockerImageInfo {
 

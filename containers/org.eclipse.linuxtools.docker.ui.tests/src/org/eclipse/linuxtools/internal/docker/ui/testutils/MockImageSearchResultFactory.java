@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Red Hat.
+ * Copyright (c) 2016, 2020 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,7 +15,7 @@ package org.eclipse.linuxtools.internal.docker.ui.testutils;
 
 import org.mockito.Mockito;
 
-import com.spotify.docker.client.messages.ImageSearchResult;
+import org.mandas.docker.client.messages.ImageSearchResult;
 
 /**
  * Factory for mocked {@link ImageSearchResult} instances.

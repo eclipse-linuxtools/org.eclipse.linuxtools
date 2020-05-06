@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2019 Red Hat Inc. and others
+ * Copyright (c) 2014, 2020 Red Hat Inc. and others
  * .
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -83,7 +83,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
-import com.spotify.docker.client.exceptions.DockerCertificateException;
+import org.mandas.docker.client.exceptions.DockerCertificateException;
 
 /**
  * {@link WizardPage} to input the settings to connect to a Docker

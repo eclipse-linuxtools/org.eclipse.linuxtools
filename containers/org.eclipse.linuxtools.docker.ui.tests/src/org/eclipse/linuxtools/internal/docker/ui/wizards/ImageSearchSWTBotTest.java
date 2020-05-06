@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2019 Red Hat.
+ * Copyright (c) 2016, 2020 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -35,7 +35,7 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.spotify.docker.client.DockerClient;
+import org.mandas.docker.client.DockerClient;
 
 /**
  * Testing the {@link ImageSearch} wizard.

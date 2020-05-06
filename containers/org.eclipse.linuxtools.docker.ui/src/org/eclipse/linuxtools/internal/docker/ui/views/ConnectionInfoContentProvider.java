@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat.
+ * Copyright (c) 2014, 2020 Red Hat.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -41,8 +41,6 @@ public class ConnectionInfoContentProvider implements ITreeContentProvider {
 					new Object[] { "Images", connectionInfo.getImages() }, //$NON-NLS-1$
 					new Object[] { "Storage driver", //$NON-NLS-1$
 							connectionInfo.getStorageDriver() },
-					new Object[] { "Execution driver", //$NON-NLS-1$
-							connectionInfo.getExecutionDriver() },
 					new Object[] { "Kernel version", //$NON-NLS-1$
 							connectionInfo.getKernelVersion() },
 					new Object[] { "Operating system", connectionInfo.getOs() }, //$NON-NLS-1$

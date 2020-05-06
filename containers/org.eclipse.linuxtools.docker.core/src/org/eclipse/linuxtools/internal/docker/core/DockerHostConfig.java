@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat.
+ * Copyright (c) 2014, 2020 Red Hat.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -29,13 +29,13 @@ import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
 import org.eclipse.linuxtools.docker.core.IDockerRestartPolicy;
 import org.eclipse.linuxtools.docker.core.IDockerUlimit;
 
-import com.spotify.docker.client.messages.Device;
-import com.spotify.docker.client.messages.HostConfig;
-import com.spotify.docker.client.messages.HostConfig.BlkioDeviceRate;
-import com.spotify.docker.client.messages.HostConfig.BlkioWeightDevice;
-import com.spotify.docker.client.messages.HostConfig.LxcConfParameter;
-import com.spotify.docker.client.messages.HostConfig.Ulimit;
-import com.spotify.docker.client.messages.PortBinding;
+import org.mandas.docker.client.messages.Device;
+import org.mandas.docker.client.messages.HostConfig;
+import org.mandas.docker.client.messages.HostConfig.BlkioDeviceRate;
+import org.mandas.docker.client.messages.HostConfig.BlkioWeightDevice;
+import org.mandas.docker.client.messages.HostConfig.LxcConfParameter;
+import org.mandas.docker.client.messages.HostConfig.Ulimit;
+import org.mandas.docker.client.messages.PortBinding;
 
 public class DockerHostConfig implements IDockerHostConfig {
 

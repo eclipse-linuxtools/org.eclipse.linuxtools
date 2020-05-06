@@ -55,13 +55,13 @@ import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.exceptions.DockerException;
-import com.spotify.docker.client.messages.Container;
-import com.spotify.docker.client.messages.ContainerCreation;
-import com.spotify.docker.client.messages.ContainerInfo;
-import com.spotify.docker.client.messages.Image;
-import com.spotify.docker.client.messages.ImageInfo;
+import org.mandas.docker.client.DockerClient;
+import org.mandas.docker.client.exceptions.DockerException;
+import org.mandas.docker.client.messages.Container;
+import org.mandas.docker.client.messages.ContainerCreation;
+import org.mandas.docker.client.messages.ContainerInfo;
+import org.mandas.docker.client.messages.Image;
+import org.mandas.docker.client.messages.ImageInfo;
 
 /**
  * Testing the {@link ImageRun} wizard

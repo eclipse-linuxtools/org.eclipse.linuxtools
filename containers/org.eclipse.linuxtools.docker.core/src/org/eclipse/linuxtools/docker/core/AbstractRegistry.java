@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Red Hat.
- * 
+ * Copyright (c) 2016, 2020 Red Hat.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -41,9 +41,8 @@ import org.eclipse.linuxtools.internal.docker.core.RepositoryTagV2;
 import org.eclipse.osgi.util.NLS;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.jackson.JacksonFeature;
-
-import com.spotify.docker.client.ObjectMapperProvider;
-import com.spotify.docker.client.messages.ImageSearchResult;
+import org.mandas.docker.client.ObjectMapperProvider;
+import org.mandas.docker.client.messages.ImageSearchResult;
 
 /**
  * @since 2.0
@@ -69,7 +68,7 @@ public abstract class AbstractRegistry implements IRegistry {
 	public abstract String getServerAddress();
 
 	/**
-	 * 
+	 *
 	 * @return the server host (and optional port) to prepend to an image name
 	 *         when pushing or pulling
 	 */
@@ -211,7 +210,7 @@ public abstract class AbstractRegistry implements IRegistry {
 	/**
 	 * Retrieves the list of tags for a given repository, assuming that the
 	 * target registry is Docker Hub.
-	 * 
+	 *
 	 * @param client
 	 *            the client to use
 	 * @param repository
@@ -300,7 +299,7 @@ public abstract class AbstractRegistry implements IRegistry {
 	/**
 	 * Retrieves the list of tags for a given repository, assuming that the
 	 * target registry is a registry v2 instance.
-	 * 
+	 *
 	 * @param client
 	 *            the client to use
 	 * @param repository
@@ -330,7 +329,7 @@ public abstract class AbstractRegistry implements IRegistry {
 	/**
 	 * Retrieves the list of tags for a given repository, assuming that the
 	 * target registry is a registry v1 instance.
-	 * 
+	 *
 	 * @param client
 	 *            the client to use
 	 * @param repository

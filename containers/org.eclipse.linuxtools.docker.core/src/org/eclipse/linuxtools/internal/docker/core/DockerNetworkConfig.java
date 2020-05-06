@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Red Hat.
+ * Copyright (c) 2016, 2020 Red Hat.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,7 +17,7 @@ import java.util.Map;
 import org.eclipse.linuxtools.docker.core.IDockerIpam;
 import org.eclipse.linuxtools.docker.core.IDockerNetworkConfig;
 
-import com.spotify.docker.client.messages.NetworkConfig;
+import org.mandas.docker.client.messages.NetworkConfig;
 
 public class DockerNetworkConfig implements IDockerNetworkConfig {
 

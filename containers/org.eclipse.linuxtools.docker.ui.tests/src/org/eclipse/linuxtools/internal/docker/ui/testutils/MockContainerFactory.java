@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat.
+ * Copyright (c) 2015, 2020 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -25,7 +25,7 @@ import org.eclipse.linuxtools.docker.core.Messages;
 import org.mockito.Mockito;
 
 import com.google.common.collect.ImmutableList;
-import com.spotify.docker.client.messages.Container;
+import org.mandas.docker.client.messages.Container;
 
 /**
  * A factory for mock {@link Container}s.

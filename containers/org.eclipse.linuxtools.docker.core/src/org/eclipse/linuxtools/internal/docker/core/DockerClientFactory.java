@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat.
- * 
+ * Copyright (c) 2015, 2020 Red Hat.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -13,19 +13,24 @@
 
 package org.eclipse.linuxtools.internal.docker.core;
 
+import static java.util.Collections.singletonMap;
+
 import java.io.File;
 import java.net.URI;
 
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings.BindingType;
 import org.eclipse.linuxtools.docker.core.IRegistryAccount;
+import org.mandas.docker.client.DefaultDockerClient;
+import org.mandas.docker.client.DefaultDockerClient.Builder;
+import org.mandas.docker.client.DockerCertificates;
+import org.mandas.docker.client.DockerClient;
+import org.mandas.docker.client.auth.FixedRegistryAuthSupplier;
+import org.mandas.docker.client.exceptions.DockerCertificateException;
+import org.mandas.docker.client.messages.RegistryAuth;
+import org.mandas.docker.client.messages.RegistryConfigs;
 
-import com.spotify.docker.client.DefaultDockerClient;
-import com.spotify.docker.client.DefaultDockerClient.Builder;
-import com.spotify.docker.client.DockerCertificates;
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.exceptions.DockerCertificateException;
-import com.spotify.docker.client.messages.RegistryAuth;
+import com.google.common.base.MoreObjects;
 
 /**
  * Factory for {@link DockerClient}. Decoupling from {@link DockerConnection}
@@ -36,7 +41,7 @@ public class DockerClientFactory {
 	/**
 	 * Creates a new {@link DockerClient} from the given
 	 * {@link IDockerConnectionSettings}.
-	 * 
+	 *
 	 * @param connectionSettings
 	 *            the connection settings
 	 * @return the {@link DockerClient}
@@ -52,7 +57,7 @@ public class DockerClientFactory {
 	/**
 	 * Creates a new {@link DockerClient} from the given
 	 * {@link IDockerConnectionSettings}.
-	 * 
+	 *
 	 * @param connectionSettings
 	 *            the connection settings
 	 * @return the {@link DockerClient} or <code>null</code> if the connection
@@ -92,7 +97,14 @@ public class DockerClientFactory {
 		}
 
 		if (registryAccount != null) {
-			builder.registryAuth(buildAuthentication(registryAccount));
+			// mimic spotify:
+			// https://github.com/spotify/docker-client/blob/master/src/main/java/com/spotify/docker/client/DefaultDockerClient.java#L3140
+			RegistryAuth registryAuth = buildAuthentication(registryAccount);
+			final RegistryConfigs configs = RegistryConfigs.create(singletonMap(
+					MoreObjects.firstNonNull(registryAuth.serverAddress(), ""),
+					registryAuth));
+			builder.registryAuthSupplier(
+					new FixedRegistryAuthSupplier(registryAuth, configs));
 		}
 		return builder.build();
 	}

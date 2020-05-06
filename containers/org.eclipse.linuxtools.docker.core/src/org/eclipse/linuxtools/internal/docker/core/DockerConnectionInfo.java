@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat.
+ * Copyright (c) 2014, 2020 Red Hat.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,9 +18,8 @@ import java.util.List;
 
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionInfo;
-
-import com.spotify.docker.client.messages.Info;
-import com.spotify.docker.client.messages.Version;
+import org.mandas.docker.client.messages.Info;
+import org.mandas.docker.client.messages.Version;
 
 /**
  * Info about a given {@link IDockerConnection}
@@ -29,7 +28,6 @@ public class DockerConnectionInfo implements IDockerConnectionInfo {
 
 	private final int containers;
 	private final boolean debug;
-	private final String executionDriver;
 	private final int fileDescriptors;
 	private final int goroutines;
 	private final int images;
@@ -56,7 +54,6 @@ public class DockerConnectionInfo implements IDockerConnectionInfo {
 	public DockerConnectionInfo(final Info info, final Version version) {
 		this.containers = info != null ? info.containers() : -1;
 		this.debug = info != null ? info.debug() : false;
-		this.executionDriver = info != null ? info.executionDriver() : null;
 		this.fileDescriptors = info != null ? info.fileDescriptors() : -1;
 		this.goroutines = info != null ? info.goroutines() : -1;
 		this.images = info != null ? info.images() : -1;
@@ -102,11 +99,6 @@ public class DockerConnectionInfo implements IDockerConnectionInfo {
 	@Override
 	public boolean isDebug() {
 		return debug;
-	}
-
-	@Override
-	public String getExecutionDriver() {
-		return executionDriver;
 	}
 
 	@Override

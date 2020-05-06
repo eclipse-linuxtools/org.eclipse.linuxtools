@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2017, 2020 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -13,6 +13,7 @@
 package org.eclipse.linuxtools.jdt.docker.launcher;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import org.eclipse.linuxtools.docker.core.DockerException;
@@ -23,10 +24,10 @@ import org.eclipse.linuxtools.internal.docker.core.DockerContainerConfig;
 import org.eclipse.linuxtools.internal.docker.core.DockerHostConfig;
 import org.osgi.framework.Version;
 
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.DockerClient.ExecCreateParam;
-import com.spotify.docker.client.LogStream;
-import com.spotify.docker.client.messages.ExecCreation;
+import org.mandas.docker.client.DockerClient;
+import org.mandas.docker.client.DockerClient.ExecCreateParam;
+import org.mandas.docker.client.LogStream;
+import org.mandas.docker.client.messages.ExecCreation;
 
 public class ImageQuery {
 
@@ -75,7 +76,10 @@ public class ImageQuery {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			stream.close();
+			try {
+        stream.close();
+      } catch (IOException e) {
+      }
 		}
 		return null;
 	}

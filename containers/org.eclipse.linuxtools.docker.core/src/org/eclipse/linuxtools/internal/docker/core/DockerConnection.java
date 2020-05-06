@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2019 Red Hat Inc. and others.
+ * Copyright (c) 2014, 2020 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -97,38 +97,39 @@ import org.eclipse.tm.terminal.view.core.TerminalServiceFactory;
 import org.eclipse.tm.terminal.view.core.interfaces.ITerminalService;
 import org.eclipse.tm.terminal.view.core.interfaces.ITerminalServiceOutputStreamMonitorListener;
 import org.eclipse.tm.terminal.view.core.interfaces.constants.ITerminalsConnectorConstants;
+import org.mandas.docker.client.DockerClient;
+import org.mandas.docker.client.DockerClient.AttachParameter;
+import org.mandas.docker.client.DockerClient.BuildParam;
+import org.mandas.docker.client.DockerClient.ExecCreateParam;
+import org.mandas.docker.client.DockerClient.LogsParam;
+import org.mandas.docker.client.LogStream;
+import org.mandas.docker.client.exceptions.ContainerNotFoundException;
+import org.mandas.docker.client.exceptions.DockerCertificateException;
+import org.mandas.docker.client.exceptions.DockerTimeoutException;
+import org.mandas.docker.client.messages.Container;
+import org.mandas.docker.client.messages.ContainerChange;
+import org.mandas.docker.client.messages.ContainerConfig;
+import org.mandas.docker.client.messages.ContainerCreation;
+import org.mandas.docker.client.messages.ContainerExit;
+import org.mandas.docker.client.messages.ContainerInfo;
+import org.mandas.docker.client.messages.ExecCreation;
+import org.mandas.docker.client.messages.HostConfig;
+import org.mandas.docker.client.messages.HostConfig.LxcConfParameter;
+import org.mandas.docker.client.messages.Image;
+import org.mandas.docker.client.messages.ImageInfo;
+import org.mandas.docker.client.messages.ImageSearchResult;
+import org.mandas.docker.client.messages.Info;
+import org.mandas.docker.client.messages.Ipam;
+import org.mandas.docker.client.messages.IpamConfig;
+import org.mandas.docker.client.messages.Network;
+import org.mandas.docker.client.messages.NetworkConfig;
+import org.mandas.docker.client.messages.PortBinding;
+import org.mandas.docker.client.messages.RegistryAuth;
+import org.mandas.docker.client.messages.Version;
+import org.mandas.docker.client.messages.Volume;
+import org.mandas.docker.client.messages.VolumeList;
 
 import com.google.common.collect.ImmutableMap;
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.DockerClient.AttachParameter;
-import com.spotify.docker.client.DockerClient.BuildParam;
-import com.spotify.docker.client.DockerClient.ExecCreateParam;
-import com.spotify.docker.client.DockerClient.LogsParam;
-import com.spotify.docker.client.LogStream;
-import com.spotify.docker.client.exceptions.ContainerNotFoundException;
-import com.spotify.docker.client.exceptions.DockerCertificateException;
-import com.spotify.docker.client.exceptions.DockerTimeoutException;
-import com.spotify.docker.client.messages.Container;
-import com.spotify.docker.client.messages.ContainerChange;
-import com.spotify.docker.client.messages.ContainerConfig;
-import com.spotify.docker.client.messages.ContainerCreation;
-import com.spotify.docker.client.messages.ContainerExit;
-import com.spotify.docker.client.messages.ContainerInfo;
-import com.spotify.docker.client.messages.ExecCreation;
-import com.spotify.docker.client.messages.HostConfig;
-import com.spotify.docker.client.messages.HostConfig.LxcConfParameter;
-import com.spotify.docker.client.messages.Image;
-import com.spotify.docker.client.messages.ImageInfo;
-import com.spotify.docker.client.messages.ImageSearchResult;
-import com.spotify.docker.client.messages.Info;
-import com.spotify.docker.client.messages.Ipam;
-import com.spotify.docker.client.messages.Network;
-import com.spotify.docker.client.messages.NetworkConfig;
-import com.spotify.docker.client.messages.PortBinding;
-import com.spotify.docker.client.messages.RegistryAuth;
-import com.spotify.docker.client.messages.Version;
-import com.spotify.docker.client.messages.Volume;
-import com.spotify.docker.client.messages.VolumeList;
 
 /**
  * A connection to a Docker daemon. The connection may rely on Unix Socket or TCP connection (using the REST API).
@@ -373,7 +374,7 @@ public class DockerConnection
 					String socket = path.replaceAll("unix://", ""); //$NON-NLS-1$ //$NON-NLS-2$
 					java.io.File f = new java.io.File(socket);
 					if (!f.exists()) {
-						throw new com.spotify.docker.client.exceptions.DockerException(
+						throw new org.mandas.docker.client.exceptions.DockerException(
 								NLS.bind(Messages.Docker_Daemon_No_Unix_Socket,
 										socket));
 					}
@@ -386,7 +387,7 @@ public class DockerConnection
 						Messages.Docker_Daemon_Ping_Failure, this.getName()));
 			}
 			setState(EnumDockerConnectionState.ESTABLISHED);
-		} catch (com.spotify.docker.client.exceptions.DockerException
+		} catch (org.mandas.docker.client.exceptions.DockerException
 				| InterruptedException | IllegalArgumentException e) {
 			setState(EnumDockerConnectionState.CLOSED);
 			throw new DockerPingConnectionException(NLS.bind(
@@ -434,9 +435,9 @@ public class DockerConnection
 			final Info info = this.client.info();
 			final Version version = this.client.version();
 			return new DockerConnectionInfo(info, version);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException
+		} catch (org.mandas.docker.client.exceptions.DockerException
 				| InterruptedException e) {
 			throw new DockerException(Messages.Docker_General_Info_Failure, e);
 		}
@@ -524,7 +525,7 @@ public class DockerConnection
 		try {
 			Version version = client.version();
 			return new DockerVersion(this, version);
-		} catch (com.spotify.docker.client.exceptions.DockerException
+		} catch (org.mandas.docker.client.exceptions.DockerException
 				| InterruptedException e) {
 			throw new DockerException(Messages.Docker_General_Info_Failure, e);
 		}
@@ -542,7 +543,7 @@ public class DockerConnection
 					volumeList.add(v);
 				}
 			}
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage());
 		} catch (InterruptedException e) {
 			return Collections.emptyList();
@@ -742,11 +743,11 @@ public class DockerConnection
 					}
 				} while (follow && !stop);
 				listContainers();
-			} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+			} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 				Activator.logErrorMessage(
 						ProcessMessages.getString("Monitor_Logs_Exception"), e); //$NON-NLS-1$
 				throw new InterruptedException();
-			} catch (com.spotify.docker.client.exceptions.DockerException
+			} catch (org.mandas.docker.client.exceptions.DockerException
 					| IOException e) {
 				Activator.logErrorMessage(
 						ProcessMessages.getString("Monitor_Logs_Exception"), e); //$NON-NLS-1$
@@ -831,7 +832,7 @@ public class DockerConnection
 							new Status(IStatus.WARNING, Activator.PLUGIN_ID,
 									Messages.Docker_Connection_Timeout, e));
 				}
-			} catch (com.spotify.docker.client.exceptions.DockerException
+			} catch (org.mandas.docker.client.exceptions.DockerException
 					| InterruptedException e) {
 				if (isOpen() && e.getCause() != null
 						&& e.getCause().getCause() != null && e.getCause()
@@ -908,7 +909,7 @@ public class DockerConnection
 						Messages.Docker_Connection_Timeout, e));
 				close();
 			}
-		} catch (com.spotify.docker.client.exceptions.DockerException
+		} catch (org.mandas.docker.client.exceptions.DockerException
 				| InterruptedException e) {
 			if (isOpen() && e.getCause() != null
 					&& e.getCause().getCause() != null
@@ -954,11 +955,11 @@ public class DockerConnection
 		try {
 			final ContainerInfo info = client.inspectContainer(id);
 			return new DockerContainerInfo(info);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			Activator.logErrorMessage(
 					ProcessMessages.getString("Container_Info_Exception"), e); //$NON-NLS-1$
 			return null;
-		} catch (com.spotify.docker.client.exceptions.DockerException
+		} catch (org.mandas.docker.client.exceptions.DockerException
 				| InterruptedException e) {
 			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					ProcessMessages.getFormattedString(
@@ -976,11 +977,11 @@ public class DockerConnection
 		try {
 			final ImageInfo info = this.client.inspectImage(id);
 			return new DockerImageInfo(info);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			Activator.logErrorMessage(
 					ProcessMessages.getString("Image_Info_Exception"), e); //$NON-NLS-1$
 			return null;
-		} catch (com.spotify.docker.client.exceptions.ImageNotFoundException e) {
+		} catch (org.mandas.docker.client.exceptions.ImageNotFoundException e) {
 			// we might have an id which contains a registry which is invalid
 			// for inspectImage() so
 			// see if we can find a local image with matching tag
@@ -989,7 +990,7 @@ public class DockerConnection
 				return getImageInfo(image.id());
 			}
 			return null;
-		} catch (com.spotify.docker.client.exceptions.DockerException
+		} catch (org.mandas.docker.client.exceptions.DockerException
 				| InterruptedException e) {
 			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					ProcessMessages.getFormattedString(
@@ -1138,15 +1139,15 @@ public class DockerConnection
 							nativeImage.created(), nativeImage.size(),
 							nativeImage.virtualSize(), imageQualifier));
 				}
-			} catch (com.spotify.docker.client.exceptions.DockerTimeoutException e) {
+			} catch (org.mandas.docker.client.exceptions.DockerTimeoutException e) {
 				if (isOpen()) {
 					Activator.log(
 							new Status(IStatus.WARNING, Activator.PLUGIN_ID,
 									Messages.Docker_Connection_Timeout, e));
 				}
-			} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+			} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 				throw new DockerException(e.getResponseBody());
-			} catch (com.spotify.docker.client.exceptions.DockerException
+			} catch (org.mandas.docker.client.exceptions.DockerException
 					| InterruptedException e) {
 				if (isOpen() && e.getCause() != null
 						&& e.getCause().getCause() != null && e.getCause()
@@ -1248,9 +1249,9 @@ public class DockerConnection
 			DockerProgressHandler d = new DockerProgressHandler(handler);
 			client.pull(id, d);
 			listImages();
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			DockerException f = new DockerException(e);
 			throw f;
 		}
@@ -1265,9 +1266,9 @@ public class DockerConnection
 			final DockerProgressHandler d = new DockerProgressHandler(handler);
 			client.pull(imageId, d);
 			listImages();
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			DockerException f = new DockerException(e);
 			throw f;
 		}
@@ -1286,7 +1287,7 @@ public class DockerConnection
 				}
 			}
 			return results;
-		} catch (com.spotify.docker.client.exceptions.DockerException
+		} catch (org.mandas.docker.client.exceptions.DockerException
 				| InterruptedException e) {
 			throw new DockerException(e);
 		}
@@ -1298,9 +1299,9 @@ public class DockerConnection
 		try {
 			DockerProgressHandler d = new DockerProgressHandler(handler);
 			client.push(name, d);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			DockerException f = new DockerException(e);
 			throw f;
 		}
@@ -1314,9 +1315,9 @@ public class DockerConnection
 					.getClient(this.connectionSettings, info);
 			final DockerProgressHandler d = new DockerProgressHandler(handler);
 			client.push(name, d);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException
+		} catch (org.mandas.docker.client.exceptions.DockerException
 				| DockerCertificateException e) {
 			DockerException f = new DockerException(e);
 			throw f;
@@ -1328,9 +1329,9 @@ public class DockerConnection
 			InterruptedException {
 		try {
 			client.removeImage(name, true, false);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			DockerException f = new DockerException(e);
 			throw f;
 		}
@@ -1341,9 +1342,9 @@ public class DockerConnection
 			InterruptedException {
 		try {
 			client.removeImage(tag, false, false);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			DockerException f = new DockerException(e);
 			throw f;
 		}
@@ -1376,9 +1377,9 @@ public class DockerConnection
 			final boolean force) throws DockerException, InterruptedException {
 		try {
 			client.tag(name, newTag, force);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			DockerException f = new DockerException(e);
 			throw f;
 		}
@@ -1395,9 +1396,9 @@ public class DockerConnection
 			String res = getClientCopy().build(p, d,
 					BuildParam.create("forcerm", "true")); //$NON-NLS-1$ //$NON-NLS-2$
 			return res;
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException
+		} catch (org.mandas.docker.client.exceptions.DockerException
 				| IOException e) {
 			DockerException f = new DockerException(e);
 			throw f;
@@ -1415,9 +1416,9 @@ public class DockerConnection
 			String res = getClientCopy().build(p, name, d,
 					BuildParam.create("forcerm", "true")); //$NON-NLS-1$ $NON-NLS-2$
 			return res;
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException
+		} catch (org.mandas.docker.client.exceptions.DockerException
 				| IOException e) {
 			DockerException f = new DockerException(e);
 			throw f;
@@ -1453,9 +1454,9 @@ public class DockerConnection
 			String res = getClientCopy().build(p, name, d,
 					getBuildParameters(buildOptions));
 			return res;
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException
+		} catch (org.mandas.docker.client.exceptions.DockerException
 				| IOException e) {
 			DockerException f = new DockerException(e);
 			throw f;
@@ -1493,9 +1494,9 @@ public class DockerConnection
 			String res = getClientCopy().build(p, name, dockerFileName, d,
 					getBuildParameters(buildOptions));
 			return res;
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException
+		} catch (org.mandas.docker.client.exceptions.DockerException
 				| IOException e) {
 			DockerException f = new DockerException(e);
 			throw f;
@@ -1652,7 +1653,7 @@ public class DockerConnection
 				builder = builder.env(c.env());
 			}
 			if (c.volumes() != null) {
-				builder = builder.volumes(c.volumes());
+				builder = builder.volumes(c.volumes().keySet());
 			}
 			if (c.entrypoint() != null) {
 				builder = builder.entrypoint(c.entrypoint());
@@ -1673,9 +1674,9 @@ public class DockerConnection
 			return id;
 		} catch (ContainerNotFoundException e) {
 			throw new DockerContainerNotFoundException(e);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e);
 		}
 	}
@@ -1696,9 +1697,9 @@ public class DockerConnection
 			listContainers();
 		} catch (ContainerNotFoundException e) {
 			throw new DockerContainerNotFoundException(e);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -1718,9 +1719,9 @@ public class DockerConnection
 			listContainers(); // update container list
 		} catch (ContainerNotFoundException e) {
 			throw new DockerContainerNotFoundException(e);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			// Permit kill to fail silently even on non-running containers
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -1734,9 +1735,9 @@ public class DockerConnection
 			listContainers(); // update container list
 		} catch (ContainerNotFoundException e) {
 			throw new DockerContainerNotFoundException(e);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -1768,9 +1769,9 @@ public class DockerConnection
 			listContainers(); // update container list
 		} catch (ContainerNotFoundException e) {
 			throw new DockerContainerNotFoundException(e);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -1784,9 +1785,9 @@ public class DockerConnection
 			listContainers(); // update container list
 		} catch (ContainerNotFoundException e) {
 			throw new DockerContainerNotFoundException(e);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -1842,11 +1843,11 @@ public class DockerConnection
 			// clearly stated so report there was a problem starting the command
 			throw new DockerException(DockerMessages.getFormattedString(
 					"DockerStartContainer.error", getCmdString(containerInfo))); //$NON-NLS-1$
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			if (e.status() != 304) {
 				throw new DockerException(e.getMessage());
 			}
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -1889,11 +1890,11 @@ public class DockerConnection
 			// clearly stated so report there was a problem starting the command
 			throw new DockerException(DockerMessages.getFormattedString(
 					"DockerStartContainer.error", getCmdString(containerInfo))); //$NON-NLS-1$
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			if (e.status() != 304) {
 				throw new DockerException(e.getMessage());
 			}
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e);
 		}
 	}
@@ -1931,9 +1932,9 @@ public class DockerConnection
 			listContainers();
 		} catch (ContainerNotFoundException e) {
 			throw new DockerContainerNotFoundException(e);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -1951,9 +1952,9 @@ public class DockerConnection
 			// FIXME: are we refreshing the list of images twice ?
 			listImages();
 			getImages(true);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException
+		} catch (org.mandas.docker.client.exceptions.DockerException
 				| InterruptedException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
@@ -1966,7 +1967,7 @@ public class DockerConnection
 		try {
 			DockerClient copy = getClientCopy();
 			stream = copy.archiveContainer(id, path);
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 		return stream;
@@ -1979,7 +1980,7 @@ public class DockerConnection
 		DockerClient clientCopy = (DockerClient) token;
 		try {
 			stream = clientCopy.archiveContainer(id, path);
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 		return stream;
@@ -1996,7 +1997,7 @@ public class DockerConnection
 				containerChanges.add(new DockerContainerChange(change.path(),
 						change.kind()));
 			}
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 		return containerChanges;
@@ -2042,7 +2043,7 @@ public class DockerConnection
 					.getPath(directory);
 			copy.copyToContainer(dirPath, id, path);
 			copy.close(); /* dispose of client copy now that we are done */
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -2056,7 +2057,7 @@ public class DockerConnection
 					.getPath(directory);
 			copy.copyToContainer(dirPath, id, path);
 			copy.close(); /* dispose of client copy now that we are done */
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -2072,7 +2073,7 @@ public class DockerConnection
 					.email(new String(cfg.getEmail()))
 					.serverAddress(new String(cfg.getServerAddress())).build();
 			return client.auth(authConfig);
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -2131,9 +2132,9 @@ public class DockerConnection
 			}
 		} catch (ContainerNotFoundException e) {
 			throw new DockerContainerNotFoundException(e);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -2149,7 +2150,7 @@ public class DockerConnection
 					LogsParam.stdout(), LogsParam.stderr());
 			stream.attach(out, err);
 			stream.close();
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -2162,7 +2163,7 @@ public class DockerConnection
 					LogsParam.follow(), LogsParam.stdout(), LogsParam.stderr());
 			stream.attach(out, err);
 			stream.close();
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -2180,9 +2181,9 @@ public class DockerConnection
 			return exit;
 		} catch (ContainerNotFoundException e) {
 			throw new DockerContainerNotFoundException(e);
-		} catch (com.spotify.docker.client.exceptions.DockerRequestException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -2472,21 +2473,23 @@ public class DockerConnection
 		try {
 			Ipam.Builder ipamBuilder = Ipam.builder()
 					.driver(cfg.ipam().driver());
-			List<IDockerIpamConfig> ipamCfgs = cfg.ipam().config();
-			for (IDockerIpamConfig ipamCfg : ipamCfgs) {
-				ipamBuilder = ipamBuilder.config(ipamCfg.subnet(),
-						ipamCfg.ipRange(), ipamCfg.gateway());
+			List<IDockerIpamConfig> idockerIpamCfgs = cfg.ipam().config();
+			List<IpamConfig> ipamCfgs = new ArrayList<>();
+			for (IDockerIpamConfig ipamCfg : idockerIpamCfgs) {
+				ipamCfgs.add(IpamConfig.create(ipamCfg.subnet(),
+						ipamCfg.ipRange(), ipamCfg.gateway()));
 			}
+			ipamBuilder = ipamBuilder.config(ipamCfgs);
 			Ipam ipam = ipamBuilder.build();
 			NetworkConfig.Builder networkConfigBuilder = NetworkConfig.builder()
 					.name(cfg.name()).driver(cfg.driver()).ipam(ipam);
 			networkConfigBuilder.options(cfg.options());
 			NetworkConfig networkConfig = networkConfigBuilder.build();
-			com.spotify.docker.client.messages.NetworkCreation creation = client
+			org.mandas.docker.client.messages.NetworkCreation creation = client
 					.createNetwork(networkConfig);
 			return new DockerNetworkCreation(creation);
 
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -2497,7 +2500,7 @@ public class DockerConnection
 		try {
 			Network n = client.inspectNetwork(networkId);
 			return new DockerNetwork(n);
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -2512,7 +2515,7 @@ public class DockerConnection
 				networks.add(new DockerNetwork(n));
 			}
 			return networks;
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -2522,7 +2525,7 @@ public class DockerConnection
 			throws DockerException, InterruptedException {
 		try {
 			client.removeNetwork(networkId);
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -2532,7 +2535,7 @@ public class DockerConnection
 			throws DockerException, InterruptedException {
 		try {
 			client.connectToNetwork(id, networkId);
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}
@@ -2542,7 +2545,7 @@ public class DockerConnection
 			throws DockerException, InterruptedException {
 		try {
 			client.disconnectFromNetwork(id, networkId);
-		} catch (com.spotify.docker.client.exceptions.DockerException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
 		}
 	}

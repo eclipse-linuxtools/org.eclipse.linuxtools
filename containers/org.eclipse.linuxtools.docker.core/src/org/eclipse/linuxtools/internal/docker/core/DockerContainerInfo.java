@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat.
- * 
+ * Copyright (c) 2015, 2020 Red Hat.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -14,15 +14,14 @@ package org.eclipse.linuxtools.internal.docker.core;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.linuxtools.docker.core.IDockerContainerConfig;
 import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.docker.core.IDockerContainerState;
 import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
 import org.eclipse.linuxtools.docker.core.IDockerNetworkSettings;
-
-import com.spotify.docker.client.messages.ContainerInfo;
+import org.mandas.docker.client.messages.ContainerInfo;
+import org.mandas.docker.client.messages.ContainerMount;
 
 public class DockerContainerInfo implements IDockerContainerInfo {
 
@@ -43,8 +42,7 @@ public class DockerContainerInfo implements IDockerContainerInfo {
 	private String execDriver;
 	private String processLabel;
 	private String mountLabel;
-	private Map<String, String> volumes;
-	private Map<String, Boolean> volumesRW;
+	private List<ContainerMount> mounts;
 
 	public DockerContainerInfo (final ContainerInfo info) {
 		this.id = info != null ? info.id() : null;
@@ -68,8 +66,7 @@ public class DockerContainerInfo implements IDockerContainerInfo {
 		this.execDriver = info != null ? info.execDriver() : null;
 		this.processLabel = info != null ? info.processLabel() : null;
 		this.mountLabel = info != null ? info.mountLabel() : null;
-		this.volumes = info != null ? info.volumes() : null;
-		this.volumesRW = info != null ? info.volumesRw() : null;
+		this.mounts = info != null ? info.mounts() : null;
 	}
 
 	@Override
@@ -158,13 +155,8 @@ public class DockerContainerInfo implements IDockerContainerInfo {
 	}
 
 	@Override
-	public Map<String, String> volumes() {
-		return volumes;
-	}
-
-	@Override
-	public Map<String, Boolean> volumesRW() {
-		return volumesRW;
+	public List<ContainerMount> mounts() {
+		return mounts;
 	}
 
 }

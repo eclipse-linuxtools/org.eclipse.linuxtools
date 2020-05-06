@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat.
- * 
+ * Copyright (c) 2014, 2020 Red Hat.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -64,8 +64,7 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 					new Object[]{"Path", info.path()}, //$NON-NLS-1$
 					new Object[]{"ProcessLabel", info.processLabel()}, //$NON-NLS-1$
 					new Object[]{"ResolvConfPath", info.resolvConfPath()}, //$NON-NLS-1$
-					new Object[]{"Volumes", info.volumes()}, //$NON-NLS-1$
-					new Object[]{"VolumesRW", info.volumesRW()}, //$NON-NLS-1$
+					new Object[] { "Mounts", info.mounts() }, //$NON-NLS-1$
 			};
 		}return EMPTY;
 	}
@@ -81,7 +80,7 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 					new Object[]{"Running", containerState.running()}, //$NON-NLS-1$
 					new Object[]{"Paused", containerState.paused()}, //$NON-NLS-1$
 					new Object[]{"Pid", containerState.pid()}, //$NON-NLS-1$
-			};		
+			};
 		} else if(propertyValue instanceof IDockerHostConfig) {
 			final DockerHostConfig hostConfig = (DockerHostConfig) propertyValue;
 			return new Object[] {
@@ -174,7 +173,7 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 				i++;
 			}
 			return result;
-		} 
+		}
 		return EMPTY;
 	}
 
@@ -211,5 +210,5 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 		}
 		return false;
 	}
-	
+
 }

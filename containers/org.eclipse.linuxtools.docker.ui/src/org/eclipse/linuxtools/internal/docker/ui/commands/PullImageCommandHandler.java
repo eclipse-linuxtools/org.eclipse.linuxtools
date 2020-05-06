@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2020 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -33,7 +33,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.spotify.docker.client.exceptions.DockerCertificateException;
+import org.mandas.docker.client.exceptions.DockerCertificateException;
 
 /**
  * Command handler that opens the {@link ImageSearch} wizard and pulls the

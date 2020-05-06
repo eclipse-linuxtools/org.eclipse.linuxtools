@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat.
+ * Copyright (c) 2014, 2020 Red Hat.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,7 +14,7 @@ package org.eclipse.linuxtools.internal.docker.core;
 
 import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
 
-import com.spotify.docker.client.messages.PortBinding;
+import org.mandas.docker.client.messages.PortBinding;
 
 public class DockerPortBinding implements IDockerPortBinding {
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Red Hat.
+ * Copyright (c) 2019, 2020 Red Hat.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -16,7 +16,7 @@ import java.util.Map;
 
 import org.eclipse.linuxtools.docker.core.IDockerLogConfig;
 
-import com.spotify.docker.client.messages.LogConfig;
+import org.mandas.docker.client.messages.LogConfig;
 
 public class DockerLogConfig implements IDockerLogConfig {
 

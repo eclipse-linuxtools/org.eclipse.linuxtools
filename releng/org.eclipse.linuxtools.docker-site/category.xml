@@ -90,10 +90,10 @@
    </iu>
 
    <!-- Orbit Dependencies -->
-   <iu id="com.spotify.docker.client" version="0.0.0">
+   <iu id="org.mandas.docker-client" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="com.spotify.docker.client.source" version="0.0.0">
+   <iu id="org.mandas.docker-client.source" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
 
@@ -151,7 +151,7 @@
    <iu id="com.github.jnr.unixsocket" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="jnr.x86asm" version="0.0.0">
+   <iu id="com.github.jnr.x86asm" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="org.bouncycastle.bcprov" version="0.0.0">
@@ -175,9 +175,6 @@
    <iu id="org.glassfish.jersey.apache.connector" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="org.glassfish.jersey.bundles.repackaged.jersey-guava" version="0.0.0">
-        <category name="Docker Client Dependencies"/>
-   </iu>
    <iu id="org.glassfish.jersey.core.jersey-client" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
@@ -191,6 +188,15 @@
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="org.glassfish.jersey.core.jersey-server" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
+   <iu id="org.glassfish.jersey.containers.servlet.core" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
+   <iu id="org.glassfish.jersey.containers.servlet" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
+   <iu id="org.glassfish.jersey.inject.jersey-hk2" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="javassist" version="0.0.0">

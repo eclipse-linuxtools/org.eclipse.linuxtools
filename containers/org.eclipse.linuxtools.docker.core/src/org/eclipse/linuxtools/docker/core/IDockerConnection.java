@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat.
+ * Copyright (c) 2014, 2020 Red Hat.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -23,7 +23,7 @@ import org.eclipse.linuxtools.internal.docker.core.DockerContainerRefreshManager
 import org.eclipse.linuxtools.internal.docker.core.TCPConnectionSettings;
 import org.eclipse.linuxtools.internal.docker.core.UnixSocketConnectionSettings;
 
-import com.spotify.docker.client.exceptions.DockerCertificateException;
+import org.mandas.docker.client.exceptions.DockerCertificateException;
 
 public interface IDockerConnection {
 

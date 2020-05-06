@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat.
- * 
+ * Copyright (c) 2014, 2020 Red Hat.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -16,14 +16,14 @@ import org.eclipse.linuxtools.docker.core.IDockerContainerExit;
 
 public class DockerContainerExit implements IDockerContainerExit {
 
-	private Integer statusCode;
+	private Long statusCode;
 
-	public DockerContainerExit(Integer statusCode) {
-		this.statusCode = statusCode;
+	public DockerContainerExit(Long long1) {
+		this.statusCode = long1;
 	}
 
 	@Override
-	public Integer statusCode() {
+	public Long statusCode() {
 		return statusCode;
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat.
+ * Copyright (c) 2015, 2020 Red Hat.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -26,8 +26,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.docker.core.Activator;
 import org.osgi.framework.Bundle;
 
-import com.spotify.docker.client.LogReader;
-import com.spotify.docker.client.LogStream;
+import org.mandas.docker.client.LogReader;
+import org.mandas.docker.client.LogStream;
 
 /**
  * This is a workaround for lack of HTTP Hijacking support in Apache
@@ -54,7 +54,7 @@ public class HttpHijackWorkaround {
 				"inStream" //$NON-NLS-1$
 		};
 		final String[] declared = new String[] {
-				"com.spotify.docker.client.DefaultLogStream",
+				"org.mandas.docker.client.DefaultLogStream",
 				LogReader.class.getName(),
 				"org.glassfish.jersey.message.internal.ReaderInterceptorExecutor$UnCloseableInputStream", //$NON-NLS-1$
 				"org.glassfish.jersey.message.internal.EntityInputStream", //$NON-NLS-1$
@@ -121,13 +121,13 @@ public class HttpHijackWorkaround {
 	}
 
 	/*
-	 * We could add API for this in com.spotify.docker.client since there is
+	 * We could add API for this in org.mandas.docker.client since there is
 	 * access to the underlying InputStream but better wait and see what
 	 * happens with the HTTP Hijacking situation.
 	 */
 	public static InputStream getInputStream(LogStream stream) {
 		final String[] fields = new String[] { "reader", "stream" }; //$NON-NLS-1$ //$NON-NLS-2$
-		final String[] declared = new String[] { "com.spotify.docker.client.DefaultLogStream", LogReader.class.getName()};
+		final String[] declared = new String[] { "org.mandas.docker.client.DefaultLogStream", LogReader.class.getName()};
 
 		List<String[]> list = new LinkedList<>();
 		for (int i = 0; i < fields.length; i++) {
@@ -155,7 +155,7 @@ public class HttpHijackWorkaround {
 
 	/*
 	 * Avoid explicitly depending on certain classes that are requirements
-	 * of the docker-client library (com.spotify.docker.client).
+	 * of the docker-client library (org.mandas.docker.client).
 	 */
 	private static Class<?> loadClass(String key, String [] bundles) {
 		try {

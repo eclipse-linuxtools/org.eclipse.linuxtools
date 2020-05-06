@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Red Hat.
+ * Copyright (c) 2016, 2020 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -33,8 +33,8 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.messages.Image;
+import org.mandas.docker.client.DockerClient;
+import org.mandas.docker.client.messages.Image;
 
 /**
  * Verifying that images are properly qualified as {@code Top-Level},

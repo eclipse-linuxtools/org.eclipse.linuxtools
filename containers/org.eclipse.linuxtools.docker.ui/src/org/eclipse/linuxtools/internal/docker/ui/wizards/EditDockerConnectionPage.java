@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2019 Red Hat Inc. and others.
+ * Copyright (c) 2014, 2020 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -62,7 +62,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
-import com.spotify.docker.client.exceptions.DockerCertificateException;
+import org.mandas.docker.client.exceptions.DockerCertificateException;
 
 /**
  * {@link WizardPage} to edit an {@link IDockerConnection}

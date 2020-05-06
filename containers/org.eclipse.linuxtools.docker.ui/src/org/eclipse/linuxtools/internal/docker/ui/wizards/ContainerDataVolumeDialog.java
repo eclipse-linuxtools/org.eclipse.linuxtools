@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2015, 2020 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -57,6 +57,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.mandas.docker.client.messages.ContainerMount;
 
 /**
  * @author xcoulon
@@ -294,7 +295,7 @@ public class ContainerDataVolumeDialog extends Dialog {
 	 * selected, and set the enablement of the associated {@link Control} at the
 	 * same time (ie: the {@link Control} are only enabled when the given
 	 * {@link Button} is selected.
-	 * 
+	 *
 	 * @param button
 	 *            the {@link Button} to bind
 	 * @param mountType
@@ -361,7 +362,7 @@ public class ContainerDataVolumeDialog extends Dialog {
 	/**
 	 * Creates an {@link IContentProposalProvider} to propose
 	 * {@link IDockerContainer} names based on the current text.
-	 * 
+	 *
 	 * @param items
 	 * @return
 	 */
@@ -438,14 +439,15 @@ public class ContainerDataVolumeDialog extends Dialog {
 				return ValidationStatus.error(null);
 			}
 			final IDockerContainerInfo selectedContainerInfo = container.info();
-			if (selectedContainerInfo != null
-					&& selectedContainerInfo.volumes() != null
-					&& !selectedContainerInfo.volumes()
-					.containsKey(model.getContainerPath())) {
-				return ValidationStatus
-						.warning(WizardMessages.getFormattedString(
-								"ContainerDataVolumeDialog.volumeWarning", //$NON-NLS-1$
-								model.getContainerPath()));
+			if (selectedContainerInfo != null && selectedContainerInfo.mounts() != null
+					&& model.getContainerPath() != null) {
+				for (ContainerMount mount : selectedContainerInfo.mounts()) {
+					if (model.getContainerPath().equals(mount.source())) {
+						return ValidationStatus
+								.warning(WizardMessages.getFormattedString("ContainerDataVolumeDialog.volumeWarning", //$NON-NLS-1$
+										model.getContainerPath()));
+					}
+				}
 			}
 		}
 		return ValidationStatus.ok();

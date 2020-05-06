@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Red Hat.
+ * Copyright (c) 2016, 2020 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -46,8 +46,8 @@ import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.ProgressHandler;
+import org.mandas.docker.client.DockerClient;
+import org.mandas.docker.client.ProgressHandler;
 
 /**
  * Testing the {@link BuildDockerImageShortcut}
@@ -110,7 +110,7 @@ public class BuildDockerImageShortcutSWTBotTest {
 	@Test
 	@RunWithProject("foo")
 	public void shouldPromptDialogThenBuildDockerImageOnFirstCall()
-			throws InterruptedException, com.spotify.docker.client.exceptions.DockerException, IOException {
+			throws InterruptedException, org.mandas.docker.client.exceptions.DockerException, IOException {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
@@ -134,7 +134,7 @@ public class BuildDockerImageShortcutSWTBotTest {
 	@Test
 	@RunWithProject("foo")
 	public void shouldBuildDockerImageImmediatelyOnSecondCall()
-			throws InterruptedException, com.spotify.docker.client.exceptions.DockerException, IOException {
+			throws InterruptedException, org.mandas.docker.client.exceptions.DockerException, IOException {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
@@ -164,7 +164,7 @@ public class BuildDockerImageShortcutSWTBotTest {
 	@Test
 	@RunWithProject("foo")
 	public void shouldNotBuildDockerImageOnSecondCallWhenAllConnectionWereRemoved()
-			throws InterruptedException, com.spotify.docker.client.exceptions.DockerException, IOException {
+			throws InterruptedException, org.mandas.docker.client.exceptions.DockerException, IOException {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
@@ -202,7 +202,7 @@ public class BuildDockerImageShortcutSWTBotTest {
 
 	@RunWithProject("foo")
 	public void shouldPromptForAnotherConnectionWhenBuildingDockerImageOnSecondCallAfterConnectionWasReplaced()
-			throws InterruptedException, com.spotify.docker.client.exceptions.DockerException, IOException {
+			throws InterruptedException, org.mandas.docker.client.exceptions.DockerException, IOException {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
@@ -243,7 +243,7 @@ public class BuildDockerImageShortcutSWTBotTest {
 	@Test
 	@RunWithProject("foo")
 	public void shouldNotBuildDockerImageOnSecondCallWhenDockerfileWasRemoved()
-			throws InterruptedException, com.spotify.docker.client.exceptions.DockerException, IOException, CoreException {
+			throws InterruptedException, org.mandas.docker.client.exceptions.DockerException, IOException, CoreException {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)

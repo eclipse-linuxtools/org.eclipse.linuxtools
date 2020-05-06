@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat.
- * 
+ * Copyright (c) 2015, 2020 Red Hat.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -14,7 +14,8 @@ package org.eclipse.linuxtools.docker.core;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
+
+import org.mandas.docker.client.messages.ContainerMount;
 
 public interface IDockerContainerInfo {
 
@@ -52,9 +53,7 @@ public interface IDockerContainerInfo {
 
 	String mountLabel();
 
-	Map<String, String> volumes();
-
-	Map<String, Boolean> volumesRW();
+	List<ContainerMount> mounts();
 
 	@Override
 	boolean equals(Object o);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat.
+ * Copyright (c) 2015, 2020 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,15 +18,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.mandas.docker.client.messages.ContainerConfig;
+import org.mandas.docker.client.messages.ContainerInfo;
+import org.mandas.docker.client.messages.HostConfig;
+import org.mandas.docker.client.messages.NetworkSettings;
+import org.mandas.docker.client.messages.PortBinding;
 import org.mockito.Mockito;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.spotify.docker.client.messages.ContainerConfig;
-import com.spotify.docker.client.messages.ContainerInfo;
-import com.spotify.docker.client.messages.HostConfig;
-import com.spotify.docker.client.messages.NetworkSettings;
-import com.spotify.docker.client.messages.PortBinding;
 
 /**
  * A factory for mock {@link ContainerInfo}s.
@@ -115,8 +115,7 @@ public class MockContainerInfoFactory {
 			Mockito.when(this.containerInfo.processLabel()).thenReturn(null);
 			Mockito.when(this.containerInfo.hostsPath()).thenReturn(null);
 			Mockito.when(this.containerInfo.mountLabel()).thenReturn(null);
-			Mockito.when(this.containerInfo.volumes()).thenReturn(null);
-			Mockito.when(this.containerInfo.volumesRw()).thenReturn(null);
+			Mockito.when(this.containerInfo.mounts()).thenReturn(null);
 
 		}
 

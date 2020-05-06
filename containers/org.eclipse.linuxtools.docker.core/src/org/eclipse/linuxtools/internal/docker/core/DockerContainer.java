@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat.
+ * Copyright (c) 2014, 2020 Red Hat.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -21,8 +21,8 @@ import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.docker.core.IDockerPortMapping;
 
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.messages.Container;
+import org.mandas.docker.client.DockerClient;
+import org.mandas.docker.client.messages.Container;
 
 public class DockerContainer implements IDockerContainer, IAdaptable {
 

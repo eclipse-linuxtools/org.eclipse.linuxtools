@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat.
+ * Copyright (c) 2015, 2020 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -23,8 +23,8 @@ import org.eclipse.linuxtools.internal.docker.core.UnixSocketConnectionSettings;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.exceptions.DockerCertificateException;
+import org.mandas.docker.client.DockerClient;
+import org.mandas.docker.client.exceptions.DockerCertificateException;
 
 /**
  * Factory for mocked {@link IDockerConnection}

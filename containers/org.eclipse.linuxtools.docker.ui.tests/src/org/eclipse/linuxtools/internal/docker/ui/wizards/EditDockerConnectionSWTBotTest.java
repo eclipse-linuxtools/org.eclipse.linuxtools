@@ -72,7 +72,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
-import com.spotify.docker.client.DockerClient;
+import org.mandas.docker.client.DockerClient;
 
 /**
  * Testing the {@link EditDockerConnection} {@link Wizard}

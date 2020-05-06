@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat.
+ * Copyright (c) 2015, 2020 Red Hat.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -35,8 +35,8 @@ import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettingsFinder;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettingsProvider;
 
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.exceptions.DockerCertificateException;
+import org.mandas.docker.client.DockerClient;
+import org.mandas.docker.client.exceptions.DockerCertificateException;
 
 /**
  * A utility class that looks for candidate {@link IDockerConnection}s on the
@@ -80,7 +80,7 @@ public class DefaultDockerConnectionSettingsFinder
 				return client.info().name();
 			}
 		} catch (DockerCertificateException
-				| com.spotify.docker.client.exceptions.DockerException
+				| org.mandas.docker.client.exceptions.DockerException
 				| InterruptedException e) {
 			// ignore and return null
 		}

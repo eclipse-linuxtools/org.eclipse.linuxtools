@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Red Hat.
+ * Copyright (c) 2016, 2020 Red Hat.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -40,11 +40,6 @@ public interface IDockerConnectionInfo {
 	 * @return the DockerRootDir
 	 */
 	String getDockerRootDir();
-	
-	/**
-	 * @return the executionDriver
-	 */
-	String getExecutionDriver();
 	
 	/**
 	 * @return the fileDescriptors
