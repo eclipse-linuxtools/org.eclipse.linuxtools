@@ -85,7 +85,6 @@
     <profile>
       <id>build-server</id>
       <build>
-        <pluginManagement>
         <plugins>
           <plugin>
             <groupId>org.eclipse.tycho.extras</groupId>
@@ -152,13 +151,11 @@
             </configuration>
           </plugin>
         </plugins>
-        </pluginManagement>
       </build>
     </profile>
     <profile>
       <id>api-generation</id>
       <build>
-        <pluginManagement>
         <plugins>
           <plugin>
             <groupId>org.eclipse.cbi.maven.plugins</groupId>
@@ -241,7 +238,6 @@
               </configuration>
 	  </plugin>
         </plugins>
-        </pluginManagement>
       </build>
     </profile>
     <profile>
