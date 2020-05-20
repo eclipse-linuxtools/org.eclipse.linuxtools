@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2019 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2014, 2020 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -23,6 +23,7 @@ import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLa
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PUBLISHED_PORTS;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PUBLISH_ALL_PORTS;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.READONLY;
+import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.UNUSED_PORTS;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * A {@link WizardPage} to let the user select the {@link IDockerImage} to run
  * and select the most common arguments (container name, port settings, etc.)
- * 
+ *
  * @author xcoulon
  *
  */
@@ -125,13 +126,13 @@ public class ImageRunSelectionPage extends WizardPage {
 
 	/**
 	 * Default constructor.
-	 * 
+	 *
 	 * @param selectedImage
 	 *            the {@link IDockerImage} to run
 	 * @param lastLaunchConfiguration
 	 *            the last {@link ILaunchConfiguration} used to run this
 	 *            {@link IDockerImage} or <code>null</code> if none exists.
-	 * 
+	 *
 	 */
 	public ImageRunSelectionPage(final IDockerImage selectedImage,
 			final ILaunchConfiguration lastLaunchConfiguration) {
@@ -146,10 +147,10 @@ public class ImageRunSelectionPage extends WizardPage {
 
 	/**
 	 * Default constructor.
-	 * 
+	 *
 	 * @param selectedConnection
 	 *            the {@link IDockerConnection} to run
-	 * 
+	 *
 	 */
 	public ImageRunSelectionPage(final IDockerConnection selectedConnection) {
 		super("ImageSelectionPage", //$NON-NLS-1$
@@ -269,7 +270,7 @@ public class ImageRunSelectionPage extends WizardPage {
 	/**
 	 * Creates the {@link Composite} container that will display widgets to
 	 * select an {@link IDockerImage}, name it and specify the command to run.
-	 * 
+	 *
 	 * @param container
 	 *            the parent {@link Composite}
 	 */
@@ -466,7 +467,6 @@ public class ImageRunSelectionPage extends WizardPage {
 						exposedPortsTableViewer, ExposedPortModel.class),
 				BeanProperties.set(ImageRunSelectionModel.SELECTED_PORTS)
 						.observe(model));
-		checkAllElements(exposedPortsTableViewer);
 
 		// disable the edit and removeButton if the table is empty
 		exposedPortsTableViewer.addSelectionChangedListener(
@@ -474,13 +474,6 @@ public class ImageRunSelectionPage extends WizardPage {
 
 		togglePortMappingControls(exposedPortsTableViewer.getTable(), addButton,
 				removeButton);
-	}
-
-	private void checkAllElements(
-			final CheckboxTableViewer exposedPortsTableViewer) {
-		exposedPortsTableViewer.setAllChecked(true);
-		model.setSelectedPorts(
-				new HashSet<>(model.getExposedPorts()));
 	}
 
 	private ISelectionChangedListener onSelectionChanged(
@@ -721,7 +714,7 @@ public class ImageRunSelectionPage extends WizardPage {
 	/**
 	 * Creates an {@link IContentProposalProvider} to propose
 	 * {@link IDockerImage} names based on the current text.
-	 * 
+	 *
 	 * @param items
 	 * @return
 	 */
@@ -859,17 +852,26 @@ public class ImageRunSelectionPage extends WizardPage {
 				final List<String> exposedPortInfos = lastLaunchConfiguration
 						.getAttribute(PUBLISHED_PORTS,
 								Collections.<String> emptyList());
+				final List<String> unusedPortInfos = lastLaunchConfiguration.getAttribute(UNUSED_PORTS,
+						Collections.<String>emptyList());
 				// FIXME: handle the case where ports where added (and selected)
 				// by the user.
 				if (selectedImageInfo != null) {
-					final List<ExposedPortModel> exposedPorts = ExposedPortModel
-							.fromStrings(
-									selectedImageInfo.config().exposedPorts());
-					model.setExposedPorts(exposedPorts);
-					final List<ExposedPortModel> selectedExposedPorts = ExposedPortModel
-							.fromStrings(exposedPortInfos);
-					this.model.setSelectedPorts(
-							new HashSet<>(selectedExposedPorts));
+					if (exposedPortInfos.isEmpty()) {
+						final List<ExposedPortModel> exposedPorts = ExposedPortModel
+								.fromStrings(selectedImageInfo.config().exposedPorts());
+						model.setExposedPorts(exposedPorts);
+						this.model.setSelectedPorts(new HashSet<>(exposedPorts));
+					} else {
+						final List<ExposedPortModel> exposedPorts = ExposedPortModel.fromStrings(exposedPortInfos);
+						model.setExposedPorts(exposedPorts);
+						this.model.setSelectedPorts(new HashSet<>(exposedPorts));
+					}
+					for (String port : unusedPortInfos) {
+						ExposedPortModel portModel = ExposedPortModel.fromString(port);
+						portModel.setSelected(false);
+						model.addExposedPort(portModel);
+					}
 				}
 
 				// links

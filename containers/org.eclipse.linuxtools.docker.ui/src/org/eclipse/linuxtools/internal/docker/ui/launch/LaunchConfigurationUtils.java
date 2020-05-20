@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015,2018 Red Hat.
- * 
+ * Copyright (c) 2015, 2020 Red Hat.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -36,6 +36,7 @@ import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLa
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PUBLISHED_PORTS;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.PUBLISH_ALL_PORTS;
 import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.READONLY;
+import static org.eclipse.linuxtools.internal.docker.ui.launch.IRunDockerImageLaunchConfigurationConstants.UNUSED_PORTS;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public class LaunchConfigurationUtils {
 	/**
 	 * Creates a new {@link ILaunchConfiguration} for the given
 	 * {@link IDockerContainer}.
-	 * 
+	 *
 	 * @param baseConfigurationName
 	 *            the base configuration name to use when creating the
 	 *            {@link ILaunchConfiguration}.
@@ -123,12 +124,14 @@ public class LaunchConfigurationUtils {
 	 * @param removeWhenExits
 	 *            flag to indicate if container should be removed when exited
 	 * @return the generated {@link ILaunchConfiguration}
-	 * 
+	 *
 	 */
 	public static ILaunchConfiguration createRunImageLaunchConfiguration(
 			final IDockerImage image,
 			final IDockerContainerConfig containerConfig,
-			final IDockerHostConfig hostConfig, final String containerName,
+			final IDockerHostConfig hostConfig,
+			final List<String> unusedPorts,
+			final String containerName,
 			final boolean removeWhenExits) {
 		try {
 			final ILaunchManager manager = DebugPlugin.getDefault()
@@ -175,6 +178,7 @@ public class LaunchConfigurationUtils {
 			} else {
 				workingCopy.setAttribute(PUBLISHED_PORTS,
 						serializePortBindings(hostConfig.portBindings()));
+				workingCopy.setAttribute(UNUSED_PORTS, unusedPorts);
 			}
 			// links (with format being: "<containerName>:<containerAlias>")
 			workingCopy.setAttribute(LINKS, hostConfig.links());
@@ -219,7 +223,7 @@ public class LaunchConfigurationUtils {
 			if (hostConfig.networkMode() != null)
 				workingCopy.setAttribute(NETWORK_MODE,
 						hostConfig.networkMode());
-				
+
 			// resources limitations
 			if (containerConfig.memory() != null) {
 				workingCopy.setAttribute(ENABLE_LIMITS, true);
@@ -250,7 +254,7 @@ public class LaunchConfigurationUtils {
 	/**
 	 * Serializes the given Port Bindings to save them in an
 	 * {@link ILaunchConfiguration}
-	 * 
+	 *
 	 * @param bindings
 	 * @return a {@link List} of port bindings serialized in the following
 	 *         format:
@@ -283,7 +287,7 @@ public class LaunchConfigurationUtils {
 	/**
 	 * Serializes the given Port Bindings to save them in an
 	 * {@link ILaunchConfiguration}
-	 * 
+	 *
 	 * @param bindings
 	 * @return a {@link List} of port bindings serialized in the following
 	 *         format:
@@ -315,7 +319,7 @@ public class LaunchConfigurationUtils {
 	/**
 	 * Deserializes the given Port Bindings to use them in an
 	 * {@link ILaunchConfiguration}
-	 * 
+	 *
 	 * @param bindings
 	 *            a {@link List} of serialized bindings
 	 * @return a {@link Map} of {@link List} of {@link IDockerPortBinding}
@@ -347,7 +351,7 @@ public class LaunchConfigurationUtils {
 
 	/**
 	 * Computes the size of the given {@link Button} and returns the width.
-	 * 
+	 *
 	 * @param button
 	 *            the button for which the size must be computed.
 	 * @return the width hint for the given button
@@ -364,7 +368,7 @@ public class LaunchConfigurationUtils {
 	/**
 	 * Looks-up the {@link ILaunchConfiguration} with the given type and
 	 * <strong>IDockerImage's name</strong>.
-	 * 
+	 *
 	 * @param type
 	 *            the configuration type
 	 * @param imageName
@@ -382,7 +386,7 @@ public class LaunchConfigurationUtils {
 	/**
 	 * Looks-up the {@link ILaunchConfiguration} with the given type and
 	 * <strong>IDockerImage's name</strong>.
-	 * 
+	 *
 	 * @param type
 	 *            the configuration type
 	 * @param imageName
@@ -417,7 +421,7 @@ public class LaunchConfigurationUtils {
 	/**
 	 * Returns the {@link ILaunchConfigurationWorkingCopy} with the given type
 	 * and <strong>IDockerImage's name</strong>.
-	 * 
+	 *
 	 * @param type
 	 *            the configuration type
 	 * @param imageName
@@ -447,7 +451,7 @@ public class LaunchConfigurationUtils {
 	/**
 	 * Looks-up the {@link ILaunchConfiguration} with the given type and
 	 * <strong>name</strong>.
-	 * 
+	 *
 	 * @param type
 	 *            the configuration type
 	 * @param name
@@ -473,7 +477,7 @@ public class LaunchConfigurationUtils {
 	/**
 	 * Converts the given <code>path</code> to a Unix path if the current OS if
 	 * {@link Platform#OS_WIN32}
-	 * 
+	 *
 	 * @param path
 	 *            the path to convert
 	 * @return the converted path or the given path, depending on the current
@@ -490,7 +494,7 @@ public class LaunchConfigurationUtils {
 	/**
 	 * Converts the given path to a portable form, replacing all "\" and ": "
 	 * with "/" if the given <code>os</code> is {@link Platform#OS_WIN32}.
-	 * 
+	 *
 	 * @param os
 	 *            the current OS
 	 * @param path
@@ -519,12 +523,12 @@ public class LaunchConfigurationUtils {
 	/**
 	 * Converts the given <code>path</code> back to a Windows path if the
 	 * current OS if {@link Platform#OS_WIN32}.
-	 * 
+	 *
 	 * <p>
 	 * Note: This is the revert operation of
 	 * {@link LaunchConfigurationUtils#convertToUnixPath(String)}.
 	 * </p>
-	 * 
+	 *
 	 * @param path
 	 *            the path to convert
 	 * @return the converted path or the given path, depending on the current
@@ -541,7 +545,7 @@ public class LaunchConfigurationUtils {
 	/**
 	 * Converts the given path to a portable form, replacing all "\" and ": "
 	 * with "/" if the given <code>os</code> is {@link Platform#OS_WIN32}.
-	 * 
+	 *
 	 * @param os
 	 *            the current OS
 	 * @param path
@@ -569,7 +573,7 @@ public class LaunchConfigurationUtils {
 	/**
 	 * Creates a Launch Configuration name from the given repoName or from the
 	 * given resource's project if the repoName was <code>null</code>.
-	 * 
+	 *
 	 * @param imageName
 	 *            the full image name
 	 * @param resource
@@ -607,7 +611,7 @@ public class LaunchConfigurationUtils {
 	/**
 	 * Creates a new {@link ILaunchConfiguration} to build an
 	 * {@link IDockerImage} from a Dockerfile {@link IResource}.
-	 * 
+	 *
 	 * @param connection
 	 *            the connection to use to submit the build
 	 * @param repoName
@@ -644,7 +648,7 @@ public class LaunchConfigurationUtils {
 	/**
 	 * Creates an {@link ILaunchConfiguration} for to run the
 	 * {@code docker-compose up} command.
-	 * 
+	 *
 	 * @param connection
 	 *            the Docker connection to use
 	 * @param dockerComposeScript
@@ -681,7 +685,7 @@ public class LaunchConfigurationUtils {
 	/**
 	 * Creates a Launch Configuration name from the given
 	 * {@code dockerComposeScript}.
-	 * 
+	 *
 	 * @param dockerComposeScript
 	 *            the name of the {@code Docker Compose} script
 	 * @return the {@link ILaunchConfiguration} name
@@ -696,7 +700,7 @@ public class LaunchConfigurationUtils {
 	 * Updates all {@link ILaunchConfiguration} of the given {@code type} where
 	 * there is an attribute with the given {@code attributeName} of the given
 	 * {@code oldValue}, and sets the {@code newValue} instead.
-	 * 
+	 *
 	 * @param type
 	 *            the type of {@link ILaunchConfiguration} to find
 	 * @param attributeName

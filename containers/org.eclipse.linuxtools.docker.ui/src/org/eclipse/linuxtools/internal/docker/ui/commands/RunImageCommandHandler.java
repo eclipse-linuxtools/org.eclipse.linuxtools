@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2014, 2020 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -16,6 +16,8 @@ package org.eclipse.linuxtools.internal.docker.ui.commands;
 import static org.eclipse.linuxtools.internal.docker.ui.commands.CommandUtils.getRunConsole;
 
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -70,10 +72,11 @@ public class RunImageCommandHandler extends AbstractHandler {
 				if (runImage) {
 					final IDockerContainerConfig containerConfig = wizard
 							.getDockerContainerConfig();
+					List<String> unusedPorts = new ArrayList<>();
 					final IDockerHostConfig hostConfig = wizard
-							.getDockerHostConfig();
+							.getDockerHostConfig(unusedPorts);
 					runImage(selectedImage, containerConfig, null,
-							hostConfig, wizard.getDockerContainerName(),
+							hostConfig, unusedPorts, wizard.getDockerContainerName(),
 							wizard.removeWhenExits());
 				}
 			} catch (DockerException | CoreException e) {
@@ -85,7 +88,7 @@ public class RunImageCommandHandler extends AbstractHandler {
 
 	/**
 	 * Run the given {@link IDockerImage} with the given settings
-	 * 
+	 *
 	 * @param image
 	 * @param containerConfig
 	 * @param hostConfig
@@ -95,7 +98,9 @@ public class RunImageCommandHandler extends AbstractHandler {
 	public static void runImage(final IDockerImage image,
 			final IDockerContainerConfig containerConfig,
 			final ILaunch launch,
-			final IDockerHostConfig hostConfig, final String containerName,
+			final IDockerHostConfig hostConfig,
+			final List<String> unusedPorts,
+			final String containerName,
 			final boolean removeWhenExits) {
 		final IDockerConnection connection = image.getConnection();
 		if (containerConfig.tty()) {
@@ -164,7 +169,7 @@ public class RunImageCommandHandler extends AbstractHandler {
 					// create a launch configuration from the container
 					LaunchConfigurationUtils.createRunImageLaunchConfiguration(image,
 							containerConfig,
-							hostConfig, containerName,
+							hostConfig, unusedPorts, containerName,
 							removeWhenExits);
 				} catch (final DockerException | InterruptedException e) {
 					if (console != null) {

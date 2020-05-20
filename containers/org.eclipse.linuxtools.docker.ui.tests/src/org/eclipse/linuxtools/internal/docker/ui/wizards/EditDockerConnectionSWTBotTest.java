@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2019 Red Hat.
+ * Copyright (c) 2015, 2020 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.resources.IResource;
@@ -148,7 +149,8 @@ public class EditDockerConnectionSWTBotTest {
 		final IDockerHostConfig hostConfig = MockDockerHostConfigFactory.publishAllPorts(true).networkMode(networkMode)
 				.build();
 		final ILaunchConfiguration runImageLaunchConfiguration = LaunchConfigurationUtils
-				.createRunImageLaunchConfiguration(image, containerConfig, hostConfig, "some_container", false);
+				.createRunImageLaunchConfiguration(image, containerConfig, hostConfig, new ArrayList<String>(),
+						"some_container", false);
 		return runImageLaunchConfiguration.getName();
 	}
 

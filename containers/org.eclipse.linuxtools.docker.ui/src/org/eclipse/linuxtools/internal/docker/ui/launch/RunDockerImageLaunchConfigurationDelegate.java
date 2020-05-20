@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015,2018 Red Hat.
- * 
+ * Copyright (c) 2015, 2020 Red Hat.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -70,6 +70,8 @@ public class RunDockerImageLaunchConfigurationDelegate
 					launch,
 					hostConfig,
 					config.getAttribute(
+							IRunDockerImageLaunchConfigurationConstants.UNUSED_PORTS, new ArrayList<String>()),
+					config.getAttribute(
 							IRunDockerImageLaunchConfigurationConstants.CONTAINER_NAME,
 							(String) null),
 					config.getAttribute(
@@ -106,7 +108,7 @@ public class RunDockerImageLaunchConfigurationDelegate
 					.deserializePortBindings(serializedBindings);
 			hostConfigBuilder.portBindings(portBindings);
 		}
-		
+
 		// container links
 		final List<String> links = config.getAttribute(
 				IRunDockerImageLaunchConfigurationConstants.LINKS,
@@ -128,10 +130,10 @@ public class RunDockerImageLaunchConfigurationDelegate
 				bind.append(",ro"); //$NON-NLS-1$
 			}
 			binds.add(bind.toString());
-					
+
 		}
 		hostConfigBuilder.binds(binds);
-		
+
 		// run in privileged mode
 		final boolean privileged = config.getAttribute(
 				IRunDockerImageLaunchConfigurationConstants.PRIVILEGED,
@@ -188,7 +190,7 @@ public class RunDockerImageLaunchConfigurationDelegate
 				IRunDockerImageLaunchConfigurationConstants.ENV_VARIABLES,
 				new ArrayList<String>());
 		config.env(environmentVariables);
-		
+
 		// labels
 		final Map<String, String> labelVariables = lconfig.getAttribute(
 				IRunDockerImageLaunchConfigurationConstants.LABELS,
@@ -251,7 +253,7 @@ public class RunDockerImageLaunchConfigurationDelegate
 	/**
 	 * Show a selection dialog that allows the user to choose one of the
 	 * connections to use to build the Image.
-	 * 
+	 *
 	 * @param connections
 	 *            Array of connections.
 	 * @return The chosen connection, or <code>null</code> if the user cancelled
@@ -283,7 +285,7 @@ public class RunDockerImageLaunchConfigurationDelegate
 
 	/**
 	 * Get the active Workbench shell.
-	 * 
+	 *
 	 * @return active shell as returned by the plug-in
 	 */
 	protected Shell getActiveWorkbenchShell() {

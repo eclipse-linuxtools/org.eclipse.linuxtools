@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat.
+ * Copyright (c) 2014, 2020 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -126,7 +126,7 @@ public class ImageRun extends Wizard {
 		return this.imageRunSelectionPage.getModel().isRemoveWhenExits();
 	}
 
-	public IDockerHostConfig getDockerHostConfig() {
+	public IDockerHostConfig getDockerHostConfig(List<String> unusedPorts) {
 		final ImageRunSelectionModel selectionModel = this.imageRunSelectionPage
 				.getModel();
 		final ImageRunResourceVolumesVariablesModel resourcesModel = this.imageRunResourceVolumesPage
@@ -135,6 +135,7 @@ public class ImageRun extends Wizard {
 				.getModel();
 
 		final DockerHostConfig.Builder hostConfigBuilder = new DockerHostConfig.Builder();
+
 		if (selectionModel.isPublishAllPorts()) {
 			hostConfigBuilder.publishAllPorts(true);
 		} else {
@@ -142,6 +143,17 @@ public class ImageRun extends Wizard {
 			for (ExposedPortModel exposedPort : selectionModel.getExposedPorts()) {
 				// only selected Ports in the CheckboxTableViewer are exposed.
 				if (!selectionModel.getSelectedPorts().contains(exposedPort)) {
+					StringBuilder b = new StringBuilder();
+					b.append(exposedPort.getContainerPort());
+					b.append("/");
+					b.append(exposedPort.getPortType());
+					b.append(":"); //$NON-NLS-1$
+					if (exposedPort.getHostAddress() != null) {
+						b.append(exposedPort.getHostAddress());
+					}
+					b.append(":"); //$NON-NLS-1$
+					b.append(exposedPort.getHostPort());
+					unusedPorts.add(b.toString());
 					continue;
 				}
 				final DockerPortBinding portBinding = new DockerPortBinding(exposedPort.getHostAddress(),

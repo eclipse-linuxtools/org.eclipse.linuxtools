@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat.
+ * Copyright (c) 2015, 2020 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -76,7 +77,8 @@ public class ImageRunSWTBotTest {
 		final IDockerHostConfig hostConfig = MockDockerHostConfigFactory.publishAllPorts(true).networkMode(networkMode)
 				.build();
 		final ILaunchConfiguration runImageLaunchConfiguration = LaunchConfigurationUtils
-				.createRunImageLaunchConfiguration(image, containerConfig, hostConfig, "some_container", false);
+				.createRunImageLaunchConfiguration(image, containerConfig, hostConfig, new ArrayList<String>(),
+						"some_container", false);
 		return runImageLaunchConfiguration.getName();
 	}
 

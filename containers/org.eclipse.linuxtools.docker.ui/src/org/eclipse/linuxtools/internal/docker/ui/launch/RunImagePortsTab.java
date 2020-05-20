@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2019 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2015, 2020 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -339,6 +339,8 @@ public class RunImagePortsTab extends AbstractLaunchConfigurationTab
 			final List<String> publishedPorts = configuration.getAttribute(
 					IRunDockerImageLaunchConfigurationConstants.PUBLISHED_PORTS,
 					new ArrayList<String>());
+			final List<String> unusedPorts = configuration
+					.getAttribute(IRunDockerImageLaunchConfigurationConstants.UNUSED_PORTS, new ArrayList<String>());
 			final Set<ExposedPortModel> selectedPorts = new HashSet<>();
 			for (String port : publishedPorts) {
 				final ImageRunSelectionModel.ExposedPortModel exposedPort = ImageRunSelectionModel.ExposedPortModel
@@ -348,6 +350,13 @@ public class RunImagePortsTab extends AbstractLaunchConfigurationTab
 					selectedPorts.add(exposedPort);
 				}
 			}
+			for (String port : unusedPorts) {
+				final ImageRunSelectionModel.ExposedPortModel exposedPort = ImageRunSelectionModel.ExposedPortModel
+						.createPortModel(port);
+				exposedPort.setSelected(false);
+				model.addExposedPort(exposedPort);
+			}
+
 			// select ports
 			model.setSelectedPorts(selectedPorts);
 

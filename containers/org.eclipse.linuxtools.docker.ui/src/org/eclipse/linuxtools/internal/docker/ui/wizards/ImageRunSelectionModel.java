@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat.
- * 
+ * Copyright (c) 2014, 2020 Red Hat.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -33,7 +33,7 @@ import org.eclipse.linuxtools.internal.docker.ui.databinding.BaseDatabindingMode
 
 /**
  * Databinding model for the {@link ImageRunSelectionPage}
- * 
+ *
  * @author xcoulon
  *
  */
@@ -373,7 +373,7 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 
 	/**
 	 * Set the container links
-	 * 
+	 *
 	 * @param links
 	 *            in the following format:
 	 *            <code>&lt;containerName&gt;:&lt;containerAlias&gt;</code>
@@ -477,7 +477,7 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 		/**
 		 * Parses and converts the {@link List} of the given {@link String}
 		 * values into a {@link List} of {@link ExposedPortModel}
-		 * 
+		 *
 		 * @param exposedPortInfos
 		 *            the input values
 		 * @return the corresponding {@link ExposedPortModel}s
@@ -498,7 +498,7 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 		/**
 		 * Parse the given value and returns an instance of
 		 * {@link ExposedPortModel}.
-		 * 
+		 *
 		 * @param exposedPortInfo
 		 *            the value to parse
 		 * @return the corresponding {@link ExposedPortModel}
@@ -512,7 +512,7 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 			if (firstColumnSeparator == -1 && exposedPortInfo
 					.indexOf(CONTAINER_TYPE_SEPARATOR) != -1) {
 				final String type = exposedPortInfo.substring(
-						exposedPortInfo.indexOf(CONTAINER_TYPE_SEPARATOR)); // $NON-NLS-1$
+						exposedPortInfo.indexOf(CONTAINER_TYPE_SEPARATOR) + 1); // $NON-NLS-1$
 				final ExposedPortModel exposedPort = new ExposedPortModel(
 						privatePort, type, "", privatePort); // $NON-NLS-1$
 				return exposedPort; // $NON-NLS-1$
@@ -521,7 +521,8 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 						.indexOf(SEPARATOR,
 						firstColumnSeparator + 1);
 				final String type = exposedPortInfo.substring(
-						exposedPortInfo.indexOf(CONTAINER_TYPE_SEPARATOR), // $NON-NLS-1$
+						exposedPortInfo.indexOf(CONTAINER_TYPE_SEPARATOR)
+								+ 1, // $NON-NLS-1$
 						firstColumnSeparator); // $NON-NLS-1$
 				final String hostIP = exposedPortInfo.substring(
 						firstColumnSeparator + 1, secondColumnSeparator);
@@ -535,7 +536,7 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 
 		/**
 		 * Full constructor
-		 * 
+		 *
 		 * @param privatePort
 		 * @param portType
 		 * @param hostAddress
@@ -554,7 +555,7 @@ public class ImageRunSelectionModel extends BaseDatabindingModel {
 
 		/**
 		 * Create an ExposedPortModel from its toString output
-		 * 
+		 *
 		 * @param stringValue
 		 * @return ExposedPortModel
 		 */
