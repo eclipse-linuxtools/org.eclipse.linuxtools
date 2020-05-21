@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat.
- * 
+ * Copyright (c) 2014, 2020 Red Hat.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -15,9 +15,11 @@ package org.eclipse.linuxtools.docker.ui.wizards;
 
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.linuxtools.docker.core.AbstractRegistry;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IRegistry;
+import org.eclipse.linuxtools.internal.docker.core.RegistryInfo;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageSearchModel;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageSearchPage;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageTagSelectionPage;
@@ -25,7 +27,7 @@ import org.eclipse.linuxtools.internal.docker.ui.wizards.WizardMessages;
 
 /**
  * Wizard to search for images.
- * 
+ *
  */
 public class ImageSearch extends Wizard {
 
@@ -42,12 +44,12 @@ public class ImageSearch extends Wizard {
 	private final ImageSearchModel imageSearchModel;
 
 	/**
-	 * Default Constructor
-	 * 
-	 * @param connection
-	 *            the current connection to a target Docker daemon
-	 * @param name
-	 *            the current image name or <code>null</code> if not applicable
+	 * Constructor
+	 *
+	 * @param connection the current connection to a target Docker daemon
+	 * @param name       the current image name or <code>null</code> if not
+	 *                   applicable
+	 * @param reg        registry to use
 	 */
 	public ImageSearch(final IDockerConnection connection, final String name, final IRegistry reg) {
 		setWindowTitle(WizardMessages.getString("ImageSearch.title")); //$NON-NLS-1$
@@ -56,6 +58,17 @@ public class ImageSearch extends Wizard {
 		this.imageSearchPage = new ImageSearchPage(this.imageSearchModel, reg);
 		this.imageTagSelectionPage = new ImageTagSelectionPage(
 				this.imageSearchModel, reg);
+	}
+
+	/**
+	 * Constructor
+	 *
+	 * @param connection the current connection to a target Docker daemon
+	 * @param name       the current image name or <code>null</code> if not
+	 *                   applicable
+	 */
+	public ImageSearch(final IDockerConnection connection, final String name) {
+		this(connection, name, new RegistryInfo(AbstractRegistry.DOCKERHUB_REGISTRY, true));
 	}
 
 	@Override
