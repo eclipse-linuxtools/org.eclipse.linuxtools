@@ -12,18 +12,23 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.core;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.linuxtools.docker.core.IDockerContainerConfig;
 import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
+import org.eclipse.linuxtools.docker.core.IDockerContainerInfo2;
+import org.eclipse.linuxtools.docker.core.IDockerContainerMount;
 import org.eclipse.linuxtools.docker.core.IDockerContainerState;
 import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
 import org.eclipse.linuxtools.docker.core.IDockerNetworkSettings;
 import org.mandas.docker.client.messages.ContainerInfo;
 import org.mandas.docker.client.messages.ContainerMount;
 
-public class DockerContainerInfo implements IDockerContainerInfo {
+public class DockerContainerInfo
+		implements IDockerContainerInfo, IDockerContainerInfo2 {
 
 	private String id;
 	private Date created;
@@ -42,7 +47,7 @@ public class DockerContainerInfo implements IDockerContainerInfo {
 	private String execDriver;
 	private String processLabel;
 	private String mountLabel;
-	private List<ContainerMount> mounts;
+	private List<IDockerContainerMount> mounts;
 
 	public DockerContainerInfo (final ContainerInfo info) {
 		this.id = info != null ? info.id() : null;
@@ -66,7 +71,14 @@ public class DockerContainerInfo implements IDockerContainerInfo {
 		this.execDriver = info != null ? info.execDriver() : null;
 		this.processLabel = info != null ? info.processLabel() : null;
 		this.mountLabel = info != null ? info.mountLabel() : null;
-		this.mounts = info != null ? info.mounts() : null;
+		if (info.mounts() != null) {
+			this.mounts = new ArrayList<>();
+			for (ContainerMount mount : info.mounts()) {
+				this.mounts.add(new DockerContainerMount(mount));
+			}
+		} else {
+			this.mounts = null;
+		}
 	}
 
 	@Override
@@ -155,8 +167,20 @@ public class DockerContainerInfo implements IDockerContainerInfo {
 	}
 
 	@Override
-	public List<ContainerMount> mounts() {
+	public List<IDockerContainerMount> mounts() {
 		return mounts;
+	}
+
+	@Override
+	@Deprecated
+	public Map<String, String> volumes() {
+		return null;
+	}
+
+	@Override
+	@Deprecated
+	public Map<String, Boolean> volumesRW() {
+		return null;
 	}
 
 }

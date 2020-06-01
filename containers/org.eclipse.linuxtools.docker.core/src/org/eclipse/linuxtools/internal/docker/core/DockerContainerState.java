@@ -58,8 +58,8 @@ public class DockerContainerState implements IDockerContainerState {
 	}
 
 	@Override
-	public Long exitCode() {
-		return exitCode;
+	public Integer exitCode() {
+		return Integer.valueOf(exitCode.intValue());
 	}
 
 	@Override

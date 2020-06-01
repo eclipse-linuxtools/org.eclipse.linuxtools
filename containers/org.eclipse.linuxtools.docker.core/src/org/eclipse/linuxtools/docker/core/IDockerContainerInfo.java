@@ -14,8 +14,7 @@ package org.eclipse.linuxtools.docker.core;
 
 import java.util.Date;
 import java.util.List;
-
-import org.mandas.docker.client.messages.ContainerMount;
+import java.util.Map;
 
 public interface IDockerContainerInfo {
 
@@ -53,7 +52,9 @@ public interface IDockerContainerInfo {
 
 	String mountLabel();
 
-	List<ContainerMount> mounts();
+	Map<String, String> volumes();
+
+	Map<String, Boolean> volumesRW();
 
 	@Override
 	boolean equals(Object o);

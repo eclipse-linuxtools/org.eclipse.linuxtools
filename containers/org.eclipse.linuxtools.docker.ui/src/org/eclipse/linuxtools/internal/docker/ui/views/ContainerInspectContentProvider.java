@@ -23,6 +23,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerConfig;
 import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
+import org.eclipse.linuxtools.docker.core.IDockerContainerInfo2;
 import org.eclipse.linuxtools.docker.core.IDockerContainerState;
 import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
 import org.eclipse.linuxtools.docker.core.IDockerNetworkSettings;
@@ -64,7 +65,7 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 					new Object[]{"Path", info.path()}, //$NON-NLS-1$
 					new Object[]{"ProcessLabel", info.processLabel()}, //$NON-NLS-1$
 					new Object[]{"ResolvConfPath", info.resolvConfPath()}, //$NON-NLS-1$
-					new Object[] { "Mounts", info.mounts() }, //$NON-NLS-1$
+					new Object[] { "Mounts", ((IDockerContainerInfo2) info).mounts() }, //$NON-NLS-1$
 			};
 		}return EMPTY;
 	}

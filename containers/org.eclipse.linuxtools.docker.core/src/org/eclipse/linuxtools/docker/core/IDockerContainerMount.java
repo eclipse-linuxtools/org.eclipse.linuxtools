@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2020 Red Hat.
+ * Copyright (c) 2020 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -10,21 +10,28 @@
  * Contributors:
  *     Red Hat - Initial Contribution
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.docker.core;
+package org.eclipse.linuxtools.docker.core;
 
-import org.eclipse.linuxtools.docker.core.IDockerContainerExit;
+/**
+ * @since 4.7
+ *
+ */
+public interface IDockerContainerMount {
 
-public class DockerContainerExit implements IDockerContainerExit {
+	String type();
 
-	private Long statusCode;
+	String name();
 
-	public DockerContainerExit(Long long1) {
-		this.statusCode = long1;
-	}
+	String source();
 
-	@Override
-	public Integer statusCode() {
-		return Integer.valueOf(statusCode.intValue());
-	}
+	String destination();
+
+	String driver();
+
+	String mode();
+
+	Boolean rw();
+
+	String propagation();
 
 }

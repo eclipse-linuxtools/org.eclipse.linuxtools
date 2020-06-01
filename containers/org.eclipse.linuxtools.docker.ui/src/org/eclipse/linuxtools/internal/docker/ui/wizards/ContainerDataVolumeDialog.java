@@ -41,7 +41,8 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
-import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
+import org.eclipse.linuxtools.docker.core.IDockerContainerInfo2;
+import org.eclipse.linuxtools.docker.core.IDockerContainerMount;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ImageRunResourceVolumesVariablesModel.MountType;
 import org.eclipse.swt.SWT;
@@ -57,7 +58,6 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.mandas.docker.client.messages.ContainerMount;
 
 /**
  * @author xcoulon
@@ -438,15 +438,21 @@ public class ContainerDataVolumeDialog extends Dialog {
 				// just make sure that the dialog cannot complete
 				return ValidationStatus.error(null);
 			}
-			final IDockerContainerInfo selectedContainerInfo = container.info();
+			final IDockerContainerInfo2 selectedContainerInfo = (IDockerContainerInfo2) container.info();
 			if (selectedContainerInfo != null && selectedContainerInfo.mounts() != null
 					&& model.getContainerPath() != null) {
-				for (ContainerMount mount : selectedContainerInfo.mounts()) {
+				boolean shouldWarn = true;
+				for (IDockerContainerMount mount : selectedContainerInfo.mounts()) {
 					if (model.getContainerPath().equals(mount.source())) {
-						return ValidationStatus
-								.warning(WizardMessages.getFormattedString("ContainerDataVolumeDialog.volumeWarning", //$NON-NLS-1$
-										model.getContainerPath()));
+						shouldWarn = false;
+						break;
 					}
+				}
+				if (shouldWarn) {
+					return ValidationStatus
+							.warning(WizardMessages.getFormattedString("ContainerDataVolumeDialog.volumeWarning", //$NON-NLS-1$
+									model.getContainerPath()));
+
 				}
 			}
 		}

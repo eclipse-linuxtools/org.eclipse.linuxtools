@@ -14,6 +14,6 @@ package org.eclipse.linuxtools.docker.core;
 
 public interface IDockerContainerExit {
 
-	Long statusCode();
+	Integer statusCode();
 
 }

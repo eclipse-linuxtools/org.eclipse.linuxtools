@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2020 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -40,7 +40,14 @@ public interface IDockerConnectionInfo {
 	 * @return the DockerRootDir
 	 */
 	String getDockerRootDir();
-	
+
+	/**
+	 * @return the executionDriver
+	 * @deprecated this will be removed in Docker Tooling 5.0.0
+	 */
+	@Deprecated
+	String getExecutionDriver();
+
 	/**
 	 * @return the fileDescriptors
 	 */
@@ -65,17 +72,17 @@ public interface IDockerConnectionInfo {
 	 * @return the initSha1
 	 */
 	String getInitSha1();
-	
+
 	/**
 	 * @return the IndexServerAddress
 	 */
 	String getIndexServerAddress();
-	
+
 	/**
 	 * @return the IPv4Forwarding flag
 	 */
 	boolean isIPv4Forwarding();
-	
+
 	/**
 	 * @return the kernelVersion
 	 */
@@ -85,7 +92,7 @@ public interface IDockerConnectionInfo {
 	 * @return the Labels
 	 */
 	List<String> getLabels();
-	
+
 	/**
 	 * @return number of CPUs
 	 */
@@ -95,17 +102,17 @@ public interface IDockerConnectionInfo {
 	 * @return total memory
 	 */
 	long getTotalMemory();
-	
+
 	/**
 	 * @return VM name
 	 */
 	String getName();
-	
+
 	/**
 	 * @return VM ID
 	 */
 	String getId();
-	
+
 	/**
 	 * @return the storageDriver
 	 */

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2020 Red Hat.
+ * Copyright (c) 2020 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -10,21 +10,17 @@
  * Contributors:
  *     Red Hat - Initial Contribution
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.docker.core;
+package org.eclipse.linuxtools.docker.core;
 
-import org.eclipse.linuxtools.docker.core.IDockerContainerExit;
+import java.util.List;
 
-public class DockerContainerExit implements IDockerContainerExit {
+/**
+ * @since 4.7
+ * @author jjohnstn
+ *
+ */
+public interface IDockerContainerInfo2 {
 
-	private Long statusCode;
-
-	public DockerContainerExit(Long long1) {
-		this.statusCode = long1;
-	}
-
-	@Override
-	public Integer statusCode() {
-		return Integer.valueOf(statusCode.intValue());
-	}
+	List<IDockerContainerMount> mounts();
 
 }

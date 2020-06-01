@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2020 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -50,7 +50,7 @@ public class DockerConnectionInfo implements IDockerConnectionInfo {
 	private final boolean ipv4Forwarding;
 	private final List<String> labels;
 	private final String dockerRootDir;
-	
+
 	public DockerConnectionInfo(final Info info, final Version version) {
 		this.containers = info != null ? info.containers() : -1;
 		this.debug = info != null ? info.debug() : false;
@@ -83,7 +83,7 @@ public class DockerConnectionInfo implements IDockerConnectionInfo {
 				: null;
 		this.labels = info != null ? info.labels() : null;
 		this.dockerRootDir = info != null ? info.dockerRootDir() : null;
-		
+
 	}
 
 	@Override
@@ -207,6 +207,12 @@ public class DockerConnectionInfo implements IDockerConnectionInfo {
 	@Override
 	public String getDockerRootDir() {
 		return dockerRootDir;
+	}
+
+	@Override
+	@Deprecated
+	public String getExecutionDriver() {
+		return null;
 	}
 
 }

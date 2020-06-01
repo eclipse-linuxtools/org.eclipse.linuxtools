@@ -20,7 +20,7 @@ public interface IDockerContainerState {
 
 	Integer pid();
 
-	Long exitCode();
+	Integer exitCode();
 
 	Date startDate();
 

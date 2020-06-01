@@ -66,6 +66,7 @@ public class ImageSearch extends Wizard {
 	 * @param connection the current connection to a target Docker daemon
 	 * @param name       the current image name or <code>null</code> if not
 	 *                   applicable
+	 * @since 4.7
 	 */
 	public ImageSearch(final IDockerConnection connection, final String name) {
 		this(connection, name, new RegistryInfo(AbstractRegistry.DOCKERHUB_REGISTRY, true));
