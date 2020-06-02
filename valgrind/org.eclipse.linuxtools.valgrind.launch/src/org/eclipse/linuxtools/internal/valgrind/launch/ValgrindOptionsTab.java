@@ -586,20 +586,22 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
     }
 
     private boolean isGeneralValid() {
-        String[] suppFiles = suppFileList.getItems();
-        boolean result = true;
-        for (int i = 0; i < suppFiles.length && result; i++) {
-            try {
-                IPath suppfile = getPlugin().parseWSPath(suppFiles[i]);
-                if (!suppfile.toFile().exists()) {
-                    setErrorMessage(NLS.bind(Messages.getString("ValgrindOptionsTab.suppressions_file_doesnt_exist"), suppFiles[i])); //$NON-NLS-1$
-                    result = false;
-                }
-            } catch (CoreException e) {
-                // should only occur if there's a cycle in variable substitution
-                e.printStackTrace();
-            }
-        }
+    	boolean result = true;
+    	if (suppFileList != null) {
+    		String[] suppFiles = suppFileList.getItems();
+    		for (int i = 0; i < suppFiles.length && result; i++) {
+    			try {
+    				IPath suppfile = getPlugin().parseWSPath(suppFiles[i]);
+    				if (!suppfile.toFile().exists()) {
+    					setErrorMessage(NLS.bind(Messages.getString("ValgrindOptionsTab.suppressions_file_doesnt_exist"), suppFiles[i])); //$NON-NLS-1$
+    					result = false;
+    				}
+    			} catch (CoreException e) {
+    				// should only occur if there's a cycle in variable substitution
+    				e.printStackTrace();
+    			}
+    		}
+    	}
 
         return result;
     }
