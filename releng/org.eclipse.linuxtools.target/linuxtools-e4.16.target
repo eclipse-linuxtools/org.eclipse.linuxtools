@@ -21,7 +21,7 @@
 <unit id="org.mandas.docker-client.source" version="3.2.1.v20200519-1937"/>
 <unit id="javassist" version="3.13.0.GA_v201209210905"/>
 <unit id="javax.ws.rs" version="2.1.6.v20200505-2127"/>
-<unit id="javax.xml.bind" version="2.2.0.v201105210648"/>
+<unit id="jakarta.xml.bind" version="2.3.3.v20200525-2159"/>
 <unit id="javax.xml.stream" version="1.0.1.v201004272200"/>
 <unit id="com.github.jnr.x86asm" version="1.0.2.v20200501-1917"/>
 <unit id="org.aopalliance" version="1.0.0.v201105210816"/>

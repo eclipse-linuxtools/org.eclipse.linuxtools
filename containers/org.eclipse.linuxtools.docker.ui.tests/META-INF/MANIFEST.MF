@@ -34,8 +34,8 @@ Require-Bundle: org.eclipse.linuxtools.docker.ui;bundle-version="1.0.0",
  org.eclipse.debug.ui,
  org.eclipse.ui.console;bundle-version="3.6.100",
  org.eclipse.launchbar.ui;bundle-version="2.0.1",
- org.eclipse.launchbar.ui.controls;bundle-version="1.0.0",
- javax.xml.bind;bundle-version="2.2.0"
+ org.eclipse.launchbar.ui.controls;bundle-version="1.0.0"
+Import-Package: javax.xml.bind;bundle-version="2.3.3"
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.linuxtools.internal.docker.ui.testutils;x-friends:="org.eclipse.linuxtools.docker.reddeer,org.eclipse.linuxtools.docker.reddeer.ui,org.eclipse.linuxtools.docker.integration.tests"

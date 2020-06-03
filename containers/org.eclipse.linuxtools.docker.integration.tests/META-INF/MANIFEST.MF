@@ -29,8 +29,8 @@ Require-Bundle: org.junit,
  org.eclipse.ui.console,
  org.eclipse.ui,
  org.eclipse.swt,
- com.google.guava;bundle-version="21.0.0",
- javax.xml.bind;bundle-version="2.2.0"
+ com.google.guava;bundle-version="21.0.0"
+Import-Package: javax.xml.bind;bundle-version="2.3.3"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.debug.core,
