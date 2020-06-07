@@ -19,5 +19,5 @@ Require-Bundle: org.eclipse.debug.core,
  org.eclipse.linuxtools.docker.core,
  org.mandas.docker-client,
  org.eclipse.core.runtime
-Import-Package: javax.xml.bind;bundle-version="2.3.3"
+Import-Package: javax.xml.bind;version="2.3.3"
 Automatic-Module-Name: org.eclipse.linuxtools.jdt.docker.launcher
