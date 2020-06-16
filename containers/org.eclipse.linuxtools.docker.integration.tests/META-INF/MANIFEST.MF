@@ -30,10 +30,10 @@ Require-Bundle: org.junit,
  org.eclipse.ui,
  org.eclipse.swt,
  com.google.guava;bundle-version="21.0.0"
-Import-Package: javax.xml.bind;version="2.3.3"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Import-Package: org.eclipse.debug.core,
+Import-Package: javax.xml.bind;version="2.3.3", 
+ org.eclipse.debug.core,
  org.eclipse.linuxtools.docker.reddeer,
  org.eclipse.linuxtools.docker.reddeer.condition,
  org.eclipse.linuxtools.docker.reddeer.core.ui.wizards,
@@ -42,7 +42,8 @@ Import-Package: org.eclipse.debug.core,
  org.eclipse.linuxtools.docker.reddeer.ui,
  org.eclipse.linuxtools.docker.reddeer.ui.resources,
  org.eclipse.linuxtools.docker.reddeer.utils,
- org.hamcrest;version="1.3.0"
+ org.hamcrest;version="1.3.0",
+ javax.annotation;version="1.3.5"
 Automatic-Module-Name: org.eclipse.linuxtools.docker.integration.tests
 
 
