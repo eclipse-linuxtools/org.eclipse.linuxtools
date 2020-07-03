@@ -117,7 +117,7 @@
           <plugin>
             <groupId>org.sonarsource.scanner.maven</groupId>
             <artifactId>sonar-maven-plugin</artifactId>
-            <version>3.3.0.603</version>
+            <version>3.7.0.1746</version>
           </plugin>
           <plugin>
             <groupId>org.eclipse.tycho.extras</groupId>
@@ -447,12 +447,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.9.0</version>
+          <version>3.9.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>3.1.0</version>
         </plugin>
 	<plugin>
 	  <groupId>org.apache.maven.plugins</groupId>
