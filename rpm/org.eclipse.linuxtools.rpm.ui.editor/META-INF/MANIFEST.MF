@@ -23,6 +23,6 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.rpm.ui.editor.markers,
  org.eclipse.linuxtools.rpm.ui.editor.parser,
  org.eclipse.linuxtools.rpm.ui.editor.wizards
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: %provider
 Automatic-Module-Name: org.eclipse.linuxtools.rpm.ui.editor
