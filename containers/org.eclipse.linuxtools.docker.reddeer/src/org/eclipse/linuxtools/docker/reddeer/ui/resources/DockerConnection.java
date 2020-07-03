@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017,2018 Red Hat, Inc.
+ * Copyright (c) 2017,2020 Red Hat, Inc.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -32,7 +32,6 @@ import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
-import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 
 public class DockerConnection extends AbstractDockerExplorerItem {
@@ -46,7 +45,8 @@ public class DockerConnection extends AbstractDockerExplorerItem {
 
 	public void enableConnection() {
 		select();
-		new DefaultToolItem("Enable Connection").click();
+//		new DefaultToolItem("Enable Connection").click();
+		new ContextMenu().getItem("Refresh").select();
 		new WaitWhile(new JobIsRunning());
 	}
 
@@ -203,7 +203,9 @@ public class DockerConnection extends AbstractDockerExplorerItem {
 
 	public void removeConnection() {
 		select();
-		new DefaultToolItem("Remove Connection").click();
+		// Use context menu instead of Tab toolbar button as this is not working with 4.17 I-build
+//		new DefaultToolItem("Remove Connection").click();
+		new ContextMenu().getItem("Remove").select();
 		new WaitWhile(new JobIsRunning());
 	}
 
