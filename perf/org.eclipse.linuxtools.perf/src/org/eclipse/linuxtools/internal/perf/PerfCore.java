@@ -182,7 +182,7 @@ public class PerfCore {
         try {
             // Process list of events. Each line is of the form <event>\s+<category>.
             while (( line = input.readLine()) != null){
-                if (line.contains("[")) { //$NON-NLS-1$
+                if (line.matches("\\s*\\S+\\s*\\[.*\\]")) { //$NON-NLS-1$
                     String event;
                     String category;
                     if (line.contains(PerfPlugin.STRINGS_HWBREAKPOINTS)) {
