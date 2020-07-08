@@ -1,4 +1,4 @@
-FROM eclipsecbi/fedora-gtk3-mutter:29-gtk3.24
+FROM eclipsecbi/fedora-gtk3-mutter:31-gtk3.24
 
 # Back to root for install
 USER 0
@@ -24,8 +24,8 @@ ENTRYPOINT [ "uid_entrypoint", "jenkins-slave" ]
 RUN sed -i '/tsflags=nodocs/ d' /etc/dnf/dnf.conf
 
 RUN dnf -y update && dnf -y install \
-    java-openjdk maven webkit2gtk3 \
-    gcc-c++ oprofile perf systemtap rpmdevtools valgrind \
+    java-11-openjdk-devel maven webkit2gtk3 \
+    gcc-c++ perf systemtap rpmdevtools valgrind \
     gtk3-devel-docs createrepo_c \
     npm \
     && dnf clean all
@@ -35,5 +35,7 @@ USER 1000
 
 ENV JENKINS_AGENT_WORKDIR=${HOME}/agent
 ENV JAVA_OPTS=""
+ENV JAVA_HOME=/usr/lib/jvm/java-11
+ENV PATH=/usr/lib/jvm/java-11/bin:$PATH
 ENV JNLP_PROTOCOL_OPTS="-XshowSettings:vm -Xmx256m -Djdk.nativeCrypto=false -Dsun.zip.disableMemoryMapping=true -Dorg.jenkinsci.remoting.engine.JnlpProtocol3.disabled=true"
 
