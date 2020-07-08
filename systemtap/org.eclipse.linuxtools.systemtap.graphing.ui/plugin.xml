@@ -26,43 +26,6 @@
     </extension>
 
     <extension
-        point="org.eclipse.ui.commands">
-        <category
-            name="%category.file.name"
-            description="%category.file.desc"
-            id="org.eclipse.linuxtools.systemtap.graphing.ui.category.file"/>
-        <command
-            name="%command.save.name"
-            description="%command.save.desc"
-            categoryId="org.eclipse.linuxtools.systemtap.graphing.ui.category.file"
-            id="org.eclipse.linuxtools.systemtap.graphing.ui.commands.SaveGraphImage"/>
-    </extension>
-
-    <extension
-        point="org.eclipse.ui.menus">
-        <menuContribution
-            locationURI="toolbar:org.eclipse.linuxtools.systemtap.ui.ide.toolbar?after=chartGroup">
-            <command
-                commandId="org.eclipse.linuxtools.systemtap.graphing.ui.commands.SaveGraphImage"
-                label="%command.save.name"
-                icon="icons/actions/chart-save.png">
-                <visibleWhen checkEnabled="true"/>
-            </command>
-        </menuContribution>
-    </extension>
-
-    <extension
-        point="org.eclipse.ui.handlers">
-        <handler
-            class="org.eclipse.linuxtools.internal.systemtap.graphing.ui.handlers.SaveGraphImageHandler"
-            commandId="org.eclipse.linuxtools.systemtap.graphing.ui.commands.SaveGraphImage">
-            <activeWhen>
-                <reference definitionId="org.eclipse.linuxtools.systemtap.graphing.ui.graphEditorEnablement"/>
-            </activeWhen>
-        </handler>
-    </extension>
-
-    <extension
         point="org.eclipse.ui.editors">
         <editor
             class="org.eclipse.linuxtools.systemtap.graphing.ui.views.GraphSelectorEditor"

@@ -15,21 +15,20 @@ package org.eclipse.linuxtools.dataviewers.charts.provider;
 import java.util.List;
 
 import org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField;
-import org.eclipse.linuxtools.dataviewers.piechart.PieChart;
 import org.eclipse.linuxtools.internal.dataviewers.charts.Activator;
 import org.eclipse.linuxtools.internal.dataviewers.charts.view.ChartView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swtchart.Chart;
+import org.eclipse.swtchart.IAxis;
+import org.eclipse.swtchart.IBarSeries;
+import org.eclipse.swtchart.ISeries.SeriesType;
+import org.eclipse.swtchart.ITitle;
+import org.eclipse.swtchart.LineStyle;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.swtchart.Chart;
-import org.swtchart.IAxis;
-import org.swtchart.IBarSeries;
-import org.swtchart.ISeries.SeriesType;
-import org.swtchart.ITitle;
-import org.swtchart.LineStyle;
 
 /**
  * A utility class that handles the charts creation (pie chart and bar chart)
@@ -40,68 +39,6 @@ import org.swtchart.LineStyle;
 public final class ChartFactory {
 
     private ChartFactory() {}
-
-    /**
-     * Produces a pie chart from the input objects.
-     *
-     * @param objects
-     *            the input data
-     * @param nameField
-     *            the field used to get the labels of the objects (colored parts in the pie).
-     * @param valFields
-     *            the field providing the values for the pie parts.
-     * @param title Title of the chart.
-     * @return a new pie chart
-     */
-    public static Chart producePieChart(Object[] objects, ISTDataViewersField nameField,
-            List<IChartField> valFields, String title) {
-
-        ChartView view;
-        try {
-            final Color WHITE = PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_WHITE);
-            final Color BLACK = PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_BLACK);
-            final Color GRAD = PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
-
-            view = (ChartView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-                    .showView(ChartView.VIEW_ID, String.valueOf(ChartView.getSecId()), IWorkbenchPage.VIEW_ACTIVATE);
-            PieChart chart = new PieChart(view.getParent(), SWT.NONE);
-
-            chart.setBackground(WHITE);
-            chart.setBackgroundInPlotArea(GRAD);
-
-            chart.getTitle().setText(title);
-            chart.getTitle().setForeground(BLACK);
-
-            chart.getLegend().setPosition(SWT.RIGHT);
-
-            String[] valueLabels = new String[objects.length];
-            for (int i = 0; i < objects.length; i++) {
-                valueLabels[i] = nameField.getValue(objects[i]);
-            }
-
-            // pie chart data is grouped by columns
-            // row size is the number of pie charts
-            // column size is the number of data per pie chart
-            double[][] doubleValues = new double[objects.length][valFields.size()];
-
-            // data
-            for (int i = 0; i < valFields.size(); i++) {
-                for (int j = 0; j < objects.length; j++) {
-                    Number num = valFields.get(i).getNumber(objects[j]);
-                    double longVal = num.doubleValue();
-                    doubleValues[j][i] = longVal + 1;
-                }
-            }
-
-            chart.addPieChartSeries(valueLabels, doubleValues);
-            chart.getAxisSet().adjustRange();
-
-            return chart;
-        } catch (PartInitException e) {
-            Activator.getDefault().getLog().log(e.getStatus());
-        }
-        return null;
-    }
 
     /**
      * Produces a 2D bar chart from the input objects.

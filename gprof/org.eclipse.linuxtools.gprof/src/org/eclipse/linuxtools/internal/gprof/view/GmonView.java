@@ -132,7 +132,7 @@ public class GmonView extends AbstractSTDataView {
         manager.add(new Separator());
         manager.add(switchSampleTime);
         manager.add(new Separator());
-		manager.add(new ChartAction(getViewSite().getShell(), getSTViewer(), true));
+		manager.add(new ChartAction(getViewSite().getShell(), getSTViewer()));
     }
 
     @Override

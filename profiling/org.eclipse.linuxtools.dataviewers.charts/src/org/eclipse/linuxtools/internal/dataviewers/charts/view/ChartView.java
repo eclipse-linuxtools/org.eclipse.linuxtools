@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -15,16 +15,12 @@ package org.eclipse.linuxtools.internal.dataviewers.charts.view;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.linuxtools.dataviewers.charts.actions.SaveChartAction;
 import org.eclipse.linuxtools.internal.dataviewers.charts.Activator;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-import org.swtchart.Chart;
 
 /**
  * The chart view.
@@ -47,34 +43,6 @@ public class ChartView extends ViewPart {
 
     private Composite parent;
 
-    private SaveChartAction saveChartAction;
-
-    /**
-     * Create and open a new chart view <br/>
-     * <br/>
-     * <u><b>Note</b></u>: this method uses the UI thread to open the view and then it sets the input chart. The UI
-     * thread execution is synchronized on internal Integer SEC_ID which is the secondary id of the chart view. Each new
-     * chart view has a secondary id equal to SEC_ID++.
-     *
-     * @param chart The chart to create view for.
-     */
-    public static void createChartView(final Chart chart) {
-        PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
-		    try {
-		        synchronized (lock) {
-		            ChartView view = (ChartView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-		                    .getActivePage().showView(VIEW_ID, String.valueOf(SEC_ID++), IWorkbenchPage.VIEW_ACTIVATE);
-		            view.setChart(chart);
-
-		        }
-		    } catch (PartInitException e) {
-		        Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e);
-		        Activator.getDefault().getLog().log(s);
-		    }
-		});
-
-    }
-    
     /**
      * Create and open a new chart view <br/>
      * <br/>
@@ -102,18 +70,6 @@ public class ChartView extends ViewPart {
     @Override
     public void createPartControl(Composite parent) {
         this.parent = parent;
-        createActions();
-        IActionBars actionBars = getViewSite().getActionBars();
-        initToolBar(actionBars.getToolBarManager());
-    }
-
-    private void createActions() {
-        saveChartAction = new SaveChartAction();
-    }
-
-    protected void initToolBar(IToolBarManager manager) {
-        manager.add(saveChartAction);
-        manager.update(true);
     }
 
     @Override
@@ -121,15 +77,6 @@ public class ChartView extends ViewPart {
         if (parent != null && !parent.isDisposed()) {
             parent.setFocus();
         }
-    }
-
-    /**
-     * Set the chart in this view
-     *
-     * @param chart
-     */
-    private void setChart(Chart chart) {
-        saveChartAction.setChart(chart);
     }
 
     public Composite getParent() {

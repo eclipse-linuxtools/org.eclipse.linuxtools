@@ -84,7 +84,7 @@ public class CovView extends AbstractSTDataView {
         manager.add(fileAction);
         manager.add(functionAction);
         manager.add(new Separator());
-		manager.add(new ChartAction(getViewSite().getShell(), getSTViewer(), true));
+		manager.add(new ChartAction(getViewSite().getShell(), getSTViewer()));
     }
 
     @Override
