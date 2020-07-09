@@ -7,6 +7,6 @@ Bundle-Vendor: %provider
 Require-Bundle: org.junit,
  org.eclipse.core.resources
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Fragment-Host: org.eclipse.linuxtools.cdt.libhover.devhelp
 Automatic-Module-Name: org.eclipse.linuxtools.cdt.libhover.devhelp.tests
