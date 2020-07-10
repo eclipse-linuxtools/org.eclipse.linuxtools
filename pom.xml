@@ -331,7 +331,6 @@
               <version>1.0.0</version>
             </artifact>
           </target>
-          <executionEnvironment>JavaSE-11</executionEnvironment>
         </configuration>
       </plugin>
       <plugin>
