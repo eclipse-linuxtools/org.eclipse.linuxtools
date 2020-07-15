@@ -88,6 +88,9 @@
    <iu id="org.eclipse.lsp4e" version="0.0.0">
         <category name="Docker Editor Dependencies"/>
    </iu>
+   <iu id="org.eclipse.wildwebdeveloper.embedder.node" version="0.0.0">
+        <category name="Docker Editor Dependencies"/>
+   </iu>
 
    <!-- Orbit Dependencies -->
    <iu id="org.mandas.docker-client" version="0.0.0">
