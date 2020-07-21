@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2018 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -50,7 +50,7 @@ public class DockerImage implements IDockerImage, IAdaptable {
 			+ "(\\:(?<tag>" + TAG + "))?"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	// SimpleDateFormat is not thread-safe, so give one to each thread
-	private static final ThreadLocal<SimpleDateFormat> formatter = new ThreadLocal<SimpleDateFormat>() {
+	private static final ThreadLocal<SimpleDateFormat> formatter = new ThreadLocal<>() {
 		@Override
 		protected SimpleDateFormat initialValue() {
 			return new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
@@ -141,7 +141,7 @@ public class DockerImage implements IDockerImage, IAdaptable {
 	 * {@code repoTags}, assuming that the given repoTags elements have the
 	 * following format: {@code [org/]repo[:tag]}. Tags are sorted by their
 	 * natural order.
-	 * 
+	 *
 	 * @param repoTags
 	 *            the list of repo/tags to analyze
 	 * @return the tags indexed by org/repo
@@ -170,7 +170,7 @@ public class DockerImage implements IDockerImage, IAdaptable {
 	/**
 	 * Extracts the list of tags in the given repo/tags, assuming that the given
 	 * repoTags elements have the following format: {@code [org/]repo[:tag]}.
-	 * 
+	 *
 	 * @param repoTags
 	 *            the repo/tags list to analyze
 	 * @return the list of tags or empty list if none was found.
@@ -194,7 +194,7 @@ public class DockerImage implements IDockerImage, IAdaptable {
 	/**
 	 * Extracts the tag in the given repo/tag, assuming that the given repoTag
 	 * element has the following format: {@code [org/]repo[:tag]}.
-	 * 
+	 *
 	 * @param repoTag
 	 *            the repo/tag to analyze
 	 * @return the tag or null if none was found.
@@ -213,7 +213,7 @@ public class DockerImage implements IDockerImage, IAdaptable {
 	/**
 	 * Extracts the tag in the given repo/tag, assuming that the given repoTag
 	 * element has the following format: {@code [org/]repo[:tag]}
-	 * 
+	 *
 	 * @param repoTag
 	 *            the repo/tag to analyze
 	 * @return the tag or <code>null</code> if none was found.
@@ -232,7 +232,7 @@ public class DockerImage implements IDockerImage, IAdaptable {
 	/**
 	 * Duplicates the given {@code image} into as many {@link IDockerImage} has
 	 * it has distinct repoTags entries
-	 * 
+	 *
 	 * @param image
 	 *            the source image
 	 * @return a {@link Stream} of duplicate {@link IDockerImage}
@@ -373,7 +373,7 @@ public class DockerImage implements IDockerImage, IAdaptable {
 
 	/**
 	 * Appends the <code>latest</code> tag to the given {@code imageName}
-	 * 
+	 *
 	 * @param imageName
 	 *            the image name to check
 	 * @return the image name with the <code>latest</code> tag if none was set

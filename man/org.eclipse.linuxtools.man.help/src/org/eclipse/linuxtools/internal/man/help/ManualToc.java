@@ -57,7 +57,7 @@ public class ManualToc implements IToc {
 
 	private void generateSections() {
 		// Filter to make sure we only get manual section directories
-		DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
+		DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<>() {
 			private final Pattern p = Pattern.compile("^man\\d[xp]?"); //$NON-NLS-1$
 
 			@Override
