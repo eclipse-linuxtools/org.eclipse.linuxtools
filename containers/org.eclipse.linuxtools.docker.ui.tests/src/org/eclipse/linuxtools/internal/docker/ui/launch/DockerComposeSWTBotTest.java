@@ -57,12 +57,9 @@ import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mandas.docker.client.DockerClient;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
-import org.mandas.docker.client.DockerClient;
 
 /**
  * Testing the {@link DockerCompose} utility class using SWTBot.
@@ -124,13 +121,9 @@ public class DockerComposeSWTBotTest {
 						.workingDir(ArgumentMatchers.anyString()).start())
 				.thenReturn(mockDockerComposeUpProcess);
 		latch = new CountDownLatch(1);
-		Mockito.when(mockDockerComposeUpProcess.waitFor()).then(new Answer<Object>() {
-
-			@Override
-			public Object answer(InvocationOnMock invocation) throws Throwable {
-				latch.await(5, TimeUnit.SECONDS);
-				return 0;
-			}
+		Mockito.when(mockDockerComposeUpProcess.waitFor()).then(invocation -> {
+			latch.await(5, TimeUnit.SECONDS);
+			return 0;
 		});
 	}
 

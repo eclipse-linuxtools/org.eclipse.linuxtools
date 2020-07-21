@@ -138,7 +138,7 @@ public abstract class AbstractRegistry implements IRegistry {
 		WebTarget queryImagesResource;
 
 		if (isVersion2()) {
-			final GenericType<ImageSearchResultV2> IMAGE_SEARCH_RESULT_LIST = new GenericType<ImageSearchResultV2>() {
+			final GenericType<ImageSearchResultV2> IMAGE_SEARCH_RESULT_LIST = new GenericType<>() {
 			};
 			ImageSearchResultV2 cisr = null;
 			queryImagesResource = client.target(getHTTPServerAddress())
@@ -160,7 +160,7 @@ public abstract class AbstractRegistry implements IRegistry {
 					.collect(Collectors.toList()));
 		} else {
 			ImageSearchResultV1 pisr = null;
-			final GenericType<ImageSearchResultV1> IMAGE_SEARCH_RESULT_LIST = new GenericType<ImageSearchResultV1>() {
+			final GenericType<ImageSearchResultV1> IMAGE_SEARCH_RESULT_LIST = new GenericType<>() {
 			};
 			int page = 0;
 			try {
@@ -315,7 +315,7 @@ public abstract class AbstractRegistry implements IRegistry {
 	private List<IRepositoryTag> retrieveTagsFromRegistryV1(final Client client,
 			final String repository)
 			throws InterruptedException, ExecutionException {
-		final GenericType<Map<String, String>> REPOSITORY_TAGS_RESULT_LIST = new GenericType<Map<String, String>>() {
+		final GenericType<Map<String, String>> REPOSITORY_TAGS_RESULT_LIST = new GenericType<>() {
 		};
 		final WebTarget queryTagsResource = client
 				.target(getHTTPServerAddress()).path("v1") //$NON-NLS-1$
@@ -345,7 +345,7 @@ public abstract class AbstractRegistry implements IRegistry {
 	private List<IRepositoryTag> retrieveTagsFromRegistryV2(final Client client,
 			final String repository)
 			throws InterruptedException, ExecutionException {
-		final GenericType<RepositoryTagV2> REPOSITORY_TAGS_RESULT_LIST = new GenericType<RepositoryTagV2>() {
+		final GenericType<RepositoryTagV2> REPOSITORY_TAGS_RESULT_LIST = new GenericType<>() {
 		};
 		final WebTarget queryTagsResource = client
 				.target(getHTTPServerAddress()).path("v2") //$NON-NLS-1$
