@@ -94,6 +94,13 @@
 <repository location="https://download.eclipse.org/staging/2020-09/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.cdt.autotools.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.cdt.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.launchbar.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.tm.terminal.feature.feature.group" version="0.0.0"/>
+<repository location="https://ci.eclipse.org/cdt/job/cdt-master/lastSuccessfulBuild/artifact/releng/org.eclipse.cdt.repo/target/repository/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.reddeer.eclipse.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.reddeer.tests.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.reddeer.ui.feature.feature.group" version="0.0.0"/>
