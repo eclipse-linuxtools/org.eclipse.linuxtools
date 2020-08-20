@@ -107,8 +107,17 @@ public class DataVolumeModel extends BaseDatabindingModel
 
 	/**
 	 * Create a DataVolumeModel from a toString() output.
-	 * 
-	 * @param fromString
+	 *
+	 * @param fromString The volume information in the following format using : as
+	 *                   separator. Windows paths containing ":" are handled
+	 *                   correctly.
+	 *                   <ul>
+	 *                   <li>The path within the target
+	 *                   <li>The @{link MountType}
+	 *                   <li>Whether to mount read only (true/false)
+	 *                   <li>Whether the mount is selected (true/false)
+	 *                   </ul>
+	 *
 	 * @return DataVolumeModel
 	 */
 	public static DataVolumeModel parseString(
