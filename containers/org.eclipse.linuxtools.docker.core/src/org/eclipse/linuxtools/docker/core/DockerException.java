@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2020 Red Hat and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -31,6 +31,11 @@ public class DockerException extends Exception {
 
 	public DockerException(final Throwable cause) {
 		super(calculateMessage(null, cause), cause);
+	}
+
+	@Override
+	public String getMessage() {
+		return super.getMessage();
 	}
 
 	static private String calculateMessage(final String message, final Throwable cause) {

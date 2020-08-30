@@ -35,6 +35,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.ws.rs.ProcessingException;
 
@@ -42,7 +44,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -396,10 +397,9 @@ public class DockerConnection
 	}
 
 	@Override
-	protected void finalize() throws Throwable {
+	protected void finalize() {
 		this.finalizing = true;
 		close();
-		super.finalize();
 	}
 
 	@Override
@@ -2263,7 +2263,7 @@ public class DockerConnection
 		try {
 			DockerClient copyClient = getClientCopy();
 			final ExecCreation execCreation = copyClient.execCreate(id,
-					new String[] { "/bin/sh", "-c", "ls -l -F -L -Q " + path }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					new String[] { "/bin/sh", "-c", "ls -l -F -Q " + path }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					ExecCreateParam.attachStdout(),
 					ExecCreateParam.attachStderr());
 			final String execId = execCreation.id();
@@ -2306,33 +2306,47 @@ public class DockerConnection
 		return childList;
 	}
 
+	private String[] tokenize(String line) {
+		String regex = "(\"[^\"]*\"/?)|(\\S+)";
+		List<String> result = new ArrayList<>();
+
+		Matcher m = Pattern.compile(regex).matcher(line);
+		while (m.find()) {
+			if (m.group(1) != null) {
+				result.add(m.group(1));
+			} else {
+				result.add(m.group(2));
+			}
+		}
+		return result.toArray(new String[0]);
+	}
+
 	private void processDirectoryLine(String line, String path,
 			List<ContainerFileProxy> childList) {
 		if (line.trim().startsWith("total")) //$NON-NLS-1$
 			return; // ignore the total line
-		String[] token = line.split("\\s+"); //$NON-NLS-1$
+		String[] token = tokenize(line);
 		boolean isDirectory = token[0].startsWith("d"); //$NON-NLS-1$
 		boolean isLink = token[0].startsWith("l"); //$NON-NLS-1$
 		if (token.length > 8) {
-			// last token depends on whether we have a link or not
-			String link = null;
+			// Non-Link ends with "filename"
+			// Link ends with "filename" -> "Target"
+			String name = token[token.length - (isLink ? 3 : 1)];
+			// remove quotes and any indicator char
+			name = name.substring(1,
+					name.length() - (name.endsWith("\"") ? 1 : 2));
+
 			if (isLink) {
 				String linkname = token[token.length - 1];
 				if (linkname.endsWith("/")) { //$NON-NLS-1$
-					linkname = linkname.substring(0, linkname.length() - 1);
 					isDirectory = true;
 				}
-				IPath linkPath = new Path(path);
-				linkPath = linkPath.append(linkname);
-				link = linkPath.toString();
-				String name = token[token.length - 3];
+				linkname = linkname.substring(1,
+						linkname.length() - (linkname.endsWith("\"") ? 1 : 2));
+
 				childList.add(new ContainerFileProxy(path, name, isDirectory,
-						isLink, link));
+						isLink, linkname));
 			} else {
-				String name = token[token.length - 1];
-				// remove quotes and any indicator char
-				name = name.substring(1,
-						name.length() - (name.endsWith("\"") ? 1 : 2));
 				childList.add(new ContainerFileProxy(path, name, isDirectory));
 			}
 		}
