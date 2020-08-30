@@ -451,9 +451,28 @@ public class ContainerLauncher {
 									path = path.append(te.getName());
 									File f = new File(path.toOSString());
 									int mode = te.getMode();
+									if (te.isSymbolicLink()) {
+										IPath linkPath = new Path(te.getLinkName());
+										if (!linkPath.isAbsolute()) {
+											if (!isWin) {
+												java.nio.file.Path p = Paths.get(path.toPortableString());
+												java.nio.file.Path link = Paths.get(te.getLinkName());
+												if (f.exists()) {
+													f.delete();
+												}
+												Files.createSymbolicLink(p, link);
+											} else {
+												linkPath = new Path(volume).append(te.getLinkName());
+												links.put(path.toPortableString(), linkPath.toPortableString());
+											}
+										} else {
+											links.put(path.toPortableString(), linkPath.toPortableString());
+										}
+										continue;
+									}
 									if (te.isDirectory()) {
 										f.mkdir();
-										if (!isWin && !te.isSymbolicLink()) {
+										if (!isWin) {
 											Files.setPosixFilePermissions(Paths.get(path.toOSString()), toPerms(mode));
 										}
 										continue;
@@ -462,7 +481,7 @@ public class ContainerLauncher {
 											continue;
 										}
 										f.createNewFile();
-										if (!isWin && !te.isSymbolicLink()) {
+										if (!isWin) {
 											Files.setPosixFilePermissions(Paths.get(path.toOSString()), toPerms(mode));
 										}
 									}
@@ -470,22 +489,14 @@ public class ContainerLauncher {
 										int bufferSize = ((int) size > 4096 ? 4096 : (int) size);
 										byte[] barray = new byte[bufferSize];
 										int result = -1;
-										if (size == 0 && te.isSymbolicLink()) {
-											IPath linkPath = new Path(te.getLinkName());
-											if (!linkPath.isAbsolute()) {
-												linkPath = new Path(volume).append(te.getLinkName());
+										while ((result = k.read(barray, 0, bufferSize)) > -1) {
+											if (monitor.isCanceled()) {
+												monitor.done();
+												k.close();
+												os.close();
+												return Status.CANCEL_STATUS;
 											}
-											links.put(te.getName(), linkPath.toPortableString());
-										} else {
-											while ((result = k.read(barray, 0, bufferSize)) > -1) {
-												if (monitor.isCanceled()) {
-													monitor.done();
-													k.close();
-													os.close();
-													return Status.CANCEL_STATUS;
-												}
-												os.write(barray, 0, result);
-											}
+											os.write(barray, 0, result);
 										}
 									}
 								}
@@ -495,36 +506,83 @@ public class ContainerLauncher {
 							// is fully copied
 							for (String name : links.keySet()) {
 								String link = links.get(name);
-								InputStream in2 = ((DockerConnection) connection).copyContainer(token, containerId,
-										link);
-								/*
-								 * The input stream from copyContainer might be incomplete or non-blocking so we
-								 * should wrap it in a stream that is guaranteed to block until data is
-								 * available.
-								 */
-								try (TarArchiveInputStream k = new TarArchiveInputStream(
-										new BlockingInputStream(in2))) {
-									TarArchiveEntry te = k.getNextTarEntry();
-									if (te != null) {
-										long size = te.getSize();
-										IPath currDir = target.append(volume).removeLastSegments(1);
-										IPath path = currDir.append(name);
-										File f = new File(path.toOSString());
-										f.createNewFile();
-										try (FileOutputStream os = new FileOutputStream(f)) {
-											int bufferSize = ((int) size > 4096 ? 4096 : (int) size);
-											byte[] barray = new byte[bufferSize];
-											int result = -1;
-											while ((result = k.read(barray, 0, bufferSize)) > -1) {
-												if (monitor.isCanceled()) {
-													monitor.done();
-													k.close();
-													os.close();
-													return Status.CANCEL_STATUS;
+								boolean resolved = false;
+								int i = 0; // prevent infinite loop if there is a circular link
+								while (!resolved && ++i < 10) {
+									InputStream in2 = ((DockerConnection) connection).copyContainer(token, containerId,
+											link);
+									/*
+									 * The input stream from copyContainer might be incomplete or non-blocking so we
+									 * should wrap it in a stream that is guaranteed to block until data is
+									 * available.
+									 */
+									try (TarArchiveInputStream k = new TarArchiveInputStream(
+											new BlockingInputStream(in2))) {
+										TarArchiveEntry te = k.getNextTarEntry();
+										if (te != null && te.isSymbolicLink()) {
+											IPath linkPath = new Path(te.getLinkName());
+											if (!linkPath.isAbsolute()) {
+												linkPath = new Path(link).removeLastSegments(1)
+														.append(te.getLinkName());
+											}
+											link = linkPath.toPortableString();
+											continue;
+										}
+										while (te != null) {
+											long size = te.getSize();
+											IPath currDir = target.append(volume).removeLastSegments(1);
+											IPath path = currDir.append(name);
+											File f = new File(path.toOSString());
+											if (te.isSymbolicLink()) {
+												IPath linkPath = new Path(te.getLinkName());
+												if (!linkPath.isAbsolute()) {
+													if (!isWin) {
+														java.nio.file.Path p = Paths.get(path.toPortableString());
+														java.nio.file.Path linkp = Paths.get(te.getLinkName());
+														if (f.exists()) {
+															f.delete();
+														}
+														Files.createSymbolicLink(p, linkp);
+													} else {
+														// we don't follow nested links
+													}
+												} else {
+													// we don't follow nested absolute links
 												}
-												os.write(barray, 0, result);
+												te = k.getNextTarEntry();
+												continue;
+											}
+											int mode = te.getMode();
+											if (te.isDirectory()) {
+												f.mkdir();
+												if (!isWin) {
+													Files.setPosixFilePermissions(Paths.get(path.toOSString()),
+															toPerms(mode));
+												}
+												te = k.getNextTarEntry();
+												continue;
+											}
+											f.createNewFile();
+											if (!isWin) {
+												Files.setPosixFilePermissions(Paths.get(path.toOSString()),
+														toPerms(mode));
+											}
+											try (FileOutputStream os = new FileOutputStream(f)) {
+												int bufferSize = ((int) size > 4096 ? 4096 : (int) size);
+												byte[] barray = new byte[bufferSize];
+												int result = -1;
+												while ((result = k.read(barray, 0, bufferSize)) > -1) {
+													if (monitor.isCanceled()) {
+														monitor.done();
+														k.close();
+														os.close();
+														return Status.CANCEL_STATUS;
+													}
+													os.write(barray, 0, result);
+												}
 											}
 										}
+										resolved = true;
 									}
 								}
 							}

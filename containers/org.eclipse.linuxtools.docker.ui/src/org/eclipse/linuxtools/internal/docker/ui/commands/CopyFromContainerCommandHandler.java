@@ -59,6 +59,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 public class CopyFromContainerCommandHandler extends AbstractHandler {
 
 	private static final String ERROR_COPYING_FROM_CONTAINER_NO_CONNECTION = "command.copyfromcontainer.failure.no_connection"; //$NON-NLS-1$
+	private static final String ERROR_POSSIBLE_CIRCULAR_LINKS = "command.copyfromcontainer.failure.possible_circular_links"; //$NON-NLS-1$
 	private static final String MISSING_CONNECTION = "missing_connection"; //$NON-NLS-1$
 	private static final String ERROR_COPYING_FROM_CONTAINER = "command.copyfromcontainer.error.msg"; //$NON-NLS-1$
 	private static final String COPY_FROM_CONTAINER_JOB_TASK = "command.copyfromcontainer.job.task"; //$NON-NLS-1$
@@ -166,7 +167,7 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 									proxy.getFullPath()));
 							monitor.worked(1);
 							InputStream in = ((DockerConnection) connection).copyContainer(token, container.id(),
-									proxy.getLink());
+									proxy.getFullPath());
 							/*
 							 * The input stream from copyContainer might be incomplete or non-blocking so we
 							 * should wrap it in a stream that is guaranteed to block until data is
@@ -180,75 +181,40 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 									path = path.append(te.getName());
 									File f = new File(path.toOSString());
 									int mode = te.getMode();
+									if (te.isSymbolicLink()) {
+										IPath linkPath = new Path(te.getLinkName());
+										if (!linkPath.isAbsolute()) {
+											// for relative links, we will create a symbolic link if
+											// we are copying a folder, otherwise, we will follow the
+											// link and copy the file it points to
+											if (!isWin && proxy.isFolder()) {
+												java.nio.file.Path p = Paths.get(path.toPortableString());
+												java.nio.file.Path link = Paths.get(te.getLinkName());
+												if (f.exists()) {
+													f.delete();
+												}
+												Files.createSymbolicLink(p, link);
+											} else {
+												linkPath = new Path(proxy.getFullPath()).removeLastSegments(1)
+														.append(te.getLinkName());
+												links.put(path.toPortableString(), linkPath.toPortableString());
+											}
+										} else {
+											links.put(path.toPortableString(), linkPath.toPortableString());
+										}
+										continue;
+									}
 									if (te.isDirectory()) {
 										f.mkdir();
-										if (!isWin && !te.isSymbolicLink()) {
+										if (!isWin) {
 											Files.setPosixFilePermissions(Paths.get(path.toOSString()), toPerms(mode));
 										}
 										continue;
-									} else {
-										f.createNewFile();
-										if (!isWin && !te.isSymbolicLink()) {
-											Files.setPosixFilePermissions(Paths.get(path.toOSString()), toPerms(mode));
-										}
 									}
-									try (FileOutputStream os = new FileOutputStream(f)) {
-										int bufferSize = ((int) size > 4096 ? 4096 : (int) size);
-										byte[] barray = new byte[bufferSize];
-										int result = -1;
-										if (size == 0 && te.isSymbolicLink()) {
-											IPath linkPath = new Path(te.getLinkName());
-											if (!linkPath.isAbsolute()) {
-												if (proxy.isFolder()) {
-													linkPath = new Path(proxy.getFullPath()).append(te.getLinkName());
-												} else {
-													linkPath = new Path(proxy.getFullPath()).removeLastSegments(1)
-															.append(te.getLinkName());
-												}
-
-											}
-											links.put(te.getName(), linkPath.toPortableString());
-										} else {
-											while ((result = k.read(barray, 0, bufferSize)) > -1) {
-												if (monitor.isCanceled()) {
-													monitor.done();
-													k.close();
-													os.close();
-													return Status.CANCEL_STATUS;
-												}
-												os.write(barray, 0, result);
-											}
-										}
-									}
-								}
-							}
-						} catch (final DockerException e) {
-							Display.getDefault()
-									.syncExec(() -> MessageDialog.openError(
-											PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-											CommandMessages.getFormattedString(ERROR_COPYING_FROM_CONTAINER,
-													proxy.getLink(), container.name()),
-											e.getCause() != null ? e.getCause().getMessage() : e.getMessage()));
-						}
-					}
-					for (String name : links.keySet()) {
-						String link = links.get(name);
-						try {
-							InputStream in = ((DockerConnection) connection).copyContainer(token, container.id(),
-									link);
-							/*
-							 * The input stream from copyContainer might be incomplete or non-blocking so we
-							 * should wrap it in a stream that is guaranteed to block until data is
-							 * available.
-							 */
-							try (TarArchiveInputStream k = new TarArchiveInputStream(new BlockingInputStream(in))) {
-								TarArchiveEntry te = k.getNextTarEntry();
-								if (te != null) {
-									long size = te.getSize();
-									IPath path = new Path(target);
-									path = path.append(name);
-									File f = new File(path.toOSString());
 									f.createNewFile();
+									if (!isWin) {
+										Files.setPosixFilePermissions(Paths.get(path.toOSString()), toPerms(mode));
+									}
 									try (FileOutputStream os = new FileOutputStream(f)) {
 										int bufferSize = ((int) size > 4096 ? 4096 : (int) size);
 										byte[] barray = new byte[bufferSize];
@@ -270,8 +236,103 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 									.syncExec(() -> MessageDialog.openError(
 											PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 											CommandMessages.getFormattedString(ERROR_COPYING_FROM_CONTAINER,
-													name, container.name()),
+													proxy.getTarget(), container.name()),
 											e.getCause() != null ? e.getCause().getMessage() : e.getMessage()));
+						}
+					}
+					// resolve absolute links by copying the files
+					for (String name : links.keySet()) {
+						String link = links.get(name);
+						boolean resolved = false;
+						int i = 0; // prevent infinite loop if there is a circular link
+						while (!resolved && ++i < 10) {
+							try {
+								InputStream in = ((DockerConnection) connection).copyContainer(token, container.id(),
+										link);
+								/*
+								 * The input stream from copyContainer might be incomplete or non-blocking so we
+								 * should wrap it in a stream that is guaranteed to block until data is
+								 * available.
+								 */
+								try (TarArchiveInputStream k = new TarArchiveInputStream(new BlockingInputStream(in))) {
+									TarArchiveEntry te = k.getNextTarEntry();
+									if (te != null && te.isSymbolicLink()) {
+										IPath linkPath = new Path(te.getLinkName());
+										if (!linkPath.isAbsolute()) {
+											linkPath = new Path(link).removeLastSegments(1).append(te.getLinkName());
+										}
+										link = linkPath.toPortableString();
+										continue;
+									}
+									while (te != null) {
+										long size = te.getSize();
+										IPath path = new Path(name)
+												.append(new Path(te.getName()).removeFirstSegments(1));
+										File f = new File(path.toOSString());
+										if (te.isSymbolicLink()) {
+											IPath linkPath = new Path(te.getLinkName());
+											if (!isWin && !linkPath.isAbsolute()) {
+												java.nio.file.Path p = Paths.get(path.toPortableString());
+												java.nio.file.Path linkp = Paths.get(te.getLinkName());
+												if (f.exists()) {
+													f.delete();
+												}
+												Files.createSymbolicLink(p, linkp);
+											} else {
+												// we don't follow nested links
+											}
+											te = k.getNextTarEntry();
+											continue;
+										}
+										int mode = te.getMode();
+										if (te.isDirectory()) {
+											f.mkdir();
+											if (!isWin) {
+												Files.setPosixFilePermissions(Paths.get(path.toOSString()),
+														toPerms(mode));
+											}
+											te = k.getNextTarEntry();
+											continue;
+										}
+										f.createNewFile();
+										if (!isWin) {
+											Files.setPosixFilePermissions(Paths.get(path.toOSString()), toPerms(mode));
+										}
+										try (FileOutputStream os = new FileOutputStream(f)) {
+											int bufferSize = ((int) size > 4096 ? 4096 : (int) size);
+											byte[] barray = new byte[bufferSize];
+											int result = -1;
+											while ((result = k.read(barray, 0, bufferSize)) > -1) {
+												if (monitor.isCanceled()) {
+													monitor.done();
+													k.close();
+													os.close();
+													return Status.CANCEL_STATUS;
+												}
+												os.write(barray, 0, result);
+											}
+										}
+										te = k.getNextTarEntry();
+									}
+									resolved = true;
+								}
+							} catch (final DockerException e) {
+								Display.getDefault()
+										.syncExec(() -> MessageDialog.openError(
+												PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+												CommandMessages.getFormattedString(ERROR_COPYING_FROM_CONTAINER, name,
+														container.name()),
+												e.getCause() != null ? e.getCause().getMessage() : e.getMessage()));
+							}
+						}
+						if (i == 10) {
+							Display.getDefault()
+									.syncExec(() -> MessageDialog.openError(
+											PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+											CommandMessages.getFormattedString(ERROR_COPYING_FROM_CONTAINER, name,
+													container.name()),
+											CommandMessages.getString(ERROR_POSSIBLE_CIRCULAR_LINKS)));
+
 						}
 					}
 				} catch (InterruptedException e) {
