@@ -2203,7 +2203,8 @@ public class DockerConnection
 		try {
 			DockerClient copyClient = getClientCopy();
 			final ExecCreation execCreation = copyClient.execCreate(id,
-					new String[] { "/bin/sh", "-c", "ls -l -F -Q " + path }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					new String[] { "/bin/sh", "-c", //$NON-NLS-1$ //$NON-NLS-2$
+							"ls -l -F -Q " + path + "/" }, //$NON-NLS-1$
 					ExecCreateParam.attachStdout(),
 					ExecCreateParam.attachStderr());
 			final String execId = execCreation.id();
