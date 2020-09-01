@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2019 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2016, 2020 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -20,8 +20,10 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -153,6 +155,7 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 				monitor.beginTask(CommandMessages.getString(COPY_FROM_CONTAINER_JOB_TASK), files.size());
 				boolean isWin = Platform.getOS().equals(Platform.OS_WIN32);
 				try (Closeable token = ((DockerConnection) connection).getOperationToken()) {
+					Map<String, String> links = new HashMap<>();
 					for (ContainerFileProxy proxy : files) {
 						if (monitor.isCanceled()) {
 							monitor.done();
@@ -193,6 +196,63 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 										int bufferSize = ((int) size > 4096 ? 4096 : (int) size);
 										byte[] barray = new byte[bufferSize];
 										int result = -1;
+										if (size == 0 && te.isSymbolicLink()) {
+											IPath linkPath = new Path(te.getLinkName());
+											if (!linkPath.isAbsolute()) {
+												if (proxy.isFolder()) {
+													linkPath = new Path(proxy.getFullPath()).append(te.getLinkName());
+												} else {
+													linkPath = new Path(proxy.getFullPath()).removeLastSegments(1)
+															.append(te.getLinkName());
+												}
+
+											}
+											links.put(te.getName(), linkPath.toPortableString());
+										} else {
+											while ((result = k.read(barray, 0, bufferSize)) > -1) {
+												if (monitor.isCanceled()) {
+													monitor.done();
+													k.close();
+													os.close();
+													return Status.CANCEL_STATUS;
+												}
+												os.write(barray, 0, result);
+											}
+										}
+									}
+								}
+							}
+						} catch (final DockerException e) {
+							Display.getDefault()
+									.syncExec(() -> MessageDialog.openError(
+											PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+											CommandMessages.getFormattedString(ERROR_COPYING_FROM_CONTAINER,
+													proxy.getLink(), container.name()),
+											e.getCause() != null ? e.getCause().getMessage() : e.getMessage()));
+						}
+					}
+					for (String name : links.keySet()) {
+						String link = links.get(name);
+						try {
+							InputStream in = ((DockerConnection) connection).copyContainer(token, container.id(),
+									link);
+							/*
+							 * The input stream from copyContainer might be incomplete or non-blocking so we
+							 * should wrap it in a stream that is guaranteed to block until data is
+							 * available.
+							 */
+							try (TarArchiveInputStream k = new TarArchiveInputStream(new BlockingInputStream(in))) {
+								TarArchiveEntry te = k.getNextTarEntry();
+								if (te != null) {
+									long size = te.getSize();
+									IPath path = new Path(target);
+									path = path.append(name);
+									File f = new File(path.toOSString());
+									f.createNewFile();
+									try (FileOutputStream os = new FileOutputStream(f)) {
+										int bufferSize = ((int) size > 4096 ? 4096 : (int) size);
+										byte[] barray = new byte[bufferSize];
+										int result = -1;
 										while ((result = k.read(barray, 0, bufferSize)) > -1) {
 											if (monitor.isCanceled()) {
 												monitor.done();
@@ -210,7 +270,7 @@ public class CopyFromContainerCommandHandler extends AbstractHandler {
 									.syncExec(() -> MessageDialog.openError(
 											PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 											CommandMessages.getFormattedString(ERROR_COPYING_FROM_CONTAINER,
-													proxy.getLink(), container.name()),
+													name, container.name()),
 											e.getCause() != null ? e.getCause().getMessage() : e.getMessage()));
 						}
 					}
