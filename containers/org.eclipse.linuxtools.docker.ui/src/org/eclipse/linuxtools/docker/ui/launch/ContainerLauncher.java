@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2019 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2015, 2020 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -424,6 +424,8 @@ public class ContainerLauncher {
 
 							InputStream in = ((DockerConnection) connection).copyContainer(token, containerId, volume);
 
+							Map<String, String> links = new HashMap<>();
+
 							synchronized (lockObject) {
 								if (!dirList.contains(volume)) {
 									dirList.add(volume);
@@ -468,14 +470,22 @@ public class ContainerLauncher {
 										int bufferSize = ((int) size > 4096 ? 4096 : (int) size);
 										byte[] barray = new byte[bufferSize];
 										int result = -1;
-										while ((result = k.read(barray, 0, bufferSize)) > -1) {
-											if (monitor.isCanceled()) {
-												monitor.done();
-												k.close();
-												os.close();
-												return Status.CANCEL_STATUS;
+										if (size == 0 && te.isSymbolicLink()) {
+											IPath linkPath = new Path(te.getLinkName());
+											if (!linkPath.isAbsolute()) {
+												linkPath = new Path(volume).append(te.getLinkName());
 											}
-											os.write(barray, 0, result);
+											links.put(te.getName(), linkPath.toPortableString());
+										} else {
+											while ((result = k.read(barray, 0, bufferSize)) > -1) {
+												if (monitor.isCanceled()) {
+													monitor.done();
+													k.close();
+													os.close();
+													return Status.CANCEL_STATUS;
+												}
+												os.write(barray, 0, result);
+											}
 										}
 									}
 								}
@@ -483,6 +493,41 @@ public class ContainerLauncher {
 							// remove from copying list so subsequent jobs might
 							// know that the volume
 							// is fully copied
+							for (String name : links.keySet()) {
+								String link = links.get(name);
+								InputStream in2 = ((DockerConnection) connection).copyContainer(token, containerId,
+										link);
+								/*
+								 * The input stream from copyContainer might be incomplete or non-blocking so we
+								 * should wrap it in a stream that is guaranteed to block until data is
+								 * available.
+								 */
+								try (TarArchiveInputStream k = new TarArchiveInputStream(
+										new BlockingInputStream(in2))) {
+									TarArchiveEntry te = k.getNextTarEntry();
+									if (te != null) {
+										long size = te.getSize();
+										IPath currDir = target.append(volume).removeLastSegments(1);
+										IPath path = currDir.append(name);
+										File f = new File(path.toOSString());
+										f.createNewFile();
+										try (FileOutputStream os = new FileOutputStream(f)) {
+											int bufferSize = ((int) size > 4096 ? 4096 : (int) size);
+											byte[] barray = new byte[bufferSize];
+											int result = -1;
+											while ((result = k.read(barray, 0, bufferSize)) > -1) {
+												if (monitor.isCanceled()) {
+													monitor.done();
+													k.close();
+													os.close();
+													return Status.CANCEL_STATUS;
+												}
+												os.write(barray, 0, result);
+											}
+										}
+									}
+								}
+							}
 							synchronized (lockObject) {
 								copyingList.remove(currentVolume);
 							}
@@ -549,7 +594,6 @@ public class ContainerLauncher {
 				}
 			}
 		}
-		super.finalize();
 	}
 
 	public ContainerLauncher() {
@@ -592,7 +636,7 @@ public class ContainerLauncher {
 	/**
 	 * Perform a launch of a command in a container and output stdout/stderr to
 	 * console.
-	 * 
+	 *
 	 * @param id
 	 *            - id of caller to use to distinguish console owner
 	 * @param listener
@@ -635,7 +679,7 @@ public class ContainerLauncher {
 	/**
 	 * Perform a launch of a command in a container and output stdout/stderr to
 	 * console.
-	 * 
+	 *
 	 * @param id
 	 *            - id of caller to use to distinguish console owner
 	 * @param listener
@@ -681,7 +725,7 @@ public class ContainerLauncher {
 	/**
 	 * Perform a launch of a command in a container and output stdout/stderr to
 	 * console.
-	 * 
+	 *
 	 * @param id
 	 *            - id of caller to use to distinguish console owner
 	 * @param listener
@@ -749,7 +793,7 @@ public class ContainerLauncher {
 	/**
 	 * Perform a launch of a command in a container and output stdout/stderr to
 	 * console.
-	 * 
+	 *
 	 * @param id
 	 *            - id of caller to use to distinguish console owner
 	 * @param listener
@@ -804,7 +848,7 @@ public class ContainerLauncher {
 	/**
 	 * Perform a launch of a command in a container and output stdout/stderr to
 	 * console.
-	 * 
+	 *
 	 * @param id
 	 *            - id of caller to use to distinguish console owner
 	 * @param listener
@@ -1258,7 +1302,7 @@ public class ContainerLauncher {
 
 	/**
 	 * Fetch directories from Container and place them in a specified location.
-	 * 
+	 *
 	 * @param connectionUri
 	 *            - uri of connection to use
 	 * @param imageName
@@ -1268,7 +1312,7 @@ public class ContainerLauncher {
 	 * @param hostDir
 	 *            - host directory to copy directories to
 	 * @return 0 if successful, -1 if failure occurred
-	 * 
+	 *
 	 * @since 3.0
 	 */
 	public int fetchContainerDirs(String connectionUri, String imageName,
@@ -1297,7 +1341,7 @@ public class ContainerLauncher {
 
 	/**
 	 * Fetch directories from Container and place them in a specified location.
-	 * 
+	 *
 	 * @param connectionUri
 	 *            - uri of connection to use
 	 * @param imageName
@@ -1309,7 +1353,7 @@ public class ContainerLauncher {
 	 * @param hostDir
 	 *            - host directory to copy directories to
 	 * @return 0 if successful, -1 if failure occurred
-	 * 
+	 *
 	 * @since 4.0
 	 */
 	public int fetchContainerDirs(String connectionUri, String imageName,
@@ -1339,7 +1383,7 @@ public class ContainerLauncher {
 	/**
 	 * Fetch directories from Container and place them in a specified location.
 	 * This method will wait for copy job to complete before returning.
-	 * 
+	 *
 	 * @param connectionUri
 	 *            - uri of connection to use
 	 * @param imageName
@@ -1349,7 +1393,7 @@ public class ContainerLauncher {
 	 * @param hostDir
 	 *            - host directory to copy directories to
 	 * @return 0 if successful, -1 if failure occurred
-	 * 
+	 *
 	 * @since 4.0
 	 */
 	public int fetchContainerDirsSync(String connectionUri, String imageName,
@@ -1384,7 +1428,7 @@ public class ContainerLauncher {
 	/**
 	 * Fetch directories from Container and place them in a specified location.
 	 * This method will wait for copy job to complete before returning.
-	 * 
+	 *
 	 * @param connectionUri
 	 *            - uri of connection to use
 	 * @param imageName
@@ -1394,7 +1438,7 @@ public class ContainerLauncher {
 	 * @param hostDir
 	 *            - host directory to copy directories to
 	 * @return 0 if successful, -1 if failure occurred
-	 * 
+	 *
 	 * @since 4.0
 	 */
 	public int fetchContainerDirsSync(String connectionUri, String imageName,
@@ -1430,7 +1474,7 @@ public class ContainerLauncher {
 	/**
 	 * Create a Process to run an arbitrary command in a Container with uid of
 	 * caller so any files created are accessible to user.
-	 * 
+	 *
 	 * @param connectionName
 	 *            - uri of connection to use
 	 * @param imageName
@@ -1461,10 +1505,10 @@ public class ContainerLauncher {
 	 *            - boolean whether to keep Container when done
 	 * @return Process that can be used to check for completion and for routing
 	 *         stdout/stderr
-	 * 
+	 *
 	 * @since 3.0
 	 */
-	public Process runCommand(String connectionName, String imageName, IProject project, 
+	public Process runCommand(String connectionName, String imageName, IProject project,
 			IErrorMessageHolder errMsgHolder, String command,
 			@SuppressWarnings("unused") String commandDir,
 			String workingDir,
@@ -1472,7 +1516,7 @@ public class ContainerLauncher {
 			Properties envMap, boolean supportStdin,
 			boolean privilegedMode, HashMap<String, String> labels,
 			boolean keepContainer) {
-		
+
 		final List<String> cmdList = getCmdList(command);
 		return runCommand(connectionName, imageName, project, errMsgHolder,
 				cmdList, workingDir, additionalDirs, origEnv, envMap,
@@ -1482,7 +1526,7 @@ public class ContainerLauncher {
 	/**
 	 * Create a Process to run an arbitrary command in a Container with uid of
 	 * caller so any files created are accessible to user.
-	 * 
+	 *
 	 * @param connectionName
 	 *            - uri of connection to use
 	 * @param imageName
@@ -1511,7 +1555,7 @@ public class ContainerLauncher {
 	 *            - boolean whether to keep Container when done
 	 * @return Process that can be used to check for completion and for routing
 	 *         stdout/stderr
-	 * 
+	 *
 	 * @since 4.0
 	 */
 	public Process runCommand(String connectionName, String imageName,
@@ -1613,7 +1657,7 @@ public class ContainerLauncher {
 				id += ":" + gid.toString(); //$NON-NLS-1$
 			builder = builder.user(id);
 		}
-		
+
 		// TODO: add group id here when supported by DockerHostConfig.Builder
 
 		// add any labels if specified
@@ -1776,7 +1820,7 @@ public class ContainerLauncher {
 			errMsgHolder.setErrorMessage(e.getMessage());
 			return null;
 		}
-		
+
 		final String id = containerId;
 		final IDockerConnection conn = connection;
 		if (!((DockerConnection) conn).isLocal()) {
@@ -1807,7 +1851,7 @@ public class ContainerLauncher {
 
 	/**
 	 * Clean up the container used for launching
-	 * 
+	 *
 	 * @param connectionUri
 	 *            the URI of the connection used
 	 * @param info
@@ -1833,7 +1877,7 @@ public class ContainerLauncher {
 
 	/**
 	 * Get the reusable run console for running C/C++ executables in containers.
-	 * 
+	 *
 	 * @return
 	 */
 	private RunConsole getConsole() {
@@ -1846,7 +1890,7 @@ public class ContainerLauncher {
 
 	/**
 	 * Take the command string and parse it into a list of strings.
-	 * 
+	 *
 	 * @param s
 	 * @return list of strings
 	 */
@@ -1910,7 +1954,7 @@ public class ContainerLauncher {
 	/**
 	 * Convert map of environment variables to a {@link List} of KEY=VALUE
 	 * String
-	 * 
+	 *
 	 * @param variables
 	 *            the entries to manipulate
 	 * @return the concatenated key/values for each given variable entry
@@ -1937,13 +1981,13 @@ public class ContainerLauncher {
 	/**
 	 * Get set of volumes that have been copied from Container to Host as part
 	 * of fetchContainerDirs method.
-	 * 
+	 *
 	 * @param connectionName
 	 *            - uri of connection used
 	 * @param imageName
 	 *            - name of image used
 	 * @return set of paths copied from Container to Host
-	 * 
+	 *
 	 * @since 3.0
 	 */
 	public Set<String> getCopiedVolumes(String connectionName,
