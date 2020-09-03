@@ -456,7 +456,7 @@
             id="org.eclipse.linuxtools.profiling.launch.profileApplicationLaunch.mainTab"
             group="org.eclipse.cdt.launch.applicationProfileLaunchTabGroup"
             name="%MainTab.name"
-            class="org.eclipse.cdt.launch.ui.CMainTab">
+            class="org.eclipse.cdt.launch.ui.CMainTab2">
         <associatedDelegate delegate="org.eclipse.linuxtools.profiling.launch.profilingDelegate"/>
       </tab>
       <tab
