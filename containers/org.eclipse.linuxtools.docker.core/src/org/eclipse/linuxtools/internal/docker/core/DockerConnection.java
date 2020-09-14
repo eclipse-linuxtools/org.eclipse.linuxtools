@@ -2199,6 +2199,7 @@ public class DockerConnection
 	public List<ContainerFileProxy> readContainerDirectory(final String id,
 			final String path) throws DockerException {
 		List<ContainerFileProxy> childList = new ArrayList<>();
+		String dirListing = null;
 		try {
 			DockerClient copyClient = getClientCopy();
 			final ExecCreation execCreation = copyClient.execCreate(id,
@@ -2208,32 +2209,13 @@ public class DockerConnection
 					ExecCreateParam.attachStderr());
 			final String execId = execCreation.id();
 			final LogStream pty_stream = copyClient.execStart(execId);
-			String lastLine = ""; //$NON-NLS-1$
+
 			try {
-				while (pty_stream.hasNext()) {
-					ByteBuffer b = pty_stream.next().content();
-					byte[] buffer = new byte[b.remaining()];
-					b.get(buffer);
-					String s = lastLine + new String(buffer);
-					String[] lines = s.split("\\r?\\n"); //$NON-NLS-1$
-					if (lines.length > 0) {
-						lastLine = lines[lines.length - 1];
-					} else {
-						lastLine = ""; //$NON-NLS-1$
-					}
-					for (int i = 0; i < lines.length - 1; ++i) {
-						String line = lines[i];
-						processDirectoryLine(line, path, childList);
-					}
-				}
-				if (!lastLine.isEmpty()) {
-					processDirectoryLine(lastLine, path, childList);
-				}
+				dirListing = pty_stream.readFully();
 			} finally {
 				if (pty_stream != null)
 					pty_stream.close();
-				if (copyClient != null)
-					copyClient.close();
+				copyClient.close();
 			}
 		} catch (Exception e) {
 			if (e.getCause() instanceof IOException) {
@@ -2242,12 +2224,18 @@ public class DockerConnection
 				return readContainerDirectory(id, path);
 			}
 			// e.printStackTrace();
+			// TODO: Should probably rethrow
+		}
+
+		final String[] lines = dirListing.split("\\r?\\n");
+		for (String line : lines) {
+			processDirectoryLine(line, path, childList);
 		}
 		return childList;
 	}
 
 	private String[] tokenize(String line) {
-		String regex = "(\"[^\"]*\"/?)|(\\S+)";
+		String regex = "(\"[^\"]*\"\\S?)|(\\S+)";
 		List<String> result = new ArrayList<>();
 
 		Matcher m = Pattern.compile(regex).matcher(line);

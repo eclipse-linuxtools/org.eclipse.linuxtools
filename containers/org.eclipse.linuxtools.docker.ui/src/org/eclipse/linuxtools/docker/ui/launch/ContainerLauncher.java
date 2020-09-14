@@ -12,43 +12,27 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.docker.ui.launch;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.attribute.PosixFilePermission;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -72,8 +56,9 @@ import org.eclipse.linuxtools.internal.docker.core.DockerPortBinding;
 import org.eclipse.linuxtools.internal.docker.core.IConsoleListener;
 import org.eclipse.linuxtools.internal.docker.ui.consoles.ConsoleOutputStream;
 import org.eclipse.linuxtools.internal.docker.ui.consoles.RunConsole;
+import org.eclipse.linuxtools.internal.docker.ui.jobs.CopyFromDockerJob;
+import org.eclipse.linuxtools.internal.docker.ui.jobs.CopyFromDockerJob.CopyType;
 import org.eclipse.linuxtools.internal.docker.ui.launch.ContainerCommandProcess;
-import org.eclipse.linuxtools.internal.docker.ui.launch.LaunchConfigurationUtils;
 import org.eclipse.linuxtools.internal.docker.ui.views.DVMessages;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.DataVolumeModel;
 import org.eclipse.swt.custom.CTabFolder;
@@ -90,47 +75,20 @@ public class ContainerLauncher {
 	private static final String ERROR_NO_CONNECTIONS = "ContainerNoConnections.msg"; //$NON-NLS-1$
 	private static final String ERROR_NO_CONNECTION_WITH_URI = "ContainerNoConnectionWithURI.msg"; //$NON-NLS-1$
 
-	private static final String DIRFILE_NAME = "copiedVolumes"; //$NON-NLS-1$
 
 	private static RunConsole console;
 
 	private static Map<IProject, ID> fidMap = new HashMap<>();
 
-	private static Object lockObject = new Object();
-	private static Map<String, Map<String, Set<String>>> copiedVolumesMap = null;
-	private static Map<String, Map<String, Set<String>>> copyingVolumesMap = null;
-
-	private static Set<PosixFilePermission> toPerms(int mode) {
-		Set<PosixFilePermission> perms = new HashSet<>();
-		if ((mode & 0400) != 0) {
-			perms.add(PosixFilePermission.OWNER_READ);
-		}
-		if ((mode & 0200) != 0) {
-			perms.add(PosixFilePermission.OWNER_WRITE);
-		}
-		if ((mode & 0100) != 0) {
-			perms.add(PosixFilePermission.OWNER_EXECUTE);
-		}
-		if ((mode & 0040) != 0) {
-			perms.add(PosixFilePermission.GROUP_READ);
-		}
-		if ((mode & 0020) != 0) {
-			perms.add(PosixFilePermission.GROUP_WRITE);
-		}
-		if ((mode & 0010) != 0) {
-			perms.add(PosixFilePermission.GROUP_EXECUTE);
-		}
-		if ((mode & 0004) != 0) {
-			perms.add(PosixFilePermission.OTHERS_READ);
-		}
-		if ((mode & 0002) != 0) {
-			perms.add(PosixFilePermission.OTHERS_WRITE);
-		}
-		if ((mode & 0001) != 0) {
-			perms.add(PosixFilePermission.OTHERS_EXECUTE);
-		}
-		return perms;
-	}
+	/**
+	 * This is needed for historic reasons to support getCopiedVolumes(String,
+	 * String)
+	 *
+	 * AbstractMap.SimpleEntry is a Pair as Java does not have a native Pair
+	 *
+	 */
+	@SuppressWarnings("rawtypes")
+	private Map<AbstractMap.SimpleEntry<String, String>, IPath> dirMapping = new HashMap<>();
 
 	private class CopyVolumesJob extends Job {
 
@@ -200,496 +158,9 @@ public class ContainerLauncher {
 
 	}
 
-	/**
-	 * A blocking input stream that waits until data is available.
-	 */
-	private class BlockingInputStream extends InputStream {
-		private InputStream in;
-
-		public BlockingInputStream(InputStream in) {
-			this.in = in;
-		}
-
-		@Override
-		public int read() throws IOException {
-			return in.read();
-		}
-	}
-
-	private class CopyVolumesFromImageJob extends Job {
-
-		private static final String COPY_VOLUMES_FROM_JOB_TITLE = "ContainerLaunch.copyVolumesFromJob.title"; //$NON-NLS-1$
-		private static final String COPY_VOLUMES_FROM_DESC = "ContainerLaunch.copyVolumesFromJob.desc"; //$NON-NLS-1$
-		private static final String COPY_VOLUMES_FROM_TASK = "ContainerLaunch.copyVolumesFromJob.task"; //$NON-NLS-1$
-
-		private final List<String> volumes;
-		private final List<String> excludedDirs;
-		private final IDockerConnection connection;
-		private final String image;
-		private final IPath target;
-		private Set<String> dirList;
-		private Set<String> copyingList;
-
-		public CopyVolumesFromImageJob(
-				IDockerConnection connection,
-				String image, List<String> volumes, List<String> excludedDirs,
-				IPath target) {
-			super(Messages.getString(COPY_VOLUMES_FROM_JOB_TITLE));
-			this.volumes = volumes;
-			this.excludedDirs = excludedDirs;
-			this.connection = connection;
-			this.image = image;
-			this.target = target;
-			Map<String, Set<String>> dirMap = null;
-			Map<String, Set<String>> copyingMap = null;
-			synchronized (lockObject) {
-				String uri = connection.getUri();
-				dirMap = copiedVolumesMap.get(uri);
-				if (dirMap == null) {
-					dirMap = new HashMap<>();
-					copiedVolumesMap.put(uri, dirMap);
-				}
-				dirList = dirMap.get(image);
-				if (dirList == null) {
-					dirList = new LinkedHashSet<>();
-					dirMap.put(image, dirList);
-				}
-				copyingMap = copyingVolumesMap.get(uri);
-				if (copyingMap == null) {
-					copyingMap = new HashMap<>();
-					copyingVolumesMap.put(uri, copyingMap);
-				}
-				copyingList = copyingMap.get(image);
-				if (copyingList == null) {
-					copyingList = new LinkedHashSet<>();
-					copyingMap.put(image, copyingList);
-				}
-			}
-		}
-
-		@Override
-		protected IStatus run(final IProgressMonitor monitor) {
-			monitor.beginTask(Messages.getFormattedString(COPY_VOLUMES_FROM_DESC, image), volumes.size());
-			String containerId = null;
-			String currentVolume = null;
-			boolean isWin = Platform.getOS().equals(Platform.OS_WIN32);
-
-			// keep a list of already copied/being copied volumes so we can skip them and
-			// wait at the end to
-			// make sure if another job was copying them, it has finished
-			List<String> alreadyCopiedList = new ArrayList<>();
-
-			try {
-				IDockerImage dockerImage = ((DockerConnection) connection).getImageByTag(image);
-				// if there is a .image_id file, check the image id to ensure
-				// the user hasn't loaded a new version which may have
-				// different header files installed.
-				IPath imageFilePath = target.append(".image_id"); //$NON-NLS-1$
-				File imageFile = imageFilePath.toFile();
-				boolean needImageIdFile = !imageFile.exists();
-				if (!needImageIdFile) {
-					try (FileReader reader = new FileReader(imageFile);
-							BufferedReader bufferReader = new BufferedReader(reader);) {
-						String imageId = bufferReader.readLine();
-						if (!dockerImage.id().equals(imageId)) {
-							// if image id has changed...all bets are off
-							// and we must reload all directories
-							synchronized (lockObject) {
-								dirList.clear();
-								copyingList.clear();
-							}
-							needImageIdFile = true;
-						}
-					} catch (IOException e) {
-						// ignore
-					}
-				}
-				if (needImageIdFile) {
-					try (FileWriter writer = new FileWriter(imageFile);
-							BufferedWriter bufferedWriter = new BufferedWriter(writer);) {
-						bufferedWriter.write(dockerImage.id());
-						bufferedWriter.newLine();
-						synchronized (lockObject) {
-							dirList.clear();
-							copyingList.clear();
-						}
-					} catch (IOException e) {
-						// ignore
-					}
-				}
-
-				// check if we have anything to copy
-				boolean somethingToCopy = false;
-				synchronized (lockObject) {
-					for (String volume : volumes) {
-						boolean excluded = false;
-						for (String dir : excludedDirs) {
-							if (volume.equals(dir)
-									|| (volume.startsWith(dir) && volume.charAt(dir.length()) == File.separatorChar)) {
-								excluded = true;
-								break;
-							}
-						}
-						if (excluded) {
-							continue;
-						}
-						boolean alreadyCopied = false;
-						for (String path : dirList) {
-							if (volume.equals(path) || (volume.startsWith(path)
-									&& volume.charAt(path.length()) == File.separatorChar)) {
-								if (!copyingList.contains(path)) {
-									alreadyCopied = true;
-									break;
-								}
-							}
-						}
-						if (!alreadyCopied) {
-							somethingToCopy = true;
-							break;
-						}
-					}
-				}
-
-				// if nothing to copy, don't waste time creating a Container
-				if (!somethingToCopy) {
-					monitor.done();
-					return Status.OK_STATUS;
-				}
-
-				// create base container to use for copying
-				DockerContainerConfig.Builder builder = new DockerContainerConfig.Builder().cmd("/bin/sh").image(image); //$NON-NLS-1$
-				IDockerContainerConfig config = builder.build();
-				DockerHostConfig.Builder hostBuilder = new DockerHostConfig.Builder();
-				IDockerHostConfig hostConfig = hostBuilder.build();
-				containerId = ((DockerConnection) connection).createContainer(config, hostConfig, null);
-
-				// copy each volume if it exists and is not copied over yet
-				for (String volume : volumes) {
-					currentVolume = volume;
-					if (monitor.isCanceled()) {
-						monitor.done();
-						return Status.CANCEL_STATUS;
-					}
-					// don't bother copying files from project
-					if (volume.contains("${ProjName}")) { //$NON-NLS-1$
-						monitor.worked(1);
-						continue;
-					}
-					// don't copy directories that are excluded
-					boolean excluded = false;
-					for (String dir : excludedDirs) {
-						if (volume.equals(dir)
-								|| (volume.startsWith(dir) && volume.charAt(dir.length()) == File.separatorChar)) {
-							excluded = true;
-							break;
-						}
-					}
-					if (excluded) {
-						monitor.worked(1);
-						continue;
-					}
-					// if we have already copied the directory either directly
-					// or as part of a parent directory copy, then skip to next
-					// volume.
-					String alreadyCopied = null;
-					synchronized (lockObject) {
-						for (String path : dirList) {
-							if (volume.equals(path) || (volume.startsWith(path)
-									&& volume.charAt(path.length()) == File.separatorChar)) {
-								alreadyCopied = path;
-								if (!dirList.contains(volume)) {
-									dirList.add(volume);
-								}
-								break;
-							}
-						}
-					}
-
-					// if we found a match, make sure it is finished copying
-					// before continuing
-					if (alreadyCopied != null) {
-						alreadyCopiedList.add(alreadyCopied);
-						monitor.worked(1);
-						continue;
-					}
-
-					// synchronize on the volume so others can wait until copy
-					// is completed
-					// instead of returning too fast and the headers won't be
-					// there
-					synchronized (volume) {
-						try (Closeable token = ((DockerConnection) connection).getOperationToken()) {
-							monitor.setTaskName(Messages.getFormattedString(COPY_VOLUMES_FROM_TASK, volume));
-							monitor.worked(1);
-
-							InputStream in = ((DockerConnection) connection).copyContainer(token, containerId, volume);
-
-							Map<String, String> links = new HashMap<>();
-
-							synchronized (lockObject) {
-								if (!dirList.contains(volume)) {
-									dirList.add(volume);
-									copyingList.add(volume);
-								} else {
-									continue;
-								}
-							}
-
-							/*
-							 * The input stream from copyContainer might be incomplete or non-blocking so we
-							 * should wrap it in a stream that is guaranteed to block until data is
-							 * available.
-							 */
-							try (TarArchiveInputStream k = new TarArchiveInputStream(new BlockingInputStream(in))) {
-								TarArchiveEntry te = null;
-								target.toFile().mkdirs();
-								IPath currDir = target.append(volume).removeLastSegments(1);
-								currDir.toFile().mkdirs();
-								while ((te = k.getNextTarEntry()) != null) {
-									long size = te.getSize();
-									IPath path = currDir;
-									path = path.append(te.getName());
-									File f = new File(path.toOSString());
-									int mode = te.getMode();
-									if (te.isSymbolicLink()) {
-										IPath linkPath = new Path(te.getLinkName());
-										if (!linkPath.isAbsolute()) {
-											if (!isWin) {
-												java.nio.file.Path p = Paths.get(path.toPortableString());
-												java.nio.file.Path link = Paths.get(te.getLinkName());
-												if (f.exists()) {
-													f.delete();
-												}
-												Files.createSymbolicLink(p, link);
-											} else {
-												linkPath = new Path(volume).append(te.getLinkName());
-												links.put(path.toPortableString(), linkPath.toPortableString());
-											}
-										} else {
-											links.put(path.toPortableString(), linkPath.toPortableString());
-										}
-										continue;
-									}
-									if (te.isDirectory()) {
-										f.mkdir();
-										if (!isWin) {
-											Files.setPosixFilePermissions(Paths.get(path.toOSString()), toPerms(mode));
-										}
-										continue;
-									} else {
-										if (".project".equals(te.getName())) { //$NON-NLS-1$
-											continue;
-										}
-										f.createNewFile();
-										if (!isWin) {
-											Files.setPosixFilePermissions(Paths.get(path.toOSString()), toPerms(mode));
-										}
-									}
-									try (FileOutputStream os = new FileOutputStream(f)) {
-										int bufferSize = ((int) size > 4096 ? 4096 : (int) size);
-										byte[] barray = new byte[bufferSize];
-										int result = -1;
-										while ((result = k.read(barray, 0, bufferSize)) > -1) {
-											if (monitor.isCanceled()) {
-												monitor.done();
-												k.close();
-												os.close();
-												return Status.CANCEL_STATUS;
-											}
-											os.write(barray, 0, result);
-										}
-									}
-								}
-							}
-							// remove from copying list so subsequent jobs might
-							// know that the volume
-							// is fully copied
-							for (String name : links.keySet()) {
-								String link = links.get(name);
-								boolean resolved = false;
-								int i = 0; // prevent infinite loop if there is a circular link
-								while (!resolved && ++i < 10) {
-									InputStream in2 = ((DockerConnection) connection).copyContainer(token, containerId,
-											link);
-									/*
-									 * The input stream from copyContainer might be incomplete or non-blocking so we
-									 * should wrap it in a stream that is guaranteed to block until data is
-									 * available.
-									 */
-									try (TarArchiveInputStream k = new TarArchiveInputStream(
-											new BlockingInputStream(in2))) {
-										TarArchiveEntry te = k.getNextTarEntry();
-										if (te != null && te.isSymbolicLink()) {
-											IPath linkPath = new Path(te.getLinkName());
-											if (!linkPath.isAbsolute()) {
-												linkPath = new Path(link).removeLastSegments(1)
-														.append(te.getLinkName());
-											}
-											link = linkPath.toPortableString();
-											continue;
-										}
-										while (te != null) {
-											long size = te.getSize();
-											IPath currDir = target.append(volume).removeLastSegments(1);
-											IPath path = currDir.append(name);
-											File f = new File(path.toOSString());
-											if (te.isSymbolicLink()) {
-												IPath linkPath = new Path(te.getLinkName());
-												if (!linkPath.isAbsolute()) {
-													if (!isWin) {
-														java.nio.file.Path p = Paths.get(path.toPortableString());
-														java.nio.file.Path linkp = Paths.get(te.getLinkName());
-														if (f.exists()) {
-															f.delete();
-														}
-														Files.createSymbolicLink(p, linkp);
-													} else {
-														// we don't follow nested links
-													}
-												} else {
-													// we don't follow nested absolute links
-												}
-												te = k.getNextTarEntry();
-												continue;
-											}
-											int mode = te.getMode();
-											if (te.isDirectory()) {
-												f.mkdir();
-												if (!isWin) {
-													Files.setPosixFilePermissions(Paths.get(path.toOSString()),
-															toPerms(mode));
-												}
-												te = k.getNextTarEntry();
-												continue;
-											}
-											f.createNewFile();
-											if (!isWin) {
-												Files.setPosixFilePermissions(Paths.get(path.toOSString()),
-														toPerms(mode));
-											}
-											try (FileOutputStream os = new FileOutputStream(f)) {
-												int bufferSize = ((int) size > 4096 ? 4096 : (int) size);
-												byte[] barray = new byte[bufferSize];
-												int result = -1;
-												while ((result = k.read(barray, 0, bufferSize)) > -1) {
-													if (monitor.isCanceled()) {
-														monitor.done();
-														k.close();
-														os.close();
-														return Status.CANCEL_STATUS;
-													}
-													os.write(barray, 0, result);
-												}
-											}
-										}
-										resolved = true;
-									}
-								}
-							}
-							synchronized (lockObject) {
-								copyingList.remove(currentVolume);
-							}
-						} catch (final DockerException e) {
-							// ignore
-							synchronized (lockObject) {
-								copyingList.remove(currentVolume);
-								dirList.remove(currentVolume);
-							}
-						}
-					}
-				}
-			} catch (InterruptedException e) {
-				// do nothing
-			} catch (IOException | DockerException e) {
-				if (currentVolume != null) {
-					synchronized (lockObject) {
-						if (copyingList != null) {
-							copyingList.remove(currentVolume);
-						}
-						if (dirList != null) {
-							dirList.remove(currentVolume);
-						}
-					}
-				}
-				Activator.log(e);
-			} finally {
-				// remove the container used for copying
-				if (containerId != null) {
-					try {
-						((DockerConnection) connection).removeContainer(containerId);
-					} catch (DockerException | InterruptedException e) {
-						// ignore
-					}
-				}
-				for (String copiedVolume : alreadyCopiedList) {
-					synchronized (copiedVolume) {
-						// do something so synchronization will occur
-						synchronized (lockObject) {
-							if (!dirList.contains(copiedVolume)) {
-								dirList.add(copiedVolume);
-							}
-						}
-					}
-				}
-				monitor.done();
-			}
-			return Status.OK_STATUS;
-		}
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		synchronized (lockObject) {
-			if (copiedVolumesMap != null) {
-				IPath pluginPath = Platform.getStateLocation(
-						Platform.getBundle(Activator.PLUGIN_ID));
-				IPath path = pluginPath.append(DIRFILE_NAME);
-
-				File dirFile = path.toFile();
-				FileOutputStream f = new FileOutputStream(dirFile);
-				try (ObjectOutputStream oos = new ObjectOutputStream(f)) {
-					oos.writeObject(copiedVolumesMap);
-				}
-			}
-		}
-	}
-
 	public ContainerLauncher() {
-		initialize();
 	}
 
-	@SuppressWarnings("unchecked")
-	private void initialize() {
-		synchronized (lockObject) {
-			if (copiedVolumesMap == null) {
-				IPath pluginPath = Platform.getStateLocation(
-						Platform.getBundle(Activator.PLUGIN_ID));
-				IPath path = pluginPath.append(DIRFILE_NAME);
-
-				File dirFile = path.toFile();
-				if (dirFile.exists()) {
-					try (FileInputStream f = new FileInputStream(dirFile)) {
-						try (ObjectInputStream ois = new ObjectInputStream(f)) {
-							copiedVolumesMap = (Map<String, Map<String, Set<String>>>) ois
-									.readObject();
-						} catch (ClassNotFoundException
-								| FileNotFoundException e) {
-							// should never happen so print stack trace
-							e.printStackTrace();
-						}
-					} catch (IOException e) {
-						// will handle this below
-					}
-				}
-			}
-			if (copiedVolumesMap == null) {
-				copiedVolumesMap = new HashMap<>();
-			}
-			if (copyingVolumesMap == null) {
-				copyingVolumesMap = new HashMap<>();
-			}
-		}
-	}
 
 	/**
 	 * Perform a launch of a command in a container and output stdout/stderr to
@@ -1375,26 +846,9 @@ public class ContainerLauncher {
 	 */
 	public int fetchContainerDirs(String connectionUri, String imageName,
 			List<String> containerDirs, IPath hostDir) {
-		// Try and use the specified connection that was used before,
-		// otherwise, open an error
-		final IDockerConnection connection = DockerConnectionManager
-				.getInstance().getConnectionByUri(connectionUri);
-		if (connection == null) {
-			Display.getDefault()
-					.syncExec(() -> MessageDialog.openError(
-							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-									.getShell(),
-							DVMessages.getString(ERROR_LAUNCHING_CONTAINER),
-							DVMessages.getFormattedString(
-									ERROR_NO_CONNECTION_WITH_URI,
-									connectionUri)));
-			return -1;
-		}
 
-		CopyVolumesFromImageJob job = new CopyVolumesFromImageJob(connection,
-				imageName, containerDirs, new ArrayList<String>(), hostDir);
-		job.schedule();
-		return 0;
+		return fetchContainerDirs(connectionUri, imageName,
+				containerDirs, null, hostDir);
 	}
 
 	/**
@@ -1416,24 +870,7 @@ public class ContainerLauncher {
 	 */
 	public int fetchContainerDirs(String connectionUri, String imageName,
 			List<String> containerDirs, List<String> excludedDirs, IPath hostDir) {
-		// Try and use the specified connection that was used before,
-		// otherwise, open an error
-		final IDockerConnection connection = DockerConnectionManager
-				.getInstance().getConnectionByUri(connectionUri);
-		if (connection == null) {
-			Display.getDefault()
-					.syncExec(() -> MessageDialog.openError(
-							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-									.getShell(),
-							DVMessages.getString(ERROR_LAUNCHING_CONTAINER),
-							DVMessages.getFormattedString(
-									ERROR_NO_CONNECTION_WITH_URI,
-									connectionUri)));
-			return -1;
-		}
-
-		CopyVolumesFromImageJob job = new CopyVolumesFromImageJob(connection,
-				imageName, containerDirs, excludedDirs, hostDir);
+		Job job = fetchContainerDirsJobInt(connectionUri, imageName, containerDirs, excludedDirs, hostDir);
 		job.schedule();
 		return 0;
 	}
@@ -1456,31 +893,7 @@ public class ContainerLauncher {
 	 */
 	public int fetchContainerDirsSync(String connectionUri, String imageName,
 			List<String> containerDirs, IPath hostDir) {
-		// Try and use the specified connection that was used before,
-		// otherwise, open an error
-		final IDockerConnection connection = DockerConnectionManager
-				.getInstance().getConnectionByUri(connectionUri);
-		if (connection == null) {
-			Display.getDefault()
-					.syncExec(() -> MessageDialog.openError(
-							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-									.getShell(),
-							DVMessages.getString(ERROR_LAUNCHING_CONTAINER),
-							DVMessages.getFormattedString(
-									ERROR_NO_CONNECTION_WITH_URI,
-									connectionUri)));
-			return -1;
-		}
-
-		CopyVolumesFromImageJob job = new CopyVolumesFromImageJob(connection,
-				imageName, containerDirs, new ArrayList<String>(), hostDir);
-		job.schedule();
-		try {
-			job.join();
-		} catch (InterruptedException e) {
-			return -1;
-		}
-		return 0;
+		return fetchContainerDirsSync(connectionUri, imageName, containerDirs, null, hostDir);
 	}
 
 	/**
@@ -1502,24 +915,9 @@ public class ContainerLauncher {
 	public int fetchContainerDirsSync(String connectionUri, String imageName,
 			List<String> containerDirs, List<String> excludedDirs,
 			IPath hostDir) {
-		// Try and use the specified connection that was used before,
-		// otherwise, open an error
-		final IDockerConnection connection = DockerConnectionManager
-				.getInstance().getConnectionByUri(connectionUri);
-		if (connection == null) {
-			Display.getDefault()
-					.syncExec(() -> MessageDialog.openError(
-							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-									.getShell(),
-							DVMessages.getString(ERROR_LAUNCHING_CONTAINER),
-							DVMessages.getFormattedString(
-									ERROR_NO_CONNECTION_WITH_URI,
-									connectionUri)));
-			return -1;
-		}
 
-		CopyVolumesFromImageJob job = new CopyVolumesFromImageJob(connection,
-				imageName, containerDirs, excludedDirs, hostDir);
+		Job job =  fetchContainerDirsJobInt(connectionUri, imageName,containerDirs,
+				excludedDirs, hostDir);
 		job.schedule();
 		try {
 			job.join();
@@ -1527,6 +925,36 @@ public class ContainerLauncher {
 			return -1;
 		}
 		return 0;
+	}
+
+	private Job fetchContainerDirsJobInt(String connectionUri, String imageName, List<String> containerDirs,
+			List<String> excludedDirs, IPath hostDir) {
+		// Try and use the specified connection that was used before,
+		// otherwise, open an error
+		final IDockerConnection connection = DockerConnectionManager.getInstance().getConnectionByUri(connectionUri);
+		if (connection == null) {
+			Display.getDefault()
+					.syncExec(() -> MessageDialog.openError(
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+							DVMessages.getString(ERROR_LAUNCHING_CONTAINER),
+							DVMessages.getFormattedString(ERROR_NO_CONNECTION_WITH_URI, connectionUri)));
+			return null;
+		}
+
+		HashSet<Path> containerDirsSet = new HashSet<>();
+
+		for (String dir : containerDirs) {
+			if (excludedDirs != null && excludedDirs.stream().anyMatch(p -> dir.startsWith(p))) {
+				continue;
+			}
+			containerDirsSet.add(new Path(dir));
+
+		}
+
+		// This is needed for backwards compatibility
+		dirMapping.put(new AbstractMap.SimpleEntry<>(connectionUri, imageName), hostDir);
+
+		return new CopyFromDockerJob(connection, CopyType.ImageMirror, imageName, containerDirsSet, (Path) hostDir);
 	}
 
 	/**
@@ -1585,6 +1013,12 @@ public class ContainerLauncher {
 	 * Create a Process to run an arbitrary command in a Container with uid of
 	 * caller so any files created are accessible to user.
 	 *
+	 * additionalDirs must be either
+	 *  * local path that will be mapped to the same path within the container
+	 *  * <ContainerPath>:CONTAINER:<Sourcepath>:<Bool:selected>
+	 *  * <ContainerPath>:HOST_PATH:<Sourcepath>:<Bool:ro>:<Bool:selected>
+	 *  * <ContainerPath>:None:<Bool:selected>
+	 * See DataVolumeModel for details.
 	 * @param connectionName
 	 *            - uri of connection to use
 	 * @param imageName
@@ -1598,7 +1032,7 @@ public class ContainerLauncher {
 	 * @param workingDir
 	 *            - where to run command
 	 * @param additionalDirs
-	 *            - additional directories to mount
+	 *            - See description
 	 * @param origEnv
 	 *            - original environment if we are appending to existing
 	 * @param envMap
@@ -1826,8 +1260,7 @@ public class ContainerLauncher {
 						DataVolumeModel dvm = DataVolumeModel.parseString(dir);
 						switch (dvm.getMountType()) {
 						case HOST_FILE_SYSTEM:
-							String bind = LaunchConfigurationUtils
-									.convertToUnixPath(dvm.getHostPathMount())
+							String bind = dvm.getHostPathMount()
 									+ ':' + dvm.getContainerPath() + ":Z"; //$NON-NLS-1$ //$NON-NLS-2$
 							if (dvm.isReadOnly()) {
 								bind += ",ro"; //$NON-NLS-1$
@@ -1846,11 +1279,6 @@ public class ContainerLauncher {
 								+ p.toPortableString() + ":Z"); //$NON-NLS-1$
 					}
 				}
-			}
-			if (workingDir != null) {
-				IPath p = new Path(workingDir).removeTrailingSeparator();
-				volumes.add(p.toPortableString() + ":" + p.toPortableString() //$NON-NLS-1$
-						+ ":Z"); //$NON-NLS-1$
 			}
 			List<String> volumeList = new ArrayList<>(volumes);
 			hostBuilder = hostBuilder.binds(volumeList);
@@ -2037,31 +1465,38 @@ public class ContainerLauncher {
 	}
 
 	/**
-	 * Get set of volumes that have been copied from Container to Host as part
-	 * of fetchContainerDirs method.
+	 * Get set of volumes that have been copied from Container to Host as part of
+	 * {@link fetchContainerDirs} method.
 	 *
-	 * @param connectionName
-	 *            - uri of connection used
-	 * @param imageName
-	 *            - name of image used
+	 * @param connectionName - uri of connection used
+	 * @param imageName      - name of image used
 	 * @return set of paths copied from Container to Host
 	 *
 	 * @since 3.0
+	 * @deprecated Use the alternate {@link getCopiedVolumes(IPath)} using the
+	 *             folder where the data was copied to. This is where the
+	 *             information is kept.
 	 */
-	public Set<String> getCopiedVolumes(String connectionName,
-			String imageName) {
-		Set<String> copiedSet = new HashSet<>();
-		if (copiedVolumesMap != null) {
-			Map<String, Set<String>> connectionMap = copiedVolumesMap
-					.get(connectionName);
-			if (connectionMap != null) {
-				Set<String> imageSet = connectionMap.get(imageName);
-				if (imageSet != null) {
-					copiedSet = imageSet;
-				}
-			}
-		}
-		return copiedSet;
+	@Deprecated
+	public Set<String> getCopiedVolumes(String connectionName, String imageName) {
+		IPath tpath = dirMapping.get(new AbstractMap.SimpleEntry<>(connectionName, imageName));
+		if(tpath == null) return new HashSet<>();
+
+		Set<IPath> rv = getCopiedVolumes(tpath);
+		return rv.stream().map(p -> p.toString()).collect(Collectors.toSet());
+	}
+
+	/**
+	 * Get set of volumes that have been copied from Container to Host as part of
+	 * fetchContainerDirs method.
+	 *
+	 * @param hostdir The {@code hostdir} param used in {@link fetchContainerDirs}
+	 * @return set of paths copied from Container to Host
+	 *
+	 * @since 5.7
+	 */
+	static public Set<IPath> getCopiedVolumes(IPath hostdir) {
+		return CopyFromDockerJob.getCopiedPaths((Path) hostdir);
 	}
 
 }
