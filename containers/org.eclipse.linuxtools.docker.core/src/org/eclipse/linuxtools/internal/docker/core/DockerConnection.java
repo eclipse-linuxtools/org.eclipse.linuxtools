@@ -1244,8 +1244,7 @@ public class DockerConnection
 			client.pull(id, d);
 			listImages();
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			DockerException f = new DockerException(e);
-			throw f;
+			throw new DockerException(e);
 		}
 	}
 
@@ -1259,8 +1258,7 @@ public class DockerConnection
 			client.pull(imageId, d);
 			listImages();
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			DockerException f = new DockerException(e);
-			throw f;
+			throw new DockerException(e);
 		}
 	}
 
@@ -1290,8 +1288,7 @@ public class DockerConnection
 			DockerProgressHandler d = new DockerProgressHandler(handler);
 			client.push(name, d);
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			DockerException f = new DockerException(e);
-			throw f;
+			throw new DockerException(e);
 		}
 	}
 
@@ -1305,8 +1302,7 @@ public class DockerConnection
 			client.push(name, d);
 		} catch (org.mandas.docker.client.exceptions.DockerException
 				| DockerCertificateException e) {
-			DockerException f = new DockerException(e);
-			throw f;
+			throw new DockerException(e);
 		}
 	}
 
@@ -1316,8 +1312,7 @@ public class DockerConnection
 		try {
 			client.removeImage(name, true, false);
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			DockerException f = new DockerException(e);
-			throw f;
+			throw new DockerException(e);
 		}
 	}
 
@@ -1327,8 +1322,7 @@ public class DockerConnection
 		try {
 			client.removeImage(tag, false, false);
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			DockerException f = new DockerException(e);
-			throw f;
+			throw new DockerException(e);
 		}
 	}
 
@@ -1360,8 +1354,7 @@ public class DockerConnection
 		try {
 			client.tag(name, newTag, force);
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			DockerException f = new DockerException(e);
-			throw f;
+			throw new DockerException(e);
 		}
 	}
 
@@ -1378,8 +1371,7 @@ public class DockerConnection
 			return res;
 		} catch (org.mandas.docker.client.exceptions.DockerException
 				| IOException e) {
-			DockerException f = new DockerException(e);
-			throw f;
+			throw new DockerException(e);
 		}
 	}
 
@@ -1396,8 +1388,7 @@ public class DockerConnection
 			return res;
 		} catch (org.mandas.docker.client.exceptions.DockerException
 				| IOException e) {
-			DockerException f = new DockerException(e);
-			throw f;
+			throw new DockerException(e);
 		}
 	}
 
@@ -1432,8 +1423,7 @@ public class DockerConnection
 			return res;
 		} catch (org.mandas.docker.client.exceptions.DockerException
 				| IOException e) {
-			DockerException f = new DockerException(e);
-			throw f;
+			throw new DockerException(e);
 		}
 	}
 
@@ -1470,8 +1460,7 @@ public class DockerConnection
 			return res;
 		} catch (org.mandas.docker.client.exceptions.DockerException
 				| IOException e) {
-			DockerException f = new DockerException(e);
-			throw f;
+			throw new DockerException(e);
 		}
 	}
 
