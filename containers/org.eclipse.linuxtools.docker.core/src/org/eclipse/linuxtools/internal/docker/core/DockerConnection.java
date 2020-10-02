@@ -544,7 +544,7 @@ public class DockerConnection
 				}
 			}
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage());
+			throw new DockerException(e);
 		} catch (InterruptedException e) {
 			return Collections.emptyList();
 		}
@@ -841,7 +841,7 @@ public class DockerConnection
 							Activator.PLUGIN_ID,
 							Messages.List_Docker_Containers_Failure, e));
 				} else {
-					throw new DockerException(e.getMessage());
+					throw new DockerException(e);
 				}
 			} finally {
 				this.containersById = updatedContainersById;
@@ -916,7 +916,7 @@ public class DockerConnection
 					&& e.getCause().getCause() instanceof ProcessingException) {
 				close();
 			} else {
-				throw new DockerException(e.getMessage());
+				throw new DockerException(e);
 			}
 		}
 		return labelSet;
@@ -1700,7 +1700,7 @@ public class DockerConnection
 		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -1722,7 +1722,7 @@ public class DockerConnection
 		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			// Permit kill to fail silently even on non-running containers
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -1738,7 +1738,7 @@ public class DockerConnection
 		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -1772,7 +1772,7 @@ public class DockerConnection
 		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -1788,7 +1788,7 @@ public class DockerConnection
 		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -1845,10 +1845,10 @@ public class DockerConnection
 					"DockerStartContainer.error", getCmdString(containerInfo))); //$NON-NLS-1$
 		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			if (e.status() != 304) {
-				throw new DockerException(e.getMessage());
+				throw new DockerException(e);
 			}
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -1892,7 +1892,7 @@ public class DockerConnection
 					"DockerStartContainer.error", getCmdString(containerInfo))); //$NON-NLS-1$
 		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			if (e.status() != 304) {
-				throw new DockerException(e.getMessage());
+				throw new DockerException(e);
 			}
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e);
@@ -1935,7 +1935,7 @@ public class DockerConnection
 		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -1956,7 +1956,7 @@ public class DockerConnection
 			throw new DockerException(e.getResponseBody());
 		} catch (org.mandas.docker.client.exceptions.DockerException
 				| InterruptedException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -1968,7 +1968,7 @@ public class DockerConnection
 			DockerClient copy = getClientCopy();
 			stream = copy.archiveContainer(id, path);
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 		return stream;
 	}
@@ -1981,7 +1981,7 @@ public class DockerConnection
 		try {
 			stream = clientCopy.archiveContainer(id, path);
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 		return stream;
 	}
@@ -1998,7 +1998,7 @@ public class DockerConnection
 						change.kind()));
 			}
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 		return containerChanges;
 	}
@@ -2044,7 +2044,7 @@ public class DockerConnection
 			copy.copyToContainer(dirPath, id, path);
 			copy.close(); /* dispose of client copy now that we are done */
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -2058,7 +2058,7 @@ public class DockerConnection
 			copy.copyToContainer(dirPath, id, path);
 			copy.close(); /* dispose of client copy now that we are done */
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -2074,7 +2074,7 @@ public class DockerConnection
 					.serverAddress(new String(cfg.getServerAddress())).build();
 			return client.auth(authConfig);
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -2135,7 +2135,7 @@ public class DockerConnection
 		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -2151,7 +2151,7 @@ public class DockerConnection
 			stream.attach(out, err);
 			stream.close();
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -2164,7 +2164,7 @@ public class DockerConnection
 			stream.attach(out, err);
 			stream.close();
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -2184,7 +2184,7 @@ public class DockerConnection
 		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 			throw new DockerException(e.getResponseBody());
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -2240,7 +2240,7 @@ public class DockerConnection
 				t_in.start();
 			}
 		} catch (Exception e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -2252,7 +2252,7 @@ public class DockerConnection
 					AttachParameter.STREAM);
 			logstream.attach(stdout, stderr);
 		} catch (Exception e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -2367,7 +2367,7 @@ public class DockerConnection
 			final IDockerContainerInfo info = getContainerInfo(id);
 			openTerminal(pty_stream, info.name() + " [shell]", null); //$NON-NLS-1$
 		} catch (Exception e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -2434,7 +2434,7 @@ public class DockerConnection
 			ITerminalService service = TerminalServiceFactory.getService();
 			service.openConsole(properties, null);
 		} catch (Exception e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -2504,7 +2504,7 @@ public class DockerConnection
 			return new DockerNetworkCreation(creation);
 
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -2515,7 +2515,7 @@ public class DockerConnection
 			Network n = client.inspectNetwork(networkId);
 			return new DockerNetwork(n);
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -2530,7 +2530,7 @@ public class DockerConnection
 			}
 			return networks;
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -2540,7 +2540,7 @@ public class DockerConnection
 		try {
 			client.removeNetwork(networkId);
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -2550,7 +2550,7 @@ public class DockerConnection
 		try {
 			client.connectToNetwork(id, networkId);
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 
@@ -2560,7 +2560,7 @@ public class DockerConnection
 		try {
 			client.disconnectFromNetwork(id, networkId);
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e.getMessage(), e.getCause());
+			throw new DockerException(e);
 		}
 	}
 

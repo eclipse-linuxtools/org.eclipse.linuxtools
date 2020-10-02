@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat.
+ * Copyright (c) 2014, 2020 Red Hat and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,7 +17,7 @@ public class DockerContainerNotFoundException extends DockerException {
 	private static final long serialVersionUID = 1L;
 
 	public DockerContainerNotFoundException(Exception e) {
-		super(e.getMessage(), e.getCause());
+		super(e);
 	}
 
 }
