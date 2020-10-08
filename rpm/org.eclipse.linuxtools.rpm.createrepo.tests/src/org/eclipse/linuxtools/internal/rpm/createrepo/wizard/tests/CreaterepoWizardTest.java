@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2013, 2020 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -102,7 +102,7 @@ public class CreaterepoWizardTest {
     public void testCreaterepoWizardProjectCreation() throws CoreException, IOException {
         // go through the process of creating a new createrepo project
         bot.menu(ICreaterepoTestConstants.FILE).menu(ICreaterepoTestConstants.NEW).menu(ICreaterepoTestConstants.OTHER).click();
-        SWTBotShell shell = bot.shell(ICreaterepoTestConstants.NEW);
+        SWTBotShell shell = bot.shell(ICreaterepoTestConstants.SELECT_A_WIZARD);
         shell.activate();
         bot.text().setText(ICreaterepoTestConstants.CREATEREPO_PROJECT_WIZARD);
         bot.waitUntil(new TestUtils.NodeAvailableAndSelect(bot.tree(), ICreaterepoTestConstants.CREATEREPO_PROJECT_CATEGORY, ICreaterepoTestConstants.CREATEREPO_PROJECT_WIZARD));

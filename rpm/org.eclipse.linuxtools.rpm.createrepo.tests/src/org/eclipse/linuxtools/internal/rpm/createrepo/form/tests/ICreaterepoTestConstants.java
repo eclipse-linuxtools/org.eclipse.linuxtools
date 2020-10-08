@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2013, 2020 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -40,6 +40,7 @@ public interface ICreaterepoTestConstants {
     String DEFAULTS = "Restore Defaults"; //$NON-NLS-1$
     String PROPERTIES = "Properties"; //$NON-NLS-1$
     String PROPERTIES_SHELL = "Properties for %s"; //$NON-NLS-1$
+    String SELECT_A_WIZARD = "Select a wizard"; //$NON-NLS-1$
 
     /*
      * Navigator controls
