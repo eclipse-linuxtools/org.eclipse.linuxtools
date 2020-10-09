@@ -2196,7 +2196,6 @@ public class DockerConnection
 		}
 	}
 
-	@SuppressWarnings("unused")
 	public List<ContainerFileProxy> readContainerDirectory(final String id,
 			final String path) throws DockerException {
 		List<ContainerFileProxy> childList = new ArrayList<>();
