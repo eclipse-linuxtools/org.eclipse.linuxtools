@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.internal.gcov.Activator;
+import org.eclipse.linuxtools.internal.gcov.Constants;
 import org.eclipse.linuxtools.internal.gcov.utils.BEDataInputStream;
 import org.eclipse.linuxtools.internal.gcov.utils.LEDataInputStream;
 import org.eclipse.linuxtools.internal.gcov.utils.MasksGenerator;
@@ -71,7 +71,7 @@ public class GcdaRecordsParser {
                 stream = new LEDataInputStream((DataInputStream) stream);
             } else {
                 String message = NLS.bind(Messages.GcdaRecordsParser_magic_num_error, magic);
-                Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
+				Status status = new Status(IStatus.ERROR, Constants.PLUGIN_ID, message);
                 throw new CoreException(status);
             }
         }
@@ -110,7 +110,7 @@ public class GcdaRecordsParser {
                                 if (f.getCheksum() != fnctnChksm) {
                                     String message = NLS.bind(Messages.GcdaRecordsParser_checksum_error, new Object[] {
                                             currentFnctn.getName(), fnctnId });
-                                    Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
+									Status status = new Status(IStatus.ERROR, Constants.PLUGIN_ID, message);
                                     throw new CoreException(status);
                                 }
 
@@ -132,7 +132,7 @@ public class GcdaRecordsParser {
                         if (!fnctnFound) {
                             currentFnctn = null;
                             String message = NLS.bind(Messages.GcdaRecordsParser_func_not_found, fnctnId);
-                            Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
+							Status status = new Status(IStatus.ERROR, Constants.PLUGIN_ID, message);
                             throw new CoreException(status);
                         }
 
@@ -143,14 +143,14 @@ public class GcdaRecordsParser {
                 case GCOV_COUNTER_ARCS: {
                     if (currentFnctn == null) {
                         String message = Messages.GcdaRecordsParser_func_counter_error;
-                        Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
+						Status status = new Status(IStatus.ERROR, Constants.PLUGIN_ID, message);
                         throw new CoreException(status);
                     }
 
                     ArrayList<Block> fnctnBlcks = currentFnctn.getFunctionBlocks();
                     if (fnctnBlcks.isEmpty()) {
                         String message = Messages.GcdaRecordsParser_func_block_empty;
-                        Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
+						Status status = new Status(IStatus.ERROR, Constants.PLUGIN_ID, message);
                         throw new CoreException(status);
                     }
 

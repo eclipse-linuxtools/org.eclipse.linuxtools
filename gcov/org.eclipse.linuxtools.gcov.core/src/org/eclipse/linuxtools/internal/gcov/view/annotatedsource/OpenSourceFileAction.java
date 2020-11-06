@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -23,11 +23,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.binutils.link2source.STLink2SourceSupport;
-import org.eclipse.linuxtools.internal.gcov.Activator;
+import org.eclipse.linuxtools.internal.gcov.Constants;
 import org.eclipse.linuxtools.internal.gcov.parser.SourceFile;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -39,6 +40,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.osgi.framework.FrameworkUtil;
 
 public final class OpenSourceFileAction {
 
@@ -96,11 +98,11 @@ public final class OpenSourceFileAction {
                 try {
                     page.openEditor(new STAnnotatedSourceNotFoundEditorInput(project, sourceFile, realLocation,
                             lineNumber), STAnnotatedSourceNotFoundEditor.ID, true);
-                } catch (PartInitException e) {
-                    Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR,
-                            Messages.OpenSourceFileAction_open_error, e);
-                    Activator.getDefault().getLog().log(s);
-                }
+					} catch (PartInitException e) {
+						Status s = new Status(IStatus.ERROR, Constants.PLUGIN_ID, IStatus.ERROR,
+								Messages.OpenSourceFileAction_open_error, e);
+						Platform.getLog(FrameworkUtil.getBundle(OpenSourceFileAction.class)).log(s);
+					}
             } else {
                 try {
                     IEditorPart editor = IDE.openEditorOnFileStore(page, fs);
@@ -116,13 +118,13 @@ public final class OpenSourceFileAction {
                         IWorkbenchPage p = editor.getSite().getPage();
                         p.activate(editor);
                     }
-                } catch (PartInitException e) {
-                    Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR,
-                            Messages.OpenSourceFileAction_open_error, e);
-                    Activator.getDefault().getLog().log(s);
-                }
+					} catch (PartInitException e) {
+						Status s = new Status(IStatus.ERROR, Constants.PLUGIN_ID, IStatus.ERROR,
+								Messages.OpenSourceFileAction_open_error, e);
+						Platform.getLog(FrameworkUtil.getBundle(OpenSourceFileAction.class)).log(s);
+					}
             }
-            
+
         }
     	});
     }

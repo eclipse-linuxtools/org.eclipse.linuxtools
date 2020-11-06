@@ -17,7 +17,7 @@ import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.linuxtools.internal.gcov.Activator;
+import org.eclipse.linuxtools.internal.gcov.Constants;
 
 /**
  * This action changes the content provider
@@ -30,7 +30,7 @@ public class SwitchContentProviderAction extends Action {
 
 	public SwitchContentProviderAction(String name, String iconPath, ColumnViewer viewer, IContentProvider provider) {
 		super(name, AS_RADIO_BUTTON);
-		this.setImageDescriptor(ResourceLocator.imageDescriptorFromBundle(Activator.PLUGIN_ID, iconPath).get());
+		this.setImageDescriptor(ResourceLocator.imageDescriptorFromBundle(Constants.PLUGIN_ID, iconPath).get());
 		this.setToolTipText(name);
 		this.viewer = viewer;
 		this.provider = provider;

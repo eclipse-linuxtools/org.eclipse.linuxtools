@@ -22,7 +22,7 @@ import java.util.HashMap;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.internal.gcov.Activator;
+import org.eclipse.linuxtools.internal.gcov.Constants;
 import org.eclipse.linuxtools.internal.gcov.utils.BEDataInputStream;
 import org.eclipse.linuxtools.internal.gcov.utils.GcovStringReader;
 import org.eclipse.linuxtools.internal.gcov.utils.LEDataInputStream;
@@ -81,7 +81,7 @@ public class GcnoRecordsParser {
                 stream = new LEDataInputStream((DataInputStream) stream);
             } else {
                 String message = NLS.bind(Messages.GcnoRecordsParser_magic_num_error, magic);
-                Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
+				Status status = new Status(IStatus.ERROR, Constants.PLUGIN_ID, message);
                 throw new CoreException(status);
             }
         }

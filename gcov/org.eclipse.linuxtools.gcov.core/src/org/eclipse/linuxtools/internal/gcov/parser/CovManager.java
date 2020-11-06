@@ -42,7 +42,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.binutils.utils.STStrings;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
-import org.eclipse.linuxtools.internal.gcov.Activator;
+import org.eclipse.linuxtools.internal.gcov.Constants;
 import org.eclipse.linuxtools.internal.gcov.model.CovFileTreeElement;
 import org.eclipse.linuxtools.internal.gcov.model.CovFolderTreeElement;
 import org.eclipse.linuxtools.internal.gcov.model.CovFunctionTreeElement;
@@ -53,6 +53,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Xavier Raynaud <xavier.raynaud@st.com>
@@ -158,7 +159,7 @@ public class CovManager implements Serializable {
             }
             if (noRcrd.getFnctns().isEmpty()) {
                 String message = NLS.bind(Messages.CovManager_No_Funcs_Error, gcnoPath);
-                Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, message);
+				Status status = new Status(IStatus.ERROR, Constants.PLUGIN_ID, message);
                 throw new CoreException(status);
             }
             daRcrd = new GcdaRecordsParser(noRcrd.getFnctns());
@@ -420,9 +421,9 @@ public class CovManager implements Serializable {
 							Messages.CovManager_No_Strings_Windows_Error);
 				});
 			} else {
-				Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR,
+				Status status = new Status(IStatus.ERROR, Constants.PLUGIN_ID, IStatus.ERROR,
 						Messages.CovManager_Retrieval_Error, new IOException());
-				Activator.getDefault().getLog().log(status);
+				Platform.getLog(FrameworkUtil.getBundle(CovManager.class)).log(status);
 			}
             return l;
         }

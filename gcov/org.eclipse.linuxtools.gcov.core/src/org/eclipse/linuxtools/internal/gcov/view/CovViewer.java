@@ -31,6 +31,8 @@ import org.eclipse.linuxtools.internal.gcov.parser.SourceFile;
 import org.eclipse.linuxtools.internal.gcov.view.annotatedsource.OpenSourceFileAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
+import org.osgi.framework.FrameworkUtil;
 
 
 
@@ -68,7 +70,7 @@ public class CovViewer extends AbstractSTTreeViewer {
 
     @Override
     public IDialogSettings getDialogSettings() {
-        return org.eclipse.linuxtools.internal.gcov.Activator.getDefault().getDialogSettings();
+		return PlatformUI.getDialogSettingsProvider(FrameworkUtil.getBundle(CovViewer.class)).getDialogSettings();
     }
 
     @Override

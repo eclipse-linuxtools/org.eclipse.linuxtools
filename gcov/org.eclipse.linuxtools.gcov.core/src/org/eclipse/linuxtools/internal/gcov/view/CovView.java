@@ -25,6 +25,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -38,7 +39,7 @@ import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.TreeColumnViewerFilter;
 import org.eclipse.linuxtools.dataviewers.actions.STExportToCSVAction;
 import org.eclipse.linuxtools.dataviewers.charts.actions.ChartAction;
-import org.eclipse.linuxtools.internal.gcov.Activator;
+import org.eclipse.linuxtools.internal.gcov.Constants;
 import org.eclipse.linuxtools.internal.gcov.action.SwitchContentProviderAction;
 import org.eclipse.linuxtools.internal.gcov.parser.CovManager;
 import org.eclipse.linuxtools.internal.gcov.parser.SourceFile;
@@ -55,6 +56,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Xavier Raynaud <xavier.raynaud@st.com>
@@ -207,9 +209,9 @@ public class CovView extends AbstractSTDataView {
 
     public static void reportError(Exception ex) {
         final String message = NLS.bind(Messages.CovView_error_message, ex.getMessage());
-        Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR, message, ex);
+		Status status = new Status(IStatus.ERROR, Constants.PLUGIN_ID, IStatus.ERROR, message, ex);
 
-        Activator.getDefault().getLog().log(status);
+		Platform.getLog(FrameworkUtil.getBundle(CovView.class)).log(status);
         PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
 		    Shell s = PlatformUI.getWorkbench().getDisplay().getActiveShell();
 		    MessageDialog.openError(s, Messages.CovView_parsing_error, message);
