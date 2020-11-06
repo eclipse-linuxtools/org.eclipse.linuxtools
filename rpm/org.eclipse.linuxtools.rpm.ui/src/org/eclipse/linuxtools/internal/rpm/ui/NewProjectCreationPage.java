@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2018 Red Hat, Inc.
+ * Copyright (c) 2011, 2020 Red Hat, Inc.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -29,8 +29,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkingSet;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 import org.eclipse.ui.dialogs.WorkingSetConfigurationBlock;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * Standard page for project creation adding some rpm specific controls.
@@ -177,7 +179,8 @@ public class NewProjectCreationPage extends WizardNewProjectCreationPage {
 		public WorkingSetGroup() {
 			String[] workingSetIds = new String[] { "org.eclipse.ui.resourceWorkingSetPage" }; //$NON-NLS-1$
 			workingSetBlock = new WorkingSetConfigurationBlock(workingSetIds,
-					Activator.getDefault().getDialogSettings());
+					PlatformUI.getDialogSettingsProvider(FrameworkUtil.getBundle(NewProjectCreationPage.class))
+							.getDialogSettings());
 		}
 
 		public Control createControl(Composite composite) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
+ * Copyright (c) 2009, 2020 STMicroelectronics and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -33,7 +33,6 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
-import org.eclipse.linuxtools.internal.gcov.Activator;
 import org.eclipse.linuxtools.internal.gcov.dialog.OpenGCDialog;
 import org.eclipse.linuxtools.internal.gcov.view.CovView;
 import org.eclipse.linuxtools.internal.gcov.view.annotatedsource.GcovAnnotationModelTracker;
@@ -41,6 +40,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorLauncher;
 import org.eclipse.ui.PlatformUI;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * Action performed when user clicks on a gcda/gcno file
@@ -106,7 +106,8 @@ public class OpenGCAction implements IEditorLauncher {
             return;
         }
 
-        IDialogSettings ds = Activator.getDefault().getDialogSettings();
+		IDialogSettings ds = PlatformUI.getDialogSettingsProvider(FrameworkUtil.getBundle(OpenGCAction.class))
+				.getDialogSettings();
         IDialogSettings defaultMapping = ds.getSection(OpenGCDialog.class.getName());
         if (defaultMapping == null) {
             defaultMapping = ds.addNewSection(OpenGCDialog.class.getName());

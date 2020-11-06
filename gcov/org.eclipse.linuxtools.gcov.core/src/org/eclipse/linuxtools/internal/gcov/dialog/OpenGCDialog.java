@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ * Copyright (c) 2009, 2020 STMicroelectronics and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -52,6 +52,7 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.navigator.ResourceComparator;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * This dialog box is opened when user clicks on a gcno/gcda file. it allows the user to choose the binary file who
@@ -274,7 +275,8 @@ public class OpenGCDialog extends Dialog {
 
     @Override
     protected void okPressed() {
-        IDialogSettings ds = Activator.getDefault().getDialogSettings();
+		IDialogSettings ds = PlatformUI.getDialogSettingsProvider(FrameworkUtil.getBundle(OpenGCDialog.class))
+				.getDialogSettings();
         IDialogSettings defaultMapping = ds.getSection(OpenGCDialog.class.getName());
         if (defaultMapping == null) {
             defaultMapping = ds.addNewSection(OpenGCDialog.class.getName());
