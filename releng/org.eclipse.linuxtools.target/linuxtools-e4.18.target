@@ -56,7 +56,7 @@
 <unit id="org.objectweb.asm.tree" version="9.0.0.v20201001-1419"/>
 <unit id="org.objectweb.asm.util" version="9.0.0.v20201001-1419"/>
 <unit id="org.slf4j.api" version="1.7.30.v20200204-2150"/>
-<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/S20201124213957/repository"/>
+<repository location="https://download.eclipse.org/tools/orbit/downloads/2020-12"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
