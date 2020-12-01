@@ -44,6 +44,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -2055,7 +2056,9 @@ public class DockerConnection
 			DockerClient copy = (DockerClient) token;
 			java.nio.file.Path dirPath = FileSystems.getDefault()
 					.getPath(directory);
-			copy.copyToContainer(dirPath, id, path);
+			boolean isWin = Platform.getOS().equals(Platform.OS_WIN32);
+			copy.copyToContainer(dirPath, id,
+					isWin ? path.replace('\\', '/') : path);
 			copy.close(); /* dispose of client copy now that we are done */
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e.getMessage(), e.getCause());
