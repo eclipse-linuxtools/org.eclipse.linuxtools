@@ -17,12 +17,22 @@ Information regarding source code management, builds, coding standards, and more
 
 - https://projects.eclipse.org/projects/tools.linuxtools/developer
 
-Contributor License Agreement:
+Eclipse Contributor Agreement:
 ------------------------------
 
-Before your contribution can be accepted by the project, you need to create and electronically sign the Eclipse Foundation Contributor License Agreement (CLA).
+Before your contribution can be accepted by the project team contributors must
+electronically sign the Eclipse Contributor Agreement (ECA).
 
-- http://www.eclipse.org/legal/CLA.php
+* http://www.eclipse.org/legal/ECA.php
+
+Commits that are provided by non-committers must have a Signed-off-by field in
+the footer indicating that the author is aware of the terms by which the
+contribution has been provided to the project. The non-committer must
+additionally have an Eclipse Foundation account and must have a signed Eclipse
+Contributor Agreement (ECA) on file.
+
+For more information, please see the Eclipse Committer Handbook:
+https://www.eclipse.org/projects/handbook/#resources-commit
 
 Contact:
 --------
@@ -36,11 +46,11 @@ Search for bugs:
 
 This project uses Bugzilla to track ongoing development and issues.
 
-- https://bugs.eclipse.org/bugs/buglist.cgi?product=Linux Tools
+- https://bugs.eclipse.org/bugs/buglist.cgi?product=Linux%20Tools
 
 Create a new bug:
 -----------------
 
 Be sure to search for existing bugs before you create another one. Remember that contributions are always welcome!
 
-- https://bugs.eclipse.org/bugs/enter_bug.cgi?product=Linux Tools
+- https://bugs.eclipse.org/bugs/enter_bug.cgi?product=Linux%20Tools
