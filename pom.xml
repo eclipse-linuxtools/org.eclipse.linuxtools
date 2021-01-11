@@ -317,11 +317,6 @@
               <ws>gtk</ws>
               <arch>x86_64</arch>
             </environment>
-            <environment>
-              <os>linux</os>
-              <ws>gtk</ws>
-              <arch>x86_64</arch>
-            </environment>
           </environments>
           <target>
             <artifact>
