@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Red Hat.
- * 
+ * Copyright (c) 2015, 2021 Red Hat.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -24,10 +24,9 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.docker.core.Activator;
-import org.osgi.framework.Bundle;
-
 import org.mandas.docker.client.LogReader;
 import org.mandas.docker.client.LogStream;
+import org.osgi.framework.Bundle;
 
 /**
  * This is a workaround for lack of HTTP Hijacking support in Apache
@@ -106,13 +105,28 @@ public class HttpHijackWorkaround {
 			}
 			list.add(new String[] { "sun.security.ssl.AppInputStream", fName }); //$NON-NLS-1$
 		} else {
-			list.add(new String[] { "java.net.SocketInputStream", "socket" }); //$NON-NLS-1$ //$NON-NLS-2$
+			float jvmVersion = Float.parseFloat(
+					System.getProperty("java.specification.version")); //$NON-NLS-1$
+			if (jvmVersion < 13f) {
+				list.add(new String[] { "java.net.SocketInputStream", //$NON-NLS-1$
+						"socket" }); //$NON-NLS-1$
+			}
 		}
 
 		Object res = getInternalField(stream, list, bundles);
 		if (res instanceof WritableByteChannel) {
 			return (WritableByteChannel) res;
-		} else if (res instanceof Socket) {
+		} else if (res != null && res.getClass().getCanonicalName()
+				.equals("java.net.Socket.SocketInputStream")) { //$NON-NLS-1$
+			// if we are here, we are Java 13 or higher and have to use an
+			// alternate field reflection to get the socket
+			List<String[]> list2 = new LinkedList<>();
+			list2.add(new String[] { "java.net.Socket$SocketInputStream", //$NON-NLS-1$
+					"parent" }); //$NON-NLS-1$
+			res = getInternalField(res, list2, bundles);
+		}
+
+		if (res instanceof Socket) {
 			return Channels.newChannel(((Socket) res).getOutputStream());
 		} else {
 			// TODO: throw an exception and let callers handle it.
