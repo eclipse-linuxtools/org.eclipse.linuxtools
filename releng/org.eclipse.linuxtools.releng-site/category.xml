@@ -80,9 +80,6 @@
    <iu id="org.apache.xml.resolver" version="0.0.0">
       <category name="Linux Tools"/>
    </iu>
-   <iu id="org.apache.xml.serializer" version="0.0.0">
-      <category name="Linux Tools"/>
-   </iu>
    <iu id="javax.xml" version="0.0.0">
       <category name="Linux Tools"/>
    </iu>
