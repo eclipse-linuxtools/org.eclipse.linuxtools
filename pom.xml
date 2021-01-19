@@ -51,7 +51,7 @@
     <mirror-repo-name>updates-nightly</mirror-repo-name>
     <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
     <mirror-mylyn-repo-name>updates-mylyn-nightly</mirror-mylyn-repo-name>
-    <tycho-version>2.1.0</tycho-version>
+    <tycho-version>2.2.0</tycho-version>
     <target-platform>linuxtools-e4.18</target-platform>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
@@ -329,31 +329,24 @@
         </configuration>
       </plugin>
       <plugin>
-          <groupId>org.eclipse.tycho.extras</groupId>
-          <artifactId>tycho-source-feature-plugin</artifactId>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-source-plugin</artifactId>
           <version>${tycho-version}</version>
           <configuration>
             <includeBinaryFeature>false</includeBinaryFeature>
           </configuration>
           <executions>
             <execution>
-              <id>source-feature</id>
-              <phase>package</phase>
-              <goals>
-                <goal>source-feature</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-	<plugin>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>tycho-source-plugin</artifactId>
-          <version>${tycho-version}</version>
-          <executions>
-            <execution>
               <id>plugin-source</id>
               <goals>
                 <goal>plugin-source</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>feature-source</id>
+              <phase>package</phase>
+              <goals>
+                <goal>feature-source</goal>
               </goals>
             </execution>
           </executions>
