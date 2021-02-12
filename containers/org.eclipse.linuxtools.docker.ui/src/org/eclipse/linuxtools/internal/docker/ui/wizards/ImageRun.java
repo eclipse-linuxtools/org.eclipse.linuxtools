@@ -267,7 +267,8 @@ public class ImageRun extends Wizard {
 			final Set<String> exposedPorts = new HashSet<>();
 			for (ExposedPortModel exposedPort : selectionModel.getExposedPorts()) {
 				// only selected Ports in the CheckboxTableViewer are exposed.
-				if (!selectionModel.getSelectedPorts().contains(exposedPort)) {
+				if (selectionModel.getSelectedPorts() == null
+						|| !selectionModel.getSelectedPorts().contains(exposedPort)) {
 					continue;
 				}
 				exposedPorts.add(exposedPort.getContainerPort()
