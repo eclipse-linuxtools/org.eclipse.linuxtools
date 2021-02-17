@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="linuxtools-e4.19" sequenceNumber="2">
+<target name="linuxtools-e4.19" sequenceNumber="3">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.12.1.v20210128-1726"/>
@@ -30,8 +30,8 @@
 <unit id="org.apache.commons.compress" version="1.19.0.v20200106-2343"/>
 <unit id="org.apache.commons.io" version="2.6.0.v20190123-2029"/>
 <unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
-<unit id="org.apache.httpcomponents.httpclient" version="4.5.10.v20200830-2311"/>
-<unit id="org.apache.httpcomponents.httpcore" version="4.4.12.v20200108-1212"/>
+<unit id="org.apache.httpcomponents.httpclient" version="4.5.13.v20210128-2225"/>
+<unit id="org.apache.httpcomponents.httpcore" version="4.4.14.v20210128-2225"/>
 <unit id="org.apache.xerces" version="2.12.1.v20210115-0812"/>
 <unit id="org.assertj" version="3.14.0.v20200120-1926"/>
 <unit id="org.bouncycastle.bcpkix" version="1.65.0.v20200527-1955"/>
@@ -51,12 +51,12 @@
 <unit id="org.glassfish.jersey.inject.jersey-hk2" version="2.30.1.v20200512-1802"/>
 <unit id="org.glassfish.jersey.media.jersey-media-json-jackson" version="2.30.1.v20200513-1859"/>
 <unit id="org.mockito" version="2.23.0.v20200310-1642"/>
-<unit id="org.objectweb.asm" version="9.0.0.v20201001-1419"/>
-<unit id="org.objectweb.asm.analysis" version="9.0.0.v20201001-1419"/>
-<unit id="org.objectweb.asm.tree" version="9.0.0.v20201001-1419"/>
-<unit id="org.objectweb.asm.util" version="9.0.0.v20201001-1419"/>
+<unit id="org.objectweb.asm" version="9.1.0.v20210209-1849"/>
+<unit id="org.objectweb.asm.analysis" version="9.1.0.v20210209-1849"/>
+<unit id="org.objectweb.asm.tree" version="9.1.0.v20210209-1849"/>
+<unit id="org.objectweb.asm.util" version="9.1.0.v20210209-1849"/>
 <unit id="org.slf4j.api" version="1.7.30.v20200204-2150"/>
-<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/I20210128235948/repository"/>
+<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/S20210216215844/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
@@ -92,11 +92,10 @@
 <unit id="org.eclipse.lsp4e" version="0.0.0"/>
 <unit id="org.eclipse.tm4e.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.wildwebdeveloper.embedder.node.feature.feature.group" version="0.0.0"/>
-<repository location="https://download.eclipse.org/staging/2020-12/"/>
+<repository location="https://download.eclipse.org/staging/2021-03/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.reddeer.eclipse.feature.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.reddeer.tests.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.reddeer.ui.feature.feature.group" version="0.0.0"/>
 <repository location="https://download.eclipse.org/reddeer/releases/latest/"/>
 </location>
