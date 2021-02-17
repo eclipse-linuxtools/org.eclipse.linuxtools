@@ -27,7 +27,7 @@ import org.eclipse.linuxtools.internal.javadocs.ui.JavaDocTocProvider;
 import org.eclipse.linuxtools.internal.javadocs.ui.preferences.PreferenceConstants;
 import org.junit.Test;
 
-public class CheckJavadoc {
+public class CheckJavadocTest {
 
 	/**
 	 * Create a valid Toc (topic contribution) using JavaDocTocProvider. A valid Toc

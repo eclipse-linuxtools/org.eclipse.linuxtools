@@ -18,7 +18,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({ CheckDevhelp.class, })
+@SuiteClasses(CheckDevhelp.class)
 public class AllTests {
 	// empty
 }
