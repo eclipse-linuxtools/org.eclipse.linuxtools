@@ -24,19 +24,4 @@
 
   <name>Linux Tools RPM Specfile Editor Tests Plug-in</name>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-surefire-plugin</artifactId>
-        <version>${tycho-version}</version>
-        <configuration>
-             <useUIHarness>true</useUIHarness>
-          <useUIThread>true</useUIThread>
-          <product>org.eclipse.platform.ide</product>
-        </configuration>
-      </plugin>
-    </plugins>
-   </build>
-
 </project>
