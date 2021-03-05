@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.eclipse.linuxtools</groupId>
 		<artifactId>org.eclipse.linuxtools.docker</artifactId>
-		<version>5.2.0-SNAPSHOT</version>
+		<version>5.2.0</version>
 	</parent>
 	<artifactId>org.eclipse.linuxtools.docker.editor.ls</artifactId>
 	<version>1.0.0-SNAPSHOT</version>

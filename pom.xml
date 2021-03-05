@@ -21,7 +21,7 @@
   </prerequisites>
   <groupId>org.eclipse.linuxtools</groupId>
   <artifactId>linuxtools-parent</artifactId>
-  <version>8.2.0-SNAPSHOT</version>
+  <version>8.2.0</version>
   <packaging>pom</packaging>
 
   <name>Eclipse Linux Tools Parent</name>
@@ -48,9 +48,9 @@
   </distributionManagement>
 
   <properties>
-    <mirror-repo-name>updates-nightly</mirror-repo-name>
-    <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
-    <mirror-mylyn-repo-name>updates-mylyn-nightly</mirror-mylyn-repo-name>
+    <mirror-repo-name>update-8.2.0</mirror-repo-name>
+    <mirror-docker-repo-name>update-docker-5.2.0</mirror-docker-repo-name>
+    <mirror-mylyn-repo-name>update-mylyn-3.2.0</mirror-mylyn-repo-name>
     <tycho-version>2.2.0</tycho-version>
     <target-platform>linuxtools-e4.19</target-platform>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
