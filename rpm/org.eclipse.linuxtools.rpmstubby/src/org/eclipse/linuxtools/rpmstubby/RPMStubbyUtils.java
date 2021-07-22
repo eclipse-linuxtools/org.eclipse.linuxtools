@@ -77,11 +77,7 @@ public class RPMStubbyUtils {
                 } else {
                     rc = true;
                 }
-            } catch (SAXException e) {
-                StubbyLog.logError(e);
-            } catch (IOException e) {
-                StubbyLog.logError(e);
-            } catch (XPathExpressionException e) {
+            } catch (SAXException | IOException | XPathExpressionException e) {
                 StubbyLog.logError(e);
             }
         }

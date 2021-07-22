@@ -102,9 +102,7 @@ public class SectionRule implements IPredicateRule {
 			// so we compare it with all terminating headers
 			if (readingEndSequence) {
 				nextHeaderBuffer.append((char) c);
-				for (int i = 0; i < endingHeaders.length; i++) {
-					String tempSectionheader = endingHeaders[i];
-
+				for (String tempSectionheader : endingHeaders) {
 					// we've found our terminating header
 					if (nextHeaderBuffer.toString().equals(tempSectionheader)) {
 						// exclude the terminating header from the partition

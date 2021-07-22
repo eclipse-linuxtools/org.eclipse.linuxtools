@@ -37,10 +37,7 @@ public class ContainsFilter extends ViewerFilter {
 		}
 		TreeViewer treeViewer = (TreeViewer) viewer;
 		String currentLabel = ((ILabelProvider) treeViewer.getLabelProvider()).getText(element);
-		if (lookFor == null) {
-			return true;
-		}
-		if (currentLabel != null && currentLabel.contains(lookFor)) {
+		if ((lookFor == null) || (currentLabel != null && currentLabel.contains(lookFor))) {
 			return true;
 		}
 		return hasUnfilteredChild(treeViewer, element);

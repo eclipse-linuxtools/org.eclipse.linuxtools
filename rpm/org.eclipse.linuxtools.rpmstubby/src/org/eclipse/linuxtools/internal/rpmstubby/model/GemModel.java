@@ -57,9 +57,7 @@ public class GemModel {
     public GemModel(IFile file) {
         try {
             rubyGemParser = new RubyGemParser(file);
-        } catch (IOException e) {
-            StubbyLog.logError(e);
-        } catch (CoreException e) {
+        } catch (IOException | CoreException e) {
             StubbyLog.logError(e);
         }
     }

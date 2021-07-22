@@ -45,9 +45,7 @@ public class RPMNewProject extends Wizard implements INewWizard {
 				}
 			};
 			getContainer().run(false, true, op);
-		} catch (InvocationTargetException x) {
-			return false;
-		} catch (InterruptedException x) {
+		} catch (InvocationTargetException | InterruptedException x) {
 			return false;
 		}
 		return true;

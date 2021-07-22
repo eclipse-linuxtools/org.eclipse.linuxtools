@@ -157,9 +157,6 @@ public class SRPMImportPage extends WizardPage {
 					setErrorMessage(Messages.getString("SRPMImportPage.Source_not_Valid")); //$NON-NLS-1$
 					return false;
 				}
-			} catch (MalformedURLException e) {
-				setErrorMessage(Messages.getString("SRPMImportPage.Source_not_Valid")); //$NON-NLS-1$
-				return false;
 			} catch (IOException e) {
 				setErrorMessage(Messages.getString("SRPMImportPage.Source_not_Valid")); //$NON-NLS-1$
 				return false;
@@ -199,16 +196,7 @@ public class SRPMImportPage extends WizardPage {
 						detailsPanel.getSelectedLayout());
 			}
 			getContainer().run(true, true, srpmImportOp);
-		} catch (InterruptedException e) {
-			setErrorMessage(e.toString());
-			return false;
-		} catch (InvocationTargetException e) {
-			setErrorMessage(e.toString());
-			return false;
-		} catch (MalformedURLException e) {
-			setErrorMessage(e.toString());
-			return false;
-		} catch (CoreException e) {
+		} catch (InterruptedException | InvocationTargetException | MalformedURLException | CoreException e) {
 			setErrorMessage(e.toString());
 			return false;
 		}

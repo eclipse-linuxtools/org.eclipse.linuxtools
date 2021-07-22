@@ -66,9 +66,7 @@ public class EggModel {
     public EggModel(IFile file) {
         try {
             pyEggParser = new PythonEggParser(file);
-        } catch (IOException e) {
-            StubbyLog.logError(e);
-        } catch (CoreException e) {
+        } catch (IOException | CoreException e) {
             StubbyLog.logError(e);
         }
     }

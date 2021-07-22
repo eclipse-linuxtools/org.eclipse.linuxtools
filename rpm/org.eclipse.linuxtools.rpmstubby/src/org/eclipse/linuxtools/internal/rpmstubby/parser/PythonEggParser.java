@@ -353,7 +353,7 @@ public class PythonEggParser {
         String line = "";
 
         reader.seek(startPosition);
-        while ((line = reader.readLine()) != null && stop == false) {
+        while ((line = reader.readLine()) != null && !stop) {
             for (char x : line.toCharArray()) {
                 if (x == '(') {
                     bracketCounter++;

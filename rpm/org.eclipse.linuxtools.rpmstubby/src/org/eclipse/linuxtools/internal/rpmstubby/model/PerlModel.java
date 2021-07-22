@@ -47,9 +47,7 @@ public class PerlModel {
     public PerlModel(IFile file) {
         try {
             perlMakefileParser = new PerlMakefileParser(file);
-        } catch (IOException e) {
-            StubbyLog.logError(e);
-        } catch (CoreException e) {
+        } catch (IOException | CoreException e) {
             StubbyLog.logError(e);
         }
     }

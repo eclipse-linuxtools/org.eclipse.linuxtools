@@ -104,8 +104,8 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 			// do nothing
 		}
 
-		Integer charStart = Integer.valueOf(lineOffset + e.getStartColumn());
-		Integer charEnd = Integer.valueOf(lineOffset + e.getEndColumn());
+		int charStart = lineOffset + e.getStartColumn();
+		int charEnd = lineOffset + e.getEndColumn();
 		String annotationType = ANNOTATION_INFO;
 		if (e.getSeverity() == IMarker.SEVERITY_ERROR) {
 			annotationType = ANNOTATION_ERROR;
@@ -113,7 +113,7 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 			annotationType = ANNOTATION_WARNING;
 		}
 		Annotation annotation = new SpecfileAnnotation(annotationType, true, e.getLocalizedMessage());
-		Position p = new Position(charStart.intValue(), charEnd.intValue() - charStart.intValue());
+		Position p = new Position(charStart, charEnd - charStart);
 		if (fAnnotationModel != null) {
 			fAnnotationModel.addAnnotation(annotation, p);
 		}
