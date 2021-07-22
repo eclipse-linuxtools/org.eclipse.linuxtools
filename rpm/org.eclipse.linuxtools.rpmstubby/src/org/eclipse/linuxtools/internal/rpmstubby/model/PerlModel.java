@@ -101,7 +101,7 @@ public class PerlModel {
         String rc = "";
         rc = getValue(CommonMetaData.NAME);
         if (!rc.equals(FIX_ME)) {
-            rc = rc.replaceAll("::", "-");
+            rc = rc.replace("::", "-");
         }
         return rc;
     }

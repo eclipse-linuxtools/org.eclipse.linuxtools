@@ -107,7 +107,7 @@ public class GemModel {
                 rc.add(tmp
                         .replaceFirst("(?:%q|%Q)(?:([\\W])([^\\W]+)[\\W])",
                                 "$2").replaceAll("(\"|'|\\[|\\])", "")
-                        .replaceAll(",", ""));
+                        .replace(",", ""));
             }
         }
         return rc;
@@ -259,7 +259,7 @@ public class GemModel {
                 rc.add(tmp
                         .replaceFirst("(?:%q|%Q)(?:([\\W])([^\\W]+)[\\W])",
                                 "$2").replaceAll("(\"|'|\\[|\\])", "")
-                        .replaceAll(",", ""));
+                        .replace(",", ""));
             }
         }
 

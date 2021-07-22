@@ -148,7 +148,7 @@ public class RpmlintItem {
 	 * @param severity The severity of the rpmlint item.
 	 */
 	public void setSeverity(String severity) {
-		severity = severity.replaceAll(":", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+		severity = severity.replace(":", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
 		switch (severity.charAt(0)) {
 		case 'I':
 			this.severity = 0;

@@ -97,7 +97,7 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 					mail = mail.replaceFirst(" ", "@").replaceFirst(" ", "."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				}
 			}
-			mail = mail.replaceAll(" ", ""); //$NON-NLS-1$ //$NON-NLS-2$
+			mail = mail.replace(" ", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
 		} else {
 

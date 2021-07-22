@@ -50,10 +50,10 @@ public class SpecfileEditorToggleCommentActionDelegate extends AbstractHandler {
 					if (selection.getStartLine() == selection.getEndLine()) {
 						selectedContent = ISpecfileSpecialSymbols.COMMENT_START + content;
 					} else {
-						selectedContent = ISpecfileSpecialSymbols.COMMENT_START + content.replaceAll("\n", "\n#"); //$NON-NLS-1$ //$NON-NLS-2$
+						selectedContent = ISpecfileSpecialSymbols.COMMENT_START + content.replace("\n", "\n#"); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				} else {
-					selectedContent = content.replaceFirst(ISpecfileSpecialSymbols.COMMENT_START, "").replaceAll( //$NON-NLS-1$
+					selectedContent = content.replaceFirst(ISpecfileSpecialSymbols.COMMENT_START, "").replace( //$NON-NLS-1$
 							"\n#", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				sb.append(selectedContent);

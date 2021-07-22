@@ -99,7 +99,7 @@ public class RpmMacroProposalsList {
 									isKeyLine = false;
 									key = item[0];
 									if (item.length > 1) {
-										value += item[1].replaceAll("\\\\", "\n\n"); //$NON-NLS-1$//$NON-NLS-2$
+										value += item[1].replace("\\", "\n\n"); //$NON-NLS-1$//$NON-NLS-2$
 									}
 								} else {
 									value += line.substring(0, line.length() - 1).trim() + "\n\t"; //$NON-NLS-1$

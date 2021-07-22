@@ -64,7 +64,7 @@ public class FeatureModel {
      */
     private String resolveFeatureProperties(String key) {
         if (key != null && key.trim().startsWith("%")) {
-            return featureProperties.getProperty(key.trim().replaceAll("%", ""));
+            return featureProperties.getProperty(key.trim().replace("%", ""));
         } else {
             return key;
         }

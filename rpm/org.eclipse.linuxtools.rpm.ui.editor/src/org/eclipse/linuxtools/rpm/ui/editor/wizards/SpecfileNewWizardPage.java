@@ -372,7 +372,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 			String templateCSV = ""; //$NON-NLS-1$
 			for (String file : files) {
 				if (file.startsWith("spectemplate-")) { //$NON-NLS-1$
-					templateCSV += file.split("-", 2)[1].replaceAll("\\.spec", //$NON-NLS-1$ //$NON-NLS-2$
+					templateCSV += file.split("-", 2)[1].replace(".spec", //$NON-NLS-1$ //$NON-NLS-2$
 							"") //$NON-NLS-1$
 							+ ","; //$NON-NLS-1$
 				}
