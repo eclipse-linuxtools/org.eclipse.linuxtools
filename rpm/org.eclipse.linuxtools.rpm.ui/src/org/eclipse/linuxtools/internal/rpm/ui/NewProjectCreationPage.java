@@ -43,7 +43,7 @@ public class NewProjectCreationPage extends WizardNewProjectCreationPage {
 	private ComboViewer typeCombo;
 	private final WorkingSetGroup wsGroup;
 
-	private static final IWorkingSet[] EMPTY_WORKING_SET_ARRAY = new IWorkingSet[0];
+	private static final IWorkingSet[] EMPTY_WORKING_SET_ARRAY = {};
 
 	/**
 	 * Instantiate the page.
@@ -177,7 +177,7 @@ public class NewProjectCreationPage extends WizardNewProjectCreationPage {
 		private WorkingSetConfigurationBlock workingSetBlock;
 
 		public WorkingSetGroup() {
-			String[] workingSetIds = new String[] { "org.eclipse.ui.resourceWorkingSetPage" }; //$NON-NLS-1$
+			String[] workingSetIds = { "org.eclipse.ui.resourceWorkingSetPage" }; //$NON-NLS-1$
 			workingSetBlock = new WorkingSetConfigurationBlock(workingSetIds,
 					PlatformUI.getDialogSettingsProvider(FrameworkUtil.getBundle(NewProjectCreationPage.class))
 							.getDialogSettings());

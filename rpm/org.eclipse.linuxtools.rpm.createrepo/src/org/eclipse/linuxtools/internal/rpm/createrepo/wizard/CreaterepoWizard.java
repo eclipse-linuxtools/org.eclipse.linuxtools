@@ -140,8 +140,7 @@ public class CreaterepoWizard extends Wizard implements INewWizard {
     private static String initializeRepoContents(String id, String name, String url) {
         String contents = String.format("[%s]\n", id); //$NON-NLS-1$
         contents = contents.concat(String.format("%s=%s\n", IRepoFileConstants.NAME, name)); //$NON-NLS-1$
-        contents = contents.concat(String.format("%s=%s\n", IRepoFileConstants.BASE_URL, url)); //$NON-NLS-1$
-        return contents;
+        return contents.concat(String.format("%s=%s\n", IRepoFileConstants.BASE_URL, url));
     }
 
 }

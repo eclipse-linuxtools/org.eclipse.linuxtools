@@ -56,7 +56,6 @@ public class SpecfileParseException extends Exception {
 	}
 
 	public SpecfileParseException(String message, int lineNumber, int startColumn, int endColumn, int severity) {
-		super();
 		this.message = message;
 		this.lineNumber = lineNumber;
 		this.startColumn = startColumn;

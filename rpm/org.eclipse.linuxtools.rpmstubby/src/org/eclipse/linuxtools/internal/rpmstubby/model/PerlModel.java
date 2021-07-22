@@ -79,7 +79,7 @@ public class PerlModel {
         String ver = "";
         if (!temp.isEmpty()) {
             for (String str : temp) {
-                ver = str.substring(str.indexOf("=>")+2, str.length());
+                ver = str.substring(str.indexOf("=>")+2);
                 str = str.substring(0, str.indexOf("=>"));
                 str = str.replaceAll("(\\S+)", "perl($1)");
                 if (!ver.isEmpty() && hasDigits(ver)) {

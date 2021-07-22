@@ -33,7 +33,7 @@ public enum InputType {
 
     private String fileNamePattern;
 
-    private InputType(String fileName) {
+    InputType(String fileName) {
         this.fileNamePattern = fileName;
     }
 

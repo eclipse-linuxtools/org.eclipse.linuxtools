@@ -206,7 +206,7 @@ public class PythonEggParser {
         for (String str : tempList) {
             if (isOptionLineKeyValuePair(str) && !str.trim().startsWith("#")) {
                 if (str.startsWith(",")) {
-                    str = str.substring(1, str.length()).trim();
+                    str = str.substring(1).trim();
                 }
                 rc.add(str);
             } else if (!str.trim().startsWith("#") && !rc.isEmpty()) {

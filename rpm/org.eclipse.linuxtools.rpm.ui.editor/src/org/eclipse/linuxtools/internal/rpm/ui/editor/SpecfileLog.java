@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.Status;
 public final class SpecfileLog {
 
 	private SpecfileLog() {
-		super();
 	}
 
 	/**

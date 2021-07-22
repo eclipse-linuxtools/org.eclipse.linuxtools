@@ -55,7 +55,6 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 	 * Constructor for SpecfileNewWizard.
 	 */
 	public SpecfileNewWizard() {
-		super();
 		setNeedsProgressMonitor(true);
 	}
 

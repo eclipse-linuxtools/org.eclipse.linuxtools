@@ -93,7 +93,6 @@ public class SpecfileScanner extends RuleBasedScanner {
 			BUILD_ARCHITECTURES, AUTO_REQUIRES, AUTO_REQ, AUTO_REQ_PROV, AUTO_PROV, EPOCH };
 
 	public SpecfileScanner() {
-		super();
 		ColorRegistry colors = PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getColorRegistry();
 		IToken sectionToken = new Token(
 				new TextAttribute(colors.get(ISpecfileColorConstants.SECTIONS), null, SWT.ITALIC));

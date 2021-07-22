@@ -117,7 +117,6 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 		if (fAnnotationModel != null) {
 			fAnnotationModel.addAnnotation(annotation, p);
 		}
-		return;
 	}
 
 	public void removeAllExistingMarkers() {

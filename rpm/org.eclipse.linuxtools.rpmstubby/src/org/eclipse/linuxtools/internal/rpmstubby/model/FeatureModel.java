@@ -110,8 +110,7 @@ public class FeatureModel {
      */
     public String getVersion() {
         String version = xpathEval("/feature/@version");
-        version = version.replaceAll(".qualifier", "");
-        return version;
+        return version.replaceAll(".qualifier", "");
     }
 
     /**

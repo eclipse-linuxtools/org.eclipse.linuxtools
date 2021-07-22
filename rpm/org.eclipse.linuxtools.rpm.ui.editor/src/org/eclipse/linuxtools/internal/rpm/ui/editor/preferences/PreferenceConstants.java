@@ -111,7 +111,6 @@ public final class PreferenceConstants {
 	public static final long DP_RPM_LIST_LAST_BUILD = 0;
 
 	private PreferenceConstants() {
-		super();
 	}
 
 }

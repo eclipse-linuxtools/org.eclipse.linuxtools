@@ -51,7 +51,7 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements IWo
 	}
 
 	private FieldEditor changelogEntryFormatFieldEditor(Composite parent) {
-		RadioGroupFieldEditor changelogEntryFormatRadioGroupEditor = new RadioGroupFieldEditor(
+		return new RadioGroupFieldEditor(
 				PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT, Messages.MainPreferencePage_2, 1,
 				new String[][] {
 						{ Messages.MainPreferencePage_3, PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED },
@@ -59,7 +59,6 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements IWo
 								PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED_WITH_SEPARATOR },
 						{ Messages.MainPreferencePage_5, PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_UNVERSIONED } },
 				parent, true);
-		return changelogEntryFormatRadioGroupEditor;
 	}
 
 	private void createLocalesCombo(Composite parent) {

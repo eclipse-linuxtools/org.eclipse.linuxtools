@@ -114,7 +114,6 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage impl
 		private SelectionListener selectionListener;
 
 		public MacroListEditor(String name, String labelText, Composite parent) {
-			super();
 			init(name, labelText);
 			createControl(parent);
 			list = getListControl(parent);

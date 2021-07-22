@@ -28,7 +28,6 @@ public class SpecTemplatePreferencePage extends TemplatePreferencePage {
 	 * Default constructor
 	 */
 	public SpecTemplatePreferencePage() {
-		super();
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setTemplateStore(Activator.getDefault().getTemplateStore());
 		setContextTypeRegistry(Activator.getDefault().getContextTypeRegistry());

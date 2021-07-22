@@ -254,7 +254,7 @@ public class SpecfileParser {
 	}
 
 	private SpecfileElement parseBuildRequire(String lineText, int lineNumber, Specfile specfile) {
-		String value = lineText.substring(lineText.indexOf(':') + 1, lineText.length()).trim();
+		String value = lineText.substring(lineText.indexOf(':') + 1).trim();
 		SpecfileDefine buildRequire = new SpecfileDefine("BuildRequires", value, specfile, null); //$NON-NLS-1$
 		buildRequire.setLineNumber(lineNumber);
 		specfile.addBuildRequire(buildRequire);

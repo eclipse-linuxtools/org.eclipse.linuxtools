@@ -43,7 +43,7 @@ public class SpecfileFoldingStructureProvider {
 		}
 	}
 
-	private static final Annotation[] EMPTY = new Annotation[] {};
+	private static final Annotation[] EMPTY = {};
 	private SpecfileEditor sEditor;
 	private IDocument sDocument;
 	private IProgressMonitor sProgressMonitor;

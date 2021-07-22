@@ -68,8 +68,6 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 			PRE_SECTION, PREUN_SECTION, POST_SECTION, POSTUN_SECTION, POSTTRANS_SECTION, CLEAN_SECTION, FILES_SECTION };
 
 	public SpecfilePartitionScanner() {
-		super();
-
 		IToken specPrep = new Token(SPEC_PREP);
 		IToken specScript = new Token(SPEC_SCRIPT);
 		IToken specFiles = new Token(SPEC_FILES);

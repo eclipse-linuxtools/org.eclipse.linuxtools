@@ -56,7 +56,6 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 			FrameworkUtil.getBundle(SpecfileConfiguration.class).getSymbolicName());
 
 	public SpecfileConfiguration(SpecfileEditor editor) {
-		super();
 		this.editor = editor;
 	}
 

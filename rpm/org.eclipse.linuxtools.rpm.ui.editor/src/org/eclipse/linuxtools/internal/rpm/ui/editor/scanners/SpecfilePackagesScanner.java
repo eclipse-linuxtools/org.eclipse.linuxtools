@@ -44,7 +44,6 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
 			"Obsoletes", "Prereq", "Suggests", "Supplements" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 	public SpecfilePackagesScanner() {
-		super();
 		ColorRegistry colors = PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getColorRegistry();
 		IToken packageToken = new Token(
 				new TextAttribute(colors.get(ISpecfileColorConstants.PACKAGES), null, SWT.NONE));

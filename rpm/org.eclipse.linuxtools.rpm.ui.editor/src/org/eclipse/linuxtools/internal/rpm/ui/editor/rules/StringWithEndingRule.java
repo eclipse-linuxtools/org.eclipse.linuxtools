@@ -40,7 +40,6 @@ public class StringWithEndingRule implements IRule {
 
 	public StringWithEndingRule(String startingSequence, IStrictWordDetector trailingCharDetector, IToken inToken,
 			boolean endSequenceRequired) {
-		super();
 		token = inToken;
 		fDetector = trailingCharDetector;
 		fStartingSequence = startingSequence;

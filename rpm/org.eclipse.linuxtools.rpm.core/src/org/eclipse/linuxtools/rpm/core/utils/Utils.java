@@ -104,7 +104,6 @@ public class Utils {
 		        outStream.close();
 		        in.close();
 		    } catch (IOException e) {}
-		    return;
 		});
         readinJob.start();
 

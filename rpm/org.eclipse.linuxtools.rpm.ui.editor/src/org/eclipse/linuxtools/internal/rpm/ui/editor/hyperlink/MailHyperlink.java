@@ -34,7 +34,6 @@ public class MailHyperlink extends URLHyperlink {
 		if (fURLString != null) {
 			Program.launch(fURLString);
 			fURLString = null;
-			return;
 		}
 	}
 

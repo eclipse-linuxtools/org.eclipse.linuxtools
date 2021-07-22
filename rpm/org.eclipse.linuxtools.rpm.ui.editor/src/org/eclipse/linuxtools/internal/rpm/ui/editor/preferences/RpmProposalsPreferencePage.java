@@ -97,20 +97,18 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage implem
 
 		}
 
-		RadioGroupFieldEditor rpmToolsRadioGroupEditor = new RadioGroupFieldEditor(
+		return new RadioGroupFieldEditor(
 				PreferenceConstants.P_CURRENT_RPMTOOLS, Messages.RpmProposalsPreferencePage_6, 1, radioItems,
 				getFieldEditorParent(), true);
-		return rpmToolsRadioGroupEditor;
 	}
 
 	private FieldEditor buildTimeListRateFieldEditor() {
-		RadioGroupFieldEditor buildListTimeRateRadioGroupEditor = new RadioGroupFieldEditor(
+		return new RadioGroupFieldEditor(
 				PreferenceConstants.P_RPM_LIST_BUILD_PERIOD, Messages.RpmProposalsPreferencePage_7, 1,
 				new String[][] { { Messages.RpmProposalsPreferencePage_8, "1" }, //$NON-NLS-1$
 						{ Messages.RpmProposalsPreferencePage_10, "2" }, //$NON-NLS-1$
 						{ Messages.RpmProposalsPreferencePage_12, "3" } }, //$NON-NLS-1$
 				getFieldEditorParent(), true);
-		return buildListTimeRateRadioGroupEditor;
 	}
 
 	@Override

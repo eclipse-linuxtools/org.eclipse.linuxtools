@@ -118,7 +118,7 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 			}
 		} else if (word.startsWith(PATCH_IDENTIFIER)) {
 
-			int sourceNumber = Integer.valueOf(word.substring(PATCH_IDENTIFIER.length(), word.length())).intValue();
+			int sourceNumber = Integer.valueOf(word.substring(PATCH_IDENTIFIER.length())).intValue();
 			SpecfileSource source = specfile.getPatch(sourceNumber);
 			if (source != null) {
 				return prepareHyperlink(lineInfo, line, word, source);

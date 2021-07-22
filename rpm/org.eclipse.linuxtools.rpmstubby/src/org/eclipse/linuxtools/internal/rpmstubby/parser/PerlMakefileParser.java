@@ -290,8 +290,7 @@ public class PerlMakefileParser {
                         key = removeVariableSigils(tempVar
                                 .substring(0, tempVar.indexOf("=>"))
                                 .toLowerCase().replaceAll("\\W", ""));
-                        value = tempVar.substring(tempVar.indexOf("=>") + 2,
-                                tempVar.length());
+                        value = tempVar.substring(tempVar.indexOf("=>") + 2);
                         mMakefileDefinitions.put(key, value);
                         tempVar = "";
                         flags &= 0;
@@ -393,7 +392,7 @@ public class PerlMakefileParser {
                     .trim();
             if (val.startsWith("(") || val.startsWith("[")
                     || val.startsWith("{")) {
-                val = val.substring(1, val.length());
+                val = val.substring(1);
             }
             if (val.endsWith(")") || val.endsWith("]") || val.endsWith("}")) {
                 val = val.substring(0, val.length() - 1);
@@ -411,7 +410,6 @@ public class PerlMakefileParser {
      * @return The cleaned up version of the line.
      */
     private static String cleanUpString(String line) {
-        String rc = "";
         line = line.trim().replaceAll("('|\")", "");
         if (line.endsWith(";")) {
             line = line.substring(0, line.length() - 1);
@@ -419,8 +417,7 @@ public class PerlMakefileParser {
         if (line.endsWith(",")) {
             line = line.substring(0, line.length() - 1);
         }
-        rc = line;
-        return rc;
+        return line;
     }
 
     /**

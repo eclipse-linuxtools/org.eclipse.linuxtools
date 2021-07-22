@@ -71,8 +71,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 			dateLine = MessageFormat.format("* {0} {1} <{2}>", formatTodaysDate(), authorName, authorEmail); //$NON-NLS-1$
 		}
 
-		dateLine = UiUtils.resolveDefines(specfile, dateLine);
-		return dateLine;
+		return UiUtils.resolveDefines(specfile, dateLine);
 
 	}
 
@@ -131,7 +130,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 					// Temporary buffer for changelog text
 					StringBuilder buf = new StringBuilder();
 					String changelogText = EMPTY_STRING;
-					String[] changelogLines = new String[] {};
+					String[] changelogLines = {};
 					int offset = doc.getLength();
 					int length = 0;
 

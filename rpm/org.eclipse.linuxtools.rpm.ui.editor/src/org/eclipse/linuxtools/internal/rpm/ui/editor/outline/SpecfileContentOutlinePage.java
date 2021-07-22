@@ -29,7 +29,6 @@ public class SpecfileContentOutlinePage extends ContentOutlinePage {
 	private IEditorInput input;
 
 	public SpecfileContentOutlinePage(ITextEditor editor) {
-		super();
 		this.editor = editor;
 	}
 

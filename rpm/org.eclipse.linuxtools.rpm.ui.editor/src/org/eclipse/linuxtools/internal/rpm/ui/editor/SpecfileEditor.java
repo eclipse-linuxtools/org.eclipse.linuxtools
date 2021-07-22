@@ -48,7 +48,6 @@ public class SpecfileEditor extends TextEditor {
 	private static SpecfileDocumentProvider fDocumentProvider;
 
 	public SpecfileEditor() {
-		super();
 		parser = getParser();
 		setSourceViewerConfiguration(new SpecfileConfiguration(this));
 		setKeyBindingScopes(new String[] { "org.eclipse.linuxtools.rpm.ui.specEditorScope" }); //$NON-NLS-1$
