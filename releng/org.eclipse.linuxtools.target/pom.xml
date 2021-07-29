@@ -31,9 +31,9 @@
               <configuration>
                 <artifacts>
                   <artifact>
-                    <file>linuxtools-e4.19.target</file>
+                    <file>linuxtools-e4.21.target</file>
                     <type>target</type>
-                    <classifier>linuxtools-e4.19</classifier>
+                    <classifier>linuxtools-e4.21</classifier>
                   </artifact>
                   <!-- More targets could be added here -->
                 </artifacts>
