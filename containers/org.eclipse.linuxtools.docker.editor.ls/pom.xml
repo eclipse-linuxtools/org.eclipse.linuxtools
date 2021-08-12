@@ -27,7 +27,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.6.0</version>
+				<version>3.0.0</version>
 				<executions>
 					<execution>
 						<id>npm-install</id>
@@ -40,7 +40,7 @@
 							<arguments>
 								<arg>install</arg>
 								<arg>--no-bin-links</arg>
-								<arg>dockerfile-language-server-nodejs@0.4.1</arg>
+								<arg>dockerfile-language-server-nodejs@0.5.0</arg>
 							</arguments>
 							<workingDirectory>language-server/</workingDirectory>
 						</configuration>
