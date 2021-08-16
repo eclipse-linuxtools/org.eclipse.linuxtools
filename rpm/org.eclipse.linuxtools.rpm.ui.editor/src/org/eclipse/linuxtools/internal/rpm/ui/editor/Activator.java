@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2018 Red Hat, Inc.
+ * Copyright (c) 2007, 2021 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -103,7 +103,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	public RpmPackageProposalsList getRpmPackageList() {
-		if (packagesList == null || packagesList.getProposals("").size() == 0) { //$NON-NLS-1$
+		if (packagesList == null || packagesList.getProposals("").isEmpty()) { //$NON-NLS-1$
 			packagesList = new RpmPackageProposalsList();
 		}
 		return packagesList;
