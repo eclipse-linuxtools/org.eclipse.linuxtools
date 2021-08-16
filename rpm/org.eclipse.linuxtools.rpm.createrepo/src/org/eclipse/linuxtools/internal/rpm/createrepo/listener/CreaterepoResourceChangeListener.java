@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2013, 2021 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -46,7 +46,7 @@ public class CreaterepoResourceChangeListener implements
         case IResourceChangeEvent.POST_CHANGE:
         case IResourceChangeEvent.PRE_CLOSE:
         case IResourceChangeEvent.PRE_DELETE:
-            PlatformUI.getWorkbench().getDisplay().asyncExec(() -> closeEditors());
+            PlatformUI.getWorkbench().getDisplay().asyncExec(this::closeEditors);
             break;
         }
     }
