@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2013, 2021 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -71,7 +71,7 @@ public class CreaterepoCategoryModel {
                 return Arrays.asList(tagPref.split(ICreaterepoConstants.DELIMITER));
             }
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     /**
@@ -87,7 +87,7 @@ public class CreaterepoCategoryModel {
                 return Arrays.asList(tagPref.split(ICreaterepoConstants.DELIMITER));
             }
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     /**
@@ -103,7 +103,7 @@ public class CreaterepoCategoryModel {
                 return Arrays.asList(tagPref.split(ICreaterepoConstants.DELIMITER));
             }
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
 }
