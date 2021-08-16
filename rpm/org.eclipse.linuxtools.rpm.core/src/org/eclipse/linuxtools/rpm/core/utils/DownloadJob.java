@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2010, 2021 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
+import java.nio.file.Files;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -78,7 +79,7 @@ public class DownloadJob extends Job {
 					file.create(new FileInputStream(tempFile), true, monitor);
 				}
             }
-            tempFile.delete();
+            Files.delete(tempFile.toPath());
         } catch (CoreException | IOException e) {
 			Platform.getLog(Platform.getBundle(IRPMConstants.RPM_CORE_ID))
 					.log(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
