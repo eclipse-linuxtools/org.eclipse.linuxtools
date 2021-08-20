@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
+ * Copyright (c) 2009, 2021 STMicroelectronics and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -89,6 +89,14 @@ public class GcnoRecordsParser {
         int version = stream.readInt();
         // stamp = stream.readInt();
         stream.readInt();
+
+		if (version >= GCC_VER_910) {
+			GcovStringReader.readString(stream); // cwd
+		}
+
+		if (version >= GCC_VER_810) {
+			stream.readInt(); // supports_has_unexecuted_blocks
+		}
 
         /*------------------------------------------------------------------------------
         System.out.println("Gcno LE, Magic "+magic+" version "+version+" stamp "+stamp);

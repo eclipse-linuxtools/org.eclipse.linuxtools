@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2019 STMicroelectronics and others.
+ * Copyright (c) 2009, 2021 STMicroelectronics and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -32,7 +32,7 @@ public class GcdaRecordsParser {
     private static final int GCOV_DATA_MAGIC = 0x67636461; // en ASCII: 67=g 63=c 64=d 61=a
     private static final int GCOV_TAG_FUNCTION = 0x01000000;
     private static final int GCOV_COUNTER_ARCS = 0x01a10000;
-    private static final int GCOV_TAG_OBJECT_SYMMARY = 0xa1000000;
+    private static final int GCOV_TAG_OBJECT_SUMMARY = 0xa1000000;
     private static final int GCOV_TAG_PROGRAM_SUMMARY = 0xa3000000;
 
 	private static final int GCC_VER_900 = 1094266922; // GCC 9.0.0 ('A90*')
@@ -207,7 +207,7 @@ public class GcdaRecordsParser {
                     break;
                 }
 
-                case GCOV_TAG_OBJECT_SYMMARY: {
+                case GCOV_TAG_OBJECT_SUMMARY: {
 					if (version >= GCC_VER_900) {
 						objSmryNbrPgmRuns = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
 						objSmrySumMax = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
