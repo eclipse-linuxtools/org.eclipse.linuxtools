@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2019 STMicroelectronics and others.
+ * Copyright (c) 2009, 2021 STMicroelectronics and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -29,6 +29,7 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
     private ArrayList<Block> functionBlocks = new ArrayList<>();
     private int numCounts = 0, numBlocks = 0;
     private final CoverageInfo cvrge = new CoverageInfo();
+	private boolean hasCatch = false;
 
     public GcnoFunction(long fnctnIdent, long fnctnChksm, String fnctnName, String fnctnSrcFle, long fnctnFrstLnNmbr) {
         this.ident = fnctnIdent;
@@ -256,6 +257,10 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
         this.functionBlocks = functionBlocks;
     }
 
+	public boolean hasCatch() {
+		return hasCatch;
+	}
+
     public void incNumCounts() {
         this.numCounts++;
     }
@@ -275,5 +280,9 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
     public CoverageInfo getCvrge() {
         return cvrge;
     }
+
+	public void setHasCatch(boolean hasCatch) {
+		this.hasCatch = hasCatch;
+	}
 
 }

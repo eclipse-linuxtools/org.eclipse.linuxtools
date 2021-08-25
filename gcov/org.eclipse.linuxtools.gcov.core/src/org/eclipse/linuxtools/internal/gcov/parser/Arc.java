@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2019 STMicroelectronics and others.
+ * Copyright (c) 2009, 2021 STMicroelectronics and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -39,6 +39,7 @@ public class Arc implements Serializable{
     private boolean isCallNonReturn = false; // Arc is for a function that abnormally returns
     private boolean isNonLoclaReturn = false; // Arc is for catch/setjump
     private boolean isUnconditionnal = false; // Is an unconditional branch.
+	private boolean isThrow = false; // is a throw
 
     /**
      * Constructor
@@ -52,19 +53,17 @@ public class Arc implements Serializable{
         this.countValid = false;
         if ((flag & VCOV_ARC_ON_TREE) != 0) {
             onTree = true;
-            fake = false;
-            fallthrough = false;
-        } else if ((flag & VCOV_ARC_FAKE) != 0) {
-            onTree = false;
-            fake = true;
-            fallthrough = true;
-        } else if ((flag & VCOV_ARC_FALLTHROUGH) != 0) {
-            onTree = false;
-            fake = false;
-            fallthrough = true;
         } else {
-            onTree = false;
-            fake = false;
+			onTree = false;
+		}
+		if ((flag & VCOV_ARC_FAKE) != 0) {
+			fake = true;
+		} else {
+			fake = false;
+		}
+		if ((flag & VCOV_ARC_FALLTHROUGH) != 0) {
+			fallthrough = true;
+		} else {
             fallthrough = false;
         }
     }
@@ -105,9 +104,17 @@ public class Arc implements Serializable{
         return isCallNonReturn;
     }
 
+	public boolean isThrow() {
+		return isThrow;
+	}
+
     public void setCallNonReturn(boolean isCallNonReturn) {
         this.isCallNonReturn = isCallNonReturn;
     }
+
+	public void setIsThrow(boolean isThrow) {
+		this.isThrow = isThrow;
+	}
 
     public void setNonLoclaReturn(boolean isNonLoclaReturn) {
         this.isNonLoclaReturn = isNonLoclaReturn;

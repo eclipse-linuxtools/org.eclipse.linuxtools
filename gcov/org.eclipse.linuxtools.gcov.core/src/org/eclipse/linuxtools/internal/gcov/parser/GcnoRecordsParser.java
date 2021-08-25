@@ -105,13 +105,9 @@ public class GcnoRecordsParser {
         while (true) {
             try {
                 int tag;
+				int currentTag = 0;
                 // parse header
-                while (true) {
-                    tag = stream.readInt();
-                    if (tag == GCOV_TAG_FUNCTION || tag == GCOV_TAG_BLOCKS || tag == GCOV_TAG_ARCS
-                            || tag == GCOV_TAG_LINES)
-                        break;
-                }
+				tag = stream.readInt();
                 int length = stream.readInt();
 
                 // parse gcno data
@@ -161,16 +157,16 @@ public class GcnoRecordsParser {
                     }
                     srcFle2.addFnctn(fnctn);
                     parseFirstFnctn = true;
+					currentTag = tag;
                     continue;
-                }
-
-                else if (tag == GCOV_TAG_BLOCKS) {
+				} else if (fnctn != null && tag == GCOV_TAG_BLOCKS) {
+					int blkLength = length;
                     if (version >= GCC_VER_810) {
-                        length = stream.readInt();
+						blkLength = stream.readInt();
                     }
                     blocks = new ArrayList<>();
                     Block blck;
-                    for (int i = 0; i < length; i++) {
+					for (int i = 0; i < blkLength; i++) {
                         if (version >= GCC_VER_810) {
                             blck = new Block(0); // value not used anywhere
                         } else {
@@ -179,9 +175,9 @@ public class GcnoRecordsParser {
                         }
                         blocks.add(blck);
                     }
-                    fnctn.setNumBlocks(length);
+					fnctn.setNumBlocks(blkLength);
                     continue;
-                } else if (tag == GCOV_TAG_ARCS) {
+				} else if (fnctn != null && tag == GCOV_TAG_ARCS) {
                     int srcBlockIndice = stream.readInt();
                     int nmbrArcs = (length - 1) / 2;
                     ArrayList<Arc> arcs = new ArrayList<>(nmbrArcs);
@@ -207,6 +203,7 @@ public class GcnoRecordsParser {
                         dstntnBlk.incNumPreds();
                     }
 
+					boolean mark_catches = false;
                     for (Arc a : arcs) {
                         if (a.isFake()) {
                             if (a.getSrcBlock() != null) {
@@ -215,6 +212,7 @@ public class GcnoRecordsParser {
                                 srcBlk = blocks.get(srcBlockIndice);
                                 srcBlk.setCallSite(true);
                                 a.setCallNonReturn(true);
+								mark_catches = true;
                             } else {
                                 a.setNonLoclaReturn(true);
                                 Block dstntnBlk = a.getDstnatnBlock();
@@ -228,11 +226,18 @@ public class GcnoRecordsParser {
                         // nbrCounts++;
                     }
 
+					if (mark_catches) {
+						for (Arc a : arcs) {
+							if (!a.isFake() && !a.isFallthrough()) {
+								a.setIsThrow(true);
+								fnctn.setHasCatch(true);
+							}
+						}
+					}
+
                     fnctn.setFunctionBlocks(blocks);
                     continue;
-                }
-
-                else if (tag == GCOV_TAG_LINES) {
+				} else if (fnctn != null && tag == GCOV_TAG_LINES) {
                     int numBlock = stream.readInt();
                     long[] lineNos = new long[length - 1];
                     int ix = 0;
@@ -262,7 +267,14 @@ public class GcnoRecordsParser {
                     fnctn.getFunctionBlocks().get((numBlock)).setEncoding(lineNos);
                     fnctn.getFunctionBlocks().get((numBlock)).setNumLine(ix);
                     continue;
-                }
+				} else {
+					if (currentTag != 0 && !isSubTag(currentTag, tag)) {
+						fnctn = null;
+						currentTag = 0;
+					}
+					// must skip data according to tag length (4 byte chunks) to get to next tag
+					stream.skipBytes(length << 2);
+				}
             } catch (EOFException e) {
                 fnctn.setFunctionBlocks(blocks);
                 fnctns.add(fnctn);
@@ -271,7 +283,14 @@ public class GcnoRecordsParser {
         }// while
     }
 
-    /* Getters */
+	private boolean isSubTag(int tag1, int tag2) {
+		int tagMask1 = (tag1 - 1) ^ tag1;
+		int tagMask2 = (tag2 - 1) ^ tag2;
+
+		return (tagMask1 >> 8) == tagMask2 && !(((tag2 ^ tag1) & ~tagMask1) != 0);
+	}
+
+	/* Getters */
     public ArrayList<GcnoFunction> getFnctns() {
         return fnctns;
     }
