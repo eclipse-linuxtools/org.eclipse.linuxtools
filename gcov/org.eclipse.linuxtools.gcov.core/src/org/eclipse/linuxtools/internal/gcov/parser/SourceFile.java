@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2019 STMicroelectronics and others.
+ * Copyright (c) 2009, 2021 STMicroelectronics and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -102,23 +102,41 @@ public class SourceFile implements Serializable {
         return index;
     }
 
-    public void createLines() {
-        int n = getNumLines();
-        lines.ensureCapacity(n);
-        for (int j = 0; j < n; j++) {
-            lines.add(new Line());
-        }
+	public void initializeLines() {
+		if (lines.isEmpty()) {
+			int n = getNumLines();
+			lines.ensureCapacity(n);
+			for (int j = 0; j < n; j++) {
+				lines.add(new Line());
+			}
+		}
+	}
+
+	public void createLines(ArrayList<SourceFile> allSrcs) {
+		initializeLines();
+		SourceFile source = this;
 		for (GcnoFunction fn : getFnctns()) {
 			for (Block b : fn.getFunctionBlocks()) {
 				long[] blockLines = b.getEncoding();
 				if (blockLines == null) {
 					continue;
 				}
-				for (int i = 2; i < blockLines.length; ++i) {
+				for (int i = 0; i < blockLines.length; ++i) {
 					long lineno = blockLines[i];
+					if (lineno == 0) {
+						if (i < blockLines.length - 2) {
+							long sourceIndex = blockLines[i + 1];
+							if (sourceIndex != 0) {
+								source = allSrcs.get((int) (sourceIndex - 1));
+								source.initializeLines();
+								lineno = blockLines[i + 2];
+								i += 2;
+							}
+						}
+					}
 					if (lineno == 0)
 						break;
-					Line line = lines.get((int) lineno);
+					Line line = source.getLines().get((int) lineno);
 					line.addBlock(b);
 				}
 			}
