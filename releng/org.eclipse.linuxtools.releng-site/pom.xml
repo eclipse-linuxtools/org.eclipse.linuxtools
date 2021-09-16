@@ -54,8 +54,8 @@
         </executions>
         <configuration>
           <extraArtifactRepositoryProperties>
-            <p2.statsURI>http://download.eclipse.org/stats</p2.statsURI>
-            <p2.mirrorsURL>http://www.eclipse.org/downloads/download.php?file=/linuxtools/${mirror-repo-name}</p2.mirrorsURL>
+            <p2.statsURI>https://download.eclipse.org/stats</p2.statsURI>
+            <p2.mirrorsURL>https://www.eclipse.org/downloads/download.php?file=/linuxtools/${mirror-repo-name}</p2.mirrorsURL>
           </extraArtifactRepositoryProperties>
         </configuration>
       </plugin>
