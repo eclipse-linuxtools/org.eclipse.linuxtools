@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ * Copyright (c) 2007, 2021 Alphonse Van Assche and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -25,6 +25,7 @@ import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.UiUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
@@ -81,10 +82,10 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage implem
 		 * Show only installed tools. Don't forgot to add sanity check in
 		 * UiUtils.pluginSanityCheck().
 		 */
-		if (Files.exists(Paths.get("/usr/bin/yum"))) { //$NON-NLS-1$
+		if (UiUtils.fileExists("/usr/bin/yum")) { //$NON-NLS-1$
 			list.add(new String[] { Messages.RpmProposalsPreferencePage_4, PreferenceConstants.DP_RPMTOOLS_YUM });
 		}
-		if (Files.exists(Paths.get("/usr/bin/urpmq"))) { //$NON-NLS-1$
+		if (UiUtils.fileExists("/usr/bin/urpmq")) { //$NON-NLS-1$
 			list.add(new String[] { Messages.RpmProposalsPreferencePage_5, PreferenceConstants.DP_RPMTOOLS_URPM });
 		}
 
@@ -97,14 +98,13 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage implem
 
 		}
 
-		return new RadioGroupFieldEditor(
-				PreferenceConstants.P_CURRENT_RPMTOOLS, Messages.RpmProposalsPreferencePage_6, 1, radioItems,
-				getFieldEditorParent(), true);
+		return new RadioGroupFieldEditor(PreferenceConstants.P_CURRENT_RPMTOOLS, Messages.RpmProposalsPreferencePage_6,
+				1, radioItems, getFieldEditorParent(), true);
 	}
 
 	private FieldEditor buildTimeListRateFieldEditor() {
-		return new RadioGroupFieldEditor(
-				PreferenceConstants.P_RPM_LIST_BUILD_PERIOD, Messages.RpmProposalsPreferencePage_7, 1,
+		return new RadioGroupFieldEditor(PreferenceConstants.P_RPM_LIST_BUILD_PERIOD,
+				Messages.RpmProposalsPreferencePage_7, 1,
 				new String[][] { { Messages.RpmProposalsPreferencePage_8, "1" }, //$NON-NLS-1$
 						{ Messages.RpmProposalsPreferencePage_10, "2" }, //$NON-NLS-1$
 						{ Messages.RpmProposalsPreferencePage_12, "3" } }, //$NON-NLS-1$

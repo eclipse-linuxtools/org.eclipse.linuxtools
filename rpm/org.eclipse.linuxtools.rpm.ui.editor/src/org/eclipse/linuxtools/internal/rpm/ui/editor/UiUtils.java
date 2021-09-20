@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ * Copyright (c) 2007, 2021 Alphonse Van Assche and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -42,7 +42,7 @@ public class UiUtils {
 		boolean exists = (new File(PreferenceConstants.RPMMACRO_FILE)).exists();
 		// Check if ~/.rpmmacros exist, if the file don't exist we create
 		// it with the appropriate command.
-		if (!exists && Files.exists(Paths.get("/usr/bin/rpmdev-setuptree"))) { //$NON-NLS-1$
+		if (!exists && fileExists("/usr/bin/rpmdev-setuptree")) { //$NON-NLS-1$
 			org.eclipse.linuxtools.rpm.core.utils.Utils.runCommandToInputStream("rpmdev-setuptree"); //$NON-NLS-1$
 		}
 
@@ -50,11 +50,11 @@ public class UiUtils {
 		IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE,
 				FrameworkUtil.getBundle(UiUtils.class).getSymbolicName());
 		String currentRpmTool = store.getString(PreferenceConstants.P_CURRENT_RPMTOOLS);
-		if (!Files.exists(Paths.get("/usr/bin/yum"))) { //$NON-NLS-1$
+		if (!fileExists("/usr/bin/yum")) { //$NON-NLS-1$
 			if (currentRpmTool.equals(PreferenceConstants.DP_RPMTOOLS_YUM)) {
 				store.setValue(PreferenceConstants.P_CURRENT_RPMTOOLS, PreferenceConstants.DP_RPMTOOLS_RPM);
 			}
-		} else if (!Files.exists(Paths.get("/usr/bin/urpmq"))) { //$NON-NLS-1$
+		} else if (!fileExists("/usr/bin/urpmq")) { //$NON-NLS-1$
 			if (currentRpmTool.equals(PreferenceConstants.DP_RPMTOOLS_URPM)) {
 				store.setValue(PreferenceConstants.P_CURRENT_RPMTOOLS, PreferenceConstants.DP_RPMTOOLS_RPM);
 			}
@@ -98,5 +98,34 @@ public class UiUtils {
 
 	public static String getPackageDefineId(String defineName, SpecfilePackage rpmPackage) {
 		return defineName.toLowerCase() + ':' + rpmPackage.getPackageName();
+	}
+
+	/**
+	 * Detects if we're running under Flatpak.
+	 *
+	 * @return Returns true in case we're running under Flatpak, otherwise - false
+	 */
+	public static boolean isFlatpak() {
+		return (System.getenv("FLATPAK_SANDBOX_DIR") != null); //$NON-NLS-1$
+	}
+
+	/**
+	 * Flatpak Sandbox mapping path
+	 */
+	public static final String SANDBOX_MAPPING_PATHNAME = "/var/run/host"; //$NON-NLS-1$
+
+	/**
+	 * Detects if a file exists under its normal path or, in case of Flatpak, in
+	 * Sandbox mapped path
+	 *
+	 * @param absPath A file path to check
+	 *
+	 * @return Returns true a file exists, otherwise - false
+	 */
+	public static boolean fileExists(String absPath) {
+		if (Files.exists(Paths.get(absPath)))
+			return true;
+
+		return (isFlatpak() && Files.exists(Paths.get(SANDBOX_MAPPING_PATHNAME + absPath)));
 	}
 }

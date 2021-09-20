@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ * Copyright (c) 2007, 2021 Alphonse Van Assche and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,8 +18,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -38,6 +36,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.UiUtils;
 import org.eclipse.linuxtools.rpm.ui.editor.wizards.Messages;
 import org.eclipse.linuxtools.rpm.ui.editor.wizards.SpecfileNewWizardPage;
 import org.eclipse.ui.INewWizard;
@@ -63,7 +62,7 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 	 */
 	@Override
 	public void addPages() {
-		if (!Files.exists(Paths.get("/usr/bin/rpmdev-newspec"))) { //$NON-NLS-1$
+		if (!UiUtils.fileExists("/usr/bin/rpmdev-newspec")) { //$NON-NLS-1$
 			addPage(new NoExecutableWizardPage());
 		} else {
 			page = new SpecfileNewWizardPage(selection);

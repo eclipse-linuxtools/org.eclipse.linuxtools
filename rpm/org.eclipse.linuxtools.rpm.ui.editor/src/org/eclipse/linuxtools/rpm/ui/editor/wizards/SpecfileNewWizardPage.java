@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ * Copyright (c) 2007, 2021 Alphonse Van Assche and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -35,6 +35,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
+import org.eclipse.linuxtools.internal.rpm.ui.editor.UiUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -367,8 +368,11 @@ public class SpecfileNewWizardPage extends WizardPage {
 	private void populateTemplateCombo(Combo templateCombo) throws CoreException {
 		// get a list of all files in a directory
 		File dir = new File("/etc/rpmdevtools"); //$NON-NLS-1$
-		String[] files = dir.list();
+		if (!dir.exists() && UiUtils.isFlatpak()) {
+			dir = new File(UiUtils.SANDBOX_MAPPING_PATHNAME + "/etc/rpmdevtools"); //$NON-NLS-1$
+		}
 		if (dir.exists()) {
+			String[] files = dir.list();
 			String templateCSV = ""; //$NON-NLS-1$
 			for (String file : files) {
 				if (file.startsWith("spectemplate-")) { //$NON-NLS-1$
