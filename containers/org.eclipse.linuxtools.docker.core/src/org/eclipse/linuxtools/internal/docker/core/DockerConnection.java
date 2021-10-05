@@ -533,7 +533,7 @@ public class DockerConnection
 		List<IDockerVolume> volumeList = new ArrayList<>();
 		try {
 			VolumeList list = client
-					.listVolumes();
+					.listVolumes(new DockerClient.ListVolumesParam[0]);
 			List<Volume> volumes = list.volumes();
 			if (volumes != null) {
 				for (Volume volume : volumes) {
