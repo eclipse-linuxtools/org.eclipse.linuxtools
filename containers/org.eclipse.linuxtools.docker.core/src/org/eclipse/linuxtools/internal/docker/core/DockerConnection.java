@@ -533,7 +533,7 @@ public class DockerConnection
 		List<IDockerVolume> volumeList = new ArrayList<>();
 		try {
 			VolumeList list = client
-					.listVolumes(new DockerClient.ListVolumesParam[0]);
+					.listVolumes();
 			List<Volume> volumes = list.volumes();
 			if (volumes != null) {
 				for (Volume volume : volumes) {
@@ -1677,7 +1677,7 @@ public class DockerConnection
 		} catch (ContainerNotFoundException e) {
 			throw new DockerContainerNotFoundException(e);
 		} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
-			// Permit kill to fail silently even on non-running containers
+			Activator.log(e);
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
 			throw new DockerException(e);
 		}
