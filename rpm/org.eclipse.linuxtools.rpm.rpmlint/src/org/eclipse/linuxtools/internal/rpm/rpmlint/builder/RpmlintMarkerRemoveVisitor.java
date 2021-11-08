@@ -28,8 +28,6 @@ public class RpmlintMarkerRemoveVisitor implements IResourceVisitor {
 
 	/**
 	 * Removes all rpmlint markers for spec and rpm files.
-	 *
-	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
 	 */
 	@Override
 	public boolean visit(IResource resource) throws CoreException {

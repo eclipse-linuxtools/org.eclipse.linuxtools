@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Red Hat.
+ * Copyright (c) 2016, 2021 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -53,9 +53,6 @@ public class SyncFileSystemStructureProvider implements IImportStructureProvider
 		this.ignoredRelativePaths = ignoredRelativePaths;
 	}
 
-	/*
-	 * (non-Javadoc) Method declared on IImportStructureProvider
-	 */
 	@Override
 	public List<File> getChildren(Object element) {
 		File folder = (File) element;
