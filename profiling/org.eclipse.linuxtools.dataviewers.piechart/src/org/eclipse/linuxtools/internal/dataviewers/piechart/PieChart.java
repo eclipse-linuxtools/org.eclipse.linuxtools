@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 IBM Corporation and others.
+ * Copyright (c) 2012, 2021 IBM Corporation and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -84,7 +84,7 @@ public class PieChart extends InteractiveChart {
      * @param labels The titles of each series. (These are not the same as titles given to pies.)
      * @param val New values.
      */
-    public void addPieChartSeries(String labels[], double val[][]) {
+    public void addPieChartSeries(String[] labels, double[][] val) {
         setSeriesNames(val[0].length);
         for (ISeries s : this.getSeriesSet().getSeries()) {
             this.getSeriesSet().deleteSeries(s.getId());
@@ -93,7 +93,7 @@ public class PieChart extends InteractiveChart {
         int size = Math.min(labels.length, val.length);
         for (int i = 0; i < size; i++) {
             IBarSeries s = (IBarSeries) this.getSeriesSet().createSeries(ISeries.SeriesType.BAR, labels[i]);
-            double d[] = new double[val[i].length];
+            double[] d = new double[val[i].length];
             for (int j = 0; j < val[i].length; j++) {
                 d[j] = val[i][j];
             }
@@ -158,7 +158,7 @@ public class PieChart extends InteractiveChart {
      */
     public double getSlicePercent(int pieIndex, int sliceIndex) {
         double max = 0;
-        ISeries series[] = getSeriesSet().getSeries();
+        ISeries[] series = getSeriesSet().getSeries();
         for (int i = 0; i < series.length; i++) {
             max += series[i].getXSeries()[pieIndex];
         }

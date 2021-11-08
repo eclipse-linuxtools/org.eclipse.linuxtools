@@ -1,5 +1,5 @@
 /****************************************************************
- * Copyright (c) 2006, 2018 IBM Corp. and others.
+ * Copyright (c) 2006, 2021 IBM Corp. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -52,7 +52,7 @@ public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
 
     @Override
     protected void buildXSeries() {
-        Object data[][] = adapter.getData();
+		Object[][] data = adapter.getData();
         if (data == null || data.length == 0) {
             return;
         }
