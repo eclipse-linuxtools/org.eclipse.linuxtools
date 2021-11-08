@@ -593,9 +593,7 @@ public class LaunchConfigurationUtils {
 				if (repository != null) {
 					configNameBuilder.append(repository).append('_'); // $NON-NLS-1$
 				}
-				if (name != null) {
-					configNameBuilder.append(name);
-				}
+				configNameBuilder.append(name);
 				if (tag != null) {
 					configNameBuilder.append(" [").append(tag).append("]"); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
