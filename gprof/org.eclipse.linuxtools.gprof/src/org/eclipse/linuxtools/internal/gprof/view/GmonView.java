@@ -294,7 +294,7 @@ public class GmonView extends AbstractSTDataView {
 
     @Override
     protected IAction createExportToCSVAction() {
-        IAction action = new STExportToCSVAction(this.getSTViewer()) {
+		return new STExportToCSVAction(this.getSTViewer()) {
             @Override
             public void run() {
                 Object o = getSTViewer().getInput();
@@ -306,7 +306,6 @@ public class GmonView extends AbstractSTDataView {
             }
 
         };
-        return action;
     }
 
 }
