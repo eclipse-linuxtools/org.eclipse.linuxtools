@@ -15,12 +15,13 @@
   <parent>
     <artifactId>linuxtools-javadocs-parent</artifactId>
     <groupId>org.eclipse.linuxtools.javadocs</groupId>
-    <version>8.5.0-SNAPSHOT</version>
+    <version>8.5.0</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.javadocs.feature</artifactId>
   <packaging>eclipse-feature</packaging>
   <name>Linux Tools Javadocs Feature</name>
+  <version>8.5.0-SNAPSHOT</version>
 
   <build>
     <plugins>

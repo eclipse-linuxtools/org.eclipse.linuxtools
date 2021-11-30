@@ -4,9 +4,10 @@
 	<parent>
 		<groupId>org.eclipse.linuxtools</groupId>
 		<artifactId>org.eclipse.linuxtools.docker</artifactId>
-		<version>5.5.0-SNAPSHOT</version>
+		<version>5.5.0</version>
 	</parent>
 	<artifactId>org.eclipse.linuxtools.docker.ui</artifactId>
 	<packaging>eclipse-plugin</packaging>
+	<version>5.5.0-SNAPSHOT</version>
 
 </project>
