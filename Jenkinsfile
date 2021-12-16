@@ -84,8 +84,8 @@ spec:
                 sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
                     sh 'ssh genie.linuxtools@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/linuxtools/updates-nightly/*'
                     sh 'ssh genie.linuxtools@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/linuxtools/updates-docker-nightly/*'
-                    sh 'scp -r releng/org.eclipse.linuxtools.releng-site/target_save/repository/* genie.linuxtools@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly/'
-                    sh 'scp -r releng/org.eclipse.linuxtools.docker-site/target_save/repository/* genie.linuxtools@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/linuxtools/updates-docker-nightly/'
+                    sh 'scp -r releng/org.eclipse.linuxtools.releng-site/target/repository/* genie.linuxtools@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly/'
+                    sh 'scp -r releng/org.eclipse.linuxtools.docker-site/target/repository/* genie.linuxtools@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/linuxtools/updates-docker-nightly/'
                 }
             }
         }
