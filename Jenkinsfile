@@ -13,7 +13,7 @@ kind: Pod
 spec:
   containers:
   - name: container
-    image: akurtakov/linuxtools-build-test-dependencies@sha256:0fa85fc43a35ca97fcbc650a012f348383a1f90514a837503160c80658e456ca
+    image: akurtakov/linuxtools-build-test-dependencies:latest
     tty: true
     command: [ "uid_entrypoint", "cat" ]
     resources:
