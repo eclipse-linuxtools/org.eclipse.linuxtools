@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Red Hat.
+ * Copyright (c) 2015, 2021 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -13,14 +13,14 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.mockito.Mockito;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import org.mandas.docker.client.messages.ContainerConfig;
 import org.mandas.docker.client.messages.ImageInfo;
+import org.mockito.Mockito;
 
 /**
  * A factory for mock {@link ImageInfo}s.
@@ -35,7 +35,7 @@ public class MockImageInfoFactory {
 
 		private final ImageInfo imageInfo;
 
-		private ImmutableSet<String> volumes;
+		private Set<String> volumes;
 
 		private List<String> command;
 
@@ -49,9 +49,12 @@ public class MockImageInfoFactory {
 
 		public Builder volume(final String volume) {
 			if (this.volumes == null) {
-				this.volumes = new ImmutableSet.Builder<String>().add(volume).build();
+				this.volumes = Set.of(volume);
 			}
-			this.volumes = new ImmutableSet.Builder<String>().addAll(this.volumes).add(volume).build();
+			Set<String> tmpVolumes = new HashSet<>();
+			tmpVolumes.addAll(this.volumes);
+			tmpVolumes.add(volume);
+			this.volumes = Collections.unmodifiableSet(tmpVolumes);
 			return this;
 		}
 
@@ -75,10 +78,10 @@ public class MockImageInfoFactory {
 			final ContainerConfig containerConfig = Mockito.mock(ContainerConfig.class);
 			Mockito.when(this.imageInfo.config()).thenReturn(config);
 			Mockito.when(this.imageInfo.containerConfig()).thenReturn(containerConfig);
-			Mockito.when(config.cmd()).thenReturn(ImmutableList.copyOf(this.command));
-			Mockito.when(config.entrypoint()).thenReturn(ImmutableList.copyOf(this.entrypoint));
-			Mockito.when(config.volumes()).thenReturn(ImmutableSet.copyOf(this.volumes));
-			Mockito.when(config.env()).thenReturn(ImmutableList.copyOf(this.env));
+			Mockito.when(config.cmd()).thenReturn(List.copyOf(this.command));
+			Mockito.when(config.entrypoint()).thenReturn(List.copyOf(this.entrypoint));
+			Mockito.when(config.volumes()).thenReturn(Set.copyOf(this.volumes));
+			Mockito.when(config.env()).thenReturn(List.copyOf(this.env));
 			return imageInfo;
 		}
 	}

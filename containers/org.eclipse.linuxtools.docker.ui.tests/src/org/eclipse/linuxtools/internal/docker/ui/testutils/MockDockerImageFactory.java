@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Red Hat.
+ * Copyright (c) 2016, 2021 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -25,8 +25,6 @@ import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.core.DockerImage;
 import org.mockito.Mockito;
-
-import com.google.common.collect.ImmutableList;
 
 /**
  * A factory for mock {@link DockerImage}s.
@@ -67,7 +65,7 @@ public class MockDockerImageFactory {
 			final List<String> repoTags = new ArrayList<>();
 			repoTags.add(repoTag);
 			Stream.of(otherRepoTags).forEach(r -> repoTags.add(r));
-			Mockito.when(this.image.repoTags()).thenReturn(ImmutableList.copyOf(repoTags));
+			Mockito.when(this.image.repoTags()).thenReturn(List.copyOf(repoTags));
 			Mockito.when(this.image.created()).thenReturn(Long.toString(new Date().getTime()));
 			return this;
 		}

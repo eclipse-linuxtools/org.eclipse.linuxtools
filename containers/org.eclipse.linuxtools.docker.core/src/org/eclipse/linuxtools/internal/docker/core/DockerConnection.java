@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2020 Red Hat Inc. and others.
+ * Copyright (c) 2014, 2021 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -129,8 +129,6 @@ import org.mandas.docker.client.messages.RegistryAuth;
 import org.mandas.docker.client.messages.Version;
 import org.mandas.docker.client.messages.Volume;
 import org.mandas.docker.client.messages.VolumeList;
-
-import com.google.common.collect.ImmutableMap;
 
 /**
  * A connection to a Docker daemon. The connection may rely on Unix Socket or TCP connection (using the REST API).
@@ -533,7 +531,7 @@ public class DockerConnection
 		List<IDockerVolume> volumeList = new ArrayList<>();
 		try {
 			VolumeList list = client
-					.listVolumes(new DockerClient.ListVolumesParam[0]);
+					.listVolumes();
 			List<Volume> volumes = list.volumes();
 			if (volumes != null) {
 				for (Volume volume : volumes) {
@@ -1528,8 +1526,7 @@ public class DockerConnection
 					.privileged(hc.privileged()).networkMode(hc.networkMode())
 					.readonlyRootfs(((DockerHostConfig) hc).readonlyRootfs());
 			if (((DockerHostConfig) hc).tmpfs() != null) {
-				hbuilder.tmpfs(
-						ImmutableMap.copyOf(((DockerHostConfig) hc).tmpfs()));
+				hbuilder.tmpfs(Map.copyOf(((DockerHostConfig) hc).tmpfs()));
 			}
 			if (((DockerHostConfig) hc).capAdd() != null) {
 				hbuilder.capAdd(((DockerHostConfig) hc).capAdd());

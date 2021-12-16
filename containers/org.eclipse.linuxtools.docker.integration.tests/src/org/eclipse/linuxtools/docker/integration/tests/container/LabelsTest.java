@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2020 Red Hat, Inc.
+ * Copyright (c) 2017, 2021 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,6 +14,8 @@
 package org.eclipse.linuxtools.docker.integration.tests.container;
 
 import static org.junit.Assert.assertTrue;
+
+import java.util.Map;
 
 import org.eclipse.linuxtools.docker.integration.tests.image.AbstractImageBotTest;
 import org.eclipse.linuxtools.docker.integration.tests.mock.MockDockerConnectionManager;
@@ -34,8 +36,6 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.google.common.collect.ImmutableMap;
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.exceptions.DockerException;
 
@@ -95,7 +95,7 @@ public class LabelsTest extends AbstractImageBotTest {
 	}
 
 	private void runContainer() {
-		ImmutableMap<String, String> labels = ImmutableMap.of(CONTAINER_LABEL_KEY,CONTAINER_LABEL_VALUE);
+		Map<String, String> labels = Map.of(CONTAINER_LABEL_KEY,CONTAINER_LABEL_VALUE);
 		final DockerClient client = MockDockerClientFactory
 				.container(MockContainerFactory.id("1MockContainer").name(CONTAINER_NAME)
 						.imageName("1a2b3c4d5e6f7g").status("Started 1 second ago").build(),

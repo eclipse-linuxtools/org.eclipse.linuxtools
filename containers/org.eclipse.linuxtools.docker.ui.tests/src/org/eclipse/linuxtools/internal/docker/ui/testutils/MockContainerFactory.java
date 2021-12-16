@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Red Hat.
+ * Copyright (c) 2015, 2021 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -22,10 +22,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.eclipse.linuxtools.docker.core.Messages;
-import org.mockito.Mockito;
-
-import com.google.common.collect.ImmutableList;
 import org.mandas.docker.client.messages.Container;
+import org.mockito.Mockito;
 
 /**
  * A factory for mock {@link Container}s.
@@ -69,7 +67,7 @@ public class MockContainerFactory {
 			repoTags.add(name);
 			Stream.of(otherNames).forEach(r -> repoTags.add(r));
 			Mockito.when(this.container.status()).thenReturn(Messages.Running_specifier);
-			Mockito.when(this.container.names()).thenReturn(ImmutableList.copyOf(repoTags));
+			Mockito.when(this.container.names()).thenReturn(List.copyOf(repoTags));
 			Mockito.when(this.container.created()).thenReturn(new Date().getTime());
 			return this;
 		}
