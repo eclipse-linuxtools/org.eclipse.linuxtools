@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2020 Red Hat.
+ * Copyright (c) 2017, 2021 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,28 +12,28 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.testutils;
 
-import org.mockito.Mockito;
+import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
 import org.mandas.docker.client.messages.ContainerConfig;
+import org.mockito.Mockito;
 
 public class MockContainerConfigFactory {
 
-	public static Builder labels(ImmutableMap<String, String> labels) {
+	public static Builder labels(Map<String, String> labels) {
 		return new Builder().labels(labels);
 	}
 
 	public static class Builder {
 
 		private final ContainerConfig containerConfig;
-		private ImmutableMap<String, String> labels;
+		private Map<String, String> labels;
 
 		private Builder() {
 			this.containerConfig = Mockito.mock(ContainerConfig.class, Mockito.RETURNS_DEEP_STUBS);
-			labels = ImmutableMap.of();
+			labels = Map.of();
 		}
 
-		public Builder labels(ImmutableMap<String, String> labels) {
+		public Builder labels(Map<String, String> labels) {
 			this.labels = labels;
 			Mockito.when(this.containerConfig.labels()).thenReturn(this.labels);
 			return this;

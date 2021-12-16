@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Red Hat.
+ * Copyright (c) 2015, 2021 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mandas.docker.client.messages.ContainerConfig;
 import org.mandas.docker.client.messages.ContainerInfo;
@@ -24,9 +25,6 @@ import org.mandas.docker.client.messages.HostConfig;
 import org.mandas.docker.client.messages.NetworkSettings;
 import org.mandas.docker.client.messages.PortBinding;
 import org.mockito.Mockito;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
 /**
  * A factory for mock {@link ContainerInfo}s.
@@ -73,7 +71,7 @@ public class MockContainerInfoFactory {
 		return new Builder().securityOpt(profile);
 	}
 
-	public static Builder labels(ImmutableMap<String, String> labels) {
+	public static Builder labels(Map<String, String> labels) {
 		return new Builder().labels(labels);
 	}
 
@@ -81,13 +79,13 @@ public class MockContainerInfoFactory {
 
 		private final ContainerInfo containerInfo;
 
-		private ImmutableMap<String, String> labels;
+		private Map<String, String> labels;
 
-		private ImmutableMap<String, List<PortBinding>> ports;
+		private Map<String, List<PortBinding>> ports;
 
-		private ImmutableList<String> links;
+		private List<String> links;
 
-		private ImmutableList<String> volumes;
+		private List<String> volumes;
 
 		private String networkMode;
 
@@ -95,7 +93,7 @@ public class MockContainerInfoFactory {
 
 		private Boolean privilegedMode;
 
-		private ImmutableList<String> securityOpt;
+		private List<String> securityOpt;
 
 		private Builder() {
 			this.containerInfo = Mockito.mock(ContainerInfo.class, Mockito.RETURNS_DEEP_STUBS);
@@ -119,7 +117,7 @@ public class MockContainerInfoFactory {
 
 		}
 
-		public Builder labels(ImmutableMap<String, String> labels) {
+		public Builder labels(Map<String, String> labels) {
 			this.labels = labels;
 			return this;
 		}
@@ -141,34 +139,34 @@ public class MockContainerInfoFactory {
 
 		public Builder link(final String link) {
 			if (this.links == null) {
-				this.links = ImmutableList.of();
+				this.links = List.of();
 			}
 
 			ArrayList<String> tmp = new ArrayList<>(this.links);
 			tmp.add(link);
-			this.links = ImmutableList.copyOf(tmp);
+			this.links = List.copyOf(tmp);
 			return this;
 		}
 
 		public Builder securityOpt(final String opt) {
 			if (this.securityOpt == null) {
-				this.securityOpt = ImmutableList.of();
+				this.securityOpt = List.of();
 			}
 
 			ArrayList<String> tmp = new ArrayList<>(this.securityOpt);
 			tmp.add(opt);
-			this.securityOpt = ImmutableList.copyOf(tmp);
+			this.securityOpt = List.copyOf(tmp);
 			return this;
 		}
 
 		public Builder volume(final String volume) {
 			if (this.volumes == null) {
-				this.volumes = ImmutableList.of();
+				this.volumes = List.of();
 			}
 
 			ArrayList<String> tmp = new ArrayList<>(this.volumes);
 			tmp.add(volume);
-			this.volumes = ImmutableList.copyOf(tmp);
+			this.volumes = List.copyOf(tmp);
 			return this;
 		}
 
@@ -184,7 +182,7 @@ public class MockContainerInfoFactory {
 
 		public Builder port(final String privatePort, final String hostIp, final String hostPort) {
 			if (this.ports == null) {
-				this.ports = ImmutableMap.of();
+				this.ports = Map.of();
 			}
 			final PortBinding binding = Mockito.mock(PortBinding.class);
 			Mockito.when(binding.hostIp()).thenReturn(hostIp);
@@ -192,7 +190,7 @@ public class MockContainerInfoFactory {
 
 			HashMap<String, List<PortBinding>> tmp = new HashMap<>(this.ports);
 			tmp.put(privatePort, new ArrayList<>());
-			this.ports = ImmutableMap.copyOf(tmp);
+			this.ports = Map.copyOf(tmp);
 			ports.get(privatePort).add(binding);
 			return this;
 		}

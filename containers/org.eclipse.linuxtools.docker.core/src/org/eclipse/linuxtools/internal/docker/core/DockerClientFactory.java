@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Red Hat.
+ * Copyright (c) 2015, 2021 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,6 +17,7 @@ import static java.util.Collections.singletonMap;
 
 import java.io.File;
 import java.net.URI;
+import java.util.Objects;
 
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings.BindingType;
@@ -29,8 +30,6 @@ import org.mandas.docker.client.auth.FixedRegistryAuthSupplier;
 import org.mandas.docker.client.exceptions.DockerCertificateException;
 import org.mandas.docker.client.messages.RegistryAuth;
 import org.mandas.docker.client.messages.RegistryConfigs;
-
-import com.google.common.base.MoreObjects;
 
 /**
  * Factory for {@link DockerClient}. Decoupling from {@link DockerConnection}
@@ -101,7 +100,7 @@ public class DockerClientFactory {
 			// https://github.com/spotify/docker-client/blob/master/src/main/java/com/spotify/docker/client/DefaultDockerClient.java#L3140
 			RegistryAuth registryAuth = buildAuthentication(registryAccount);
 			final RegistryConfigs configs = RegistryConfigs.create(singletonMap(
-					MoreObjects.firstNonNull(registryAuth.serverAddress(), ""),
+					Objects.toString(registryAuth.serverAddress(), ""),
 					registryAuth));
 			builder.registryAuthSupplier(
 					new FixedRegistryAuthSupplier(registryAuth, configs));

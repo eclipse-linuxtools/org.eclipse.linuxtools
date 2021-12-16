@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Red Hat.
+ * Copyright (c) 2015, 2021 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -21,10 +21,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.mockito.Mockito;
-
-import com.google.common.collect.ImmutableList;
 import org.mandas.docker.client.messages.Image;
+import org.mockito.Mockito;
 
 /**
  * A factory for mock {@link Image}s.
@@ -67,7 +65,7 @@ public class MockImageFactory {
 			final List<String> repoTags = new ArrayList<>();
 			repoTags.add(repoTag);
 			Stream.of(otherRepoTags).forEach(r -> repoTags.add(r));
-			Mockito.when(this.image.repoTags()).thenReturn(ImmutableList.copyOf(repoTags));
+			Mockito.when(this.image.repoTags()).thenReturn(List.copyOf(repoTags));
 			Mockito.when(this.image.created()).thenReturn(Long.toString(new Date().getTime()));
 			return this;
 		}
