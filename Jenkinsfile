@@ -58,7 +58,6 @@ spec:
 			steps {
 				container('container') {
 					sh 'mutter --replace --sm-disable &'
-                    checkout([$class: 'GitSCM', branches: [[name: 'FETCH_HEAD']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[refspec: '${GERRIT_REFSPEC}', url: 'https://git.eclipse.org/r/linuxtools/org.eclipse.linuxtools.git']]])
 				}
 			}
 		}
@@ -66,7 +65,7 @@ spec:
 			steps {
 				container('container') {
 					wrap([$class: 'Xvnc', useXauthority: true]) {
-						sh 'mvn clean verify -Dmaven.test.failure.ignore=true'
+						sh 'mvn clean verify -Dmaven.test.failure.ignore=true -ntp'
 					}
 				}
 			}
