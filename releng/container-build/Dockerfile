@@ -1,4 +1,4 @@
-FROM eclipsecbi/fedora-gtk3-mutter:34-gtk3.24
+FROM eclipsecbi/fedora-gtk3-mutter:35-gtk3.24
 
 # Back to root for install
 USER 0
