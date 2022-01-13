@@ -41,16 +41,9 @@ Contact the project developers via the project's "dev" list.
 
 - https://dev.eclipse.org/mailman/listinfo/linuxtools-dev
 
-Search for bugs:
+Bugs/Issues:
 ----------------
 
-This project uses Bugzilla to track ongoing development and issues.
+This project uses Github Issues to track ongoing development and issues.
 
-- https://bugs.eclipse.org/bugs/buglist.cgi?product=Linux%20Tools
-
-Create a new bug:
------------------
-
-Be sure to search for existing bugs before you create another one. Remember that contributions are always welcome!
-
-- https://bugs.eclipse.org/bugs/enter_bug.cgi?product=Linux%20Tools
+- https://github.com/eclipse-linuxtools/org.eclipse.linuxtools/issues
