@@ -45,15 +45,6 @@
 
         <activityPatternBinding
             activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-            pattern="org\.eclipse\.linuxtools\.oprofile\..*/*">
-        </activityPatternBinding>
-        <activityPatternBinding
-            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
-            pattern="org\.eclipse\.linuxtools\.oprofile/*">
-        </activityPatternBinding>
-
-        <activityPatternBinding
-            activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
             pattern="org\.eclipse\.linuxtools\.valgrind\..*/*">
         </activityPatternBinding>
         <activityPatternBinding
