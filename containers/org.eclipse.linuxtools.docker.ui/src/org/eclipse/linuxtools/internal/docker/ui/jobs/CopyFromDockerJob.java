@@ -57,11 +57,11 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
-import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.core.CloseableContainer;
 import org.eclipse.linuxtools.internal.docker.core.ContainerFileProxy;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
+import org.eclipse.linuxtools.internal.docker.core.DockerImage;
 
 /**
  * A Job that copies data from a docker image or a running container to the
@@ -734,18 +734,28 @@ public class CopyFromDockerJob extends Job {
 		if (m_containerId != null) {
 			IDockerContainerInfo containerinfo = m_connection.getContainerInfo(m_containerId);
 			m_imageId = containerinfo.image();
-			return m_imageId;
-		} else if (m_image != null) {
 
-			IDockerImage dockerImage = m_connection.getImageByTag(m_image);
+		} else if (m_image != null) {
+			var dockerImage = m_connection.getImageByTag(m_image);
+
+			// Fall back to short-id
+			if (dockerImage == null) {
+				var images = m_connection.getImages();
+				var oImage = images.stream().filter(f -> ((DockerImage) f).shortId().equals(m_image)).findFirst();
+				if (oImage.isPresent()) {
+					dockerImage = oImage.get();
+				}
+			}
+
 			if (dockerImage == null) {
 				throw new RuntimeException(
 						JobMessages.getFormattedString("CopyFromDockerJob.docker.no.image", m_image)); //$NON-NLS-1$
 			}
-			return dockerImage.id();
+			m_imageId = dockerImage.id();
 		} else {
 			assert false : "Neither container nor image set. Broken init?"; //$NON-NLS-1$
 		}
+		return m_imageId;
 	}
 
 	/**
