@@ -62,6 +62,9 @@
 							<excludes>
 								<exclude>**/*SWTBotTest.class</exclude>
 							</excludes>
+							<excludedGroups>
+								org.eclipse.linuxtools.docker.testCategory.NativeLinuxDocker
+							</excludedGroups>
 						</configuration>
 					</plugin>
 				</plugins>
