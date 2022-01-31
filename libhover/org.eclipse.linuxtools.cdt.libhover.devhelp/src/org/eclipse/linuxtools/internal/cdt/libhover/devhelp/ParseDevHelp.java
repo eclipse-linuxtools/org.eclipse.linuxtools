@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2011, 2022 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -58,8 +58,8 @@ import org.xml.sax.SAXException;
 
 public class ParseDevHelp {
 
-    private final static String PARSING_MSG = "Libhover.Devhelp.Parsing.msg"; //$NON-NLS-1$
-    private final static String PARSING_FMT_MSG = "Libhover.Devhelp.Parsing.fmt.msg"; //$NON-NLS-1$
+    private static final String PARSING_MSG = "Libhover.Devhelp.Parsing.msg"; //$NON-NLS-1$
+    private static final String PARSING_FMT_MSG = "Libhover.Devhelp.Parsing.fmt.msg"; //$NON-NLS-1$
     private static class HTMLSaxParser extends AbstractSAXParser {
 
         private boolean begin;
@@ -70,7 +70,7 @@ public class ParseDevHelp {
         private boolean descStart;
         private boolean rowIgnore;
         private boolean valid = true;
-        private HashMap<String, String> funcs;
+        private Map<String, String> funcs;
         private String returnValue;
         private String funcName;
         private String rowTag;
@@ -80,7 +80,7 @@ public class ParseDevHelp {
         private int rowItemCount;
         private TreeMap<String, FunctionInfo> infos = new TreeMap<>();
 
-        public HTMLSaxParser(HashMap<String, String> funcs) {
+        public HTMLSaxParser(Map<String, String> funcs) {
             super(new HTMLConfiguration());
             this.funcs = funcs;
         }
@@ -228,7 +228,7 @@ public class ParseDevHelp {
                         completed = true;
                         tmp = tmp.substring(0, tmp.length() - 2);
                     }
-                    String tokens[] = tmp.split("\\s+"); //$NON-NLS-1$
+                    String[] tokens = tmp.split("\\s+"); //$NON-NLS-1$
                     String separator = ""; //$NON-NLS-1$
                     protoStart = true;
                     for (int i = 0; i < tokens.length; ++i) {
