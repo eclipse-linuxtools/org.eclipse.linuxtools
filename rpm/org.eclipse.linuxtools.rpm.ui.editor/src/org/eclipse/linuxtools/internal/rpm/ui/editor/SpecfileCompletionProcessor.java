@@ -122,7 +122,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			}
 		}
 
-		return result.toArray(new ICompletionProposal[result.size()]);
+		return result.toArray(new ICompletionProposal[0]);
 	}
 
 	/**
@@ -180,14 +180,12 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		rpmMacroProposalsMap.putAll(getDefines(specfile, prefix));
 
 		ArrayList<ICompletionProposal> proposals = new ArrayList<>();
-		if (rpmMacroProposalsMap != null) {
-			for (Map.Entry<String, String> entry : rpmMacroProposalsMap.entrySet()) {
-				proposals.add(new SpecCompletionProposal(
-						ISpecfileSpecialSymbols.MACRO_START_LONG + entry.getKey().substring(1)
-								+ ISpecfileSpecialSymbols.MACRO_END_LONG,
-						region.getOffset(), region.getLength(), entry.getKey().length() + 2,
-						Activator.getDefault().getImage(MACRO_ICON), entry.getKey(), null, entry.getValue()));
-			}
+		for (Map.Entry<String, String> entry : rpmMacroProposalsMap.entrySet()) {
+			proposals.add(new SpecCompletionProposal(
+					ISpecfileSpecialSymbols.MACRO_START_LONG + entry.getKey().substring(1)
+							+ ISpecfileSpecialSymbols.MACRO_END_LONG,
+					region.getOffset(), region.getLength(), entry.getKey().length() + 2,
+					Activator.getDefault().getImage(MACRO_ICON), entry.getKey(), null, entry.getValue()));
 		}
 		return proposals;
 	}
@@ -206,12 +204,10 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		// grab patches and put them into the proposals map
 		Map<String, String> patchesProposalsMap = getPatches(specfile, prefix);
 		ArrayList<ICompletionProposal> proposals = new ArrayList<>();
-		if (patchesProposalsMap != null) {
-			for (Map.Entry<String, String> entry : patchesProposalsMap.entrySet()) {
-				proposals.add(new SpecCompletionProposal(entry.getKey(), region.getOffset(), region.getLength(),
-						entry.getKey().length(), Activator.getDefault().getImage(PATCH_ICON), entry.getKey(), null,
-						entry.getValue()));
-			}
+		for (Map.Entry<String, String> entry : patchesProposalsMap.entrySet()) {
+			proposals.add(new SpecCompletionProposal(entry.getKey(), region.getOffset(), region.getLength(),
+					entry.getKey().length(), Activator.getDefault().getImage(PATCH_ICON), entry.getKey(), null,
+					entry.getValue()));
 		}
 		return proposals;
 	}
@@ -230,12 +226,10 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		// grab patches and put them into the proposals map
 		Map<String, String> sourcesProposalsMap = getSources(specfile, prefix);
 		ArrayList<ICompletionProposal> proposals = new ArrayList<>();
-		if (sourcesProposalsMap != null) {
-			for (Map.Entry<String, String> entry : sourcesProposalsMap.entrySet()) {
-				proposals.add(new SpecCompletionProposal(entry.getKey(), region.getOffset(), region.getLength(),
-						entry.getKey().length(), Activator.getDefault().getImage(PATCH_ICON), entry.getKey(), null,
-						entry.getValue()));
-			}
+		for (Map.Entry<String, String> entry : sourcesProposalsMap.entrySet()) {
+			proposals.add(new SpecCompletionProposal(entry.getKey(), region.getOffset(), region.getLength(),
+					entry.getKey().length(), Activator.getDefault().getImage(PATCH_ICON), entry.getKey(), null,
+					entry.getValue()));
 		}
 		return proposals;
 	}
@@ -286,7 +280,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private TemplateContextType getContextType(Specfile specfile, int offset) {
 		List<SpecfileSection> elements = specfile.getSections();
-		if (elements.size() == 0 || offset < elements.get(0).getLineEndPosition()) {
+		if (elements.isEmpty() || offset < elements.get(0).getLineEndPosition()) {
 			return Activator.getDefault().getContextTypeRegistry().getContextType(PREAMBLE_SECTION_TEMPLATE);
 		} else if (elements.size() == 1 || offset < elements.get(1).getLineEndPosition()) {
 			return Activator.getDefault().getContextTypeRegistry().getContextType(PRE_SECTION_TEMPLATE);

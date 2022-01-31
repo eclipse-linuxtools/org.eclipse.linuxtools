@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ * Copyright (c) 2007, 2021 Alphonse Van Assche and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -87,7 +87,6 @@ public final class RpmPackageBuildProposalsJob extends Job {
 						if (monitor.isCanceled()) {
 							in.destroyProcess();
 							in.close();
-							out.close();
 							// restore backup
 							if (Files.exists(rpmListFile) && Files.exists(bkupFile)) {
 								Files.copy(bkupFile, Paths.get(rpmListFilepath));
@@ -98,7 +97,6 @@ public final class RpmPackageBuildProposalsJob extends Job {
 						}
 					}
 					in.close();
-					out.close();
 					Files.deleteIfExists(bkupFile);
 					int processExitValue = 0;
 					try {
