@@ -118,8 +118,8 @@ public class CreaterepoWizardTest {
         project = root.getProject(ICreaterepoTestConstants.PROJECT_NAME);
         assertTrue(project.exists());
         assertTrue(project.hasNature(CreaterepoProjectNature.CREATEREPO_NATURE_ID));
-        // 3 = .project + content folder + .repo file
-        assertEquals(3, project.members().length);
+        // 4 = .project + content folder + .repo file + .settings folder
+        assertEquals(4, project.members().length);
 
         // contains the content folder and repo file
         assertTrue(project.findMember(ICreaterepoConstants.CONTENT_FOLDER).exists());

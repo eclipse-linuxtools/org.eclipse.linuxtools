@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017,2018 Red Hat, Inc.
+ * Copyright (c) 2017,2022 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -13,6 +13,7 @@
 
 package org.eclipse.linuxtools.docker.integration.tests.ui;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.linuxtools.docker.integration.tests.image.AbstractImageBotTest;
@@ -70,8 +71,8 @@ public class ImageTabTest extends AbstractImageBotTest {
 		String sizeProp = propertiesView.getProperty("VirtualSize").getPropertyValue();
 
 		assertTrue("Id in table and in Properties do not match!", idProp.contains(idFromTable));
-		assertTrue("RepoTags in table and in Properties do not match!", repoTagsProp.equals(repoTagsFromTable));
-		assertTrue("Created in table and in Properties do not match!", createdProp.equals(createdFromTable));
+		assertEquals("RepoTags in table and in Properties do not match!", repoTagsProp, repoTagsFromTable);
+		assertEquals("Created in table and in Properties do not match!", createdProp, createdFromTable);
 		assertTrue("Size in table and in Properties do not match!", sizeProp.startsWith(sizeFromTable));
 	}
 
@@ -83,7 +84,7 @@ public class ImageTabTest extends AbstractImageBotTest {
 		imageTab.refresh();
 		new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT);
 		imageTab.searchImage("aaa");
-		assertTrue("Search result is not 0!", imageTab.getTableItems().size() == 0);
+		assertEquals("Search result is not 0!", 0, imageTab.getTableItems().size());
 		imageTab.searchImage("");
 		assertTrue("Search result is 0!", imageTab.getTableItems().size() > 0);
 	}
