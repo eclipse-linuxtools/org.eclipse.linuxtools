@@ -92,8 +92,8 @@ public class CreaterepoProjectCreatorTest {
      */
     @Test
     public void testProjectContents() throws CoreException, IOException {
-        // 2 = .project + .repo file
-        assertEquals(2, project.members().length);
+        // 3 = .project + .repo file + .settings folder
+        assertEquals(3, project.members().length);
 
         // contains the repo file
         assertTrue(project.findMember(ICreaterepoTestConstants.REPO_NAME).exists());
@@ -101,7 +101,7 @@ public class CreaterepoProjectCreatorTest {
         IFile repoFile = (IFile) project.findMember(ICreaterepoTestConstants.REPO_NAME);
         // repo file should be empty because test did not go through project creation
         // to initialize .repo contents
-        assertEquals(repoFile.getContents().available(), 0);
+        assertEquals(0, repoFile.getContents().available());
     }
 
     /**
