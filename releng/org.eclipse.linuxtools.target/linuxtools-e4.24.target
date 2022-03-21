@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="linuxtools-e4.22" sequenceNumber="1">
+<target name="linuxtools-e4.24" sequenceNumber="1">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.12.1.v20210128-1726"/>
@@ -12,11 +12,11 @@
 <unit id="com.github.jnr.constants" version="0.9.15.v20200501-1917"/>
 <unit id="com.github.jnr.enxio" version="0.25.0.v20200501-1917"/>
 <unit id="com.github.jnr.ffi" version="2.1.12.v20200513-1859"/>
-<unit id="com.github.jnr.jffi" version="1.2.23.v20200501-1917"/>
-<unit id="com.github.jnr.jffi.native" version="1.2.23.v20200501-1917"/>
+<unit id="com.github.jnr.jffi" version="1.2.23.v20211029-0121"/>
+<unit id="com.github.jnr.jffi.native" version="1.2.23.v20211029-0121"/>
 <unit id="com.github.jnr.posix" version="3.0.54.v20200501-1917"/>
 <unit id="com.github.jnr.unixsocket" version="0.28.0.v20200501-1917"/>
-<unit id="com.google.gson" version="2.8.7.v20210624-1215"/>
+<unit id="com.google.gson" version="2.8.9.v20220111-1409"/>
 <unit id="com.google.guava" version="30.1.0.v20210127-2300"/>
 <unit id="org.mandas.docker-client" version="3.2.1.v20200519-1937"/>
 <unit id="org.mandas.docker-client.source" version="3.2.1.v20200519-1937"/>
@@ -27,15 +27,13 @@
 <unit id="com.github.jnr.x86asm" version="1.0.2.v20200501-1917"/>
 <unit id="org.aopalliance" version="1.0.0.v201105210816"/>
 <unit id="org.apache.commons.codec" version="1.14.0.v20200818-1422"/>
-<unit id="org.apache.commons.compress" version="1.20.0.v20210713-1928"/>
+<unit id="org.apache.commons.compress" version="1.21.0.v20211103-2100"/>
 <unit id="org.apache.commons.io" version="2.8.0.v20210415-0900"/>
 <unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
-<unit id="org.apache.httpcomponents.httpclient" version="4.5.13.v20210128-2225"/>
-<unit id="org.apache.httpcomponents.httpcore" version="4.4.14.v20210128-2225"/>
-<unit id="org.apache.xerces" version="2.12.1.v20210115-0812"/>
+<unit id="org.apache.xerces" version="2.12.2.v20220131-0835"/>
 <unit id="org.assertj" version="3.20.2.v20210706-1104"/>
-<unit id="org.bouncycastle.bcpkix" version="1.69.0.v20210713-1924"/>
-<unit id="org.bouncycastle.bcprov" version="1.69.0.v20210713-1924"/>
+<unit id="org.bouncycastle.bcpkix" version="1.70.0.v20220105-1522"/>
+<unit id="org.bouncycastle.bcprov" version="1.70.0.v20220105-1522"/>
 <unit id="org.cyberneko.html" version="1.9.14.v201105210654"/>
 <unit id="org.glassfish.hk2.api" version="2.6.1.v20200513-1859"/>
 <unit id="org.glassfish.hk2.locator" version="2.6.1.v20200513-1859"/>
@@ -56,7 +54,8 @@
 <unit id="org.objectweb.asm.tree" version="9.2.0.v20210813-1119"/>
 <unit id="org.objectweb.asm.util" version="9.2.0.v20210813-1119"/>
 <unit id="org.slf4j.api" version="1.7.30.v20200204-2150"/>
-<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20210825222808/repository"/>
+<unit id="org.hamcrest" version="2.2.0.v20210711-0821"/>>
+<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20220302172233/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
@@ -68,7 +67,7 @@
 <unit id="org.eclipse.platform.ide" version="0.0.0"/>
 <unit id="org.eclipse.equinox.core.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.ui.tests.harness" version="0.0.0"/>
-<repository location="https://download.eclipse.org/eclipse/updates/4.22-I-builds/"/>
+<repository location="https://download.eclipse.org/eclipse/updates/4.24-I-builds/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -79,6 +78,7 @@
 <unit id="org.eclipse.cdt.autotools.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.cdt.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.launchbar.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.remote.feature.group" version="0.0.0"/>
 <repository location="https://ci.eclipse.org/cdt/job/cdt-master/lastSuccessfulBuild/artifact/releng/org.eclipse.cdt.repo/target/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -87,12 +87,11 @@
 <unit id="org.eclipse.dstore.core" version="0.0.0"/>
 <unit id="org.eclipse.jgit.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.ptp.rdt.sync.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.remote.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.zest.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.lsp4e" version="0.0.0"/>
 <unit id="org.eclipse.tm4e.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.wildwebdeveloper.embedder.node.feature.feature.group" version="0.0.0"/>
-<repository location="https://download.eclipse.org/releases/2021-09/"/>
+<repository location="https://download.eclipse.org/releases/2022-03/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.reddeer.eclipse.feature.feature.group" version="0.0.0"/>

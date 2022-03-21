@@ -52,7 +52,7 @@
     <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
     <mirror-mylyn-repo-name>updates-mylyn-nightly</mirror-mylyn-repo-name>
     <tycho-version>2.7.0</tycho-version>
-    <target-platform>linuxtools-e4.23</target-platform>
+    <target-platform>linuxtools-e4.24</target-platform>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../../target/jacoco.exec</sonar.jacoco.reportPath>
@@ -158,7 +158,7 @@
                 <repository>
                   <id>eclipse</id>
                   <layout>p2</layout>
-                  <url>http://download.eclipse.org/releases/2021-12</url>
+                  <url>http://download.eclipse.org/releases/2022-03</url>
                 </repository>
               </repositories>
               <!-- actuall indexer call -->
