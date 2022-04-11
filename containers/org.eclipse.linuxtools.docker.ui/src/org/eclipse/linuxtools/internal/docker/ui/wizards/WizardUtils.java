@@ -30,10 +30,12 @@ public class WizardUtils {
 	public static List<String> getContainerNames(
 			final IDockerConnection connection) {
 		final List<String> containerNames = new ArrayList<>();
-		for (IDockerContainer container : connection.getContainers()) {
-			containerNames.add(container.name());
+		if (connection != null) {
+			for (IDockerContainer container : connection.getContainers()) {
+				containerNames.add(container.name());
+			}
+			Collections.sort(containerNames);
 		}
-		Collections.sort(containerNames);
 		return containerNames;
 	}
 
@@ -49,7 +51,7 @@ public class WizardUtils {
 	 */
 	public static IDockerContainer getContainer(
 			final IDockerConnection connection, final String containerName) {
-		if (containerName != null && !containerName.isEmpty()) {
+		if (containerName != null && !containerName.isEmpty() && connection != null) {
 			for (IDockerContainer container : connection.getContainers()) {
 				if (container.name().equals(containerName)) {
 					return container;
