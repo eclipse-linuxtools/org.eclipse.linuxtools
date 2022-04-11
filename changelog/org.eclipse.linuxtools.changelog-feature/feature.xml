@@ -37,8 +37,6 @@
       <import plugin="org.eclipse.ui.editors" version="3.3.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.filesystem"/>
       <import plugin="org.eclipse.core.expressions" version="3.3.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.cdt.core"/>
-      <import plugin="org.eclipse.jdt.core"/>
       <import plugin="org.eclipse.help"/>
       <import plugin="org.eclipse.cdt.core" version="5.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.cdt.ui" version="5.2.0" match="greaterOrEqual"/>
