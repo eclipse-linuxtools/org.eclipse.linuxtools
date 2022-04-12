@@ -74,10 +74,10 @@
    <iu id="org.eclipse.reddeer.workbench.core" version="0.0.0">
 	<category name="Docker Test Dependencies"/>
    </iu>
-   <iu id="org.mockito" version="0.0.0">
+   <iu id="org.mockito.mockito-core" version="0.0.0">
 	<category name="Docker Test Dependencies"/>
    </iu>
-   <iu id="org.assertj" version="0.0.0">
+   <iu id="assertj-core" version="0.0.0">
 	<category name="Docker Test Dependencies"/>
    </iu>
    <iu id="org.objenesis" version="0.0.0">
