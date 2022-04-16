@@ -459,6 +459,9 @@ public class ParseDevHelp {
                                     && !nameValue.contains("\"")) { //$NON-NLS-1$
                                 String linkValue = link.getNodeValue();
                                 String[] linkParts = linkValue.split("#"); //$NON-NLS-1$
+                                if (linkParts.length < 2) {
+                                	return;
+                                }
                                 // Check if the file referred to by the link has been seen before
                                 // If not, create a new function list for it
                                 HashMap<String, String> funcMap = files.get(linkParts[0]);
@@ -494,6 +497,9 @@ public class ParseDevHelp {
                                             && !nameValue.contains("\"")) { //$NON-NLS-1$
                                         String linkValue = link.getNodeValue();
                                         String[] linkParts = linkValue.split("#"); //$NON-NLS-1$
+                                        if (linkParts.length < 2) {
+                                        	return;
+                                        }
                                         // Check to see if the file referred to by the link has been seen before
                                         // If not, create a new function list for it
                                         HashMap<String, String> funcMap = files.get(linkParts[0]);
