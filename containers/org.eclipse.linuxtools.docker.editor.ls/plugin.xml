@@ -27,6 +27,7 @@
             base-type="org.eclipse.core.runtime.text"
             file-extensions="Dockerfile,dockerfile"
             file-names="Dockerfile"
+            file-patterns="Dockerfile.*"
             id="org.eclipse.linuxtools.docker.editor.ls"
             name="Dockerfile"
             priority="normal">
