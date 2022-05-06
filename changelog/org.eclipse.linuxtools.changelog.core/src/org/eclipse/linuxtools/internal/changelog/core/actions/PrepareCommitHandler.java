@@ -29,7 +29,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -63,19 +62,9 @@ public class PrepareCommitHandler extends ChangeLogAction implements IHandler {
 
         try {
             pd.run(false /* fork */, false /* cancelable */, code);
-        } catch (InvocationTargetException e) {
-            ChangelogPlugin
-                    .getDefault()
-                    .getLog()
-                    .log(new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID,
-                            IStatus.ERROR, e.getMessage(), e));
-        } catch (InterruptedException e) {
-            ChangelogPlugin
-                    .getDefault()
-                    .getLog()
-                    .log(new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID,
-                            IStatus.ERROR, e.getMessage(), e));
-        }
+		} catch (InvocationTargetException|InterruptedException e) {
+			ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
+		}
 
         return null;
     }

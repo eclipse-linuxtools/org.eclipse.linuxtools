@@ -20,13 +20,11 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.linuxtools.internal.gprof.Activator;
 import org.eclipse.linuxtools.internal.gprof.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -199,12 +197,12 @@ public class OpenGmonDialog extends Dialog {
         }
         dialog.setValidator(selection -> {
 		    if (selection.length != 1) {
-		        return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+				return Status.error(""); //$NON-NLS-1$
 		    }
 		    if (!(selection[0] instanceof IFile)) {
-		        return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+				return Status.error(""); //$NON-NLS-1$
 		    }
-		    return new Status(IStatus.OK, Activator.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+			return Status.OK_STATUS;
 		});
         if (dialog.open() == IDialogConstants.OK_ID) {
             IResource resource = (IResource) dialog.getFirstResult();

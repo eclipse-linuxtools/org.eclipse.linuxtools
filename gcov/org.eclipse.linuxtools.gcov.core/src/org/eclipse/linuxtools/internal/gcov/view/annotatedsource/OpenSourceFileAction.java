@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.binutils.link2source.STLink2SourceSupport;
-import org.eclipse.linuxtools.internal.gcov.Constants;
 import org.eclipse.linuxtools.internal.gcov.parser.SourceFile;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -99,8 +98,7 @@ public final class OpenSourceFileAction {
                     page.openEditor(new STAnnotatedSourceNotFoundEditorInput(project, sourceFile, realLocation,
                             lineNumber), STAnnotatedSourceNotFoundEditor.ID, true);
 					} catch (PartInitException e) {
-						Status s = new Status(IStatus.ERROR, Constants.PLUGIN_ID, IStatus.ERROR,
-								Messages.OpenSourceFileAction_open_error, e);
+						IStatus s = Status.error(Messages.OpenSourceFileAction_open_error, e);
 						Platform.getLog(FrameworkUtil.getBundle(OpenSourceFileAction.class)).log(s);
 					}
             } else {
@@ -119,8 +117,7 @@ public final class OpenSourceFileAction {
                         p.activate(editor);
                     }
 					} catch (PartInitException e) {
-						Status s = new Status(IStatus.ERROR, Constants.PLUGIN_ID, IStatus.ERROR,
-								Messages.OpenSourceFileAction_open_error, e);
+						IStatus s = Status.error(Messages.OpenSourceFileAction_open_error, e);
 						Platform.getLog(FrameworkUtil.getBundle(OpenSourceFileAction.class)).log(s);
 					}
             }

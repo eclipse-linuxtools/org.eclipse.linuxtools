@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2018 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.docker.core.Activator;
 import org.eclipse.linuxtools.docker.core.DockerCommandNotFoundException;
@@ -41,7 +40,7 @@ public class ProcessLauncher {
 
 	/**
 	 * Checks that the given {@code cmdName} exists in the given {@code path}
-	 * 
+	 *
 	 * @param path
 	 *            the system {@code PATH} to use to look for the command
 	 * @param cmdName
@@ -52,12 +51,12 @@ public class ProcessLauncher {
 	public boolean checkPathToCommand(final String path, final String cmdName) {
 		return Stream.of(path.split(File.pathSeparator))
 				.map(pathFragment -> new File(pathFragment, cmdName))
-				.anyMatch(fullPath -> fullPath.exists());
+				.anyMatch(File::exists);
 	}
 
 	/**
 	 * Entry method to run a command.
-	 * 
+	 *
 	 * @param baseCmdDir
 	 *            the base directory containing the command to run
 	 * @param cmdName
@@ -78,7 +77,7 @@ public class ProcessLauncher {
 
 		/**
 		 * Constructor.
-		 * 
+		 *
 		 * @param baseCmdDir
 		 *            the base directory containing the command to run
 		 * @param cmdName
@@ -136,7 +135,7 @@ public class ProcessLauncher {
 
 		/**
 		 * Starts the process from the current settings.
-		 * 
+		 *
 		 * @return the {@link Process} that was started by this process builder
 		 * @throws DockerException
 		 *             if an error occurred
@@ -157,7 +156,7 @@ public class ProcessLauncher {
 		/**
 		 * Starts the {@link Process} from the current settings and returns the
 		 * output.
-		 * 
+		 *
 		 * @return the process output once it has completed.
 		 * @throws DockerException
 		 *             if an error occurred
@@ -191,13 +190,13 @@ public class ProcessLauncher {
 						errorMessage.append(line).append('\n'); // $NON-NLS-1$
 					}
 				}
-				Activator.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
+				Activator.log(Status.warning(
 						ProcessMessages.getFormattedString("Process_Error", //$NON-NLS-1$
-											this.getCommand(),
-								process.exitValue(), errorMessage.toString())));
+								this.getCommand(), process.exitValue(),
+								errorMessage.toString())));
 			}
 			} catch (IOException | InterruptedException e) {
-				Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+				Activator.log(Status.error(
 						ProcessMessages.getFormattedString("Process_Exception", //$NON-NLS-1$
 								this.getCommand(), e.getMessage()),
 						e));

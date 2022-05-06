@@ -34,7 +34,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -117,9 +116,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
         try {
             return parser.parseCurrentFunction(input, offset);
         } catch (CoreException e) {
-            ChangelogPlugin.getDefault().getLog().log(
-                    new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e
-                            .getMessage(), e));
+			ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
         }
         return "";
     }
@@ -139,15 +136,8 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 
         try {
             pd.run(false /* fork */, false /* cancelable */, code);
-        } catch (InvocationTargetException e) {
-            ChangelogPlugin.getDefault().getLog().log(
-                    new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e
-                            .getMessage(), e));
-            return;
-        } catch (InterruptedException e) {
-            ChangelogPlugin.getDefault().getLog().log(
-                    new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e
-                            .getMessage(), e));
+		} catch (InvocationTargetException|InterruptedException e) {
+			ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
         }
     }
 
@@ -529,10 +519,8 @@ public class PrepareChangeLogAction extends ChangeLogAction {
                     .getEditorDescriptor(patchFileInfo.getPath().toOSString(), true, false);
             editorName = ed.getId().substring(ed.getId().lastIndexOf(".") + 1); // $NON-NLS-1$
         } catch (PartInitException e1) {
-            ChangelogPlugin.getDefault().getLog().log(
-                    new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
-                            e1.getMessage(), e1));
-            return new String[0];
+			ChangelogPlugin.getDefault().getLog().log(Status.error(e1.getMessage(), e1));
+			return new String[0];
         }
 
         // check if the file type is supported
@@ -588,10 +576,8 @@ public class PrepareChangeLogAction extends ChangeLogAction {
             fnames = nameList.toArray(fnames);
 
         } catch (CoreException|BadLocationException e) {
-            ChangelogPlugin.getDefault().getLog().log(
-                    new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
-                            e.getMessage(), e));
-        }
+			ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
+		}
         return fnames;
     }
 }

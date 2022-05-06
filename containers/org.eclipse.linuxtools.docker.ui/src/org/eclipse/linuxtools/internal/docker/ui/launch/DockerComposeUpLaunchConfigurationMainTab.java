@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2015, 2018 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -22,7 +22,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -144,7 +143,7 @@ public class DockerComposeUpLaunchConfigurationMainTab
 
 	/**
 	 * Opens a dialog to browse the workspace
-	 * 
+	 *
 	 * @return
 	 */
 	private SelectionListener onBrowseWorkspace(final Text pathText,
@@ -162,9 +161,9 @@ public class DockerComposeUpLaunchConfigurationMainTab
 			dialog.setValidator(selection -> {
 				if (selection.length == 1 && expectedType
 						.isAssignableFrom(selection[0].getClass())) {
-					return new Status(IStatus.OK, Activator.PLUGIN_ID, null);
+					return Status.OK_STATUS;
 				}
-				return new Status(IStatus.ERROR, Activator.PLUGIN_ID, null);
+				return Status.error(null);
 			});
 			if (dialog.open() == IDialogConstants.OK_ID) {
 				final IResource selection = (IResource) dialog.getFirstResult();
@@ -176,7 +175,7 @@ public class DockerComposeUpLaunchConfigurationMainTab
 
 	/**
 	 * Opens a dialog to browse the file system and select a directory
-	 * 
+	 *
 	 * @return
 	 */
 	private SelectionListener onBrowseFileSystemForDirectory(

@@ -21,7 +21,6 @@ import java.util.regex.PatternSyntaxException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib;
@@ -90,10 +89,8 @@ public final class ChangeLogExtensionManager {
                                 .createExecutableExtension("class"); // $NON-NLS-1$
                         return parserContributor;
                     } catch (CoreException e) {
-                        ChangelogPlugin.getDefault().getLog().log(
-                                new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID,
-                                        IStatus.ERROR, e.getMessage(), e));
-                    }
+						ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
+					}
 
                 }
             }
@@ -169,17 +166,10 @@ public final class ChangeLogExtensionManager {
                 IConfigurationElement patternElement = patternElementTmp[0];
 
                 if (patternElement.getAttribute("pattern") == null) { // $NON-NLS-1$
-                    ChangelogPlugin
-                            .getDefault()
-                            .getLog()
-                            .log(
-                                    new Status(
-                                            IStatus.ERROR,
-                                            ChangelogPlugin.PLUGIN_ID,
-                                            IStatus.ERROR,
-                                            Messages.getString("ChangeLog.ErrNonPattern"), // $NON-NLS-1$
-                                            new Exception(Messages.getString("ChangeLog.ErrNonPattern")))); // $NON-NLS-1$
-                } else {
+					ChangelogPlugin.getDefault().getLog()
+							.log(Status.error(Messages.getString("ChangeLog.ErrNonPattern"), // $NON-NLS-1$
+									new Exception(Messages.getString("ChangeLog.ErrNonPattern")))); // $NON-NLS-1$
+				} else {
                     String filePattern = patternElement.getAttribute("pattern"); // $NON-NLS-1$
 
                     try {
@@ -194,10 +184,8 @@ public final class ChangeLogExtensionManager {
                             break;
                         }
                     } catch (PatternSyntaxException e) {
-                        ChangelogPlugin.getDefault().getLog().log(
-                                new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID,
-                                        IStatus.ERROR, e.getMessage(), e));
-                    }
+						ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
+					}
                 }
 
             }
@@ -228,18 +216,11 @@ public final class ChangeLogExtensionManager {
                 formatterConfigElementToUse = cachedPrefFormatter;
 
                 if (formatterConfigElementToUse == null) {
-                    ChangelogPlugin
-                            .getDefault()
-                            .getLog()
-                            .log(
-                                    new Status(
-                                            IStatus.ERROR,
-                                            ChangelogPlugin.PLUGIN_ID,
-                                            IStatus.ERROR,
-                                            Messages.getString("ChangeLog.ErrRetrieveFormatter"), // $NON-NLS-1$
-                                            new Exception(Messages.getString("ChangeLog.ErrRetrieveFormatter")))); // $NON-NLS-1$
+					ChangelogPlugin.getDefault().getLog()
+							.log(Status.error(Messages.getString("ChangeLog.ErrRetrieveFormatter"), // $NON-NLS-1$
+									new Exception(Messages.getString("ChangeLog.ErrRetrieveFormatter")))); // $NON-NLS-1$
 
-                    return null;
+					return null;
                 }
 
             }
@@ -252,10 +233,8 @@ public final class ChangeLogExtensionManager {
                     .createExecutableExtension("class"); // $NON-NLS-1$
 
         } catch (CoreException e) {
-            ChangelogPlugin.getDefault().getLog().log(
-                    new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e
-                            .getMessage(), e));
-            e.printStackTrace();
+			ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
+			e.printStackTrace();
         }
         return null;
     }

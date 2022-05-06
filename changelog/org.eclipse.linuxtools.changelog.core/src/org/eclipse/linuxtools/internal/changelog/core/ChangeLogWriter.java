@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.changelog.core;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib;
 import org.eclipse.ui.IEditorPart;
@@ -106,11 +105,10 @@ public class ChangeLogWriter {
         if (entryFilePath == null || guessedFName == null || formatter == null
                 || changelog == null || dateLine == null
                 || changelogLocation == null) {
-            ChangelogPlugin.getDefault().getLog().log(
-                    new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
-                            Messages.getString("ChangeLogWriter.ErrUninitialized"), null)); // $NON-NLS-1$
+			ChangelogPlugin.getDefault().getLog()
+					.log(Status.error(Messages.getString("ChangeLogWriter.ErrUninitialized"), null)); // $NON-NLS-1$
 
-            return;
+			return;
         }
 
         formatter.mergeChangelog(dateLine, guessedFName, defaultContent, changelog,

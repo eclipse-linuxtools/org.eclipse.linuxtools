@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2009, 2018 Red Hat, Inc.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -90,9 +89,7 @@ public class CallgraphCorePlugin extends AbstractUIPlugin {
      * @param e Exception to log.
      */
     public static void logException(Exception e) {
-        Status status = new Status(IStatus.ERROR, CallgraphCorePlugin.PLUGIN_ID,
-                e.getMessage());
-        CallgraphCorePlugin.getDefault().getLog().log(status);
+		CallgraphCorePlugin.getDefault().getLog().log(Status.error(e.getMessage()));
     }
 
 }

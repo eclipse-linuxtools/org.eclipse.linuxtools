@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2015, 2018 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -43,7 +43,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * A {@link Job} to call and progressMonitor the build of an
  * {@link IDockerImage}
- * 
+ *
  */
 public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 
@@ -75,7 +75,7 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param connection
 	 *            the Docker connection to use (i.e., on which Docker engine to
 	 *            build the image)
@@ -106,7 +106,7 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 	/**
 	 * Verifies that the file located at the given {@code pathToDockerfile}
 	 * exists and is readable.
-	 * 
+	 *
 	 * @param pathToDockerfile
 	 *            the path to the Docker file
 	 * @return
@@ -138,9 +138,7 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 				final int numberOfBuildOperations = countLines(
 						pathToDockerfile.toOSString()); // $NON-NLS-1$
 				if (numberOfBuildOperations == 0) {
-					Activator.log(new Status(IStatus.WARNING,
-							Activator.PLUGIN_ID,
-							JobMessages.getString(SKIP_EMPTY_DOCKERFILE)));
+					Activator.log(Status.warning(JobMessages.getString(SKIP_EMPTY_DOCKERFILE)));
 				} else {
 					this.console.clearConsole();
 					this.console.activate();
@@ -218,7 +216,7 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 	/**
 	 * Counts the number of lines in the given Docker build file that contain
 	 * statements to execute (ignoring comments and empty lines).
-	 * 
+	 *
 	 * @param fileName
 	 *            the full repoName of the Docker file to read
 	 * @return the number of instructions.

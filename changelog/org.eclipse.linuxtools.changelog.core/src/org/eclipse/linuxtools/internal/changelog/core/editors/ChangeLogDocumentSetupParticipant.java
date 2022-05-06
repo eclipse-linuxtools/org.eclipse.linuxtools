@@ -16,7 +16,6 @@ import org.eclipse.core.filebuffers.IDocumentSetupParticipant;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -58,10 +57,8 @@ public class ChangeLogDocumentSetupParticipant implements
 
                         editorContrib.setup(document);
                     } catch (CoreException e) {
-                        ChangelogPlugin.getDefault().getLog().log(
-                                new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID,
-                                        IStatus.ERROR, e.getMessage(), e));
-                    }
+						ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
+					}
                 }
             }
         }

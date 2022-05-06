@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2015, 2018 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -104,9 +104,7 @@ public class ShowInWebBrowserCommandHandler extends AbstractHandler {
 								CommandMessages.getString("ShowInWebBrowserCommandHandler.internal.browser.tooltip")); //$NON-NLS-1$
 				browser.openURL(location);
 			} catch (Exception e) {
-				Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-						CommandMessages
-								.getString("command.showIn.webBrowser.failure"), //$NON-NLS-1$
+				Activator.log(Status.error(CommandMessages.getString("command.showIn.webBrowser.failure"), //$NON-NLS-1$
 						e));
 			}
 		});

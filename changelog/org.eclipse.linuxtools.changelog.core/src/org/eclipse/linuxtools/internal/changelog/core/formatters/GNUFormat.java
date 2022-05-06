@@ -20,7 +20,6 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.FindReplaceDocumentAdapter;
@@ -337,11 +336,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
                 // If no date matches, move to the next line
                 nextEntry += changelogDoc.getLineLength(lineNum);
             } catch (BadLocationException e) {
-                ChangelogPlugin.getDefault().getLog().log(
-                        new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e
-                                .getMessage(), e
-
-                        ));
+				ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
             }
 
         }
@@ -374,11 +369,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
         try {
             region = findDocumentAptd.find(0, entry, true, false,/*whole world */ false, true);
         } catch (BadLocationException e) {
-            ChangelogPlugin.getDefault().getLog().log(
-                    new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e
-                            .getMessage(), e
-
-                    ));
+			ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
             return -1;
         }
         if (region != null) {

@@ -147,8 +147,7 @@ public class ContainerLauncher {
 							Messages.getFormattedString(ERROR_COPYING_VOLUME,
 									new String[] { dir, containerId }),
 							e.getMessage()));
-					status = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-							e.getMessage());
+					status = Status.error(e.getMessage());
 				} finally {
 					monitor.done();
 				}

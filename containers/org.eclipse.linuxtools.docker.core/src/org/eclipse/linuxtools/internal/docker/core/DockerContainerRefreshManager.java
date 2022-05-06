@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.docker.core.Activator;
@@ -169,8 +168,8 @@ public class DockerContainerRefreshManager implements IDockerContainerListener {
 					// otherwise..continue
 				}
 			}
-			Activator.log(new Status(IStatus.INFO, Activator.PLUGIN_ID,
-					"Stopped monitor container changes for connection '"
+			Activator.log(Status
+					.info("Stopped monitor container changes for connection '"
 							+ connection.getName() + "'"));
 		}
 	}
