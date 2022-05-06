@@ -60,11 +60,11 @@ public class Activator extends Plugin {
 	}
 
 	public static void logWarningMessage(final String message) {
-		log(new Status(IStatus.WARNING, PLUGIN_ID, IStatus.WARNING, message, null));
+		log(Status.warning(message));
 	}
 
 	public static void logErrorMessage(final String message, final Throwable e) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, message, e));
+		log(Status.error(message, e));
 	}
 
 }

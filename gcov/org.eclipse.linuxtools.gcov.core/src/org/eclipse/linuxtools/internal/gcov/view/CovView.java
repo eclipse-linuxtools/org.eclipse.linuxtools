@@ -39,7 +39,6 @@ import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.TreeColumnViewerFilter;
 import org.eclipse.linuxtools.dataviewers.actions.STExportToCSVAction;
 import org.eclipse.linuxtools.dataviewers.charts.actions.ChartAction;
-import org.eclipse.linuxtools.internal.gcov.Constants;
 import org.eclipse.linuxtools.internal.gcov.action.SwitchContentProviderAction;
 import org.eclipse.linuxtools.internal.gcov.parser.CovManager;
 import org.eclipse.linuxtools.internal.gcov.parser.SourceFile;
@@ -209,7 +208,7 @@ public class CovView extends AbstractSTDataView {
 
     public static void reportError(Exception ex) {
         final String message = NLS.bind(Messages.CovView_error_message, ex.getMessage());
-		Status status = new Status(IStatus.ERROR, Constants.PLUGIN_ID, IStatus.ERROR, message, ex);
+		IStatus status = Status.error(message, ex);
 
 		Platform.getLog(FrameworkUtil.getBundle(CovView.class)).log(status);
         PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {

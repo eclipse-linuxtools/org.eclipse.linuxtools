@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2018 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.docker.core.Activator;
@@ -38,8 +37,8 @@ public class ShellConnectionSettingsProvider implements IDockerConnectionSetting
 		try {
 			final String connectionSettingsDetectionScriptName = getConnectionSettingsDetectionScriptName();
 			if (connectionSettingsDetectionScriptName == null) {
-				Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-						Messages.Docker_No_Settings_Description_Script));
+				Activator.log(Status
+						.error(Messages.Docker_No_Settings_Description_Script));
 				return Collections.emptyList();
 			}
 			final File connectionSettingsDetectionScript = getConnectionSettingsDetectionScript(
@@ -67,14 +66,13 @@ public class ShellConnectionSettingsProvider implements IDockerConnectionSetting
 							.getErrorStream();
 					final String errorMessage = streamToString(
 							processErrorStream);
-					Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-							errorMessage));
+					Activator.log(Status.error(errorMessage));
 				}
 			}
 		} catch (IOException | IllegalArgumentException
 				| InterruptedException e) {
-			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					Messages.Retrieve_Default_Settings_Failure, e));
+			Activator.log(Status
+					.error(Messages.Retrieve_Default_Settings_Failure, e));
 		}
 		return Collections.emptyList();
 	}
@@ -99,7 +97,7 @@ public class ShellConnectionSettingsProvider implements IDockerConnectionSetting
 	 * Finds the script file in the data directory of the bundle given its name,
 	 * or creates it from the 'resources' dir in the bundle if it was not found
 	 * in the data dir.
-	 * 
+	 *
 	 * @param scriptName
 	 *            the name of the script to load in the data dir or in the
 	 *            'resources' dir in the bundle
@@ -163,7 +161,7 @@ public class ShellConnectionSettingsProvider implements IDockerConnectionSetting
 	 * Creates connection settings from the given {@code docerSettings}, or
 	 * <code>null</code> if the settings did not contain a property with the
 	 * {@code DOCKER_HOST} key.
-	 * 
+	 *
 	 * @param dockerSettings
 	 *            the connection settings
 	 * @return the {@link IDockerConnectionSettings} or <code>null</code> if the

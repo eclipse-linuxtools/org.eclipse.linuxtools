@@ -128,9 +128,8 @@ public class DevHelpStartup implements IStartup {
                 monitor.done();
                 return Status.CANCEL_STATUS;
             } catch (IOException e) {
-                monitor.done();
-                return new Status(IStatus.ERROR, DevHelpPlugin.PLUGIN_ID,
-                        e.getLocalizedMessage(), e);
+				monitor.done();
+				return Status.error(e.getLocalizedMessage(), e);
             }
 
             return Status.OK_STATUS;

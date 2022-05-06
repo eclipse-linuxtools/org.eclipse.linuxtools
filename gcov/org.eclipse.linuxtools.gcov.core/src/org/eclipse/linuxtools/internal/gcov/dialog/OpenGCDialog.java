@@ -21,7 +21,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.variables.IStringVariableManager;
@@ -31,7 +30,6 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
-import org.eclipse.linuxtools.internal.gcov.Constants;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -239,12 +237,12 @@ public class OpenGCDialog extends Dialog {
             dialog.setInitialSelection(c.getProject());
         dialog.setValidator(selection -> {
 		    if (selection.length != 1) {
-				return new Status(IStatus.ERROR, Constants.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+				return Status.error(""); //$NON-NLS-1$
 		    }
 		    if (!(selection[0] instanceof IFile)) {
-				return new Status(IStatus.ERROR, Constants.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+				return Status.error(""); //$NON-NLS-1$
 		    }
-			return new Status(IStatus.OK, Constants.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+			return Status.OK_STATUS;
 		});
         if (dialog.open() == IDialogConstants.OK_ID) {
             IResource resource = (IResource) dialog.getFirstResult();

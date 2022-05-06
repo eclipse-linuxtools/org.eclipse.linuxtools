@@ -30,7 +30,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -76,7 +75,7 @@ public abstract class ChangeLogAction extends Action {
 
     protected void reportErr(String msg, Exception e) {
         ChangelogPlugin.getDefault().getLog().log(
-                new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, msg, e));
+                Status.error(msg, e));
     }
 
     private IWorkspaceRoot getWorkspaceRoot() {

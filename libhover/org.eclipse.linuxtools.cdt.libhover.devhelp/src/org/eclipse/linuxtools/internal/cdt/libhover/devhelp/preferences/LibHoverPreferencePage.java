@@ -115,7 +115,7 @@ public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
                     monitor.done();
                 } catch(IOException e) {
                     monitor.done();
-                    return new Status(IStatus.ERROR, DevHelpPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
+                    return Status.error(e.getLocalizedMessage(), e);
                 }
 
 

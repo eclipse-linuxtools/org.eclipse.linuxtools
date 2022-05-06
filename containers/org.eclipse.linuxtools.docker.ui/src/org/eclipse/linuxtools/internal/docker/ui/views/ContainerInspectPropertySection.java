@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2018 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -44,7 +44,7 @@ public class ContainerInspectPropertySection extends BasePropertySection {
 		super.createControls(parent, aTabbedPropertySheetPage);
 		getTreeViewer().setContentProvider(new ContainerInspectContentProvider());
 	}
-	
+
 	@Override
 	public void setInput(final IWorkbenchPart part, final ISelection selection) {
 		super.setInput(part, selection);
@@ -99,9 +99,7 @@ public class ContainerInspectPropertySection extends BasePropertySection {
 		try {
 			return result.poll(2, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
-			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					DVMessages.getFormattedString(PropertiesInfoError,
-							connection.getName()), e));
+			Activator.log(Status.error(DVMessages.getFormattedString(PropertiesInfoError, connection.getName()), e));
 			return null;
 		}
 	}

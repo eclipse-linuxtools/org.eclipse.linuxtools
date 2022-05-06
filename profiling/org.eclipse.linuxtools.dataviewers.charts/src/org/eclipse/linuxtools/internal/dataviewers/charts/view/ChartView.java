@@ -13,7 +13,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.dataviewers.charts.view;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.dataviewers.charts.Activator;
 import org.eclipse.swt.widgets.Composite;
@@ -60,8 +59,7 @@ public class ChartView extends ViewPart {
 
 		        }
 		    } catch (PartInitException e) {
-		        Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e);
-		        Activator.getDefault().getLog().log(s);
+				Activator.getDefault().getLog().log(Status.error(e.getMessage(), e));
 		    }
 		});
 

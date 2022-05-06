@@ -23,7 +23,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -152,12 +151,12 @@ public class GprofNoGmonDialog {
 
        dialog.setValidator(selection -> {
 	       if (selection.length != 1) {
-	           return new Status(IStatus.ERROR, GprofLaunch.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+	           return Status.error(""); //$NON-NLS-1$
 	       }
 	       if (!(selection[0] instanceof IFile)) {
-	           return new Status(IStatus.ERROR, GprofLaunch.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+	           return Status.error(""); //$NON-NLS-1$
 	       }
-	       return new Status(IStatus.OK, GprofLaunch.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+	       return Status.OK_STATUS;
 	   });
 
        //Open dialogue.

@@ -18,7 +18,6 @@ package org.eclipse.linuxtools.internal.changelog.core.editors;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -46,8 +45,7 @@ public class ChangeLogEditor extends TextEditor {
 			setSourceViewerConfiguration(config);
 		} else {
 			ChangelogPlugin.getDefault().getLog()
-					.log(new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
-							Messages.getString("ChangeLogEditor.ErrConfiguration"), // $NON-NLS-1$
+					.log(Status.error(Messages.getString("ChangeLogEditor.ErrConfiguration"), // $NON-NLS-1$
 							new Exception(Messages.getString("ChangeLogEditor.ErrConfiguration")))); // $NON-NLS-1$
 		}
 
@@ -90,8 +88,7 @@ public class ChangeLogEditor extends TextEditor {
 
 						return (SourceViewerConfiguration) editorContrib;
 					} catch (CoreException e) {
-						ChangelogPlugin.getDefault().getLog().log(
-								new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e));
+						ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
 					}
 
 				}

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -32,7 +32,6 @@ import org.eclipse.debug.core.sourcelookup.ISourceContainer;
 import org.eclipse.debug.ui.sourcelookup.CommonSourceNotFoundEditor;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.window.Window;
-import org.eclipse.linuxtools.internal.Activator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -180,8 +179,8 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
         try {
             InstanceScope.INSTANCE.getNode(CDebugCorePlugin.PLUGIN_ID).flush();
         } catch (BackingStoreException e) {
-            IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
-                    Messages.STCSourceNotFoundEditor_failed_saving_settings_for_content_type + CDebugCorePlugin.PLUGIN_ID, e);
+			IStatus status = Status.error(Messages.STCSourceNotFoundEditor_failed_saving_settings_for_content_type
+					+ CDebugCorePlugin.PLUGIN_ID, e);
             throw new CoreException(status);
         }
     }

@@ -820,17 +820,15 @@ public class DockerConnection
 				}
 			} catch (DockerTimeoutException e) {
 				if (isOpen()) {
-					Activator.log(
-							new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-									Messages.Docker_Connection_Timeout, e));
+					Activator.log(Status
+							.warning(Messages.Docker_Connection_Timeout, e));
 				}
 			} catch (org.mandas.docker.client.exceptions.DockerException
 					| InterruptedException e) {
 				if (isOpen() && e.getCause() != null
 						&& e.getCause().getCause() != null && e.getCause()
 								.getCause() instanceof ProcessingException) {
-					Activator.log(new Status(IStatus.WARNING,
-							Activator.PLUGIN_ID,
+					Activator.log(Status.warning(
 							Messages.List_Docker_Containers_Failure, e));
 				} else {
 					throw new DockerException(e);
@@ -953,8 +951,7 @@ public class DockerConnection
 			return null;
 		} catch (org.mandas.docker.client.exceptions.DockerException
 				| InterruptedException e) {
-			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					ProcessMessages.getFormattedString(
+			Activator.log(Status.error(ProcessMessages.getFormattedString(
 							"Container_Inspect_Exception", id), //$NON-NLS-1$
 					e));
 			return null;
@@ -984,8 +981,7 @@ public class DockerConnection
 			return null;
 		} catch (org.mandas.docker.client.exceptions.DockerException
 				| InterruptedException e) {
-			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					ProcessMessages.getFormattedString(
+			Activator.log(Status.error(ProcessMessages.getFormattedString(
 							"Image_Inspect_Exception", id), //$NON-NLS-1$
 					e));
 			return null;
@@ -1133,9 +1129,8 @@ public class DockerConnection
 				}
 			} catch (org.mandas.docker.client.exceptions.DockerTimeoutException e) {
 				if (isOpen()) {
-					Activator.log(
-							new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-									Messages.Docker_Connection_Timeout, e));
+					Activator.log(Status
+							.warning(Messages.Docker_Connection_Timeout, e));
 				}
 			} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 				throw new DockerException(e);
@@ -1144,9 +1139,8 @@ public class DockerConnection
 				if (isOpen() && e.getCause() != null
 						&& e.getCause().getCause() != null && e.getCause()
 								.getCause() instanceof ProcessingException) {
-					Activator.log(
-							new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-									Messages.List_Docker_Images_Failure, e));
+					Activator.log(Status
+							.warning(Messages.List_Docker_Images_Failure, e));
 				} else {
 					throw new DockerException(
 							NLS.bind(Messages.List_Docker_Images_Failure,

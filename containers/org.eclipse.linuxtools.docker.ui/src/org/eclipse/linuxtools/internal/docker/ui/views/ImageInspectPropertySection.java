@@ -106,9 +106,7 @@ public class ImageInspectPropertySection extends BasePropertySection {
 		try {
 			return result.poll(2, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
-			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					DVMessages.getFormattedString(PropertiesInfoError,
-							connection.getName()), e));
+			Activator.log(Status.error(DVMessages.getFormattedString(PropertiesInfoError, connection.getName()), e));
 			return null;
 		}
 	}

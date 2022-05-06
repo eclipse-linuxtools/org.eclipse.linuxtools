@@ -185,10 +185,9 @@ public class STDataViewersCSVExporter {
             }
 
         } catch (NumberFormatException nfe) {
-            IStatus s = new Status(IStatus.WARNING, STDataViewersActivator.PLUGIN_ID,
-                    "Invalid parameter, resetting configuration!\n" + nfe.getMessage(), nfe);
-            logStatus(s);
-            resetState();
+			IStatus s = Status.warning("Invalid parameter, resetting configuration!\n" + nfe.getMessage(), nfe);
+			logStatus(s);
+			resetState();
         }
 
     }
@@ -398,13 +397,11 @@ public class STDataViewersCSVExporter {
             this.ps = new PrintStream(outputFile);
 
         } catch (IOException e) {
-            Status s = new Status(IStatus.ERROR, STDataViewersActivator.PLUGIN_ID,
-                    "Invalid file! Dumping to stdout...\n" + e.getMessage(), e);
+            IStatus s = Status.error("Invalid file! Dumping to stdout...\n" + e.getMessage(), e);
             logStatus(s);
             this.ps = System.out;
         } catch (NullPointerException e) {
-            Status s = new Status(IStatus.ERROR, STDataViewersActivator.PLUGIN_ID,
-                    "File has not been set! Dumping to stdout...\n" + e.getMessage(), e);
+            IStatus s = Status.error("File has not been set! Dumping to stdout...\n" + e.getMessage(), e);
             logStatus(s);
             this.ps = System.out;
         }

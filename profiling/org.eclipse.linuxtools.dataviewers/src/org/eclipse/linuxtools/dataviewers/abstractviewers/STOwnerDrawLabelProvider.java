@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.dataviewers.abstractviewers;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.OwnerDrawLabelProvider;
 import org.eclipse.jface.viewers.ViewerCell;
@@ -32,12 +31,8 @@ public class STOwnerDrawLabelProvider extends OwnerDrawLabelProvider {
         if (data instanceof ISTDataViewersField) {
             fields = (ISTDataViewersField) data;
         } else {
-            STDataViewersActivator
-                    .getDefault()
-                    .getLog()
-                    .log(new Status(IStatus.ERROR, STDataViewersActivator.PLUGIN_ID,
-                            "No ISTDataField associated to Column!"));
-            fields = null;
+			STDataViewersActivator.getDefault().getLog().log(Status.error("No ISTDataField associated to Column!"));
+			fields = null;
         }
     }
 

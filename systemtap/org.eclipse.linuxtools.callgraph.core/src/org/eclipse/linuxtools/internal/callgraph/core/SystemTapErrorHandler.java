@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2009, 2018 Red Hat, Inc.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -21,7 +21,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -150,9 +149,7 @@ public class SystemTapErrorHandler {
      * time.
      */
     private void writeToLog() {
-        IStatus status = new Status(IStatus.INFO,CallgraphCorePlugin.PLUGIN_ID,logContents.toString());
-        CallgraphCorePlugin.getDefault().getLog().log(status);
-
+		CallgraphCorePlugin.getDefault().getLog().log(Status.info(logContents.toString()));
         logContents = new StringBuilder();
     }
 

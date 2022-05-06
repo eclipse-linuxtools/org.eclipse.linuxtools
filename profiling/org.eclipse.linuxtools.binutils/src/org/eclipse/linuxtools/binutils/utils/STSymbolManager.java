@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -100,7 +100,7 @@ public class STSymbolManager {
 		            cleanup();
 		        } while (true);
 		    } catch (Exception e2) {
-		        Status s = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e2.getMessage(), e2);
+				IStatus s = Status.error(e2.getMessage(), e2);
 		        Activator.getDefault().getLog().log(s);
 		    }
 		};
@@ -466,7 +466,7 @@ public class STSymbolManager {
                 }
                 catch (CModelException e)
                 {
-                    String message = 
+                    String message =
                        "Error getting binaries for [" + cproject.toString() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
                     CCorePlugin.log(message, e);
                 }
@@ -505,7 +505,7 @@ public class STSymbolManager {
                     }
                     catch (CModelException e)
                     {
-                        String message = 
+                        String message =
                            "Error getting binaries for [" + cproject.toString() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
                         CCorePlugin.log(message, e);
                     }
@@ -524,8 +524,8 @@ public class STSymbolManager {
 
     //FIXME EK-LINUXTOOLS: New method to get location for linked binary resource
     /**
-	 * @param file 
-     * @return 
+	 * @param file
+     * @return
      * @since 6.0
 	 */
     public IFile findFileFromPath(IPath file)
@@ -534,7 +534,7 @@ public class STSymbolManager {
     	if (file == null || file.isEmpty()) {
     		return null;
     	}
-    	
+
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         /*
          * Find resource to which this GCOV file maps to in workspace
@@ -548,13 +548,13 @@ public class STSymbolManager {
              */
             return (null);
         }
-        return files[0];   	
+        return files[0];
     }
-    
+
     //FIXME EK-LINUXTOOLS: IProject file resolution for linked resources
     /**
-	 * @param file 
-     * @return 
+	 * @param file
+     * @return
      * @since 6.0
 	 */
     public IProject getProjectFromFile(IPath file)
@@ -571,7 +571,7 @@ public class STSymbolManager {
         /*
          * Find project this resource belongs to
          */
-        return (ifile.getProject());   	
+        return (ifile.getProject());
     }
 
     /**

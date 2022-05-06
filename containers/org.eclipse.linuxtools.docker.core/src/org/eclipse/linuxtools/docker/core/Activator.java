@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2018 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -59,13 +59,12 @@ public class Activator extends Plugin {
 	}
 
 	public static void logWarningMessage(final String message) {
-		log(new Status(IStatus.WARNING, PLUGIN_ID, IStatus.WARNING, message,
-				null));
+		log(Status.warning(message));
 	}
 
 	public static void logErrorMessage(final String message,
 			final Throwable e) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, message, e));
+		log(Status.error(message, e));
 	}
 
 	public static void log(Throwable e) {
@@ -76,11 +75,9 @@ public class Activator extends Plugin {
 			status = ((CoreException) e).getStatus();
 		} else if (e instanceof DockerPingConnectionException
 				|| e instanceof DockerOpenConnectionException) {
-			status = new Status(IStatus.INFO, PLUGIN_ID, IStatus.OK,
-					e.getMessage(), null);
+			status = Status.info(e.getMessage());
 		} else {
-			status = new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK,
-					e.getMessage(), e);
+			status = Status.error(e.getMessage(), e);
 		}
 		log(status);
 	}

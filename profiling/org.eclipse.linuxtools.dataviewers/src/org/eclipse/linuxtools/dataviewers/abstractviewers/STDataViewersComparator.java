@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.dataviewers.abstractviewers;
 
 import java.util.Comparator;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.Viewer;
@@ -78,13 +77,10 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
                 this.priorities = priorities;
                 this.directions = directions;
             } else {
-                STDataViewersActivator
-                        .getDefault()
-                        .getLog()
-                        .log(new Status(IStatus.WARNING, STDataViewersActivator.PLUGIN_ID, "Invalid parameters:"
-                                + " priorities and/or directions number don't match with"
-                                + " viewer's columns count. Applying defaults settings."));
-                resetState();
+				STDataViewersActivator.getDefault().getLog().log(
+						Status.warning("Invalid parameters:" + " priorities and/or directions number don't match with"
+								+ " viewer's columns count. Applying defaults settings."));
+				resetState();
             }
         }
     }
