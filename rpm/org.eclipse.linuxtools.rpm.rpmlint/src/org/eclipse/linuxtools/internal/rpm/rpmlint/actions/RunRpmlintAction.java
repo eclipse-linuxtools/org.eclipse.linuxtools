@@ -94,8 +94,7 @@ public class RunRpmlintAction extends AbstractHandler {
 				myConsole.activate();
 				out.println(output);
 			} else {
-				IStatus warning = new Status(IStatus.WARNING, Activator.PLUGIN_ID, 1, Messages.RunRpmlintAction_1,
-						null);
+				IStatus warning = Status.warning(Messages.RunRpmlintAction_1, null);
 				ErrorDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 						Messages.RunRpmlintAction_2, null, warning);
 			}

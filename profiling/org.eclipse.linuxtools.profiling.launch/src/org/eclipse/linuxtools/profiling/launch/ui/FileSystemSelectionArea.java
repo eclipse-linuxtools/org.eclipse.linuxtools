@@ -177,8 +177,7 @@ public class FileSystemSelectionArea {
             }
         }
         if (!foundMatch) {
-            throw new CoreException(new Status(IStatus.ERROR, ProfileLaunchPlugin.PLUGIN_ID, IStatus.OK,
-                    ResourceSelectorWidgetMessages.FileSystemSelectionArea_unrecognized_scheme + scheme, null));
+            throw new CoreException(Status.error(ResourceSelectorWidgetMessages.FileSystemSelectionArea_unrecognized_scheme + scheme));
         }
     }
 

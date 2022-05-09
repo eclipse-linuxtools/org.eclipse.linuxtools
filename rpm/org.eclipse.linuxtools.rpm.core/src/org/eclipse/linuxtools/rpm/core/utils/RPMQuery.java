@@ -20,7 +20,6 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -129,7 +128,7 @@ public final class RPMQuery {
 		try {
 			return Utils.runCommandToString(project, command.toArray(new String[command.size()]));
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
+			throw new CoreException(Status.error(e.getMessage(), e));
 		}
     }
 

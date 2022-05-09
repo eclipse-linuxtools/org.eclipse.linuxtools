@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.ui;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.linuxtools.internal.perf.IPerfData;
@@ -83,8 +82,7 @@ public class StatView extends ViewPart {
 		                .showView(PerfPlugin.STAT_VIEW_ID);
 		        view.updateData();
 		    } catch (PartInitException e) {
-		        IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID, e.getMessage(), e);
-		        PerfPlugin.getDefault().getLog().log(status);
+		        PerfPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
 		    }
 		});
     }

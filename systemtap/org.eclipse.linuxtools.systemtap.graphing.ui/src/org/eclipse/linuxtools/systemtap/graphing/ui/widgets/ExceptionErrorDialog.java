@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2013, 2018 Red Hat and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -15,7 +15,6 @@ import java.io.StringWriter;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.linuxtools.internal.systemtap.graphing.ui.GraphingUIPlugin;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
@@ -34,8 +33,7 @@ public class ExceptionErrorDialog {
         Display.getDefault().asyncExec(() -> {
 		    StringWriter writer = new StringWriter();
 		    e.printStackTrace(new PrintWriter(writer));
-		    Status status = new Status(IStatus.ERROR, GraphingUIPlugin.PLUGIN_ID,
-		            e.toString(), new Throwable(writer.toString()));
+			IStatus status = Status.error(e.toString(), new Throwable(writer.toString()));
 		    ErrorDialog.openError(PlatformUI.getWorkbench()
 		            .getActiveWorkbenchWindow().getShell(),
 		            title, message, status);

@@ -56,7 +56,7 @@ public class Activator extends AbstractUIPlugin {
 	 * @param exception The exception to log.
 	 */
 	public static void logError(String message, Throwable exception) {
-		IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, message, exception);
+		IStatus status = Status.error(message, exception);
 		getDefault().getLog().log(status);
 	}
 }

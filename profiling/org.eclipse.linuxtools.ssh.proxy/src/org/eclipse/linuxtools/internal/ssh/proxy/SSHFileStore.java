@@ -28,7 +28,6 @@ import org.eclipse.core.filesystem.provider.FileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -81,15 +80,14 @@ public class SSHFileStore extends FileStore {
                 }
             }
             if (!isDir) {
-                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-                    MessageFormat.format(Messages.SSHFileStore_childNamesFailedDirectory, getName())));
+                throw new CoreException(Status.error(MessageFormat.format(Messages.SSHFileStore_childNamesFailedDirectory, getName())));
             }
 
             monitor.worked(100);
             monitor.done();
             return childs.toArray(new String[0]);
         } catch (SftpException e) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHFileStore_childNamesFailed + e.getMessage()));
+            throw new CoreException(Status.error(Messages.SSHFileStore_childNamesFailed + e.getMessage(), e));
 
         }
     }
@@ -118,15 +116,14 @@ public class SSHFileStore extends FileStore {
                 }
             }
             if (!isDir) {
-                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-                    MessageFormat.format(Messages.SSHFileStore_childInfoFailedDirectory, getName())));
+                throw new CoreException(Status.error(MessageFormat.format(Messages.SSHFileStore_childInfoFailedDirectory, getName())));
             }
 
             monitor.worked(100);
             monitor.done();
             return childs.toArray(new IFileInfo[0]);
         } catch (SftpException e) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHFileStore_childInfoFailed + e.getMessage()));
+            throw new CoreException(Status.error(Messages.SSHFileStore_childInfoFailed + e.getMessage(),e));
         }
     }
 
@@ -161,14 +158,13 @@ public class SSHFileStore extends FileStore {
                     isDir = true;
             }
             if (!isDir)
-                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-                    MessageFormat.format(Messages.SSHFileStore_childStoresFailedDirectory, getName())));
+                throw new CoreException(Status.error(MessageFormat.format(Messages.SSHFileStore_childStoresFailedDirectory, getName())));
 
             monitor.worked(100);
             monitor.done();
             return childs.toArray(new IFileStore[0]);
         } catch (SftpException e) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHFileStore_childStoresFailed + e.getMessage()));
+            throw new CoreException(Status.error(Messages.SSHFileStore_childStoresFailed + e.getMessage(), e));
         }
     }
 
@@ -189,7 +185,7 @@ public class SSHFileStore extends FileStore {
             monitor.worked(100);
             monitor.done();
         } catch (SftpException e) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHFileStore_rmFailed + e.getMessage()));
+			throw new CoreException(Status.error(Messages.SSHFileStore_rmFailed + e.getMessage(), e));
         }
     }
 
@@ -208,7 +204,7 @@ public class SSHFileStore extends FileStore {
             monitor.done();
             return createFileInfo(attrs);
         } catch (SftpException e) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHFileStore_attrFailed + e.getMessage()));
+			throw new CoreException(Status.error(Messages.SSHFileStore_attrFailed + e.getMessage(), e));
         }
     }
 
@@ -266,7 +262,7 @@ public class SSHFileStore extends FileStore {
         try {
             channel.mkdir(dir);
         } catch (SftpException e) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHFileStore_mkdirFailed + e.getMessage()));
+			throw new CoreException(Status.error(Messages.SSHFileStore_mkdirFailed + e.getMessage(), e));
         }
     }
 
@@ -277,7 +273,7 @@ public class SSHFileStore extends FileStore {
             ChannelSftp channel = proxy.getChannelSftp();
             return channel.get(uri.getPath(), new ProgressMonitor(monitor, Messages.SSHFileStore_getInputStreamMonitor));
         } catch (SftpException e) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHFileStore_getInputStreamFailed + e.getMessage()));
+			throw new CoreException(Status.error(Messages.SSHFileStore_getInputStreamFailed + e.getMessage(), e));
         }
     }
 
@@ -291,7 +287,7 @@ public class SSHFileStore extends FileStore {
                 mode = ChannelSftp.APPEND;
             return channel.put(uri.getPath(), new ProgressMonitor(monitor, Messages.SSHFileStore_getOutputStreamMonitor), mode);
         } catch (SftpException e) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHFileStore_getOutputStreamFailed + e.getMessage()));
+			throw new CoreException(Status.error(Messages.SSHFileStore_getOutputStreamFailed + e.getMessage(), e));
         }
 
     }
@@ -312,7 +308,7 @@ public class SSHFileStore extends FileStore {
             monitor.worked(100);
             monitor.done();
         } catch (SftpException e) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHFileStore_putInfoFailed + e.getMessage()));
+			throw new CoreException(Status.error(Messages.SSHFileStore_putInfoFailed + e.getMessage(), e));
         }
     }
 

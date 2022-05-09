@@ -42,9 +42,7 @@ public class PageProducer implements IHelpContentProducer {
 		}
 		if (parts == null || parts.length < 2) {
 			Bundle bundle = FrameworkUtil.getBundle(this.getClass());
-			Status status = new Status(IStatus.ERROR,
-					Messages.ManPageProducer_ParseError,
-					bundle.getSymbolicName());
+			IStatus status = Status.error(Messages.ManPageProducer_ParseError);
 			Platform.getLog(bundle).log(status);
 			return null;
 		}

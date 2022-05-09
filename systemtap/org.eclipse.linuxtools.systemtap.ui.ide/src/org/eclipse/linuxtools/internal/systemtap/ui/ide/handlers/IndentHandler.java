@@ -19,7 +19,6 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -96,7 +95,7 @@ public class IndentHandler extends AbstractHandler {
 				document.addPosition(end);
 			} catch (BadLocationException e) {
 				// will only happen on concurrent modification
-				IDEPlugin.log(new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID, IStatus.OK, "", e)); //$NON-NLS-1$
+				IDEPlugin.log(Status.error(e.getMessage(), e));
 				return null;
 			}
 
@@ -134,8 +133,7 @@ public class IndentHandler extends AbstractHandler {
 
 				} catch (BadLocationException e) {
 					// will only happen on concurrent modification
-					IDEPlugin.log(new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID, IStatus.OK,
-							"ConcurrentModification in IndentAction", e)); //$NON-NLS-1$
+					IDEPlugin.log(Status.error("ConcurrentModification in IndentAction", e)); //$NON-NLS-1$
 				} finally {
 					document.removePosition(end);
 					if (target != null) {

@@ -80,7 +80,7 @@ public class RDTProxyManager implements IRemoteEnvProxyManager {
             try {
                 connection.open(null);
             } catch (RemoteConnectionException e) {
-                Status status = new Status(IStatus.ERROR, e.getMessage(), Activator.PLUGIN_ID);
+                IStatus status = Status.error(e.getMessage(), e);
                 Activator.getDefault().getLog().log(status);
                 return Collections.emptyMap();
             }

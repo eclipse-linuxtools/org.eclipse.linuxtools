@@ -86,7 +86,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	public static void logErrorMessage(String message) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, message, null));
+		log(Status.error(message));
 	}
 
 	public static void log(Throwable e) {
@@ -96,8 +96,7 @@ public class Activator extends AbstractUIPlugin {
 		if (e instanceof CoreException)
 			status = ((CoreException) e).getStatus();
 		else
-			status = new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK,
-					e.getMessage(), e);
+			status = Status.error(e.getMessage(), e);
 		log(status);
 	}
 

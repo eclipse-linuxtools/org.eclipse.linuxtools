@@ -82,7 +82,7 @@ public class DownloadJob extends Job {
             Files.delete(tempFile.toPath());
         } catch (CoreException | IOException e) {
 			Platform.getLog(Platform.getBundle(IRPMConstants.RPM_CORE_ID))
-					.log(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
+					.log(Status.error(e.getMessage(), e));
             return Status.CANCEL_STATUS;
         }
         monitor.done();

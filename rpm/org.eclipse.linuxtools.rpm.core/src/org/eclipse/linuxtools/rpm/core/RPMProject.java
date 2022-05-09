@@ -114,7 +114,7 @@ public class RPMProject {
         } catch (FileNotFoundException e) {
 			String throwMessage = Messages.getString("RPMCore.Error_trying_to_copy__") + //$NON-NLS-1$
 					rpmConfig.getSpecsFolder().getLocation().toOSString();
-			IStatus error = new Status(IStatus.ERROR, IRPMConstants.ERROR, 1, throwMessage, e);
+			IStatus error = Status.error(throwMessage, e);
             throw new CoreException(error);
         }
 
@@ -141,19 +141,18 @@ public class RPMProject {
         try {
             content = remoteFile.openConnection();
         } catch (IOException e) {
-			Status status = new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e);
+			IStatus status = Status.error(e.getMessage(), e);
             throw new CoreException(status);
         }
         File tempFile = new File(
                 System.getProperty("java.io.tmpdir"), remoteFile.toString().substring(remoteFile.toString().lastIndexOf('/') + 1)); //$NON-NLS-1$
-        if (tempFile.exists()) {
-            tempFile.delete();
-        }
-        final FileDownloadJob downloadJob = new FileDownloadJob(tempFile,
-                content);
-        downloadJob.run(monitor);
-        importSourceRPM(tempFile);
-    }
+		if (tempFile.exists()) {
+			tempFile.delete();
+		}
+		final FileDownloadJob downloadJob = new FileDownloadJob(tempFile, content);
+		downloadJob.run(monitor);
+		importSourceRPM(tempFile);
+	}
 
     /**
      * Build both source and binary rpms.

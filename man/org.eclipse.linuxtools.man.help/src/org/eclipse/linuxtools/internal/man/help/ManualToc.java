@@ -25,7 +25,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.expressions.IEvaluationContext;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.help.IToc;
@@ -97,9 +96,7 @@ public class ManualToc implements IToc {
 				}
 			} catch (IOException e) {
 				Bundle bundle = FrameworkUtil.getBundle(this.getClass());
-				Status status = new Status(IStatus.ERROR, e.getMessage(),
-						bundle.getSymbolicName());
-				Platform.getLog(bundle).log(status);
+				Platform.getLog(bundle).log(Status.error(e.getMessage(), e));
 			}
 		}
 	}

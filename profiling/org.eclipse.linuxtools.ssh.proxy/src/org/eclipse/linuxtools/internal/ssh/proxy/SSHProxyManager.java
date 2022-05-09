@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
@@ -98,8 +97,7 @@ public class SSHProxyManager implements IRemoteEnvProxyManager {
             }
             error.close();
         } catch (IOException e) {
-            Status status = new Status(IStatus.ERROR, e.getMessage(), Activator.PLUGIN_ID);
-            Activator.getDefault().getLog().log(status);
+			Activator.getDefault().getLog().log(Status.error(e.getMessage(), e));
             return Collections.emptyMap();
         }
         /*
@@ -130,9 +128,7 @@ public class SSHProxyManager implements IRemoteEnvProxyManager {
                 readLine = reader.readLine();
             }
         } catch (IOException e) {
-            Status status = new Status(IStatus.ERROR, e.getMessage(),
-                    Activator.PLUGIN_ID);
-            Activator.getDefault().getLog().log(status);
+			Activator.getDefault().getLog().log(Status.error(e.getMessage(), e));
             return Collections.emptyMap();
         }
         return env;
@@ -158,8 +154,7 @@ public class SSHProxyManager implements IRemoteEnvProxyManager {
                 return new URI(SCHEME_ID, uri.getRawUserInfo(), uri.getHost(), uri.getPort(), uri.getRawPath()
                         , uri.getRawQuery(), uri.getRawFragment());
             } catch (URISyntaxException e) {
-                Status status = new Status(IStatus.ERROR, e.getMessage(), Activator.PLUGIN_ID);
-                Activator.getDefault().getLog().log(status);
+				Activator.getDefault().getLog().log(Status.error(e.getMessage(), e));
             }
         }
         return uri;

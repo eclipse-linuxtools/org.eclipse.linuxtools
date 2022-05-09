@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 20138 Red Hat, Inc.
+ * Copyright (c) 2004, 2022 Red Hat, Inc.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -22,7 +22,6 @@ import org.eclipse.linuxtools.internal.rpm.ui.Messages;
 import org.eclipse.linuxtools.internal.rpm.ui.RpmConsole;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.ui.console.IOConsoleOutputStream;
-import org.osgi.framework.FrameworkUtil;
 
 /**
  * Job for handling rpm exports.
@@ -49,8 +48,7 @@ public class RPMExportOperation extends Job {
 	public IStatus run(IProgressMonitor monitor) {
 		IStatus result = null;
 		if (rpmProject.getSpecFile() == null) {
-			return new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
-					Messages.getString("RPMExportOperation.No_Spec_File")); //$NON-NLS-1$
+			return Status.error(Messages.getString("RPMExportOperation.No_Spec_File")); //$NON-NLS-1$
 		}
 		IOConsoleOutputStream out = RpmConsole.findConsole(rpmProject).linkJob(this);
 		if (out == null) {
@@ -63,8 +61,7 @@ public class RPMExportOperation extends Job {
 						IProgressMonitor.UNKNOWN);
 				result = rpmProject.buildAll(out);
 			} catch (CoreException e) {
-				result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
-						e.getMessage(), e);
+				result = Status.error(e.getMessage(), e);
 			}
 			break;
 
@@ -73,8 +70,7 @@ public class RPMExportOperation extends Job {
 			try {
 				result = rpmProject.buildBinaryRPM(out);
 			} catch (CoreException e) {
-				result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
-						e.getMessage(), e);
+				result = Status.error(e.getMessage(), e);
 			}
 			break;
 
@@ -83,8 +79,7 @@ public class RPMExportOperation extends Job {
 			try {
 				result = rpmProject.buildSourceRPM(out);
 			} catch (CoreException e) {
-				result = new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
-						e.getMessage(), e);
+				result = Status.error(e.getMessage(), e);
 			}
 			break;
 		}

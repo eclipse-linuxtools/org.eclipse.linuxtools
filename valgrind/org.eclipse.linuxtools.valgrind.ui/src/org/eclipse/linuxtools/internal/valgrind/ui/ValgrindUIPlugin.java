@@ -189,7 +189,7 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
             }
         }
         if (view == null) {
-            throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindUIPlugin.Cannot_retrieve_view"))); //$NON-NLS-1$
+            throw new CoreException(Status.error(Messages.getString("ValgrindUIPlugin.Cannot_retrieve_view"))); //$NON-NLS-1$
         }
         return view;
     }
@@ -231,13 +231,13 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 	 * @param string - String to log
 	 * */
 	public static void log(String string) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, string, null));
+		log(Status.error(string));
 	}
 
 	/** log Throwable
 	 * @param e - Throwable to log
 	 * */
 	public static void log(Throwable e) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, e.getMessage(), e));
+		log(Status.error(e.getMessage(), e));
 	}
 }

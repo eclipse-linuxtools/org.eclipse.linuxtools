@@ -81,7 +81,7 @@ public class SSHCommandLauncher extends SSHBase implements IRemoteCommandLaunche
             fProcess = new SSHProcess(channel);
             return fProcess;
         } catch (JSchException e) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHCommandLauncher_execution_problem + e.getMessage()));
+            throw new CoreException(Status.error(Messages.SSHCommandLauncher_execution_problem + e.getMessage(), e));
         }
     }
 

@@ -26,7 +26,6 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ISelection;
@@ -413,8 +412,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 	}
 
 	private void throwCoreException(String message) throws CoreException {
-		IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.OK, message, null);
-		throw new CoreException(status);
+		throw new CoreException(Status.error(message));
 	}
 
 	public Text getNameText() {

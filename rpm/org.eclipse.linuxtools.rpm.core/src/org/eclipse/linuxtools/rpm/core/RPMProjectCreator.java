@@ -22,7 +22,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 
@@ -72,7 +71,7 @@ public class RPMProjectCreator {
 			try {
 				description.setLocationURI(new URI(parsedIPathString));
 			} catch (URISyntaxException e) {
-				throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
+				throw new CoreException(Status.error(e.getMessage(), e));
 			}
 		}
 

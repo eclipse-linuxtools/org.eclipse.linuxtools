@@ -34,7 +34,6 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileLog;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.UiUtils;
 import org.eclipse.linuxtools.rpm.ui.editor.wizards.Messages;
@@ -146,7 +145,7 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 	}
 
 	private void throwCoreException(String message) throws CoreException {
-		IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, IStatus.OK, message, null);
+		IStatus status = Status.error(message);
 		throw new CoreException(status);
 	}
 

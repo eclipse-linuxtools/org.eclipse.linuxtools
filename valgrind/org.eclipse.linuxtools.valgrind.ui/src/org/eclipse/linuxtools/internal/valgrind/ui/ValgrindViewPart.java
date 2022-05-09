@@ -13,7 +13,6 @@
 package org.eclipse.linuxtools.internal.valgrind.ui;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
@@ -94,7 +93,7 @@ public class ValgrindViewPart extends ViewPart {
         IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
         ToolBar tb = ((ToolBarManager) toolbar).getControl();
         if (tb == null || tb.isDisposed()) {
-            throw new CoreException(new Status(IStatus.ERROR, ValgrindUIPlugin.PLUGIN_ID, "Toolbar is disposed")); //$NON-NLS-1$
+            throw new CoreException(Status.error("Toolbar is disposed")); //$NON-NLS-1$
         }
 
         if (dynamicActions != null) {

@@ -20,7 +20,6 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.SWT;
@@ -87,7 +86,7 @@ public class OpenFileHandler extends AbstractHandler {
             ErrorDialog.openError(window.getShell(),
                     Localization.getString("OpenFileHandler.Problem"), //$NON-NLS-1$
                     Localization.getString("OpenFileHandler.ProblemMessage"), //$NON-NLS-1$
-                    new Status(IStatus.ERROR, IDEPlugin.PLUGIN_ID, e.getMessage(), e));
+					Status.error(e.getMessage(), e));
         }
     }
 

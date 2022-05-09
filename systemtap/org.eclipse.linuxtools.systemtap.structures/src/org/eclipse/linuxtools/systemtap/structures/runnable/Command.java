@@ -25,7 +25,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.internal.systemtap.structures.StructuresPlugin;
 import org.eclipse.linuxtools.systemtap.structures.LoggingStreamDaemon;
 import org.eclipse.linuxtools.systemtap.structures.listeners.IGobblerListener;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
@@ -145,10 +144,10 @@ public class Command implements Runnable {
         try {
             process = RuntimeProcessFactory.getFactory().exec(cmd, envVars, project);
         } catch (IOException e) {
-            return new Status(IStatus.ERROR, StructuresPlugin.PLUGIN_ID, e.getMessage(), e);
+            return Status.error(e.getMessage(), e);
         }
         if (process == null) {
-            return new Status(IStatus.ERROR, StructuresPlugin.PLUGIN_ID, Messages.Command_failedToRunSystemtap);
+            return Status.error(Messages.Command_failedToRunSystemtap);
         }
         errorGobbler = new StreamGobbler(process.getErrorStream());
         inputGobbler = new StreamGobbler(process.getInputStream());

@@ -24,7 +24,6 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -160,9 +159,7 @@ public class NewSuppressionWizard extends Wizard implements INewWizard {
     }
 
     private void throwCoreException(String message) throws CoreException {
-        IStatus status =
-            new Status(IStatus.ERROR, ValgrindEditorPlugin.PLUGIN_ID, IStatus.OK, message, null);
-        throw new CoreException(status);
+        throw new CoreException(Status.error(message));
     }
 
     /**
