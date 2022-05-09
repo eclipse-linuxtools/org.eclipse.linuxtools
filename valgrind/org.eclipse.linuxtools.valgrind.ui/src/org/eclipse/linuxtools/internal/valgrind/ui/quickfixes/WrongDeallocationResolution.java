@@ -83,7 +83,7 @@ public class WrongDeallocationResolution extends AbstractValgrindMarkerResolutio
                 marker.delete();
             }
         } catch (BadLocationException|CoreException e ){
-            Status status = new Status(IStatus.ERROR, ValgrindUIPlugin.PLUGIN_ID, null, e);
+            IStatus status = Status.error(e.getMessage(), e);
             String title = Messages.getString("ValgrindMemcheckQuickFixes.Valgrind_error_title"); //$NON-NLS-1$
             String message = Messages.getString("ValgrindMemcheckQuickFixes.Error_applying_quickfix"); //$NON-NLS-1$
             showErrorMessage(title, message, status);

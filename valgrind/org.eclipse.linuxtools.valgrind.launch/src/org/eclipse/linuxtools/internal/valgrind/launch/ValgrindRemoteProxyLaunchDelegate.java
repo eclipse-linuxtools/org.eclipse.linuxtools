@@ -29,7 +29,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -92,7 +91,7 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
         String verString = whichVersion(project);
 
         if (verString == null || verString.isEmpty()){
-            throw new CoreException(new Status(IStatus.ERROR, ValgrindLaunchPlugin.PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"))); //$NON-NLS-1$
+            throw new CoreException(Status.error(Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"))); //$NON-NLS-1$
         }
 
         verString = verString.replace(VERSION_PREFIX, ""); //$NON-NLS-1$
@@ -103,12 +102,12 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
         if (!verString.isEmpty()) {
             valgrindVersion = Version.parseVersion(verString);
         } else {
-            throw new CoreException(new Status(IStatus.ERROR, ValgrindLaunchPlugin.PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"))); //$NON-NLS-1$
+            throw new CoreException(Status.error(Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"))); //$NON-NLS-1$
         }
 
         // check for minimum supported version
         if (valgrindVersion.compareTo(MIN_VER) < 0) {
-            throw new CoreException(new Status(IStatus.ERROR, ValgrindLaunchPlugin.PLUGIN_ID, NLS.bind(Messages.getString("ValgrindLaunchPlugin.Error_min_version"), valgrindVersion.toString(), MIN_VER.toString()))); //$NON-NLS-1$
+            throw new CoreException(Status.error(NLS.bind(Messages.getString("ValgrindLaunchPlugin.Error_min_version"), valgrindVersion.toString(), MIN_VER.toString()))); //$NON-NLS-1$
         }
         return valgrindVersion;
     }
@@ -200,8 +199,7 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
                 localOutputDir = provider.getOutputPath();
                 createDirectory(localOutputDir);
             } catch (IOException e2) {
-                throw new CoreException(new Status(IStatus.ERROR, ValgrindLaunchPlugin.PLUGIN_ID, IStatus.OK,
-                        "", e2)); //$NON-NLS-1$
+                throw new CoreException(Status.error(e2.getMessage(), e2));
             }
 
             // tool that was launched

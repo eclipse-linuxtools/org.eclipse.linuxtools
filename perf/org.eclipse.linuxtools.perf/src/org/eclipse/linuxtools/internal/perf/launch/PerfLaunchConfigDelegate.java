@@ -98,7 +98,7 @@ public class PerfLaunchConfigDelegate extends AbstractCLaunchDelegate {
             // check if Perf exists in $PATH
             if (! PerfCore.checkPerfInPath(project))
             {
-                IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID, "Error: Perf was not found on PATH"); //$NON-NLS-1$
+                IStatus status = Status.error("Error: Perf was not found on PATH"); //$NON-NLS-1$
                 throw new CoreException(status);
             }
 

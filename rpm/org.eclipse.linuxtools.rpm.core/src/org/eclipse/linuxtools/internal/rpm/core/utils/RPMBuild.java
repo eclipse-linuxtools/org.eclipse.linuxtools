@@ -142,7 +142,7 @@ public class RPMBuild {
      */
 	public IStatus build(IResource specFile, OutputStream outStream, String buildParameter) throws CoreException {
 		if (specFile == null) {
-			throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, Messages.Specfile_not_found));
+			throw new CoreException(Status.error(Messages.Specfile_not_found));
 		}
 
 		final List<String> command = new ArrayList<>();
@@ -157,7 +157,7 @@ public class RPMBuild {
 				return Utils.runCommand(outStream, specFile.getProject(), command.toArray(new String[command.size()]));
 			}
 		} catch (IOException | URISyntaxException e) {
-			throw new CoreException(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
+			throw new CoreException(Status.error(e.getMessage(), e));
 		}
     }
 

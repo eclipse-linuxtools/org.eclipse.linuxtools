@@ -80,11 +80,8 @@ public class Createrepo {
             os.write(commandString.getBytes());
             return Utils.runCommand(os, project.getProject(), commandSwitches.toArray(new String[commandSwitches.size()]));
         } catch (IOException e) {
-            return new Status(
-                    IStatus.ERROR,
-                    FrameworkUtil.getBundle(CreaterepoProject.class).getSymbolicName(),
-                    NLS.bind(Messages.Createrepo_errorExecuting, commandString), e);
-        }
+			return Status.error(NLS.bind(Messages.Createrepo_errorExecuting, commandString), e);
+		}
     }
 
     /**
@@ -97,15 +94,11 @@ public class Createrepo {
             BufferedProcessInputStream bpis = Utils.runCommandToInputStream("which", ICreaterepoConstants.CREATEREPO_COMMAND); //$NON-NLS-1$
             // error executing "which createrepo", most likely due to it not being found
             if (bpis.getExitValue() == 1) {
-                return new Status(IStatus.ERROR,
-                        FrameworkUtil.getBundle(CreaterepoProject.class).getSymbolicName(),
-                        Messages.Createrepo_errorCommandNotFound, null);
+                return Status.error(Messages.Createrepo_errorCommandNotFound);
             }
             return Status.OK_STATUS;
         } catch (IOException e) {
-            return new Status(
-                    IStatus.WARNING,
-                    FrameworkUtil.getBundle(CreaterepoProject.class).getSymbolicName(),
+            return Status.warning(
                     Messages.Createrepo_errorTryingToFindCommand, e);
         } catch (InterruptedException e) {
             return new Status(
@@ -141,12 +134,9 @@ public class Createrepo {
             boolean createrepoValid = isGreaterOrEqual(createrepoVersion.split("\\."), CREATEREPO_VALID_VERSION.split("\\.")); //$NON-NLS-1$ //$NON-NLS-2$
             // exit return an error early if the version does not meet the requirements
             if (!createrepoValid) {
-                return new Status(
-                        IStatus.ERROR,
-                        FrameworkUtil.getBundle(CreaterepoProject.class).getSymbolicName(),
+                return Status.error(
                         NLS.bind(Messages.Createrepo_errorWrongVersionCreaterepo, new String[] {
-                                CREATEREPO_VALID_VERSION, createrepoVersion}),
-                                null);
+                                CREATEREPO_VALID_VERSION, createrepoVersion}));
             }
             return Status.OK_STATUS;
         } catch (IOException e) {

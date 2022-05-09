@@ -108,7 +108,7 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
      * @since 1.1
      */
     public static void logErrorMessage(String message) {
-        log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR, message, null));
+        log(Status.error(message));
     }
 
     /**
@@ -119,7 +119,7 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
      * @since 1.1
      */
     public static void log(Throwable e) {
-        log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR, e.getMessage(), e));
+        log(Status.error(e.getMessage(), e));
     }
 
     public static void log(int status, String msg, Throwable e) {

@@ -68,7 +68,7 @@ public class ValgrindExportWizard extends Wizard implements IExportWizard {
 			});
 
 		} catch (InvocationTargetException e) {
-            IStatus status = new Status(IStatus.ERROR, ValgrindLaunchPlugin.PLUGIN_ID, Messages.getString("ValgrindExportWizard.Export_fail"), e); //$NON-NLS-1$
+            IStatus status = Status.error(Messages.getString("ValgrindExportWizard.Export_fail"), e); //$NON-NLS-1$
             ErrorDialog.openError(getShell(), ExportWizardConstants.WIZARD_TITLE, null, status);
             e.printStackTrace();
             return false;

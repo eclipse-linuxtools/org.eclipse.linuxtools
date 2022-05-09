@@ -20,7 +20,6 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.swt.widgets.Display;
@@ -106,8 +105,7 @@ public class ProjectBuildListener implements IResourceChangeListener {
             // clear valgrind error view
             Display.getDefault().syncExec(() -> ValgrindUIPlugin.getDefault().resetView());
         } catch (CoreException e) {
-            Status status = new Status(IStatus.ERROR, ValgrindLaunchPlugin.PLUGIN_ID, e.getMessage());
-            ValgrindLaunchPlugin.getDefault().getLog().log(status);
+            ValgrindLaunchPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
         }
     }
 }

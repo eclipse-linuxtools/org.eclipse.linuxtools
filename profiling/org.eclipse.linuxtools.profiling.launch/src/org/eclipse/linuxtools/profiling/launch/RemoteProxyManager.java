@@ -20,7 +20,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.profiling.launch.LocalFileProxy;
@@ -95,8 +94,7 @@ public class RemoteProxyManager implements IRemoteProxyManager {
             if (manager != null)
                 return manager.getFileProxy(uri);
             else
-                throw new CoreException(new Status(IStatus.ERROR, ProfileLaunchPlugin.PLUGIN_ID,
-                        IStatus.OK, Messages.RemoteProxyManager_unrecognized_scheme + scheme, null));
+                throw new CoreException(Status.error(Messages.RemoteProxyManager_unrecognized_scheme + scheme));
         }
         return getLocalFileProxy(uri);
     }
@@ -124,8 +122,7 @@ public class RemoteProxyManager implements IRemoteProxyManager {
             if (manager != null)
                 return manager.getLauncher(uri);
             else
-                throw new CoreException(new Status(IStatus.ERROR, ProfileLaunchPlugin.PLUGIN_ID,
-                        IStatus.OK, Messages.RemoteProxyManager_unrecognized_scheme + scheme, null));
+                throw new CoreException(Status.error(Messages.RemoteProxyManager_unrecognized_scheme + scheme));
         }
         return new LocalLauncher();
     }
@@ -152,8 +149,7 @@ public class RemoteProxyManager implements IRemoteProxyManager {
             if (manager != null)
                 return manager.getOS(uri);
             else
-                throw new CoreException(new Status(IStatus.ERROR, ProfileLaunchPlugin.PLUGIN_ID,
-                        IStatus.OK, Messages.RemoteProxyManager_unrecognized_scheme + scheme, null));
+                throw new CoreException(Status.error(Messages.RemoteProxyManager_unrecognized_scheme + scheme));
         }
         return Platform.getOS();
     }

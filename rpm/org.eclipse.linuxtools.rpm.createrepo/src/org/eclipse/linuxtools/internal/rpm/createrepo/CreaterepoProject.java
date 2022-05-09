@@ -31,7 +31,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.osgi.framework.FrameworkUtil;
 
 /**
  * This class will contain the current project and basic operations of the
@@ -130,10 +129,7 @@ public class CreaterepoProject {
             try {
                 file.create(new FileInputStream(externalFile), false, monitor);
             } catch (FileNotFoundException e) {
-                IStatus status = new Status(
-                        IStatus.ERROR,
-                        FrameworkUtil.getBundle(CreaterepoProject.class).getSymbolicName(),
-                        Messages.CreaterepoProject_errorGettingFile, null);
+				IStatus status = Status.error(Messages.CreaterepoProject_errorGettingFile, e);
                 throw new CoreException(status);
             }
             getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);

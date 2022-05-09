@@ -112,16 +112,16 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
             if (!verString.isEmpty()) {
                 valgrindVersion = Version.parseVersion(verString);
             } else {
-                throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"))); //$NON-NLS-1$
+                throw new CoreException(Status.error(Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"))); //$NON-NLS-1$
             }
         } catch (IOException e) {
-            IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"), e); //$NON-NLS-1$
+            IStatus status = Status.error(Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"), e); //$NON-NLS-1$
             throw new CoreException(status);
         }
 
         // check for minimum supported version
         if (valgrindVersion.compareTo(MIN_VER) < 0) {
-            throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, NLS.bind(Messages.getString("ValgrindLaunchPlugin.Error_min_version"), valgrindVersion.toString(), MIN_VER.toString()))); //$NON-NLS-1$
+            throw new CoreException(Status.error(NLS.bind(Messages.getString("ValgrindLaunchPlugin.Error_min_version"), valgrindVersion.toString(), MIN_VER.toString()))); //$NON-NLS-1$
         }
         return valgrindVersion;
     }
@@ -161,7 +161,7 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
             }
         }
         if (tab == null) {
-            throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Cannot_retrieve_page"))); //$NON-NLS-1$
+            throw new CoreException(Status.error(Messages.getString("ValgrindLaunchPlugin.Cannot_retrieve_page"))); //$NON-NLS-1$
         }
         return tab;
     }
@@ -176,7 +176,7 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
             }
         }
         if (delegate == null) {
-            throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Cannot_retrieve_delegate"))); //$NON-NLS-1$
+            throw new CoreException(Status.error(Messages.getString("ValgrindLaunchPlugin.Cannot_retrieve_delegate"))); //$NON-NLS-1$
         }
         return delegate;
     }

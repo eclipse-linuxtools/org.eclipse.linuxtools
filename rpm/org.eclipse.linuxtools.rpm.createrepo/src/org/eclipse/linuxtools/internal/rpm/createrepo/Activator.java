@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.createrepo;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ResourceLocator;
@@ -89,9 +88,7 @@ public class Activator extends AbstractUIPlugin {
      * @param exception The exception to log.
      */
     public static void logError(String message, Throwable exception) {
-        IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, message,
-                exception);
-        getDefault().getLog().log(status);
+		getDefault().getLog().log(Status.error(message, exception));
     }
 
 }

@@ -21,7 +21,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.systemtap.graphing.ui.widgets.ExceptionErrorDialog;
 import org.eclipse.linuxtools.systemtap.structures.runnable.Command;
 import org.eclipse.linuxtools.systemtap.structures.runnable.StreamGobbler;
-import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.RemoteScriptOptions;
 import org.eclipse.linuxtools.tools.launch.core.factory.LinuxtoolsProcessFactory;
 
@@ -37,12 +36,13 @@ public class ScpExec extends Command {
     private RemoteScriptOptions remoteOptions;
 
     /**
-     * Creates the exec helper class
-     * @param cmd The command to run.
-     * @param remoteOptions Remote connection information.
-     * @param envVars Runtime environment properties.
-     * @since 3.0
-     */
+	 * Creates the exec helper class
+	 * 
+	 * @param cmd           The command to run.
+	 * @param remoteOptions Remote connection information.
+	 * @param envVars       Runtime environment properties.
+	 * @since 3.0
+	 */
     public ScpExec(String[] cmd, RemoteScriptOptions remoteOptions, String[] envVars) {
         super(cmd, envVars, null);
         this.remoteOptions = remoteOptions;
@@ -62,7 +62,7 @@ public class ScpExec extends Command {
             transferListeners();
             return Status.OK_STATUS;
         } catch (final JSchException|IOException e) {
-            return new Status(IStatus.ERROR, ConsoleLogPlugin.PLUGIN_ID, Messages.ScpExec_FileTransferFailed, e);
+            return Status.error(Messages.ScpExec_FileTransferFailed, e);
         }
     }
 

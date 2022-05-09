@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -47,7 +46,7 @@ public class SSHBase {
             try {
                 session=jsch.getSession(uri.getUserInfo(), uri.getHost());
             } catch (JSchException e) {
-                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHBase_CreateSessionFailed + e.getMessage()));
+                throw new CoreException(Status.error(Messages.SSHBase_CreateSessionFailed + e.getMessage()));
             }
 
             Properties config = new Properties();
@@ -70,7 +69,7 @@ public class SSHBase {
             try {
                 session.connect();
             } catch (JSchException e) {
-                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHBase_CreateSessionFailed + e.getMessage()));
+                throw new CoreException(Status.error(Messages.SSHBase_CreateSessionFailed + e.getMessage()));
             }
             passwords.put(uri.getAuthority(), password);
         }
@@ -86,7 +85,7 @@ public class SSHBase {
         if (d.open() == Window.OK) {
             return d.getPassword();
         } else {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHBase_CreateSessionCancelled));
+            throw new CoreException(Status.error(Messages.SSHBase_CreateSessionCancelled));
         }
     }
 
@@ -97,7 +96,7 @@ public class SSHBase {
                 channelSftp = (ChannelSftp)session.openChannel("sftp"); //$NON-NLS-1$
                 channelSftp.connect();
             } catch (JSchException e) {
-                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHBase_CreateSessionFailed + e.getMessage()));
+				throw new CoreException(Status.error(Messages.SSHBase_CreateSessionFailed + e.getMessage(), e));
             }
         }
         return channelSftp;
@@ -108,7 +107,7 @@ public class SSHBase {
         try {
             return (ChannelExec)session.openChannel("exec"); //$NON-NLS-1$
         } catch (JSchException e) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.SSHBase_CreateSessionFailed + e.getMessage()));
+            throw new CoreException(Status.error(Messages.SSHBase_CreateSessionFailed + e.getMessage(), e));
         }
     }
 }

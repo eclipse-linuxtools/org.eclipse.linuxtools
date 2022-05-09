@@ -52,8 +52,7 @@ public abstract class AbstractGenerator {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         IResource resource = root.findMember(new Path(projectName));
         if (!resource.exists() || !(resource instanceof IContainer)) {
-            IStatus status = new Status(IStatus.ERROR, StubbyPlugin.PLUGIN_ID,
-                    IStatus.OK, "Project \"" + projectName + "\" does not exist.", null);
+            IStatus status = Status.error("Project \"" + projectName + "\" does not exist.");
             StubbyLog.logError(new CoreException(status));
         }
         IContainer container = (IContainer) resource;

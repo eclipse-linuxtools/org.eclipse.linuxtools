@@ -129,11 +129,10 @@ public class EnvironmentsManager {
 		private IStatus createStatus(Throwable t, boolean action) {
 			// TODO externalize?
 			if (action == READ)
-				return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-						Messages.EnvironmentsManager_error_read, t);
+				return Status.error(Messages.EnvironmentsManager_error_read, t);
 			else
-				return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-						Messages.EnvironmentsManager_error_write, t);
+				return Status.error(Messages.EnvironmentsManager_error_write,
+						t);
 		}
 
 		public void setEnvironmentForFolder(File folder,

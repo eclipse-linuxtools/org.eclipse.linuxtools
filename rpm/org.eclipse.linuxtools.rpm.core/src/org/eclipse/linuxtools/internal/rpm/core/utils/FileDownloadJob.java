@@ -60,8 +60,7 @@ public class FileDownloadJob extends Job {
 				monitor.worked(1);
 			}
 		} catch (IOException e) {
-			Platform.getLog(Platform.getBundle(IRPMConstants.RPM_CORE_ID))
-					.log(new Status(IStatus.ERROR, IRPMConstants.RPM_CORE_ID, e.getMessage(), e));
+			Platform.getLog(Platform.getBundle(IRPMConstants.RPM_CORE_ID)).log(Status.error(e.getMessage(), e));
 			return Status.CANCEL_STATUS;
 		}
 		monitor.done();

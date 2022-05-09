@@ -20,7 +20,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -456,7 +455,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 
         loadDynamicTab();
         if (dynamicTab == null) {
-            throw new CoreException(new Status(IStatus.ERROR, ValgrindLaunchPlugin.PLUGIN_ID, Messages.getString("ValgrindOptionsTab.No_options_tab_found") + tool)); //$NON-NLS-1$
+            throw new CoreException(Status.error(Messages.getString("ValgrindOptionsTab.No_options_tab_found") + tool)); //$NON-NLS-1$
         }
         dynamicTab.setLaunchConfigurationDialog(getLaunchConfigurationDialog());
         dynamicTab.setValgrindVersion(valgrindVersion);

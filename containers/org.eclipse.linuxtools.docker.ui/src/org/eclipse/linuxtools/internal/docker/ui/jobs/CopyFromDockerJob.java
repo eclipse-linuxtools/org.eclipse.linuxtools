@@ -1023,7 +1023,7 @@ public class CopyFromDockerJob extends Job {
 			return Status.CANCEL_STATUS;
 		} catch (Exception e) {
 			Activator.logErrorMessage("Failed to initialize mirror", e); //$NON-NLS-1$
-			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed to initialize"); //$NON-NLS-1$
+			return Status.error("Failed to initialize", e); //$NON-NLS-1$
 		}
 
 		if (m_pathsToCopy.isEmpty()) {

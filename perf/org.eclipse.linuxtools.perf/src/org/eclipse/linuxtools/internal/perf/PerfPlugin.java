@@ -273,7 +273,7 @@ public class PerfPlugin extends AbstractUIPlugin {
 
         final String message = ex.getMessage();
         final String formattedMessage = PLUGIN_ID + " : " + message; //$NON-NLS-1$
-        final Status status = new Status(IStatus.ERROR, PLUGIN_ID, formattedMessage, new Throwable(writer.toString()));
+        final IStatus status = Status.error(formattedMessage, new Throwable(writer.toString()));
 
         getLog().log(status);
         Display.getDefault().asyncExec(() -> ErrorDialog.openError(Display.getDefault().getActiveShell(),

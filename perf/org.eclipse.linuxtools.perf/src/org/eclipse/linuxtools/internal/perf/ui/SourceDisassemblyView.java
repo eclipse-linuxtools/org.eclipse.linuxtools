@@ -18,7 +18,6 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IFindReplaceTarget;
@@ -144,8 +143,7 @@ public class SourceDisassemblyView extends ViewPart implements IFindReplaceTarge
 		                        Integer.toString(SECONDARY_ID++),
 		                        IWorkbenchPage.VIEW_CREATE);
 		    } catch (PartInitException e) {
-		        IStatus status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID, e.getMessage(), e);
-		        PerfPlugin.getDefault().getLog().log(status);
+		        PerfPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
 		    }
 		});
     }

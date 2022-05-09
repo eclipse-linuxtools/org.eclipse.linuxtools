@@ -895,8 +895,8 @@ public class DockerConnection
 			}
 		} catch (DockerTimeoutException e) {
 			if (isOpen()) {
-				Activator.log(new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-						Messages.Docker_Connection_Timeout, e));
+				Activator.log(
+						Status.warning(Messages.Docker_Connection_Timeout, e));
 				close();
 			}
 		} catch (org.mandas.docker.client.exceptions.DockerException

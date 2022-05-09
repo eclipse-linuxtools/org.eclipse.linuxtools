@@ -66,7 +66,7 @@ public class ToggleRpmlintNatureAction extends AbstractHandler {
 		String rpmlintPath = new ScopedPreferenceStore(InstanceScope.INSTANCE, Activator.PLUGIN_ID)
 				.getString(PreferenceConstants.P_RPMLINT_PATH);
 		if (!Files.exists(Paths.get(rpmlintPath))) {
-			IStatus warning = new Status(IStatus.WARNING, Activator.PLUGIN_ID, 1, Messages.RunRpmlintAction_1, null);
+			IStatus warning = Status.warning(Messages.RunRpmlintAction_1);
 			ErrorDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 					Messages.RunRpmlintAction_2, null, warning);
 			return;

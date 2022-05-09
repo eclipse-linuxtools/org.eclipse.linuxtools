@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 import org.eclipse.osgi.util.NLS;
-import org.osgi.framework.FrameworkUtil;
 /**
  * Utilities for calling system executables.
  */
@@ -129,8 +128,7 @@ public class Utils {
             return Status.CANCEL_STATUS;
         }
 		if (child.exitValue() != 0) {
-			return new Status(IStatus.ERROR, FrameworkUtil.getBundle(Utils.class).getSymbolicName(),
-					NLS.bind(Messages.Utils_NON_ZERO_RETURN_CODE, child.exitValue()), null);
+			return Status.error(NLS.bind(Messages.Utils_NON_ZERO_RETURN_CODE, child.exitValue()));
 		}
         return Status.OK_STATUS;
     }

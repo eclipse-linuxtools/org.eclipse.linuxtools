@@ -21,7 +21,6 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.remote.core.IRemoteConnection;
@@ -39,8 +38,7 @@ public class RDTFileProxy implements IRemoteFileProxy {
         if (connection != null) {
             manager = connection.getService(IRemoteFileService.class);
         } else {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-                    Activator.getResourceString("Connection.error"))); //$NON-NLS-1$
+            throw new CoreException(Status.error(Activator.getResourceString("Connection.error"))); //$NON-NLS-1$
         }
     }
 

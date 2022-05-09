@@ -122,8 +122,7 @@ public class PerfCore {
 
         URI projectURI = project.getLocationURI();
         if (projectURI == null) {
-        	Status status = new Status(IStatus.WARNING, PerfPlugin.PLUGIN_ID,
-                    NLS.bind(Messages.MsgNoProjectError, projectName));
+        	IStatus status = Status.warning(NLS.bind(Messages.MsgNoProjectError, projectName));
             PerfPlugin.getDefault().getLog().log(status);
             return null;
         }
@@ -228,9 +227,7 @@ public class PerfCore {
             p = RuntimeProcessFactory.getFactory().exec(new String [] {PerfPlugin.PERF_COMMAND, "--version"}, project); //$NON-NLS-1$
         } catch (IOException e) {
         	// Issue warning to avoid AERI reports whenever user is missing perf
-            Status status = new Status(IStatus.WARNING, PerfPlugin.PLUGIN_ID,
-                    e.getMessage());
-            PerfPlugin.getDefault().getLog().log(status);
+            PerfPlugin.getDefault().getLog().log(Status.warning(e.getMessage(),e));
         }
 
         if (p == null) {
@@ -726,8 +723,7 @@ public class PerfCore {
      * @param e Exception to log.
      */
     public static void logException(Exception e) {
-        Status status = new Status(IStatus.ERROR, PerfPlugin.PLUGIN_ID,
-                e.getMessage());
+        IStatus status = Status.error(e.getMessage(),e);
         PerfPlugin.getDefault().getLog().log(status);
     }
 }

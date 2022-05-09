@@ -125,7 +125,7 @@ public class IDEPlugin extends AbstractUIPlugin {
         if (e instanceof CoreException) {
             status = ((CoreException) e).getStatus();
         } else {
-            status = new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, e.getMessage(), e);
+			status = Status.error(e.getMessage(), e);
         }
         log(status);
     }
