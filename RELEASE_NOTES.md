@@ -11,6 +11,10 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 Changelog available [here](https://github.com/rcjsuen/dockerfile-language-server-nodejs/blob/master/CHANGELOG.md#090---2022-05-04).
 
+### Support Dockerfile.* file types
+
+Dockerfile editor now recognizes Dockerfile.* type too.
+
 ## 8.6.0
 
 ### Update Dockerfile LS to 0.7.3
