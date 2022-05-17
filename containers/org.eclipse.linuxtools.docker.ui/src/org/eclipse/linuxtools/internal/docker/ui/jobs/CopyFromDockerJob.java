@@ -40,7 +40,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -669,6 +668,10 @@ public class CopyFromDockerJob extends Job {
 
 				if (te.isFile()) {
 					if (f.exists()) {
+						// This might have been previously been copied from a sub folder of ours
+						if (checkWasCopied(path))
+							continue;
+
 						if (f.isDirectory()) {
 							Activator.logWarningMessage(
 									JobMessages.getFormattedString("CopyFromDockerJob.create.failed.file.dir.exists", //$NON-NLS-1$
@@ -715,9 +718,10 @@ public class CopyFromDockerJob extends Job {
 					}
 					continue;
 				}
+				// None of the previous checks matched
 				throw new RuntimeException("Unsupported Tar file entry that should not exist"); //$NON-NLS-1$
-			}
-		}
+			} // Tar-entry-loop
+		} // Try
 		return successful;
 	}
 
@@ -909,7 +913,7 @@ public class CopyFromDockerJob extends Job {
 	}
 
 	/**
-	 * Check if a sourcePath is already being copied
+	 * Check if a sourcePath is currently being or was copied
 	 *
 	 * This must only be used in mirror-mode
 	 *
@@ -922,30 +926,73 @@ public class CopyFromDockerJob extends Job {
 	 * @throws OperationCanceledException
 	 * @throws InterruptedException
 	 */
-	private boolean checkIfBeingCopied(Path sourcePath, boolean addToCopyingList, boolean wait)
+	private boolean needsBeingCopied(Path sourcePath, boolean addToCopyingList, boolean wait)
 			throws OperationCanceledException, InterruptedException {
 
 		assert m_mirror;
 
-		Optional<Job> j = null;
-		synchronized (m_lockObject) {
-			j = m_copyingMap.entrySet().stream().filter(other -> other.getKey().isPrefixOf(sourcePath))
-					.map(Map.Entry::getValue).findFirst();
+		List<Job> jAbove = null;
+		List<Job> jBelow = null;
+		boolean rv;
 
-			if (j.isEmpty()) {
-				if (addToCopyingList)
-					m_copyingMap.put(sourcePath, this);
+		synchronized (m_lockObject) {
+			// Check if a super-folder was already copied
+			boolean wascopied = m_copiedList.stream().anyMatch(p -> p.isPrefixOf(sourcePath));
+
+			// Return directly as everything is already there
+			// But we might have to wait for y job running in a subfolder
+			if (wascopied && !wait) {
 				return false;
 			}
 
+			// Check if another job copies something including sourcePath - this may also be
+			// sourcePath
+			jAbove = m_copyingMap.entrySet().stream().filter(other -> other.getKey().isPrefixOf(sourcePath))
+					.map(Map.Entry::getValue).collect(Collectors.toList());
+
+			// Check if some other job copies something sourcePath includes - this may also
+			// be sourcePath
+			jBelow = m_copyingMap.entrySet().stream().filter(other -> sourcePath.isPrefixOf(other.getKey()))
+					.map(Map.Entry::getValue).collect(Collectors.toList());
+
+
+			if (jAbove.isEmpty() && !wascopied) {
+				if (addToCopyingList)
+					m_copyingMap.put(sourcePath, this);
+				rv = true;
+			} else {
+				rv = false;
+			}
 		}
 
 		if (wait) {
-			// Todo Print message?
-			if (!j.get().join(0, m_monitor))
-				return false;
+			// The same job can be in Above and in Below - if it is us - but that shouldn't
+			// be an issue
+			for (var j : jAbove)
+				j.join(0, m_monitor);
+			for (var j : jBelow)
+				j.join(0, m_monitor);
 		}
-		return true;
+		return rv;
+	}
+
+	/**
+	 * Check if a sourcePath has already been copied
+	 *
+	 * This must only be used in mirror-mode
+	 *
+	 * @param sourcePath The path to check
+	 * @return true if the path has previously been copied
+	 * @throws OperationCanceledException
+	 * @throws InterruptedException
+	 */
+	private boolean checkWasCopied(Path sourcePath) {
+
+		assert m_mirror;
+
+		synchronized (m_lockObject) {
+			return m_copiedList.stream().anyMatch(p -> p.isPrefixOf(sourcePath));
+		}
 	}
 
 	/**
@@ -1065,7 +1112,7 @@ public class CopyFromDockerJob extends Job {
 					return Status.CANCEL_STATUS;
 				}
 
-				if (checkIfBeingCopied(srcdir, true, false)) {
+				if (!needsBeingCopied(srcdir, true, false)) {
 					continue;
 				}
 				Path realDir = mkdirSyms(m_containerId, srcdir, hostDir);
@@ -1076,7 +1123,7 @@ public class CopyFromDockerJob extends Job {
 					copySuccess(srcdir);
 					srcdir = realDir;
 					// The realdir might be already copied.
-					if (checkIfBeingCopied(srcdir, true, false))
+					if (!needsBeingCopied(srcdir, true, false))
 						continue;
 				}
 
@@ -1090,33 +1137,31 @@ public class CopyFromDockerJob extends Job {
 
 			// After everything has been copied the symlinks can be created
 			for (SymLink sl : symlinkBacklog) {
-				// The target does not exist, thus it must be copied from the image
-				if (!sl.targetExists()) {
-					if (!checkIfBeingCopied(sl.m_targetAbs, true, true)) {
-						Path get = sl.m_targetAbs;
-						if (!sl.m_isDirectory) {
-							get = (Path) get.removeLastSegments(1);
-						}
-						Set<Path> dir = new HashSet<>();
-						dir.add(get);
+				if (needsBeingCopied(sl.m_targetAbs, false, true)) {
+					Path get = sl.m_targetAbs;
+					if (!sl.m_isDirectory) {
+						get = (Path) get.removeLastSegments(1);
+					}
+					Set<Path> dir = new HashSet<>();
+					dir.add(get);
 
-						CopyFromDockerJob job = new CopyFromDockerJob(m_connection, CopyType.ContainerMirror,
-								m_containerId, dir, m_targetfolder);
-						job.schedule();
-						try {
-							job.join(0, m_monitor);
-							if (!job.getResult().isOK()) {
-								Activator.logWarningMessage(JobMessages.getFormattedString(
-										"CopyFromDockerJob.create.failed.symlink.get", dir.toString())); //$NON-NLS-1$
-								continue;
-							}
-						} catch (Exception e) {
-							Activator.logErrorMessage(JobMessages.getFormattedString(
-									"CopyFromDockerJob.create.failed.symlink.get", dir.toString()), e); //$NON-NLS-1$
+					CopyFromDockerJob job = new CopyFromDockerJob(m_connection, CopyType.ContainerMirror, m_containerId,
+							dir, m_targetfolder);
+					job.schedule();
+					try {
+						job.join(0, m_monitor);
+						if (!job.getResult().isOK()) {
+							Activator.logWarningMessage(JobMessages
+									.getFormattedString("CopyFromDockerJob.create.failed.symlink.get", dir.toString())); //$NON-NLS-1$
 							continue;
 						}
+					} catch (Exception e) {
+						Activator.logErrorMessage(JobMessages
+								.getFormattedString("CopyFromDockerJob.create.failed.symlink.get", dir.toString()), e); //$NON-NLS-1$
+						continue;
 					}
 				}
+
 				if (!sl.create()) {
 					Activator.logWarningMessage(JobMessages.getFormattedString("CopyFromDockerJob.docker.failed.get", //$NON-NLS-1$
 							sl.m_targetAbs.toString()));
