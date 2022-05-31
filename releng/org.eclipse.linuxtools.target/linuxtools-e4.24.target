@@ -3,12 +3,12 @@
 <target name="linuxtools-e4.24" sequenceNumber="1">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.12.1.v20210128-1726"/>
-<unit id="com.fasterxml.jackson.core.jackson-core" version="2.12.1.v20210128-1726"/>
-<unit id="com.fasterxml.jackson.core.jackson-databind" version="2.12.1.v20210128-1726"/>
-<unit id="com.fasterxml.jackson.datatype.jackson-datatype-guava" version="2.12.1.v20210128-1726"/>
-<unit id="com.fasterxml.jackson.jaxrs.jackson-jaxrs-base" version="2.12.1.v20210128-1726"/>
-<unit id="com.fasterxml.jackson.jaxrs.jackson-jaxrs-json-provider" version="2.12.1.v20210128-1726"/>
+<unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.13.2.v20220426-1653"/>
+<unit id="com.fasterxml.jackson.core.jackson-core" version="2.13.2.v20220426-1653"/>
+<unit id="com.fasterxml.jackson.core.jackson-databind" version="2.13.2.v20220426-1653"/>
+<unit id="com.fasterxml.jackson.datatype.jackson-datatype-guava" version="2.13.2.v20220426-1653"/>
+<unit id="com.fasterxml.jackson.jaxrs.jackson-jaxrs-base" version="2.13.2.v20220426-1653"/>
+<unit id="com.fasterxml.jackson.jaxrs.jackson-jaxrs-json-provider" version="2.13.2.v20220426-1653"/>
 <unit id="com.github.jnr.constants" version="0.9.15.v20200501-1917"/>
 <unit id="com.github.jnr.enxio" version="0.25.0.v20200501-1917"/>
 <unit id="com.github.jnr.ffi" version="2.1.12.v20200513-1859"/>
@@ -20,17 +20,12 @@
 <unit id="com.google.guava" version="30.1.0.v20210127-2300"/>
 <unit id="org.mandas.docker-client" version="3.2.1.v20200519-1937"/>
 <unit id="org.mandas.docker-client.source" version="3.2.1.v20200519-1937"/>
-<unit id="javassist" version="3.13.0.GA_v201209210905"/>
 <unit id="javax.ws.rs" version="2.1.6.v20200505-2127"/>
 <unit id="jakarta.xml.bind" version="2.3.3.v20201118-1818"/>
-<unit id="javax.xml.stream" version="1.0.1.v201004272200"/>
 <unit id="com.github.jnr.x86asm" version="1.0.2.v20200501-1917"/>
-<unit id="org.aopalliance" version="1.0.0.v201105210816"/>
 <unit id="org.apache.commons.codec" version="1.14.0.v20200818-1422"/>
 <unit id="org.apache.commons.compress" version="1.21.0.v20211103-2100"/>
-<unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
 <unit id="org.apache.xerces" version="2.12.2.v20220131-0835"/>
-<unit id="org.cyberneko.html" version="1.9.14.v201105210654"/>
 <unit id="org.glassfish.hk2.api" version="2.6.1.v20200513-1859"/>
 <unit id="org.glassfish.hk2.locator" version="2.6.1.v20200513-1859"/>
 <unit id="org.glassfish.hk2.osgi-resource-locator" version="2.5.0.v20161103-1916"/>
@@ -47,7 +42,15 @@
 <unit id="org.slf4j.api" version="1.7.30.v20200204-2150"/>
 <unit id="org.hamcrest" version="2.2.0.v20210711-0821"/>
 <unit id="org.bouncycastle.bcpkix" version="1.70.0.v20220105-1522"/>
-<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20220302172233/repository"/>
+<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/S20220517184036/repository/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="javassist" version="3.13.0.GA_v201209210905"/>
+<unit id="javax.xml.stream" version="1.0.1.v201004272200"/>
+<unit id="org.aopalliance" version="1.0.0.v201105210816"/>
+<unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
+<unit id="org.cyberneko.html" version="1.9.14.v201105210654"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20201118194144/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
