@@ -42,7 +42,7 @@
 <unit id="org.slf4j.api" version="1.7.30.v20200204-2150"/>
 <unit id="org.hamcrest" version="2.2.0.v20210711-0821"/>
 <unit id="org.bouncycastle.bcpkix" version="1.70.0.v20220105-1522"/>
-<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/S20220517184036/repository/"/>
+<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20220531185310/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="javassist" version="3.13.0.GA_v201209210905"/>
