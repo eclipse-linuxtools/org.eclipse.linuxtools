@@ -7,6 +7,11 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 ## 8.7.0
 
+### Rewrite of Docker Container copy support ###
+
+Copy from container and copy to container support has been rewritten to eliminate duplicate code and
+to better support linked resources.
+
 ### Update Dockerfile LS to 0.9.0
 
 Changelog available [here](https://github.com/rcjsuen/dockerfile-language-server-nodejs/blob/master/CHANGELOG.md#090---2022-05-04).
