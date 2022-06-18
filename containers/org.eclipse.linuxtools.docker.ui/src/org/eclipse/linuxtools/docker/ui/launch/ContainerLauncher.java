@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -87,7 +86,6 @@ public class ContainerLauncher {
 	 * AbstractMap.SimpleEntry is a Pair as Java does not have a native Pair
 	 *
 	 */
-	@SuppressWarnings("rawtypes")
 	private Map<AbstractMap.SimpleEntry<String, String>, IPath> dirMapping = new HashMap<>();
 
 	private class CopyVolumesJob extends Job {
@@ -115,15 +113,13 @@ public class ContainerLauncher {
 			monitor.beginTask(
 					Messages.getFormattedString(COPY_VOLUMES_DESC, containerId),
 					volumes.size());
-			Iterator<String> iterator = volumes.keySet().iterator();
 			IStatus status = Status.OK_STATUS;
 			// for each remote volume, copy from host to Container volume
-			while (iterator.hasNext()) {
+			for (String hostDirectory : volumes.keySet()) {
 				if (monitor.isCanceled()) {
 					monitor.done();
 					return Status.CANCEL_STATUS;
 				}
-				String hostDirectory = iterator.next();
 				String containerDirectory = volumes.get(hostDirectory);
 				if (!containerDirectory.endsWith("/")) { //$NON-NLS-1$
 					containerDirectory = containerDirectory + "/"; //$NON-NLS-1$
@@ -488,7 +484,7 @@ public class ContainerLauncher {
 		}
 
 		// add any exposed ports as needed
-		if (exposedPorts.size() > 0)
+		if (!exposedPorts.isEmpty())
 			builder = builder.exposedPorts(exposedPorts);
 
 		// add any labels if specified
@@ -943,7 +939,7 @@ public class ContainerLauncher {
 		HashSet<Path> containerDirsSet = new HashSet<>();
 
 		for (String dir : containerDirs) {
-			if (excludedDirs != null && excludedDirs.stream().anyMatch(p -> dir.startsWith(p))) {
+			if (excludedDirs != null && excludedDirs.stream().anyMatch(dir::startsWith)) {
 				continue;
 			}
 			containerDirsSet.add(new Path(dir));
@@ -1482,7 +1478,7 @@ public class ContainerLauncher {
 		if(tpath == null) return new HashSet<>();
 
 		Set<IPath> rv = getCopiedVolumes(tpath);
-		return rv.stream().map(p -> p.toString()).collect(Collectors.toSet());
+		return rv.stream().map(IPath::toString).collect(Collectors.toSet());
 	}
 
 	/**
@@ -1494,7 +1490,7 @@ public class ContainerLauncher {
 	 *
 	 * @since 5.7
 	 */
-	static public Set<IPath> getCopiedVolumes(IPath hostdir) {
+	public static Set<IPath> getCopiedVolumes(IPath hostdir) {
 		return CopyFromDockerJob.getCopiedPaths((Path) hostdir);
 	}
 
