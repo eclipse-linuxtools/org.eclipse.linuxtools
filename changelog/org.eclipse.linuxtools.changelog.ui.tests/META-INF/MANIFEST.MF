@@ -4,7 +4,8 @@ Bundle-Name: Eclipse Linuxtools ChangeLog UI SWTBot tests
 Bundle-SymbolicName: org.eclipse.linuxtools.changelog.ui.tests
 Bundle-Version: 2.7.0.qualifier
 Bundle-Vendor: Eclipse.org
-Require-Bundle: org.eclipse.swtbot.go,
+Require-Bundle: org.eclipse.swtbot.go;bundle-version="4.0.0",
+ org.slf4j.api,
  org.eclipse.cdt.core
 Fragment-Host: org.eclipse.linuxtools.changelog.core
 Import-Package: org.eclipse.core.resources,
