@@ -6,7 +6,7 @@
 	}
   agent {
     kubernetes {
-      label 'linuxtools-buildtest-pod-' + env.BUILD_NUMBER
+      label 'linuxtools-buildtest-pod'
       defaultContainer 'jnlp'
       yaml """
 apiVersion: v1
