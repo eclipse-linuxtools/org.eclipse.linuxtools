@@ -51,7 +51,7 @@ spec:
   }
   environment {
         MAVEN_OPTS = "-Xmx2G"
-        JAVA_HOME = "/usr/lib/jvm/java-11-openjdk"
+        JAVA_HOME = "/usr/lib/jvm/java-17-openjdk"
   }
 	stages {
 		stage('Prepare-environment') {
