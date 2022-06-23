@@ -15,7 +15,7 @@ podman login docker.io
 * Deploy
 
 ```
-podman push docker.io/USER_NAME/linuxtools-build-test-dependencies
+podman push IMAGE_ID docker.io/USER_NAME/linuxtools-build-test-dependencies
 ```
 
 **Note:**
