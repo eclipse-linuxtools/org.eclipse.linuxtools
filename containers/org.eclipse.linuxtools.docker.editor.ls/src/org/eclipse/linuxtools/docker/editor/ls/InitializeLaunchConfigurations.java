@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat Inc. and others.
+ * Copyright (c) 2016, 2022 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -33,7 +33,7 @@ public class InitializeLaunchConfigurations {
 		}
 
 		String res = null;
-		String[] command = new String[] { "/bin/bash", "-c", "which node" };
+		String[] command = { "/bin/bash", "-c", "which node" };
 		if (Platform.getOS().equals(Platform.OS_WIN32)) {
 			command = new String[] { "cmd", "/c", "where node" };
 		}

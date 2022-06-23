@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Red Hat Inc. and others.
+ * Copyright (c) 2019, 2022 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -76,15 +76,13 @@ public class TestLanguageServers {
 		ITextEditor editor = (ITextEditor) IDE
 				.openEditor(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(), file, "org.eclipse.ui.genericeditor.GenericEditor");
 		editor.getDocumentProvider().getDocument(editor.getEditorInput()).set("MAINTAINER alex");
-		assertTrue("Diagnostic not published", new DisplayHelper() {
-			@Override
-			protected boolean condition() {
-				try {
-					return file.findMarkers("org.eclipse.lsp4e.diagnostic", true, IResource.DEPTH_ZERO).length != 0;
-				} catch (CoreException e) {
-					return false;
-				}
-			}
-		}.waitForCondition(PlatformUI.getWorkbench().getDisplay(), 5000));
+		assertTrue("Diagnostic not published",
+				DisplayHelper.waitForCondition(PlatformUI.getWorkbench().getDisplay(), 5000, () -> {
+					try {
+						return file.findMarkers("org.eclipse.lsp4e.diagnostic", true, IResource.DEPTH_ZERO).length != 0;
+					} catch (CoreException e) {
+						return false;
+					}
+				}));
 	}
 }

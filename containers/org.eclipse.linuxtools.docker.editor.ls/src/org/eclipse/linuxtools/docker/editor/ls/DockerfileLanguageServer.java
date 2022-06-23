@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2017 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2017, 2022 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -20,13 +20,13 @@ import org.eclipse.lsp4e.server.ProcessStreamConnectionProvider;
 
 public class DockerfileLanguageServer extends ProcessStreamConnectionProvider {
 
-	final static String PATH = "/language-server/node_modules/dockerfile-language-server-nodejs/lib/server.js"; //$NON-NLS-1$
+	static final String PATH = "/language-server/node_modules/dockerfile-language-server-nodejs/lib/server.js"; //$NON-NLS-1$
 
 	public DockerfileLanguageServer() {
-		List<String> command = new ArrayList<> ();
+		List<String> command = new ArrayList<>();
 		try {
 			URL url = FileLocator.toFileURL(getClass().getResource(PATH));
-			String resourcePath = new File (url.getPath()).getAbsolutePath();
+			String resourcePath = new File(url.getPath()).getAbsolutePath();
 			String nodePath = InitializeLaunchConfigurations.getNodeJsLocation();
 			if (nodePath != null) {
 				command.add(nodePath);
