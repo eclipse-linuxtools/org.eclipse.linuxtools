@@ -219,10 +219,44 @@ public interface IDockerConnection {
 	 */
 	List<IDockerImage> listImages() throws DockerException;
 
+	/**
+	 * Pull an image from the registry
+	 *
+	 * @param id
+	 *            The image to pull
+	 * @param handler
+	 *            A progress handler that gets called on Progress
+	 * @throws DockerOperationCancelledException
+	 *             If the progress handler throws an
+	 *             {@link DockerOperationCancelledException}. Note that
+	 *             DockerOperationCancelledException is a child of
+	 *             DockerException.
+	 * @throws DockerException
+	 *             In case of an error
+	 * @throws InterruptedException
+	 *             If the thread is interrupted
+	 */
 	void pullImage(String id, IDockerProgressHandler handler)
 			throws DockerException, InterruptedException;
 
 	/**
+	 * Pull an image from the registry
+	 *
+	 * @param id
+	 *            The image to pull
+	 * @param info
+	 *            Account information needed to log into the registry
+	 * @param handler
+	 *            A progress handler that gets called on Progress
+	 * @throws DockerOperationCancelledException
+	 *             If the progress handler throws an
+	 *             {@link DockerOperationCancelledException}. Note that
+	 *             DockerOperationCancelledException is a child of
+	 *             DockerException.
+	 * @throws DockerException
+	 *             In case of an error
+	 * @throws InterruptedException
+	 *             If the thread is interrupted
 	 * @since 2.0
 	 */
 	void pullImage(String id, IRegistryAccount info,
