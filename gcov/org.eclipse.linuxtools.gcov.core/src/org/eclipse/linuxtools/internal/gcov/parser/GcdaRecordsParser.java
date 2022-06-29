@@ -35,6 +35,7 @@ public class GcdaRecordsParser {
     private static final int GCOV_TAG_PROGRAM_SUMMARY = 0xa3000000;
 
 	private static final int GCC_VER_900 = 1094266922; // GCC 9.0.0 ('A90*')
+	private static final int GCC_VER_1210 = 1110585632;// GCC 12.1.0 ('B21*')
 
 
     private final ArrayList<GcnoFunction> fnctns;
@@ -54,6 +55,7 @@ public class GcdaRecordsParser {
     public void parseGcdaRecord(DataInput stream) throws IOException, CoreException {
         // header data
         int magic = 0;
+		boolean readBytes = false;
 
         // data & flags to process tests
         GcnoFunction currentFnctn = null;
@@ -80,6 +82,10 @@ public class GcdaRecordsParser {
         // read stamp
         // stamp = stream.readInt();
         stream.readInt();
+		if (version >= GCC_VER_1210) {
+			stream.readInt(); // checksum
+			readBytes = true;
+		}
 
         while (true) {
             try {

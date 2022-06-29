@@ -17,11 +17,11 @@ import java.io.IOException;
 
 public class GcovStringReader {
 
-    public static String readString(DataInput stream) throws IOException {
+	public static String readString(DataInput stream, boolean readBytes) throws IOException {
         String res = Messages.GcovStringReader_null_string;
         long length = stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK;
         if (length != 0) {
-            int ln = ((int) length) << 2;
+			int ln = readBytes ? (int) length : ((int) length) << 2;
             byte[] name = new byte[ln];
             stream.readFully(name);
 			StringBuilder sb = new StringBuilder();

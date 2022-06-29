@@ -38,6 +38,7 @@ public class GcnoRecordsParser {
 
     private static final int GCC_VER_810 = 1094201642; // GCC 8.1.0 ('A81*')
 	private static final int GCC_VER_910 = 1094267178; // GCC 9.1.0 ('A91*')
+	private static final int GCC_VER_1210 = 1110585632;// GCC 12.1.0 ('B21*')
     private static final int GCC_VER_407 = 875575082; // GCC 4.0.7
 
     private GcnoFunction fnctn = null;
@@ -69,6 +70,7 @@ public class GcnoRecordsParser {
         SourceFile source = null;
         // flag
         boolean parseFirstFnctn = false;
+		boolean readBytes = false;
 
         magic = stream.readInt();
         if (magic == GCOV_NOTE_MAGIC) {
@@ -89,8 +91,13 @@ public class GcnoRecordsParser {
         // stamp = stream.readInt();
         stream.readInt();
 
+		if (version >= GCC_VER_1210) {
+			stream.readInt(); // checksum
+			readBytes = true;
+		}
+
 		if (version >= GCC_VER_910) {
-			GcovStringReader.readString(stream); // cwd
+			GcovStringReader.readString(stream, readBytes); // cwd
 		}
 
 		if (version >= GCC_VER_810) {
@@ -108,6 +115,9 @@ public class GcnoRecordsParser {
                 // parse header
 				tag = stream.readInt();
                 int length = stream.readInt();
+				if (length < 0) {
+					length = 0;
+				}
 
                 // parse gcno data
                 if (tag == GCOV_TAG_FUNCTION) {
@@ -128,12 +138,12 @@ public class GcnoRecordsParser {
                         // long cfgChksm = (stream.readInt()&MasksGenerator.UNSIGNED_INT_MASK);
                         stream.readInt();
                     }
-                    String fnctnName = GcovStringReader.readString(stream);
+					String fnctnName = GcovStringReader.readString(stream, readBytes);
                     if (version >= GCC_VER_810) {
                         // long artificial = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
                         stream.readInt();
                     }
-                    String fnctnSrcFle = GcovStringReader.readString(stream);
+					String fnctnSrcFle = GcovStringReader.readString(stream, readBytes);
                     long fnctnFrstLnNmbr = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
                     if (version >= GCC_VER_810) {
 						// long fnctnFrstColumnNmbr = (stream.readInt() &
@@ -178,7 +188,7 @@ public class GcnoRecordsParser {
                     continue;
 				} else if (fnctn != null && tag == GCOV_TAG_ARCS) {
                     int srcBlockIndice = stream.readInt();
-                    int nmbrArcs = (length - 1) / 2;
+					int nmbrArcs = readBytes ? ((length >> 2) - 1) / 2 : (length - 1) / 2;
                     ArrayList<Arc> arcs = new ArrayList<>(nmbrArcs);
 
                     for (int i = 0; i < nmbrArcs; i++) {
@@ -252,7 +262,7 @@ public class GcnoRecordsParser {
                                 source.setNumLines((int) lineNumber + 1);
                             }
                         } else {
-                            String fileName = GcovStringReader.readString(stream);
+							String fileName = GcovStringReader.readString(stream, readBytes);
                             if (fileName.equals(Messages.GcnoRecordsParser_null_string)){
                                 break;
                             }
@@ -272,7 +282,7 @@ public class GcnoRecordsParser {
 						currentTag = 0;
 					}
 					// must skip data according to tag length (4 byte chunks) to get to next tag
-					stream.skipBytes(length << 2);
+					stream.skipBytes(readBytes ? length : length << 2);
 				}
             } catch (EOFException e) {
                 fnctn.setFunctionBlocks(blocks);
