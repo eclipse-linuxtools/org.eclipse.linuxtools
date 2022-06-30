@@ -34,7 +34,8 @@ int main() {
 		a.c();
 	}
 	else {
-		execv("../cpptest/Debug/cpptest", NULL);
+                char *params[2] = {(char *)"cpptest", NULL};
+		execv("../cpptest/Debug/cpptest", params);
 		perror("execv");
 	}
 	return 0;
