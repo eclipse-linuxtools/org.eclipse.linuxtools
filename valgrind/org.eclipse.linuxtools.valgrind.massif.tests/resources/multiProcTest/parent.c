@@ -13,7 +13,8 @@ int main() {
 		free(c);
 	}
 	else {
-		execv("../alloctest/Debug/alloctest", NULL);
+                char *params[2] = {(char *)"alloctest", NULL};
+		execv("../alloctest/Debug/alloctest", params);
 		perror("execv");
 	}
 	return 0;
