@@ -14,6 +14,17 @@ package org.eclipse.linuxtools.docker.core;
 
 public interface IDockerProgressHandler {
 
+	/**
+	 * To cancel the the current operation a
+	 * {@link DockerOperationCancelledException} should be thrown. This is
+	 * currently only supported by pullImage().
+	 *
+	 * @param message
+	 *            The progress message
+	 * @throws DockerException
+	 *             If an exception is thrown the current operation is normally
+	 *             terminated
+	 */
 	void processMessage(IDockerProgressMessage message) throws DockerException;
 
 }

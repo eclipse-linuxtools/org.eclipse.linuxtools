@@ -57,13 +57,13 @@ import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.DockerContainerNotFoundException;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.DockerOpenConnectionException;
+import org.eclipse.linuxtools.docker.core.DockerOperationCancelledException;
 import org.eclipse.linuxtools.docker.core.DockerPingConnectionException;
 import org.eclipse.linuxtools.docker.core.EnumDockerConnectionState;
 import org.eclipse.linuxtools.docker.core.EnumDockerLoggingStatus;
 import org.eclipse.linuxtools.docker.core.IDockerConfParameter;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
-import org.eclipse.linuxtools.docker.core.IDockerConnection2;
-import org.eclipse.linuxtools.docker.core.IDockerConnection3;
+import org.eclipse.linuxtools.docker.core.IDockerConnection4;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionInfo;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionManagerListener;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
@@ -137,8 +137,8 @@ import org.mandas.docker.client.messages.VolumeList;
  *
  */
 public class DockerConnection
-		implements IDockerConnection, IDockerConnection2, IDockerConnection3,
-		Closeable {
+		// IDockerConnection4 includes all the previous IDockerConnections
+		implements IDockerConnection4, Closeable {
 
 	// Builder allowing different binding modes (unix socket vs TCP connection)
 	public static class Builder {
@@ -1219,7 +1219,13 @@ public class DockerConnection
 	@Override
 	public IDockerProgressHandler getDefaultPullImageProgressHandler(
 			String image) {
-		return new DefaultImagePullProgressHandler(this, image);
+		return new DefaultImagePullProgressHandler(this, image, null);
+	}
+
+	@Override
+	public IDockerProgressHandler getDefaultPullImageProgressHandler(
+			String image, IProgressMonitor monitor) {
+		return new DefaultImagePullProgressHandler(this, image, monitor);
 	}
 
 	@Override
@@ -1228,30 +1234,34 @@ public class DockerConnection
 		return new DefaultImagePushProgressHandler(this, image);
 	}
 
-	@Override
-	public void pullImage(final String id, final IDockerProgressHandler handler)
-			throws DockerException, InterruptedException {
+	private void pullImage(final String image, final DockerClient clt,
+			final IDockerProgressHandler pgh)
+			throws InterruptedException, DockerException {
 		try {
-			DockerProgressHandler d = new DockerProgressHandler(handler);
-			client.pull(id, d);
+			clt.pull(image, new DockerProgressHandler(pgh));
 			listImages();
 		} catch (org.mandas.docker.client.exceptions.DockerException e) {
+			for (Throwable t = e; t != null; t = t.getCause()) {
+				if (t instanceof DockerOperationCancelledException) {
+					throw new DockerOperationCancelledException(e);
+				}
+			}
 			throw new DockerException(e);
 		}
 	}
 
 	@Override
+	public void pullImage(final String id, final IDockerProgressHandler handler)
+			throws DockerException, InterruptedException {
+		pullImage(id, client, handler);
+	}
+
+	@Override
 	public void pullImage(final String imageId, final IRegistryAccount info, final IDockerProgressHandler handler)
 			throws DockerException, InterruptedException, DockerCertificateException {
-		try {
-			final DockerClient client = dockerClientFactory
-					.getClient(this.connectionSettings, info);
-			final DockerProgressHandler d = new DockerProgressHandler(handler);
-			client.pull(imageId, d);
-			listImages();
-		} catch (org.mandas.docker.client.exceptions.DockerException e) {
-			throw new DockerException(e);
-		}
+		final DockerClient client = dockerClientFactory
+				.getClient(this.connectionSettings, info);
+			pullImage(imageId, client, handler);
 	}
 
 	@Override

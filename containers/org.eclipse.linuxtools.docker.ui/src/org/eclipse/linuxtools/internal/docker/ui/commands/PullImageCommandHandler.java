@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.docker.core.AbstractRegistry;
 import org.eclipse.linuxtools.docker.core.DockerException;
+import org.eclipse.linuxtools.docker.core.DockerOperationCancelledException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IRegistryAccount;
 import org.eclipse.linuxtools.docker.ui.wizards.ImageSearch;
@@ -74,43 +75,37 @@ public class PullImageCommandHandler extends AbstractHandler {
 		return null;
 	}
 
-	private void performPullImage(final IDockerConnection connection,
-			final String imageName, final AbstractRegistry registry) {
-		final Job pullImageJob = new Job(DVMessages
-				.getFormattedString(PULL_IMAGE_JOB_TITLE, imageName)) {
+	private void performPullImage(final IDockerConnection connection, final String imageName,
+			final AbstractRegistry registry) {
+		final Job pullImageJob = new Job(DVMessages.getFormattedString(PULL_IMAGE_JOB_TITLE, imageName)) {
 
 			@Override
 			protected IStatus run(final IProgressMonitor monitor) {
-				monitor.beginTask(DVMessages.getString(PULL_IMAGE_JOB_TASK),
-						IProgressMonitor.UNKNOWN);
+				final DockerConnection dconn = (DockerConnection) connection;
+				monitor.beginTask(DVMessages.getString(PULL_IMAGE_JOB_TASK), IProgressMonitor.UNKNOWN);
 				// pull the image and let the progress
 				// handler refresh the images when done
 				try {
 					if (registry == null || registry.isDockerHubRegistry()) {
-						((DockerConnection) connection).pullImage(imageName,
-								new DefaultImagePullProgressHandler(connection,
-										imageName));
+						dconn.pullImage(imageName, new DefaultImagePullProgressHandler(connection, imageName, monitor));
 					} else {
-						String fullImageName = registry.getServerHost() + '/'
-								+ imageName;
+						String fullImageName = registry.getServerHost() + '/' + imageName;
 						if (registry instanceof IRegistryAccount) {
 							IRegistryAccount account = (IRegistryAccount) registry;
-							((DockerConnection) connection).pullImage(fullImageName,
-									account, new DefaultImagePullProgressHandler(
-											connection, fullImageName));
+							dconn.pullImage(fullImageName, account,
+									new DefaultImagePullProgressHandler(connection, fullImageName, monitor));
 						} else {
-							((DockerConnection) connection).pullImage(fullImageName,
-									new DefaultImagePullProgressHandler(connection,
-											fullImageName));
+							dconn.pullImage(fullImageName,
+									new DefaultImagePullProgressHandler(connection, fullImageName, monitor));
 						}
 					}
+				} catch (final DockerOperationCancelledException e) {
+					// Cancelled by user. Do nothing
 				} catch (final DockerException e) {
-					Display.getDefault().syncExec(() -> MessageDialog.openError(
-							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-									.getShell(),
-							DVMessages.getFormattedString(ERROR_PULLING_IMAGE,
-									imageName),
-							e.getMessage()));
+						Display.getDefault()
+								.syncExec(() -> MessageDialog.openError(
+										PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+										DVMessages.getFormattedString(ERROR_PULLING_IMAGE, imageName), e.getMessage()));
 					// for now
 				} catch (InterruptedException | DockerCertificateException e) {
 					// do nothing

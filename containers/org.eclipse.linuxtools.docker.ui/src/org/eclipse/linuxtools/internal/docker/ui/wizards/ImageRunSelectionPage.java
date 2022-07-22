@@ -71,6 +71,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.docker.core.AbstractRegistry;
 import org.eclipse.linuxtools.docker.core.DockerException;
+import org.eclipse.linuxtools.docker.core.DockerOperationCancelledException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
@@ -948,7 +949,9 @@ public class ImageRunSelectionPage extends WizardPage {
 				try {
 					connection.pullImage(imageName,
 							new DefaultImagePullProgressHandler(connection,
-									imageName));
+									imageName, monitor));
+				} catch (final DockerOperationCancelledException e) {
+					// Cancelled by user. Do nothing
 				} catch (final DockerException e) {
 					Display.getDefault().syncExec(() -> MessageDialog.openError(
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
