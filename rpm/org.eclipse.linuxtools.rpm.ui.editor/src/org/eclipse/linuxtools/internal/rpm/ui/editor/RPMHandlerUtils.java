@@ -46,7 +46,7 @@ public class RPMHandlerUtils {
 
 	/**
 	 * Extract the IResource that was selected when the event was fired.
-	 * 
+	 *
 	 * @param event The fired execution event.
 	 * @return The resource that was selected.
 	 */
@@ -75,8 +75,7 @@ public class RPMHandlerUtils {
 			Object element = ((IStructuredSelection) selection).getFirstElement();
 			if (element instanceof IResource) {
 				return (IResource) element;
-			} else if (element instanceof IAdaptable) {
-				IAdaptable adaptable = (IAdaptable) element;
+			} else if (element instanceof IAdaptable adaptable) {
 				return adaptable.getAdapter(IResource.class);
 			} else {
 				return null;
@@ -87,7 +86,7 @@ public class RPMHandlerUtils {
 
 	/**
 	 * Get an RPMProject for the resource creating a new instance to an RPMProject.
-	 * 
+	 *
 	 * @param resource The resource to check its parent project.
 	 * @return The RPMProject of the resource passed in.
 	 */

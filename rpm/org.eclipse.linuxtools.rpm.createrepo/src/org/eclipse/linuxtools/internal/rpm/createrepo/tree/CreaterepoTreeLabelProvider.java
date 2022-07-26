@@ -26,8 +26,7 @@ public class CreaterepoTreeLabelProvider extends LabelProvider {
 
     @Override
     public String getText(Object element) {
-        if (element instanceof CreaterepoTreeCategory) {
-            CreaterepoTreeCategory category = (CreaterepoTreeCategory) element;
+        if (element instanceof CreaterepoTreeCategory category) {
             return category.getName();
         }
         return element.toString();

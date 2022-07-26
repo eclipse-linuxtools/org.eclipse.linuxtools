@@ -39,54 +39,39 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 	@Override
 	public boolean hasResolutions(IMarker marker) {
 		String rpmlintErrorId = getRpmlintErrorId(marker);
-		if (rpmlintErrorId.equals(SetupNotQuiet.ID)) {
-			return true;
-		} else if (rpmlintErrorId.equals(PatchNotApplied.ID)) {
-			return true;
-		} else if (rpmlintErrorId.equals(NoBuildSection.ID)) {
-			return true;
-		} else if (rpmlintErrorId.equals(MacroInChangelog.ID)) {
-			return true;
-		} else if (rpmlintErrorId.equals(RpmBuildrootUsage.ID)) {
-			return true;
-		} else if (rpmlintErrorId.equals(HardcodedPrefixTag.ID)) {
-			return true;
-		} else if (rpmlintErrorId.equals(HardcodedPackagerTag.ID)) {
-			return true;
-		} else if (rpmlintErrorId.equals(NoPrepSection.ID)) {
-			return true;
-		} else if (rpmlintErrorId.equals(NoInstallSection.ID)) {
-			return true;
-		}
-
-		return false;
+		return switch (rpmlintErrorId) {
+		case SetupNotQuiet.ID, PatchNotApplied.ID, NoBuildSection.ID, MacroInChangelog.ID, RpmBuildrootUsage.ID,
+				HardcodedPrefixTag.ID, HardcodedPackagerTag.ID, NoPrepSection.ID, NoInstallSection.ID ->
+			true;
+		default -> false;
+		};
 	}
 
 	@Override
 	public IMarkerResolution[] getResolutions(IMarker marker) {
 		List<IMarkerResolution> resolutions = new ArrayList<>();
 		String rpmlintErrorId = getRpmlintErrorId(marker);
-		if (rpmlintErrorId.equals(SetupNotQuiet.ID)) {
+		if (SetupNotQuiet.ID.equals(rpmlintErrorId)) {
 			resolutions.add(new SetupNotQuiet());
-		} else if (rpmlintErrorId.equals(PatchNotApplied.ID)) {
+		} else if (PatchNotApplied.ID.equals(rpmlintErrorId)) {
 			resolutions.add(new PatchNotApplied());
-		} else if (rpmlintErrorId.equals(NoBuildSection.ID)) {
+		} else if (NoBuildSection.ID.equals(rpmlintErrorId)) {
 			resolutions.add(new NoBuildSection());
-		} else if (rpmlintErrorId.equals(MacroInChangelog.ID)) {
+		} else if (MacroInChangelog.ID.equals(rpmlintErrorId)) {
 			resolutions.add(new MacroInChangelog());
-		} else if (rpmlintErrorId.equals(RpmBuildrootUsage.ID)) {
+		} else if (RpmBuildrootUsage.ID.equals(rpmlintErrorId)) {
 			resolutions.add(new RpmBuildrootUsage());
-		} else if (rpmlintErrorId.equals(HardcodedPrefixTag.ID)) {
+		} else if (HardcodedPrefixTag.ID.equals(rpmlintErrorId)) {
 			resolutions.add(new HardcodedPrefixTag());
-		} else if (rpmlintErrorId.equals(HardcodedPackagerTag.ID)) {
+		} else if (HardcodedPackagerTag.ID.equals(rpmlintErrorId)) {
 			resolutions.add(new HardcodedPackagerTag());
-		} else if (rpmlintErrorId.equals(NoPrepSection.ID)) {
+		} else if (NoPrepSection.ID.equals(rpmlintErrorId)) {
 			resolutions.add(new NoPrepSection());
-		} else if (rpmlintErrorId.equals(NoInstallSection.ID)) {
+		} else if (NoInstallSection.ID.equals(rpmlintErrorId)) {
 			resolutions.add(new NoInstallSection());
 		}
 
-		return resolutions.toArray(new IMarkerResolution[resolutions.size()]);
+		return resolutions.toArray(IMarkerResolution[]::new);
 	}
 
 	/**

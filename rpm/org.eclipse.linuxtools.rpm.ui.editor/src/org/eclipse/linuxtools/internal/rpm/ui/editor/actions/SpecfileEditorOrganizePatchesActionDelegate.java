@@ -25,8 +25,8 @@ public class SpecfileEditorOrganizePatchesActionDelegate extends AbstractHandler
 	@Override
 	public Object execute(ExecutionEvent event) {
 		IEditorPart editor = HandlerUtil.getActiveEditor(event);
-		if (editor instanceof SpecfileEditor) {
-			Specfile specfile = ((SpecfileEditor) editor).getSpecfile();
+		if (editor instanceof SpecfileEditor specEditor) {
+			Specfile specfile = specEditor.getSpecfile();
 			if (specfile != null) {
 				specfile.organizePatches();
 			}

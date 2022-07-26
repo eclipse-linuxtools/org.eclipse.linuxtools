@@ -85,7 +85,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 
 	private void visitAndMarkRpmlintItems(IProgressMonitor monitor, List<RpmlintItem> rpmlintItems)
 			throws CoreException {
-		if (rpmlintItems.size() > 0) {
+		if (!rpmlintItems.isEmpty()) {
 			checkCancel(monitor);
 			monitor.worked(70);
 			monitor.setTaskName(Messages.RpmlintBuilder_2);
