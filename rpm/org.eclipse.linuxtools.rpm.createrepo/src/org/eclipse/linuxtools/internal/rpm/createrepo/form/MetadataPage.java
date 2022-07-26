@@ -165,8 +165,7 @@ public class MetadataPage extends FormPage {
         // expand or shrink a category
         tagsTreeViewer.addDoubleClickListener(event -> {
 		    IStructuredSelection selection = tagsTreeViewer.getStructuredSelection();
-		    if (selection.getFirstElement() instanceof CreaterepoTreeCategory) {
-		        CreaterepoTreeCategory category = (CreaterepoTreeCategory) selection.getFirstElement();
+		    if (selection.getFirstElement() instanceof CreaterepoTreeCategory category) {
 		        tagsTreeViewer.setExpandedState(category, !tagsTreeViewer.getExpandedState(category));
 		    }
 		});
@@ -199,8 +198,7 @@ public class MetadataPage extends FormPage {
     private void refreshTree() {
         // expand categories with no tags under them to remove expand button
         for (TreeItem treeItem : tagsTree.getItems()) {
-            if (treeItem.getData() instanceof CreaterepoTreeCategory) {
-                CreaterepoTreeCategory category = (CreaterepoTreeCategory) treeItem.getData();
+            if (treeItem.getData() instanceof CreaterepoTreeCategory category) {
                 if (category.getTags().isEmpty()) {
                     tagsTreeViewer.expandToLevel(category, 1);
                     tagsTreeViewer.update(category, null);
@@ -316,31 +314,30 @@ public class MetadataPage extends FormPage {
         return preferenceToSave;
     }
 
-    /**
-     * Method to add the tag from the tag text field to the category in the tree.
-     * Used by the "Add" button and the default operation when ENTER is pressed while
-     * in the tag text field.
-     */
-    private void addTag() {
-        IStructuredSelection selection = tagsTreeViewer.getStructuredSelection();
-        if (selection.getFirstElement() instanceof CreaterepoTreeCategory) {
-            CreaterepoTreeCategory category = (CreaterepoTreeCategory) selection.getFirstElement();
-            String text = tagTxt.getText().trim();
-            if (!text.isEmpty()) {
-                category.addTag(text);
-                tagsTreeViewer.refresh(category, false);
-                tagsTreeViewer.setExpandedState(category, true);
-                tagTxt.setText(ICreaterepoConstants.EMPTY_STRING);
-                String preferenceToSave = preparePreferenceTag(category);
-                savePreferences(category.getName(), preferenceToSave);
-            }
-        }
-    }
 
     /**
      * Handle the add button execution on the Metadata page.
      */
     private class AddTagButtonListener extends SelectionAdapter {
+    	/**
+    	 * Method to add the tag from the tag text field to the category in the tree.
+    	 * Used by the "Add" button and the default operation when ENTER is pressed while
+    	 * in the tag text field.
+    	 */
+    	private void addTag() {
+    		IStructuredSelection selection = tagsTreeViewer.getStructuredSelection();
+    		if (selection.getFirstElement() instanceof CreaterepoTreeCategory category) {
+    			String text = tagTxt.getText().trim();
+    			if (!text.isEmpty()) {
+    				category.addTag(text);
+    				tagsTreeViewer.refresh(category, false);
+    				tagsTreeViewer.setExpandedState(category, true);
+    				tagTxt.setText(ICreaterepoConstants.EMPTY_STRING);
+    				String preferenceToSave = preparePreferenceTag(category);
+    				savePreferences(category.getName(), preferenceToSave);
+    			}
+    		}
+    	}
         @Override
         public void widgetSelected(SelectionEvent e) {
             addTag();

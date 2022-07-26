@@ -65,8 +65,7 @@ public class SpecfileDocumentProvider extends TextFileDocumentProvider {
 
 	@Override
 	public boolean canSaveDocument(Object element) {
-		if (element instanceof FileStoreEditorInput) {
-			FileStoreEditorInput fei = (FileStoreEditorInput) element;
+		if (element instanceof FileStoreEditorInput fei) {
 			IDocument doc = getDocument(element);
 			if (!super.canSaveDocument(element)) {
 				return false;

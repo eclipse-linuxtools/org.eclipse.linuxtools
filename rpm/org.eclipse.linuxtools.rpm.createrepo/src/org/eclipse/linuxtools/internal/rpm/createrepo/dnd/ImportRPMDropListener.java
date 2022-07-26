@@ -67,8 +67,7 @@ public class ImportRPMDropListener extends ViewerDropAdapter {
     @Override
     public boolean performDrop(Object data) {
         // data should be an array of paths to the file being transferred
-        if (data instanceof String[]) {
-            String[] dragData = (String[]) data;
+        if (data instanceof String[] dragData) {
             for (String str : dragData) {
                 IPath path = new Path(str);
                 try {

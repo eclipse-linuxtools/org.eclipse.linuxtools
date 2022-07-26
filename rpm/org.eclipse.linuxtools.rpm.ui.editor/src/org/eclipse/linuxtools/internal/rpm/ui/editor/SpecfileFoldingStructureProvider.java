@@ -113,7 +113,7 @@ public class SpecfileFoldingStructureProvider {
 		Set<Position> regions = new HashSet<>();
 		// add folding on the preamble section
 		Position position;
-		if (elements.size() > 0) {
+		if (!elements.isEmpty()) {
 			SpecfileElement element = elements.get(0);
 			position = new Position(0, element.getLineStartPosition() - 1);
 			regions.add(position);

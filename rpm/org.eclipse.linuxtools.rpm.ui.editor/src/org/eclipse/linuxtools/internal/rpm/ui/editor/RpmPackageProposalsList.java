@@ -20,6 +20,7 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class RpmPackageProposalsList {
 		int rpmpkgsMaxProposals = store.getInt(PreferenceConstants.P_RPM_LIST_MAX_PROPOSALS);
 		List<String[]> proposalsList = new ArrayList<>(list.size());
 		for (String listValue : list) {
-			String item[] = new String[2];
+			String[] item = new String[2];
 			item[0] = listValue;
 			String message = Messages.RpmPackageProposalsList_0 + rpmpkgsMaxProposals
 					+ Messages.RpmPackageProposalsList_1;
@@ -110,11 +111,7 @@ public class RpmPackageProposalsList {
 		}
 		// Create encoder and decoder
 		CharsetDecoder decoder = Charset.forName(System.getProperty("file.encoding")).newDecoder(); //$NON-NLS-1$
-		/*
-		 * TODO: Jcharset may be used to detect the inputstream encoding if it's
-		 * required? http://jchardet.sourceforge.net
-		 */
-		CharsetEncoder encoder = Charset.forName("ISO-8859-1").newEncoder(); //$NON-NLS-1$
+		CharsetEncoder encoder = StandardCharsets.ISO_8859_1.newEncoder();
 		try {
 			ByteBuffer bbuf = encoder.encode(CharBuffer.wrap(ret));
 			CharBuffer cbuf = decoder.decode(bbuf);

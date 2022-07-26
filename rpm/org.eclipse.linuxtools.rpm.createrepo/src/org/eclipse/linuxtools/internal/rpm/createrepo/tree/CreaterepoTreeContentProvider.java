@@ -39,8 +39,7 @@ public class CreaterepoTreeContentProvider implements ITreeContentProvider {
 
     @Override
     public Object[] getChildren(Object parentElement) {
-        if (parentElement instanceof CreaterepoTreeCategory) {
-            CreaterepoTreeCategory category = (CreaterepoTreeCategory) parentElement;
+        if (parentElement instanceof CreaterepoTreeCategory category) {
             return category.getTags().toArray();
         }
         return null;
@@ -53,8 +52,7 @@ public class CreaterepoTreeContentProvider implements ITreeContentProvider {
 
     @Override
     public boolean hasChildren(Object element) {
-        if (element instanceof CreaterepoTreeCategory) {
-            CreaterepoTreeCategory category = (CreaterepoTreeCategory) element;
+        if (element instanceof CreaterepoTreeCategory category) {
             // category has children if ! empty
             return !category.getTags().isEmpty();
         }

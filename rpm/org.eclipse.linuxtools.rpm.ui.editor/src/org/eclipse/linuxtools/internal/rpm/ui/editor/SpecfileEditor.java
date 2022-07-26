@@ -109,8 +109,7 @@ public class SpecfileEditor extends TextEditor {
 	 * @return a <code>IFile</code> or <code>null</code>.
 	 */
 	protected IFile getInputFile() {
-		if (input instanceof IFileEditorInput) {
-			IFileEditorInput ife = (IFileEditorInput) input;
+		if (input instanceof IFileEditorInput ife) {
 			return ife.getFile();
 		}
 		return null;

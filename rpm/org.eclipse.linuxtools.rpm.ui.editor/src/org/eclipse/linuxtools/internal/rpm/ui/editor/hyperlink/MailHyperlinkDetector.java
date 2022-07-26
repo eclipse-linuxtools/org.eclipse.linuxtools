@@ -92,10 +92,8 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 			mail = mail.replaceAll("(?i)_dot_", "."); //$NON-NLS-1$ //$NON-NLS-2$
 
 			mail = mail.replaceAll(" +", " "); //$NON-NLS-1$ //$NON-NLS-2$
-			if (mail.split(" ").length == 3) { //$NON-NLS-1$
-				if (mail.indexOf('@') == -1) {
-					mail = mail.replaceFirst(" ", "@").replaceFirst(" ", "."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-				}
+			if (mail.split(" ").length == 3 && mail.indexOf('@') == -1) {
+				mail = mail.replaceFirst(" ", "@").replaceFirst(" ", "."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			}
 			mail = mail.replace(" ", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -210,8 +208,7 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 		// Get current selection
 		IDocument document = editor.getAdapter(IDocument.class);
 		ISelection currentSelection = editor.getSpecfileSourceViewer().getSelection();
-		if (currentSelection instanceof ITextSelection) {
-			ITextSelection selection = (ITextSelection) currentSelection;
+		if (currentSelection instanceof ITextSelection selection) {
 			try {
 				String txt = selection.getText();
 				if (txt.trim().length() > 0) {

@@ -169,9 +169,8 @@ public class RPMBuild {
 		rmtCmdLauncher = rmtProxyMgr.getLauncher(new URI(mainFolder));
 
 		command.add(specFile.getLocationURI().getPath());
-		String empty[] = {};
 		Process pProxy = rmtCmdLauncher.execute(Path.fromOSString(rpmBuildCmd),
-				command.toArray(new String[command.size()]), empty, null, new NullProgressMonitor());
+				command.toArray(new String[command.size()]), new String[]{}, null, new NullProgressMonitor());
 
 		if (pProxy != null) {
 			return Utils.watchProcess(outStream, pProxy);

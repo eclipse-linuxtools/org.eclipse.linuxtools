@@ -79,8 +79,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 		if (changelog == null) {
 			changelog = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		}
-		if (changelog instanceof SpecfileEditor) {
-			SpecfileEditor specEditor = (SpecfileEditor) changelog;
+		if (changelog instanceof SpecfileEditor specEditor) {
 			return specEditor.getSpecfile();
 		}
 		return null;
@@ -100,8 +99,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 	@Override
 	public String mergeChangelog(String dateLine, String functionGuess, String defaultContent, IEditorPart changelog,
 			String changeLogLocation, String fileLocation) {
-		if (changelog instanceof SpecfileEditor) {
-			SpecfileEditor specEditor = (SpecfileEditor) changelog;
+		if (changelog instanceof SpecfileEditor specEditor) {
 			IDocument doc = specEditor.getDocumentProvider().getDocument(specEditor.getEditorInput());
 			String[] positionCategories = doc.getPositionCategories();
 			String contentTypesPositionCategory = null;

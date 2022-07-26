@@ -73,7 +73,6 @@ public class SpecCompletionProposal implements ICompletionProposal, ICompletionP
 
 	@Override
 	public String getAdditionalProposalInfo() {
-		System.out.println(fAdditionalProposalInfo);
 		return fAdditionalProposalInfo;
 	}
 

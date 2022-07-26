@@ -46,7 +46,7 @@ public class SpecfilePackageContainer extends SpecfileElement {
 
 	@Override
 	public int getLineStartPosition() {
-		if ((packages == null) || (packages.size() == 0)) {
+		if (packages == null || packages.isEmpty()) {
 			return 0;
 		}
 
@@ -97,7 +97,7 @@ public class SpecfilePackageContainer extends SpecfileElement {
 	}
 
 	public boolean hasChildren() {
-		if (packages != null && packages.size() > 0) {
+		if (packages != null && !packages.isEmpty()) {
 			return true;
 		}
 		return false;

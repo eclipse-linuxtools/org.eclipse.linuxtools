@@ -173,8 +173,7 @@ public class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	 */
 	private String getWordAtSelection(ISelection selection, IDocument document) throws BadLocationException {
 		String word;
-		if (selection instanceof ITextSelection) {
-			ITextSelection ts = (ITextSelection) selection;
+		if (selection instanceof ITextSelection ts) {
 			int offset = ts.getOffset();
 			int end = offset + ts.getLength();
 
