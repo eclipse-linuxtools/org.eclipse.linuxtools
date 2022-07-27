@@ -116,8 +116,8 @@ public class HttpHijackWorkaround {
 		Object res = getInternalField(stream, list, bundles);
 		if (res instanceof WritableByteChannel) {
 			return (WritableByteChannel) res;
-		} else if (res != null && res.getClass().getCanonicalName()
-				.equals("java.net.Socket.SocketInputStream")) { //$NON-NLS-1$
+		} else if (res != null && "java.net.Socket.SocketInputStream" //$NON-NLS-1$
+				.equals(res.getClass().getCanonicalName())) {
 			// if we are here, we are Java 13 or higher and have to use an
 			// alternate field reflection to get the socket
 			List<String[]> list2 = new LinkedList<>();
