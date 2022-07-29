@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Red Hat, Inc.
+ * Copyright (c) 2017, 2022 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.linuxtools.docker.integration.tests.container.VolumeMountTest;
 import org.eclipse.linuxtools.docker.integration.tests.mock.MockUtils;
