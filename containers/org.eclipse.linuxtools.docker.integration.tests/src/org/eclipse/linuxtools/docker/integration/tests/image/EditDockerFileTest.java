@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Red Hat, Inc.
+ * Copyright (c) 2017, 2022 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,7 +18,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.lang.StringUtils;
+import org.eclipse.linuxtools.docker.integration.tests.StringUtils;
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerImagesTab;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;

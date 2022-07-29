@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017,2020 Red Hat, Inc.
+ * Copyright (c) 2017,2022 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,7 +15,7 @@ package org.eclipse.linuxtools.docker.integration.tests.container;
 
 import static org.junit.Assert.assertTrue;
 
-import org.apache.commons.lang.StringUtils;
+import org.eclipse.linuxtools.docker.integration.tests.StringUtils;
 import org.eclipse.linuxtools.docker.integration.tests.image.AbstractImageBotTest;
 import org.eclipse.linuxtools.docker.integration.tests.mock.MockDockerConnectionManager;
 import org.eclipse.linuxtools.docker.integration.tests.mock.MockUtils;
@@ -38,7 +38,6 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.mandas.docker.client.DockerClient;
 
 public class ContainerLogTest extends AbstractImageBotTest {
