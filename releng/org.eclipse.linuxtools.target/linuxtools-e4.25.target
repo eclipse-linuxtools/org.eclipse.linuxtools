@@ -62,10 +62,10 @@
 <unit id="assertj-core" version="0.0.0"/>
 <unit id="com.google.gson" version="0.0.0"/>
 <unit id="org.apache.commons.codec" version="0.0.0"/>
-<unit id="org.apache.commons.io" version="0.0.0"/>
+<unit id="org.apache.commons.commons-io" version="0.0.0"/>
 <unit id="org.hamcrest.core" version="0.0.0"/>
 <unit id="org.slf4j.api" version="0.0.0"/>
-<unit id="bcprov" version="0.0.0"/>
+<unit id="org.bouncycastle.bcprov" version="0.0.0"/>
 <repository location="https://download.eclipse.org/eclipse/updates/4.25-I-builds/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
