@@ -43,8 +43,6 @@
 <repository location="https://download.eclipse.org/tools/orbit/downloads/drops/S20220726152247/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="javassist" version="3.13.0.GA_v201209210905"/>
-<unit id="javax.xml.stream" version="1.0.1.v201004272200"/>
 <unit id="org.cyberneko.html" version="1.9.14.v201105210654"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20201118194144/repository/"/>
 </location>
