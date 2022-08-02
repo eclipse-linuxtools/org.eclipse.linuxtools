@@ -130,6 +130,9 @@
    <iu id="jakarta.xml.bind" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
+   <iu id="javax.xml.stream" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
    <iu id="javax.annotation" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
@@ -200,6 +203,9 @@
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="org.glassfish.jersey.inject.jersey-hk2" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
+   <iu id="javassist" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="com.google.guava" version="0.0.0">
