@@ -31,15 +31,15 @@ public class RpmConsolePageParticipant implements IConsolePageParticipant {
 
 	@Override
 	public void init(IPageBookViewPage page, IConsole console) {
-		if (!(console instanceof RpmConsole)) {
+		if (!(console instanceof RpmConsole rpmCon)) {
 			return;
 		}
 		IToolBarManager manager = page.getSite().getActionBars().getToolBarManager();
 
-		StopBuildAction stopBuildAction = new StopBuildAction((RpmConsole) console);
+		StopBuildAction stopBuildAction = new StopBuildAction(rpmCon);
 		manager.appendToGroup(IConsoleConstants.LAUNCH_GROUP, stopBuildAction);
 
-		CloseConsoleAction closeConsoleAction = new CloseConsoleAction((RpmConsole) console);
+		CloseConsoleAction closeConsoleAction = new CloseConsoleAction(rpmCon);
 		manager.appendToGroup(IConsoleConstants.LAUNCH_GROUP, closeConsoleAction);
 	}
 

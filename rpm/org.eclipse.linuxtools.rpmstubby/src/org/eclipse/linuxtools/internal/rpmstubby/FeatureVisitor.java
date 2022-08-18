@@ -30,11 +30,10 @@ public class FeatureVisitor implements IResourceVisitor {
 
     @Override
     public boolean visit(IResource resource) {
-        if (resource instanceof IFile
-                && resource.getName().equals(FEATURE_XML)) {
-            featureFiles.add((IFile)resource);
-        }
-        return true;
+		if (resource instanceof IFile file && resource.getName().equals(FEATURE_XML)) {
+			featureFiles.add(file);
+		}
+		return true;
     }
 
     /**

@@ -80,9 +80,9 @@ public class RpmConsole extends IOConsole {
 	public static RpmConsole findConsole(RPMProject rpmProject) {
 		RpmConsole ret = null;
 		for (IConsole cons : ConsolePlugin.getDefault().getConsoleManager().getConsoles()) {
-			if (cons instanceof RpmConsole && ((RpmConsole) cons).rpmProject.getSpecFile().getProject().getName()
+			if ((cons instanceof RpmConsole rpmCon) && rpmCon.rpmProject.getSpecFile().getProject().getName()
 					.equals(rpmProject.getSpecFile().getProject().getName())) {
-				ret = (RpmConsole) cons;
+				ret = rpmCon;
 			}
 		}
 		// no existing console, create new one

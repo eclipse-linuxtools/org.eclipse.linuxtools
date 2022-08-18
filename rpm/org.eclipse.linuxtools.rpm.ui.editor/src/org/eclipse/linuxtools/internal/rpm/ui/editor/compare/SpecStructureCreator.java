@@ -103,8 +103,7 @@ public class SpecStructureCreator extends StructureCreator {
 
 	@Override
 	public String getContents(Object node, boolean ignoreWhitespace) {
-		if (node instanceof IStreamContentAccessor) {
-			IStreamContentAccessor sca = (IStreamContentAccessor) node;
+		if (node instanceof IStreamContentAccessor sca) {
 			try {
 				return readString(sca);
 			} catch (CoreException e) {
@@ -204,8 +203,8 @@ public class SpecStructureCreator extends StructureCreator {
 		InputStream is = sa.getContents();
 		if (is != null) {
 			String encoding = null;
-			if (sa instanceof IEncodedStreamContentAccessor) {
-				encoding = ((IEncodedStreamContentAccessor) sa).getCharset();
+			if (sa instanceof IEncodedStreamContentAccessor encodedSA) {
+				encoding = encodedSA.getCharset();
 			}
 			if (encoding == null) {
 				encoding = ResourcesPlugin.getEncoding();
@@ -239,8 +238,8 @@ public class SpecStructureCreator extends StructureCreator {
 		// get the resource being compared, but treat compare with history as
 		// null resource
 		IFile file = null;
-		if (input instanceof IResourceProvider) {
-			IResource res = ((IResourceProvider) input).getResource();
+		if (input instanceof IResourceProvider resourceProvider) {
+			IResource res = resourceProvider.getResource();
 			file = res.getAdapter(IFile.class);
 		}
 

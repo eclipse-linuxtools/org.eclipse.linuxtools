@@ -45,8 +45,7 @@ public class URLHyperlinkWithMacroDetector extends URLHyperlinkDetector {
 		IHyperlink[] returned = super.detectHyperlinks(textViewer, region, canShowMultipleHyperlinks);
 		if (returned != null && returned.length > 0) {
 			IHyperlink hyperlink = returned[0];
-			if (hyperlink instanceof URLHyperlink) {
-				URLHyperlink urlHyperlink = (URLHyperlink) hyperlink;
+			if (hyperlink instanceof URLHyperlink urlHyperlink) {
 				String newURLString = UiUtils.resolveDefines(specfile, urlHyperlink.getURLString());
 				return new IHyperlink[] { new URLHyperlink(urlHyperlink.getHyperlinkRegion(), newURLString) };
 			}

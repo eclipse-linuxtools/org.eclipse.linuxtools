@@ -55,22 +55,20 @@ public class SpecfileLabelProvider extends LabelProvider {
 	@Override
 	public String getText(Object element) {
 		String str = ""; //$NON-NLS-1$
-		if (element instanceof SpecfileSection) {
-			SpecfileSection specfileSection = (SpecfileSection) element;
+		if (element instanceof SpecfileSection specfileSection) {
 			str = specfileSection.toString();
-		} else if (element instanceof Specfile) {
-			str = ((Specfile) element).getName();
+		} else if (element instanceof Specfile s) {
+			str = s.getName();
 		} else if (element instanceof SpecfilePackageContainer) {
 			str = Messages.SpecfileLabelProvider_0;
 		} else if (element instanceof SpecfilePreamble) {
 			str = Messages.SpecfileLabelProvider_1;
-		} else if (element instanceof SpecfileElement) {
-			SpecfileElement specfileElement = (SpecfileElement) element;
+		} else if (element instanceof SpecfileElement specfileElement) {
 			str = specfileElement.getName();
-		} else if (element instanceof String) {
-			str = (String) element;
-		} else if (element instanceof SpecfilePackage) {
-			str = ((SpecfilePackage) element).getName();
+		} else if (element instanceof String s) {
+			str = s;
+		} else if (element instanceof SpecfilePackage sp) {
+			str = sp.getName();
 		}
 		return filterMacros(str.trim());
 	}

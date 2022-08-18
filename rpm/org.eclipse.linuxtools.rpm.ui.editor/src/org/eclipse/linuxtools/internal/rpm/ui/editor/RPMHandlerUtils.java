@@ -55,10 +55,10 @@ public class RPMHandlerUtils {
 		if (part == null) {
 			return null;
 		}
-		if (part instanceof EditorPart) {
-			IEditorInput input = ((EditorPart) part).getEditorInput();
-			if (input instanceof IFileEditorInput) {
-				return ((IFileEditorInput) input).getFile();
+		if (part instanceof EditorPart editorPart) {
+			IEditorInput input = editorPart.getEditorInput();
+			if (input instanceof IFileEditorInput fei) {
+				return fei.getFile();
 			}
 			return null;
 		}
@@ -71,10 +71,10 @@ public class RPMHandlerUtils {
 			return null;
 		}
 		ISelection selection = provider.getSelection();
-		if (selection instanceof IStructuredSelection) {
-			Object element = ((IStructuredSelection) selection).getFirstElement();
-			if (element instanceof IResource) {
-				return (IResource) element;
+		if (selection instanceof IStructuredSelection structured) {
+			Object element = structured.getFirstElement();
+			if (element instanceof IResource r) {
+				return r;
 			} else if (element instanceof IAdaptable adaptable) {
 				return adaptable.getAdapter(IResource.class);
 			} else {

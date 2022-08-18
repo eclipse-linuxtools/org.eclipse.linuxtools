@@ -45,10 +45,10 @@ public class ToggleRpmlintNatureAction extends AbstractHandler {
 		IStructuredSelection selection = HandlerUtil.getCurrentStructuredSelection(event);
 		for (Object element : selection.toList()) {
 			IProject project = null;
-			if (element instanceof IProject) {
-				project = (IProject) element;
-			} else if (element instanceof IAdaptable) {
-				project = ((IAdaptable) element).getAdapter(IProject.class);
+			if (element instanceof IProject p) {
+				project = p;
+			} else if (element instanceof IAdaptable a) {
+				project = a.getAdapter(IProject.class);
 			}
 			if (project != null) {
 				toggleNature(project);

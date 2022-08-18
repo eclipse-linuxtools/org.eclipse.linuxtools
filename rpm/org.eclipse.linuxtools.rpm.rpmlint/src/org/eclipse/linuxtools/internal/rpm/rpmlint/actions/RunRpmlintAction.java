@@ -55,13 +55,13 @@ public class RunRpmlintAction extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) {
 		ISelection selection = HandlerUtil.getCurrentSelection(event);
-		if (selection instanceof IStructuredSelection) {
-			for (Object element : ((IStructuredSelection) selection).toList()) {
+		if (selection instanceof IStructuredSelection structured) {
+			for (Object element : structured.toList()) {
 				IFile rpmFile = null;
-				if (element instanceof IFile) {
-					rpmFile = (IFile) element;
-				} else if (element instanceof IAdaptable) {
-					rpmFile = ((IAdaptable) element).getAdapter(IFile.class);
+				if (element instanceof IFile file) {
+					rpmFile = file;
+				} else if (element instanceof IAdaptable a) {
+					rpmFile = a.getAdapter(IFile.class);
 				}
 				if (rpmFile != null) {
 					runRpmlint(rpmFile.getLocation().toString());
@@ -71,10 +71,10 @@ public class RunRpmlintAction extends AbstractHandler {
 			IEditorPart editor = HandlerUtil.getActiveEditor(event);
 			if (editor != null) {
 				IEditorInput editorInput = editor.getEditorInput();
-				if (editorInput instanceof IFileEditorInput) {
-					runRpmlint(((IFileEditorInput) editorInput).getFile().getLocation().toString());
-				} else if (editorInput instanceof IURIEditorInput) {
-					runRpmlint(((IURIEditorInput) editorInput).getURI().getPath());
+				if (editorInput instanceof IFileEditorInput fei) {
+					runRpmlint(fei.getFile().getLocation().toString());
+				} else if (editorInput instanceof IURIEditorInput uei) {
+					runRpmlint(uei.getURI().getPath());
 				}
 			}
 		}

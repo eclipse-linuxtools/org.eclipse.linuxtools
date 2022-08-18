@@ -125,11 +125,10 @@ public class NewProjectCreationPage extends WizardNewProjectCreationPage {
 	 * current selection.
 	 */
 	private IWorkingSet[] getSelectedWorkingSet(IStructuredSelection selection) {
-		if (!(selection instanceof ITreeSelection)) {
+		if (!(selection instanceof ITreeSelection treeSelection)) {
 			return EMPTY_WORKING_SET_ARRAY;
 		}
 
-		ITreeSelection treeSelection = (ITreeSelection) selection;
 		if (treeSelection.isEmpty()) {
 			return EMPTY_WORKING_SET_ARRAY;
 		}
@@ -157,7 +156,7 @@ public class NewProjectCreationPage extends WizardNewProjectCreationPage {
 
 		ArrayList<IWorkingSet> result = new ArrayList<>();
 		for (Object element : elements) {
-			if (element instanceof IWorkingSet && !((IWorkingSet) element).isAggregateWorkingSet()) {
+			if ((element instanceof IWorkingSet ws) && !ws.isAggregateWorkingSet()) {
 				result.add((IWorkingSet) element);
 			}
 		}

@@ -271,8 +271,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 	 * Tests if the current workbench selection is a suitable container to use.
 	 */
 	private void initialize() {
-		if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
-			IStructuredSelection ssel = (IStructuredSelection) selection;
+		if (selection instanceof IStructuredSelection ssel && !selection.isEmpty()) {
 			if (ssel.size() > 1) {
 				return;
 			}
