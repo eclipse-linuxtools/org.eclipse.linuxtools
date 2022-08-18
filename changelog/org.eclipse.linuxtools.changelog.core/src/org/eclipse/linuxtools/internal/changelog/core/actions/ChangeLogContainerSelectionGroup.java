@@ -219,9 +219,8 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 		});
         treeViewer.addDoubleClickListener(event -> {
 		    ISelection selection = event.getSelection();
-		    if (selection instanceof IStructuredSelection) {
-		        Object item = ((IStructuredSelection) selection)
-		                .getFirstElement();
+		    if (selection instanceof IStructuredSelection ss) {
+				Object item = ss.getFirstElement();
 		        if (item == null) {
 		            return;
 		        }

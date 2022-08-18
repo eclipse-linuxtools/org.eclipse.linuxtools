@@ -270,8 +270,8 @@ public abstract class ChangeLogAction extends Action {
     private IFile getDocumentIFile(IEditorPart currentEditor) {
         IEditorInput cc = currentEditor.getEditorInput();
 
-        if (cc instanceof IFileEditorInput) {
-            return ((IFileEditorInput) cc).getFile();
+        if (cc instanceof IFileEditorInput fileEditorInput) {
+            return fileEditorInput.getFile();
         }
         return null;
     }
@@ -287,8 +287,8 @@ public abstract class ChangeLogAction extends Action {
         IWorkspaceRoot myWorkspaceRoot = getWorkspaceRoot();
         WorkspaceRoot = myWorkspaceRoot.getLocation().toOSString();
 
-        if (currentEditor instanceof MultiPageEditorPart) {
-            Object ed = ((MultiPageEditorPart) currentEditor).getSelectedPage();
+        if (currentEditor instanceof MultiPageEditorPart mpep) {
+            Object ed = mpep.getSelectedPage();
             if (ed instanceof IEditorPart)
                 cc = ((IEditorPart) ed).getEditorInput();
             if (cc instanceof FileEditorInput)
@@ -308,11 +308,10 @@ public abstract class ChangeLogAction extends Action {
             CompareEditorInput test = (CompareEditorInput) cc;
             if (test.getCompareResult() == null) {
                 return "";
-            } else if (test.getCompareResult() instanceof ICompareInput) {
-                ITypedElement leftCompare = ((ICompareInput) test.getCompareResult())
-                .getLeft();
-                if (leftCompare instanceof IResourceProvider){
-                    String localPath = ((IResourceProvider)leftCompare).getResource().getFullPath().toString();
+            } else if (test.getCompareResult() instanceof ICompareInput compareInput) {
+                ITypedElement leftCompare = compareInput.getLeft();
+                if (leftCompare instanceof IResourceProvider resourceProvider){
+                    String localPath = resourceProvider.getResource().getFullPath().toString();
                     if (appendRoot) {
                         return WorkspaceRoot + localPath;
                     }
@@ -323,8 +322,8 @@ public abstract class ChangeLogAction extends Action {
                     return WorkspaceRoot + test.getCompareResult().toString();
                 return test.getCompareResult().toString();
             }
-        } else if (cc instanceof FileStoreEditorInput) {
-            return ((FileStoreEditorInput)cc).getName();
+        } else if (cc instanceof FileStoreEditorInput fsei) {
+            return fsei.getName();
         }
 
 
@@ -342,11 +341,10 @@ public abstract class ChangeLogAction extends Action {
         IPreferenceStore store = ChangelogPlugin.getDefault()
         .getPreferenceStore();
 
-        pref_AuthorName = store.getString("IChangeLogConstants.AUTHOR_NAME"); //$NON-NLS-1$
-        pref_AuthorEmail = store.getString("IChangeLogConstants.AUTHOR_EMAIL"); //$NON-NLS-1$
+		pref_AuthorName = store.getString("IChangeLogConstants.AUTHOR_NAME"); //$NON-NLS-1$
+		pref_AuthorEmail = store.getString("IChangeLogConstants.AUTHOR_EMAIL"); //$NON-NLS-1$
 
-        pref_Formatter = store
-                .getString("IChangeLogConstants.DEFAULT_FORMATTER"); // $NON-NLS-1$
-    }
+		pref_Formatter = store.getString("IChangeLogConstants.DEFAULT_FORMATTER"); // $NON-NLS-1$
+	}
 
 }

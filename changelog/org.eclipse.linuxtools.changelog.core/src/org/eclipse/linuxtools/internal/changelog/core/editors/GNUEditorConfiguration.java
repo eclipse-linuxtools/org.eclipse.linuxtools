@@ -104,8 +104,7 @@ public class GNUEditorConfiguration extends TextSourceViewerConfiguration implem
 		FastPartitioner partitioner = new FastPartitioner(new GNUPartitionScanner(),
 				GNUPartitionScanner.CHANGELOG_PARTITION_TYPES);
 		partitioner.connect(document);
-		if (document instanceof IDocumentExtension3) {
-			IDocumentExtension3 extension3 = (IDocumentExtension3) document;
+		if (document instanceof IDocumentExtension3 extension3) {
 			extension3.setDocumentPartitioner(CHANGELOG_PARTITIONING, partitioner);
 		} else {
 			document.setDocumentPartitioner(partitioner);

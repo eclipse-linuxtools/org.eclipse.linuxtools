@@ -109,11 +109,9 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 
     private void initializeDefaults() {
         IPreferenceStore store = getPreferenceStore();
-        emailField.setText(store
-                .getDefaultString("IChangeLogConstants.AUTHOR_EMAIL")); //$NON-NLS-1$
-        nameField.setText(store
-                .getDefaultString("IChangeLogConstants.AUTHOR_NAME")); //$NON-NLS-1$
-        setDefaultFormatter(store);
+		emailField.setText(store.getDefaultString("IChangeLogConstants.AUTHOR_EMAIL")); //$NON-NLS-1$
+		nameField.setText(store.getDefaultString("IChangeLogConstants.AUTHOR_NAME")); //$NON-NLS-1$
+		setDefaultFormatter(store);
         setDefaultEditor(store);
         storeValues();
     }
@@ -172,26 +170,22 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
     }
 
     private void populateEditorList(IPreferenceStore store) {
-        IExtensionPoint editorExtensions = Platform
-                .getExtensionRegistry()
-                .getExtensionPoint(
-                        "org.eclipse.linuxtools.changelog.core", "editorContribution"); //$NON-NLS-1$ //$NON-NLS-2$
-        if (editorExtensions != null) {
-            IConfigurationElement[] elements = editorExtensions
-                    .getConfigurationElements();
-            for (IConfigurationElement element : elements) {
-                if (element.getName().equals("editor")) {//$NON-NLS-1$
-                    String fname = element.getAttribute("name"); //$NON-NLS-1$
-                    editorList.add(fname);
-                    if (fname.equals(store
-                            .getString("IChangeLogConstants.DEFAULT_EDITOR"))) {//$NON-NLS-1$
-                        editorList.setSelection(editorList.getItemCount() - 1);
-                    }
-                }
-            }
+		IExtensionPoint editorExtensions = Platform.getExtensionRegistry()
+				.getExtensionPoint("org.eclipse.linuxtools.changelog.core", "editorContribution"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (editorExtensions != null) {
+			IConfigurationElement[] elements = editorExtensions.getConfigurationElements();
+			for (IConfigurationElement element : elements) {
+				if (element.getName().equals("editor")) {//$NON-NLS-1$
+					String fname = element.getAttribute("name"); //$NON-NLS-1$
+					editorList.add(fname);
+					if (fname.equals(store.getString("IChangeLogConstants.DEFAULT_EDITOR"))) {//$NON-NLS-1$
+						editorList.setSelection(editorList.getItemCount() - 1);
+					}
+				}
+			}
 
-        }
-    }
+		}
+	}
 
     private void initializeValues() {
         IPreferenceStore store = getPreferenceStore();
@@ -205,18 +199,16 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
     private void storeValues() {
         IPreferenceStore store = getPreferenceStore();
 
-        store.setValue("IChangeLogConstants.AUTHOR_NAME", nameField.getText()); //$NON-NLS-1$
-        store
-                .setValue(
-                        "IChangeLogConstants.AUTHOR_EMAIL", emailField.getText()); //$NON-NLS-1$
-        String[] selection = formatterList.getSelection();
-        if (selection != null && selection.length > 0) {
-            store.setValue("IChangeLogConstants.DEFAULT_FORMATTER", selection[0]); //$NON-NLS-1$
-        }
-        String[] selection2 = editorList.getSelection();
-        if (selection2 != null && selection2.length > 0) {
-            store.setValue("IChangeLogConstants.DEFAULT_EDITOR", selection2[0]); //$NON-NLS-1$
-        }
+		store.setValue("IChangeLogConstants.AUTHOR_NAME", nameField.getText()); //$NON-NLS-1$
+		store.setValue("IChangeLogConstants.AUTHOR_EMAIL", emailField.getText()); //$NON-NLS-1$
+		String[] selection = formatterList.getSelection();
+		if (selection != null && selection.length > 0) {
+			store.setValue("IChangeLogConstants.DEFAULT_FORMATTER", selection[0]); //$NON-NLS-1$
+		}
+		String[] selection2 = editorList.getSelection();
+		if (selection2 != null && selection2.length > 0) {
+			store.setValue("IChangeLogConstants.DEFAULT_EDITOR", selection2[0]); //$NON-NLS-1$
+		}
 
     }
 
@@ -241,26 +233,22 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
     @Override
     protected Control createContents(Composite parent) {
         // composite_textField << parent
-        Composite composite_textField = createComposite(parent, 2);
-        createLabel(composite_textField, Messages
-                .getString("ChangeLogPreferencesPage.AuthorName")); //$NON-NLS-1$
-        nameField = createTextField(composite_textField);
+		Composite composite_textField = createComposite(parent, 2);
+		createLabel(composite_textField, Messages.getString("ChangeLogPreferencesPage.AuthorName")); //$NON-NLS-1$
+		nameField = createTextField(composite_textField);
 
-        // composite_textField << parent
+		// composite_textField << parent
 
-        createLabel(composite_textField, Messages
-                .getString("ChangeLogPreferencesPage.AuthorEmail")); //$NON-NLS-1$
-        emailField = createTextField(composite_textField);
+		createLabel(composite_textField, Messages.getString("ChangeLogPreferencesPage.AuthorEmail")); //$NON-NLS-1$
+		emailField = createTextField(composite_textField);
 
-        createLabel(composite_textField, Messages
-                .getString("ChangeLogPreferencesPage.Formatters")); //$NON-NLS-1$
-        formatterList = createListBox(composite_textField, 3);
+		createLabel(composite_textField, Messages.getString("ChangeLogPreferencesPage.Formatters")); //$NON-NLS-1$
+		formatterList = createListBox(composite_textField, 3);
 
-        createLabel(composite_textField, Messages
-                .getString("ChangeLogPreferencesPage.Editors")); //$NON-NLS-1$
-        editorList = createListBox(composite_textField, 3);
+		createLabel(composite_textField, Messages.getString("ChangeLogPreferencesPage.Editors")); //$NON-NLS-1$
+		editorList = createListBox(composite_textField, 3);
 
-        initializeValues();
+		initializeValues();
 
         return new Composite(parent, SWT.NULL);
     }

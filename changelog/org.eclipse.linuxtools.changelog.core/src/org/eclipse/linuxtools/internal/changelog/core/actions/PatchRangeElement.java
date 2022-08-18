@@ -31,8 +31,7 @@ public class PatchRangeElement {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof PatchRangeElement) {
-            PatchRangeElement b = (PatchRangeElement)o;
+        if (o instanceof PatchRangeElement b) {
             return b.fromLine == fromLine && b.toLine == toLine && b.localChange == localChange;
         }
         else

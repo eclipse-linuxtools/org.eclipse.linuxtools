@@ -123,11 +123,10 @@ public class CParser implements IParserChangeLogContrib {
             }
             return currentElementName;
         }
-        else if (input instanceof IStorageEditorInput) {
+        else if (input instanceof IStorageEditorInput sei) {
             // Get the working copy and connect to input.
             // don't follow inclusions
             currentElementName = "";
-            IStorageEditorInput sei = (IStorageEditorInput)input;
             // don't follow inclusions
             IncludeFileContentProvider contentProvider = IncludeFileContentProvider.getEmptyFilesProvider();
 
@@ -165,8 +164,7 @@ public class CParser implements IParserChangeLogContrib {
                 IASTNodeSelector n = ast.getNodeSelector(null);
                 IASTNode node = n.findFirstContainedNode(offset, 100);
                 while (node != null && !(node instanceof IASTTranslationUnit)) {
-                    if (node instanceof IASTFunctionDefinition) {
-                        IASTFunctionDefinition fd = (IASTFunctionDefinition)node;
+                    if (node instanceof IASTFunctionDefinition fd) {
                         IASTFunctionDeclarator d = fd.getDeclarator();
                         currentElementName = new String(d.getName().getSimpleID());
                         break;
@@ -188,14 +186,12 @@ public class CParser implements IParserChangeLogContrib {
     public String parseCurrentFunction(IEditorPart editor) throws CoreException {
 
         // Check for correct editor type
-        if (!(editor instanceof AbstractTextEditor))
+        if (!(editor instanceof AbstractTextEditor absEditor))
             return "";
 
         // Get the editor, test selection and input.
-        AbstractTextEditor a_editor = (AbstractTextEditor) editor;
-        ITextSelection selection = (ITextSelection) (a_editor)
-                .getSelectionProvider().getSelection();
-        IEditorInput input = a_editor.getEditorInput();
+		ITextSelection selection = (ITextSelection) (absEditor).getSelectionProvider().getSelection();
+		IEditorInput input = absEditor.getEditorInput();
 
         // Parse it and return the function.
         return parseCurrentFunction(input, selection.getOffset());

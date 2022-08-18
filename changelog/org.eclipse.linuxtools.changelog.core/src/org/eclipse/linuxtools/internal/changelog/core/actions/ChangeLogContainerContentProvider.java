@@ -46,10 +46,9 @@ public class ChangeLogContainerContentProvider implements ITreeContentProvider {
 
     @Override
     public Object[] getChildren(Object element) {
-        if (element instanceof IWorkspace) {
+        if (element instanceof IWorkspace workspace) {
             // check if closed projects should be shown
-            IProject[] allProjects = ((IWorkspace) element).getRoot()
-                    .getProjects();
+			IProject[] allProjects = workspace.getRoot().getProjects();
             if (showClosedProjects) {
                 return allProjects;
             }
@@ -61,8 +60,7 @@ public class ChangeLogContainerContentProvider implements ITreeContentProvider {
                 }
             }
             return accessibleProjects.toArray();
-        } else if (element instanceof IContainer) {
-            IContainer container = (IContainer) element;
+        } else if (element instanceof IContainer container) {
             if (container.isAccessible()) {
                 try {
                     List<IResource> children = new ArrayList<>();
@@ -77,8 +75,7 @@ public class ChangeLogContainerContentProvider implements ITreeContentProvider {
                     // this should never happen because we call #isAccessible before invoking #members
                 }
             }
-        } else if (element instanceof ChangeLogRootContainer) {
-            ChangeLogRootContainer container = (ChangeLogRootContainer) element;
+        } else if (element instanceof ChangeLogRootContainer container) {
             List<IResource> children = new ArrayList<>();
             IResource[] members = container.members();
             for (int i = 0; i < members.length; i++) {
@@ -98,8 +95,8 @@ public class ChangeLogContainerContentProvider implements ITreeContentProvider {
 
     @Override
     public Object getParent(Object element) {
-        if (element instanceof IResource) {
-            return ((IResource) element).getParent();
+        if (element instanceof IResource resource) {
+            return resource.getParent();
         }
         return null;
     }

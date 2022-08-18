@@ -25,8 +25,8 @@ public class FormatChangeLogAction extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) {
         IEditorPart editor = HandlerUtil.getActiveEditor(event);
-        if (editor instanceof ChangeLogEditor) {
-            SourceViewer srcViewer = (SourceViewer) ((ChangeLogEditor) editor).getMySourceViewer();
+        if (editor instanceof ChangeLogEditor changelogEditor) {
+            SourceViewer srcViewer = (SourceViewer) changelogEditor.getMySourceViewer();
             if (srcViewer != null) {
                 srcViewer.doOperation(ISourceViewer.FORMAT);
             }

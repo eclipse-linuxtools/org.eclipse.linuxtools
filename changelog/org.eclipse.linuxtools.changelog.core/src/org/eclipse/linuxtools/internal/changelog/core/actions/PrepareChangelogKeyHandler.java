@@ -46,10 +46,9 @@ public class PrepareChangelogKeyHandler extends AbstractHandler {
         // try getting currently selected project
             IWorkbenchPage ref = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
             IWorkbenchPart part = HandlerUtil.getActivePart(event);
-            if (part instanceof IEditorPart) {
+            if (part instanceof IEditorPart editorPart) {
                 // If we are in an editor, check if the file being edited is an IResource
                 // that belongs to a project in the workspace
-                IEditorPart editorPart = (IEditorPart)part;
                 IEditorInput input = editorPart.getEditorInput();
                 IResource r = input.getAdapter(IResource.class);
                 if (r != null) {
@@ -61,14 +60,13 @@ public class PrepareChangelogKeyHandler extends AbstractHandler {
                 // Otherwise, our view is not an editor, see if we have an IResource or something
                 // that will lead us to an IResource
                 ISelection selected = ref.getSelection();
-                if (selected instanceof IStructuredSelection) {
+                if (selected instanceof IStructuredSelection iss) {
                     IResource r = null;
-                    IStructuredSelection iss = (IStructuredSelection)selected;
-                    Object o = ((IStructuredSelection)selected).getFirstElement();
-                    if (o instanceof ISynchronizeModelElement) {
-                        r = ((ISynchronizeModelElement)o).getResource();
-                    } else if (o instanceof IAdaptable) {
-                        r = ((IAdaptable)o).getAdapter(IResource.class);
+                    Object o = iss.getFirstElement();
+                    if (o instanceof ISynchronizeModelElement s) {
+                        r = s.getResource();
+                    } else if (o instanceof IAdaptable a) {
+                        r = a.getAdapter(IResource.class);
                     }
                     if (r != null)
                         tempResult = iss;
@@ -86,14 +84,13 @@ public class PrepareChangelogKeyHandler extends AbstractHandler {
                         if (sp != null) {
                             s = sp.getSelection();
                         }
-                        if (s instanceof IStructuredSelection) {
-                            IStructuredSelection ss = (IStructuredSelection)s;
+                        if (s instanceof IStructuredSelection ss) {
                             Object element = ss.getFirstElement();
                             IResource r = null;
-                            if (element instanceof ISynchronizeModelElement) {
-                                r = ((ISynchronizeModelElement)element).getResource();
-                            } else if (element instanceof IAdaptable) {
-                                r = ((IAdaptable)element).getAdapter(IResource.class);
+                            if (element instanceof ISynchronizeModelElement syncE) {
+                                r = syncE.getResource();
+                            } else if (element instanceof IAdaptable a) {
+                                r = a.getAdapter(IResource.class);
                             }
 
                             if (r != null) {

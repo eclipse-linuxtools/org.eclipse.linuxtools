@@ -142,15 +142,13 @@ public class JavaParser implements IParserChangeLogContrib {
     public String parseCurrentFunction(IEditorPart editor) throws CoreException {
 
         // Check for correct editor type
-        if (!(editor instanceof AbstractDecoratedTextEditor)) {
+        if (!(editor instanceof AbstractDecoratedTextEditor javaEditor)) {
             return "";
         }
 
         // Get the editor, test selection and input.
-        AbstractDecoratedTextEditor java_editor = (AbstractDecoratedTextEditor) editor;
-        ITextSelection selection = (ITextSelection) (java_editor
-                .getSelectionProvider().getSelection());
-        IEditorInput input = java_editor.getEditorInput();
+		ITextSelection selection = (ITextSelection) (javaEditor.getSelectionProvider().getSelection());
+		IEditorInput input = javaEditor.getEditorInput();
 
         // Parse it and return the function.
         return parseCurrentFunction(input, selection.getOffset());

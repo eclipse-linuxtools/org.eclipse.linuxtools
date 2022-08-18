@@ -147,8 +147,8 @@ public class PrepareChangeLogAction extends ChangeLogAction {
         if (d.hasChildren()) {
             IPath newPath = path.append(d.getName());
             for (IDiffElement element: d.getChildren()) {
-                if (element instanceof ISynchronizeModelElement)
-                    extractSynchronizeModelInfo((ISynchronizeModelElement)element, newPath, newList, removeList, changeList);
+                if (element instanceof ISynchronizeModelElement syncElement)
+                    extractSynchronizeModelInfo(syncElement, newPath, newList, removeList, changeList);
                 else {
                     if (!(d.getName().equals("ChangeLog"))) { //$NON-NLS-1$
                         PatchFile p = new PatchFile(d.getResource());
@@ -192,14 +192,11 @@ public class PrepareChangeLogAction extends ChangeLogAction {
             // differ from the local file and its previous local version
             // (i.e. we don't want to force a diff with the repository).
             IDiff d = s.getDiff(p.getResource());
-            if (d instanceof IThreeWayDiff
-                    && ((IThreeWayDiff)d).getDirection() == IThreeWayDiff.OUTGOING) {
-                IThreeWayDiff diff = (IThreeWayDiff)d;
+			if (d instanceof IThreeWayDiff diff && diff.getDirection() == IThreeWayDiff.OUTGOING) {
                 monitor.beginTask(null, 100);
                 IResourceDiff localDiff = (IResourceDiff)diff.getLocalChange();
                 IResource resource = localDiff.getResource();
-                if (resource instanceof IFile) {
-                    IFile file = (IFile)resource;
+                if (resource instanceof IFile file) {
                     monitor.subTask(Messages.getString("ChangeLog.MergingDiffs")); // $NON-NLS-1$
                     String osEncoding = file.getCharset();
                     IFileRevision ancestorState = localDiff.getBeforeState();
@@ -252,13 +249,12 @@ public class PrepareChangeLogAction extends ChangeLogAction {
         Vector<PatchFile> changeList = new Vector<>();
         int totalChanges = 0;
 
-        if (element instanceof IResource) {
-            resource = (IResource)element;
-        } else if (element instanceof ISynchronizeModelElement) {
-            ISynchronizeModelElement sme = (ISynchronizeModelElement)element;
+        if (element instanceof IResource r) {
+            resource = r;
+        } else if (element instanceof ISynchronizeModelElement sme) {
             resource = sme.getResource();
-        } else if (element instanceof IAdaptable) {
-            resource = ((IAdaptable)element).getAdapter(IResource.class);
+        } else if (element instanceof IAdaptable a) {
+            resource = a.getAdapter(IResource.class);
         }
 
         if (resource == null)
@@ -274,10 +270,9 @@ public class PrepareChangeLogAction extends ChangeLogAction {
         Subscriber s = r.getSubscriber();
         if (s == null)
             return;
-        if (element instanceof ISynchronizeModelElement) {
+        if (element instanceof ISynchronizeModelElement d) {
             // We can extract the ChangeLog list from the synchronize view which
             // allows us to skip items removed from the view
-            ISynchronizeModelElement d = (ISynchronizeModelElement)element;
             while (d.getParent() != null)
                 d = (ISynchronizeModelElement)d.getParent();
             extractSynchronizeModelInfo(d, new Path(""), newList, removeList, changeList);
@@ -451,8 +446,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
                 return;
             }
         }
-        if ((changelog instanceof ChangeLogEditor) && (!this.newEntryWritten)) {
-            ChangeLogEditor editor = (ChangeLogEditor) changelog;
+        if ((changelog instanceof ChangeLogEditor editor) && (!this.newEntryWritten)) {
             // if the editor is dirty (changes added to the editor without
             // saving), treat it as a change log modification
             if (editor.isDirty())
