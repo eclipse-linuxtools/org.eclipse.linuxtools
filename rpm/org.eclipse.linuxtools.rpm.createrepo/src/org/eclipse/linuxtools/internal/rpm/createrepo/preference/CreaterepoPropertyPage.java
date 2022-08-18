@@ -56,12 +56,12 @@ public abstract class CreaterepoPropertyPage extends PropertyPage implements IPr
 
     @Override
     protected Control createContents(Composite parent) {
-        if (getElement() instanceof IResource) {
-            project = ((IResource) getElement()).getProject();
+        if (getElement() instanceof IResource element) {
+            project = element.getProject();
         } else {
             Object adapter = getElement().getAdapter(IResource.class);
-            if (adapter instanceof IResource) {
-                project = ((IResource) adapter).getProject();
+            if (adapter instanceof IResource r) {
+                project = r.getProject();
             }
         }
         setPreferenceStore(new ScopedPreferenceStore(new ProjectScope(project),

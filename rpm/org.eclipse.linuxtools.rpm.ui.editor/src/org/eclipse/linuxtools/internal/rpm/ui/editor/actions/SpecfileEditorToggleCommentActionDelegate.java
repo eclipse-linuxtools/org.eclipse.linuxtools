@@ -39,8 +39,7 @@ public class SpecfileEditorToggleCommentActionDelegate extends AbstractHandler {
 		IDocumentProvider dp = specfileEditor.getDocumentProvider();
 		IDocument document = dp.getDocument(specfileEditor.getEditorInput());
 		ISelection currentSelection = HandlerUtil.getCurrentSelection(event);
-		if (currentSelection instanceof ITextSelection) {
-			ITextSelection selection = (ITextSelection) currentSelection;
+		if (currentSelection instanceof ITextSelection selection) {
 			String selectedContent = ""; //$NON-NLS-1$
 			try {
 				int begin = document.getLineOffset(selection.getStartLine());

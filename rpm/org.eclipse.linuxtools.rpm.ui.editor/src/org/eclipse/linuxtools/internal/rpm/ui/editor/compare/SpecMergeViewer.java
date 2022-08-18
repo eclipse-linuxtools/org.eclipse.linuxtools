@@ -58,9 +58,9 @@ public class SpecMergeViewer extends TextMergeViewer {
 
 	@Override
 	protected void configureTextViewer(TextViewer textViewer) {
-		if (textViewer instanceof SourceViewer) {
+		if (textViewer instanceof SourceViewer sourceViewer) {
 			SpecfileEditor editor = new SpecfileEditor();
-			((SourceViewer) textViewer).configure(new SpecfileConfiguration(editor));
+			sourceViewer.configure(new SpecfileConfiguration(editor));
 		}
 	}
 

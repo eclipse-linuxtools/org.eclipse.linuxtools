@@ -152,8 +152,8 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 		IEditorPart editor = page.getActiveEditor();
 		// A IFile cannot be retrieve from a IFileStoreEditorInput, so at this time
 		// we can only provide this functionality for resources inside the workbench.
-		if (editor.getEditorInput() instanceof FileEditorInput) {
-			IFile original = ((FileEditorInput) editor.getEditorInput()).getFile();
+		if (editor.getEditorInput() instanceof FileEditorInput fei) {
+			IFile original = fei.getFile();
 			return new IHyperlink[] { new SpecfileElementHyperlink(urlRegion, source, original) };
 		} else {
 			return null;

@@ -77,10 +77,10 @@ public class SpecfileContentProvider implements ITreeContentProvider {
 			}
 			elms[elmsSize - 1] = specfile.getPackages();
 			return elms;
-		} else if (parentElement instanceof SpecfilePackageContainer) {
-			return ((SpecfilePackageContainer) parentElement).getPackages();
-		} else if (parentElement instanceof SpecfilePackage) {
-			return ((SpecfilePackage) parentElement).getSections();
+		} else if (parentElement instanceof SpecfilePackageContainer spc) {
+			return spc.getPackages();
+		} else if (parentElement instanceof SpecfilePackage sp) {
+			return sp.getSections();
 		}
 		return new Object[0];
 	}
@@ -94,10 +94,10 @@ public class SpecfileContentProvider implements ITreeContentProvider {
 	public boolean hasChildren(Object element) {
 		if (element == specfile) {
 			return true;
-		} else if (element instanceof SpecfilePackageContainer) {
-			return ((SpecfilePackageContainer) element).hasChildren();
-		} else if (element instanceof SpecfilePackage) {
-			return ((SpecfilePackage) element).hasChildren();
+		} else if (element instanceof SpecfilePackageContainer spc) {
+			return spc.hasChildren();
+		} else if (element instanceof SpecfilePackage sp) {
+			return sp.hasChildren();
 		}
 		return false;
 	}

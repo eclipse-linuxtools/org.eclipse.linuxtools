@@ -148,8 +148,7 @@ public class CreaterepoTreeTest {
 		Display.getDefault().syncExec(() -> {
 			initViewer();
 			for (TreeItem treeItem : tree.getItems()) {
-				if (treeItem.getData() instanceof CreaterepoTreeCategory) {
-					CreaterepoTreeCategory category = (CreaterepoTreeCategory) treeItem.getData();
+				if (treeItem.getData() instanceof CreaterepoTreeCategory category) {
 					// make sure the categories are still correct
 					assertTrue(CORRECT_CATEGORIES.containsKey(category.getName()));
 					// assert that the number of tags stored is the correct
@@ -159,8 +158,7 @@ public class CreaterepoTreeTest {
 			}
 			// do 1 test to make sure the tags were properly stored/loaded
 			for (TreeItem treeItem : tree.getItems()) {
-				if (treeItem.getData() instanceof CreaterepoTreeCategory) {
-					CreaterepoTreeCategory category = (CreaterepoTreeCategory) treeItem.getData();
+				if (treeItem.getData() instanceof CreaterepoTreeCategory category) {
 					// only check 1 category's tags, as all are loaded the same
 					// way
 					if (category.getName().equals(CreaterepoPreferenceConstants.PREF_DISTRO_TAG)) {

@@ -72,8 +72,8 @@ public class SpecfileEditorRPMBuildHandler extends AbstractHandler {
 			IEditorPart epart = HandlerUtil.getActiveEditor(event);
 			if (epart != null) {
 				IEditorInput input = epart.getEditorInput();
-				if (input instanceof IFileEditorInput) {
-					return ((IFileEditorInput) input).getFile();
+				if (input instanceof IFileEditorInput fei) {
+					return fei.getFile();
 				}
 			}
 			return null;
@@ -82,10 +82,10 @@ public class SpecfileEditorRPMBuildHandler extends AbstractHandler {
 		if (part == null) {
 			return null;
 		}
-		if (part instanceof EditorPart) {
-			IEditorInput input = ((EditorPart) part).getEditorInput();
-			if (input instanceof IFileEditorInput) {
-				return ((IFileEditorInput) input).getFile();
+		if (part instanceof EditorPart ePart) {
+			IEditorInput input = ePart.getEditorInput();
+			if (input instanceof IFileEditorInput fei) {
+				return fei.getFile();
 			}
 			return null;
 		}
@@ -98,12 +98,12 @@ public class SpecfileEditorRPMBuildHandler extends AbstractHandler {
 			return null;
 		}
 		ISelection selection = provider.getSelection();
-		if (selection instanceof IStructuredSelection) {
-			Object element = ((IStructuredSelection) selection).getFirstElement();
-			if (element instanceof IResource) {
-				return (IResource) element;
-			} else if (element instanceof IAdaptable) {
-				IAdaptable adaptable = (IAdaptable) element;
+		if (selection instanceof IStructuredSelection structured) {
+			Object element = structured.getFirstElement();
+			if (element instanceof IResource r) {
+				return r;
+			} else if (element instanceof IAdaptable a) {
+				IAdaptable adaptable = a;
 				return adaptable.getAdapter(IResource.class);
 			} else {
 				return null;

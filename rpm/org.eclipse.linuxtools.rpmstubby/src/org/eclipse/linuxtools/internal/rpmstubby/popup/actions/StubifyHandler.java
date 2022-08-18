@@ -36,10 +36,10 @@ public abstract class StubifyHandler extends AbstractHandler {
 		IFile featureFile = null;
 		IStructuredSelection selection = HandlerUtil.getCurrentStructuredSelection(event);
 		for (Object element : selection.toList()) {
-			if (element instanceof IFile) {
-				featureFile = (IFile) element;
-			} else if (element instanceof IAdaptable) {
-				featureFile = ((IAdaptable) element).getAdapter(IFile.class);
+			if (element instanceof IFile f) {
+				featureFile = f;
+			} else if (element instanceof IAdaptable a) {
+				featureFile = a.getAdapter(IFile.class);
 			}
 			if (featureFile != null) {
 				Generator generator = new Generator(getInputType());

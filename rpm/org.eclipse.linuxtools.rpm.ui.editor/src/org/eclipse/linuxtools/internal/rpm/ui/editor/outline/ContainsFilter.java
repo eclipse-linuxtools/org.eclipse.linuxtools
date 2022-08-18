@@ -32,10 +32,9 @@ public class ContainsFilter extends ViewerFilter {
 
 	@Override
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
-		if (!(viewer instanceof TreeViewer)) {
+		if (!(viewer instanceof TreeViewer treeViewer)) {
 			return true;
 		}
-		TreeViewer treeViewer = (TreeViewer) viewer;
 		String currentLabel = ((ILabelProvider) treeViewer.getLabelProvider()).getText(element);
 		if ((lookFor == null) || (currentLabel != null && currentLabel.contains(lookFor))) {
 			return true;

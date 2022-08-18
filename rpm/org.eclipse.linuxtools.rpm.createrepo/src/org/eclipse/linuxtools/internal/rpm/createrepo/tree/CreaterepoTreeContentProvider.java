@@ -27,8 +27,8 @@ public class CreaterepoTreeContentProvider implements ITreeContentProvider {
 
     @Override
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-        if (newInput instanceof CreaterepoCategoryModel) {
-            model = (CreaterepoCategoryModel) newInput;
+        if (newInput instanceof CreaterepoCategoryModel input) {
+            model = input;
         }
     }
 
