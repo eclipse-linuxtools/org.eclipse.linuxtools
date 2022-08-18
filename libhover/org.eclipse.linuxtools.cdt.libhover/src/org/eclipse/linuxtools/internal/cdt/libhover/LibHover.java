@@ -438,8 +438,7 @@ public class LibHover implements ICHelpProvider {
             }
 
             // Check if we have an instance of a template class.
-            if (c instanceof ICPPTemplateInstance) {
-                ICPPTemplateInstance ti = (ICPPTemplateInstance)c;
+            if (c instanceof ICPPTemplateInstance ti) {
                 // Get a map which tells us the values of the template
                 // arguments (e.g. _CharT maps to char in the instance).
                 ICPPTemplateParameterMap tiMap = ti.getTemplateParameterMap();
@@ -580,7 +579,7 @@ public class LibHover implements ICHelpProvider {
             // parameters specified.
             if (memberParms[i].contains(unqualifiedName) && !memberParms[i].contains(className)) {
                 String classTemplate = ""; //$NON-NLS-1$
-                if (templateTypes.size() > 0) {
+                if (!templateTypes.isEmpty()) {
                     classTemplate = "<"; //$NON-NLS-1$
                     String separator = ""; //$NON-NLS-1$
                     for (int j = 0; j < templateTypes.size(); ++j) {
@@ -629,9 +628,9 @@ public class LibHover implements ICHelpProvider {
 
         if (t.isCXXLanguage()) {
             try {
-                if (context instanceof IContentAssistHelpInvocationContext) {
+                if (context instanceof IContentAssistHelpInvocationContext helpContext) {
                     // We know the file offset of the member reference.
-                    IASTCompletionNode node = ((IContentAssistHelpInvocationContext)context).getCompletionNode();
+                    IASTCompletionNode node = helpContext.getCompletionNode();
 
                     IASTName[] names = node.getNames();
 
@@ -644,9 +643,6 @@ public class LibHover implements ICHelpProvider {
                     }
 
                 }
-            } catch (IllegalArgumentException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
