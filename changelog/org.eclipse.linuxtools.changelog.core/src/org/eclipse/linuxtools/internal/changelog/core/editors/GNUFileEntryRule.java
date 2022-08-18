@@ -82,8 +82,8 @@ public class GNUFileEntryRule implements IPredicateRule {
                 c = scanner.read();
             }
             scanner.unread();
-            if (scanner instanceof GNUHyperlinkScanner) {
-            	return ((GNUHyperlinkScanner)scanner).getDefaultToken();
+            if (scanner instanceof GNUHyperlinkScanner gnuScanner) {
+            	return gnuScanner.getDefaultToken();
             }
             return ((GNUElementScanner)scanner).getDefaultToken();
         }

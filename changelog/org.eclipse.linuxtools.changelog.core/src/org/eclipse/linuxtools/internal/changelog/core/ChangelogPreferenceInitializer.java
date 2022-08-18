@@ -24,12 +24,8 @@ public class ChangelogPreferenceInitializer extends
     public void initializeDefaultPreferences() {
         IPreferenceStore store = ChangelogPlugin.getDefault()
                 .getPreferenceStore();
-        store.setDefault("IChangeLogConstants.DATE_FORMAT", "true"); // $NON-NLS-1$
-                                                                        // //
-                                                                        // $NON-NLS-2$
-        store.setDefault("IChangeLogConstants.APPEND_RESOURCE_PATH", "false"); // $NON-NLS-1$
-                                                                                // //
-                                                                                // $NON-NLS-2$
+		store.setDefault("IChangeLogConstants.DATE_FORMAT", "true"); // $NON-NLS-1$ $NON-NLS-2$
+		store.setDefault("IChangeLogConstants.APPEND_RESOURCE_PATH", "false"); // $NON-NLS-1$ $NON-NLS-2$
 
         store.setDefault("IChangeLogConstants.AUTHOR_NAME", // $NON-NLS-1$
                 getUserRealName());

@@ -90,8 +90,7 @@ public class LineComparator implements IRangeComparator {
     }
 
     private static String getEncoding(IStorage storage, String outputEncoding) throws CoreException {
-        if (storage instanceof IEncodedStorage) {
-            IEncodedStorage es = (IEncodedStorage) storage;
+        if (storage instanceof IEncodedStorage es) {
             String charset = es.getCharset();
             if (charset != null)
                 return charset;

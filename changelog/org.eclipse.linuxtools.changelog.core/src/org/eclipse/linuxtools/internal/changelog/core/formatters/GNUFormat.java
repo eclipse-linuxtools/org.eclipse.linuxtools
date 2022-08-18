@@ -63,8 +63,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
         /* Fix Bz #366854.  Make sure that forceNewEntry is used only
          * once and then cleared even when the ChangeLog is empty to start with.
          */
-        if(changelog instanceof ChangeLogEditor) {
-            ChangeLogEditor editor = (ChangeLogEditor)changelog;
+        if(changelog instanceof ChangeLogEditor editor) {
             forceNewEntry = editor.isForceNewLogEntry();
             editor.setForceNewLogEntry(false);
         }

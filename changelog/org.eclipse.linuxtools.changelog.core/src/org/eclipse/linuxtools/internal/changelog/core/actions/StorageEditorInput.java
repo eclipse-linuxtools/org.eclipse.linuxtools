@@ -66,10 +66,9 @@ public abstract class StorageEditorInput implements IStorageEditorInput {
             return true;
         }
         try {
-            return object instanceof IStorageEditorInput
-                && getStorage().equals(((IStorageEditorInput)object).getStorage());
-        } catch (CoreException e) {
-        }
+			return object instanceof IStorageEditorInput storageInput && getStorage().equals(storageInput.getStorage());
+		} catch (CoreException e) {
+		}
         return false;
     }
 

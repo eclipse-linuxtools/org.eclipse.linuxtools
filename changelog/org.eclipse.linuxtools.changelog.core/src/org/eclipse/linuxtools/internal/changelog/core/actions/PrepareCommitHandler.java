@@ -116,25 +116,20 @@ public class PrepareCommitHandler extends ChangeLogAction implements IHandler {
             if (kind == SyncInfo.CHANGE) {
                 try {
                     IDiff d = s.getDiff(infos[0].getLocal());
-                    if (d instanceof IThreeWayDiff
-                            && ((IThreeWayDiff) d).getDirection() == IThreeWayDiff.OUTGOING) {
-                        IThreeWayDiff diff = (IThreeWayDiff) d;
-                        monitor.beginTask(null, 100);
-                        IResourceDiff localDiff = (IResourceDiff) diff
-                                .getLocalChange();
-                        IFile file = (IFile) localDiff.getResource();
-                        monitor.subTask(Messages
-                                .getString("ChangeLog.MergingDiffs")); // $NON-NLS-1$
-                        String osEncoding = file.getCharset();
-                        IFileRevision ancestorState = localDiff
-                                .getBeforeState();
-                        IStorage ancestorStorage;
-                        if (ancestorState != null)
-                            ancestorStorage = ancestorState.getStorage(monitor);
-                        else {
-                            ancestorStorage = null;
-                            return;
-                        }
+					if (d instanceof IThreeWayDiff diff && diff.getDirection() == IThreeWayDiff.OUTGOING) {
+						monitor.beginTask(null, 100);
+						IResourceDiff localDiff = (IResourceDiff) diff.getLocalChange();
+						IFile file = (IFile) localDiff.getResource();
+						monitor.subTask(Messages.getString("ChangeLog.MergingDiffs")); // $NON-NLS-1$
+						String osEncoding = file.getCharset();
+						IFileRevision ancestorState = localDiff.getBeforeState();
+						IStorage ancestorStorage;
+						if (ancestorState != null)
+							ancestorStorage = ancestorState.getStorage(monitor);
+						else {
+							ancestorStorage = null;
+							return;
+						}
 
                         try {
                             LineComparator left = new LineComparator(
