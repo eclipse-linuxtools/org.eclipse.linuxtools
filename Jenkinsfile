@@ -66,7 +66,7 @@ spec:
 			steps {
 				container('container') {
 					wrap([$class: 'Xvnc', useXauthority: true]) {
-						sh 'mvn clean verify -Pbuild-server -Dmaven.test.failure.ignore=true -ntp -Ddash.fail=true'
+						sh 'mvn -T 1C clean verify -Pbuild-server -Dmaven.test.failure.ignore=true -ntp -Ddash.fail=true '
 					}
 				}
 			}
