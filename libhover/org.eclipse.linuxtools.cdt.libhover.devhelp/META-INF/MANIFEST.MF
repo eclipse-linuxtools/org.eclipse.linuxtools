@@ -14,6 +14,6 @@ Require-Bundle: org.eclipse.ui,
  org.cyberneko.html;bundle-version="1.9.14",
  org.apache.xerces;bundle-version="2.12.1"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: %provider
 Automatic-Module-Name: org.eclipse.linuxtools.cdt.libhover.devhelp
