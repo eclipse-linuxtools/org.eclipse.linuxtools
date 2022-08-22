@@ -7,7 +7,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jface.text,
  com.jcraft.jsch
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.eclipse.linuxtools.internal.man.parser;x-friends:="org.eclipse.linuxtools.man.help",
  org.eclipse.linuxtools.man.parser,
  org.eclipse.linuxtools.man.views
