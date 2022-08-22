@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2017, 2022 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -77,14 +77,9 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 		try {
 			DockerConnection conn = (DockerConnection) DockerConnectionManager.getInstance().getConnectionByUri(connectionURI);
 			if (conn == null) {
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						MessageDialog.openError(Display.getDefault().getActiveShell()
-							, Messages.JavaAppInContainerLaunchDelegate_connection_not_found_title
-							, Messages.bind(Messages.JavaAppInContainerLaunchDelegate_connection_not_found_text, connectionURI));
-					}
-				});
+				Display.getDefault().asyncExec(() -> MessageDialog.openError(Display.getDefault().getActiveShell()
+					, Messages.JavaAppInContainerLaunchDelegate_connection_not_found_title
+					, Messages.bind(Messages.JavaAppInContainerLaunchDelegate_connection_not_found_text, connectionURI)));
 				return;
 			} else if (!conn.isOpen()) {
 				try {
@@ -93,28 +88,18 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 				}
 
 				if (!conn.isOpen()) {
-					Display.getDefault().asyncExec(new Runnable() {
-						@Override
-						public void run() {
-							MessageDialog.openError(Display.getDefault().getActiveShell()
-							, Messages.JavaAppInContainerLaunchDelegate_connection_not_active_title
-							, Messages.bind(Messages.JavaAppInContainerLaunchDelegate_connection_not_active_text, connectionURI));
-						}
-					});
+					Display.getDefault().asyncExec(() -> MessageDialog.openError(Display.getDefault().getActiveShell()
+					, Messages.JavaAppInContainerLaunchDelegate_connection_not_active_title
+					, Messages.bind(Messages.JavaAppInContainerLaunchDelegate_connection_not_active_text, connectionURI)));
 					return;
 				}
 			}
 
 			IDockerImage img = conn.getImage(imageID);
 			if (img == null) {
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						MessageDialog.openError(Display.getDefault().getActiveShell()
-							, Messages.JavaAppInContainerLaunchDelegate_image_not_found_title
-							, Messages.bind(Messages.JavaAppInContainerLaunchDelegate_image_not_found_text, imageID));
-					}
-				});
+				Display.getDefault().asyncExec(() -> MessageDialog.openError(Display.getDefault().getActiveShell()
+					, Messages.JavaAppInContainerLaunchDelegate_image_not_found_title
+					, Messages.bind(Messages.JavaAppInContainerLaunchDelegate_image_not_found_text, imageID)));
 				return;
 			}
 
@@ -278,14 +263,9 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 
 				if (ip == null) {
 					String imageName = conn.getImage(imageID).repoTags().get(0);
-					Display.getDefault().asyncExec(new Runnable() {
-						@Override
-						public void run() {
-							MessageDialog.openError(Display.getDefault().getActiveShell()
-									, Messages.JavaAppInContainerLaunchDelegate_session_unreachable_title
-									, Messages.bind(Messages.JavaAppInContainerLaunchDelegate_session_unreachable_text, new Object [] {imageName, imageID, runner.getIPAddress()}));
-						}
-					});
+					Display.getDefault().asyncExec(() -> MessageDialog.openError(Display.getDefault().getActiveShell()
+							, Messages.JavaAppInContainerLaunchDelegate_session_unreachable_title
+							, Messages.bind(Messages.JavaAppInContainerLaunchDelegate_session_unreachable_text, new Object [] {imageName, imageID, runner.getIPAddress()})));
 					return;
 				}
 

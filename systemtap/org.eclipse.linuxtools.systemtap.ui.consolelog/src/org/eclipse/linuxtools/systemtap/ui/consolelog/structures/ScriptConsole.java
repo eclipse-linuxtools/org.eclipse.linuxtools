@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2018 IBM Corporation and others.
+ * Copyright (c) 2006, 2022 IBM Corporation and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -239,37 +239,32 @@ public class ScriptConsole extends IOConsole {
         onCmdStartThread.start();
     }
 
-    private final Runnable onCmdStart = new Runnable() {
-        @Override
-        public void run() {
-            // If stopping the previous command, wait for it to stop.
-            if (isThreadAlive(stopCommandThread)
-                    && stopCommand.stopcmd != cmd) {
-                try {
-                    stopCommandThread.join();
-                } catch (InterruptedException e) {
-                    return;
-                }
-            }
-            if (errorDaemon != null) {
-                cmd.addErrorStreamListener(errorDaemon);
-            }
-            cmd.addInputStreamListener(consoleDaemon);
-            onCmdStopThread = new Thread(onCmdStop);
-            onCmdStopThread.start();
-            clearConsole();
-            try {
-                cmd.start();
-            } catch (final CoreException e) {
-                ExceptionErrorDialog.openError(
-                        Localization.getString("ScriptConsole.ErrorRunningStapTitle"), //$NON-NLS-1$
-                        Localization.getString("ScriptConsole.ErrorRunningStapMessage"), e);//$NON-NLS-1$
-                cmd.dispose();
-                return;
-            }
-            notifyConsoleObservers();
-        }
-    };
+	private final Runnable onCmdStart = () -> {
+		// If stopping the previous command, wait for it to stop.
+		if (isThreadAlive(stopCommandThread) && stopCommand.stopcmd != cmd) {
+			try {
+				stopCommandThread.join();
+			} catch (InterruptedException e) {
+				return;
+			}
+		}
+		if (errorDaemon != null) {
+			cmd.addErrorStreamListener(errorDaemon);
+		}
+		cmd.addInputStreamListener(consoleDaemon);
+		onCmdStopThread = new Thread(this.onCmdStop);
+		onCmdStopThread.start();
+		clearConsole();
+		try {
+			cmd.start();
+		} catch (final CoreException e) {
+			ExceptionErrorDialog.openError(Localization.getString("ScriptConsole.ErrorRunningStapTitle"), //$NON-NLS-1$
+					Localization.getString("ScriptConsole.ErrorRunningStapMessage"), e);//$NON-NLS-1$
+			cmd.dispose();
+			return;
+		}
+		notifyConsoleObservers();
+	};
 
     private class StopCommand implements Runnable {
         private Command stopcmd;
