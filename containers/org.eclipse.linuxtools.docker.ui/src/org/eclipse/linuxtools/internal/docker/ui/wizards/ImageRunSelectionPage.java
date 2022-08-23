@@ -251,7 +251,7 @@ public class ImageRunSelectionPage extends WizardPage {
 			if (status.getSeverity() == IStatus.ERROR) {
 				setMessage(status.getMessage(), IMessageProvider.ERROR);
 			} else
-				if (status != null && status.getSeverity() == IStatus.WARNING) {
+			if (status.getSeverity() == IStatus.WARNING) {
 				setMessage(status.getMessage(), IMessageProvider.WARNING);
 			}
 
@@ -740,7 +740,7 @@ public class ImageRunSelectionPage extends WizardPage {
 			// host
 			if (selectedImage == null) {
 				model.setExposedPorts(
-						Collections.<ExposedPortModel> emptyList());
+						Collections.emptyList());
 				return;
 			}
 			final IDockerImageInfo selectedImageInfo = getImageInfo(
@@ -850,11 +850,10 @@ public class ImageRunSelectionPage extends WizardPage {
 						lastLaunchConfiguration.getAttribute(COMMAND, ""));
 				this.model.setPublishAllPorts(lastLaunchConfiguration
 						.getAttribute(PUBLISH_ALL_PORTS, false));
-				final List<String> exposedPortInfos = lastLaunchConfiguration
-						.getAttribute(PUBLISHED_PORTS,
-								Collections.<String> emptyList());
+				final List<String> exposedPortInfos = lastLaunchConfiguration.getAttribute(PUBLISHED_PORTS,
+						Collections.emptyList());
 				final List<String> unusedPortInfos = lastLaunchConfiguration.getAttribute(UNUSED_PORTS,
-						Collections.<String>emptyList());
+						Collections.emptyList());
 				// FIXME: handle the case where ports where added (and selected)
 				// by the user.
 				if (selectedImageInfo != null) {
@@ -876,8 +875,7 @@ public class ImageRunSelectionPage extends WizardPage {
 				}
 
 				// links
-				this.model.setLinks(lastLaunchConfiguration.getAttribute(LINKS,
-						Collections.<String> emptyList()));
+				this.model.setLinks(lastLaunchConfiguration.getAttribute(LINKS, Collections.emptyList()));
 				// other options
 				this.model.setRemoveWhenExits(lastLaunchConfiguration
 						.getAttribute(AUTO_REMOVE, false));
@@ -969,10 +967,8 @@ public class ImageRunSelectionPage extends WizardPage {
 						// Force revalidation by changing writeValue which
 						// is made to be a dependency of the ImageCombo
 						// MultiValidator.
-						Display.getDefault().syncExec(() -> {
-							writeValue.setValue(
-									Long.toString(System.currentTimeMillis()));
-						});
+						Display.getDefault()
+								.syncExec(() -> writeValue.setValue(Long.toString(System.currentTimeMillis())));
 					}
 				}
 			});

@@ -99,7 +99,7 @@ public class ScriptConsole extends IOConsole {
      * @since 3.0
      */
     public static boolean instanceIsRunning(String name) {
-        IConsole ic[] = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
+		IConsole[] ic = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
         if (ic != null) {
             for (IConsole consoleIterator : ic) {
                 if (consoleIterator instanceof ScriptConsole) {
@@ -121,8 +121,8 @@ public class ScriptConsole extends IOConsole {
      * @param name The name of the console that should be created &amp; returned.
      * @return A console of the specified name.
      */
-    public synchronized static ScriptConsole getInstance(String name) {
-        IConsole ic[] = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
+	public static synchronized ScriptConsole getInstance(String name) {
+		IConsole[] ic = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
         if (ic != null) {
             ScriptConsole activeConsole;
             for (IConsole consoleIterator : ic) {
@@ -148,7 +148,7 @@ public class ScriptConsole extends IOConsole {
      * @since 2.0
      */
     public static boolean anyRunning() {
-        IConsole ic[] = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
+		IConsole[] ic = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
         ScriptConsole console;
 
         for (IConsole con : ic) {
@@ -167,7 +167,7 @@ public class ScriptConsole extends IOConsole {
      * @since 2.0
      */
     public static void stopAll() {
-        IConsole ic[] = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
+		IConsole[] ic = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
         ScriptConsole console;
 
         for (IConsole con : ic) {

@@ -56,10 +56,9 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.exceptions.DockerException;
+import org.mockito.Mockito;
 
 /**
  * Testing the {@link DockerExplorerView} {@link Viewer}
@@ -99,7 +98,7 @@ public class DockerExplorerViewSWTBotTest {
 				.filter(v -> v.getReference().getId().equals(DockerContainersView.VIEW_ID)
 						|| v.getReference().getId().equals(DockerImagesView.VIEW_ID)
 						|| v.getReference().getId().equals("org.eclipse.ui.views.PropertySheet"))
-				.forEach(v -> v.close());
+				.forEach(SWTBotView::close);
 	}
 
 	@After
@@ -642,14 +641,14 @@ public class DockerExplorerViewSWTBotTest {
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection1, dockerConnection2);
 		final List<String> initialConnections = Stream.of(dockerExplorerViewBot.bot().tree().getAllItems())
-				.map(item -> item.getText()).collect(Collectors.toList());
+				.map(SWTBotTreeItem::getText).collect(Collectors.toList());
 		assertThat(initialConnections).contains("Test1", "Test2");
 		// when
 		SWTUtils.select(dockerExplorerViewBot.bot().tree(), "Test1", "Test2");
 		SWTUtils.getContextMenu(dockerExplorerViewBot.bot().tree(), "Remove").click();
 		// then
 		final List<String> remainingConnections = Stream.of(dockerExplorerViewBot.bot().tree().getAllItems())
-				.map(item -> item.getText()).collect(Collectors.toList());
+				.map(SWTBotTreeItem::getText).collect(Collectors.toList());
 		assertThat(remainingConnections).doesNotContain("Test1", "Test2");
 	}
 
