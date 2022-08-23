@@ -86,8 +86,7 @@ public class DockerImage implements IDockerImage, IAdaptable {
 		this.created = created;
 		this.createdDate = created != null
 				? formatter.get()
-						.format(new Date(
-								Long.valueOf(created).longValue() * 1000))
+						.format(new Date(Long.parseLong(created) * 1000))
 				: null;
 		this.size = size;
 		this.virtualSize = virtualSize;
@@ -110,7 +109,7 @@ public class DockerImage implements IDockerImage, IAdaptable {
 		this.created = created;
 		this.createdDate = created != null
 				? formatter.get().format(
-						new Date(Long.valueOf(created).longValue() * 1000))
+						new Date(Long.parseLong(created) * 1000))
 				: null;
 		this.size = size;
 		this.virtualSize = virtualSize;
@@ -154,7 +153,7 @@ public class DockerImage implements IDockerImage, IAdaptable {
 			final String repo = (indexOfColonChar > -1)
 					? entry.substring(0, indexOfColonChar) : entry;
 			if (!results.containsKey(repo)) {
-				results.put(repo, new ArrayList<String>());
+				results.put(repo, new ArrayList<>());
 			}
 			if (indexOfColonChar > -1) {
 				results.get(repo).add(entry.substring(indexOfColonChar + 1));

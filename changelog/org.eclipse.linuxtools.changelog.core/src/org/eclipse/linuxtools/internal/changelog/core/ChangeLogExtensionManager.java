@@ -46,8 +46,6 @@ public final class ChangeLogExtensionManager {
 
     private IExtensionPoint formatterExtensions = null;
 
-    private IParserChangeLogContrib parserContributor = null;
-
     private IConfigurationElement formatterConfigElementToUse = null;
 
     private ChangeLogExtensionManager() {
@@ -85,9 +83,8 @@ public final class ChangeLogExtensionManager {
                     //$NON-NLS-1$
                     try {
                         IConfigurationElement bob = elements[i];
-                        parserContributor = (IParserChangeLogContrib) bob
+                        return (IParserChangeLogContrib) bob
                                 .createExecutableExtension("class"); // $NON-NLS-1$
-                        return parserContributor;
                     } catch (CoreException e) {
 						ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
 					}
@@ -95,8 +92,6 @@ public final class ChangeLogExtensionManager {
                 }
             }
         }
-
-
 
         return null;
     }
@@ -154,9 +149,7 @@ public final class ChangeLogExtensionManager {
             // check if there is an in-file changelog formatter for the
             // currently
             // edited file
-            for (int i = 0; i < cachedInFileFormateters.length; i++) {
-                IConfigurationElement formatterConfigElement = cachedInFileFormateters[i];
-
+            for (IConfigurationElement formatterConfigElement : cachedInFileFormateters) {
                 IConfigurationElement[] patternElementTmp = formatterConfigElement
                         .getChildren();
 

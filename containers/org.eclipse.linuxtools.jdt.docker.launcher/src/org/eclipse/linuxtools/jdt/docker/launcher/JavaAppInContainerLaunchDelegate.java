@@ -79,7 +79,7 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 			if (conn == null) {
 				Display.getDefault().asyncExec(() -> MessageDialog.openError(Display.getDefault().getActiveShell()
 					, Messages.JavaAppInContainerLaunchDelegate_connection_not_found_title
-					, Messages.bind(Messages.JavaAppInContainerLaunchDelegate_connection_not_found_text, connectionURI)));
+					, NLS.bind(Messages.JavaAppInContainerLaunchDelegate_connection_not_found_text, connectionURI)));
 				return;
 			} else if (!conn.isOpen()) {
 				try {
@@ -90,7 +90,7 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 				if (!conn.isOpen()) {
 					Display.getDefault().asyncExec(() -> MessageDialog.openError(Display.getDefault().getActiveShell()
 					, Messages.JavaAppInContainerLaunchDelegate_connection_not_active_title
-					, Messages.bind(Messages.JavaAppInContainerLaunchDelegate_connection_not_active_text, connectionURI)));
+					, NLS.bind(Messages.JavaAppInContainerLaunchDelegate_connection_not_active_text, connectionURI)));
 					return;
 				}
 			}
@@ -99,7 +99,7 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 			if (img == null) {
 				Display.getDefault().asyncExec(() -> MessageDialog.openError(Display.getDefault().getActiveShell()
 					, Messages.JavaAppInContainerLaunchDelegate_image_not_found_title
-					, Messages.bind(Messages.JavaAppInContainerLaunchDelegate_image_not_found_text, imageID)));
+					, NLS.bind(Messages.JavaAppInContainerLaunchDelegate_image_not_found_text, imageID)));
 				return;
 			}
 
@@ -265,7 +265,7 @@ public class JavaAppInContainerLaunchDelegate extends AbstractJavaLaunchConfigur
 					String imageName = conn.getImage(imageID).repoTags().get(0);
 					Display.getDefault().asyncExec(() -> MessageDialog.openError(Display.getDefault().getActiveShell()
 							, Messages.JavaAppInContainerLaunchDelegate_session_unreachable_title
-							, Messages.bind(Messages.JavaAppInContainerLaunchDelegate_session_unreachable_text, new Object [] {imageName, imageID, runner.getIPAddress()})));
+							, NLS.bind(Messages.JavaAppInContainerLaunchDelegate_session_unreachable_text, new Object [] {imageName, imageID, runner.getIPAddress()})));
 					return;
 				}
 
