@@ -4,6 +4,21 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 ## Next release...
 
+## 8.8.0
+
+### Move Linux Tools plug-ins to Java 17
+
+Linux Tools plug-ins now require Java 17
+
+### Docker Image Pull Cancellation
+
+A Docker pull of an Image can now be cancelled.  This support was added
+as part of a CDT enhancement to allow Images to be specified by name and
+pulled if not already in the local Image repository.
+
+### Gcov Support
+
+The Linux Tools Gcov plug-in now support GCC 12.
 
 ## 8.7.0
 
