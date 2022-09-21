@@ -40,7 +40,7 @@
 <unit id="org.hamcrest" version="2.2.0.v20210711-0821"/>
 <unit id="org.bouncycastle.bcpkix" version="1.71.0.v20220723-1943"/>
 <unit id="org.aopalliance" version="1.0.0.v20220404-1927"/>
-<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/S20220726152247/repository"/>
+<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20220830213456/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="javassist" version="3.13.0.GA_v201209210905"/>
@@ -95,7 +95,7 @@
 <unit id="org.eclipse.zest.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.lsp4e" version="0.0.0"/>
 <unit id="org.eclipse.tm4e.feature.feature.group" version="0.0.0"/>
-<repository location="https://download.eclipse.org/releases/2022-06/"/>
+<repository location="https://download.eclipse.org/releases/2022-09/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.reddeer.eclipse.feature.feature.group" version="0.0.0"/>
@@ -110,8 +110,6 @@
 </locations>
 <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17"/>
 <launcherArgs>
-<vmArgs>-Xms40m
--Xmx512M</vmArgs>
 <programArgs>-consolelog</programArgs>
 </launcherArgs>
 </target>
