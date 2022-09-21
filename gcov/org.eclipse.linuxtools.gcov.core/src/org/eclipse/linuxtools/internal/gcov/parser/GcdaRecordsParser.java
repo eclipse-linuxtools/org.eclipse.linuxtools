@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2021 STMicroelectronics and others.
+ * Copyright (c) 2009, 2022 STMicroelectronics and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -55,6 +55,7 @@ public class GcdaRecordsParser {
     public void parseGcdaRecord(DataInput stream) throws IOException, CoreException {
         // header data
         int magic = 0;
+		@SuppressWarnings("unused")
 		boolean readBytes = false;
 
         // data & flags to process tests
@@ -104,6 +105,9 @@ public class GcdaRecordsParser {
                 // parse gcda data
                 switch (tag) {
                 case GCOV_TAG_FUNCTION: {
+					if (length == 0) {
+						continue;
+					}
                     long fnctnId = stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK;
                     if (!fnctns.isEmpty()) {
                         boolean fnctnFound = false;
@@ -147,10 +151,12 @@ public class GcdaRecordsParser {
 
                 case GCOV_COUNTER_ARCS: {
                     if (currentFnctn == null) {
-                        String message = Messages.GcdaRecordsParser_func_counter_error;
-						IStatus status = Status.error(message);
-                        throw new CoreException(status);
+						continue;
                     }
+
+					if (version >= GCC_VER_1210 && length > Integer.MAX_VALUE) {
+						continue;
+					}
 
                     ArrayList<Block> fnctnBlcks = currentFnctn.getFunctionBlocks();
                     if (fnctnBlcks.isEmpty()) {
