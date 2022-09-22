@@ -49,7 +49,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewerSupport;
-import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.databinding.viewers.typed.ViewerProperties;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -68,6 +68,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.docker.core.AbstractRegistry;
 import org.eclipse.linuxtools.docker.core.DockerException;
@@ -463,11 +464,8 @@ public class ImageRunSelectionPage extends WizardPage {
 						ExposedPortModel.PORT_TYPE,
 						ExposedPortModel.HOST_ADDRESS,
 						ExposedPortModel.HOST_PORT));
-		dbc.bindSet(
-				ViewersObservables.observeCheckedElements(
-						exposedPortsTableViewer, ExposedPortModel.class),
-				BeanProperties.set(ImageRunSelectionModel.SELECTED_PORTS)
-						.observe(model));
+		dbc.bindSet(ViewerProperties.checkedElements(ExposedPortModel.class).observe((Viewer) exposedPortsTableViewer),
+				BeanProperties.set(ImageRunSelectionModel.SELECTED_PORTS).observe(model));
 
 		// disable the edit and removeButton if the table is empty
 		exposedPortsTableViewer.addSelectionChangedListener(
