@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2015, 2019 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -45,7 +45,7 @@ import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ObservableMapLabelProvider;
 import org.eclipse.jface.databinding.viewers.ViewerSupport;
-import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.databinding.viewers.typed.ViewerProperties;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -55,6 +55,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
@@ -82,7 +83,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * A {@link WizardPage} to let the user select the CPU and memory allocation for
  * the container, as well as the volumes to mount.
- * 
+ *
  * @author xcoulon
  *
  */
@@ -96,13 +97,13 @@ public class ImageRunResourceVolumesVariablesPage extends WizardPage {
 
 	/**
 	 * Default constructor.
-	 * 
+	 *
 	 * @param selectedImage
 	 *            the {@link IDockerImage} to run
 	 * @throws DockerException
 	 *             if obtaining info from the given {@link IDockerConnection}
 	 *             failed
-	 * 
+	 *
 	 */
 	public ImageRunResourceVolumesVariablesPage(
 			final IDockerConnection connection) throws DockerException {
@@ -116,7 +117,7 @@ public class ImageRunResourceVolumesVariablesPage extends WizardPage {
 
 	/**
 	 * Default constructor.
-	 * 
+	 *
 	 * @param selectedImage
 	 *            the {@link IDockerImage} to run
 	 * @param lastLaunchConfiguration
@@ -128,7 +129,7 @@ public class ImageRunResourceVolumesVariablesPage extends WizardPage {
 	 * @throws CoreException
 	 *             if reading attributes from {@link ILaunchConfiguration}
 	 *             failed
-	 * 
+	 *
 	 */
 	public ImageRunResourceVolumesVariablesPage(final IDockerImage image,
 			final ILaunchConfiguration lastLaunchConfiguration)
@@ -287,7 +288,7 @@ image);
 	/**
 	 * Binds the given <code>cpuShares</code> value to the given {@link Button}
 	 * when it is selected.
-	 * 
+	 *
 	 * @param button
 	 *            the {@link Button} to bind
 	 * @param cpuShares
@@ -377,12 +378,8 @@ image);
 				BeanProperties.values(DataVolumeModel.class,
 						DataVolumeModel.CONTAINER_PATH, DataVolumeModel.MOUNT,
 						DataVolumeModel.READ_ONLY_VOLUME));
-		dbc.bindSet(
-				ViewersObservables.observeCheckedElements(
-						dataVolumesTableViewer, DataVolumeModel.class),
-				BeanProperties
-						.set(ImageRunResourceVolumesVariablesModel.SELECTED_DATA_VOLUMES)
-						.observe(model));
+		dbc.bindSet(ViewerProperties.checkedElements(DataVolumeModel.class).observe((Viewer) dataVolumesTableViewer),
+				BeanProperties.set(ImageRunResourceVolumesVariablesModel.SELECTED_DATA_VOLUMES).observe(model));
 		// disable the edit and removeButton if the table is empty
 		dataVolumesTableViewer.addSelectionChangedListener(
 				onSelectionChanged(editButton, removeButton));
@@ -421,12 +418,12 @@ image);
 						selectedVolumes.add(volume);
 					}
 				}
-				
+
 				// environment variables
 				model.setEnvironmentVariables(
 						lastLaunchConfiguration.getAttribute(ENV_VARIABLES,
 								Collections.<String> emptyList()));
-				
+
 				// labels
 				Map<String, String> labels = lastLaunchConfiguration
 						.getAttribute(LABELS, (Map<String, String>) null);
@@ -572,12 +569,8 @@ image);
 		final CheckboxTableViewer tableViewer = new CheckboxTableViewer(table);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-		dbc.bindSet(
-				ViewersObservables.observeCheckedElements(tableViewer,
-						DataVolumeModel.class),
-				BeanProperties
-						.set(ImageRunResourceVolumesVariablesModel.SELECTED_DATA_VOLUMES)
-						.observe(model));
+		dbc.bindSet(ViewerProperties.checkedElements(DataVolumeModel.class).observe((Viewer) tableViewer),
+				BeanProperties.set(ImageRunResourceVolumesVariablesModel.SELECTED_DATA_VOLUMES).observe(model));
 		addTableViewerColum(tableViewer,
 				WizardMessages.getString(
 						"ImageRunResourceVolVarPage.containerPathColumn"), //$NON-NLS-1$

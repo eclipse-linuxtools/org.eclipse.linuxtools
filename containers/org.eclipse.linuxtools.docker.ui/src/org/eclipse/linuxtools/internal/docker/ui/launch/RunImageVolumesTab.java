@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2015, 2018 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -36,7 +36,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ObservableMapLabelProvider;
-import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.databinding.viewers.typed.ViewerProperties;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -47,6 +47,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ContainerDataVolumeDialog;
@@ -120,8 +121,7 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 				.set(ImageRunResourceVolumesVariablesModel.SELECTED_DATA_VOLUMES)
 				.observe(model);
 		dbc.bindSet(
-				ViewersObservables.observeCheckedElements(
-						dataVolumesTableViewer, DataVolumeModel.class),
+				ViewerProperties.checkedElements(DataVolumeModel.class).observe((Viewer) dataVolumesTableViewer),
 				selectedVolumesObservable);
 		dataVolumesTableViewer.addCheckStateListener(onCheckStateChanged());
 
