@@ -30,7 +30,7 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewerSupport;
-import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.databinding.viewers.typed.ViewerProperties;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -40,6 +40,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.linuxtools.internal.docker.ui.SWTImagesFactory;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.ContainerPortDialog;
@@ -158,8 +159,7 @@ public class RunImagePortsTab extends AbstractLaunchConfigurationTab
 						ExposedPortModel.HOST_ADDRESS,
 						ExposedPortModel.HOST_PORT));
 		dbc.bindSet(
-				ViewersObservables.observeCheckedElements(
-						exposedPortsTableViewer, ExposedPortModel.class),
+				ViewerProperties.checkedElements(ExposedPortModel.class).observe((Viewer) exposedPortsTableViewer),
 				BeanProperties.set(ImageRunSelectionModel.SELECTED_PORTS)
 						.observe(model));
 
