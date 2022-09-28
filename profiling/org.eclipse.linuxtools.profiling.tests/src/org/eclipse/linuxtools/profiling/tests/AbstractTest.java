@@ -286,6 +286,8 @@ public abstract class AbstractTest {
 
         // Index the project
         IIndexManager indexManager = CCorePlugin.getIndexManager();
+        indexManager.joinIndexer(IIndexManager.FOREVER,
+                new NullProgressMonitor());
         indexManager.reindex(proj);
         indexManager.joinIndexer(IIndexManager.FOREVER,
                 new NullProgressMonitor());
