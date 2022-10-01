@@ -17,12 +17,13 @@
 		<systemProperties></systemProperties>
 		<platformSystemProperties></platformSystemProperties>
 		<applejdkProperties></applejdkProperties>
-		<tycho.scmUrl>scm:git://git.eclipse.org/gitroot/linuxtools/org.eclipse.linuxtools.git</tycho.scmUrl>
+		<tycho.scmUrl>scm:git:https://github.com/eclipse-linuxtools/org.eclipse.linuxtools.git</tycho.scmUrl>
   </properties>
   
   <modules>
     <module>org.eclipse.linuxtools.docker.core</module>
     <module>org.eclipse.linuxtools.docker.ui</module>
+    <module>org.eclipse.linuxtools.docker.tests.hamcrest-wrap</module>
     <module>org.eclipse.linuxtools.docker.ui.tests</module>
     <module>org.eclipse.linuxtools.docker.docs</module>
     <module>org.eclipse.linuxtools.docker-feature</module>

@@ -34,7 +34,6 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.exceptions.DockerException;
 
@@ -55,6 +54,7 @@ public class NetworkModeTest extends AbstractImageBotTest {
 		deleteAllConnections();
 		getConnection();
 		pullImage(IMAGE_NAME, IMAGE_TAG);
+		Thread.sleep(10000);
 		new WaitWhile(new JobIsRunning());
 		DockerExplorerView explorer = new DockerExplorerView();
 		explorer.open();

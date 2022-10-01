@@ -52,6 +52,7 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -99,6 +100,7 @@ public class ComposeTest extends AbstractImageBotTest {
 
 	}
 
+	@Ignore
 	@Test
 	public void testCompose() {
 		// Set up Docker Compose location
