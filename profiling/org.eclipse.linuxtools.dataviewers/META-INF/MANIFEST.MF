@@ -17,6 +17,6 @@ Export-Package: org.eclipse.linuxtools.dataviewers,
  org.eclipse.linuxtools.dataviewers.actions,
  org.eclipse.linuxtools.dataviewers.dialogs,
  org.eclipse.linuxtools.dataviewers.listeners
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Localization: plugin
 Automatic-Module-Name: org.eclipse.linuxtools.dataviewers

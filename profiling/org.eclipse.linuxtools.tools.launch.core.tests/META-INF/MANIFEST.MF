@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.11.0",
  org.eclipse.linuxtools.profiling.tests;bundle-version="1.1.0",
  org.eclipse.cdt.core
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Import-Package: org.eclipse.debug.core,
  org.eclipse.linuxtools.remote.proxy.tests
 Automatic-Module-Name: org.eclipse.linuxtools.tools.launch.core.tests

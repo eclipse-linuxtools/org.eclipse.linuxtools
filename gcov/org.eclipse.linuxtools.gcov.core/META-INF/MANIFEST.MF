@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.linuxtools.dataviewers.charts,
  org.eclipse.ui.editors;bundle-version="3.8.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Localization: plugin
 Export-Package: 
  org.eclipse.linuxtools.internal.gcov.parser;x-friends:="org.eclipse.linuxtools.gcov.launch",
