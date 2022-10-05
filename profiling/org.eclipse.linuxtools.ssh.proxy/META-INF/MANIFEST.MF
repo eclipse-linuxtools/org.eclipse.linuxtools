@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.ui,
  com.jcraft.jsch;bundle-version="0.1.44",
  org.eclipse.remote.jsch.core
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Localization: plugin
 Bundle-Vendor: %provider
 Import-Package: org.eclipse.cdt.utils.pty

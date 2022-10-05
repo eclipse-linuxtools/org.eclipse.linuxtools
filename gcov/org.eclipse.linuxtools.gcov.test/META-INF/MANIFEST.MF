@@ -11,7 +11,7 @@ Require-Bundle: org.junit;bundle-version="4.10.0",
  org.eclipse.ui.navigator.resources,
  org.eclipse.ui.navigator
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Localization: plugin
 Fragment-Host: org.eclipse.linuxtools.gcov.core
 Automatic-Module-Name: org.eclipse.linuxtools.gcov.test
