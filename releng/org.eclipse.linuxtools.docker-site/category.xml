@@ -160,7 +160,7 @@
    <iu id="com.github.jnr.x86asm" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="org.bouncycastle.bcprov" version="0.0.0">
+   <iu id="bcprov" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="org.bouncycastle.bcpkix" version="0.0.0">
