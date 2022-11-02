@@ -115,10 +115,6 @@ public class ParseDevHelp {
                     if (f.exists()) {
                         parse(f.getAbsolutePath(),
                                 monitor);
-                    } else {
-                        parse(dirPath.append(name)
-                                .append(name + ".devhelp").toOSString(), //$NON-NLS-1$
-                                monitor);
                     }
                     monitor.worked(1);
                 }
@@ -177,76 +173,40 @@ public class ParseDevHelp {
                         return;
                     }
                 }
-                if (path.getFileExtension().equals("devhelp")) { //$NON-NLS-1$
-                    // Get all function nodes
-                    NodeList nl = doc.getElementsByTagName("function"); // $NON-NLS-1$ //$NON-NLS-1$
-                    for (int i = 0; i < nl.getLength(); ++i) {
-                        if (monitor.isCanceled()) {
-                            return;
-                        }
-                        Node n = nl.item(i);
-                        NamedNodeMap m = n.getAttributes();
-                        // For each function node, get its associated link
-                        Node name = m.getNamedItem("name"); // $NON-NLS-1$ //$NON-NLS-1$
-                        Node link = m.getNamedItem("link"); // $NON-NLS-1$ //$NON-NLS-1$
-                        if (name != null && link != null) {
-                            String nameValue = name.getNodeValue();
-                            nameValue = nameValue.replaceAll("\\(.*\\);+", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                            if (!nameValue.contains("::") && !nameValue.startsWith("enum ") //$NON-NLS-1$ //$NON-NLS-2$
-                                    && !nameValue.contains("\"")) { //$NON-NLS-1$
-                                String linkValue = link.getNodeValue();
-                                String[] linkParts = linkValue.split("#"); //$NON-NLS-1$
-                                if (linkParts.length < 2) {
-                                	return;
-                                }
-                                // Check if the file referred to by the link has been seen before
-                                // If not, create a new function list for it
-                                HashMap<String, String> funcMap = files.get(linkParts[0]);
-                                if (funcMap == null) {
-                                    funcMap = new HashMap<>();
-                                    files.put(linkParts[0], funcMap);
-                                }
-                                // Add the function to the function list for the link file
-                                funcMap.put(linkParts[1], nameValue);
-                            }
-                        }
-                    }
-                } else if (path.getFileExtension().equals("devhelp2")) { //$NON-NLS-1$
-                    NodeList nl = doc.getElementsByTagName("keyword"); // $NON-NLS-1$ //$NON-NLS-1$
-                    for (int i = 0; i < nl.getLength(); ++i) {
-                        if (monitor.isCanceled())
-                            return;
-                        Node n = nl.item(i);
-                        NamedNodeMap m = n.getAttributes();
-                        Node type = m.getNamedItem("type"); // $NON-NLS-1$ //$NON-NLS-1$
-                        if (type != null) {
-                            String typeName = type.getNodeValue();
-                            // Look for all function references in the devhelp file
-                            if (typeName.equals("function")) { //$NON-NLS-1$
-                                // Each function reference will have a link associated with it
-                                Node name = m.getNamedItem("name"); // $NON-NLS-1$ //$NON-NLS-1$
-                                Node link = m.getNamedItem("link"); // $NON-NLS-1$ //$NON-NLS-1$
-                                if (name != null && link != null) {
-                                    // Clean up the name and make sure it isn't a non-C-function
-                                    String nameValue = name.getNodeValue();
-                                    nameValue = nameValue.replaceAll("\\(.*\\);+", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                                    if (!nameValue.contains("::") && !nameValue.startsWith("enum ") //$NON-NLS-1$ //$NON-NLS-2$
-                                            && !nameValue.contains("\"")) { //$NON-NLS-1$
-                                        String linkValue = link.getNodeValue();
-                                        String[] linkParts = linkValue.split("#"); //$NON-NLS-1$
-                                        // Check to see if the file referred to by the link has been seen before
-                                        // If not, create a new function list for it
-                                        HashMap<String, String> funcMap = files.get(linkParts[0]);
-                                        if (funcMap == null) {
-                                            funcMap = new HashMap<>();
-                                            files.put(linkParts[0], funcMap);
-                                        }
-                                        if (linkParts.length < 2) {
-                                        	funcMap.put("name", nameValue); //$NON-NLS-1$
-                                        } else {
-                                        	// Add the function to the function list for the link file
-                                        	funcMap.put(linkParts[1], nameValue);
-                                        }
+                NodeList nl = doc.getElementsByTagName("keyword"); // $NON-NLS-1$ //$NON-NLS-1$
+                for (int i = 0; i < nl.getLength(); ++i) {
+                    if (monitor.isCanceled())
+                        return;
+                    Node n = nl.item(i);
+                    NamedNodeMap m = n.getAttributes();
+                    Node type = m.getNamedItem("type"); // $NON-NLS-1$ //$NON-NLS-1$
+                    if (type != null) {
+                        String typeName = type.getNodeValue();
+                        // Look for all function references in the devhelp file
+                        if (typeName.equals("function")) { //$NON-NLS-1$
+                            // Each function reference will have a link associated with it
+                            Node name = m.getNamedItem("name"); // $NON-NLS-1$ //$NON-NLS-1$
+                            Node link = m.getNamedItem("link"); // $NON-NLS-1$ //$NON-NLS-1$
+                            if (name != null && link != null) {
+                                // Clean up the name and make sure it isn't a non-C-function
+                                String nameValue = name.getNodeValue();
+                                nameValue = nameValue.replaceAll("\\(.*\\);+", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+                                if (!nameValue.contains("::") && !nameValue.startsWith("enum ") //$NON-NLS-1$ //$NON-NLS-2$
+                                        && !nameValue.contains("\"")) { //$NON-NLS-1$
+                                    String linkValue = link.getNodeValue();
+                                    String[] linkParts = linkValue.split("#"); //$NON-NLS-1$
+                                    // Check to see if the file referred to by the link has been seen before
+                                    // If not, create a new function list for it
+                                    HashMap<String, String> funcMap = files.get(linkParts[0]);
+                                    if (funcMap == null) {
+                                        funcMap = new HashMap<>();
+                                        files.put(linkParts[0], funcMap);
+                                    }
+                                    if (linkParts.length < 2) {
+                                        funcMap.put("name", nameValue); //$NON-NLS-1$
+                                    } else {
+                                        // Add the function to the function list for the link file
+                                        funcMap.put(linkParts[1], nameValue);
                                     }
                                 }
                             }
