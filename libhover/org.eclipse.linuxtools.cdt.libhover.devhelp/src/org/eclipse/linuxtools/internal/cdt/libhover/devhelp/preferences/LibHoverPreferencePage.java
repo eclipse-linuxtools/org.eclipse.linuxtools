@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2018 Red Hat, Inc.
+ * Copyright (c) 2011, 2022 Red Hat, Inc.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -13,35 +13,24 @@
 package org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.Collection;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.cdt.libhover.LibHoverInfo;
-import org.eclipse.linuxtools.cdt.libhover.LibhoverPlugin;
-import org.eclipse.linuxtools.internal.cdt.libhover.LibHover;
-import org.eclipse.linuxtools.internal.cdt.libhover.LibHoverLibrary;
+import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.DevHelpGenerateJob;
 import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.DevHelpPlugin;
-import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.ParseDevHelp;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -64,7 +53,6 @@ public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
 
     private final static String DEVHELP_DIR = "Libhover.Devhelp.Directory"; //$NON-NLS-1$
     private final static String GENERATE = "Libhover.Devhelp.Generate.lbl"; //$NON-NLS-1$
-    private final static String REGENERATE_MSG = "Libhover.Devhelp.Regenerate.msg"; //$NON-NLS-1$
     private final static String TITLE = "Libhover.Devhelp.Preference.title"; //$NON-NLS-1$
 
     private Button generateButton;
@@ -72,6 +60,11 @@ public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
     public LibHoverPreferencePage() {
         super(GRID);
         setPreferenceStore(DevHelpPlugin.getDefault().getPreferenceStore());
+    }
+
+    @Override
+    public void init(IWorkbench workbench) {
+        // Nothing to do
     }
 
     private static class DevhelpStringFieldEditor extends DirectoryFieldEditor {
@@ -85,50 +78,13 @@ public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
 
     private synchronized void regenerate() {
         generateButton.setEnabled(false);
-        Job k = new Job(LibHoverMessages.getString(REGENERATE_MSG)) {
-
-            @Override
-            protected IStatus run(IProgressMonitor monitor) {
-                IPreferenceStore ps = DevHelpPlugin.getDefault().getPreferenceStore();
-                ParseDevHelp.DevHelpParser p =
-                    new ParseDevHelp.DevHelpParser(ps.getString(PreferenceConstants.DEVHELP_DIRECTORY));
-                LibHoverInfo hover = p.parse(monitor);
-                // Update the devhelp library info if it is on library list
-                Collection<LibHoverLibrary> libs = LibHover.getLibraries();
-                for (LibHoverLibrary l : libs) {
-                    if (l.getName().equals("devhelp")) { //$NON-NLS-1$
-                        l.setHoverinfo(hover);
-                        break;
-                    }
-                }
-                try {
-                    // Now, output the LibHoverInfo for caching later
-                    IPath location = LibhoverPlugin.getDefault().getStateLocation().append("C"); //$NON-NLS-1$
-                    File ldir = new File(location.toOSString());
-                    ldir.mkdir();
-                    location = location.append("devhelp.libhover"); //$NON-NLS-1$
-                    try (FileOutputStream f = new FileOutputStream(
-                            location.toOSString());
-                            ObjectOutputStream out = new ObjectOutputStream(f)) {
-                        out.writeObject(hover);
-                    }
-                    monitor.done();
-                } catch(IOException e) {
-                    monitor.done();
-                    return Status.error(e.getLocalizedMessage(), e);
-                }
-
-
-                return Status.OK_STATUS;
-            }
-
-        };
+        Job k = new DevHelpGenerateJob(true);
         k.setUser(true);
         k.addJobChangeListener(new JobChangeAdapter() {
             @Override
             public void done(IJobChangeEvent event) {
                 Display.getDefault().syncExec(() -> {
-				    if (generateButton != null)
+				    if (generateButton != null && !generateButton.isDisposed())
 				        generateButton.setEnabled(true);
 				});
             }
@@ -143,7 +99,6 @@ public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
         generateButton.setFont(parent.getFont());
         generateButton.setText(LibHoverMessages.getString(GENERATE));
         generateButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> regenerate()));
-        generateButton.addDisposeListener(event -> generateButton = null);
         GridData gd = new GridData();
 
         gd.horizontalAlignment = GridData.FILL;
@@ -155,29 +110,16 @@ public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
         generateButton.setLayoutData(gd);
     }
 
-    /**
-     * Creates the field editors. Field editors are abstractions of
-     * the common GUI blocks needed to manipulate various types
-     * of preferences. Each field editor knows how to save and
-     * restore itself.
-     */
+    @Override
+    protected Control createContents(Composite parent) {
+        Label desc = new Label(parent, SWT.NONE);
+        desc.setText(LibHoverMessages.getString(TITLE));
+        return super.createContents(parent);
+    }
+
     @Override
     public void createFieldEditors() {
-        addField(
-                new LabelFieldEditor(
-                        getFieldEditorParent(),
-                        LibHoverMessages.getString(TITLE)));
-        addField(
-                new DevhelpStringFieldEditor(
-                        PreferenceConstants.DEVHELP_DIRECTORY,
-                        LibHoverMessages.getString(DEVHELP_DIR),
-                        getFieldEditorParent()));
-
-
+        addField(new DevhelpStringFieldEditor(PreferenceConstants.DEVHELP_DIRECTORY,
+                LibHoverMessages.getString(DEVHELP_DIR), getFieldEditorParent()));
     }
-
-    @Override
-    public void init(IWorkbench workbench) {
-    }
-
 }
