@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contexts>
+   <context id="prefs">
+      <description>On this page you can configure in which directories Library Hover will search for Devhelp books. Library Hover help will be generated for all Devhelp books found in these directories. Use the generate button to regenerate Devhelp hover data.</description>
+      <topic href="html/devhelp.html" label="Devhelp Documentation"/>
+   </context>
+</contexts>

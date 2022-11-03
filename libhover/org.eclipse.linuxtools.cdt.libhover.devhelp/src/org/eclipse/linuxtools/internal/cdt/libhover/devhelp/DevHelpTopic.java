@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2012, 2022 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -39,16 +39,15 @@ import org.xml.sax.SAXException;
 
 public class DevHelpTopic implements ITopic {
 
+    private static XPath xpath = XPathFactory.newInstance().newXPath();
+
     private String name;
-    private XPath xpath;
     private String label;
     private String link;
-    private List<ITopic> subTopics;
+    private final List<ITopic> subTopics = new ArrayList<>();
 
     DevHelpTopic(String name) {
         this.name = name;
-        xpath = XPathFactory.newInstance().newXPath();
-        subTopics = new ArrayList<>();
         label = name;
         init();
     }

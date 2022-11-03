@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2012, 2022 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -28,16 +28,15 @@ import org.w3c.dom.NodeList;
 
 public class SimpleTopic implements ITopic {
 
+    private static XPath xpath = XPathFactory.newInstance().newXPath();
+
     private String bookName;
     private Node node;
-    private XPath xpath;
-    private List<ITopic> subTopics;
+    private final List<ITopic> subTopics = new ArrayList<>();
 
     public SimpleTopic(String bookName, Node node) {
         this.bookName = bookName;
         this.node = node;
-        xpath = XPathFactory.newInstance().newXPath();
-        subTopics = new ArrayList<>();
         initSubtopics();
     }
 
