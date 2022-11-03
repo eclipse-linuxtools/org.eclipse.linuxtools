@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2011, 2022 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -34,6 +34,10 @@ public class DevHelpContentProducer implements IHelpContentProducer {
         // Eclipse help system adds parameters to the href but this breaks our path creation so we just strip them.
         if (href.contains("?")) { //$NON-NLS-1$
             href = href.substring(0, href.indexOf('?'));
+        }
+        // This is our custom index page, let the help system deal with it
+        if ("html/devhelp.html".equals(href)) { //$NON-NLS-1$
+            return null;
         }
         IPreferenceStore ps = DevHelpPlugin.getDefault().getPreferenceStore();
         IPath devhelpLocation = new Path(ps.getString(PreferenceConstants.DEVHELP_DIRECTORY)).append(href);

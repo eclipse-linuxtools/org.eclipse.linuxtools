@@ -166,12 +166,12 @@ public class CheckDevhelp {
         ITocContribution c = contributions[0];
         assertEquals(c.getId(),
                 "org.eclipse.linuxtools.cdt.libhover.devhelp.toc"); //$NON-NLS-1$
-        assertTrue(c.isPrimary());
+        assertFalse(c.isPrimary());
         assertEquals(c.getCategoryId(), null);
         assertEquals(c.getLocale(), "en_US"); //$NON-NLS-1$
         String[] docs = c.getExtraDocuments();
         assertEquals(docs.length, 0);
-        assertTrue(c.getLinkTo().isEmpty());
+        assertFalse(c.getLinkTo().isEmpty());
         assertEquals(c.getContributorId(),
                 "org.eclipse.linuxtools.cdt.libhover.devhelp"); //$NON-NLS-1$
     }

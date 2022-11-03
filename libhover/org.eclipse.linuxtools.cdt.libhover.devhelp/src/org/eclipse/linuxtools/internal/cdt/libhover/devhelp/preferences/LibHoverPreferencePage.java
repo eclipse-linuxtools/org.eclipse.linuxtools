@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.DevHelpGenerateJob;
 import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.DevHelpPlugin;
 import org.eclipse.swt.SWT;
@@ -33,6 +34,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * This class represents a preference page that
@@ -51,6 +53,9 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
         IWorkbenchPreferencePage {
 
+    // ID of the context help for the preference page
+    private static final String HELP_CONTEXT_ID = "org.eclipse.linuxtools.cdt.libhover.devhelp.prefs"; //$NON-NLS-1$
+
     private final static String DEVHELP_DIR = "Libhover.Devhelp.Directory"; //$NON-NLS-1$
     private final static String GENERATE = "Libhover.Devhelp.Generate.lbl"; //$NON-NLS-1$
     private final static String TITLE = "Libhover.Devhelp.Preference.title"; //$NON-NLS-1$
@@ -59,12 +64,16 @@ public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
 
     public LibHoverPreferencePage() {
         super(GRID);
-        setPreferenceStore(DevHelpPlugin.getDefault().getPreferenceStore());
     }
 
     @Override
     public void init(IWorkbench workbench) {
         // Nothing to do
+    }
+
+    @Override
+    protected IPreferenceStore doGetPreferenceStore() {
+        return DevHelpPlugin.getDefault().getPreferenceStore();
     }
 
     private static class DevhelpStringFieldEditor extends DirectoryFieldEditor {
@@ -108,6 +117,12 @@ public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
                 SWT.DEFAULT, SWT.DEFAULT, true).x);
 
         generateButton.setLayoutData(gd);
+    }
+
+    @Override
+    public void createControl(Composite parent) {
+        super.createControl(parent);
+        PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(), HELP_CONTEXT_ID);
     }
 
     @Override

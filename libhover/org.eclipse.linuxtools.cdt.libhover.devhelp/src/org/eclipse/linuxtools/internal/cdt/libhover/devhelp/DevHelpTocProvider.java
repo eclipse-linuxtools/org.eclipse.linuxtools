@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2011, 2022 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.internal.cdt.libhover.devhelp;
 import org.eclipse.help.AbstractTocProvider;
 import org.eclipse.help.IToc;
 import org.eclipse.help.ITocContribution;
+import org.osgi.framework.FrameworkUtil;
 
 public class DevHelpTocProvider extends AbstractTocProvider {
 
@@ -33,8 +34,8 @@ public class DevHelpTocProvider extends AbstractTocProvider {
             }
             @Override
             public boolean isPrimary() {
-               // this is a primary, top-level contribution (a book)
-               return true;
+               // table of contents will be embedded in a custom index page
+               return false;
             }
             @Override
             public IToc getToc() {
@@ -52,14 +53,13 @@ public class DevHelpTocProvider extends AbstractTocProvider {
             }
             @Override
             public String getLinkTo() {
-                return ""; //$NON-NLS-1$
+                return "toc.xml#devhelp_toc"; //$NON-NLS-1$
             }
             @Override
             public String getContributorId() {
-                return "org.eclipse.linuxtools.cdt.libhover.devhelp"; //$NON-NLS-1$
+                return FrameworkUtil.getBundle(DevHelpTocProvider.class).getSymbolicName();
             }
         };
         return new ITocContribution[] { contribution };
     }
-
 }

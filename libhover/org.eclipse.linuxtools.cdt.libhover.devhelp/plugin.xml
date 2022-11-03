@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-
    <extension
          point="org.eclipse.help.toc">
+      <toc
+            file="toc.xml"
+            primary="true">
+      </toc>
       <tocProvider
             class="org.eclipse.linuxtools.internal.cdt.libhover.devhelp.DevHelpTocProvider">
       </tocProvider>
@@ -38,6 +41,13 @@
       <contentProducer
             producer="org.eclipse.linuxtools.internal.cdt.libhover.devhelp.DevHelpContentProducer">
       </contentProducer>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml"
+            plugin="org.eclipse.linuxtools.cdt.libhover.devhelp">
+      </contexts>
    </extension>
    <extension
          point="org.eclipse.ui.startup">
