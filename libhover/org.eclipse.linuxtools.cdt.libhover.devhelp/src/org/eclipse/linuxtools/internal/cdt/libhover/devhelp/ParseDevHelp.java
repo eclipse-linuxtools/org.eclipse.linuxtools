@@ -13,36 +13,33 @@
 package org.eclipse.linuxtools.internal.cdt.libhover.devhelp;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Stream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xerces.parsers.AbstractSAXParser;
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.filesystem.IFileSystem;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.cdt.libhover.FunctionInfo;
 import org.eclipse.linuxtools.cdt.libhover.LibHoverInfo;
 import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences.FuncFoundSaxException;
-import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences.LibHoverMessages;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -53,8 +50,6 @@ import org.xml.sax.SAXException;
 
 public class ParseDevHelp {
 
-    private static final String PARSING_MSG = "Libhover.Devhelp.Parsing.msg"; //$NON-NLS-1$
-    private static final String PARSING_FMT_MSG = "Libhover.Devhelp.Parsing.fmt.msg"; //$NON-NLS-1$
     public static class DevHelpParser {
 
         private static final class NullEntityResolver implements EntityResolver {
@@ -64,27 +59,22 @@ public class ParseDevHelp {
             }
         }
 
-        private static final class FilenameComparator implements
-        Comparator<IFileStore> {
-            @Override
-            public int compare(IFileStore arg0, IFileStore arg1) {
-                return (arg0.getName().compareToIgnoreCase(arg1.getName()));
-            }
-        }
-
-        private String dirName;
+        private final List<Path> books = new ArrayList<>();
         private LibHoverInfo libhover;
         private boolean debug;
-        private FilenameComparator filenameComparator = new FilenameComparator();
         private NullEntityResolver entityResolver = new NullEntityResolver();
         private DocumentBuilderFactory factory;
 
-        public DevHelpParser(String dirName) {
-            this(dirName, false);
+        public DevHelpParser(String paths) {
+            this(findAllDevhelpBooks(paths));
         }
 
-        public DevHelpParser(String dirName, boolean debug) {
-            this.dirName = dirName;
+        public DevHelpParser(List<Path> books) {
+            this(books, false);
+        }
+
+        public DevHelpParser(List<Path> books, boolean debug) {
+            this.books.addAll(books);
             this.libhover = new LibHoverInfo();
             this.debug = debug;
             factory = DocumentBuilderFactory.newInstance();
@@ -96,40 +86,25 @@ public class ParseDevHelp {
         }
 
         public LibHoverInfo parse(IProgressMonitor monitor) {
-            try {
-                IFileSystem fs = EFS.getLocalFileSystem();
-                IPath dirPath = new Path(dirName);
-                IFileStore htmlDir = fs.getStore(dirPath);
-                IFileStore[] files = htmlDir.childStores(EFS.NONE, null);
-                monitor.beginTask(LibHoverMessages.getString(PARSING_MSG), files.length);
-                Arrays.sort(files, filenameComparator);
-                for (int i = 0; i < files.length; ++i) {
-                    IFileStore file = files[i];
-                    String name = file.fetchInfo().getName();
-                    if (monitor.isCanceled()) {
-                        return null;
-                    }
-                    monitor.setTaskName(LibHoverMessages.getFormattedString(PARSING_FMT_MSG,
-                            new String[]{name}));
-                    File f = new File(dirPath.append(name).append(name + ".devhelp2").toOSString()); //$NON-NLS-1$
-                    if (f.exists()) {
-                        parse(f.getAbsolutePath(),
-                                monitor);
-                    }
-                    monitor.worked(1);
+            monitor.beginTask(Messages.ParseDevHelp_ParseTask, books.size());
+            Collections.sort(books);
+            for (Path book : books) {
+                if (monitor.isCanceled()) {
+                    return null;
                 }
-            } catch (CoreException e) {
-                e.printStackTrace();
+                monitor.setTaskName(MessageFormat.format(Messages.ParseDevHelp_ParseFileTask,
+                        book.getParent().getFileName().toString()));
+                parse(book.toAbsolutePath(), monitor);
+                monitor.worked(1);
             }
             return libhover;
         }
 
-        private void parseLinks(HashMap<String, String> funcMap, String fileName, IPath path, LibHoverInfo libhover) {
+        private void parseLinks(HashMap<String, String> funcMap, String fileName, Path path, LibHoverInfo libhover) {
             InputStream reader = null;
             AbstractSAXParser parser = null;
             try {
-                reader = new FileInputStream(path.removeLastSegments(1).toOSString()
-                        + "/" + fileName); //$NON-NLS-1$
+                reader = Files.newInputStream(path.getParent().resolve(fileName));
                 if (funcMap.size() == 1 && funcMap.containsKey("name")) { //$NON-NLS-1$
                 	parser = new HTMLSAXParser(funcMap);
                 } else {
@@ -155,12 +130,9 @@ public class ParseDevHelp {
             }
         }
 
-        private void parse(String fileName, IProgressMonitor monitor) {
-            try {
+        private void parse(Path path, IProgressMonitor monitor) {
+            try(InputStream stream = Files.newInputStream(path)) {
                 HashMap<String, HashMap<String,String>> files = new HashMap<>();
-                Path path = new Path(fileName);
-                File f = new File(fileName);
-                FileInputStream stream = new FileInputStream(f);
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 builder.setEntityResolver(entityResolver);
                 Document doc = builder.parse(stream);
@@ -228,29 +200,50 @@ public class ParseDevHelp {
         }
     }
 
+	/**
+	 * A utility to find all the devhelp indexes within the given set of
+	 * directories.
+	 * 
+	 * @param paths a string containing a set of paths, delimited by the
+	 *              platform-specific path separator
+	 * @return a list of paths to devhelp indexes
+	 */
+	public static List<Path> findAllDevhelpBooks(String paths) {
+		List<Path> books = new ArrayList<>();
+		if (paths != null) {
+			for (String path : paths.split(File.pathSeparator)) {
+				Path p = Path.of(path);
+				if (!Files.isDirectory(p)) {
+					continue;
+				}
+				try (Stream<Path> htmlDirs = Files.walk(p, 1)) {
+					books.addAll(htmlDirs.map(dir -> {
+						return dir.resolve(dir.getFileName() + ".devhelp2"); //$NON-NLS-1$
+					}).filter(Files::isReadable).toList());
+				} catch (IOException e) {
+					// No big deal, we just might not have permission to read this directory, for
+					// example, carry on to the next one
+				}
+			}
+		}
+		return books;
+	}
+
     public static void main(String[] args) {
         long startParse = System.currentTimeMillis();
-        String devhelpHtmlDirectory = "/usr/share/gtk-doc/html"; //$NON-NLS-1$
-        DevHelpParser p = new DevHelpParser(devhelpHtmlDirectory, false);
-        File dir = new File(devhelpHtmlDirectory);
-        for (File f : dir.listFiles()) {
-            String name = f.getName();
-            p.parse(f.getAbsolutePath() + "/" + name + ".devhelp2",  //$NON-NLS-1$ //$NON-NLS-2$
-                    new NullProgressMonitor());
-        }
+        String devhelpDirs = "/usr/share/doc:/usr/share/gtk-doc/html:/usr/share/devhelp/books"; //$NON-NLS-1$
+        List<Path> books = findAllDevhelpBooks(devhelpDirs);
+        DevHelpParser p = new DevHelpParser(books, false);
+        p.parse(new NullProgressMonitor());
         long endParse = System.currentTimeMillis();
         System.out.println("Parse Complete:"+(endParse-startParse)); //$NON-NLS-1$
         long startSerialize = System.currentTimeMillis();
         LibHoverInfo hover = p.getLibHoverInfo();
         try {
             // Now, output the LibHoverInfo for caching later
-            IPath workspaceDir = new Path(args[1]);
-            IPath location = workspaceDir.append("org.eclipse.linuxtools.cdt.libhover/C"); //$NON-NLS-1$
-            File ldir = new File(location.toOSString());
-            ldir.mkdir();
-            location = location.append("devhelp.libhover"); //$NON-NLS-1$
-            try (FileOutputStream f = new FileOutputStream(
-                    location.toOSString());
+            Path location = Path.of(args[0], "org.eclipse.linuxtools.cdt.libhover", "C"); //$NON-NLS-1$ //$NON-NLS-2$
+            Files.createDirectories(location);
+            try (OutputStream f = Files.newOutputStream(location.resolve("devhelp.libhover")); //$NON-NLS-1$
                     ObjectOutputStream out = new ObjectOutputStream(f)) {
                 out.writeObject(hover);
             }
