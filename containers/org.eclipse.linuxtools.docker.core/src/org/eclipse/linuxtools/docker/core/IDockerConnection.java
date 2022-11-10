@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2020 Red Hat.
- * 
+ * Copyright (c) 2014, 2022 Red Hat.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerRefreshManager;
 import org.eclipse.linuxtools.internal.docker.core.TCPConnectionSettings;
 import org.eclipse.linuxtools.internal.docker.core.UnixSocketConnectionSettings;
-
 import org.mandas.docker.client.exceptions.DockerCertificateException;
 
 public interface IDockerConnection {
@@ -33,7 +32,7 @@ public interface IDockerConnection {
 
 	/**
 	 * Get the list of {@link IDockerContainer} of the remote Docker daemon.
-	 * 
+	 *
 	 * @return an unmodifiable list of {@link IDockerContainer} or
 	 *         {@link Collections#emptyList()} if no container exists yet. see
 	 *         {@link IDockerConnection#getContainers(boolean)}
@@ -42,7 +41,7 @@ public interface IDockerConnection {
 
 	/**
 	 * Get the list of {@link IDockerContainer} of the remote Docker daemon.
-	 * 
+	 *
 	 * @param force
 	 *            {@code true} to force a new retrieval of the list of
 	 *            {@link IDockerContainer}, {@code false} to use the cached
@@ -90,7 +89,7 @@ public interface IDockerConnection {
 
 	/**
 	 * Get the list of {@link IDockerImage} of the remote Docker daemon.
-	 * 
+	 *
 	 * @return an unmodifiable list of {@link IDockerImage} or
 	 *         {@link Collections#emptyList()} if no container exists yet.
 	 * @see IDockerConnection#getImages(boolean)
@@ -100,7 +99,7 @@ public interface IDockerConnection {
 	/**
 	 * Checks if an entry in the current list of {@link IDockerImage} exists
 	 * with the same <code>name</code> and <code>tag</code>
-	 * 
+	 *
 	 * @param repository
 	 *            the repository of the {@link IDockerImage} to find
 	 * @param tag
@@ -118,7 +117,7 @@ public interface IDockerConnection {
 
 	/**
 	 * Get the list of {@link IDockerImage} of the remote Docker daemon.
-	 * 
+	 *
 	 * @param force
 	 *            {@code true} to force a new retrieval of the list of
 	 *            {@link IDockerImage}, {@code false} to use the cached list.
@@ -129,7 +128,7 @@ public interface IDockerConnection {
 
 	/**
 	 * Get the Docker daemon version info
-	 * 
+	 *
 	 * @return an {@link IDockerVersion} instance containing the info
 	 * @throws DockerException
 	 *             generic exception
@@ -143,7 +142,7 @@ public interface IDockerConnection {
 
 	/**
 	 * Updates the connection name
-	 * 
+	 *
 	 * @param name
 	 *            the new name
 	 * @return <code>true</code> if the name changed, <code>false</code>
@@ -166,14 +165,14 @@ public interface IDockerConnection {
 
 	/**
 	 * Checks if the connection is open
-	 * 
+	 *
 	 * @return {@code true} if connection is open, {@code false} otherwise.
 	 */
 	boolean isOpen();
 
 	/**
 	 * Opens the connection to the Docker daemon.
-	 * 
+	 *
 	 * @param registerContainerRefreshManager
 	 *            {@code true} if the {@link DockerContainerRefreshManager}
 	 *            should be associated with the Docker client to auto-refresh
@@ -188,7 +187,7 @@ public interface IDockerConnection {
 	/**
 	 * Send a ping message to the Docker daemon to check if the connection
 	 * works.
-	 * 
+	 *
 	 * @throws DockerException
 	 *             generic exception
 	 */
@@ -212,7 +211,7 @@ public interface IDockerConnection {
 	 * Retrieves/refreshes the {@link IDockerImage} on the Docker daemon and
 	 * applies 'dangling' and 'intermediate' flags on each of them. Also
 	 * notifies {@link IDockerConnection} listeners with the list of Images.
-	 * 
+	 *
 	 * @return the {@link List} of existing {@link IDockerImage}
 	 * @throws DockerException
 	 *             If listing images failed.
@@ -235,7 +234,9 @@ public interface IDockerConnection {
 	 *             In case of an error
 	 * @throws InterruptedException
 	 *             If the thread is interrupted
+	 * @deprecated Use corresponding pullImageWithHandler method instead.
 	 */
+	@Deprecated
 	void pullImage(String id, IDockerProgressHandler handler)
 			throws DockerException, InterruptedException;
 
@@ -258,7 +259,10 @@ public interface IDockerConnection {
 	 * @throws InterruptedException
 	 *             If the thread is interrupted
 	 * @since 2.0
+	 *
+	 * @deprecated Use pullImageWithHandler method instead
 	 */
+	@Deprecated
 	void pullImage(String id, IRegistryAccount info,
 			IDockerProgressHandler handler) throws DockerException,
 			InterruptedException, DockerCertificateException;
@@ -278,7 +282,7 @@ public interface IDockerConnection {
 
 	/**
 	 * Adds a tag to an existing image
-	 * 
+	 *
 	 * @param name
 	 *            the image id
 	 * @param newTag
@@ -293,7 +297,7 @@ public interface IDockerConnection {
 
 	/**
 	 * Copy a file or directory from a Container into a tar InputStream.
-	 * 
+	 *
 	 * @param id
 	 *            the Container id
 	 * @param path
@@ -309,7 +313,7 @@ public interface IDockerConnection {
 
 	/**
 	 * Copy a directory from the Host into a Container's file system.
-	 * 
+	 *
 	 * @param directory
 	 *            the Host directory to copy to the Container
 	 * @param id
@@ -327,7 +331,7 @@ public interface IDockerConnection {
 
 	/**
 	 * Determine if authorization is valid.
-	 * 
+	 *
 	 * @param config
 	 *            authorization credentials
 	 * @return 0 if ok, non-zero otherwise
@@ -404,7 +408,7 @@ public interface IDockerConnection {
 
 	/**
 	 * Removes the tagged image
-	 * 
+	 *
 	 * @param tag
 	 *            the tagged image to remove. If the image has more tags they
 	 *            will be kept. If this is the only tag for the named image, it
@@ -430,7 +434,7 @@ public interface IDockerConnection {
 
 	/**
 	 * Updates the connection settings
-	 * 
+	 *
 	 * @param settings
 	 *            the new {@link IDockerConnectionSettings}
 	 * @return <code>true</code> if the connection settings changed,
@@ -440,7 +444,7 @@ public interface IDockerConnection {
 
 	/**
 	 * Wait for a Container to finish.
-	 * 
+	 *
 	 * @param id
 	 *            the container to wait for
 	 * @return {@link IDockerContainerExit class}
@@ -450,12 +454,12 @@ public interface IDockerConnection {
 	 *             if the thread was interrupted
 	 * @since 3.0
 	 */
-	public IDockerContainerExit waitForContainer(String id)
+	IDockerContainerExit waitForContainer(String id)
 			throws DockerException, InterruptedException;
 
 	/**
 	 * Attach output streams to the Container log.
-	 * 
+	 *
 	 * @param id
 	 *            id of container
 	 * @param out
@@ -470,13 +474,13 @@ public interface IDockerConnection {
 	 *             if an I/O exception occurs during attach
 	 * @since 3.0
 	 */
-	public void attachLog(final String id, final OutputStream out,
+	void attachLog(final String id, final OutputStream out,
 			final OutputStream err)
 			throws DockerException, InterruptedException, IOException;
 
 	/**
 	 * Get list of changes to filesystem for a Container.
-	 * 
+	 *
 	 * @param id
 	 *            id of container
 	 * @return list of IDockerChange instances
@@ -486,7 +490,7 @@ public interface IDockerConnection {
 	 *             if the operation is interrupted
 	 * @since 3.0
 	 */
-	public List<IDockerContainerChange> containerChanges(final String id)
+	List<IDockerContainerChange> containerChanges(final String id)
 			throws DockerException, InterruptedException;
 
 }

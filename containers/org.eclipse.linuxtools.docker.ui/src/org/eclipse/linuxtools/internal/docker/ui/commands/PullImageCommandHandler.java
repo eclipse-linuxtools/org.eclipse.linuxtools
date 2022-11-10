@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2015, 2022 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.docker.core.AbstractRegistry;
+import org.eclipse.linuxtools.docker.core.DockerCertificateException;
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.DockerOperationCancelledException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
@@ -33,8 +34,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
-
-import org.mandas.docker.client.exceptions.DockerCertificateException;
 
 /**
  * Command handler that opens the {@link ImageSearch} wizard and pulls the
@@ -87,28 +86,29 @@ public class PullImageCommandHandler extends AbstractHandler {
 				// handler refresh the images when done
 				try {
 					if (registry == null || registry.isDockerHubRegistry()) {
-						dconn.pullImage(imageName, new DefaultImagePullProgressHandler(connection, imageName, monitor));
+						dconn.pullImageWithHandler(imageName,
+								new DefaultImagePullProgressHandler(connection, imageName, monitor));
 					} else {
 						String fullImageName = registry.getServerHost() + '/' + imageName;
 						if (registry instanceof IRegistryAccount) {
 							IRegistryAccount account = (IRegistryAccount) registry;
-							dconn.pullImage(fullImageName, account,
+							dconn.pullImageWithHandler(fullImageName, account,
 									new DefaultImagePullProgressHandler(connection, fullImageName, monitor));
 						} else {
-							dconn.pullImage(fullImageName,
+							dconn.pullImageWithHandler(fullImageName,
 									new DefaultImagePullProgressHandler(connection, fullImageName, monitor));
 						}
 					}
 				} catch (final DockerOperationCancelledException e) {
 					// Cancelled by user. Do nothing
-				} catch (final DockerException e) {
-						Display.getDefault()
-								.syncExec(() -> MessageDialog.openError(
-										PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-										DVMessages.getFormattedString(ERROR_PULLING_IMAGE, imageName), e.getMessage()));
-					// for now
 				} catch (InterruptedException | DockerCertificateException e) {
 					// do nothing
+				} catch (final DockerException e) {
+					Display.getDefault()
+							.syncExec(() -> MessageDialog.openError(
+									PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+									DVMessages.getFormattedString(ERROR_PULLING_IMAGE, imageName), e.getMessage()));
+					// for now
 				} finally {
 					monitor.done();
 				}
