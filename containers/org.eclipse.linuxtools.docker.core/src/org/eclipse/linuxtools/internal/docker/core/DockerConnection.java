@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2021 Red Hat Inc. and others.
+ * Copyright (c) 2014, 2022 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -63,7 +63,7 @@ import org.eclipse.linuxtools.docker.core.EnumDockerConnectionState;
 import org.eclipse.linuxtools.docker.core.EnumDockerLoggingStatus;
 import org.eclipse.linuxtools.docker.core.IDockerConfParameter;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
-import org.eclipse.linuxtools.docker.core.IDockerConnection4;
+import org.eclipse.linuxtools.docker.core.IDockerConnection5;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionInfo;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionManagerListener;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
@@ -138,7 +138,7 @@ import org.mandas.docker.client.messages.VolumeList;
  */
 public class DockerConnection
 		// IDockerConnection4 includes all the previous IDockerConnections
-		implements IDockerConnection4, Closeable {
+		implements IDockerConnection5, Closeable {
 
 	// Builder allowing different binding modes (unix socket vs TCP connection)
 	public static class Builder {
@@ -1250,6 +1250,7 @@ public class DockerConnection
 		}
 	}
 
+	@Deprecated
 	@Override
 	public void pullImage(final String id, final IDockerProgressHandler handler)
 			throws DockerException, InterruptedException {
@@ -1257,11 +1258,35 @@ public class DockerConnection
 	}
 
 	@Override
+	public void pullImageWithHandler(final String id,
+			final IDockerProgressHandler handler)
+			throws DockerException, InterruptedException {
+		pullImage(id, client, handler);
+	}
+
+	@Deprecated
+	@Override
 	public void pullImage(final String imageId, final IRegistryAccount info, final IDockerProgressHandler handler)
 			throws DockerException, InterruptedException, DockerCertificateException {
 		final DockerClient client = dockerClientFactory
 				.getClient(this.connectionSettings, info);
 			pullImage(imageId, client, handler);
+	}
+
+	@Override
+	public void pullImageWithHandler(final String imageId,
+			final IRegistryAccount info, final IDockerProgressHandler handler)
+			throws DockerException, InterruptedException,
+			org.eclipse.linuxtools.docker.core.DockerCertificateException {
+		DockerClient client;
+		try {
+			client = dockerClientFactory.getClient(this.connectionSettings,
+					info);
+		} catch (DockerCertificateException e) {
+			throw new org.eclipse.linuxtools.docker.core.DockerCertificateException(
+					e);
+		}
+		pullImage(imageId, client, handler);
 	}
 
 	@Override
