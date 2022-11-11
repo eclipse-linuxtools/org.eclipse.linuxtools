@@ -17,7 +17,7 @@
             Generate Eclipse help content from the Eclipsepedia wiki
     </description>
 
-    <property name="gprof.help.doc.url.base" value="http://wiki.eclipse.org"/>
+    <property name="gprof.help.doc.url.base" value="https://wiki.eclipse.org"/>
     <property name="gprof.wiki.url.base" value="${gprof.help.doc.url.base}/Linux_Tools_Project/GProf"/>
     <property name="imageFolder" value="images"/>
 
@@ -30,7 +30,7 @@
             = Updating This Document =
 
             This document is maintained in a collaborative wiki.  If you wish to update or modify this document please visit
-            http://wiki.eclipse.org/Linux_Tools_Project/GProf/User_Guide .
+            https://wiki.eclipse.org/Linux_Tools_Project/GProf/User_Guide .
                                              </pageAppendum>
         </mediawiki-to-eclipse-help>
         <antcall target="test" />
