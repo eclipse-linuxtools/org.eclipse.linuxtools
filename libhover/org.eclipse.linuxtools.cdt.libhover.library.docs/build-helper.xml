@@ -4,7 +4,7 @@
             Generate Eclipse help content for the Linux Tools Libhover Developers guide
     </description>
 
-    <property name="help.doc.url.base" value="http://wiki.eclipse.org" />
+    <property name="help.doc.url.base" value="https://wiki.eclipse.org" />
 
     <path id="tasks.classpath" path="bin" />
     <target name="all" description="Generate Eclipse help content for the Linux Tools changelog user guide">
@@ -16,7 +16,7 @@
     = Updating This Document =
 
     This document is maintained in a collaborative wiki.  If you wish to update or modify this document please visit
-    http://wiki.eclipse.org/Linux_Tools_Project/Libhover/Developers_Guide .
+    https://wiki.eclipse.org/Linux_Tools_Project/Libhover/Developers_Guide .
                                      </pageAppendum>
         </mediawiki-to-eclipse-help>
         <antcall target="test" />

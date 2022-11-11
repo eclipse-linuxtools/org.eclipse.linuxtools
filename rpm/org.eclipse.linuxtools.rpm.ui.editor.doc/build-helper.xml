@@ -17,7 +17,7 @@
             Generate Eclipse help content for the Linux Tools Specfile Editor user guide
     </description>
 
-    <property name="specfile.help.doc.url.base" value="http://wiki.eclipse.org" />
+    <property name="specfile.help.doc.url.base" value="https://wiki.eclipse.org" />
     <property name="imageFolder" value="images" />
 
     <target name="all" description="Generate Eclipse help content for the Linux Tools Specfile Editor user guide">
@@ -29,7 +29,7 @@
 = Updating This Document =
 
 This document is maintained in a collaborative wiki.  If you wish to update or modify this document please visit
-http://wiki.eclipse.org/Linux_Tools_Project/SpecfileEditor/User_Guide .
+https://wiki.eclipse.org/Linux_Tools_Project/SpecfileEditor/User_Guide .
                                  </pageAppendum>
         </mediawiki-to-eclipse-help>
         <antcall target="test" />

@@ -16,7 +16,7 @@
             Generate Eclipse help content for the Linux Tools gcov user guide
     </description>
 
-    <property name="gcov.help.doc.url.base" value="http://wiki.eclipse.org"/>
+    <property name="gcov.help.doc.url.base" value="https://wiki.eclipse.org"/>
     <property name="gcov.wiki.url.base" value="${gcov.help.doc.url.base}/Linux_Tools_Project/GCov"/>
     <property name="imageFolder" value="images"/>
 
@@ -29,7 +29,7 @@
 = Updating This Document =
 
 This document is maintained in a collaborative wiki.  If you wish to update or modify this document please visit
-http://wiki.eclipse.org/Linux_Tools_Project/GCov/User_Guide
+https://wiki.eclipse.org/Linux_Tools_Project/GCov/User_Guide
             </pageAppendum>
         </mediawiki-to-eclipse-help>
         <antcall target="test" />
