@@ -86,7 +86,7 @@ public class PullImageCommandHandler extends AbstractHandler {
 				// handler refresh the images when done
 				try {
 					if (registry == null || registry.isDockerHubRegistry()) {
-						dconn.pullImageWithHandler(imageName,
+						dconn.pullImage(imageName,
 								new DefaultImagePullProgressHandler(connection, imageName, monitor));
 					} else {
 						String fullImageName = registry.getServerHost() + '/' + imageName;
@@ -95,7 +95,7 @@ public class PullImageCommandHandler extends AbstractHandler {
 							dconn.pullImageWithHandler(fullImageName, account,
 									new DefaultImagePullProgressHandler(connection, fullImageName, monitor));
 						} else {
-							dconn.pullImageWithHandler(fullImageName,
+							dconn.pullImage(fullImageName,
 									new DefaultImagePullProgressHandler(connection, fullImageName, monitor));
 						}
 					}
