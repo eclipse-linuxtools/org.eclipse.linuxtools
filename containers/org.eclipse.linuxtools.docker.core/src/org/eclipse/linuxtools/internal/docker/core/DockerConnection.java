@@ -53,6 +53,7 @@ import org.eclipse.equinox.security.storage.ISecurePreferences;
 import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
 import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.linuxtools.docker.core.Activator;
+import org.eclipse.linuxtools.docker.core.DockerCertificateException;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.DockerContainerNotFoundException;
 import org.eclipse.linuxtools.docker.core.DockerException;
@@ -105,7 +106,6 @@ import org.mandas.docker.client.DockerClient.ExecCreateParam;
 import org.mandas.docker.client.DockerClient.LogsParam;
 import org.mandas.docker.client.LogStream;
 import org.mandas.docker.client.exceptions.ContainerNotFoundException;
-import org.mandas.docker.client.exceptions.DockerCertificateException;
 import org.mandas.docker.client.exceptions.DockerTimeoutException;
 import org.mandas.docker.client.messages.Container;
 import org.mandas.docker.client.messages.ContainerChange;
@@ -279,7 +279,7 @@ public class DockerConnection
 								.getInstance();
 						addContainerListener(dcrm);
 					}
-				} catch (DockerCertificateException e) {
+				} catch (org.mandas.docker.client.exceptions.DockerCertificateException e) {
 					setState(EnumDockerConnectionState.CLOSED);
 					throw new DockerOpenConnectionException(
 							NLS
@@ -574,7 +574,7 @@ public class DockerConnection
 	private DockerClient getClientCopy() throws DockerException {
 		try {
 			return dockerClientFactory.getClient(this.connectionSettings);
-		} catch (DockerCertificateException e) {
+		} catch (org.mandas.docker.client.exceptions.DockerCertificateException e) {
 			throw new DockerException(NLS.bind(Messages.Open_Connection_Failure,
 					this.name, this.getUri()));
 		}
@@ -1250,16 +1250,8 @@ public class DockerConnection
 		}
 	}
 
-	@Deprecated
 	@Override
 	public void pullImage(final String id, final IDockerProgressHandler handler)
-			throws DockerException, InterruptedException {
-		pullImage(id, client, handler);
-	}
-
-	@Override
-	public void pullImageWithHandler(final String id,
-			final IDockerProgressHandler handler)
 			throws DockerException, InterruptedException {
 		pullImage(id, client, handler);
 	}
@@ -1267,7 +1259,8 @@ public class DockerConnection
 	@Deprecated
 	@Override
 	public void pullImage(final String imageId, final IRegistryAccount info, final IDockerProgressHandler handler)
-			throws DockerException, InterruptedException, DockerCertificateException {
+			throws DockerException, InterruptedException,
+			org.mandas.docker.client.exceptions.DockerCertificateException {
 		final DockerClient client = dockerClientFactory
 				.getClient(this.connectionSettings, info);
 			pullImage(imageId, client, handler);
@@ -1277,13 +1270,13 @@ public class DockerConnection
 	public void pullImageWithHandler(final String imageId,
 			final IRegistryAccount info, final IDockerProgressHandler handler)
 			throws DockerException, InterruptedException,
-			org.eclipse.linuxtools.docker.core.DockerCertificateException {
+			DockerCertificateException {
 		DockerClient client;
 		try {
 			client = dockerClientFactory.getClient(this.connectionSettings,
 					info);
-		} catch (DockerCertificateException e) {
-			throw new org.eclipse.linuxtools.docker.core.DockerCertificateException(
+		} catch (org.mandas.docker.client.exceptions.DockerCertificateException e) {
+			throw new DockerCertificateException(
 					e);
 		}
 		pullImage(imageId, client, handler);
@@ -1328,7 +1321,7 @@ public class DockerConnection
 			final DockerProgressHandler d = new DockerProgressHandler(handler);
 			client.push(name, d);
 		} catch (org.mandas.docker.client.exceptions.DockerException
-				| DockerCertificateException e) {
+				| org.mandas.docker.client.exceptions.DockerCertificateException e) {
 			throw new DockerException(e);
 		}
 	}
