@@ -11,56 +11,68 @@
    Contributors:
        Red Hat Incorporated - initial implementation
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-
-  <parent>
-    <groupId>org.eclipse.linuxtools.releng</groupId>
-    <artifactId>linuxtools-releng-parent</artifactId>
-    <version>8.10.0-SNAPSHOT</version>
-  </parent>
-
-  <artifactId>org.eclipse.linuxtools.releng-site</artifactId>
-  <packaging>eclipse-repository</packaging>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-p2-publisher-plugin</artifactId>
-        <version>${tycho-version}</version>
-        <configuration>
-          <publishArtifacts>true</publishArtifacts>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-p2-repository-plugin</artifactId>
-        <version>${tycho-version}</version>
-	<executions>
-          <execution>
-            <id>default-archive-repository</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>archive-repository</goal>
-            </goals>
-            <configuration>
-              <finalName>${project.artifactId}</finalName>
-            </configuration>
-          </execution>
-        </executions>
-        <configuration>
-          <extraArtifactRepositoryProperties>
-            <p2.statsURI>https://download.eclipse.org/stats</p2.statsURI>
-            <p2.mirrorsURL>https://www.eclipse.org/downloads/download.php?file=/linuxtools/${mirror-repo-name}</p2.mirrorsURL>
-          </extraArtifactRepositoryProperties>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
-  <name>Linux Tools p2 Repository</name>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.eclipse.linuxtools.releng</groupId>
+		<artifactId>linuxtools-releng-parent</artifactId>
+		<version>8.10.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>org.eclipse.linuxtools.releng-site</artifactId>
+	<packaging>eclipse-repository</packaging>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-publisher-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<publishArtifacts>true</publishArtifacts>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-gpg-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<executions>
+					<execution>
+						<id>pgpsigner</id>
+						<goals>
+							<goal>sign-p2-artifacts</goal>
+						</goals>
+						<configuration>
+							<skipIfJarsigned>true</skipIfJarsigned>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-repository-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<executions>
+					<execution>
+						<id>default-archive-repository</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>archive-repository</goal>
+						</goals>
+						<configuration>
+							<finalName>${project.artifactId}</finalName>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<extraArtifactRepositoryProperties>
+						<p2.statsURI>https://download.eclipse.org/stats</p2.statsURI>
+						<p2.mirrorsURL>https://www.eclipse.org/downloads/download.php?file=/linuxtools/${mirror-repo-name}</p2.mirrorsURL>
+					</extraArtifactRepositoryProperties>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<name>Linux Tools p2 Repository</name>
+>>>>>>> 368867ef05 (Enable pgp signing)
 </project>
