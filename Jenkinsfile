@@ -83,7 +83,7 @@ spec:
 			post {
 				always {
 					junit '**/*.test*/target/surefire-reports/*.xml'
-					archiveArtifacts artifacts: '**/*.log,**/*.html,**/screenshots/*.png'
+					archiveArtifacts artifacts: '**/*.log,**/*.html,**/screenshots/*.png,**/target/repository/*'
 				}
 			}
 		}
