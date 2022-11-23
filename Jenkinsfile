@@ -62,13 +62,23 @@ spec:
 				}
 			}
 		}
+		stage('Initialize PGP') {
+			steps {
+				container('container') {
+				withCredentials([file(credentialsId: 'secret-subkeys.asc', variable: 'KEYRING')]) {
+					sh 'gpg --batch --import "${KEYRING}"'
+					sh 'for fpr in $(gpg --list-keys --with-colons  | awk -F: \'/fpr:/ {print $10}\' | sort -u); do echo -e "5\ny\n" |  gpg --batch --command-fd 0 --expert --edit-key ${fpr} trust; done'
+				}}
+			}
+		}
 		stage('Build') {
 			steps {
 				container('container') {
+				withCredentials([string(credentialsId: 'gpg-passphrase', variable: 'KEYRING_PASSPHRASE')]) {
 					wrap([$class: 'Xvnc', useXauthority: true]) {
-						sh 'mvn clean verify -Pbuild-server -Dmaven.test.failure.ignore=true -ntp -Ddash.fail=true'
+						sh 'mvn clean verify -Pbuild-server -Dmaven.test.failure.ignore=true -ntp -Ddash.fail=true -Dgpg.passphrase="${KEYRING_PASSPHRASE}"'
 					}
-				}
+				}}
 			}
 			post {
 				always {
