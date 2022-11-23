@@ -76,7 +76,7 @@ spec:
 				container('container') {
 				withCredentials([string(credentialsId: 'gpg-passphrase', variable: 'KEYRING_PASSPHRASE')]) {
 					wrap([$class: 'Xvnc', useXauthority: true]) {
-						sh 'mvn clean verify -Pbuild-server -Dmaven.test.failure.ignore=true -ntp -Ddash.fail=true -Dgpg.passphrase="${KEYRING_PASSPHRASE}"'
+						sh 'mvn clean verify -e -Pbuild-server -Dmaven.test.failure.ignore=true -ntp -Ddash.fail=true -Dgpg.passphrase="${KEYRING_PASSPHRASE}"'
 					}
 				}}
 			}
