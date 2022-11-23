@@ -40,7 +40,7 @@
 <unit id="org.hamcrest" version="2.2.0.v20210711-0821"/>
 <unit id="org.bouncycastle.bcpkix" version="1.72.0.v20221013-1810"/>
 <unit id="org.aopalliance" version="1.0.0.v20220404-1927"/>
-<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/S20221118032057/repository"/>
+<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20221123021534/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="javassist" version="3.13.0.GA_v201209210905"/>
@@ -95,7 +95,7 @@
 <unit id="org.eclipse.zest.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.lsp4e" version="0.0.0"/>
 <unit id="org.eclipse.tm4e.feature.feature.group" version="0.0.0"/>
-<repository location="https://download.eclipse.org/staging/2022-09/"/>
+<repository location="https://download.eclipse.org/staging/2022-12/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.reddeer.eclipse.feature.feature.group" version="0.0.0"/>
