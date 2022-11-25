@@ -44,7 +44,7 @@
 						</goals>
 						<configuration>
 							<keyname>F5CBCFD82F07D82E</keyname>
-							<skipIfJarsigned>true</skipIfJarsigned>
+							<skipIfJarsigned>false</skipIfJarsigned>
 						</configuration>
 					</execution>
 				</executions>
