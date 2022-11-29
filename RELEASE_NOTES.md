@@ -4,6 +4,20 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 ## Next release...
 
+## 8.9.0
+
+### Libhover devhelp support enhanced
+
+Libhover devhelp support now handles multiple devhelp directories specified by the preferences
+as devhelp books may be distributed over multiple directories.  In addition, the help pages
+for Libhover devhelp have been improved.
+
+### Docker Tooling pullImage rework
+
+A public api in Docker Tooling for pulling images has been reworked so it does not expose
+an org.mandas.docker-client exception which means that the consumer must add org.mandas.docker-client
+to its requirements.  A new wrapped exception is now supported and the old API has been deprecated.
+
 ## 8.8.0
 
 ### Move Linux Tools plug-ins to Java 17
