@@ -19,28 +19,28 @@
 <unit id="com.google.guava" version="30.1.0.v20221112-0806"/>
 <unit id="org.mandas.docker-client" version="3.2.1.v20221112-0806"/>
 <unit id="org.mandas.docker-client.source" version="3.2.1.v20221112-0806"/>
-<unit id="javax.ws.rs" version="2.1.6.v20221112-0806"/>
-<unit id="jakarta.xml.bind" version="2.3.3.v20221112-0806"/>
+<unit id="javax.ws.rs" version="2.1.6.v20221203-1659"/>
+<unit id="jakarta.xml.bind" version="2.3.3.v20221203-1659"/>
 <unit id="com.github.jnr.x86asm" version="1.0.2.v20221112-0806"/>
-<unit id="org.apache.commons.compress" version="1.21.0.v20211103-2100"/>
+<unit id="org.apache.commons.compress" version="1.22.0.v20221207-1049"/>
 <unit id="org.apache.xerces" version="2.12.2.v20220131-0835"/>
-<unit id="org.glassfish.hk2.api" version="2.6.1.v20221112-0806"/>
-<unit id="org.glassfish.hk2.locator" version="2.6.1.v20221112-0806"/>
+<unit id="org.glassfish.hk2.api" version="2.6.1.v20221203-1659"/>
+<unit id="org.glassfish.hk2.locator" version="2.6.1.v20221203-1659"/>
 <unit id="org.glassfish.hk2.osgi-resource-locator" version="2.5.0.v20161103-1916"/>
-<unit id="org.glassfish.hk2.utils" version="2.6.1.v20221112-0806"/>
-<unit id="org.glassfish.jersey.apache.connector" version="2.30.1.v20221112-0806"/>
+<unit id="org.glassfish.hk2.utils" version="2.6.1.v20221203-1659"/>
+<unit id="org.glassfish.jersey.apache.connector" version="2.30.1.v20221203-1659"/>
 <unit id="org.glassfish.jersey.containers.servlet" version="2.30.1.v20221112-0806"/>
 <unit id="org.glassfish.jersey.containers.servlet.core" version="2.30.1.v20221112-0806"/>
 <unit id="org.glassfish.jersey.core.jersey-client" version="2.30.1.v20221112-0806"/>
 <unit id="org.glassfish.jersey.core.jersey-common" version="2.30.1.v20221112-0806"/>
 <unit id="org.glassfish.jersey.core.jersey-server" version="2.30.1.v20221112-0806"/>
 <unit id="org.glassfish.jersey.ext.entityfiltering" version="2.30.1.v20221112-0806"/>
-<unit id="org.glassfish.jersey.inject.jersey-hk2" version="2.30.1.v20221112-0806"/>
+<unit id="org.glassfish.jersey.inject.jersey-hk2" version="2.30.1.v20221203-1659"/>
 <unit id="org.glassfish.jersey.media.jersey-media-json-jackson" version="2.30.1.v20221112-0806"/>
 <unit id="org.hamcrest" version="2.2.0.v20210711-0821"/>
 <unit id="org.bouncycastle.bcpkix" version="1.72.0.v20221013-1810"/>
 <unit id="org.aopalliance" version="1.0.0.v20220404-1927"/>
-<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20221123021534/repository"/>
+<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/I20221207195208/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="javassist" version="3.13.0.GA_v201209210905"/>
