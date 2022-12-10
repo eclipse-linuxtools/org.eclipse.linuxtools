@@ -50,7 +50,7 @@ import org.junit.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleReference;
 
-public class CheckDevhelp {
+public class CheckDevhelpTest {
 
     public final static String CACHE_EXT_LIBHOVER = "org.eclipse.linuxtools.cdt.libhover.testCacheExtLibhover"; //$NON-NLS-1$
 
