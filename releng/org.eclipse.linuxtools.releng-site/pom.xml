@@ -75,5 +75,4 @@
 		</plugins>
 	</build>
 	<name>Linux Tools p2 Repository</name>
->>>>>>> 368867ef05 (Enable pgp signing)
 </project>
