@@ -31,13 +31,7 @@
         <artifactId>tycho-surefire-plugin</artifactId>
         <version>${tycho-version}</version>
         <configuration>
-          <excludes>
-            <!-- test mojo matches TestProject be default and treats it as PojoTest -->
-            <exclude>**/Test*.class</exclude>
-          </excludes>
-          <testSuite>org.eclipse.linuxtools.cdt.libhover.devhelp.tests</testSuite>
-          <testClass>org.eclipse.linuxtools.cdt.libhover.devhelp.test.AllTests</testClass>
-             <useUIHarness>true</useUIHarness>
+          <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
           <product>org.eclipse.platform.ide</product>
         </configuration>
