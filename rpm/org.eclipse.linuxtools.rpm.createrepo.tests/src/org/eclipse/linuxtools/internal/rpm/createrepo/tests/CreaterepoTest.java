@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2013, 2023 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -65,8 +65,10 @@ public class CreaterepoTest {
      */
     @AfterClass
     public static void tearDownAfterClass() throws CoreException {
-        testProject.dispose();
-        assertFalse(testProject.getProject().exists());
+		if (testProject != null) {
+			testProject.dispose();
+			assertFalse(testProject.getProject().exists());
+		}
     }
 
     /**
@@ -102,8 +104,7 @@ public class CreaterepoTest {
     @Test
     public void testSimpleCreaterepoExecution() {
         Createrepo command = new Createrepo();
-        IStatus status = command.execute(console.newMessageStream(),
-                project, new ArrayList<String>());
+		IStatus status = command.execute(console.newMessageStream(), project, new ArrayList<>());
         if (status.getCode() == IStatus.ERROR) {
             fail("Possibly failed due to system not having the 'createrepo' command, or it cannot be found."); //$NON-NLS-1$
         }
