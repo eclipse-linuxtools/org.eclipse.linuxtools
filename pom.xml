@@ -159,7 +159,7 @@
 							<dependency>
 								<groupId>org.eclipse.mylyn.docs</groupId>
 								<artifactId>org.eclipse.mylyn.wikitext.mediawiki.ant</artifactId>
-								<version>3.0.45.202211090110</version>
+								<version>3.0.46.202301111837</version>
 							</dependency>
 						</dependencies>
 					</plugin>
