@@ -253,7 +253,7 @@
    <iu id="org.objectweb.asm.util" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="org.objectweb.asm.analysis" version="0.0.0">
+   <iu id="org.objectweb.asm.tree.analysis" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="org.apache.commons.codec" version="0.0.0">
