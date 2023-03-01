@@ -53,7 +53,6 @@ public class CreaterepoTest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws CoreException {
-        Assume.assumeTrue(Createrepo.isCorrectVersion().isOK());
         testProject = new TestCreaterepoProject();
         assertTrue(testProject.getProject().exists());
     }
