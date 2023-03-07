@@ -49,7 +49,7 @@
 
   <properties>
     <mirror-repo-name>update-8.10.0</mirror-repo-name>
-    <mirror-docker-repo-name>update-docker-5.10.0-</mirror-docker-repo-name>
+    <mirror-docker-repo-name>update-docker-5.10.0</mirror-docker-repo-name>
     <tycho-version>4.0.0-SNAPSHOT</tycho-version>
     <target-platform>linuxtools-e4.27</target-platform>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
