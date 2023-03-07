@@ -4,6 +4,13 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 ## Next release...
 
+## 8.10.0
+
+### Docker Tooling Aarch64 Support
+
+Docker Tooling has switched over to use a new jnr stack that supports Aarch64 which is
+needed to run on modern macOS machines.
+
 ## 8.9.0
 
 ### Libhover devhelp support enhanced
