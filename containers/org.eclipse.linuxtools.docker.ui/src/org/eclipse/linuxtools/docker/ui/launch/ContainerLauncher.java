@@ -1131,8 +1131,8 @@ public class ContainerLauncher {
 				.workingDir(workingDir);
 
 		// preserve any entry point specified in the image
-		if (info.containerConfig() != null) {
-			List<String> entrypoint = info.containerConfig().entrypoint();
+		if (info.config() != null) {
+			List<String> entrypoint = info.config().entrypoint();
 			if (entrypoint != null && !entrypoint.isEmpty()) {
 				builder = builder.entryPoint(entrypoint);
 			}
