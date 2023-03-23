@@ -171,7 +171,7 @@ public class LaunchConfigurationUtils {
 						.getImageInfo(image.id());
 				if (imageInfo != null) {
 					workingCopy.setAttribute(PUBLISHED_PORTS,
-							serializePortBindings(imageInfo.containerConfig()
+							serializePortBindings(imageInfo.config()
 									.exposedPorts()));
 				}
 			} else {
