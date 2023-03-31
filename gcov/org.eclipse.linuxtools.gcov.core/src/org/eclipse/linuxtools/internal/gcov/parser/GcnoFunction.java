@@ -29,7 +29,14 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
     private ArrayList<Block> functionBlocks = new ArrayList<>();
     private int numCounts = 0, numBlocks = 0;
     private final CoverageInfo cvrge = new CoverageInfo();
-	private boolean hasCatch = false;
+    private boolean hasCatch = false;
+
+    /*
+     * Array of basic blocks.  Like in GCC, the entry block is
+     * at functionBlocks[0] and the exit block is at functionBlocks[1].
+     */
+    private static final int entryBlockIndice = 0;
+    private static final int exitBlockIndice = 1;
 
     public GcnoFunction(long fnctnIdent, long fnctnChksm, String fnctnName, String fnctnSrcFle, long fnctnFrstLnNmbr) {
         this.ident = fnctnIdent;
@@ -106,11 +113,11 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
 
         // Function should contain at least one block
         if (fnctnBlcks.size() >= 2) {
-            if (fnctnBlcks.get(0).getNumPreds() == 0) {
-                fnctnBlcks.get(0).setNumPreds(50000);
+            if (fnctnBlcks.get(entryBlockIndice).getNumPreds() == 0) {
+                fnctnBlcks.get(entryBlockIndice).setNumPreds(50000);
             }
-            if (fnctnBlcks.get(fnctnBlcks.size() - 1).getNumSuccs() == 0) {
-                fnctnBlcks.get(fnctnBlcks.size() - 1).setNumSuccs(50000);
+            if (fnctnBlcks.get(exitBlockIndice).getNumSuccs() == 0) {
+                fnctnBlcks.get(exitBlockIndice).setNumSuccs(50000);
             }
         }
 
@@ -210,7 +217,7 @@ public class GcnoFunction implements Serializable, Comparable<GcnoFunction> {
                     blcksrc.decNumSuccs();
 
                     if (blcksrc.isCountValid()) {
-                        if (blcksrc.getNumSuccs() == 1 && !blcksrc.isInvalidChain()) {
+                        if (blcksrc.getNumSuccs() == 1 && !blcksrc.isValidChain()) {
                             blcksrc.setValidChain(true);
                             validBlocks.add(blcksrc);
                         }

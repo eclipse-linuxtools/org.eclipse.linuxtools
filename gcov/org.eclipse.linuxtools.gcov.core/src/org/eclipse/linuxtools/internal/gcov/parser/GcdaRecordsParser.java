@@ -17,6 +17,8 @@ import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -168,7 +170,6 @@ public class GcdaRecordsParser {
                     for (Block b : fnctnBlcks) {
                         int nonFakeExit = 0;
 						int prevBlockIndice = 0;
-						@SuppressWarnings("unused")
 						boolean outOfOrder = false;
 
                         ArrayList<Arc> arcsExit = b.getExitArcs();
@@ -182,12 +183,12 @@ public class GcdaRecordsParser {
                                 extArc.setCountValid(true);
                                 b.decNumSuccs();
                                 extArc.getDstnatnBlock().decNumPreds();
-								if (prevBlockIndice > extArc.getDstnatnBlockIndice()) {
-//									System.err.println("out of order"); //$NON-NLS-1$
-									outOfOrder = true;
-								}
-								prevBlockIndice = extArc.getDstnatnBlockIndice();
                             }
+                            if (prevBlockIndice > extArc.getDstnatnBlockIndice()) {
+//                            	System.err.println("out of order"); //$NON-NLS-1$
+                                outOfOrder = true;
+							}
+                            prevBlockIndice = extArc.getDstnatnBlockIndice();
                         }
 
                         // If there is only one non-fake exit, it is an
@@ -210,6 +211,17 @@ public class GcdaRecordsParser {
 									}
                                 }
                             }
+                        }
+
+                        /*
+                         * Sort the successor arcs into ascending dst order. gcc profile.c
+                         * normally produces arcs in the right order, but sometimes with
+                         * one or two out of order.
+                         */
+                        if (outOfOrder == true) {
+                            ArrayList<Arc> sordtedExitArcs = (ArrayList<Arc>) arcsExit.stream().sorted(Comparator.comparing(Arc::getDstnatnBlockIndice))
+                                    .collect(Collectors.toList());
+                            b.setExitArcs(sordtedExitArcs);
                         }
                     }
 
