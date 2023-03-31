@@ -187,56 +187,47 @@ public class GcnoRecordsParser {
 					fnctn.setNumBlocks(blkLength);
                     continue;
 				} else if (fnctn != null && tag == GCOV_TAG_ARCS) {
+                    boolean mark_catches = false;
                     int srcBlockIndice = stream.readInt();
+                    Block srcBlk = blocks.get(srcBlockIndice);
 					int nmbrArcs = readBytes ? ((length >> 2) - 1) / 2 : (length - 1) / 2;
-                    ArrayList<Arc> arcs = new ArrayList<>(nmbrArcs);
 
                     for (int i = 0; i < nmbrArcs; i++) {
                         int dstnatnBlockIndice = stream.readInt();
                         long flag = (stream.readInt() & MasksGenerator.UNSIGNED_INT_MASK);
                         Arc arc = new Arc(srcBlockIndice, dstnatnBlockIndice, flag, blocks);
-                        arcs.add(arc);
-                    }
 
-                    // each arc, register it as exit of the src block
-                    Block srcBlk = blocks.get(srcBlockIndice);
-                    for (Arc a : arcs) {
-                        srcBlk.addExitArcs(a);
+                        // each arc, register it as exit of the src block
+                        srcBlk.addExitArcs(arc);
                         srcBlk.incNumSuccs();
-                    }
 
-                    // each arc, register it as entry of its dstntn block
-                    for (Arc a : arcs) {
-                        Block dstntnBlk = a.getDstnatnBlock();
-                        dstntnBlk.addEntryArcs(a);
+                        // each arc, register it as entry of its dstntn block
+                        Block dstntnBlk = arc.getDstnatnBlock();
+                        dstntnBlk.addEntryArcs(arc);
                         dstntnBlk.incNumPreds();
-                    }
 
-					boolean mark_catches = false;
-                    for (Arc a : arcs) {
-                        if (a.isFake()) {
-                            if (a.getSrcBlock() != null) {
+                        if (arc.isFake()) {
+                            if (arc.getSrcBlock() != null) {
                                 // Exceptional exit from this function, the
                                 // source block must be a call.
                                 srcBlk = blocks.get(srcBlockIndice);
                                 srcBlk.setCallSite(true);
-                                a.setCallNonReturn(true);
+                                arc.setCallNonReturn(true);
 								mark_catches = true;
                             } else {
-                                a.setNonLoclaReturn(true);
-                                Block dstntnBlk = a.getDstnatnBlock();
+                            	arc.setNonLoclaReturn(true);
                                 dstntnBlk.setNonLocalReturn(true);
                             }
                         }
 
-                        if (!a.isOnTree()) {
+                        if (!arc.isOnTree()) {
                             fnctn.incNumCounts();
                         }
                         // nbrCounts++;
                     }
 
 					if (mark_catches) {
-						for (Arc a : arcs) {
+						for (Arc a : srcBlk.getExitArcs()) {
 							if (!a.isFake() && !a.isFallthrough()) {
 								a.setIsThrow(true);
 								fnctn.setHasCatch(true);
