@@ -73,16 +73,16 @@ public class TestUtils {
     public static void openResourcePerspective(SWTWorkbenchBot bot) {
         try {
             // Check if the required views are already opened
-            bot.viewByTitle(ICreaterepoTestConstants.NAVIGATOR);
+            bot.viewByTitle(ICreaterepoTestConstants.PROJECT_EXPLORER);
         } catch (WidgetNotFoundException e) {
             // Not yet opened: turn on the resource perspective
             bot.menu(ICreaterepoTestConstants.WINDOW).menu(ICreaterepoTestConstants.SHOW_VIEW)
             .menu(ICreaterepoTestConstants.OTHER).click();
             SWTBotShell shell = bot.shell(ICreaterepoTestConstants.SHOW_VIEW);
             shell.activate();
-            bot.text().setText(ICreaterepoTestConstants.NAVIGATOR);
+            bot.text().setText(ICreaterepoTestConstants.PROJECT_EXPLORER);
             bot.waitUntil(new NodeAvailableAndSelect(bot.tree(),
-                    ICreaterepoTestConstants.GENERAL_NODE, ICreaterepoTestConstants.NAVIGATOR));
+                    ICreaterepoTestConstants.GENERAL_NODE, ICreaterepoTestConstants.PROJECT_EXPLORER));
             bot.button(ICreaterepoTestConstants.OPEN).click();
         }
     }
@@ -91,7 +91,7 @@ public class TestUtils {
      * Enter the project folder so as to avoid expanding trees later
      */
     public static SWTBotView enterProjectFolder(SWTWorkbenchBot bot) {
-        SWTBotView navigator = bot.viewByTitle(ICreaterepoTestConstants.NAVIGATOR);
+        SWTBotView navigator = bot.viewByTitle(ICreaterepoTestConstants.PROJECT_EXPLORER);
         navigator.setFocus();
         navigator.bot().tree().select(ICreaterepoTestConstants.PROJECT_NAME).
             contextMenu(ICreaterepoTestConstants.GO_INTO).click();
