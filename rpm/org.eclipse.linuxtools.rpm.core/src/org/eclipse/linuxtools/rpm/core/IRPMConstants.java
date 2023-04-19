@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.core;
 
+import java.io.File;
+
 import org.eclipse.linuxtools.internal.rpm.core.Messages;
 
 /**
@@ -95,7 +97,7 @@ public interface IRPMConstants {
     /**
      * Contains the system's file separator.
      */
-    String FILE_SEP = System.getProperty("file.separator"); //$NON-NLS-1$
+    String FILE_SEP = File.separator;
 
     /**
      * Contains the system's line separator.

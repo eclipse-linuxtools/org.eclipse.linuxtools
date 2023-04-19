@@ -14,6 +14,7 @@
 package org.eclipse.linuxtools.internal.changelog.core.actions;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 
@@ -166,7 +167,7 @@ public abstract class ChangeLogAction extends Action {
         if (result == null)
             return null;
         final IPath result_path = new Path(result[0]
-                + System.getProperty("file.separator") + pref_ChangeLogName); //$NON-NLS-1$ //$NON-NLS-2$
+                + File.separator + pref_ChangeLogName);
         IFile newChangeLog = createChangeLog(result_path);
 
         return openEditor(newChangeLog);
@@ -190,7 +191,7 @@ public abstract class ChangeLogAction extends Action {
                 String parent_node = parent_dec.getFullPath()
                         .removeLastSegments(1).toOSString();
                 parent_node = parent_node
-                        + System.getProperty("file.separator") + pref_ChangeLogName; //$NON-NLS-1$
+                        + File.separator + pref_ChangeLogName;
 
                 IResource change_log_res = myWorkspaceRoot
                         .findMember(parent_node);
@@ -241,7 +242,7 @@ public abstract class ChangeLogAction extends Action {
             while (parent_dec != null) {
                 String parent_node = parent_dec.getFullPath().toOSString();
                 parent_node = parent_node
-                        + System.getProperty("file.separator") + pref_ChangeLogName; //$NON-NLS-1$
+                        + File.separator + pref_ChangeLogName;
 
                 IResource change_log_res = myWorkspaceRoot
                         .findMember(parent_node);

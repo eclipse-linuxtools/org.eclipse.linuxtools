@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.profiling.launch;
 
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -50,7 +51,7 @@ public class LocalFileProxy implements IRemoteFileProxy {
 
     @Override
     public String getDirectorySeparator() {
-        return System.getProperty("file.separator"); //$NON-NLS-1$
+        return File.separator;
     }
 
     @Override

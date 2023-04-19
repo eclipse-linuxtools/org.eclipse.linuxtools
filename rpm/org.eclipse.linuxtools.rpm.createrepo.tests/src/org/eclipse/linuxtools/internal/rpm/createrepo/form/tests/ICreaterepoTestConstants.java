@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.createrepo.form.tests;
 
+import java.io.File;
+
 import org.eclipse.linuxtools.internal.rpm.createrepo.CreaterepoPreferenceConstants;
 
 
@@ -67,8 +69,8 @@ public interface ICreaterepoTestConstants {
     /*
      * Resources
      */
-    String RPM_RESOURCE_LOC =  "resources" + System.getProperty("file.separator")  //$NON-NLS-1$//$NON-NLS-2$
-            + "rpms" + System.getProperty("file.separator"); //$NON-NLS-1$ //$NON-NLS-2$
+    String RPM_RESOURCE_LOC =  "resources" + File.separator  //$NON-NLS-1$
+            + "rpms" + File.separator; //$NON-NLS-1$
     String RPM1 = "eclipse-egit-github-3.0.0-2.fc19.noarch.rpm"; //$NON-NLS-1$
     String RPM2 = "hello-2.8-1.fc19.src.rpm"; //$NON-NLS-1$
 
