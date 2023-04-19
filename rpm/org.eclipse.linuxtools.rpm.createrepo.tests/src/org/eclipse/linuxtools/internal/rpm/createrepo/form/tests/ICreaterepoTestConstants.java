@@ -54,7 +54,7 @@ public interface ICreaterepoTestConstants {
      */
     String WELCOME_VIEW = "Welcome"; //$NON-NLS-1$
     String GENERAL_NODE = "General"; //$NON-NLS-1$
-    String NAVIGATOR = "Navigator (Deprecated)"; //$NON-NLS-1$
+    String PROJECT_EXPLORER = "Project Explorer"; //$NON-NLS-1$
 
     /*
      * Project Wizard Specific Stuff
