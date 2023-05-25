@@ -90,8 +90,7 @@ public class PullImageCommandHandler extends AbstractHandler {
 								new DefaultImagePullProgressHandler(connection, imageName, monitor));
 					} else {
 						String fullImageName = registry.getServerHost() + '/' + imageName;
-						if (registry instanceof IRegistryAccount) {
-							IRegistryAccount account = (IRegistryAccount) registry;
+						if (registry instanceof IRegistryAccount account) {
 							dconn.pullImageWithHandler(fullImageName, account,
 									new DefaultImagePullProgressHandler(connection, fullImageName, monitor));
 						} else {

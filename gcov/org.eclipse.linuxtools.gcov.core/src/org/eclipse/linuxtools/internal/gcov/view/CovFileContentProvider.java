@@ -32,8 +32,7 @@ public class CovFileContentProvider extends CovFolderContentProvider {
 
     @Override
     public Object[] getChildren(Object parentElement) {
-        if (parentElement instanceof CovRootTreeElement) {
-            CovRootTreeElement root = (CovRootTreeElement) parentElement;
+        if (parentElement instanceof CovRootTreeElement root) {
             LinkedList<? extends TreeElement> ret = getElementChildrenList(root);
             return ret.toArray();
         }

@@ -288,8 +288,7 @@ public class ImageSearchPage extends WizardPage {
 							searchResultQueue.offer(searchResults);
 						} catch (DockerException e) {
 							Activator.log(e);
-							searchResultQueue.offer(
-									new ArrayList<>());
+							searchResultQueue.offer(new ArrayList<>());
 						}
 						monitor.done();
 					});
@@ -367,8 +366,8 @@ public class ImageSearchPage extends WizardPage {
 
 		@Override
 		public String getText(final Object element) {
-			if (element instanceof IDockerImageSearchResult) {
-				return ((IDockerImageSearchResult) element).getName();
+			if (element instanceof IDockerImageSearchResult dockerSearchResult) {
+				return dockerSearchResult.getName();
 			}
 			return super.getText(element);
 		}
@@ -378,9 +377,8 @@ public class ImageSearchPage extends WizardPage {
 
 		@Override
 		public String getText(final Object element) {
-			if (element instanceof IDockerImageSearchResult) {
-				return Integer.toString(
-						((IDockerImageSearchResult) element).getStarCount());
+			if (element instanceof IDockerImageSearchResult dockerSearchResult) {
+				return Integer.toString(dockerSearchResult.getStarCount());
 			}
 			return super.getText(element);
 		}
@@ -391,8 +389,7 @@ public class ImageSearchPage extends WizardPage {
 
 		@Override
 		boolean doPaint(final Object element) {
-			return element instanceof IDockerImageSearchResult
-					&& ((IDockerImageSearchResult) element).isOfficial();
+			return element instanceof IDockerImageSearchResult dockerSearchResult && dockerSearchResult.isOfficial();
 		}
 
 	}
@@ -402,14 +399,12 @@ public class ImageSearchPage extends WizardPage {
 
 		@Override
 		boolean doPaint(final Object element) {
-			return element instanceof IDockerImageSearchResult
-					&& ((IDockerImageSearchResult) element).isAutomated();
+			return element instanceof IDockerImageSearchResult dockerSearchResult && dockerSearchResult.isAutomated();
 		}
 
 	}
 
-	static abstract class IconColumnLabelProvider
-			extends StyledCellLabelProvider {
+	static abstract class IconColumnLabelProvider extends StyledCellLabelProvider {
 
 		private static final Image ICON = SWTImagesFactory.DESC_RESOLVED
 				.createImage();

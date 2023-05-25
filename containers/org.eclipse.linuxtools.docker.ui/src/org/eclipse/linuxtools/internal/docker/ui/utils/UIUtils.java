@@ -60,8 +60,8 @@ public class UIUtils {
 	 */
 	public static IStructuredSelection getStructuredSelection() {
 		ISelection selection = getWorkbenchWindowSelection();
-		if (selection instanceof IStructuredSelection) {
-			return (IStructuredSelection) selection;
+		if (selection instanceof IStructuredSelection sse) {
+			return sse;
 		} else {
 			return null;
 		}

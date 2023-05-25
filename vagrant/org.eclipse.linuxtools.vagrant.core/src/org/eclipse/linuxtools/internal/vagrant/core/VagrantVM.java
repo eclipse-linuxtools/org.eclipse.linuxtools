@@ -104,8 +104,7 @@ public class VagrantVM implements IVagrantVM {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof VagrantVM) {
-			VagrantVM other = (VagrantVM) o;
+		if (o instanceof VagrantVM other) {
 			return id.equals(other.id())
 					&& name.equals(other.name())
 					&& provider.equals(other.provider())

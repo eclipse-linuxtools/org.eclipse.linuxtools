@@ -69,8 +69,7 @@ public class FileFinderOpener {
             }
 
             for (Object o : d.getResult()) {
-                if (o instanceof String) {
-                    String s = (String) o;
+                if (o instanceof String s) {
                     open(s, map.get(s)[0], map.get(s)[1]);
                 }
             }

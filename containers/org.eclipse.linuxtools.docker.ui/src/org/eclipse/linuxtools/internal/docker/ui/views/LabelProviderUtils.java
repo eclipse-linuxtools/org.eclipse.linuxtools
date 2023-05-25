@@ -146,8 +146,7 @@ public class LabelProviderUtils {
 		if (value == null) {
 			return "null"; //$NON-NLS-1$
 		}
-		if (value instanceof IDockerPortBinding) {
-			final IDockerPortBinding binding = (IDockerPortBinding) value;
+		if (value instanceof IDockerPortBinding binding) {
 			final String hostIp = (binding.hostIp() == null
 					|| binding.hostIp().isEmpty()) ? "<unspecified>" //$NON-NLS-1$
 							: binding.hostIp();
@@ -171,9 +170,8 @@ public class LabelProviderUtils {
 		// given element
 		// is the TreeSelection from the contributing view (the Docker Explorer
 		// View)
-		if (element instanceof IStructuredSelection) {
-			return getStyledText(
-					((IStructuredSelection) element).getFirstElement());
+		if (element instanceof IStructuredSelection sse) {
+			return getStyledText(sse.getFirstElement());
 		}
 		if (element instanceof IDockerConnection) {
 			return getStyledText((IDockerConnection) element);

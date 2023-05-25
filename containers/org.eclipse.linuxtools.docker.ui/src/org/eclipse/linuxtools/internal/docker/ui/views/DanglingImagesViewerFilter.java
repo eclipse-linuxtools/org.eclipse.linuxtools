@@ -38,8 +38,8 @@ public class DanglingImagesViewerFilter extends ViewerFilter {
 	 */
 	@Override
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
-		if(element instanceof IDockerImage) {
-			return !((IDockerImage)element).isDangling();
+		if(element instanceof IDockerImage image) {
+			return !image.isDangling();
 		}
 		return true;
 	}

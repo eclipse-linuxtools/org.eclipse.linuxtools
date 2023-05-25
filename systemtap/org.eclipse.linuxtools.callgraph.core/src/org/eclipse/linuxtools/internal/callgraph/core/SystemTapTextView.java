@@ -211,8 +211,7 @@ public class SystemTapTextView extends SystemTapView {
 
     @Override
     public void updateMethod() {
-        if (getParser().getData() instanceof String) {
-            String data = (String) getParser().getData();
+        if (getParser().getData() instanceof String data) {
             if (!data.isEmpty()) {
                 prettyPrintln((String) getParser().getData());
             }

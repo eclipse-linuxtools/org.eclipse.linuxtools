@@ -44,8 +44,7 @@ public class DockerContainersContentProvider implements ITreeContentProvider{
 
 	@Override
 	public Object[] getElements(final Object inputElement) {
-		if(inputElement instanceof IDockerConnection) {
-			final IDockerConnection connection = (IDockerConnection)inputElement;
+		if(inputElement instanceof IDockerConnection connection) {
 			if(connection.isContainersLoaded()) {
 				return connection.getContainers().toArray();
 			}

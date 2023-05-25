@@ -496,8 +496,7 @@ public class ContainerCopyToPage
 		return new WorkbenchContentProvider() {
 			@Override
 			public Object[] getChildren(Object o) {
-				if (o instanceof MinimizedFileSystemElement) {
-					MinimizedFileSystemElement element = (MinimizedFileSystemElement) o;
+				if (o instanceof MinimizedFileSystemElement element) {
 					return element.getFiles(fileSystemStructureProvider)
 							.getChildren(element);
 				}
@@ -530,8 +529,7 @@ public class ContainerCopyToPage
 		return new WorkbenchContentProvider() {
 			@Override
 			public Object[] getChildren(Object o) {
-				if (o instanceof MinimizedFileSystemElement) {
-					MinimizedFileSystemElement element = (MinimizedFileSystemElement) o;
+				if (o instanceof MinimizedFileSystemElement element) {
 					return element.getFolders(fileSystemStructureProvider)
 							.getChildren(element);
 				}
@@ -540,8 +538,7 @@ public class ContainerCopyToPage
 
 			@Override
 			public boolean hasChildren(Object o) {
-				if (o instanceof MinimizedFileSystemElement) {
-					MinimizedFileSystemElement element = (MinimizedFileSystemElement) o;
+				if (o instanceof MinimizedFileSystemElement element) {
 					if (element.isPopulated()) {
 						return getChildren(element).length > 0;
 					}

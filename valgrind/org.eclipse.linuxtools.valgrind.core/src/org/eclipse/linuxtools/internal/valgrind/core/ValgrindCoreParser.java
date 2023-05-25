@@ -167,9 +167,8 @@ public class ValgrindCoreParser {
         // sourceLocator from launch object will be disposed when launch is
         // gone,
         // since we want to use it later we need to create a copy of it
-        if (sourceLocator instanceof ISourceLookupDirector) {
+        if (sourceLocator instanceof ISourceLookupDirector director) {
             try {
-                ISourceLookupDirector director = (ISourceLookupDirector) sourceLocator;
 
                 String id = director.getId();
                 String memento = director.getMemento();

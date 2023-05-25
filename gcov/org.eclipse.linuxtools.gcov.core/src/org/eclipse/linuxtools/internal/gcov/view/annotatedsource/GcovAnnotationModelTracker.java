@@ -156,8 +156,7 @@ public final class GcovAnnotationModelTracker {
 
     private void annotateCEditor(IWorkbenchPartReference partref) {
         IWorkbenchPart part = partref.getPart(false);
-        if (part instanceof ICEditor) {
-            ICEditor editor = (ICEditor) part;
+        if (part instanceof ICEditor editor) {
             ICElement element = CDTUITools.getEditorInputCElement(editor.getEditorInput());
 			if (element == null) {
 				return;

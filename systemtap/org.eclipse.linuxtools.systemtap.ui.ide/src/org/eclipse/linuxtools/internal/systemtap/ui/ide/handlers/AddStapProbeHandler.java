@@ -117,17 +117,15 @@ public class AddStapProbeHandler extends AbstractHandler {
                             Messages.CEditor_probeInsertFailed, Messages.CEditor_canNotProbeLine);
         } else {
             IEditorInput in = editor.getEditorInput();
-            if (in instanceof FileStoreEditorInput) {
-                FileStoreEditorInput input = (FileStoreEditorInput) in;
+            if (in instanceof FileStoreEditorInput input) {
+               	IPreferenceStore p = IDEPlugin.getDefault()
+						.getPreferenceStore();
+				String kernroot = p
+						.getString(IDEPreferenceConstants.P_KERNEL_SOURCE);
 
-                IPreferenceStore p = IDEPlugin.getDefault()
-                        .getPreferenceStore();
-                String kernroot = p
-                        .getString(IDEPreferenceConstants.P_KERNEL_SOURCE);
-
-                String filepath = input.getURI().getPath();
-                String kernrelative = filepath.substring(
-                        kernroot.length() + 1, filepath.length());
+				String filepath = input.getURI().getPath();
+				String kernrelative = filepath.substring(
+						kernroot.length() + 1, filepath.length());
 				StringBuilder sb = new StringBuilder();
 
                 sb.append("probe kernel.statement(\"*@" + kernrelative + ":" + (lineno + 1) + "\")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

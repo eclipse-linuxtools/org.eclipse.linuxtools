@@ -27,8 +27,7 @@ public class HideStoppedContainersViewerFilter extends ViewerFilter {
 
 	@Override
 	public boolean select(final Viewer viewer, final Object parentElement, final Object element) {
-		if(element instanceof IDockerContainer) {
-			final IDockerContainer container = (IDockerContainer) element;
+		if(element instanceof IDockerContainer container) {
 			final EnumDockerStatus containerStatus = EnumDockerStatus.fromStatusMessage(container.status());
 			if (containerStatus == EnumDockerStatus.RUNNING
 					|| containerStatus == EnumDockerStatus.PAUSED) {

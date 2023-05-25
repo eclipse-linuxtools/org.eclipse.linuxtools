@@ -43,8 +43,7 @@ public class DockerImagesContentProvider implements ITreeContentProvider{
 
 	@Override
 	public Object[] getElements(final Object inputElement) {
-		if(inputElement instanceof IDockerConnection) {
-			final IDockerConnection connection = (IDockerConnection)inputElement;
+		if(inputElement instanceof IDockerConnection connection) {
 			if (connection.isImagesLoaded()) {
 				final List<IDockerImage> images = connection.getImages();
 				if(images == null) {

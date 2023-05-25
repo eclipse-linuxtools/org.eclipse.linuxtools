@@ -124,12 +124,12 @@ public final class STLink2SourceSupport {
                             STCSourceNotFoundEditor.ID, true);
                 } else {
                     IEditorPart editor = p.openEditor(editorInput, CUIPlugin.EDITOR_ID, true);
-                    if (lineNumber > 0 && editor instanceof ITextEditor) {
-                        IDocumentProvider provider = ((ITextEditor) editor).getDocumentProvider();
+                    if (lineNumber > 0 && editor instanceof ITextEditor textEditor) {
+                        IDocumentProvider provider = textEditor.getDocumentProvider();
                         IDocument document = provider.getDocument(editor.getEditorInput());
                         try {
                             int start = document.getLineOffset(lineNumber - 1);
-                            ((ITextEditor) editor).selectAndReveal(start, 0);
+                            textEditor.selectAndReveal(start, 0);
                             IWorkbenchPage page = editor.getSite().getPage();
                             page.activate(editor);
                             return true;
@@ -170,10 +170,9 @@ public final class STLink2SourceSupport {
             for (ISourceContainer sourceContainer : c) {
                 Object[] o = sourceContainer.findSourceElements(path.toOSString());
                 for (Object object : o) {
-                    if (object instanceof IFile) {
-                        return new FileEditorInput((IFile) object);
-                    } else if (object instanceof LocalFileStorage) {
-                        LocalFileStorage storage = (LocalFileStorage) object;
+                    if (object instanceof IFile file) {
+                        return new FileEditorInput(file);
+                    } else if (object instanceof LocalFileStorage storage) {
                         IFileStore ifs = EFS.getStore(storage.getFile().toURI());
                         return new FileStoreEditorInput(ifs);
                     }
@@ -270,8 +269,8 @@ public final class STLink2SourceSupport {
                     for (ISourceRoot sourceRoot : roots) {
                         IContainer r = sourceRoot.getResource();
                         IResource res = r.findMember(path);
-                        if (res != null && res.exists() && res instanceof IFile) {
-                            return (IFile) res;
+                        if (res != null && res.exists() && res instanceof IFile file) {
+                            return file;
                         }
                     }
 
@@ -279,11 +278,10 @@ public final class STLink2SourceSupport {
                     for (IOutputEntry pathEntry : entries) {
                         IPath p = pathEntry.getPath();
                         IResource r = root.findMember(p);
-                        if (r instanceof IContainer) {
-                            IContainer parent = (IContainer) r;
+                        if (r instanceof IContainer parent) {
                             IResource res = parent.findMember(path);
-                            if (res != null && res.exists() && res instanceof IFile) {
-                                return (IFile) res;
+                            if (res != null && res.exists() && res instanceof IFile file) {
+                                return file;
                             }
                         }
                     }

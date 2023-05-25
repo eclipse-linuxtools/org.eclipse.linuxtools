@@ -37,8 +37,7 @@ public class ContainerInfoContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getElements(final Object inputElement) {
-		if(inputElement instanceof IDockerContainer) {
-			final IDockerContainer container = (IDockerContainer) inputElement;
+		if(inputElement instanceof IDockerContainer container) {
 			return new Object[] {
 					new Object[]{"Id", container.id().substring(0,  12)}, //$NON-NLS-1$
 					new Object[]{"Image", container.image()}, //$NON-NLS-1$

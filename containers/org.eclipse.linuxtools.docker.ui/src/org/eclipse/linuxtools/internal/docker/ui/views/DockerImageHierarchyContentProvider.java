@@ -27,11 +27,9 @@ public class DockerImageHierarchyContentProvider
 
 	@Override
 	public Object[] getElements(Object inputElement) {
-		if (inputElement instanceof DockerImageHiearchy) {
-			final DockerImageHiearchy dockerImageHiearchy = (DockerImageHiearchy) inputElement;
+		if (inputElement instanceof DockerImageHiearchy dockerImageHiearchy) {
 			return new Object[] { dockerImageHiearchy.getRoot() };
-		} else if (inputElement instanceof IDockerImageHierarchyNode) {
-			final IDockerImageHierarchyNode imageHiearchyNode = (IDockerImageHierarchyNode) inputElement;
+		} else if (inputElement instanceof IDockerImageHierarchyNode imageHiearchyNode) {
 			if (imageHiearchyNode.getChildren() != null) {
 				return imageHiearchyNode.getChildren().toArray();
 			}
@@ -46,8 +44,7 @@ public class DockerImageHierarchyContentProvider
 
 	@Override
 	public Object getParent(Object element) {
-		if (element instanceof IDockerImageHierarchyNode) {
-			final IDockerImageHierarchyNode imageHiearchyNode = (IDockerImageHierarchyNode) element;
+		if (element instanceof IDockerImageHierarchyNode imageHiearchyNode) {
 			return imageHiearchyNode.getParent();
 		}
 		return null;
@@ -55,8 +52,7 @@ public class DockerImageHierarchyContentProvider
 
 	@Override
 	public boolean hasChildren(Object element) {
-		if (element instanceof IDockerImageHierarchyNode) {
-			final IDockerImageHierarchyNode imageHiearchyNode = (IDockerImageHierarchyNode) element;
+		if (element instanceof IDockerImageHierarchyNode imageHiearchyNode) {
 			return !imageHiearchyNode.getChildren().isEmpty();
 		}
 		return false;

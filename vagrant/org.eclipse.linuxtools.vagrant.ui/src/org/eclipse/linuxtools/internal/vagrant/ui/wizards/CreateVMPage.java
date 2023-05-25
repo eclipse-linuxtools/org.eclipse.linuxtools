@@ -214,8 +214,7 @@ public class CreateVMPage extends WizardPage {
 			Text boxRefText, Text boxLocText, Button searchButton,
 			Button boxSearchButton) {
 		return SelectionListener.widgetSelectedAdapter(e -> {
-			if (e.widget instanceof Button) {
-				Button bt = (Button) e.widget;
+			if (e.widget instanceof Button bt) {
 				if (bt.getSelection()) {
 					vmNameText.setEnabled(false);
 					boxRefText.setEnabled(false);

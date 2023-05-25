@@ -125,11 +125,10 @@ public class ToggleCommentHandler extends AbstractHandler {
     public boolean isSelectionCommented(ISelection selection,
             IDocument document) {
 
-        if (!(selection instanceof ITextSelection)) {
+        if (!(selection instanceof ITextSelection textSelection)) {
             return false;
         }
 
-        ITextSelection textSelection = (ITextSelection) selection;
         if (textSelection.getStartLine() < 0 || textSelection.getEndLine() < 0) {
             return false;
         }

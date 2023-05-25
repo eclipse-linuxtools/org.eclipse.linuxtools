@@ -140,9 +140,7 @@ public class UniqueFilterWizardPage extends FilterWizardPage {
 
         @Override
         public void widgetSelected(SelectionEvent e) {
-            if(e.widget instanceof Button) {
-                Button target = (Button)e.widget;
-
+            if(e.widget instanceof Button target) {
                 for (Button button : btnAggregates) {
                     if(target == button) {
                         lblDesc.setText(AggregateFactory.getAggregateName(button.getData().toString()) + "\n\n" + //$NON-NLS-1$

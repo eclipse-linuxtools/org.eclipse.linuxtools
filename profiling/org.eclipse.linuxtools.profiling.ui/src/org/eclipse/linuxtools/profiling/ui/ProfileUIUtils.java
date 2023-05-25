@@ -77,9 +77,7 @@ public class ProfileUIUtils {
             IFileStore file = EFS.getLocalFileSystem().getStore(p);
 
             IEditorPart editor = IDE.openEditorOnFileStore(activePage, file);
-            if (editor instanceof ITextEditor) {
-                ITextEditor textEditor = (ITextEditor) editor;
-
+            if (editor instanceof ITextEditor textEditor) {
                 if (line > 0) {
                     IDocumentProvider provider = textEditor.getDocumentProvider();
                     IDocument document = provider.getDocument(textEditor.getEditorInput());
@@ -109,9 +107,7 @@ public class ProfileUIUtils {
         IFileStore file = proxy.getResource(path);
         if (file.fetchInfo().exists()) {
             IEditorPart editor = IDE.openEditorOnFileStore(activePage, file);
-            if (editor instanceof ITextEditor) {
-                ITextEditor textEditor = (ITextEditor) editor;
-
+            if (editor instanceof ITextEditor textEditor) {
                 if (line > 0) {
                     IDocumentProvider provider = textEditor.getDocumentProvider();
                     IDocument document = provider.getDocument(textEditor.getEditorInput());
@@ -138,9 +134,7 @@ public class ProfileUIUtils {
             IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
             IEditorPart editor = IDE.openEditor(activePage, file);
-            if (editor instanceof ITextEditor) {
-                ITextEditor textEditor = (ITextEditor) editor;
-
+            if (editor instanceof ITextEditor textEditor) {
                 if (line > 0) {
                     IDocumentProvider provider = textEditor.getDocumentProvider();
                     IDocument document = provider.getDocument(textEditor.getEditorInput());
@@ -193,9 +187,7 @@ public class ProfileUIUtils {
 
             IEditorPart editor = IDE.openEditor(activePage, input, editorID);
             // Select the line
-            if (editor instanceof ITextEditor) {
-                ITextEditor textEditor = (ITextEditor) editor;
-
+            if (editor instanceof ITextEditor textEditor) {
                 if (line > 0) {
                     IDocumentProvider provider = textEditor.getDocumentProvider();
                     IDocument document = provider.getDocument(textEditor.getEditorInput());
@@ -223,8 +215,7 @@ public class ProfileUIUtils {
             IFileStore fileStore = EFS.getLocalFileSystem().getStore(p);
 
             IEditorPart editor = IDE.openEditorOnFileStore(activePage, fileStore);
-            if (editor instanceof ITextEditor) {
-                ITextEditor text = (ITextEditor) editor;
+            if (editor instanceof ITextEditor text) {
                 text.selectAndReveal(offset, length);
             }
         }
@@ -286,9 +277,8 @@ public class ProfileUIUtils {
                 index.acquireReadLock();
                 IBinding[] bindings = index.findBindings(functionName.toCharArray(), IndexFilter.ALL, null);
                 for (IBinding bind : bindings) {
-                    if (bind instanceof IFunction
-                            && (numArgs == -1 || ((IFunction)bind).getParameters().length == numArgs)) {
-                        IFunction ifunction = (IFunction) bind;
+                    if (bind instanceof IFunction ifunction
+                            && (numArgs == -1 || ifunction.getParameters().length == numArgs)) {
                         IIndexName[] names = index.findNames(ifunction, IIndex.FIND_DEFINITIONS);
                         for (IIndexName iname : names) {
                             IIndexFile file = iname.getFile();

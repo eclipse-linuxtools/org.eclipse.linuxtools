@@ -122,8 +122,7 @@ public class VagrantVMView extends ViewPart implements IVagrantVMListener {
 
 			@Override
 			public Image getImage(Object element) {
-				if (element instanceof IVagrantVM) {
-					final IVagrantVM container = (IVagrantVM) element;
+				if (element instanceof IVagrantVM container) {
 					final String state = container.state();
 					if (EnumVMStatus.RUNNING
 							.equals(EnumVMStatus.fromStatusMessage(state))) {

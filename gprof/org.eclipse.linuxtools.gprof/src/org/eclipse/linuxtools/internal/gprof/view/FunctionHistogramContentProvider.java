@@ -36,8 +36,7 @@ public class FunctionHistogramContentProvider extends FileHistogramContentProvid
 
     @Override
     public Object[] getChildren(Object parentElement) {
-        if (parentElement instanceof HistRoot) {
-            HistRoot root = (HistRoot) parentElement;
+        if (parentElement instanceof HistRoot root) {
             LinkedList<? extends TreeElement> ret = getFunctionChildrenList(root);
             return ret.toArray();
         }
@@ -46,8 +45,7 @@ public class FunctionHistogramContentProvider extends FileHistogramContentProvid
 
     @Override
     public boolean hasChildren(Object element) {
-        if (element instanceof HistRoot) {
-            HistRoot root = (HistRoot) element;
+        if (element instanceof HistRoot root) {
             LinkedList<? extends TreeElement> ret = getFunctionChildrenList(root);
             return !ret.isEmpty();
         }

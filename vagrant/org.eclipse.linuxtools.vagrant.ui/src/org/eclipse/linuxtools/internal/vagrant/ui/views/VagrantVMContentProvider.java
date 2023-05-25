@@ -39,8 +39,7 @@ public class VagrantVMContentProvider implements ITreeContentProvider{
 
 	@Override
 	public Object[] getElements(final Object inputElement) {
-		if(inputElement instanceof IVagrantConnection) {
-			final IVagrantConnection connection = (IVagrantConnection)inputElement;
+		if(inputElement instanceof IVagrantConnection connection) {
 			if (connection.isVMsLoaded()) {
 				return connection.getVMs().toArray();
 			}

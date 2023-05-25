@@ -113,8 +113,7 @@ public abstract class AbstractMassifTest extends AbstractValgrindTest {
         IToolBarManager manager = view.getViewSite().getActionBars()
                 .getToolBarManager();
         for (IContributionItem item : manager.getItems()) {
-            if (item instanceof ActionContributionItem) {
-                ActionContributionItem actionItem = (ActionContributionItem) item;
+            if (item instanceof ActionContributionItem actionItem) {
                 if (actionItem.getAction().getId()
                         .equals(actionId)) {
                     result = actionItem.getAction();

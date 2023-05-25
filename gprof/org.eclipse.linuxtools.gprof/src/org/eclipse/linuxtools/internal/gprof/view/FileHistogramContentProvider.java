@@ -38,8 +38,7 @@ public class FileHistogramContentProvider implements ITreeContentProvider {
 
     @Override
     public Object[] getChildren(Object parentElement) {
-        if (parentElement instanceof AbstractTreeElement) {
-            AbstractTreeElement elem = (AbstractTreeElement) parentElement;
+        if (parentElement instanceof AbstractTreeElement elem) {
             LinkedList<? extends TreeElement> list = elem.getChildren();
             return list.toArray();
         }
@@ -48,8 +47,7 @@ public class FileHistogramContentProvider implements ITreeContentProvider {
 
     @Override
     public Object getParent(Object element) {
-        if (element instanceof AbstractTreeElement) {
-            AbstractTreeElement elem = (AbstractTreeElement) element;
+        if (element instanceof AbstractTreeElement elem) {
             return elem.getParent();
         }
         return null;
@@ -57,8 +55,7 @@ public class FileHistogramContentProvider implements ITreeContentProvider {
 
     @Override
     public boolean hasChildren(Object element) {
-        if (element instanceof AbstractTreeElement) {
-            AbstractTreeElement elem = (AbstractTreeElement) element;
+        if (element instanceof AbstractTreeElement elem) {
             return elem.hasChildren() && !elem.getChildren().isEmpty();
         }
         return false;
@@ -66,8 +63,7 @@ public class FileHistogramContentProvider implements ITreeContentProvider {
 
     @Override
     public Object[] getElements(Object inputElement) {
-        if (inputElement instanceof GmonDecoder) {
-            GmonDecoder obj = (GmonDecoder) inputElement;
+        if (inputElement instanceof GmonDecoder obj) {
             HistRoot root = obj.getRootNode();
             return new Object[] {
                     root

@@ -64,8 +64,7 @@ public class VagrantToolBarContributionItem extends ContributionItem
 	public void fill(Menu menu, int index) {
 		// The menu passed in doesn't allow us to have sub-menus
 		// Ignore it, get the parent IMenuManager and create the structure
-		if (getParent() instanceof IMenuManager) {
-			IMenuManager mm = (IMenuManager) getParent();
+		if (getParent() instanceof IMenuManager mm) {
 			IContributionItem v = mm.find(getId());
 			// Menu manager contributions get aggregated so remove them first
 			mm.removeAll();
@@ -153,11 +152,8 @@ public class VagrantToolBarContributionItem extends ContributionItem
 			List<IVagrantVM> list) {
 		this.vms = list;
 		// Need to call update(false) so menu manager is up to date
-		if (getParent() instanceof IMenuManager) {
-			IMenuManager mm = (IMenuManager) getParent();
-			Display.getDefault().asyncExec(() -> {
-				mm.update(false);
-			});
+		if (getParent() instanceof IMenuManager mm) {
+			Display.getDefault().asyncExec(() -> mm.update(false));
 		}
 	}
 }

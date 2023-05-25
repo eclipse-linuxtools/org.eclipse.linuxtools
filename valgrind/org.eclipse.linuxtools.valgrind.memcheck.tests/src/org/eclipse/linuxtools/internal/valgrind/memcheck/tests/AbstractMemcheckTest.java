@@ -41,9 +41,7 @@ public abstract class AbstractMemcheckTest extends AbstractValgrindTest {
 
         for (IValgrindMessage message : messages) {
             for (IValgrindMessage child : message.getChildren()) {
-                if (child instanceof ValgrindStackFrame) {
-                    ValgrindStackFrame stackFrameMsg = (ValgrindStackFrame) child;
-
+                if (child instanceof ValgrindStackFrame stackFrameMsg) {
                     // check expected error messages exist for basicTest (child process in multiProcTest)
                     if (("testNumErrors".equals(testName) || "testExec".equals(testName)) //$NON-NLS-1$ //$NON-NLS-2$
                             && "test.c".equals(stackFrameMsg.getFile())) { //$NON-NLS-1$

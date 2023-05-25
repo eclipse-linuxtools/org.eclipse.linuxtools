@@ -59,12 +59,11 @@ public class DockerContainersComparator extends ViewerComparator {
 	
 	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {
-		if (!(e1 instanceof IDockerContainer)
-				|| !(e2 instanceof IDockerContainer)) {
+		if (!(e1 instanceof IDockerContainer d1)
+				|| !(e2 instanceof IDockerContainer d2)) {
 			return 0;
 		}
-		final int tmp = compareByColumn((IDockerContainer) e1,
-				(IDockerContainer) e2);
+		final int tmp = compareByColumn(d1, d2);
 		return tmp * sortDirection;
 	}
 

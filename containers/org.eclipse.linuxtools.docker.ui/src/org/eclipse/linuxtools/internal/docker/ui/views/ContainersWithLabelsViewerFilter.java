@@ -30,8 +30,7 @@ public class ContainersWithLabelsViewerFilter extends ViewerFilter {
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
 		if (ids == null)
 			return true;
-		if (element instanceof IDockerContainer) {
-			final IDockerContainer container = (IDockerContainer) element;
+		if (element instanceof IDockerContainer container) {
 			if (ids.contains(container.id())) {
 				return true;
 			}

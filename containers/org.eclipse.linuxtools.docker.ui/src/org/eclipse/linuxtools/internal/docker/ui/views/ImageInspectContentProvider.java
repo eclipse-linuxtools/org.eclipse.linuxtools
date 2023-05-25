@@ -38,8 +38,7 @@ public class ImageInspectContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getElements(Object inputElement) {
-		if (inputElement instanceof IDockerImageInfo) {
-			final IDockerImageInfo info = (IDockerImageInfo) inputElement;
+		if (inputElement instanceof IDockerImageInfo info) {
 			return new Object[] {
 					new Object[] { "Id", info.id() }, //$NON-NLS-1$
 					new Object[] { "Parent", info.parent() }, //$NON-NLS-1$
@@ -62,8 +61,7 @@ public class ImageInspectContentProvider implements ITreeContentProvider {
 	@Override
 	public Object[] getChildren(Object parentElement) {
 		final Object propertyValue = ((Object[]) parentElement)[1];
-		if (propertyValue instanceof IDockerContainerConfig) {
-			final IDockerContainerConfig config = (IDockerContainerConfig) propertyValue;
+		if (propertyValue instanceof IDockerContainerConfig config) {
 			return new Object[] {
 					new Object[] { "Hostname", config.hostname() }, //$NON-NLS-1$
 					new Object[] { "Domainname", config.domainname() }, //$NON-NLS-1$

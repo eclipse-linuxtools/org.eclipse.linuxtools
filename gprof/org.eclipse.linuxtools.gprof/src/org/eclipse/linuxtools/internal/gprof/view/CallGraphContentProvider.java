@@ -40,13 +40,11 @@ public class CallGraphContentProvider implements ITreeContentProvider {
 
     @Override
     public Object[] getChildren(Object parentElement) {
-        if (parentElement instanceof HistRoot) {
-            HistRoot root = (HistRoot) parentElement;
+        if (parentElement instanceof HistRoot root) {
             LinkedList<? extends TreeElement> ret = getFunctionChildrenList(root);
             return ret.toArray();
         }
-        if (parentElement instanceof HistFunction) {
-            HistFunction function = (HistFunction) parentElement;
+        if (parentElement instanceof HistFunction function) {
             CGCategory parents  = function.getParentsFunctions();
             CGCategory children = function.getChildrenFunctions();
             if (parents == null) {
@@ -61,8 +59,7 @@ public class CallGraphContentProvider implements ITreeContentProvider {
                 };
             }
         }
-        if (parentElement instanceof CGCategory) {
-            CGCategory cat = (CGCategory) parentElement;
+        if (parentElement instanceof CGCategory cat) {
             return cat.getChildren().toArray();
         }
         return null;

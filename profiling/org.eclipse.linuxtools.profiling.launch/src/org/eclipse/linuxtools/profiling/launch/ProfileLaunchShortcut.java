@@ -288,8 +288,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
         ILabelProvider qualifierLabelProvider = new CElementLabelProvider() {
             @Override
             public String getText(Object element) {
-                if (element instanceof IBinary) {
-                    IBinary bin = (IBinary)element;
+                if (element instanceof IBinary bin) {
                     StringBuilder name = new StringBuilder();
                     name.append(bin.getCPU() + (bin.isLittleEndian() ? "le" : "be")); //$NON-NLS-1$ //$NON-NLS-2$
                     name.append(" - "); //$NON-NLS-1$

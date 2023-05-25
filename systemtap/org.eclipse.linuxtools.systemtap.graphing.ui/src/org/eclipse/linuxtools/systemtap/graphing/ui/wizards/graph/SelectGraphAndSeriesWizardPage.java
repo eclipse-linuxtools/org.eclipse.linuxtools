@@ -200,8 +200,8 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements
 
     @Override
     public void handleEvent(Event event) {
-        if (event.widget instanceof Button) {
-            saveDataToModelGraph(((Button) event.widget).getData().toString());
+        if (event.widget instanceof Button b) {
+            saveDataToModelGraph(b.getData().toString());
             checkErrors(false);
             wizard.getContainer().updateButtons();
         }

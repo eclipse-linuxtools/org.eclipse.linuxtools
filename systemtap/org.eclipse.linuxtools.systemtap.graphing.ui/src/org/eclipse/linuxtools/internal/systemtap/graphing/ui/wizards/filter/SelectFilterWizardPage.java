@@ -103,9 +103,7 @@ public class SelectFilterWizardPage extends WizardPage {
 
         @Override
         public void widgetSelected(SelectionEvent e) {
-            if(e.widget instanceof Button) {
-                Button target = (Button)e.widget;
-
+            if(e.widget instanceof Button target) {
                 for(int i=0; i<btnFilters.length; i++) {
                     if(target == btnFilters[i]) {
                         filterID = btnFilters[i].getData().toString();

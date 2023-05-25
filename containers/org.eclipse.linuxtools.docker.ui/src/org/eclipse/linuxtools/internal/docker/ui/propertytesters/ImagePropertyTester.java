@@ -30,8 +30,7 @@ public class ImagePropertyTester extends PropertyTester {
 
 	@Override
 	public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {
-		if (receiver instanceof IDockerImage) {
-			final IDockerImage image = (IDockerImage) receiver;
+		if (receiver instanceof IDockerImage image) {
 			switch (property) {
 			case CAN_BE_TAGGED:
 				return !image.isDangling() && !image.isIntermediateImage();

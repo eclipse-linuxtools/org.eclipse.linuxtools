@@ -27,8 +27,7 @@ public class StapTreeContentProvider implements ITreeContentProvider{
     @Override
     public Object[] getChildren(Object parentElement) {
         List<StapData> empty = new ArrayList<>();
-        if (parentElement instanceof StapData) {
-            StapData parent = ((StapData) parentElement);
+        if (parentElement instanceof StapData parent) {
             List<Integer> childrenIDs = parent.collapsedChildren;
             for (int val : childrenIDs) {
                 if (graph.getNodeData(val) != null) {
@@ -41,16 +40,16 @@ public class StapTreeContentProvider implements ITreeContentProvider{
 
     @Override
     public Object getParent(Object element) {
-        if (element instanceof StapData) {
-            return graph.getNodeData(((StapData) element).collapsedParent);
+        if (element instanceof StapData stapData) {
+            return graph.getNodeData(stapData.collapsedParent);
         }
         return null;
     }
 
     @Override
     public boolean hasChildren(Object element) {
-        if (element instanceof StapData) {
-            return ((StapData) element).children.size() > 0;
+        if (element instanceof StapData stapData) {
+            return stapData.children.size() > 0;
         }
         return false;
     }

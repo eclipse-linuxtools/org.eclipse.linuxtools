@@ -72,8 +72,7 @@ public class KernelSourceAction extends BrowserViewAction {
     public void run() {
         IWorkbench wb = PlatformUI.getWorkbench();
         Object o = getSelectedElement();
-        if (o instanceof TreeNode) {
-            TreeNode t = (TreeNode) o;
+        if (o instanceof TreeNode t) {
             if (t.isClickable()) {
                 IFileStore fs = (IFileStore) t.getData();
                 if (fs != null) {

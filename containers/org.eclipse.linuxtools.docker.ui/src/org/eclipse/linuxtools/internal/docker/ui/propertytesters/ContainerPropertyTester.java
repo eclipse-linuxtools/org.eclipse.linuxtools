@@ -43,8 +43,7 @@ public class ContainerPropertyTester extends PropertyTester {
 
 	@Override
 	public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {
-		if (receiver instanceof IDockerContainer) {
-			IDockerContainer container = (IDockerContainer) receiver;
+		if (receiver instanceof IDockerContainer container) {
 			/*
 			 * The 'receiver' is not updated if the selection remains unchanged
 			 * but a context menu command may have modified container state
