@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Red Hat.
+ * Copyright (c) 2015, 2023 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -69,14 +69,9 @@ public class RunDockerImageLaunchConfigurationDelegate
 					containerConfig,
 					launch,
 					hostConfig,
-					config.getAttribute(
-							IRunDockerImageLaunchConfigurationConstants.UNUSED_PORTS, new ArrayList<String>()),
-					config.getAttribute(
-							IRunDockerImageLaunchConfigurationConstants.CONTAINER_NAME,
-							(String) null),
-					config.getAttribute(
-							IRunDockerImageLaunchConfigurationConstants.AUTO_REMOVE,
-							false));
+					config.getAttribute(IRunDockerImageLaunchConfigurationConstants.UNUSED_PORTS, new ArrayList<>()),
+					config.getAttribute(IRunDockerImageLaunchConfigurationConstants.CONTAINER_NAME, (String) null),
+					config.getAttribute(IRunDockerImageLaunchConfigurationConstants.AUTO_REMOVE, false));
 		} catch (CoreException e) {
 			Activator.log(e);
 		}
@@ -103,7 +98,7 @@ public class RunDockerImageLaunchConfigurationDelegate
 		} else {
 			final List<String> serializedBindings = config.getAttribute(
 					IRunDockerImageLaunchConfigurationConstants.PUBLISHED_PORTS,
-					new ArrayList<String>());
+					new ArrayList<>());
 			final Map<String, List<IDockerPortBinding>> portBindings = LaunchConfigurationUtils
 					.deserializePortBindings(serializedBindings);
 			hostConfigBuilder.portBindings(portBindings);
@@ -112,14 +107,14 @@ public class RunDockerImageLaunchConfigurationDelegate
 		// container links
 		final List<String> links = config.getAttribute(
 				IRunDockerImageLaunchConfigurationConstants.LINKS,
-				new ArrayList<String>());
+				new ArrayList<>());
 		hostConfigBuilder.links(links);
 
 		// data volumes
-		final List<String> volumesFromList = config.getAttribute(IRunDockerImageLaunchConfigurationConstants.VOLUMES_FROM, new ArrayList<String>());
+		final List<String> volumesFromList = config.getAttribute(IRunDockerImageLaunchConfigurationConstants.VOLUMES_FROM, new ArrayList<>());
 		hostConfigBuilder.volumesFrom(volumesFromList);
 		final List<String> binds = new ArrayList<>();
-		final List<String> bindsList = config.getAttribute(IRunDockerImageLaunchConfigurationConstants.BINDS, new ArrayList<String>());
+		final List<String> bindsList = config.getAttribute(IRunDockerImageLaunchConfigurationConstants.BINDS, new ArrayList<>());
 		for (String bindsListEntry : bindsList) {
 			String[] bindsEntryParms = bindsListEntry.split(":"); //$NON-NLS-1$
 			final StringBuilder bind = new StringBuilder();
@@ -188,7 +183,7 @@ public class RunDockerImageLaunchConfigurationDelegate
 		// environment variables
 		final List<String> environmentVariables = lconfig.getAttribute(
 				IRunDockerImageLaunchConfigurationConstants.ENV_VARIABLES,
-				new ArrayList<String>());
+				new ArrayList<>());
 		config.env(environmentVariables);
 
 		// labels

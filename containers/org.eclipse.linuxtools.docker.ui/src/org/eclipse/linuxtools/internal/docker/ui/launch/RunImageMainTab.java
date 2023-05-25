@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2019 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2023 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -322,7 +322,7 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 			// skip if the selected image does not exist in the local Docker
 			// host
 			if (selectedImage == null) {
-				model.setExposedPorts(new ArrayList<ExposedPortModel>());
+				model.setExposedPorts(new ArrayList<>());
 				return;
 			}
 			findImageInfo(selectedImage);
@@ -343,7 +343,7 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 					model.setSelectedImageName(imageNames.get(0));
 					selectedImage = model.getSelectedImage();
 				} else {
-					model.setExposedPorts(new ArrayList<ExposedPortModel>());
+					model.setExposedPorts(new ArrayList<>());
 					return;
 				}
 			}
