@@ -61,8 +61,7 @@ public abstract class AbstractPercentageDrawerField extends AbstractSTDataViewer
         int index = event.index;
         int widthcol = 0;
 
-        if (event.widget instanceof Tree) {
-            Tree tree = (Tree) event.widget;
+        if (event.widget instanceof Tree tree) {
             widthcol = tree.getColumn(index).getWidth();
         } else { // event.widget instanceof Table
             Table table = (Table) event.widget;

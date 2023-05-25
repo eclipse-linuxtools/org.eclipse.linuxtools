@@ -29,8 +29,7 @@ public class STAnnotatedSourceNotFoundEditor extends STCSourceNotFoundEditor {
     @Override
     protected void openSourceFileAtLocation(IProject project, IPath sourceLoc, int lineNumber) {
         IEditorInput input = this.getEditorInput();
-        if (input instanceof STAnnotatedSourceNotFoundEditorInput) {
-            STAnnotatedSourceNotFoundEditorInput editorInput = (STAnnotatedSourceNotFoundEditorInput) input;
+        if (input instanceof STAnnotatedSourceNotFoundEditorInput editorInput) {
             SourceFile sf = editorInput.getSourceFile();
             OpenSourceFileAction.openAnnotatedSourceFile(project, null, sf, sourceLoc, lineNumber);
         } else {

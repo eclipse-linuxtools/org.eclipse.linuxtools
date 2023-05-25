@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -93,8 +92,7 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getElements(final Object inputElement) {
-		if (inputElement instanceof DockerConnectionManager) {
-			final DockerConnectionManager connectionManager = (DockerConnectionManager) inputElement;
+		if (inputElement instanceof DockerConnectionManager connectionManager) {
 			return connectionManager.getConnections();
 		}
 		return EMPTY;
@@ -102,10 +100,9 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getChildren(final Object parentElement) {
-		if (parentElement instanceof IDockerConnection) {
+		if (parentElement instanceof IDockerConnection connection) {
 			// check the connection availability before returning the
 			// 'containers' and 'images' child nodes.
-			final IDockerConnection connection = (IDockerConnection) parentElement;
 			if (connection.isOpen()) {
 				return new Object[] { new DockerImagesCategory(connection),
 						new DockerContainersCategory(connection) };
@@ -124,16 +121,14 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 				return new Object[] { new LoadingStub(connection) };
 			}
 			return new Object[0];
-		} else if (parentElement instanceof DockerContainersCategory) {
-			final DockerContainersCategory containersCategory = (DockerContainersCategory) parentElement;
+		} else if (parentElement instanceof DockerContainersCategory containersCategory) {
 			final IDockerConnection connection = containersCategory.getConnection();
 			if(connection.isContainersLoaded()) {
 				return connection.getContainers().toArray();
 			}
 			loadContainers(containersCategory);
 			return new Object[] { new LoadingStub(containersCategory) };
-		} else if (parentElement instanceof DockerImagesCategory) {
-			final DockerImagesCategory imagesCategory = (DockerImagesCategory) parentElement;
+		} else if (parentElement instanceof DockerImagesCategory imagesCategory) {
 			final IDockerConnection connection = imagesCategory.getConnection();
 			if(connection.isImagesLoaded()) {
 				// here we duplicate the images to show one org/repo with all
@@ -196,7 +191,7 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 			final List<IDockerImage> images) {
 		return images.stream()
 				.flatMap(image -> DockerImage.duplicateImageByRepo(image))
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	/**
@@ -369,10 +364,8 @@ public class DockerExplorerContentProvider implements ITreeContentProvider {
 		// If the connection is closed (meaning we tried to open
 		// and failed), then kick off a retry job.
 		// Don't start a retry job if one is already running.
-		if (element instanceof IDockerConnection) {
-			IDockerConnection connection = (IDockerConnection) element;
-			if (connection
-					.getState() != EnumDockerConnectionState.ESTABLISHED) {
+		if (element instanceof IDockerConnection connection) {
+			if (connection.getState() != EnumDockerConnectionState.ESTABLISHED) {
 				Job openRetryJob = null;
 				synchronized (openRetryJobs) {
 					openRetryJob = openRetryJobs.get(connection);

@@ -247,8 +247,7 @@ public class ImageRunSelectionPage extends WizardPage {
 				setMessage(validationStatus.getMessage(),
 						IMessageProvider.WARNING);
 			}
-		} else if (containerstatus instanceof IStatus) {
-			final IStatus status = (IStatus) containerstatus;
+		} else if (containerstatus instanceof IStatus status) {
 			if (status.getSeverity() == IStatus.ERROR) {
 				setMessage(status.getMessage(), IMessageProvider.ERROR);
 			} else

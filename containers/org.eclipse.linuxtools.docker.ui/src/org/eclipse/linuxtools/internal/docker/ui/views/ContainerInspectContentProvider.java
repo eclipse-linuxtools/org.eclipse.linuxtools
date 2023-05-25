@@ -45,8 +45,7 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getElements(Object inputElement) {
-		if(inputElement instanceof IDockerContainerInfo) {
-			final IDockerContainerInfo info = (IDockerContainerInfo) inputElement;
+		if(inputElement instanceof IDockerContainerInfo info) {
 			return new Object[] {
 					new Object[]{"Id", info.id().substring(0,  12)}, //$NON-NLS-1$
 					new Object[]{"Name", info.name()}, //$NON-NLS-1$
@@ -73,8 +72,7 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 	@Override
 	public Object[] getChildren(Object parentElement) {
 		final Object propertyValue = ((Object[])parentElement)[1];
-		if(propertyValue instanceof IDockerContainerState) {
-			final IDockerContainerState containerState = (IDockerContainerState) propertyValue;
+		if(propertyValue instanceof IDockerContainerState containerState) {
 			return new Object[] {
 					new Object[]{"ExitCode", containerState.exitCode()}, //$NON-NLS-1$
 					new Object[]{"Finished at", LabelProviderUtils.toFinishedDate(containerState.finishDate())}, //$NON-NLS-1$
@@ -103,8 +101,7 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 					new Object[] { "Tmpfs", hostConfig.tmpfs() }, //$NON-NLS-1$
 					new Object[]{"VolumesFrom", LabelProviderUtils.reduce(hostConfig.volumesFrom())}, //$NON-NLS-1$
 			};
-		} else if(propertyValue instanceof IDockerContainerConfig) {
-			final IDockerContainerConfig config = (IDockerContainerConfig) propertyValue;
+		} else if(propertyValue instanceof IDockerContainerConfig config) {
 			return new Object[] {
 					new Object[]{"AttachStderr", config.attachStderr()}, //$NON-NLS-1$
 					new Object[]{"AttachStdin", config.attachStdin()}, //$NON-NLS-1$
@@ -132,13 +129,11 @@ public class ContainerInspectContentProvider implements ITreeContentProvider {
 							LabelProviderUtils.reduce(config.volumes().keySet()) },
 					new Object[]{"WorkingDir", config.workingDir()}, //$NON-NLS-1$
 			};
-		} else if(propertyValue instanceof IDockerPortBinding) {
-			final IDockerPortBinding portBinding = (IDockerPortBinding) propertyValue;
+		} else if(propertyValue instanceof IDockerPortBinding portBinding) {
 			return new Object[] {
 					new Object[]{"Host IP/Port", LabelProviderUtils.toString(portBinding)} //$NON-NLS-1$
 			};
-		} else if(propertyValue instanceof IDockerNetworkSettings) {
-			final IDockerNetworkSettings networkSettings = (IDockerNetworkSettings) propertyValue;
+		} else if(propertyValue instanceof IDockerNetworkSettings networkSettings) {
 			return new Object[] {
 					new Object[]{"Bridge", networkSettings.bridge()}, //$NON-NLS-1$
 					new Object[]{"Gateway", networkSettings.gateway()}, //$NON-NLS-1$

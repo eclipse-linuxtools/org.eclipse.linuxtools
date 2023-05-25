@@ -56,8 +56,7 @@ public class CallsProfField extends AbstractSTDataViewersField implements IChart
         } else if (element instanceof HistFunction) {
             String format = Messages.CallsProfField_INVOCATION_NUMBER;
             return String.format(format, ((HistFunction) element).getName());
-        } else if (element instanceof CGCategory) {
-            CGCategory cat = (CGCategory) element;
+        } else if (element instanceof CGCategory cat) {
             if (CGCategory.CHILDREN.equals(cat.getName())) {
                 String format = Messages.CallsProfField_TOTAL_CALL_NUMBER_BY_FUNCTION;
                 return String.format(format, cat.getParent().getName());
@@ -65,8 +64,7 @@ public class CallsProfField extends AbstractSTDataViewersField implements IChart
                 String format = Messages.CallsProfField_INVOCATION_NUMBER;
                 return String.format(format, cat.getParent().getName());
             }
-        } else if (element instanceof CGArc) {
-            CGArc cgarc = (CGArc) element;
+        } else if (element instanceof CGArc cgarc) {
             if (CGCategory.CHILDREN.equals(cgarc.getParent().getName())) {
                 String format = Messages.CallsProfField_FUNCTION_CALL_NUMBER_BY_FUNCTION;
                 return String.format(format, cgarc.getParent().getParent().getName(), cgarc.getFunctionName());

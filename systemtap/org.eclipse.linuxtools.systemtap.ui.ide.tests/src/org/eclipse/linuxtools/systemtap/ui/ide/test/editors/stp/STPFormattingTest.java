@@ -68,8 +68,7 @@ public class STPFormattingTest {
      */
     private static void setupDocumentPartitioner(IDocument document, String partitioning) {
         IDocumentPartitioner partitioner = new FastPartitioner(new STPPartitionScanner(), STPPartitionScanner.STP_PARTITION_TYPES);
-        if (document instanceof IDocumentExtension3) {
-            IDocumentExtension3 extension3= (IDocumentExtension3) document;
+        if (document instanceof IDocumentExtension3 extension3) {
             extension3.setDocumentPartitioner(partitioning, partitioner);
         } else {
             document.setDocumentPartitioner(partitioner);

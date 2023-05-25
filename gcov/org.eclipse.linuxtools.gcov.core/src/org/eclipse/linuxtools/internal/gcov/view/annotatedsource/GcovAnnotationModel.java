@@ -103,10 +103,9 @@ public final class GcovAnnotationModel implements IAnnotationModel {
             return;
         }
         IAnnotationModel model = provider.getAnnotationModel(editor.getEditorInput());
-        if (!(model instanceof IAnnotationModelExtension)) {
+        if (!(model instanceof IAnnotationModelExtension modelex)) {
             return;
         }
-        IAnnotationModelExtension modelex = (IAnnotationModelExtension) model;
         IDocument document = provider.getDocument(editor.getEditorInput());
 
         GcovAnnotationModel coveragemodel = (GcovAnnotationModel) modelex.getAnnotationModel(KEY);
@@ -124,10 +123,9 @@ public final class GcovAnnotationModel implements IAnnotationModel {
             return;
         }
         IAnnotationModel model = provider.getAnnotationModel(editor.getEditorInput());
-        if (!(model instanceof IAnnotationModelExtension)) {
+        if (!(model instanceof IAnnotationModelExtension modelex)) {
             return;
         }
-        IAnnotationModelExtension modelex = (IAnnotationModelExtension) model;
         IAnnotationModel coverageModel = modelex.getAnnotationModel(KEY);
         if (coverageModel instanceof GcovAnnotationModel) {
             ((GcovAnnotationModel) coverageModel).clear();

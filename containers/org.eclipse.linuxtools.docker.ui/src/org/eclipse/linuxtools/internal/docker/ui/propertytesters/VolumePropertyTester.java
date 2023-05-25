@@ -28,8 +28,7 @@ public class VolumePropertyTester extends PropertyTester {
 	public boolean test(Object receiver, String property, Object[] args,
 			Object expectedValue) {
 		try {
-			if (receiver instanceof DockerContainerVolume) {
-				final DockerContainerVolume volume = (DockerContainerVolume) receiver;
+			if (receiver instanceof DockerContainerVolume volume) {
 				switch (property) {
 				case HAS_HOST_PATH:
 					DockerConnection connection = (DockerConnection) volume.getContainer().getConnection();

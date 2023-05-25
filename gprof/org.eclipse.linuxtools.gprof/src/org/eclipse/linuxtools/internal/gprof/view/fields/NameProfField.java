@@ -46,8 +46,7 @@ public class NameProfField extends AbstractSTDataViewersField {
 
     @Override
     public String getValue(Object obj) {
-        if (obj instanceof TreeElement) {
-            TreeElement e = (TreeElement) obj;
+        if (obj instanceof TreeElement e) {
             return e.getName();
         }
         return ""; //$NON-NLS-1$

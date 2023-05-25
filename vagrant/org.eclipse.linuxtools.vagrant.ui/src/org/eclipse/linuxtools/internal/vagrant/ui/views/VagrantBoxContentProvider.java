@@ -40,8 +40,7 @@ public class VagrantBoxContentProvider implements ITreeContentProvider{
 
 	@Override
 	public Object[] getElements(final Object inputElement) {
-		if(inputElement instanceof IVagrantConnection) {
-			final IVagrantConnection connection = (IVagrantConnection)inputElement;
+		if(inputElement instanceof IVagrantConnection connection) {
 			if (connection.isBoxesLoaded()) {
 				return connection.getBoxes().toArray();
 			}

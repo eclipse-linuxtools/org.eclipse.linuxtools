@@ -118,10 +118,9 @@ public class PatchFile {
     @Override
     public boolean equals(Object o) {
 
-        if (!(o instanceof PatchFile))
+        if (!(o instanceof PatchFile that))
             return false;
 
-        PatchFile that = (PatchFile) o;
         // check  fpath  +  count
         if (!this.resource.equals(that.resource) ||
                 this.pranges.size() != that.pranges.size() ) {

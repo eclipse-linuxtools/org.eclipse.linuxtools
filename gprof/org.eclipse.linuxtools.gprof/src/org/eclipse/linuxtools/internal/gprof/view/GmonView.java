@@ -166,15 +166,13 @@ public class GmonView extends AbstractSTDataView {
         Color color4 = colorRegistry.get("org.eclipse.ui.workbench.ACTIVE_TAB_BG_END"); //$NON-NLS-1$
         //        Color color5 = colorRegistry.get("org.eclipse.ui.workbench.INACTIVE_TAB_BG_START"); //$NON-NLS-1$
 
-        if (element instanceof CGCategory) {
-            CGCategory cat = (CGCategory) element;
+        if (element instanceof CGCategory cat) {
             if (CGCategory.CHILDREN.equals(cat.category)) {
                 return color1 == null ? BLUE1 : color1;
             } else {
                 return color2 == null ? GREEN1 : color2;
             }
-        } else if (element instanceof CGArc) {
-            CGArc arc = (CGArc) element;
+        } else if (element instanceof CGArc arc) {
             CGCategory cat = (CGCategory) arc.getParent();
             if (CGCategory.CHILDREN.equals(cat.category)) {
                 return color3 == null ? BLUE2 : color3;
@@ -297,8 +295,7 @@ public class GmonView extends AbstractSTDataView {
             @Override
             public void run() {
                 Object o = getSTViewer().getInput();
-                if (o instanceof GmonDecoder) {
-                    GmonDecoder gd = (GmonDecoder) o;
+                if (o instanceof GmonDecoder gd) {
                     getExporter().setFilePath(gd.getGmonFile() + ".csv"); //$NON-NLS-1$
                 }
                 super.run();

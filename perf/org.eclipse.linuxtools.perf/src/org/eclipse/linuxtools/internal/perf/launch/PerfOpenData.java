@@ -49,8 +49,7 @@ public class PerfOpenData extends ProfileLaunchShortcut implements
                 ISelection selection = page.getSelection();
                 if(selection instanceof ITreeSelection){
                         Object element = ((ITreeSelection)selection).getFirstElement();
-                        if(element instanceof IFile){
-                                IFile eFile = (IFile) element;
+                        if(element instanceof IFile eFile){
                                 IProject project = eFile.getProject();
                                 projectName = project.getName();
                                 URI fileURI = ((IFile)element).getLocationURI();

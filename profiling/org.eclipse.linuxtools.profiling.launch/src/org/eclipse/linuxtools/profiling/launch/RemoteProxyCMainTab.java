@@ -283,8 +283,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 
             @Override
             public String getText(Object element) {
-                if (element instanceof IBinary) {
-                    IBinary bin = (IBinary) element;
+                if (element instanceof IBinary bin) {
                     StringBuilder name = new StringBuilder();
                     name.append(bin.getPath().lastSegment());
                     return name.toString();
@@ -315,8 +314,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 
             @Override
             public String getText(Object element) {
-                if (element instanceof IBinary) {
-                    IBinary bin = (IBinary) element;
+                if (element instanceof IBinary bin) {
                     StringBuilder name = new StringBuilder();
                     name.append(bin.getCPU()
                             + (bin.isLittleEndian() ? "le" : "be")); //$NON-NLS-1$ //$NON-NLS-2$

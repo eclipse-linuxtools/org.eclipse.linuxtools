@@ -175,8 +175,7 @@ public abstract class ImagePullPushPage<M extends ImagePullPushPageModel>
 
 		@Override
 		public String getText(Object element) {
-			if (element instanceof IRegistryAccount) {
-				final IRegistryAccount registryAccount = (IRegistryAccount) element;
+			if (element instanceof IRegistryAccount registryAccount) {
 				final StringBuilder textBuilder = new StringBuilder();
 				// only display account username if it is set.
 				if (registryAccount.getUsername() != null) {
@@ -185,9 +184,7 @@ public abstract class ImagePullPushPage<M extends ImagePullPushPageModel>
 				}
 				textBuilder.append(registryAccount.getServerAddress());
 				return textBuilder.toString();
-			}
-			else if (element instanceof IRegistry) {
-				final IRegistry registry = (IRegistry) element;
+			} else if (element instanceof IRegistry registry) {
 				return registry.getServerAddress();
 			}
 			return null;

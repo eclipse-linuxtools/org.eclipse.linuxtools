@@ -75,47 +75,28 @@ public class DockerRegistryAccountPreferencePage extends PreferencePage
 	private final class PasswordContentProvider
 			implements IStructuredContentProvider, ITableLabelProvider {
 
-		/**
-		 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(Object)
-		 */
 		@Override
 		public Object[] getElements(Object inputElement) {
 			return passwords.toArray();
 		}
 
-		/**
-		 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-		 */
 		@Override
 		public void dispose() {
 		}
 
-		/**
-		 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(Viewer,
-		 *      Object, Object)
-		 */
 		@Override
 		public void inputChanged(Viewer viewer, Object oldInput,
 				Object newInput) {
 		}
 
-		/**
-		 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(Object,
-		 *      int)
-		 */
 		@Override
 		public Image getColumnImage(Object element, int columnIndex) {
 			return null;
 		}
 
-		/**
-		 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(Object,
-		 *      int)
-		 */
 		@Override
 		public String getColumnText(Object element, int columnIndex) {
-			if (element instanceof IRegistryAccount) {
-				IRegistryAccount info = (IRegistryAccount) element;
+			if (element instanceof IRegistryAccount info) {
 				switch (columnIndex) {
 				case 0:
 					return info.getServerAddress();
@@ -130,25 +111,15 @@ public class DockerRegistryAccountPreferencePage extends PreferencePage
 			return null;
 		}
 
-		/**
-		 * @see org.eclipse.jface.viewers.IBaseLabelProvider#addListener(ILabelProviderListener)
-		 */
 		@Override
 		public void addListener(ILabelProviderListener listener) {
 		}
 
-		/**
-		 * @see org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(Object,
-		 *      String)
-		 */
 		@Override
 		public boolean isLabelProperty(Object element, String property) {
 			return false;
 		}
 
-		/**
-		 * @see org.eclipse.jface.viewers.IBaseLabelProvider#removeListener(ILabelProviderListener)
-		 */
 		@Override
 		public void removeListener(ILabelProviderListener listener) {
 		}
@@ -186,9 +157,6 @@ public class DockerRegistryAccountPreferencePage extends PreferencePage
 	// changes)
 	private List<PasswordModification> modifications;
 
-	/**
-	 * @see org.eclipse.jface.preference.PreferencePage#createContents(Composite)
-	 */
 	@Override
 	protected Control createContents(Composite parent) {
 
@@ -258,9 +226,6 @@ public class DockerRegistryAccountPreferencePage extends PreferencePage
 		return parent;
 	}
 
-	/**
-	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(IWorkbench)
-	 */
 	@Override
 	public void init(IWorkbench workbench) {
 		// get a local copy of the accounts
@@ -273,9 +238,6 @@ public class DockerRegistryAccountPreferencePage extends PreferencePage
 		}
 	}
 
-	/**
-	 * @see org.eclipse.swt.widgets.Listener#handleEvent(Event)
-	 */
 	@Override
 	public void handleEvent(Event event) {
 		if (event.type == SWT.Selection) {
@@ -353,9 +315,6 @@ public class DockerRegistryAccountPreferencePage extends PreferencePage
 		}
 	}
 
-	/**
-	 * @see org.eclipse.jface.preference.IPreferencePage#performOk()
-	 */
 	@Override
 	public boolean performOk() {
 
@@ -380,9 +339,6 @@ public class DockerRegistryAccountPreferencePage extends PreferencePage
 		return super.performOk();
 	}
 
-	/**
-	 * @see org.eclipse.jface.preference.IPreferencePage#performCancel()
-	 */
 	@Override
 	public boolean performCancel() {
 		modifications.clear();

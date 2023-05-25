@@ -177,8 +177,7 @@ public class ReportComparisonView extends Viewer {
                 IPath newDatum;
                 IProject proj = null;
 
-                if (fInput.getLeft() instanceof ResourceNode) {
-                    ResourceNode left = (ResourceNode) fInput.getLeft();
+                if (fInput.getLeft() instanceof ResourceNode left) {
                     IResource oldData = left.getResource();
                     oldDatum = oldData.getLocation();
                     proj = oldData.getProject();
@@ -187,8 +186,7 @@ public class ReportComparisonView extends Viewer {
                     oldDatum = generateTempFile(lStream);
                 }
 
-                if (fInput.getRight() instanceof ResourceNode) {
-                    ResourceNode right = (ResourceNode) fInput.getRight();
+                if (fInput.getRight() instanceof ResourceNode right) {
                     IResource newData = right.getResource();
                     newDatum = newData.getLocation();
                     proj = newData.getProject();

@@ -142,8 +142,7 @@ public class CoreMessagesViewer {
 
 		doubleClickListener = event -> {
 			Object element = ((TreeSelection) event.getSelection()).getFirstElement();
-			if (element instanceof ValgrindStackFrame) {
-				ValgrindStackFrame frame = (ValgrindStackFrame) element;
+			if (element instanceof ValgrindStackFrame frame) {
 				// locator stored in the frame should be valid for the lifespan of the frame object
 				ISourceLocator locator = frame.getSourceLocator();
 				ISourceLookupResult result = DebugUITools.lookupSource(frame.getFile(), locator);

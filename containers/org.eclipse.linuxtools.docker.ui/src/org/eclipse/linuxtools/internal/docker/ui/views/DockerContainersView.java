@@ -252,8 +252,7 @@ public class DockerContainersView extends ViewPart implements
 
 			@Override
 			public Image getImage(Object element) {
-				if (element instanceof IDockerContainer) {
-					final IDockerContainer container = (IDockerContainer) element;
+				if (element instanceof IDockerContainer container) {
 					final EnumDockerStatus containerStatus = EnumDockerStatus
 							.fromStatusMessage(container.status());
 					if (containerStatus == EnumDockerStatus.RUNNING) {

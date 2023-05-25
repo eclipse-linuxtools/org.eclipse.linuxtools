@@ -145,8 +145,7 @@ public class SampleProfField extends AbstractSTDataViewersField implements IChar
     protected double getProfRate() {
         double prof_rate = UNINITIALIZED;
         Object o = viewer.getViewer().getInput();
-        if (o instanceof GmonDecoder) {
-            GmonDecoder decoder = (GmonDecoder)  o;
+        if (o instanceof GmonDecoder decoder) {
             HistogramDecoder histo = decoder.getHistogramDecoder();
             prof_rate = histo.getProfRate();
             char tUnit = histo.getTimeDimension();

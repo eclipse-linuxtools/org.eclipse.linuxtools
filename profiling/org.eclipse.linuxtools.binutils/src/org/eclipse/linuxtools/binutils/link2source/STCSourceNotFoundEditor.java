@@ -63,8 +63,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 
     private IPath getMissingFile() {
         IEditorInput i = this.getEditorInput();
-        if (i instanceof STCSourceNotFoundEditorInput) {
-            STCSourceNotFoundEditorInput input = (STCSourceNotFoundEditorInput) i;
+        if (i instanceof STCSourceNotFoundEditorInput input) {
             return input.getSourcePath();
         }
         return null;
@@ -72,8 +71,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 
     private int getLineNumber() {
         IEditorInput i = this.getEditorInput();
-        if (i instanceof STCSourceNotFoundEditorInput) {
-            STCSourceNotFoundEditorInput input = (STCSourceNotFoundEditorInput) i;
+        if (i instanceof STCSourceNotFoundEditorInput input) {
             return input.getLineNumber();
         }
         return -1;
@@ -81,8 +79,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 
     private IProject getProject() {
         IEditorInput i = this.getEditorInput();
-        if (i instanceof STCSourceNotFoundEditorInput) {
-            STCSourceNotFoundEditorInput input = (STCSourceNotFoundEditorInput) i;
+        if (i instanceof STCSourceNotFoundEditorInput input) {
             return input.getProject();
         }
         return null;
@@ -155,10 +152,10 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
         MappingSourceContainer foundMappings = null;
         for (Iterator<ISourceContainer> iter = containerList.iterator(); iter.hasNext() && !hasFoundMappings;) {
             ISourceContainer container = iter.next();
-            if (container instanceof MappingSourceContainer) {
+            if (container instanceof MappingSourceContainer sourceContainer) {
                 hasFoundMappings = container.getName().equals(foundMappingsContainerName);
                 if (hasFoundMappings) {
-                    foundMappings = (MappingSourceContainer) container;
+                    foundMappings = sourceContainer;
                 }
             }
         }

@@ -51,8 +51,7 @@ public class VagrantBox implements IVagrantBox {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof VagrantBox) {
-			VagrantBox other = (VagrantBox) o;
+		if (o instanceof VagrantBox other) {
 			return name.equals(other.getName())
 					&& provider.equals(other.getProvider())
 					&& version.equals(other.getVersion());

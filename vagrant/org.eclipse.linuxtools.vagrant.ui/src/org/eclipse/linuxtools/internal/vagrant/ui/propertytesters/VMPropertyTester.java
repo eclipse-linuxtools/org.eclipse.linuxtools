@@ -26,8 +26,7 @@ public class VMPropertyTester extends PropertyTester {
 
 	@Override
 	public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {
-		if (receiver instanceof IVagrantVM) {
-			final IVagrantVM vm = (IVagrantVM) receiver;
+		if (receiver instanceof IVagrantVM vm) {
 			switch (property) {
 			case IS_RUNNING:
 				return checkIfStateMatchesExpectation(vm,

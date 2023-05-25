@@ -155,8 +155,7 @@ public class STDataViewersHideShowColumnsDialog extends Dialog {
         tableViewer.setContentProvider(new IStructuredContentProvider() {
             @Override
             public Object[] getElements(Object inputElement) {
-                if (inputElement instanceof Item[]) {
-                    Item[] columns = (Item[]) inputElement;
+                if (inputElement instanceof Item[] columns) {
                     int[] order = stViewer.getColumnOrder();
                     Item[] elements = new Item[columns.length];
 
@@ -182,9 +181,7 @@ public class STDataViewersHideShowColumnsDialog extends Dialog {
         tableViewer.setLabelProvider(new LabelProvider() {
             @Override
             public String getText(Object element) {
-                if (element instanceof Item) {
-                    Item column = (Item) element;
-
+                if (element instanceof Item column) {
                     if (manager.getWidth(stViewer.getColumnIndex(column)) == 0) {
                         return column.getText() + " (width = 0)";
                     }

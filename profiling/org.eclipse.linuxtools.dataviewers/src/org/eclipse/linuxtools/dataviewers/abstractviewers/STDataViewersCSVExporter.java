@@ -279,8 +279,7 @@ public class STDataViewersCSVExporter {
         dumpColumnHeaders();
 
         if (input != null) {
-            if (contentProvider instanceof ITreeContentProvider) {
-                ITreeContentProvider treeContentProvider = (ITreeContentProvider) contentProvider;
+            if (contentProvider instanceof ITreeContentProvider treeContentProvider) {
                 Object[] topElements = treeContentProvider.getElements(input);
 
                 if (topElements != null) {
@@ -323,8 +322,7 @@ public class STDataViewersCSVExporter {
                     monitor.worked(tempWork);
                 }
 
-            } else if (contentProvider instanceof IStructuredContentProvider) {
-                IStructuredContentProvider structContentProvider = (IStructuredContentProvider) contentProvider;
+            } else if (contentProvider instanceof IStructuredContentProvider structContentProvider) {
                 Object[] topElements = structContentProvider.getElements(input);
 
                 if (topElements != null) {

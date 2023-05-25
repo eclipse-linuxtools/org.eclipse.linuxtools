@@ -254,8 +254,7 @@ public class ChartDialog2 extends Dialog {
     private void addColumnButtons(Composite comp, SelectionListener listener) {
         columnButtons = new LinkedList<>();
         for (ISTDataViewersField field : stViewer.getAllFields()) {
-            if (field instanceof IChartField) {
-                IChartField cField = (IChartField) field;
+            if (field instanceof IChartField cField) {
                 Button b = new Button(comp, SWT.CHECK);
                 b.setText(cField.getColumnHeaderText());
                 b.setData(cField);

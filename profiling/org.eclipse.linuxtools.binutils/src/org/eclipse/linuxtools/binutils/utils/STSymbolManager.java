@@ -580,8 +580,7 @@ public class STSymbolManager {
      * @return the binary object, or null.
      */
     private IBinaryObject validateBinary(IBinaryFile o) {
-        if (o instanceof IBinaryObject) {
-            IBinaryObject object = (IBinaryObject) o;
+        if (o instanceof IBinaryObject object) {
             String s = object.getCPU(); //
             if (s != null && !s.isEmpty()) {
                 return object;

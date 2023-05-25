@@ -113,10 +113,9 @@ public class RunConsole extends IOConsole {
 		RunConsole ret = null;
 		for (IConsole cons : ConsolePlugin.getDefault().getConsoleManager()
 				.getConsoles()) {
-			if (cons instanceof RunConsole
-					&& ((RunConsole) cons).containerId.equals(containerId)
-					&& ((RunConsole) cons).id.equals(id)) {
-				ret = (RunConsole) cons;
+			if (cons instanceof RunConsole runConsole && runConsole.containerId.equals(containerId)
+					&& runConsole.id.equals(id)) {
+				ret = runConsole;
 			}
 		}
 		// no existing console, create new one

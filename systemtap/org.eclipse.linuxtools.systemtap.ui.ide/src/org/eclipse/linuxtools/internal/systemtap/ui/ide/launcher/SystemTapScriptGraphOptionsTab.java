@@ -260,8 +260,8 @@ public class SystemTapScriptGraphOptionsTab extends
 				outputList.add(""); //$NON-NLS-1$ //For empty "sample output" entry.
 				regexErrorMessages.add(null);
 				columnNamesList.add(columnNames);
-				cachedNamesList.add(new Stack<String>());
-				graphsDataList.add(new LinkedList<GraphData>());
+				cachedNamesList.add(new Stack<>());
+				graphsDataList.add(new LinkedList<>());
 			}
 			if (getNumberOfRegexs() < MAX_NUMBER_OF_REGEXS) {
 				regularExpressionCombo.add(Messages.SystemTapScriptGraphOptionsTab_regexAddNew);

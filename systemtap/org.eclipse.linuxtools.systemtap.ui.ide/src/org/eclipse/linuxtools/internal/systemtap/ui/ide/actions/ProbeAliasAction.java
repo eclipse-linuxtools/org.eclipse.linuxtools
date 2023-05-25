@@ -52,12 +52,11 @@ public class ProbeAliasAction extends BrowserViewAction {
     @Override
     public void run() {
         Object o = getSelectedElement();
-        if (o instanceof TreeNode) {
-            TreeNode t = (TreeNode) o;
+        if (o instanceof TreeNode t) {
             if (t.isClickable()) {
                 STPEditor stpeditor = IDESessionSettings.getOrAskForActiveSTPEditor(true);
                 if (stpeditor != null) {
-                    stpeditor.insertText(buildString((TreeNode) o));
+                    stpeditor.insertText(buildString(t));
                 }
             } else {
                 runExpandAction();

@@ -102,8 +102,8 @@ public class CheckDevhelpTest {
         // tests non-breaking spaces used in latest gtk-doc devhelp generation.
         ClassLoader cl = getClass().getClassLoader();
         Bundle bundle = null;
-        if (cl instanceof BundleReference) {
-            bundle = ((BundleReference) cl).getBundle();
+        if (cl instanceof BundleReference ref) {
+            bundle = ref.getBundle();
         }
         IWorkspace ws = ResourcesPlugin.getWorkspace();
         IPath wslocpath = ws.getRoot().getLocation();
@@ -183,8 +183,8 @@ public class CheckDevhelpTest {
         // test1.devhelp2 and index.html, to the workspace.
         ClassLoader cl = getClass().getClassLoader();
         Bundle bundle = null;
-        if (cl instanceof BundleReference) {
-            bundle = ((BundleReference) cl).getBundle();
+        if (cl instanceof BundleReference ref) {
+            bundle = ref.getBundle();
         }
         IWorkspace ws = ResourcesPlugin.getWorkspace();
         IPath wslocpath = ws.getRoot().getLocation();

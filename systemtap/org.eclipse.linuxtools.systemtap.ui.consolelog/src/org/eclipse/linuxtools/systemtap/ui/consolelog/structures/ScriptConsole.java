@@ -102,8 +102,7 @@ public class ScriptConsole extends IOConsole {
 		IConsole[] ic = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
         if (ic != null) {
             for (IConsole consoleIterator : ic) {
-                if (consoleIterator instanceof ScriptConsole) {
-                    ScriptConsole activeConsole = (ScriptConsole) consoleIterator;
+                if (consoleIterator instanceof ScriptConsole activeConsole) {
                     if (activeConsole.getBaseName().equals(name) && activeConsole.isRunning()) {
                         return true;
                     }
@@ -124,10 +123,8 @@ public class ScriptConsole extends IOConsole {
 	public static synchronized ScriptConsole getInstance(String name) {
 		IConsole[] ic = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
         if (ic != null) {
-            ScriptConsole activeConsole;
             for (IConsole consoleIterator : ic) {
-                if (consoleIterator instanceof ScriptConsole) {
-                    activeConsole = (ScriptConsole) consoleIterator;
+                if (consoleIterator instanceof ScriptConsole activeConsole) {
                     if (activeConsole.getBaseName().equals(name)) {
                         activeConsole.reset();
                         return activeConsole;

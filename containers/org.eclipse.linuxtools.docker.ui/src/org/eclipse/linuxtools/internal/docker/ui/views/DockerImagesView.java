@@ -237,8 +237,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 		tagsColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(final Object element) {
-				if (element instanceof IDockerImage) {
-					final IDockerImage image = (IDockerImage) element;
+				if (element instanceof IDockerImage image) {
 					final StringBuilder messageBuilder = new StringBuilder();
 					for (Iterator<String> iterator = image.repoTags()
 							.iterator(); iterator.hasNext();) {
@@ -377,8 +376,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 			return;
 		}
 		final Object firstSegment = treeSelection.getPaths()[0].getFirstSegment();
-		if(firstSegment instanceof IDockerConnection) {
-			final IDockerConnection connection = (IDockerConnection) firstSegment;
+		if(firstSegment instanceof IDockerConnection connection) {
 			setConnection(connection);
 		}
 	}

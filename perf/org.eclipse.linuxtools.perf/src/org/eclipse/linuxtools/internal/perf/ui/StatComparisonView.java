@@ -183,16 +183,14 @@ public class StatComparisonView extends Viewer {
                 IPath oldDatum;
                 IPath newDatum;
 
-                if (fInput.getLeft() instanceof ResourceNode) {
-                    ResourceNode left = (ResourceNode) fInput.getLeft();
+                if (fInput.getLeft() instanceof ResourceNode left) {
                     oldDatum = left.getResource().getLocation();
                 } else {
                     IEncodedStreamContentAccessor lStream = (IEncodedStreamContentAccessor) fInput.getLeft();
                     oldDatum = generateTempFile(lStream);
                 }
 
-                if (fInput.getRight() instanceof ResourceNode) {
-                    ResourceNode right = (ResourceNode) fInput.getRight();
+                if (fInput.getRight() instanceof ResourceNode right) {
                     newDatum = right.getResource().getLocation();
                 } else {
                     IEncodedStreamContentAccessor rStream = (IEncodedStreamContentAccessor) fInput.getRight();

@@ -170,8 +170,8 @@ public class ContainerDirectorySelectionDialog extends SelectionDialog {
         return new WorkbenchContentProvider() {
             @Override
 			public Object[] getChildren(Object o) {
-				if (o instanceof FileSystemElement) {
-					return ((FileSystemElement) o).getFolders().getChildren(o);
+				if (o instanceof FileSystemElement fse) {
+					return fse.getFolders().getChildren(o);
                 }
 
                 return new Object[0];
@@ -187,12 +187,10 @@ public class ContainerDirectorySelectionDialog extends SelectionDialog {
 		return new WorkbenchContentProvider() {
 			@Override
 			public Object[] getChildren(Object o) {
-				if (o instanceof MinimizedFileSystemElement) {
-					return ((MinimizedFileSystemElement) o)
-							.getFolders(structureProvider)
-							.getChildren(o);
-				} else if (o instanceof FileSystemElement) {
-					return ((FileSystemElement) o).getFolders().getChildren(o);
+				if (o instanceof MinimizedFileSystemElement mfse) {
+					return mfse.getFolders(structureProvider).getChildren(o);
+				} else if (o instanceof FileSystemElement fse) {
+					return fse.getFolders().getChildren(o);
 				}
 
 				return new Object[0];

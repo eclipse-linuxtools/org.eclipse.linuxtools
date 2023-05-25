@@ -115,16 +115,13 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 		    int line = 0;
 		    if (selection instanceof CachegrindFile) {
 		        path = ((CachegrindFile) selection).getPath();
-		    } else if (selection instanceof CachegrindLine) {
-		        CachegrindLine element = (CachegrindLine) selection;
+		    } else if (selection instanceof CachegrindLine element) {
 		        CachegrindFile file = (CachegrindFile) element.getParent().getParent();
 		        path = file.getPath();
 		        line = element.getLine();
-		    } else if (selection instanceof CachegrindFunction) {
-		        CachegrindFunction function = (CachegrindFunction) selection;
+		    } else if (selection instanceof CachegrindFunction function) {
 		        path = ((CachegrindFile) function.getParent()).getPath();
-		        if (function.getModel() instanceof ISourceReference) {
-		            ISourceReference model = (ISourceReference) function.getModel();
+		        if (function.getModel() instanceof ISourceReference model) {
 		            try {
 		                ISourceRange sr = model.getSourceRange();
 		                if (sr != null) {

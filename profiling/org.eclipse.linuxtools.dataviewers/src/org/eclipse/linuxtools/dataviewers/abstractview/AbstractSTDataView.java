@@ -157,8 +157,7 @@ public abstract class AbstractSTDataView extends ViewPart {
      * @return IAction The newly created action.
      */
     private IAction createCollapseSelectionAction() {
-        if (getSTViewer() instanceof AbstractSTTreeViewer) {
-            AbstractSTTreeViewer stTreeViewer = (AbstractSTTreeViewer) getSTViewer();
+        if (getSTViewer() instanceof AbstractSTTreeViewer stTreeViewer) {
             return new STCollapseSelectionAction(stTreeViewer);
         }
         return null;
@@ -170,8 +169,7 @@ public abstract class AbstractSTDataView extends ViewPart {
      * @return IAction The newly created action.
      */
     private IAction createExpandSelectionAction() {
-        if (getSTViewer() instanceof AbstractSTTreeViewer) {
-            AbstractSTTreeViewer stTreeViewer = (AbstractSTTreeViewer) getSTViewer();
+        if (getSTViewer() instanceof AbstractSTTreeViewer stTreeViewer) {
             return new STExpandSelectionAction(stTreeViewer);
         }
         return null;
@@ -183,8 +181,7 @@ public abstract class AbstractSTDataView extends ViewPart {
      * @return IAction The newly created action.
      */
     private IAction createCollapseAllAction() {
-        if (getSTViewer() instanceof AbstractSTTreeViewer) {
-            AbstractSTTreeViewer stTreeViewer = (AbstractSTTreeViewer) getSTViewer();
+        if (getSTViewer() instanceof AbstractSTTreeViewer stTreeViewer) {
             return new STCollapseAllTreeAction(stTreeViewer);
         }
         return null;
@@ -196,8 +193,7 @@ public abstract class AbstractSTDataView extends ViewPart {
      * @return IAction The newly created action.
      */
     private IAction createExpandAllAction() {
-        if (getSTViewer() instanceof AbstractSTTreeViewer) {
-            AbstractSTTreeViewer stTreeViewer = (AbstractSTTreeViewer) getSTViewer();
+        if (getSTViewer() instanceof AbstractSTTreeViewer stTreeViewer) {
             return new STExpandAllTreeAction(stTreeViewer);
         }
         return null;
@@ -298,8 +294,7 @@ public abstract class AbstractSTDataView extends ViewPart {
      */
     protected void fillContextMenu(IMenuManager manager) {
         Control control = stViewer.getViewer().getControl();
-        if (control instanceof Tree) {
-            Tree tree = (Tree) control;
+        if (control instanceof Tree tree) {
             TreeItem[] selection = tree.getSelection();
             if (selection != null && selection.length > 0) {
                 if (collapseSelectionAction != null) {

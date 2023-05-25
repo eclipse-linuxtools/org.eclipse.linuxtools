@@ -244,13 +244,10 @@ public class CommandUtils {
 	@SuppressWarnings("unchecked")
 	private static <T> List<T> adaptSelectionTo(
 			final IStructuredSelection selection, final Class<T> targetClass) {
-		return (List<T>) selection.toList().stream()
-				.filter(selectedElement -> selectedElement instanceof IAdaptable
-						&& ((IAdaptable) selectedElement)
-								.getAdapter(targetClass) != null)
-				.map(selectedElement -> ((IAdaptable) selectedElement)
-						.getAdapter(targetClass))
-				.collect(Collectors.toList());
+		return selection.toList().stream()
+				.filter(selectedElement -> selectedElement instanceof IAdaptable adaptable
+						&& adaptable.getAdapter(targetClass) != null)
+				.map(selectedElement -> ((IAdaptable) selectedElement).getAdapter(targetClass)).toList();
 	}
 
 	/**

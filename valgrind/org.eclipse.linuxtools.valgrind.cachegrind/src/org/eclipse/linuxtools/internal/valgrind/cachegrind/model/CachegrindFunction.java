@@ -41,8 +41,7 @@ public class CachegrindFunction implements ICachegrindElement {
         lines = new ArrayList<>();
 
         IAdaptable pModel = parent.getModel();
-        if (pModel instanceof ICElement) {
-            ICElement element = (ICElement) pModel;
+        if (pModel instanceof ICElement element) {
             try {
                 if (element instanceof ITranslationUnit) {
                     // Cachegrind labels parameter types for C++ methods

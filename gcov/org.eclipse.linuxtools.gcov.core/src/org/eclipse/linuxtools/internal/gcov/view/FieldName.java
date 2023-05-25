@@ -24,8 +24,7 @@ public class FieldName extends AbstractSTDataViewersField {
 
     @Override
     public String getValue(Object obj) {
-        if (obj instanceof TreeElement) {
-            TreeElement e = (TreeElement) obj;
+        if (obj instanceof TreeElement e) {
             String nm = e.getName();
             nm = nm.substring(nm.lastIndexOf('/') + 1);
             nm = nm.substring(nm.lastIndexOf('\\') + 1);
@@ -36,8 +35,7 @@ public class FieldName extends AbstractSTDataViewersField {
 
     @Override
     public String getToolTipText(Object element) {
-        if (element instanceof TreeElement) {
-            TreeElement elem = (TreeElement) element;
+        if (element instanceof TreeElement elem) {
             return elem.getName();
         }
         return ""; //$NON-NLS-1$

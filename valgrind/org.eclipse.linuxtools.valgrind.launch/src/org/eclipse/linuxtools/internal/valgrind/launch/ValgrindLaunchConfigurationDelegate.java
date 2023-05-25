@@ -262,8 +262,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
                                 }
                             }
 
-                            if (sourceElement instanceof IResource) {
-                                IResource resource = (IResource) sourceElement;
+                            if (sourceElement instanceof IResource resource) {
                                 marker = resource.createMarker(ValgrindLaunchPlugin.MARKER_TYPE);
                                 marker.setAttribute(IMarker.MESSAGE, message.getText());
                                 marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);

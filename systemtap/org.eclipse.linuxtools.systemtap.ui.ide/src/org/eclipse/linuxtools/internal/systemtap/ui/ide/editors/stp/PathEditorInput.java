@@ -41,8 +41,7 @@ public class PathEditorInput extends FileStoreEditorInput implements IPathEditor
         if (this == obj) {
             return true;
         }
-        if (obj instanceof PathEditorInput) {
-            PathEditorInput other = (PathEditorInput) obj;
+        if (obj instanceof PathEditorInput other) {
             return fPath.equals(other.fPath);
         } else if (obj instanceof FileStoreEditorInput) {
             return super.equals(obj);

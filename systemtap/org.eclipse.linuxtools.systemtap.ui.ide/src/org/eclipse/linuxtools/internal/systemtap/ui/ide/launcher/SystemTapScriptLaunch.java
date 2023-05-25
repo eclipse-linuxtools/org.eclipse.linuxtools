@@ -43,8 +43,7 @@ public class SystemTapScriptLaunch extends Launch
             if (launch.equals(this)) {
                 continue;
             }
-            if (launch instanceof SystemTapScriptLaunch) {
-                SystemTapScriptLaunch olaunch = (SystemTapScriptLaunch) launch;
+            if (launch instanceof SystemTapScriptLaunch olaunch) {
                 if (olaunch.console == null || olaunch.console.equals(console)) {
                     olaunch.forceRemove();
                 }
