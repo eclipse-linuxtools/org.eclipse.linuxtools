@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2023 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -332,15 +332,13 @@ public class RunImagePortsTab extends AbstractLaunchConfigurationTab
 		try {
 			// recycle the model
 			model.removeExposedPorts();
-			final boolean publishAllPorts = configuration.getAttribute(
-					IRunDockerImageLaunchConfigurationConstants.PUBLISH_ALL_PORTS,
-					true);
+			final boolean publishAllPorts = configuration
+					.getAttribute(IRunDockerImageLaunchConfigurationConstants.PUBLISH_ALL_PORTS, true);
 			model.setPublishAllPorts(publishAllPorts);
-			final List<String> publishedPorts = configuration.getAttribute(
-					IRunDockerImageLaunchConfigurationConstants.PUBLISHED_PORTS,
-					new ArrayList<String>());
+			final List<String> publishedPorts = configuration
+					.getAttribute(IRunDockerImageLaunchConfigurationConstants.PUBLISHED_PORTS, new ArrayList<>());
 			final List<String> unusedPorts = configuration
-					.getAttribute(IRunDockerImageLaunchConfigurationConstants.UNUSED_PORTS, new ArrayList<String>());
+					.getAttribute(IRunDockerImageLaunchConfigurationConstants.UNUSED_PORTS, new ArrayList<>());
 			final Set<ExposedPortModel> selectedPorts = new HashSet<>();
 			for (String port : publishedPorts) {
 				final ImageRunSelectionModel.ExposedPortModel exposedPort = ImageRunSelectionModel.ExposedPortModel

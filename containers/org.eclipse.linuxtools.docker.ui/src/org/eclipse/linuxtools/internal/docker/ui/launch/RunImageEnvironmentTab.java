@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2023 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -255,7 +255,7 @@ public class RunImageEnvironmentTab extends AbstractLaunchConfigurationTab {
 			final List<String> environmentVariables = configuration
 					.getAttribute(
 					IRunDockerImageLaunchConfigurationConstants.ENV_VARIABLES,
-					new ArrayList<String>());
+					new ArrayList<>());
 			model.setEnvironmentVariables(environmentVariables);
 		} catch (CoreException e) {
 			Activator.logErrorMessage(

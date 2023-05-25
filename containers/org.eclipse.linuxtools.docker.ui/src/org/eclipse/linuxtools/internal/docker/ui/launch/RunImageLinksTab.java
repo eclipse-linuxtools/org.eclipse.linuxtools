@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2023 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -240,12 +240,10 @@ public class RunImageLinksTab extends AbstractLaunchConfigurationTab {
 		try {
 			// model needs to be recycled
 			model.removeLinks();
-			final List<String> containerLinks = configuration.getAttribute(
-					IRunDockerImageLaunchConfigurationConstants.LINKS,
-					new ArrayList<String>());
+			final List<String> containerLinks = configuration
+					.getAttribute(IRunDockerImageLaunchConfigurationConstants.LINKS, new ArrayList<>());
 			for (String containerLink : containerLinks) {
-				model.addLink(ImageRunSelectionModel.ContainerLinkModel
-						.createContainerLinkModel(containerLink));
+				model.addLink(ImageRunSelectionModel.ContainerLinkModel.createContainerLinkModel(containerLink));
 			}
 		} catch (CoreException e) {
 			// do nothing

@@ -289,7 +289,7 @@ public class ImageSearchPage extends WizardPage {
 						} catch (DockerException e) {
 							Activator.log(e);
 							searchResultQueue.offer(
-									new ArrayList<IDockerImageSearchResult>());
+									new ArrayList<>());
 						}
 						monitor.done();
 					});

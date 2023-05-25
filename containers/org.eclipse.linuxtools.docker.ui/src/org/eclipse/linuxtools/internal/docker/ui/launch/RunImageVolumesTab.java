@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2023 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -419,13 +419,11 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 			return;
 		final List<DataVolumeModel> volumes = new ArrayList<>();
 		try {
-			final List<String> volumesList = configuration.getAttribute(
-					IRunDockerImageLaunchConfigurationConstants.DATA_VOLUMES,
-					new ArrayList<String>());
+			final List<String> volumesList = configuration
+					.getAttribute(IRunDockerImageLaunchConfigurationConstants.DATA_VOLUMES, new ArrayList<>());
 			final Set<DataVolumeModel> selectedVolumes = new HashSet<>();
 			for (String volume : volumesList) {
-				DataVolumeModel volumeModel = DataVolumeModel
-						.parseString(volume);
+				DataVolumeModel volumeModel = DataVolumeModel.parseString(volume);
 				volumes.add(volumeModel);
 				if (volumeModel.getSelected()) {
 					selectedVolumes.add(volumeModel);
@@ -434,9 +432,7 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 			model.setDataVolumes(volumes);
 			model.setSelectedDataVolumes(selectedVolumes);
 		} catch (CoreException e) {
-			Activator.logErrorMessage(
-					LaunchMessages.getString(
-							"RunDockerImageLaunchConfiguration.load.failure"), //$NON-NLS-1$
+			Activator.logErrorMessage(LaunchMessages.getString("RunDockerImageLaunchConfiguration.load.failure"), //$NON-NLS-1$
 					e);
 		}
 		// update the underlying launch config working copy on model
