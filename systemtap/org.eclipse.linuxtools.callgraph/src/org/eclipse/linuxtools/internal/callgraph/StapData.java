@@ -74,7 +74,7 @@ public class StapData {
         //---------------Recursion management
         //Insert new level if necessary
         if (graphModel.levels.get(levelOfRecursion) == null)
-            graphModel.levels.put(levelOfRecursion, new ArrayList<Integer>());
+            graphModel.levels.put(levelOfRecursion, new ArrayList<>());
         graphModel.levels.get(levelOfRecursion).add(this.id);
 
         //Keep track of the lowest level of recursion

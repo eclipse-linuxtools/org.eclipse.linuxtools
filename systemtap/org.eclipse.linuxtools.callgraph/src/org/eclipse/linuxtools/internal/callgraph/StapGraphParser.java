@@ -281,7 +281,7 @@ public class StapGraphParser extends SystemTapParser {
 
 
                 if (outNeighbours.get(id) == null){
-                    outNeighbours.put(id, new ArrayList<Integer>());
+                    outNeighbours.put(id, new ArrayList<>());
                 }
 
                 if (idList.size() > 1) {
