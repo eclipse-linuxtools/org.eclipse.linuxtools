@@ -504,9 +504,9 @@ public class SystemTapScriptGraphOptionsTab extends
 			if (selected == regularExpressionCombo.getItemCount() - 1 && getNumberOfRegexs() < MAX_NUMBER_OF_REGEXS) {
 				outputList.add(""); //$NON-NLS-1$
 				regexErrorMessages.add(null);
-				columnNamesList.add(new ArrayList<String>());
-				cachedNamesList.add(new Stack<String>());
-				graphsDataList.add(new LinkedList<GraphData>());
+				columnNamesList.add(new ArrayList<>());
+				cachedNamesList.add(new Stack<>());
+				graphsDataList.add(new LinkedList<>());
 
 				// Remove "Add New Regex" from the selected combo item; make it blank.
 				regularExpressionCombo.setItem(selected, ""); //$NON-NLS-1$
