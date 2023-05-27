@@ -70,7 +70,7 @@ public abstract class BrowserViewAction extends Action implements ISelectionList
     }
 
     protected Object getSelectedElement() {
-        return ((IStructuredSelection) viewer.getViewer().getSelection()).getFirstElement();
+        return viewer.getViewer().getStructuredSelection().getFirstElement();
     }
 
     protected void runExpandAction() {

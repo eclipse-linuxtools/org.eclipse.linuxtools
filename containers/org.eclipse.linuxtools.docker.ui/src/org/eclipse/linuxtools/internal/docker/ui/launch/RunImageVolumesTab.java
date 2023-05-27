@@ -251,8 +251,7 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 	private SelectionListener onEditDataVolume(
 			final CheckboxTableViewer dataVolumesTableViewer) {
 		return SelectionListener.widgetSelectedAdapter(e -> {
-				final IStructuredSelection selection = (IStructuredSelection) dataVolumesTableViewer
-						.getSelection();
+				final IStructuredSelection selection = dataVolumesTableViewer.getStructuredSelection();
 				if (selection.isEmpty()) {
 					return;
 				}

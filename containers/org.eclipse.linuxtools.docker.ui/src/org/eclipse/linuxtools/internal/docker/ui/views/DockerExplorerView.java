@@ -357,16 +357,14 @@ public class DockerExplorerView extends CommonNavigator implements
 		Display.getDefault().asyncExec(() -> {
 			if (getCommonViewer().getTree() != null
 					&& !getCommonViewer().getTree().isDisposed()) {
-				ITreeSelection old = (ITreeSelection) getCommonViewer()
-						.getSelection();
+				ITreeSelection old = getCommonViewer().getStructuredSelection();
 				getCommonViewer().refresh(connection, true);
 				// Bug 499919 - Deselected connection after deleted tag
 				// if we had an old selection and now we don't, assume that
 				// operation in another view removed the item we had selected
 				// so reset the connection so the Images and Containers views
 				// don't reset to no connection.
-				ITreeSelection current = (ITreeSelection) getCommonViewer()
-						.getSelection();
+				ITreeSelection current = getCommonViewer().getStructuredSelection();
 				if (!old.isEmpty() && current.isEmpty()) {
 					getCommonViewer()
 							.setSelection(new StructuredSelection(connection));
