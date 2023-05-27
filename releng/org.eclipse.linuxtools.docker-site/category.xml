@@ -238,7 +238,7 @@
    <iu id="io.opencensus.opencensus-contrib-http-util" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="org.slf4j.api" version="0.0.0">
+   <iu id="slf4j.api" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="org.aopalliance" version="0.0.0">

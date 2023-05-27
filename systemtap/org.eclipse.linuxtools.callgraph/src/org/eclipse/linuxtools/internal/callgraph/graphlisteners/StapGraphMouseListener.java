@@ -21,6 +21,7 @@ import org.eclipse.linuxtools.internal.callgraph.core.FileFinderOpener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
 
 public class StapGraphMouseListener implements MouseListener {
@@ -99,12 +100,12 @@ public class StapGraphMouseListener implements MouseListener {
         graph.removeMouseMoveListener(listener);
         graph.removeListener(SWT.MouseExit, exitListener);
 
-        List<StapNode> list = graph.getSelection();
+        List<? extends GraphItem> list = graph.getSelection();
 
         if (list.size() == 1) {
             int id;
             if (list.get(0) != null) {
-                id = list.get(0).id;
+                id = ((StapNode)list.get(0)).id;
             } else {
                 graph.setSelection(null);
                 return;
@@ -174,7 +175,7 @@ public class StapGraphMouseListener implements MouseListener {
 
 
     private StapNode getNodeFromSelection() {
-        List<GraphNode> stapNodeList = graph.getSelection();
+        List<? extends GraphItem> stapNodeList = graph.getSelection();
         if (stapNodeList.isEmpty() || stapNodeList.size() != 1) {
             graph.setSelection(null);
             return null;
@@ -190,14 +191,14 @@ public class StapGraphMouseListener implements MouseListener {
         return node;
     }
 
-    private GraphNode getAggregateNodeFromSelection() {
-        List<GraphNode> graphNodeList = graph.getSelection();
+    private GraphItem getAggregateNodeFromSelection() {
+        List<? extends GraphItem> graphNodeList = graph.getSelection();
         if (graphNodeList.isEmpty() || graphNodeList.size() != 1) {
             graph.setSelection(null);
             return null;
         }
 
-        GraphNode node = null;
+        GraphItem node = null;
         if (graphNodeList.get(0) != null) {
             node = graphNodeList.remove(0);
         } else {
@@ -209,7 +210,7 @@ public class StapGraphMouseListener implements MouseListener {
 
     private void controlDoubleClick() {
         if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_AGGREGATE) {
-            GraphNode node = getAggregateNodeFromSelection();
+            GraphItem node = getAggregateNodeFromSelection();
 
             if (node == null) {
                 return;

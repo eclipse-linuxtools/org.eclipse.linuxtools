@@ -44,6 +44,7 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.zest.core.widgets.Graph;
+import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.layouts.LayoutStyles;
 
@@ -1184,9 +1185,9 @@ public class StapGraph extends Graph {
      * Unhighlights all selected nodes and sets selection to null
      */
     private void clearSelection() {
-        List<GraphNode> list = this.getSelection();
+        List<? extends GraphItem> list = this.getSelection();
 
-        for (GraphNode n : list) {
+        for (GraphItem n : list) {
             if (n != null) {
                 n.unhighlight();
             }
