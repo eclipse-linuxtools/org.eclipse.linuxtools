@@ -633,8 +633,7 @@ public class CheckboxTreeAndListGroup extends EventManager implements
 	 */
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
-		IStructuredSelection selection = (IStructuredSelection) event
-				.getSelection();
+		IStructuredSelection selection = event.getStructuredSelection();
 		Object selectedElement = selection.getFirstElement();
 		if (selectedElement == null) {
 			currentTreeSelection = null;

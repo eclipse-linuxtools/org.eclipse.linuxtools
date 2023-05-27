@@ -252,8 +252,7 @@ public class DockerComposeUpLaunchConfigurationMainTab
 	@Override
 	public void performApply(
 			final ILaunchConfigurationWorkingCopy configuration) {
-		final IStructuredSelection connectionSelection = (IStructuredSelection) this.connectionSelectionComboViewer
-				.getSelection();
+		final IStructuredSelection connectionSelection = this.connectionSelectionComboViewer.getStructuredSelection();
 		if (connectionSelection.getFirstElement() != null) {
 			configuration.setAttribute(DOCKER_CONNECTION,
 					connectionSelection.getFirstElement().toString());
