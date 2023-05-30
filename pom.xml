@@ -48,9 +48,8 @@
   </distributionManagement>
 
   <properties>
-    <mirror-repo-name>updates-nightly</mirror-repo-name>
-    <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
-    <mirror-mylyn-repo-name>updates-mylyn-nightly</mirror-mylyn-repo-name>
+    <mirror-repo-name>updates-nightly-8.11</mirror-repo-name>
+    <mirror-docker-repo-name>updates-docker-nightly-5.11</mirror-docker-repo-name>
     <tycho-version>4.0.0-SNAPSHOT</tycho-version>
     <target-platform>linuxtools-e4.28</target-platform>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
