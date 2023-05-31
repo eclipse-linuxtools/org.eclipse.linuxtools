@@ -17,6 +17,9 @@ spec:
     image: akurtakov/linuxtools-build-test-dependencies:latest
     tty: true
     command: [ "uid_entrypoint", "cat" ]
+    volumeMounts:
+    - name: tools
+      mountPath: /opt/tools
     resources:
       requests:
         memory: "2Gi"
@@ -47,6 +50,9 @@ spec:
         path: settings.xml
   - name: m2-repo
     emptyDir: {}
+  - name: tools
+    persistentVolumeClaim:
+      claimName: tools-claim-jiro-linuxtools
 """
     }
   }
