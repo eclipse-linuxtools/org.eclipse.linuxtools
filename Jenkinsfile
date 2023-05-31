@@ -50,9 +50,12 @@ spec:
 """
     }
   }
+  tools {
+		maven 'apache-maven-latest'
+		jdk 'temurin-jdk17-latest'
+	}
   environment {
         MAVEN_OPTS = "-Xmx2G"
-        JAVA_HOME = "/usr/lib/jvm/java-17-openjdk"
   }
 	stages {
 		stage('Prepare-environment') {
