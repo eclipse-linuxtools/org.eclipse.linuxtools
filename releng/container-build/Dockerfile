@@ -24,18 +24,14 @@ ENTRYPOINT [ "uid_entrypoint", "jenkins-slave" ]
 RUN sed -i '/tsflags=nodocs/ d' /etc/dnf/dnf.conf
 
 RUN dnf -y update && dnf -y install \
-    java-17-openjdk-devel maven webkit2gtk3 \
+    webkit2gtk3 npm \
     gcc-c++ perf systemtap rpmdevtools valgrind \
     gtk3-devel-docs createrepo_c \
-    npm \
     && dnf clean all
 
 #Back to named user
 USER 1000
 
 ENV JENKINS_AGENT_WORKDIR=${HOME}/agent
-ENV JAVA_OPTS=""
-ENV JAVA_HOME=/usr/lib/jvm/java-17
-ENV PATH=/usr/lib/jvm/java-17/bin:$PATH
 ENV JNLP_PROTOCOL_OPTS="-XshowSettings:vm -Xmx256m -Djdk.nativeCrypto=false -Dsun.zip.disableMemoryMapping=true -Dorg.jenkinsci.remoting.engine.JnlpProtocol3.disabled=true"
 
