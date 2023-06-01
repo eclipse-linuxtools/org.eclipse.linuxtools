@@ -17,9 +17,6 @@ spec:
     image: akurtakov/linuxtools-build-test-dependencies:latest
     tty: true
     command: [ "uid_entrypoint", "cat" ]
-    volumeMounts:
-    - name: tools
-      mountPath: /opt/tools
     resources:
       requests:
         memory: "2Gi"
@@ -50,27 +47,13 @@ spec:
         path: settings.xml
   - name: m2-repo
     emptyDir: {}
-  - name: tools
-    persistentVolumeClaim:
-      claimName: tools-claim-jiro-linuxtools
 """
     }
   }
-  tools {
-		maven 'apache-maven-latest'
-		jdk 'temurin-jdk17-latest'
-	}
   environment {
         MAVEN_OPTS = "-Xmx2G"
   }
 	stages {
-		stage('Prepare-environment') {
-			steps {
-				container('container') {
-					sh 'mutter --replace --sm-disable &'
-				}
-			}
-		}
 		stage('Initialize PGP') {
 			steps {
 				container('container') {
