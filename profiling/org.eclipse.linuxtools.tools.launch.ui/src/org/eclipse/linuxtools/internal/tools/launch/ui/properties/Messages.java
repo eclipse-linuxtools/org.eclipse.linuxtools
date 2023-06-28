@@ -23,6 +23,14 @@ public class Messages extends NLS {
     public static String LINUXTOOLS_PATH_CUSTOM_TOOLTIP;
     public static String LINUXTOOLS_PATH_SYSTEM_ENV;
     public static String LINUXTOOLS_PATH_TOOLTIP;
+    public static String LINUXTOOLS_PREFIX;
+    public static String LINUXTOOLS_PREFIX_COMBO;
+    public static String LINUXTOOLS_PREFIX_TOOLTIP;
+    public static String LINUXTOOLS_PREFIX_CUSTOM;
+    public static String LINUXTOOLS_PREFIX_SYSTEM_ENV;
+    public static String LINUXTOOLS_PREFIX_CUSTOM_TOOLTIP;
+
+
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

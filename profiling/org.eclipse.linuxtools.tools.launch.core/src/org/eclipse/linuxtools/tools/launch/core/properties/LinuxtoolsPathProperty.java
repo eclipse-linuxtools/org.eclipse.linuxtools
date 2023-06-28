@@ -31,6 +31,7 @@ public class LinuxtoolsPathProperty {
     private static final String LINUXTOOLS_PATH_OPTION_PATH = "path"; //$NON-NLS-1$
     private static final String LINUXTOOLS_PATH_OPTION_DEFAULT = "default"; //$NON-NLS-1$
     private String linuxtoolsPathDefault = ""; //$NON-NLS-1$
+	private String linuxtoolsPrefixDefault = ""; //$NON-NLS-1$
     private boolean linuxtoolsPathSystemDefault = true;
     private static LinuxtoolsPathProperty instance = null;
 
@@ -109,9 +110,32 @@ public class LinuxtoolsPathProperty {
         return path;
     }
 
+	public String getLinuxtoolsPrefix(IProject project) {
+		if (project == null) {
+			return ""; //$NON-NLS-1$
+		}
+
+		ScopedPreferenceStore store = new ScopedPreferenceStore(new ProjectScope(project),
+				LaunchCoreConstants.PLUGIN_ID);
+
+		String prefix = null;
+		if (store.contains(LaunchCoreConstants.LINUXTOOLS_PREFIX_NAME)) {
+			prefix = store.getString(LaunchCoreConstants.LINUXTOOLS_PREFIX_NAME);
+		}
+
+		if (prefix == null) {
+			return getLinuxtoolsPrefixDefault();
+		}
+		return prefix;
+	}
+
     public String getLinuxtoolsPathDefault() {
         return linuxtoolsPathDefault;
     }
+
+	public String getLinuxtoolsPrefixDefault() {
+		return linuxtoolsPrefixDefault;
+	}
 
     public boolean getLinuxtoolsPathSystemDefault() {
         return linuxtoolsPathSystemDefault;

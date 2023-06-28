@@ -23,6 +23,9 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.variables.IStringVariableManager;
+import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.linuxtools.profiling.launch.RemoteEnvProxyManager;
 import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathProperty;
 
@@ -41,7 +44,9 @@ public abstract class LinuxtoolsProcessFactory {
 
     private static final String PATH = "PATH"; //$NON-NLS-1$
     private static final String PATH_EQUAL = "PATH="; //$NON-NLS-1$
-    private static final String SEPARATOR = ":"; //$NON-NLS-1$
+	private static final String SEPARATOR_WIN32 = ";"; //$NON-NLS-1$
+	private static final String SEPARATOR_LINUX = ":"; //$NON-NLS-1$
+	private static final String SEPARATOR = ":"; //$NON-NLS-1$
 
     private String getEnvpPath(String[] envp) {
         if (envp == null) {
@@ -66,7 +71,14 @@ public abstract class LinuxtoolsProcessFactory {
      * will be updated.
      * @return The new environment.
      */
-    protected String[] updateEnvironment(String[] envp, IProject project) {
+	protected String[] updateEnvironment(String[] envp, IProject project) {
+		String separator;
+		if (Platform.OS_WIN32.equals(Platform.getOS())) {
+			separator = SEPARATOR_WIN32;
+		} else {
+			separator = SEPARATOR_LINUX;
+		}
+
         String ltPath = LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project);
         String envpPath = getEnvpPath(envp);
 
@@ -96,13 +108,28 @@ public abstract class LinuxtoolsProcessFactory {
 		StringBuilder newPath = new StringBuilder();
         newPath.append(PATH_EQUAL);
 
+		IStringVariableManager varManager = VariablesPlugin.getDefault().getStringVariableManager();
+
+
         if (ltPath != null && !ltPath.isEmpty()) {
+			try {
+				ltPath = varManager.performStringSubstitution(ltPath);
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             newPath.append(ltPath);
-            newPath.append(SEPARATOR);
+			newPath.append(separator);
         }
         if (envpPath != null && !envpPath.isEmpty()) {
+			try {
+				envpPath = varManager.performStringSubstitution(envpPath);
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             newPath.append(envpPath);
-            newPath.append(SEPARATOR);
+			newPath.append(separator);
         }
         if (systemPath != null && !systemPath.isEmpty()) {
             newPath.append(systemPath);
