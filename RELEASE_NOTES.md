@@ -6,6 +6,10 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 ## 8.12.0
 
+### RPM
+
+Createrepo and Rpmstubby plugins are removed and no longer part of the release as they have been badly outdated and no longer userful. 
+
 ### Docker Tooling
 
 Docker LS updated to version 0.10.2 from version 0.9.0 with the [following editor enhancements and fixes](https://github.com/akurtakov/dockerfile-language-server-nodejs/blob/master/CHANGELOG.md#0102---2023-06-01).
