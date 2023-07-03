@@ -144,7 +144,7 @@ public class DownloadPrepareSourcesTest {
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         IStatus is = rpmProject.buildPrep(bos);
-        assertTrue(is.isOK());
+        assertTrue("Status should have been OK but is:"+is.toString() , is.isOK());
 
         checkPreparedSources(rpmProject, RPMProjectLayout.RPMBUILD);
     }
@@ -167,7 +167,7 @@ public class DownloadPrepareSourcesTest {
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         IStatus is = rpmProject.buildPrep(bos);
-        assertTrue(is.isOK());
+        assertTrue("Status should have been OK but is:"+is.toString() , is.isOK());
 
         checkPreparedSources(rpmProject, RPMProjectLayout.FLAT);
     }
