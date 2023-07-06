@@ -21,5 +21,6 @@ package org.eclipse.linuxtools.tools.launch.core;
 public interface LaunchCoreConstants {
     String PLUGIN_ID = "org.eclipse.linuxtools.tools.launch.core"; //$NON-NLS-1$
     String LINUXTOOLS_PATH_NAME = LaunchCoreConstants.PLUGIN_ID + ".LinuxtoolsPath"; //$NON-NLS-1$
+	String LINUXTOOLS_PREFIX_NAME = LaunchCoreConstants.PLUGIN_ID + ".LinuxtoolsPrefix"; //$NON-NLS-1$
     String LINUXTOOLS_PATH_SYSTEM_NAME = LaunchCoreConstants.PLUGIN_ID + ".LinuxtoolsSystemEnvPath"; //$NON-NLS-1$
 }

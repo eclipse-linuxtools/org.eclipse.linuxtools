@@ -62,6 +62,7 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
                 {"Custom", ""}, //$NON-NLS-1$  //$NON-NLS-2$
     };
     private StringFieldEditor linuxtoolsPath;
+    private StringFieldEditor linuxtoolsPrefix;
     private CustomComboFieldEditor linuxtoolsPathCombo;
     private IAdaptable element = null;
     private Composite result;
@@ -150,6 +151,17 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
         linuxtoolsPath.setPage(this);
         linuxtoolsPath.setPreferenceStore(getPreferenceStore());
         linuxtoolsPath.getTextControl(result).setToolTipText(Messages.LINUXTOOLS_PATH_TOOLTIP);
+        
+        
+        
+        //Add textbox
+		linuxtoolsPrefix = new StringFieldEditor(LaunchCoreConstants.LINUXTOOLS_PREFIX_NAME,Messages.LINUXTOOLS_PREFIX_COMBO, result);
+		linuxtoolsPrefix.setPage(this);
+		linuxtoolsPrefix.setPreferenceStore(getPreferenceStore());
+		linuxtoolsPrefix.getTextControl(result).setToolTipText(Messages.LINUXTOOLS_PREFIX_TOOLTIP);
+		
+		getPreferenceStore().setDefault(LaunchCoreConstants.LINUXTOOLS_PREFIX_NAME, LinuxtoolsPathProperty.getInstance().getLinuxtoolsPrefixDefault());
+		linuxtoolsPrefix.load();
 
         String selected = getPreferenceStore().getString(LINUXTOOLS_PATH_COMBO_NAME);
         customSelected = selected.equals(""); //$NON-NLS-1$
@@ -176,6 +188,7 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
     protected void performDefaults() {
     	if (initialized) {
     		linuxtoolsPath.loadDefault();
+    		linuxtoolsPrefix.loadDefault();
     		linuxtoolsPathCombo.loadDefault();
     		customButton.setSelection(!LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathSystemDefault());
     		systemEnvButton.setSelection(LinuxtoolsPathProperty.getInstance().getLinuxtoolsPathSystemDefault());
@@ -187,6 +200,7 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
     public boolean performOk() {
     	if (initialized) {
     		linuxtoolsPath.store();
+    		linuxtoolsPrefix.store();
     		linuxtoolsPathCombo.store();
     		getPreferenceStore().setValue(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME, systemEnvButton.getSelection());
     	}
@@ -197,6 +211,7 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
     protected void performApply() {
     	if (initialized) {
     		linuxtoolsPath.store();
+    		linuxtoolsPrefix.store();
     		linuxtoolsPathCombo.store();
     		getPreferenceStore().setValue(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME, systemEnvButton.getSelection());
     	}

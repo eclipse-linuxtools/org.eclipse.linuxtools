@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
+import org.eclipse.linuxtools.tools.launch.core.properties.LinuxtoolsPathProperty;
 
 /*
  * Create process using Runtime.getRuntime().exec and prepends the
@@ -81,8 +82,15 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
      *
      * @since 1.1
      */
-    public String whichCommand(String command, IProject project) throws IOException {
+	public String whichCommand(String command, IProject project) throws IOException {
         String[] envp = updateEnvironment(null, project);
+
+		String ltPrefix = LinuxtoolsPathProperty.getInstance().getLinuxtoolsPrefix(project);
+
+		if (!ltPrefix.isEmpty()) {
+			command = ltPrefix + command;
+		}
+
         try {
             IRemoteFileProxy proxy = RemoteProxyManager.getInstance().getFileProxy(project);
             URI whichUri;
@@ -107,7 +115,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
                     }
                 }
                 if (!lines.isEmpty()) {
-                    if (project != null && project.getLocationURI() != null) {
+					if (project != null && project.getLocationURI() != null) {
                         if (project.getLocationURI().toString()
                                 .startsWith("rse:")) { //$NON-NLS-1$
                             // RSE output
