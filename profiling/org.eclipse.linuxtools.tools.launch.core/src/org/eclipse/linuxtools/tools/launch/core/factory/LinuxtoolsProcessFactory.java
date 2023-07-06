@@ -14,6 +14,7 @@
 
 package org.eclipse.linuxtools.tools.launch.core.factory;
 
+import java.io.File;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -23,7 +24,6 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.linuxtools.profiling.launch.RemoteEnvProxyManager;
@@ -44,9 +44,6 @@ public abstract class LinuxtoolsProcessFactory {
 
     private static final String PATH = "PATH"; //$NON-NLS-1$
     private static final String PATH_EQUAL = "PATH="; //$NON-NLS-1$
-	private static final String SEPARATOR_WIN32 = ";"; //$NON-NLS-1$
-	private static final String SEPARATOR_LINUX = ":"; //$NON-NLS-1$
-	private static final String SEPARATOR = ":"; //$NON-NLS-1$
 
     private String getEnvpPath(String[] envp) {
         if (envp == null) {
@@ -72,13 +69,7 @@ public abstract class LinuxtoolsProcessFactory {
      * @return The new environment.
      */
 	protected String[] updateEnvironment(String[] envp, IProject project) {
-		String separator;
-		if (Platform.OS_WIN32.equals(Platform.getOS())) {
-			separator = SEPARATOR_WIN32;
-		} else {
-			separator = SEPARATOR_LINUX;
-		}
-
+		String separator = File.pathSeparator;
         String ltPath = LinuxtoolsPathProperty.getInstance().getLinuxtoolsPath(project);
         String envpPath = getEnvpPath(envp);
 
