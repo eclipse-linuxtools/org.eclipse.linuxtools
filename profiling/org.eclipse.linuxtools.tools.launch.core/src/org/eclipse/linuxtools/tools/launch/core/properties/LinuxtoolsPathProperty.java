@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2018 IBM Corporation and others.
+ * Copyright (c) 2011, 2023 IBM Corporation and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -26,89 +26,86 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
  * This class provides the path to be used to run linux tools commands
  */
 public class LinuxtoolsPathProperty {
-    private static final String LINUXTOOLS_PATH_EXT_POINT = "LinuxtoolsPathOptions"; //$NON-NLS-1$
-    private static final String LINUXTOOLS_PATH_OPTION = "option"; //$NON-NLS-1$
-    private static final String LINUXTOOLS_PATH_OPTION_PATH = "path"; //$NON-NLS-1$
-    private static final String LINUXTOOLS_PATH_OPTION_DEFAULT = "default"; //$NON-NLS-1$
-    private String linuxtoolsPathDefault = ""; //$NON-NLS-1$
+	private static final String LINUXTOOLS_PATH_EXT_POINT = "LinuxtoolsPathOptions"; //$NON-NLS-1$
+	private static final String LINUXTOOLS_PATH_OPTION = "option"; //$NON-NLS-1$
+	private static final String LINUXTOOLS_PATH_OPTION_PATH = "path"; //$NON-NLS-1$
+	private static final String LINUXTOOLS_PATH_OPTION_DEFAULT = "default"; //$NON-NLS-1$
+	private String linuxtoolsPathDefault = ""; //$NON-NLS-1$
 	private String linuxtoolsPrefixDefault = ""; //$NON-NLS-1$
-    private boolean linuxtoolsPathSystemDefault = true;
-    private static LinuxtoolsPathProperty instance = null;
+	private boolean linuxtoolsPathSystemDefault = true;
+	private static LinuxtoolsPathProperty instance = null;
 
+	private void fillLinuxtoolsPath(String path) {
+		if (path != null && !path.isEmpty()) {
+			linuxtoolsPathSystemDefault = false;
+			linuxtoolsPathDefault = path;
+		}
+	}
 
-    private void fillLinuxtoolsPath(String path) {
-        if (path != null && !path.isEmpty()) {
-            linuxtoolsPathSystemDefault = false;
-            linuxtoolsPathDefault = path;
-        }
-    }
+	private LinuxtoolsPathProperty() {
+		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(LaunchCoreConstants.PLUGIN_ID,
+				LINUXTOOLS_PATH_EXT_POINT);
+		if (extPoint != null) {
+			IConfigurationElement[] configs = extPoint.getConfigurationElements();
+			for (IConfigurationElement config : configs)
+				if (config.getName().equals(LINUXTOOLS_PATH_OPTION)) {
+					String sdefault = config.getAttribute(LINUXTOOLS_PATH_OPTION_DEFAULT);
+					if (sdefault != null && sdefault.equals(Boolean.toString(true))) {
+						fillLinuxtoolsPath(config.getAttribute(LINUXTOOLS_PATH_OPTION_PATH));
+						break;
+					}
+				}
+		}
+	}
 
-    private LinuxtoolsPathProperty() {
-        IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(LaunchCoreConstants.PLUGIN_ID, LINUXTOOLS_PATH_EXT_POINT);
-        if (extPoint != null) {
-            IConfigurationElement[] configs = extPoint.getConfigurationElements();
-            for (IConfigurationElement config : configs)
-                if (config.getName().equals(LINUXTOOLS_PATH_OPTION)) {
-                    String sdefault = config.getAttribute(LINUXTOOLS_PATH_OPTION_DEFAULT);
-                    if (sdefault != null && sdefault.equals(Boolean.toString(true))) {
-                        fillLinuxtoolsPath(config.getAttribute(LINUXTOOLS_PATH_OPTION_PATH));
-                        break;
-                    }
-                }
-        }
-    }
+	public static LinuxtoolsPathProperty getInstance() {
+		if (instance == null) {
+			instance = new LinuxtoolsPathProperty();
+		}
+		return instance;
+	}
 
-    public static LinuxtoolsPathProperty getInstance() {
-        if (instance == null) {
-            instance = new LinuxtoolsPathProperty();
-        }
-        return instance;
-    }
+	/*
+	 * This function will return the selected Linuxtools Path in the 'Linux Tools
+	 * Path' project properties page. If there is a default path setted by the
+	 * extension point it should be selected as the default by the tools.launch.ui
+	 * classes. This function will not care about it.
+	 *
+	 * * If the tools.launch.ui is not installed this function should always return
+	 * "". * If the option 'Use the System env PATH' this function should return ""
+	 * * If the option 'Prepend string to path' is selected this function should
+	 * return the value of the selected path.
+	 */
+	public String getLinuxtoolsPath(IProject project) {
+		if (project == null) {
+			return ""; //$NON-NLS-1$
+		}
 
-    /*
-     * This function will return the selected Linuxtools Path in the
-     * 'Linux Tools Path' project properties page.
-     * If there is a default path setted by the extension point it should be
-     * selected as the default by the tools.launch.ui classes. This function
-     * will not care about it.
-     *
-     * * If the tools.launch.ui is not installed this function should always
-     * return "".
-     * * If the option 'Use the System env PATH' this function should return ""
-     * * If the option 'Prepend string to path' is selected this function
-     * should return the value of the selected path.
-     */
-    public String getLinuxtoolsPath(IProject project) {
-        if (project == null) {
-            return ""; //$NON-NLS-1$
-        }
+		ScopedPreferenceStore store = new ScopedPreferenceStore(new ProjectScope(project),
+				LaunchCoreConstants.PLUGIN_ID);
 
-        ScopedPreferenceStore store = new ScopedPreferenceStore(
-                new ProjectScope(project),
-                LaunchCoreConstants.PLUGIN_ID);
+		// If the value is not stored we use the default
+		boolean systemPathSelected;
+		if (store.contains(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME)) {
+			systemPathSelected = store.getBoolean(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME);
+		} else {
+			systemPathSelected = getLinuxtoolsPathSystemDefault();
+		}
 
-        //If the value is not stored we use the default
-        boolean systemPathSelected;
-        if (store.contains(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME)) {
-            systemPathSelected = store.getBoolean(LaunchCoreConstants.LINUXTOOLS_PATH_SYSTEM_NAME);
-        } else {
-            systemPathSelected = getLinuxtoolsPathSystemDefault();
-        }
+		if (systemPathSelected) {
+			return ""; //$NON-NLS-1$
+		}
 
-        if (systemPathSelected) {
-            return ""; //$NON-NLS-1$
-        }
+		String path = null;
+		if (store.contains(LaunchCoreConstants.LINUXTOOLS_PATH_NAME)) {
+			path = store.getString(LaunchCoreConstants.LINUXTOOLS_PATH_NAME);
+		}
 
-        String path = null;
-        if (store.contains(LaunchCoreConstants.LINUXTOOLS_PATH_NAME)) {
-            path = store.getString(LaunchCoreConstants.LINUXTOOLS_PATH_NAME);
-        }
-
-        if (path == null) {
-            return getLinuxtoolsPathDefault();
-        }
-        return path;
-    }
+		if (path == null) {
+			return getLinuxtoolsPathDefault();
+		}
+		return path;
+	}
 
 	public String getLinuxtoolsPrefix(IProject project) {
 		if (project == null) {
@@ -129,15 +126,15 @@ public class LinuxtoolsPathProperty {
 		return prefix;
 	}
 
-    public String getLinuxtoolsPathDefault() {
-        return linuxtoolsPathDefault;
-    }
+	public String getLinuxtoolsPathDefault() {
+		return linuxtoolsPathDefault;
+	}
 
 	public String getLinuxtoolsPrefixDefault() {
 		return linuxtoolsPrefixDefault;
 	}
 
-    public boolean getLinuxtoolsPathSystemDefault() {
-        return linuxtoolsPathSystemDefault;
-    }
+	public boolean getLinuxtoolsPathSystemDefault() {
+		return linuxtoolsPathSystemDefault;
+	}
 }

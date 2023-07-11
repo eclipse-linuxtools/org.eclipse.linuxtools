@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2018 IBM Corporation and others.
+ * Copyright (c) 2011, 2023 IBM Corporation and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -19,8 +19,8 @@ package org.eclipse.linuxtools.tools.launch.core;
  * @since 2.0
  */
 public interface LaunchCoreConstants {
-    String PLUGIN_ID = "org.eclipse.linuxtools.tools.launch.core"; //$NON-NLS-1$
-    String LINUXTOOLS_PATH_NAME = LaunchCoreConstants.PLUGIN_ID + ".LinuxtoolsPath"; //$NON-NLS-1$
+	String PLUGIN_ID = "org.eclipse.linuxtools.tools.launch.core"; //$NON-NLS-1$
+	String LINUXTOOLS_PATH_NAME = LaunchCoreConstants.PLUGIN_ID + ".LinuxtoolsPath"; //$NON-NLS-1$
 	String LINUXTOOLS_PREFIX_NAME = LaunchCoreConstants.PLUGIN_ID + ".LinuxtoolsPrefix"; //$NON-NLS-1$
-    String LINUXTOOLS_PATH_SYSTEM_NAME = LaunchCoreConstants.PLUGIN_ID + ".LinuxtoolsSystemEnvPath"; //$NON-NLS-1$
+	String LINUXTOOLS_PATH_SYSTEM_NAME = LaunchCoreConstants.PLUGIN_ID + ".LinuxtoolsSystemEnvPath"; //$NON-NLS-1$
 }
