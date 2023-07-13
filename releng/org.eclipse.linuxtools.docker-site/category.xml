@@ -130,7 +130,7 @@
    <iu id="jakarta.xml.bind" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="javax.annotation" version="0.0.0">
+   <iu id="jakarta.annotation-api" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="com.github.jnr.a64asm" version="0.0.0">
