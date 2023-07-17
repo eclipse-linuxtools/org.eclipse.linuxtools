@@ -42,6 +42,8 @@
 						</goals>
 						<configuration>
 							<finalName>${project.artifactId}</finalName>
+							<includeAllDependencies>true</includeAllDependencies>
+          					<includeAllSources>true</includeAllSources>
 						</configuration>
 					</execution>
 				</executions>
