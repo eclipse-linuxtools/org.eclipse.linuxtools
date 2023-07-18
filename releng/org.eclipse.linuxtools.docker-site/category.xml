@@ -120,7 +120,7 @@
    <iu id="com.fasterxml.jackson.jaxrs.jackson-jaxrs-json-provider" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="javax.ws.rs" version="0.0.0">
+   <iu id="jakarta.ws.rs-api" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="jakarta.xml.bind" version="0.0.0">
