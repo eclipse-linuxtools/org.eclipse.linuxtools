@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Red Hat.
+ * Copyright (c) 2015, 2023 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -22,11 +22,10 @@ import java.util.Objects;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings.BindingType;
 import org.eclipse.linuxtools.docker.core.IRegistryAccount;
-import org.mandas.docker.client.DefaultDockerClient;
-import org.mandas.docker.client.DefaultDockerClient.Builder;
 import org.mandas.docker.client.DockerCertificates;
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.auth.FixedRegistryAuthSupplier;
+import org.mandas.docker.client.builder.jersey.JerseyDockerClientBuilder;
 import org.mandas.docker.client.exceptions.DockerCertificateException;
 import org.mandas.docker.client.messages.RegistryAuth;
 import org.mandas.docker.client.messages.RegistryConfigs;
@@ -69,7 +68,7 @@ public class DockerClientFactory {
 			final IDockerConnectionSettings connectionSettings,
 			final IRegistryAccount registryAccount)
 			throws DockerCertificateException {
-		final Builder builder = DefaultDockerClient.builder();
+		final JerseyDockerClientBuilder builder = new JerseyDockerClientBuilder();
 		if (connectionSettings
 				.getType() == BindingType.UNIX_SOCKET_CONNECTION) {
 			final UnixSocketConnectionSettings unixSocketConnectionSettings = (UnixSocketConnectionSettings) connectionSettings;
