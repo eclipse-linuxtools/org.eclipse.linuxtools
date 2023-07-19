@@ -5,9 +5,7 @@
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="com.github.jnr.a64asm" version="1.0.0.v20221215-1656"/>
 <unit id="com.github.jnr.x86asm" version="1.0.2.v20221112-0806"/>
-<unit id="org.apache.commons.compress" version="1.22.0.v20221207-1049"/>
 <unit id="org.apache.xerces" version="2.12.2.v20220131-0835"/>
-<unit id="org.hamcrest" version="2.2.0.v20210711-0821"/>
 <unit id="org.aopalliance" version="1.0.0.v20220404-1927"/>
 <unit id="org.apache.httpcomponents.httpcore" version="4.4.16.v20221207-1049"/>
 <unit id="org.apache.httpcomponents.httpclient" version="4.5.14.v20230516-1249"/>
@@ -185,6 +183,12 @@
 				<type>jar</type>
 			</dependency>
 			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-compress</artifactId>
+				<version>1.23.0</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcpkix-jdk18on</artifactId>
 				<version>1.75</version>
@@ -272,6 +276,12 @@
 				<groupId>org.glassfish.jersey.media</groupId>
 				<artifactId>jersey-media-json-jackson</artifactId>
 				<version>2.40</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>org.hamcrest</groupId>
+				<artifactId>hamcrest</artifactId>
+				<version>2.2</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
