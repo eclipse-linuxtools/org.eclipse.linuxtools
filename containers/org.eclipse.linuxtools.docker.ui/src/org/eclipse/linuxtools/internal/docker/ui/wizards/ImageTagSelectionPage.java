@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2015, 2018 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.typed.BeanProperties;
@@ -62,7 +61,7 @@ public class ImageTagSelectionPage extends WizardPage {
 
 	/**
 	 * Default constructor.
-	 * 
+	 *
 	 * @param model
 	 *            the model associated to this page
 	 * @param registry
@@ -105,7 +104,7 @@ public class ImageTagSelectionPage extends WizardPage {
 							final List<RepositoryTag> tags = repositoryTags
 									.stream()
 									.map(c -> (RepositoryTag) c)
-									.collect(Collectors.toList());
+									.toList();
 							Collections.sort(tags);
 							monitor.worked(1);
 							final IDockerConnection connection = model
@@ -117,7 +116,7 @@ public class ImageTagSelectionPage extends WizardPage {
 											connection.hasImage(
 													selectedImageName,
 													t.getName())))
-									.collect(Collectors.toList());
+									.toList();
 							monitor.worked(1);
 							searchResultQueue.offer(searchResults);
 						} catch (DockerException e) {

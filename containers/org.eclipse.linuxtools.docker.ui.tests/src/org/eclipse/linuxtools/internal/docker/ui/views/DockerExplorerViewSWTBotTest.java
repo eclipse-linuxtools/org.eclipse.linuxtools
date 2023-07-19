@@ -17,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.assertj.core.api.Assertions;
@@ -641,14 +640,14 @@ public class DockerExplorerViewSWTBotTest {
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection1, dockerConnection2);
 		final List<String> initialConnections = Stream.of(dockerExplorerViewBot.bot().tree().getAllItems())
-				.map(SWTBotTreeItem::getText).collect(Collectors.toList());
+				.map(SWTBotTreeItem::getText).toList();
 		assertThat(initialConnections).contains("Test1", "Test2");
 		// when
 		SWTUtils.select(dockerExplorerViewBot.bot().tree(), "Test1", "Test2");
 		SWTUtils.getContextMenu(dockerExplorerViewBot.bot().tree(), "Remove").click();
 		// then
 		final List<String> remainingConnections = Stream.of(dockerExplorerViewBot.bot().tree().getAllItems())
-				.map(SWTBotTreeItem::getText).collect(Collectors.toList());
+				.map(SWTBotTreeItem::getText).toList();
 		assertThat(remainingConnections).doesNotContain("Test1", "Test2");
 	}
 

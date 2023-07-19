@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.assertj.core.data.MapEntry;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
@@ -139,7 +138,7 @@ public class DockerImageTest {
 		final IDockerImage fooImage = MockDockerImageFactory.id("sha256:foo_image")
 				.name("foo_image", "foo_image_alias:alias").build();
 		// when
-		final List<IDockerImage> result = DockerImage.duplicateImageByRepo(fooImage).collect(Collectors.toList());
+		final List<IDockerImage> result = DockerImage.duplicateImageByRepo(fooImage).toList();
 		// then
 		assertThat(result).hasSize(2);
 		assertThat(result.get(0).id()).isEqualTo("sha256:foo_image");

@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (c) 2021 Red Hat Inc. and others
+ * Copyright (c) 2021, 2023 Red Hat Inc. and others
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -857,7 +857,7 @@ public class CopyFromDockerJob extends Job {
 				}
 				// Delete old files
 				if (m_targetfolder.toFile().exists()) {
-					var paths = Files.walk(m_targetfolder.toFile().toPath()).collect(Collectors.toList());
+					var paths = Files.walk(m_targetfolder.toFile().toPath()).toList();
 					Collections.reverse(paths);
 					paths.stream().forEach(p -> p.toFile().delete());
 				}
@@ -948,12 +948,12 @@ public class CopyFromDockerJob extends Job {
 			// Check if another job copies something including sourcePath - this may also be
 			// sourcePath
 			jAbove = m_copyingMap.entrySet().stream().filter(other -> other.getKey().isPrefixOf(sourcePath))
-					.map(Map.Entry::getValue).collect(Collectors.toList());
+					.map(Map.Entry::getValue).toList();
 
 			// Check if some other job copies something sourcePath includes - this may also
 			// be sourcePath
 			jBelow = m_copyingMap.entrySet().stream().filter(other -> sourcePath.isPrefixOf(other.getKey()))
-					.map(Map.Entry::getValue).collect(Collectors.toList());
+					.map(Map.Entry::getValue).toList();
 
 
 			if (jAbove.isEmpty() && !wascopied) {
