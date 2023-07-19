@@ -5,25 +5,24 @@ Bundle-SymbolicName: org.eclipse.linuxtools.docker.core;singleton:=true
 Bundle-Version: 5.12.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.docker.core.Activator
 Bundle-Vendor: Eclipse Linux Tools
-Require-Bundle: org.eclipse.core.runtime;bundle-version="3.12.0",
- org.eclipse.core.resources;bundle-version="3.9.0",
- com.google.guava;bundle-version="27.1.0",
- org.eclipse.equinox.registry;bundle-version="0.0.0",
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.28.0",
+ org.eclipse.core.resources;bundle-version="3.19.100",
+ com.google.guava;bundle-version="32.1.1",
+ org.eclipse.equinox.registry;bundle-version="3.11.300",
  org.eclipse.equinox.security,
  org.eclipse.osgi,
- org.mandas.docker-client;bundle-version="3.2.1",
- com.github.jnr.unixsocket;bundle-version="0.28.0",
- com.github.jnr.enxio;bundle-version="0.25.0",
- org.glassfish.jersey.core.jersey-client;bundle-version="2.30.1",
- org.glassfish.jersey.media.jersey-media-json-jackson;bundle-version="2.30.1",
- org.glassfish.jersey.core.jersey-common;bundle-version="2.30.1",
+ org.mandas.docker-client;bundle-version="4.0.3",
+ com.github.jnr.unixsocket;bundle-version="0.38.20",
+ com.github.jnr.enxio;bundle-version="0.32.15",
+ org.glassfish.jersey.core.jersey-client;bundle-version="2.40",
+ org.glassfish.jersey.media.jersey-media-json-jackson;bundle-version="2.40",
+ org.glassfish.jersey.core.jersey-common;bundle-version="2.40",
  org.glassfish.jersey.containers.jersey-container-servlet;bundle-version="2.40",
- org.glassfish.jersey.inject.jersey-hk2;bundle-version="2.3.0.1",
+ org.glassfish.jersey.inject.jersey-hk2;bundle-version="2.40",
  org.eclipse.tm.terminal.view.core;bundle-version="4.0.0",
- org.eclipse.debug.core;bundle-version="3.10.100",
- org.apache.httpcomponents.httpcore;bundle-version="4.4.12",
- org.apache.httpcomponents.httpclient;bundle-version="4.5.10",
- org.glassfish.jersey.media.jersey-media-json-jackson
+ org.eclipse.debug.core;bundle-version="3.21.100",
+ org.apache.httpcomponents.httpcore;bundle-version="4.4.16",
+ org.apache.httpcomponents.httpclient;bundle-version="4.5.14"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.docker.core,
