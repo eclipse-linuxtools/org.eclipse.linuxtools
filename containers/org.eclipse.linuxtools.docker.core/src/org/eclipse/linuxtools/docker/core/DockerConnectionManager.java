@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2018 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.docker.core;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings.BindingType;
@@ -200,7 +199,7 @@ public class DockerConnectionManager {
 
 	/**
 	 * Finds the {@link IDockerConnection} from the given {@code connectionName}
-	 * 
+	 *
 	 * @param connectionName
 	 *            the name of the connection to find
 	 * @return the {@link IDockerConnection} or <code>null</code> if none
@@ -223,7 +222,7 @@ public class DockerConnectionManager {
 
 	/**
 	 * Finds the {@link IDockerConnection} from the given {@code connectionUri}
-	 * 
+	 *
 	 * @param connectionUri
 	 *            the URI of the connection to find
 	 * @return the {@link IDockerConnection} or <code>null</code> if none
@@ -258,11 +257,11 @@ public class DockerConnectionManager {
 			reloadThread = null;
 		}
 		return Collections.unmodifiableList(getAllConnections().stream()
-				.map(c -> c.getName())
+				.map(IDockerConnection::getName)
 				// making sure that no 'null' name is returned in the list of
 				// connection names.
 				.filter(n -> n != null)
-				.collect(Collectors.toList()));
+				.toList());
 	}
 
 	public IDockerConnection findConnection(final String name) {
@@ -287,7 +286,7 @@ public class DockerConnectionManager {
 	/**
 	 * Adds the given connection and notifies all registered
 	 * {@link IDockerConnectionManagerListener}
-	 * 
+	 *
 	 * @param dockerConnection
 	 *            the connection to add
 	 */
@@ -307,7 +306,7 @@ public class DockerConnectionManager {
 	/**
 	 * Adds the given connection and notifies optionally all registered
 	 * {@link IDockerConnectionManagerListener}
-	 * 
+	 *
 	 * @param dockerConnection
 	 *            the connection to add
 	 * @param notifyListeners
@@ -376,7 +375,7 @@ public class DockerConnectionManager {
 
 	/**
 	 * Notifies all listeners that a change occurred on the given connection
-	 * 
+	 *
 	 * @param connection
 	 *            the connection that changed
 	 * @param type
@@ -394,12 +393,12 @@ public class DockerConnectionManager {
 	/**
 	 * Notifies all listeners that a change occurred on the given connection but
 	 * does nothing if DockerConnectionManager isn't instantiated
-	 * 
+	 *
 	 * @param connection
 	 *                       the connection that changed
 	 * @param type
 	 *                       the type of change
-	 * 
+	 *
 	 * @since 4.0
 	 */
 	public static void instanceNotifyListeners(
@@ -412,7 +411,7 @@ public class DockerConnectionManager {
 
 	/**
 	 * Finds the default {@link IDockerConnectionSettings}
-	 * 
+	 *
 	 * @return the default {@link IDockerConnectionSettings} or
 	 *         <code>null</code> if nothing was found
 	 */
@@ -424,7 +423,7 @@ public class DockerConnectionManager {
 	/**
 	 * Resolves the name of the Docker instance, given the
 	 * {@link IDockerConnectionSettings}
-	 * 
+	 *
 	 * @param connectionSettings
 	 *            the settings to use to connect
 	 * @return the name retrieved from the Docker instance or <code>null</code>
@@ -439,7 +438,7 @@ public class DockerConnectionManager {
 	/**
 	 * Updates the given {@link IDockerConnection} with the given {@code name}
 	 * and {@code connectionSettings}
-	 * 
+	 *
 	 * @param connection
 	 *            the {@link IDockerConnection} to update
 	 * @param name

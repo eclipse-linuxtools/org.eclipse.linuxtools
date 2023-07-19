@@ -16,7 +16,6 @@ package org.eclipse.linuxtools.internal.docker.ui.views;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
@@ -48,7 +47,6 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.messages.Container;
 import org.mandas.docker.client.messages.Image;
@@ -88,7 +86,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		this.dockerExplorerViewBot = bot.viewById(DockerExplorerView.VIEW_ID);
 		// make sure that the Docker Image Hierarchy view is closed
 		this.bot.views().stream().filter(v -> v.getReference().getId().equals(DockerImageHierarchyView.VIEW_ID))
-				.forEach(v -> v.close());
+				.forEach(SWTBotView::close);
 	}
 
 	@Before
@@ -145,7 +143,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 				return ((IDockerImage) e.getElement()).id();
 			}
 			return ((IDockerContainer) e.getElement()).id();
-		}).collect(Collectors.toList());
+		}).toList();
 	}
 
 	private DockerImageHierarchyView getDockerImageHierarchyView() {

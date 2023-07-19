@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2018 Red Hat, Inc. 
+ * Copyright (c) 2018, 2023 Red Hat, Inc. 
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,7 +18,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.linuxtools.docker.reddeer.ui.DockerExplorerView;
 import org.eclipse.linuxtools.docker.reddeer.ui.resources.DockerConnection;
@@ -87,7 +86,7 @@ public class CleanDockerExplorerRequirement implements Requirement<CleanDockerEx
 		try {
 			return new DefaultTree().getItems().stream()
 					.map(x -> new DockerConnection(x))
-					.collect(Collectors.toList()); 
+					.toList(); 
 		} catch (CoreLayerException coreExc) {
 			// there is no item in docker explorer
 		}

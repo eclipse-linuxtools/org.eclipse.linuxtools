@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2014, 2023 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -15,7 +15,6 @@ package org.eclipse.linuxtools.internal.docker.ui.commands;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.core.commands.Command;
@@ -59,7 +58,7 @@ public class CommandUtils {
 
 	/**
 	 * Refreshes (async) the {@link Viewer}.
-	 * 
+	 *
 	 * @param viewer
 	 *            - the {@link Viewer} to refresh
 	 */
@@ -213,7 +212,7 @@ public class CommandUtils {
 	/**
 	 * Returns the given {@link List} <strong>typed</strong> with the given
 	 * {@code targetClass}.
-	 * 
+	 *
 	 * @param selection
 	 *            the current selection
 	 * @return Returns the given {@link List} typed with the
@@ -222,17 +221,17 @@ public class CommandUtils {
 	@SuppressWarnings("unchecked")
 	private static <T> List<T> castSelectionTo(
 			final IStructuredSelection selection, final Class<T> targetClass) {
-		return (List<T>) selection.toList().stream()
+		return selection.toList().stream()
 				.filter(selectedElement -> targetClass
 						.isAssignableFrom(selectedElement.getClass()))
 				.map(selectedElement -> (T) selectedElement)
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	/**
 	 * Returns the given {@link List} <strong>adapted</strong> to the given
 	 * {@code targetClass}.
-	 * 
+	 *
 	 * @param selection
 	 *            the current selection
 	 * @param targetClass
@@ -253,7 +252,7 @@ public class CommandUtils {
 	/**
 	 * Finds and returns a cleared {@link RunConsole} if the preference
 	 * {@link PreferenceConstants#AUTOLOG_ON_START} is set to {@code true}.
-	 * 
+	 *
 	 * @param connection
 	 *            the current Docker connection
 	 * @param container
@@ -289,7 +288,7 @@ public class CommandUtils {
 	/**
 	 * Opens the given {@link IWizard} and returns <code>true</code> if the user
 	 * finished the operation, <code>false</code> if he cancelled it.
-	 * 
+	 *
 	 * @param wizard
 	 *            the wizard to open
 	 * @param shell
@@ -306,7 +305,7 @@ public class CommandUtils {
 	/**
 	 * Opens the given {@link IWizard} and returns <code>true</code> if the user
 	 * finished the operation, <code>false</code> if he cancelled it.
-	 * 
+	 *
 	 * @param wizard
 	 *            the wizard to open
 	 * @param shell
@@ -329,7 +328,7 @@ public class CommandUtils {
 	/**
 	 * Executes the command identified by the given {@code id} on a context
 	 * based on the given selection
-	 * 
+	 *
 	 * @param id
 	 *            the id of the command to execute
 	 * @param selection

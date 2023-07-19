@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Mathema.
+ * Copyright (c) 2022, 2023 Mathema and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.assertj.core.api.Assertions;
@@ -88,7 +87,7 @@ public class CopyFromDockerJobTest {
 
 	@After
 	public void cleanTemp() throws IOException {
-		var paths = Files.walk(localTempWork).collect(Collectors.toList());
+		var paths = Files.walk(localTempWork).toList();
 		// Must delete recursively
 		Collections.reverse(paths);
 		paths.stream().forEach(p -> p.toFile().delete());
@@ -101,7 +100,7 @@ public class CopyFromDockerJobTest {
 	}
 
 	private List<String> getTempLs() throws IOException {
-		var paths = Files.walk(localTempWork).sorted().collect(Collectors.toList());
+		var paths = Files.walk(localTempWork).sorted().toList();
 
 		var sep = File.separatorChar;
 
@@ -120,7 +119,7 @@ public class CopyFromDockerJobTest {
 				return "U " + sep + stripTemp(f);
 			}
 
-		}).map(f -> f.replace(sep, '/')).collect(Collectors.toList());
+		}).map(f -> f.replace(sep, '/')).toList();
 
 	}
 
@@ -283,7 +282,7 @@ public class CopyFromDockerJobTest {
 		exp.add("D /");
 		exp.add("D /manyfiles");
 		var files = IntStream.range(1, 10001).mapToObj(n -> "/manyfiles/F" + n).sorted().map(f -> "R " + f)
-				.collect(Collectors.toList());
+				.toList();
 		exp.addAll(files);
 		Assertions.assertThat(getTempLs()).isEqualTo(exp);
 	}
@@ -296,7 +295,7 @@ public class CopyFromDockerJobTest {
 		exp.addAll(List.of("D /", "R /.copyState", "R /.image_id", "D /test", "D /test/manyfiles"));
 
 		var files = IntStream.range(1, 10001).mapToObj(n -> "/test/manyfiles/F" + n).sorted().map(f -> "R " + f)
-				.collect(Collectors.toList());
+				.toList();
 		exp.addAll(files);
 
 		Assertions.assertThat(getTempLs()).isEqualTo(exp);

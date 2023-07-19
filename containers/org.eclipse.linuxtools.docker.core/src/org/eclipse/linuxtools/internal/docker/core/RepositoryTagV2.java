@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2018 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Binding for Repository Tag results from a Registry V2.
- * 
+ *
  * Currently the returned repo tag results lack the same degree of information
  * returned from the V1 registries.
  */

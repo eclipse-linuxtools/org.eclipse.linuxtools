@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2016, 2023 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -264,7 +264,7 @@ public class SWTUtils {
 	private static SWTBotTreeItem getTreeItem(final SWTBotTreeItem[] treeItems, final String[] paths) {
 		final SWTBotTreeItem swtBotTreeItem = Stream.of(treeItems).filter(item -> item.getText().startsWith(paths[0]))
 				.findFirst().orElseThrow(() -> new RuntimeException("Only available items: "
-						+ Stream.of(treeItems).map(item -> item.getText()).collect(Collectors.joining(", "))));
+						+ Stream.of(treeItems).map(SWTBotTreeItem::getText).collect(Collectors.joining(", "))));
 		if (paths.length > 1) {
 			syncExec(() -> swtBotTreeItem.expand());
 			final String[] remainingPath = new String[paths.length - 1];
@@ -276,10 +276,8 @@ public class SWTUtils {
 
 	public static SWTBotTableItem getListItem(final SWTBotTable table, final String name) {
 		return Stream.iterate(0, i -> i + 1).limit(table.rowCount()).map(rowNumber -> table.getTableItem(rowNumber))
-				.filter(rowItem -> {
-					return Stream.iterate(0, j -> j + 1).limit(table.columnCount())
-							.map(colNum -> rowItem.getText(colNum)).anyMatch(colValue -> colValue.contains(name));
-				}).findFirst().orElse(null);
+				.filter(rowItem -> Stream.iterate(0, j -> j + 1).limit(table.columnCount())
+						.map(colNum -> rowItem.getText(colNum)).anyMatch(colValue -> colValue.contains(name))).findFirst().orElse(null);
 	}
 
 	/**
@@ -312,7 +310,7 @@ public class SWTUtils {
 	public static SWTBotTreeItem select(final SWTBotTreeItem parentTreeItem, final String... matchItems) {
 		final List<String> fullyQualifiedItems = Stream.of(parentTreeItem.getItems()).filter(
 				treeItem -> Stream.of(matchItems).anyMatch(matchItem -> treeItem.getText().startsWith(matchItem)))
-				.map(item -> item.getText()).collect(Collectors.toList());
+				.map(SWTBotTreeItem::getText).toList();
 		return parentTreeItem.select(fullyQualifiedItems.toArray(new String[0]));
 	}
 
@@ -330,7 +328,7 @@ public class SWTUtils {
 	public static SWTBotTree select(final SWTBotTree parentTree, final String... matchItems) {
 		final List<String> fullyQualifiedItems = Stream.of(parentTree.getAllItems()).filter(
 				treeItem -> Stream.of(matchItems).anyMatch(matchItem -> treeItem.getText().startsWith(matchItem)))
-				.map(item -> item.getText()).collect(Collectors.toList());
+				.map(SWTBotTreeItem::getText).toList();
 		return parentTree.select(fullyQualifiedItems.toArray(new String[0]));
 	}
 
@@ -500,7 +498,7 @@ public class SWTUtils {
 	}
 
 	public static void closeView(final SWTWorkbenchBot bot, final String viewId) {
-		bot.views().stream().filter(v -> v.getReference().getId().equals(viewId)).forEach(v -> v.close());
+		bot.views().stream().filter(v -> v.getReference().getId().equals(viewId)).forEach(SWTBotView::close);
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat.
+ * Copyright (c) 2016, 2023 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -151,13 +151,13 @@ public abstract class AbstractRegistry implements IRegistry {
 			}
 			List<ImageSearchResult> tmp = cisr.getRepositories().stream()
 					.filter(e -> e.name().contains(term))
-					.collect(Collectors.toList());
+					.toList();
 
 			result.addAll(tmp.stream()
 					.map(r -> new DockerImageSearchResult(r.description(),
 							r.official(), r.automated(), r.name(),
 							r.starCount()))
-					.collect(Collectors.toList()));
+					.toList());
 		} else {
 			ImageSearchResultV1 pisr = null;
 			final GenericType<ImageSearchResultV1> IMAGE_SEARCH_RESULT_LIST = new GenericType<>() {
@@ -178,7 +178,7 @@ public abstract class AbstractRegistry implements IRegistry {
 							.map(r -> new DockerImageSearchResult(
 									r.description(), r.official(),
 									r.automated(), r.name(), r.starCount()))
-							.collect(Collectors.toList()));
+							.toList());
 				}
 			} catch (InterruptedException | ExecutionException e) {
 				throw new DockerException(e);

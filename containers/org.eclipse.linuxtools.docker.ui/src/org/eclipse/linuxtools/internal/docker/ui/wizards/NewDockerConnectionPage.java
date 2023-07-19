@@ -82,7 +82,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.dialogs.PreferencesUtil;
-
 import org.mandas.docker.client.exceptions.DockerCertificateException;
 
 /**
@@ -161,7 +160,7 @@ public class NewDockerConnectionPage extends WizardPage {
 	/**
 	 * Creates the connection settings container, where the user can choose how
 	 * to connect to the docker daemon (using sockets or TCP with SSL - or not)
-	 * 
+	 *
 	 * @param parent
 	 *            the parent container (ie, the main container in the preference
 	 *            page)
@@ -595,7 +594,7 @@ public class NewDockerConnectionPage extends WizardPage {
 	/**
 	 * Verifies that the given connection settings work by trying to connect to
 	 * the target Docker daemon
-	 * 
+	 *
 	 * @return
 	 */
 	private SelectionListener onTestConnectionButtonSelection() {
@@ -693,11 +692,11 @@ public class NewDockerConnectionPage extends WizardPage {
 						dockerMachineInstallDir, vmDriverInstallDir);
 				final List<String> activeMachineNames = allMachineStates
 						.entrySet().stream()
-						.filter((machineEntry) -> machineEntry.getValue()
+						.filter(machineEntry -> machineEntry.getValue()
 								.booleanValue())
-						.map((machineEntry) -> machineEntry.getKey())
-						.collect(Collectors.toList());
-				if (activeMachineNames.size() > 0) {
+						.map(machineEntry -> machineEntry.getKey())
+						.toList();
+				if (!activeMachineNames.isEmpty()) {
 					ListDialog connPrompt = new ListDialog(getShell());
 					connPrompt.setContentProvider(
 							new ConnectionSelectionContentProvider());
@@ -774,7 +773,7 @@ public class NewDockerConnectionPage extends WizardPage {
 			 * Verifies that the install dirs for Docker Machine and its driver
 			 * are valid, otherwise offers to open the preference page to fix
 			 * the settings.
-			 * 
+			 *
 			 * @return <code>true</code> if the settings are valid,
 			 *         <code>false</code> otherwise.
 			 */
@@ -821,7 +820,7 @@ public class NewDockerConnectionPage extends WizardPage {
 			/**
 			 * Retrieves the docker machine names along with a boolean flag to
 			 * indicate if it is running or not.
-			 * 
+			 *
 			 * @param dockerMachineInstallDir
 			 * @param vmDriverInstallDir
 			 * @return
@@ -855,7 +854,7 @@ public class NewDockerConnectionPage extends WizardPage {
 	/**
 	 * Opens a new {@link DockerConnection} using the settings of this
 	 * {@link NewDockerConnectionPage}.
-	 * 
+	 *
 	 * @return
 	 * @throws DockerCertificateException
 	 */
