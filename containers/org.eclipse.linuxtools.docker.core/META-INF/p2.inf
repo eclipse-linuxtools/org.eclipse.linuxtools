@@ -1,0 +1,4 @@
+# ensure that the applicable implementation fragment gets installed
+requires.1.namespace = org.eclipse.equinox.p2.iu
+requires.1.name = com.github.jnr.jffi.native
+requires.1.range = 0.0.0
