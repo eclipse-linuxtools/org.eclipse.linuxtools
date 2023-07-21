@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2021 Red Hat.
+ * Copyright (c) 2015, 2023 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -44,7 +44,6 @@ public class HttpHijackWorkaround {
 		final String[] fields = new String[] {
 				"reader", //$NON-NLS-1$
 				"stream", //$NON-NLS-1$
-				"original", //$NON-NLS-1$
 				"input", //$NON-NLS-1$
 				"in", //$NON-NLS-1$
 				"in", //$NON-NLS-1$
@@ -55,7 +54,6 @@ public class HttpHijackWorkaround {
 		final String[] declared = new String[] {
 				"org.mandas.docker.client.DefaultLogStream",
 				LogReader.class.getName(),
-				"org.glassfish.jersey.message.internal.ReaderInterceptorExecutor$UnCloseableInputStream", //$NON-NLS-1$
 				"org.glassfish.jersey.message.internal.EntityInputStream", //$NON-NLS-1$
 				FilterInputStream.class.getName(),
 				FilterInputStream.class.getName(),
