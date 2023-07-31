@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2023 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -1052,6 +1052,43 @@ public class ContainerLauncher {
 			Map<String, String> origEnv, Properties envMap,
 			boolean supportStdin, boolean privilegedMode,
 			HashMap<String, String> labels, boolean keepContainer) {
+		return runCommand(workingDir, workingDir, project, errMsgHolder, additionalDirs, workingDir, additionalDirs,
+				origEnv, envMap, keepContainer, keepContainer, labels, keepContainer, null);
+	}
+
+	/**
+	 * Create a Process to run an arbitrary command in a Container with uid of
+	 * caller so any files created are accessible to user.
+	 *
+	 * additionalDirs must be either * local path that will be mapped to the same
+	 * path within the container *
+	 * <ContainerPath>:CONTAINER:<Sourcepath>:<Bool:selected> *
+	 * <ContainerPath>:HOST_PATH:<Sourcepath>:<Bool:ro>:<Bool:selected> *
+	 * <ContainerPath>:None:<Bool:selected> See DataVolumeModel for details.
+	 *
+	 * @param connectionName - uri of connection to use
+	 * @param imageName      - name of image to use
+	 * @param project        - Eclipse project
+	 * @param errMsgHolder   - holder for any error messages
+	 * @param cmdList        - command to run as list of String
+	 * @param workingDir     - where to run command
+	 * @param additionalDirs - See description
+	 * @param origEnv        - original environment if we are appending to existing
+	 * @param envMap         - new environment
+	 * @param supportStdin   - support using stdin
+	 * @param privilegedMode - run in privileged mode
+	 * @param labels         - labels to apply to Container
+	 * @param keepContainer  - boolean whether to keep Container when done
+	 * @param seccomp        - list of strings containing seccomp settings or null
+	 * @return Process that can be used to check for completion and for routing
+	 *         stdout/stderr
+	 *
+	 * @since 5.12
+	 */
+	public Process runCommand(String connectionName, String imageName, IProject project,
+			IErrorMessageHolder errMsgHolder, List<String> cmdList, String workingDir, List<String> additionalDirs,
+			Map<String, String> origEnv, Properties envMap, boolean supportStdin, boolean privilegedMode,
+			HashMap<String, String> labels, boolean keepContainer, List<String> seccomp) {
 		Integer uid = null;
 		Integer gid = null;
 		// For Unix, make sure that the user id is passed with the run
@@ -1153,6 +1190,10 @@ public class ContainerLauncher {
 
 		DockerHostConfig.Builder hostBuilder = new DockerHostConfig.Builder()
 				.privileged(privilegedMode);
+
+		if (seccomp != null) {
+			hostBuilder = hostBuilder.securityOpt(seccomp);
+		}
 
 		// Note we only pass volumes to the config if we have a
 		// remote daemon. Local mounted volumes are passed
