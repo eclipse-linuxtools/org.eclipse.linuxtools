@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (c) 2021 Eclipse Linux Tools project committers and others
+ * Copyright (c) 2021, 2023 Eclipse Linux Tools project committers and others
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -10,6 +10,8 @@
  ********************************************************************************/
 
 package org.eclipse.linuxtools.internal.docker.core;
+
+import java.util.List;
 
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
@@ -50,6 +52,8 @@ public class CloseableContainer implements AutoCloseable {
 		DockerHostConfig.Builder hostBuilder = new DockerHostConfig.Builder();
 		// Remove the container after usage.
 		hostBuilder.autoRemove(true);
+		// seccomp=unconfined
+		hostBuilder.securityOpt(List.of("seccomp=unconfined")); //$NON-NLS-1$
 		IDockerHostConfig hostConfig = hostBuilder.build();
 		containerId = connection.createContainer(config, hostConfig, null);
 
