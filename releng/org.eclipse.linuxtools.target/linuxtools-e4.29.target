@@ -35,7 +35,6 @@
 <unit id="org.apache.commons.commons-io" version="0.0.0"/>
 <unit id="org.hamcrest.core" version="0.0.0"/>
 <unit id="slf4j.api" version="0.0.0"/>
-<unit id="bcprov" version="0.0.0"/>
 <unit id="jakarta.annotation-api" version="0.0.0"/>
 <repository location="https://download.eclipse.org/eclipse/updates/4.29-I-builds/"/>
 </location>
@@ -167,7 +166,7 @@
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>32.1.1-jre</version>
+				<version>32.1.2-jre</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
@@ -190,14 +189,20 @@
 			</dependency>
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcprov-jdk18on</artifactId>
+				<version>1.76</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcpkix-jdk18on</artifactId>
-				<version>1.75</version>
+				<version>1.76</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcutil-jdk18on</artifactId>
-				<version>1.75</version>
+				<version>1.76</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
