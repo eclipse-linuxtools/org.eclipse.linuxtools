@@ -15,16 +15,15 @@ package org.eclipse.linuxtools.internal.cdt.libhover.devhelp;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.xerces.parsers.AbstractSAXParser;
-import org.apache.xerces.xni.Augmentations;
-import org.apache.xerces.xni.QName;
-import org.apache.xerces.xni.XMLAttributes;
-import org.apache.xerces.xni.XMLString;
-import org.cyberneko.html.HTMLConfiguration;
+import org.codelibs.nekohtml.parsers.SAXParser;
+import org.codelibs.xerces.xerces.xni.Augmentations;
+import org.codelibs.xerces.xerces.xni.QName;
+import org.codelibs.xerces.xerces.xni.XMLAttributes;
+import org.codelibs.xerces.xerces.xni.XMLString;
 import org.eclipse.linuxtools.cdt.libhover.FunctionInfo;
 import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences.FuncFoundSaxException;
 
-class HTMLSAXParser extends AbstractSAXParser implements DevHelpSAXParser {
+class HTMLSAXParser extends SAXParser implements DevHelpSAXParser {
 
         private boolean begin;
         private boolean returnType;
@@ -45,7 +44,7 @@ class HTMLSAXParser extends AbstractSAXParser implements DevHelpSAXParser {
         private TreeMap<String, FunctionInfo> infos = new TreeMap<>();
 
         public HTMLSAXParser(Map<String, String> funcs) {
-            super(new HTMLConfiguration());
+            super();
             this.funcs = funcs;
         }
 

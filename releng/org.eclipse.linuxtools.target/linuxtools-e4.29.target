@@ -5,15 +5,12 @@
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="com.github.jnr.a64asm" version="1.0.0.v20230715-0746"/>
 <unit id="com.github.jnr.x86asm" version="1.0.2.v20230715-0746"/>
-<unit id="org.apache.xerces" version="2.12.2.v20220131-0835"/>
 <unit id="org.aopalliance" version="1.0.0.v20230720-0728"/>
 <unit id="org.apache.httpcomponents.httpcore" version="4.4.16.v20221207-1049"/>
 <unit id="org.apache.httpcomponents.httpclient" version="4.5.14.v20230516-1249"/>
+<unit id="org.nekohtml" version="2.1.2.v20230721-0706"/>
+<unit id="org.nekohtml.source" version="2.1.2.v20230721-0706"/>
 <repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2023-09"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.cyberneko.html" version="1.9.14.v201105210654"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20201118194144/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
@@ -186,13 +183,13 @@
 			</dependency>
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
-				<artifactId>bcprov-jdk18on</artifactId>
+				<artifactId>bcpkix-jdk18on</artifactId>
 				<version>1.76</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
-				<artifactId>bcpkix-jdk18on</artifactId>
+				<artifactId>bcprov-jdk18on</artifactId>
 				<version>1.76</version>
 				<type>jar</type>
 			</dependency>
