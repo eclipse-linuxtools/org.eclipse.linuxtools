@@ -34,7 +34,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.xerces.parsers.AbstractSAXParser;
+import org.codelibs.nekohtml.parsers.SAXParser;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.linuxtools.cdt.libhover.FunctionInfo;
@@ -102,7 +102,7 @@ public class ParseDevHelp {
 
         private void parseLinks(HashMap<String, String> funcMap, String fileName, Path path, LibHoverInfo libhover) {
             InputStream reader = null;
-            AbstractSAXParser parser = null;
+            SAXParser parser = null;
             try {
                 reader = Files.newInputStream(path.getParent().resolve(fileName));
                 if (funcMap.size() == 1 && funcMap.containsKey("name")) { //$NON-NLS-1$
