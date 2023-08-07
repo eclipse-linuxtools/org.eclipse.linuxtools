@@ -148,7 +148,7 @@
    <iu id="org.aopalliance" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="org.apache.commons.compress" version="0.0.0">
+   <iu id="org.apache.commons.commons-compress" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
    <category-def name="Linux Tools" label="Linux Tools">
