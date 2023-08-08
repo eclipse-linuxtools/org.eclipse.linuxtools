@@ -18,7 +18,7 @@
 <unit id="org.eclipse.jdt.core" version="0.0.0"/>
 <unit id="org.eclipse.jdt.debug.ui" version="0.0.0"/>
 <unit id="org.eclipse.jdt.ui" version="0.0.0"/>
-<unit id="org.eclipse.jdt.junit4.runtime" version="0.0.0"/>
+<unit id="org.eclipse.jdt.junit5.runtime" version="0.0.0"/>
 <unit id="org.eclipse.pde.runtime" version="0.0.0"/>
 <unit id="org.eclipse.platform.ide" version="0.0.0"/>
 <unit id="org.eclipse.equinox.core.feature.feature.group" version="0.0.0"/>
