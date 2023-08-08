@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.docker.editor.ls.tests;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.ByteArrayInputStream;
 
 import org.eclipse.core.resources.IFile;
@@ -29,23 +27,17 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.eclipse.ui.tests.harness.util.DisplayHelper;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
-@RunWith(Parameterized.class)
-public class TestLanguageServers {
+class TestLanguageServers {
 
 	private IProject project;
 	
-	@Parameter
-    public String fileName;
-
-	@Before
+	@BeforeEach
 	public void setUpProject() throws Exception {
 		ScopedPreferenceStore prefs = new ScopedPreferenceStore(InstanceScope.INSTANCE, "org.eclipse.lsp4e");
 		prefs.putValue("org.eclipse.linuxtools.docker.editor.ls.server.logging.enabled", Boolean.toString(true));
@@ -58,31 +50,27 @@ public class TestLanguageServers {
 		}
 	}
 
-	@After
+	@AfterEach
 	public void deleteProjectAndCloseEditors() throws Exception {
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeAllEditors(false);
 		this.project.delete(true, null);
 	}
 	
-	@Parameters
-	public static Object[] data() {
-	    return new Object[] { "test.dockerfile", "Dockerfile" };
-	}
-
-	@Test
-	public void testDiagnostics() throws Exception {
+	@ParameterizedTest
+	@ValueSource(strings={ "test.dockerfile", "Dockerfile" })
+	void testDiagnostics(String fileName) throws Exception {
 		final IFile file = project.getFile(fileName);
 		file.create(new ByteArrayInputStream("".getBytes()), true, null);
 		ITextEditor editor = (ITextEditor) IDE
 				.openEditor(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(), file, "org.eclipse.ui.genericeditor.GenericEditor");
 		editor.getDocumentProvider().getDocument(editor.getEditorInput()).set("MAINTAINER alex");
-		assertTrue("Diagnostic not published",
+		Assertions.assertTrue(
 				DisplayHelper.waitForCondition(PlatformUI.getWorkbench().getDisplay(), 5000, () -> {
 					try {
 						return file.findMarkers("org.eclipse.lsp4e.diagnostic", true, IResource.DEPTH_ZERO).length != 0;
 					} catch (CoreException e) {
 						return false;
 					}
-				}));
+				}), "Diagnostic not published");
 	}
 }
