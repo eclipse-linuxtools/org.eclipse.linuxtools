@@ -51,7 +51,7 @@
     <mirror-repo-name>updates-nightly</mirror-repo-name>
     <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
     <mirror-mylyn-repo-name>updates-mylyn-nightly</mirror-mylyn-repo-name>
-    <tycho-version>4.0.1</tycho-version>
+    <tycho-version>4.0.2</tycho-version>
     <target-platform>linuxtools-e4.29</target-platform>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
