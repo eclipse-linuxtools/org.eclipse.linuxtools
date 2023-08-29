@@ -4,6 +4,14 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 ## Next release...
 
+## 8.13.0
+
+### Docker Tooling
+
+The underlying Docker Client dependency has been bumped up to 5.2.2.  This in turn required upgrades to various Docker Client dependencies.
+
+To support the CDT, a seccomp option has been added to the Docker Launching APIs so that "seccomp=unconfined" can be specified.
+
 ## 8.12.0
 
 ### RPM
