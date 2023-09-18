@@ -4,6 +4,12 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 ## Next release...
 
+## 8.13.0
+
+### Docker Editor
+
+Docker LS updated to version 0.11.0 from version 0.10.2 with the [following enhancements and fixes](https://github.com/rcjsuen/dockerfile-language-server-nodejs/blob/master/CHANGELOG.md#0110---2023-09-10)
+
 ## 8.12.0
 
 ### RPM
