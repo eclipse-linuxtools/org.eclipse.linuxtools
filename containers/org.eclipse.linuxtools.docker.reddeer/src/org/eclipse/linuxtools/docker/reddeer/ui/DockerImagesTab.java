@@ -16,11 +16,10 @@ package org.eclipse.linuxtools.docker.reddeer.ui;
 import java.util.List;
 
 import org.eclipse.reddeer.common.wait.WaitUntil;
-import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
 import org.eclipse.reddeer.swt.api.Combo;
 import org.eclipse.reddeer.swt.api.TableItem;
-import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.FinishButton;
 import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
@@ -108,16 +107,6 @@ public class DockerImagesTab extends WorkbenchView {
 		activate();
 		TableItem image = getDockerImage(imageName);
 		image.select();
-	}
-
-	public void pushImage(String imageName, String registryAccount, boolean forceTagging, boolean keepTaggedImage) {
-		selectImage(imageName);
-		new ContextMenu().getItem("Push...").select();
-		Combo combo = new DefaultCombo();
-		combo.setSelection(registryAccount);
-		new CheckBox("Force tagging image with selected registry").toggle(forceTagging);
-		new CheckBox("Keep tagged image upon completion").toggle(keepTaggedImage);
-		new FinishButton().click();
 	}
 
 	public void searchImage(String searchText) {
