@@ -6,7 +6,7 @@ Bundle-Version: 1.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Fragment-Host: org.eclipse.linuxtools.profiling.launch
 Require-Bundle: org.junit;bundle-version="4.0.0",
- org.hamcrest.core,
+ org.hamcrest,
  org.eclipse.linuxtools.profiling.tests,
  org.eclipse.swtbot.eclipse.finder;bundle-version="4.0.0"
 Bundle-Localization: fragment

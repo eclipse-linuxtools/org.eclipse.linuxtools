@@ -31,7 +31,7 @@
 <unit id="com.google.gson" version="0.0.0"/>
 <unit id="org.apache.commons.codec" version="0.0.0"/>
 <unit id="org.apache.commons.commons-io" version="0.0.0"/>
-<unit id="org.hamcrest.core" version="0.0.0"/>
+<unit id="org.hamcrest" version="0.0.0"/>
 <unit id="slf4j.api" version="0.0.0"/>
 <unit id="jakarta.annotation-api" version="0.0.0"/>
 <repository location="https://download.eclipse.org/eclipse/updates/4.30-I-builds/"/>
@@ -275,12 +275,6 @@
 				<groupId>org.glassfish.jersey.media</groupId>
 				<artifactId>jersey-media-json-jackson</artifactId>
 				<version>2.40</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>org.hamcrest</groupId>
-				<artifactId>hamcrest</artifactId>
-				<version>2.2</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
