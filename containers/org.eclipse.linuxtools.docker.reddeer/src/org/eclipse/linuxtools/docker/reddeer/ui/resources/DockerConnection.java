@@ -118,23 +118,6 @@ public class DockerConnection extends AbstractDockerExplorerItem {
 		refreshContainers();
 	}
 
-	public void pullImage(String imageName) {
-		pullImage(imageName, null, null);
-	}
-
-	/**
-	 * Pull docker image with specified name and tag. If tag is null, latest tag
-	 * is assumed. If image exists, nothing happens.
-	 * 
-	 * @param imageName
-	 *            name of docker image to pull
-	 * @param tag
-	 *            tag of docker image to null
-	 */
-	public void pullImage(String imageName, String imageTag) {
-		pullImage(imageName, imageTag, null);
-	}
-
 	public void pullImage(String imageName, String imageTag, String dockerRegister) {
 		if (getImage(imageName, imageTag) == null) {
 			refreshImages();
