@@ -29,7 +29,6 @@
 <unit id="org.mockito.mockito-core" version="0.0.0"/>
 <unit id="assertj-core" version="0.0.0"/>
 <unit id="com.google.gson" version="0.0.0"/>
-<unit id="org.apache.commons.codec" version="0.0.0"/>
 <unit id="org.apache.commons.commons-io" version="0.0.0"/>
 <unit id="org.hamcrest" version="0.0.0"/>
 <unit id="slf4j.api" version="0.0.0"/>
