@@ -3,9 +3,9 @@
       id="org.eclipse.linuxtools.javadocs.feature"
       label="%featureName"
       version="8.13.0.qualifier"
+      provider-name="%provider"
       license-feature="org.eclipse.license"
-      license-feature-version="0.0.0"
-      provider-name="%provider">
+      license-feature-version="0.0.0">
 
    <description>
       %featureDescription
@@ -21,9 +21,6 @@
 
    <plugin
          id="org.eclipse.linuxtools.javadocs"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
 </feature>
