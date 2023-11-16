@@ -186,19 +186,19 @@
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcpkix-jdk18on</artifactId>
-				<version>1.76</version>
+				<version>1.77</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcprov-jdk18on</artifactId>
-				<version>1.76</version>
+				<version>1.77</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcutil-jdk18on</artifactId>
-				<version>1.76</version>
+				<version>1.77</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
