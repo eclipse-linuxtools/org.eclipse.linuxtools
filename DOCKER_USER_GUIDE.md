@@ -3,7 +3,7 @@ Introduction
 
 The Linux Tools Docker Tooling plug-ins allow a user to manage Docker Images and Containers with functionality similar to the command-line docker command.
 
-For details on Docker and the docker command, see the Docker web-site at <http://www.docker.com>
+For details on Docker and the docker command, see the Docker web-site at <https://www.docker.com>
 
 This document discusses functionality found in the Docker Tooling 3.1.0 feature.
 
@@ -16,11 +16,11 @@ A new perspective known as the Docker Tooling Perspective is added.
 
 This perspective brings up three new views added:
 
--   [Docker Explorer View](#Docker_Explorer_View "wikilink") - view for creating/managing connections to Docker daemons
--   [Docker Images View](#Docker_Images_View "wikilink") - view for managing Docker Images
--   [Docker Containers View](#Docker_Containers_View "wikilink") - view for managing Docker Containers
+-   [Docker Explorer View](#docker-explorer-view "wikilink") - view for creating/managing connections to Docker daemons
+-   [Docker Images View](#docker-images-view "wikilink") - view for managing Docker Images
+-   [Docker Containers View](#docker-containers-view "wikilink") - view for managing Docker Containers
 
-In addition, the Docker Tooling Perspective adds the [Docker Image Hierarchy View](#Docker_Image_Hierarchy_View "wikilink"), Console View, the Terminal View, and the Properties View.
+In addition, the Docker Tooling Perspective adds the [Docker Image Hierarchy View](#docker-image-hierarchy-view "wikilink"), Console View, the Terminal View, and the Properties View.
 
 The Console View is used to display logs of stdout/stderr output from Containers and in some instances, allow input to stdin. The Properties View allows clicking on various elements such as Connections, Images, and Containers and getting detailed info not readily shown in the various views mentioned above.
 
@@ -79,11 +79,11 @@ For Connections, Containers, and Images in the Docker Explorer View, right-click
 For Connections, one can:
 
 -   Show in Properties View
--   [Edit](#Edit_Connection_Wizard "wikilink") - edit Connection properties
+-   [Edit](#edit-connection-wizard "wikilink") - edit Connection properties
 -   Enable - enable a Connection that is no longer established
 -   Refresh - refresh a Connection (update Containers and Images)
 -   Remove - remove the Connection
--   [Pull](#Pull_Image "wikilink") - pull an Image
+-   [Pull](#pull-image "wikilink") - pull an Image
 
 <img src="images/LinuxToolsExplorerContainerContextMenu.png">
 
@@ -96,26 +96,27 @@ For Containers, one can:
 -   Kill - kill running Containers
 -   Restart - restart Container
 -   Show in - show in Properties View
--   [Open Image Hierarchy](#Docker_Image_Hierarchy_View "wikilink") - show parent Image plus its parents in Image Hierarchy View
+-   [Open Image Hierarchy](#docker-image-hierarchy-view "wikilink") - show parent Image plus its parents in Image Hierarchy View
 -   Execute Shell - run a shell in the Terminal View (running Container only)
--   [Copy from Container](#Copy_from_Container "wikilink") - copy files from Container to Host
--   [Copy to Container](#Copy_to_Container "wikilink") - copy files from Host to Container
+-   [Copy from Container](#copy-from-container "wikilink") - copy files from Container to Host
+
+-   [Copy to Container](#copy-to-container "wikilink") - copy files from Host to Container
 -   Remove - delete stopped Containers
--   [Commit](#Commit_Container "wikilink") - commit the Container to an Image
--   [Display Log](#Display_Log "wikilink") - display the log for the Container
+-   [Commit](#commit-container "wikilink") - commit the Container to an Image
+-   [Display Log](#display-log "wikilink") - display the log for the Container
 -   Remove Log - removes the log for the Container from Eclipse Console View or Terminal View (tty flag on)
 
 <img src="images/LinuxToolsExplorerImageContextMenu.png">
 
 For Images, one can:
 
--   [Run](#Run_Image "wikilink") - build a Container and run it
+-   [Run](#run-image "wikilink") - build a Container and run it
 -   Show in Properties View
--   [Open Image Hierarchy](#Docker_Image_Hierarchy_View "wikilink") - show parent Image plus its parents in Image Hierarchy View
+-   [Open Image Hierarchy](#docker-image-hierarchy-view "wikilink") - show parent Image plus its parents in Image Hierarchy View
 -   Remove - delete selected Images
--   [Push](#Push_Image "wikilink") - push an Image to a registry
--   [Add Tag](#Add_Tag "wikilink") - add a tag to an Image
--   [Remove Tag](#Remove_Tag "wikilink") - remove a tag from an Image with multiple tags
+-   [Push](#push-image "wikilink") - push an Image to a registry
+-   [Add Tag](#add-tag "wikilink") - add a tag to an Image
+-   [Remove Tag](#remove-tag "wikilink") - remove a tag from an Image with multiple tags
 
 Docker Images View
 ------------------
@@ -130,20 +131,20 @@ The connection used for the Docker Images View is determined by the latest selec
 
 There are a number of toolbar actions supported in the Docker Images View:
 
--   ![](images/LinuxToolsDockerImageViewPull.gif "fig:images/LinuxToolsDockerImageViewPull.png") - [pull an Image from the Repository](#Pull_Image "wikilink")
--   ![](images/LinuxToolsDockerImageViewPush.gif "fig:images/LinuxToolsDockerImageViewPush.png") - [push an Image to the Repository](#Push_Image "wikilink")
--   ![](images/LinuxToolsDockerContainerCreate.gif "fig:images/LinuxToolsDockerContainerCreate.png") - [create a Container from an Image](#Run_Image "wikilink")
--   ![](images/LinuxToolsDockerImageBuild.png "fig:images/LinuxToolsDockerImageBuild.png") - [build an Image from a Dockerfile](#Build_Image "wikilink")
--   ![](images/LinuxToolsDockerTagImage.gif "fig:images/LinuxToolsDockerTagImage.png") - [tag an Image](#Add_Tag "wikilink")
+-   ![](images/LinuxToolsDockerImageViewPull.gif "fig:images/LinuxToolsDockerImageViewPull.png") - [pull an Image from the Repository](#pull-image "wikilink")
+-   ![](images/LinuxToolsDockerImageViewPush.gif "fig:images/LinuxToolsDockerImageViewPush.png") - [push an Image to the Repository](#push-image "wikilink")
+-   ![](images/LinuxToolsDockerContainerCreate.gif "fig:images/LinuxToolsDockerContainerCreate.png") - [create a Container from an Image](#run-image "wikilink")
+-   ![](images/LinuxToolsDockerImageBuild.png "fig:images/LinuxToolsDockerImageBuild.png") - [build an Image from a Dockerfile](#build-image "wikilink")
+-   ![](images/LinuxToolsDockerTagImage.gif "fig:images/LinuxToolsDockerTagImage.png") - [tag an Image](#add-tag "wikilink")
 -   ![](images/LinuxToolsDockerDeleteImage.gif "fig:images/LinuxToolsDockerDeleteImage.png") - delete one or more Images (requires confirmation)
 -   ![](images/LinuxToolsDockerRefreshImage.gif "fig:images/LinuxToolsDockerRefreshImage.png") - refresh Images list
 
 There are also context menu actions supported:
 
--   ![](images/LinuxToolsDockerContainerCreate.gif "fig:images/LinuxToolsDockerContainerCreate.png") - [Run an Image and create a Container](#Run_Image "wikilink")
--   ![](images/LinuxToolsDockerTagImage.gif "fig:images/LinuxToolsDockerTagImage.png") - [tag an Image](#Add_Tag "wikilink") (same as the toolbar tag image action)
--   ![](images/LinuxToolsDockerRemoveTagIcon.gif "fig:images/LinuxToolsDockerRemoveTagIcon.png") - [remove a tag from an Image with multiple repo tags](#Remove_Tag "wikilink")
--   ![](images/LinuxToolsDockerOpenImageHierarchy.png "fig:images/LinuxToolsDockerOpenImageHierarchy.png") - [Open Image Hierarchy](#Docker_Image_Hierarchy_View "wikilink")
+-   ![](images/LinuxToolsDockerContainerCreate.gif "fig:images/LinuxToolsDockerContainerCreate.png") - [Run an Image and create a Container](#run-image "wikilink")
+-   ![](images/LinuxToolsDockerTagImage.gif "fig:images/LinuxToolsDockerTagImage.png") - [tag an Image](#add-tag "wikilink") (same as the toolbar tag image action)
+-   ![](images/LinuxToolsDockerRemoveTagIcon.gif "fig:images/LinuxToolsDockerRemoveTagIcon.png") - [remove a tag from an Image with multiple repo tags](#remove-tag "wikilink")
+-   ![](images/LinuxToolsDockerOpenImageHierarchy.png "fig:images/LinuxToolsDockerOpenImageHierarchy.png") - [Open Image Hierarchy](#docker-image-hierarchy-view "wikilink")
 
 The text entry below the Connection name is used to search/filter the contents of the list. Anything typed in the filter text widget is used to match items in the list (any column) and any row without a match is excluded.
 
@@ -155,7 +156,7 @@ The pull Wizard is used to specify the repository or repo:tag specification and 
 
 ![](images/LinuxToolsDockerPullWizard.png "images/LinuxToolsDockerPullWizard.png")
 
-By default, the Docker Hub registry will be used, however, a user may specify an additional private registry if desired. Additional registries can be added by clicking on ***Add a registry account...*** or going to [Windows -\> Preferences -\> Docker -\> Registry Accounts](#Docker_Registry_Accounts_Preference_Page "wikilink").
+By default, the Docker Hub registry will be used, however, a user may specify an additional private registry if desired. Additional registries can be added by clicking on ***Add a registry account...*** or going to [Windows -\> Preferences -\> Docker -\> Registry Accounts](#docker-registry-accounts-preference-page "wikilink").
 
 The user can either fill in the complete name of the image to download or a search can be performed using the Search button. This brings up the Search Image Wizard.
 
@@ -175,7 +176,7 @@ The pull of an Image may take a long time. This is because an Image may use seve
 
 Pushing a Docker Image consists of specifying an existing repo tag to push. By default, Images will be pushed to the default Docker registry, but if a tag contains a registry specifier in addition to repo:tag, it will be pushed to the specified registry. To specify an external or local registry, use the Tag Image function to add a new tag to an existing Image which has the registry specifier and then push that tag.
 
-The latest version of the Push Image Wizard allows one to specify a registry/account that has been added via [Window -\> Preferences -\> Docker -\> Registry Accounts](#Docker_Registry_Accounts_Preference_Page "wikilink"). This is needed when authorization is required by the registry for the specified repo. Using the aforementioned tag method assumes no authorization required.
+The latest version of the Push Image Wizard allows one to specify a registry/account that has been added via [Window -\> Preferences -\> Docker -\> Registry Accounts](#docker-registry-accounts-preference-page "wikilink"). This is needed when authorization is required by the registry for the specified repo. Using the aforementioned tag method assumes no authorization required.
 
 As well, a new tag can be specified at the time of the push. This new tag is not retained unless specified in the options.
 
@@ -259,7 +260,7 @@ There are two fields that need to be filled in:
     -   Note that this name must follow correct repo:tag format.
 -   Directory - this is the directory that contains or will contain the Dockerfile
 
-The directory can be specified using the "Browse" button. Once a valid existing directory is specified, the "Edit" button will be enabled, allowing creation and modification of the Dockerfile using a [basic editor dialog](#Dockerfile_Editor "wikilink").
+The directory can be specified using the "Browse" button. Once a valid existing directory is specified, the "Edit" button will be enabled, allowing creation and modification of the Dockerfile using a [basic editor dialog](#dockerfile-editor "wikilink").
 
 When the Dockerfile is considered complete, hitting the "Finish" button will start the Image build action. When the build is complete, the Docker Images View will be refreshed automatically.
 
@@ -278,10 +279,10 @@ A Dockerfile is used to specify how to build the new Docker Image. The file cont
     -   The cmd form is run in a shell (/bin/sh -c cmd).
     -   Typically, this is how you install new packages (e.g. RUN yum install -y gdb). It can also be used to modify the configuration (e.g. sed operations on a config file).
     -   These commands are run in the build stage prior to any Container being run and there can be multiple RUN commands specified.
--   CMD - this is the default command that the new Image will run if one isn't specified on [Container create](#Container_Create "wikilink").
+-   CMD - this is the default command that the new Image will run if one isn't specified on [Container create](#container-create "wikilink").
     -   There are three forms:
         -   ["executable", "param1", "param2"] - executable form
-        -   ["param1", "param2"] - default parameters to Entrypoint (see [Entrypoint parameter of Create Container](#Create_Container "wikilink")
+        -   ["param1", "param2"] - default parameters to Entrypoint (see [Entrypoint parameter of Create Container](#create-container "wikilink")
         -   command param1 param2 - command form
     -   The CMD is not run in build, but only when the Container is created and started.
 -   ENV - this specifies one of more environment variables
@@ -304,7 +305,7 @@ A Dockerfile is used to specify how to build the new Docker Image. The file cont
         -   COPY ["\<src\>"... "\<dest\>"]
     -   The second form is used to quote names that have white-space.
 
-For more details, see [the official Dockerfile reference](http://docs.docker.com/reference/builder)
+For more details, see [the official Dockerfile reference](https://docs.docker.com/build)
 
 #### Build Image Run Configuration
 
@@ -372,14 +373,14 @@ It should be noted that the various actions above are enabled/disabled based on 
 
 The following context menu actions are supported:
 
--   ![](images/LinuxToolsDockerContainerCommitIcon.gif "fig:LinuxToolsDockerContainerCommitIcon.png") Commit Container - [commit all changes of a selected Container into a new Image](#Commit_Container "wikilink")
+-   ![](images/LinuxToolsDockerContainerCommitIcon.gif "fig:LinuxToolsDockerContainerCommitIcon.png") Commit Container - [commit all changes of a selected Container into a new Image](#commit-container "wikilink")
 -   ![](images/LinuxToolsDockerContainerRestartIcon.gif "fig:LinuxToolsDockerContainerRestartIcon.png") Restart - restart a Container (will wait to stop a running Container, then will kill it before starting again)
--   ![](images/LinuxToolsDockerContainerDisplayLogIcon.gif "fig:LinuxToolsDockerContainerDisplayLogIcon.png") Display Log - [display the stdout/stderr logs of a selected Container in the Console View](#Display_Log "wikilink")
+-   ![](images/LinuxToolsDockerContainerDisplayLogIcon.gif "fig:LinuxToolsDockerContainerDisplayLogIcon.png") Display Log - [display the stdout/stderr logs of a selected Container in the Console View](#display-log "wikilink")
 -   ![](images/LinuxToolsDockerContainerRemoveLogIcon.gif "fig:LinuxToolsDockerContainerRemoveLogIcon.png") Remove Log - remove the stdout/stderr logs of a selected Container from the Console View
--   ![](images/LinuxToolsDockerOpenImageHierarchy.png "fig:LinuxToolsDockerOpenImageHierarchy.png") Open Image Hierarchy - [Open Image Hierarchy for Container](#Docker_Image_Hierarchy_View "wikilink")
--   ![](images/LinuxToolsDockerCopyFromContainer.gif "fig:LinuxToolsDockerCopyFromContainer.png") Copy from Container - [copy files from Container to Host](#Copy_from_Container "wikilink")
--   ![](images/LinuxToolsDockerCopyToContainer.gif "fig:LinuxToolsDockerCopyToContainer.png") Copy to Container - [copy files from Host to Container](#Copy_to_Container "wikilink")
--   ![](images/LinuxToolsDockerExecuteShell.gif "fig:LinuxToolsDockerExecuteShell.png") Execute Shell - [execute a shell in running Container](#Execute_Shell "wikilink")
+-   ![](images/LinuxToolsDockerOpenImageHierarchy.png "fig:LinuxToolsDockerOpenImageHierarchy.png") Open Image Hierarchy - [Open Image Hierarchy for Container](#docker-image-hierarchy-view "wikilink")
+-   ![](images/LinuxToolsDockerCopyFromContainer.gif "fig:LinuxToolsDockerCopyFromContainer.png") Copy from Container - [copy files from Container to Host](#copy-from-container "wikilink")
+-   ![](images/LinuxToolsDockerCopyToContainer.gif "fig:LinuxToolsDockerCopyToContainer.png") Copy to Container - [copy files from Host to Container](#copy-to-container "wikilink")
+-   ![](images/LinuxToolsDockerExecuteShell.gif "fig:LinuxToolsDockerExecuteShell.png") Execute Shell - [execute a shell in running Container](#execute-shell "wikilink")
 
 ### Filtering Labels
 
@@ -451,12 +452,12 @@ Docker Image Hierarchy View
 
 The Image Hierarchy View displays a hierarchy of Images starting at a particular Image or Container back to its earliest parent Image. A parent Image is one that is used in a Build Image action. In the case where the Image Hierarchy is started from an Image, all of its existing Containers are shown as children. In the case where the Image Hierarchy is started from a Container, just the selected Container is shown under the Image used to create it.
 
-Context menu actions are available for the Docker Images and Docker Containers in the View. These match those found in the [Docker Explorer View context menu](#Docker_Explorer_Context_Menu "wikilink").
+Context menu actions are available for the Docker Images and Docker Containers in the View. These match those found in the [Docker Explorer View context menu](#docker-explorer-context-menu "wikilink").
 
 Properties View
 ---------------
 
-The Properties View will respond to selections in the four Docker Tooling Views: [Docker Explorer View](#Docker_Explorer_View "wikilink"), [Docker Images View](#Docker_Images_View "wikilink"), [Docker Containers View](#Docker_Containers_View "wikilink"), and the [Docker Image Hierarchy View](#Docker_Image_Hierarchy_View "wikilink"). The data shown will depend on what is being selected:
+The Properties View will respond to selections in the four Docker Tooling Views: [Docker Explorer View](#docker-explorer-view "wikilink"), [Docker Images View](#docker-images-view "wikilink"), [Docker Containers View](#docker-containers-view "wikilink"), and the [Docker Image Hierarchy View](#docker-image-hierarchy-view "wikilink"). The data shown will depend on what is being selected:
 
 -   Docker Connection
 -   Docker Image
@@ -478,7 +479,7 @@ Support has been added for docker-compose.
 
 Users can select a docker-compose.yml file and start Docker Compose from the context menu, using the Run \> Docker Compose launcher shortcut.
 
-The Docker Compose process displays its logs (with support for text coloring based on ANSI escape codes) and provides a stop button to stop the underlying process. The location of the docker-compose command is specified using the [docker compose preferences page](#Docker_Compose_Preference_Page "wikilink") location using Window-\>Preferences-\>Docker-\>Docker Compose.
+The Docker Compose process displays its logs (with support for text coloring based on ANSI escape codes) and provides a stop button to stop the underlying process. The location of the docker-compose command is specified using the [docker compose preferences page](#docker-compose-preference-page "wikilink") location using Window-\>Preferences-\>Docker-\>Docker Compose.
 
 ![](images/LinuxToolsDockerComposeConsole.png "LinuxToolsDockerComposeConsole.png")
 
@@ -527,4 +528,4 @@ Here a user may specify registry account information. By default, a user has acc
 
 The page supports adding, editing, and removing accounts.
 
-Once a registry account entry is added, it may be used for pushing and pulling images. See the [push image](#Push_Image "wikilink") and [pull image](#Pull_Image "wikilink") sections for details.
+Once a registry account entry is added, it may be used for pushing and pulling images. See the [push image](#push-image "wikilink") and [pull image](#pull-image "wikilink") sections for details.
