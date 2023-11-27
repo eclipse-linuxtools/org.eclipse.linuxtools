@@ -21,7 +21,7 @@
   </prerequisites>
   <groupId>org.eclipse.linuxtools</groupId>
   <artifactId>linuxtools-parent</artifactId>
-  <version>8.13.0-SNAPSHOT</version>
+  <version>8.13.0</version>
   <packaging>pom</packaging>
 
   <name>Eclipse Linux Tools Parent</name>
@@ -48,8 +48,8 @@
   </distributionManagement>
 
   <properties>
-    <mirror-repo-name>updates-nightly-8.13</mirror-repo-name>
-    <mirror-docker-repo-name>updates-docker-nightly-5.13</mirror-docker-repo-name>
+    <mirror-repo-name>update-8.13.0</mirror-repo-name>
+    <mirror-docker-repo-name>update-docker-5.13.0</mirror-docker-repo-name>
     <tycho-version>4.0.4</tycho-version>
     <target-platform>linuxtools-e4.30</target-platform>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
