@@ -52,7 +52,7 @@
     <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
     <mirror-mylyn-repo-name>updates-mylyn-nightly</mirror-mylyn-repo-name>
     <tycho-version>4.0.4</tycho-version>
-    <target-platform>linuxtools-e4.30</target-platform>
+    <target-platform>linuxtools-e4.31</target-platform>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../../target/jacoco.exec</sonar.jacoco.reportPath>
