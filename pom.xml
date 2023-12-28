@@ -50,9 +50,7 @@
   <properties>
     <mirror-repo-name>updates-nightly</mirror-repo-name>
     <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
-    <mirror-mylyn-repo-name>updates-mylyn-nightly</mirror-mylyn-repo-name>
     <tycho-version>4.0.4</tycho-version>
-    <target-platform>linuxtools-e4.31</target-platform>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../../target/jacoco.exec</sonar.jacoco.reportPath>
@@ -208,12 +206,7 @@
             </environment>
           </environments>
           <target>
-            <artifact>
-              <groupId>org.eclipse.linuxtools</groupId>
-              <artifactId>org.eclipse.linuxtools.target</artifactId>
-              <classifier>${target-platform}</classifier>
-              <version>1.0.0</version>
-            </artifact>
+          <file>${maven.multiModuleProjectDirectory}/releng/org.eclipse.linuxtools.target/linuxtools-e4.31.target</file>
           </target>
         </configuration>
       </plugin>
