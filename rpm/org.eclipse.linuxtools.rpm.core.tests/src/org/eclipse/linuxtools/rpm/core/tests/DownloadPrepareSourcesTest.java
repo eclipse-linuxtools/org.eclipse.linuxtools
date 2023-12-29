@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2022 Red Hat, Inc.
+ * Copyright (c) 2013, 2023 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -207,10 +207,12 @@ public class DownloadPrepareSourcesTest {
 		IContainer buildFolder = project.getConfiguration().getBuildFolder();
 		IFolder helloBuildFolder = null;
 		assertNotNull(buildFolder);
+		// See https://rpm-software-management.github.io/rpm/manual/dynamic_specs.html
+		// for the *-SPECPARTS extra dir
 		switch (layout) {
 			case RPMBUILD:
 				assertNotNull(buildFolder.getParent().findMember("BUILD"));
-				assertEquals(1, buildFolder.members().length);
+				assertEquals(2, buildFolder.members().length);
 				// check if the file exists under BUILD folder
 				helloBuildFolder = buildFolder.getFolder(new Path("hello-2.12.1"));
 				assertTrue(helloBuildFolder.exists());
@@ -218,7 +220,7 @@ public class DownloadPrepareSourcesTest {
 				assertTrue(helloBuildFolder.members().length >= 1);
 				break;
 			case FLAT:
-				assertEquals(9, buildFolder.members().length);
+				assertEquals(10, buildFolder.members().length);
 				helloBuildFolder = buildFolder.getFolder(new Path("hello-2.12.1"));
 				assertTrue(helloBuildFolder.exists());
 				// there should be some stuff within hello-2.12.1/ folder
