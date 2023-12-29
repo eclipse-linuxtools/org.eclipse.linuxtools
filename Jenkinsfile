@@ -76,6 +76,7 @@ spec:
 				always {
 					junit '**/*.test*/target/surefire-reports/*.xml'
 					archiveArtifacts artifacts: '**/*.log,**/*.html,**/screenshots/*.png,**/target/repository/*'
+					recordIssues publishAllIssues: true, tools: [mavenConsole(), java(), eclipse(), javaDoc()]
 				}
 			}
 		}
