@@ -29,13 +29,9 @@
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-surefire-plugin</artifactId>
-        <version>${tycho-version}</version>
         <configuration>
-          <testSuite>org.eclipse.linuxtools.valgrind.ui.tests</testSuite>
-          <testClass>org.eclipse.linuxtools.internal.valgrind.ui.quickfixes.tests.AllTests</testClass>
-             <useUIHarness>true</useUIHarness>
+          <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
-          <product>org.eclipse.product.ide</product>
         </configuration>
       </plugin>
     </plugins>
