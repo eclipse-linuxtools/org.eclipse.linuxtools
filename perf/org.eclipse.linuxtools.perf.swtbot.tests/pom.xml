@@ -32,7 +32,6 @@
           <configuration>
             <useUIHarness>true</useUIHarness>
             <useUIThread>false</useUIThread>
-            <testSuite>org.eclipse.linuxtools.perf.swtbot.tests</testSuite>
             <testClass>org.eclipse.linuxtools.internal.perf.swtbot.tests.AllPerfTests</testClass>
         </configuration>
       </plugin>
