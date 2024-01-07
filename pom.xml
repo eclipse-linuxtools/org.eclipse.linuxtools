@@ -293,11 +293,16 @@
  	    <argLine>${tycho.testArgLine}</argLine>
 	  </configuration>
 	</plugin>
-        <plugin>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>tycho-versions-plugin</artifactId>
-          <version>${tycho-version}</version>
-        </plugin>
+    <plugin>
+      <groupId>org.eclipse.tycho</groupId>
+      <artifactId>tycho-versions-plugin</artifactId>
+      <version>${tycho-version}</version>
+    </plugin>
+    <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-plugin</artifactId>
+        <version>${tycho-version}</version>
+    </plugin>
 	<plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
