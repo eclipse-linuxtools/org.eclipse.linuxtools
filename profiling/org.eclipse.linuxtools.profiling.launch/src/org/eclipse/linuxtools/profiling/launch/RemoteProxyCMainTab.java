@@ -30,6 +30,7 @@ import org.eclipse.cdt.launch.ui.CAbstractMainTab;
 import org.eclipse.cdt.launch.ui.ICDTLaunchHelpContextIds;
 import org.eclipse.cdt.ui.CElementLabelProvider;
 import org.eclipse.cdt.utils.pty.PTY;
+import org.eclipse.cdt.utils.pty.PTY.Mode;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
@@ -173,7 +174,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
                 LaunchMessages.CMainTab_UseTerminal);
 		fTerminalButton
 				.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> updateLaunchConfigurationDialog()));
-        fTerminalButton.setEnabled(PTY.isSupported());
+        fTerminalButton.setEnabled(PTY.isSupported(Mode.CONSOLE));
     }
 
     @Override
@@ -486,17 +487,16 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
                 ProfileLaunchPlugin.log(ce);
             }
 
-            if (projectDir.equals(EMPTY_STRING)){
-                if(this.fProjText != null){
-                    IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-                    IProject project = root.getProject(this.fProjText.getText());
-                    try {
-                        projectDir = RemoteProxyManager.getInstance().getRemoteProjectLocation(project);
-                    } catch (CoreException e) {
-                        setErrorMessage(fPreviouslyCheckedWorkingDirErrorMsg = ProxyLaunchMessages.error_accessing_working_directory);
-                    }
-                }
-            }
+			if (projectDir.equals(EMPTY_STRING) && (this.fProjText != null)) {
+				IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+				IProject project = root.getProject(this.fProjText.getText());
+				try {
+					projectDir = RemoteProxyManager.getInstance().getRemoteProjectLocation(project);
+				} catch (CoreException e) {
+					setErrorMessage(
+							fPreviouslyCheckedWorkingDirErrorMsg = ProxyLaunchMessages.error_accessing_working_directory);
+				}
+			}
             workingDirText.setText(projectDir);
         }
     }
