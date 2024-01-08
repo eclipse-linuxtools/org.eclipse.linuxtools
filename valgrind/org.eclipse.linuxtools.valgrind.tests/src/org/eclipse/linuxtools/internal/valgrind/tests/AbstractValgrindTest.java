@@ -122,7 +122,7 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 	}
 
 	private void unbindLocation(IPath pathToFiles) throws IOException {
-		String bundleLoc = FileLocator.getBundleFile(getBundle()).getCanonicalPath();
+		String bundleLoc = FileLocator.getBundleFileLocation(getBundle()).get().getCanonicalPath();
 		String workspaceLoc = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
 		File testDir = pathToFiles.toFile();
 		for (File log : testDir.listFiles(NOT_TEMPLATE_FILTER)) {
@@ -133,7 +133,7 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 	}
 
 	private void bindLocation(IPath pathToFiles) throws IOException {
-		String bundleLoc = FileLocator.getBundleFile(getBundle()).getCanonicalPath();
+		String bundleLoc = FileLocator.getBundleFileLocation(getBundle()).get().getCanonicalPath();
 		String workspaceLoc = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
 		File testDir = pathToFiles.toFile();
 		for (File template : testDir.listFiles(TEMPLATE_FILTER)) {
