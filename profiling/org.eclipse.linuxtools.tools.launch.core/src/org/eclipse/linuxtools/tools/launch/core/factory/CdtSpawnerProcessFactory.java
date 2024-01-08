@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.cdt.utils.pty.PTY;
+import org.eclipse.cdt.utils.pty.PTY.Mode;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.resources.IProject;
 
@@ -76,7 +77,7 @@ public class CdtSpawnerProcessFactory extends LinuxtoolsProcessFactory {
             if (dir == null) {
                 process = ProcessFactory.getFactory().exec(cmdarray, envp);
             } else {
-                if (PTY.isSupported() && usePty) {
+				if (PTY.isSupported(Mode.CONSOLE) && usePty) {
                     process = ProcessFactory.getFactory().exec(cmdarray,
                             envp, dir, new PTY());
                 } else {

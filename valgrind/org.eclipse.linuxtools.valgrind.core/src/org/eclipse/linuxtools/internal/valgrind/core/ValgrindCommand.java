@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.eclipse.cdt.utils.pty.PTY;
+import org.eclipse.cdt.utils.pty.PTY.Mode;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.linuxtools.tools.launch.core.factory.CdtSpawnerProcessFactory;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
@@ -105,7 +106,7 @@ public class ValgrindCommand {
         if (workDir == null) {
             return CdtSpawnerProcessFactory.getFactory().exec(commandArray, env, project);
         }
-        if (PTY.isSupported() && usePty) {
+        if (PTY.isSupported(Mode.CONSOLE) && usePty) {
             return CdtSpawnerProcessFactory.getFactory().exec(commandArray, env, workDir, new PTY(), project);
         } else {
             return CdtSpawnerProcessFactory.getFactory().exec(commandArray, env, workDir, project);
