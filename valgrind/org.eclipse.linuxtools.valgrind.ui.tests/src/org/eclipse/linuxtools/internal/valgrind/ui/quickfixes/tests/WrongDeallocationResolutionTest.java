@@ -18,10 +18,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.Scanner;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -30,12 +31,10 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.linuxtools.internal.valgrind.tests.AbstractValgrindTest;
 import org.eclipse.linuxtools.internal.valgrind.ui.quickfixes.WrongDeallocationResolution;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class WrongDeallocationResolutionTest extends AbstractValgrindTest {
 
-	private final String EMPTY_STRING = ""; //$NON-NLS-1$
 	private final String VALGRIND_MARKER_TYPE = "org.eclipse.linuxtools.valgrind.launch.marker"; //$NON-NLS-1$
 	private Document document;
 	private IMarker[] markers;
@@ -45,24 +44,20 @@ public class WrongDeallocationResolutionTest extends AbstractValgrindTest {
 		return "org.eclipse.linuxtools.valgrind.launch.memcheck"; //$NON-NLS-1$
 	}
 
-	@Before
-	public void prep() throws Exception {
-		proj = createProjectAndBuild("wrongDeallocTest"); //$NON-NLS-1$
+	private void prep(String statements) throws Exception {
+		proj = createProject(getBundle(), "wrongDeallocTest");
+		IFile cppFile = proj.getProject().getFile("wrongDealloc.cpp");
+		InputStream preContentStream = cppFile.getContents();
+		String content = new String(preContentStream.readAllBytes());
+		content = content.replace("__VALGRIND__", statements);
+		cppFile.setContents(new ByteArrayInputStream(content.getBytes()) , 0, null);
+		buildProject(proj);
+
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "wrongDeallocTest"); //$NON-NLS-1$
 
 		document = new Document();
-		InputStream fileInputStream = proj.getProject().getFile("wrongDealloc.cpp").getContents(); //$NON-NLS-1$
-		try (Scanner scanner = new Scanner(fileInputStream)) {
-			scanner.useDelimiter("\\A"); //$NON-NLS-1$
-			String content;
-			if (scanner.hasNext()) {
-				content = scanner.next();
-			} else {
-				content = EMPTY_STRING;
-			}
-			document.set(content);
-		}
+		document.set(content);
 		markers = proj.getProject().findMarkers(VALGRIND_MARKER_TYPE, true, 1);
 		Arrays.sort(markers, (marker1, marker2) -> {
 			int line1 = marker1.getAttribute(IMarker.LINE_NUMBER, -1);
@@ -93,11 +88,13 @@ public class WrongDeallocationResolutionTest extends AbstractValgrindTest {
 	}
 
 	@Test
-	public void testMallocDeleteQuickFix() throws CoreException {
-		IMarker mallocDeleteMarker = markers[1];
+	public void testMallocDeleteQuickFix() throws Exception {
+		prep("char *p1 = (char *)malloc(sizeof(char) * SIZE);\n"
+				+ "	delete(p1);");
+		IMarker mallocDeleteMarker = markers[2];
 		int markerLine = mallocDeleteMarker.getAttribute(IMarker.LINE_NUMBER, -1);
 
-		createResolutionAndApply(mallocDeleteMarker);
+		createResolutionAndApply(mallocDeleteMarker, 3);
 
 		String newContent = getLineContent(document, markerLine);
 		assertTrue(newContent.contains("free")); //$NON-NLS-1$
@@ -105,11 +102,13 @@ public class WrongDeallocationResolutionTest extends AbstractValgrindTest {
 	}
 
 	@Test
-	public void testMallocDeleteArrayQuickFix() throws CoreException {
-		IMarker mallocDeleteArrayMarker = markers[3];
+	public void testMallocDeleteArrayQuickFix() throws Exception {
+		prep("char* p2 = (char *)malloc(5 * sizeof(char) * SIZE);\n"
+				+ "	delete[] p2;");
+		IMarker mallocDeleteArrayMarker = markers[1];
 		int markerLine = mallocDeleteArrayMarker.getAttribute(IMarker.LINE_NUMBER, -1);
 
-		createResolutionAndApply(mallocDeleteArrayMarker);
+		createResolutionAndApply(mallocDeleteArrayMarker, 2);
 
 		String newContent = getLineContent(document, markerLine);
 		assertTrue(newContent.contains("free")); //$NON-NLS-1$
@@ -118,11 +117,13 @@ public class WrongDeallocationResolutionTest extends AbstractValgrindTest {
 	}
 
 	@Test
-	public void testNewFreeQuickFix() throws CoreException {
-		IMarker newFreeMarker = markers[5];
+	public void testNewFreeQuickFix() throws Exception {
+		prep("char *p3 = new char;\n"
+				+ "	free(p3);");
+		IMarker newFreeMarker = markers[1];
 		int markerLine = newFreeMarker.getAttribute(IMarker.LINE_NUMBER, -1);
 
-		createResolutionAndApply(newFreeMarker);
+		createResolutionAndApply(newFreeMarker, 2);
 
 		String newContent = getLineContent(document, markerLine);
 		assertTrue(newContent.contains("delete")); //$NON-NLS-1$
@@ -130,11 +131,13 @@ public class WrongDeallocationResolutionTest extends AbstractValgrindTest {
 	}
 
 	@Test
-	public void testNewArrayFreeQuickFix() throws CoreException {
-		IMarker newArrayFreeMarker = markers[7];
+	public void testNewArrayFreeQuickFix() throws Exception {
+		prep("char *p4 = new char[5];\n"
+				+ "	free(p4);");
+		IMarker newArrayFreeMarker = markers[1];
 		int markerLine = newArrayFreeMarker.getAttribute(IMarker.LINE_NUMBER, -1);
 
-		createResolutionAndApply(newArrayFreeMarker);
+		createResolutionAndApply(newArrayFreeMarker, 2);
 
 		String newContent = getLineContent(document, markerLine);
 		assertTrue(newContent.contains("delete[]")); //$NON-NLS-1$
@@ -142,25 +145,28 @@ public class WrongDeallocationResolutionTest extends AbstractValgrindTest {
 	}
 
 	@Test
-	public void testNewArrayDeleteQuickFix() throws CoreException {
-		IMarker newArrayDeleteMarker = markers[9];
+	public void testNewArrayDeleteQuickFix() throws Exception {
+		prep("char* p5 = new char[5];\n"
+				+ "	delete p5;");
+		IMarker newArrayDeleteMarker = markers[2];
 		int markerLine = newArrayDeleteMarker.getAttribute(IMarker.LINE_NUMBER, -1);
 
-		createResolutionAndApply(newArrayDeleteMarker);
+		createResolutionAndApply(newArrayDeleteMarker, 3);
 
 		String newContent = getLineContent(document, markerLine);
 		assertTrue(newContent.contains("delete[]")); //$NON-NLS-1$
 	}
 
-	private void createResolutionAndApply(IMarker marker) throws CoreException {
+	private void createResolutionAndApply(IMarker marker, int fixedMarkers) throws CoreException {
 		WrongDeallocationResolution resolution = new WrongDeallocationResolution();
 		assertNotNull(resolution);
 
 		int numMarkersBefore = proj.getProject().findMarkers(VALGRIND_MARKER_TYPE, true, 1).length;
 		resolution.apply(marker, document);
-		int numMarkersAfter = proj.getProject().findMarkers(VALGRIND_MARKER_TYPE, true, 1).length;
+		IMarker[] markers2 = proj.getProject().findMarkers(VALGRIND_MARKER_TYPE, true, 1);
+		int numMarkersAfter = markers2.length;
 
-		assertEquals(numMarkersAfter, numMarkersBefore - 2);
+		assertEquals(numMarkersAfter, numMarkersBefore - fixedMarkers);
 	}
 
 	private String getLineContent(Document document, int line) {
