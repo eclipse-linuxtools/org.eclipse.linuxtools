@@ -25,9 +25,9 @@
          point="org.eclipse.core.contenttype.contentTypes">
       <content-type
             base-type="org.eclipse.core.runtime.text"
-            file-extensions="Dockerfile,dockerfile"
-            file-names="Dockerfile"
-            file-patterns="Dockerfile.*"
+            file-extensions="Dockerfile,Containerfile,dockerfile"
+            file-names="Dockerfile,Containerfile"
+            file-patterns="Dockerfile.*,Containerfile.*"
             id="org.eclipse.linuxtools.docker.editor.ls"
             name="Dockerfile"
             priority="normal">
