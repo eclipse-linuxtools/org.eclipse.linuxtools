@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2020 Red Hat and others.
+ * Copyright (c) 2014, 2024 Red Hat and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,8 +18,8 @@ public class DockerException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	private static String JSON_MESSAGE_PREFIX = "{\"message\":\""; //$NON-NLS-1$
-	private static String JSON_MESSAGE_SUFFIX = "\"}"; //$NON-NLS-1$
+	private static final String JSON_MESSAGE_PREFIX = "{\"message\":\""; //$NON-NLS-1$
+	private static final String JSON_MESSAGE_SUFFIX = "\"}"; //$NON-NLS-1$
 
 	public DockerException(final String message) {
 		super(message);
@@ -33,12 +33,8 @@ public class DockerException extends Exception {
 		super(calculateMessage(null, cause), cause);
 	}
 
-	@Override
-	public String getMessage() {
-		return super.getMessage();
-	}
-
-	static private String calculateMessage(final String message, final Throwable cause) {
+	private static String calculateMessage(final String message,
+			final Throwable cause) {
 		Throwable dre = cause;
 		// Search for DockerRequestException
 		while (dre != null && !(dre instanceof DockerRequestException)) {
@@ -53,7 +49,7 @@ public class DockerException extends Exception {
 			// from docker 1.12.0 and beyond.
 			DockerRequestException re = (DockerRequestException) dre;
 			String s = re.getResponseBody();
-			if (s.startsWith(JSON_MESSAGE_PREFIX)) {
+			if (s != null && s.startsWith(JSON_MESSAGE_PREFIX)) {
 				s = s.substring(JSON_MESSAGE_PREFIX.length());
 				s = s.replaceAll(JSON_MESSAGE_SUFFIX, ""); //$NON-NLS-1$
 				if (message != null) {
