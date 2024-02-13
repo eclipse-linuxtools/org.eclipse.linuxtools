@@ -1,5 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
+Automatic-Module-Name: org.eclipse.linuxtools.cdt.libhover.libstdcxx
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.cdt.libhover.libstdcxx;singleton:=true
 Bundle-Version: 1.0.0.qualifier
