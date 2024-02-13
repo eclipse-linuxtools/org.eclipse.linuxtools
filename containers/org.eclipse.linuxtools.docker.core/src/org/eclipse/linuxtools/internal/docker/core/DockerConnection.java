@@ -38,8 +38,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.ws.rs.ProcessingException;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -129,6 +127,8 @@ import org.mandas.docker.client.messages.RegistryAuth;
 import org.mandas.docker.client.messages.Version;
 import org.mandas.docker.client.messages.Volume;
 import org.mandas.docker.client.messages.VolumeList;
+
+import jakarta.ws.rs.ProcessingException;
 
 /**
  * A connection to a Docker daemon. The connection may rely on Unix Socket or TCP connection (using the REST API).

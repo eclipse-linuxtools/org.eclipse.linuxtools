@@ -23,14 +23,12 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.databinding;bundle-version="1.9.0",
  org.eclipse.debug.core;bundle-version="3.10.0",
  org.eclipse.debug.ui;bundle-version="3.11.0",
- org.mandas.docker-client;bundle-version="3.2.1",
+ org.mandas.docker-client;bundle-version="7.0.7",
  org.eclipse.e4.ui.workbench;bundle-version="1.4.0",
  org.eclipse.e4.ui.model.workbench;bundle-version="1.2.0",
  org.eclipse.tm.terminal.view.ui;bundle-version="4.1.0",
  org.eclipse.tm.terminal.view.core;bundle-version="4.0.0",
  org.apache.commons.commons-compress;bundle-version="1.23.0"
-Import-Package: javax.xml.bind;version="2.3.3",
- javax.annotation;version="1.3.5"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin

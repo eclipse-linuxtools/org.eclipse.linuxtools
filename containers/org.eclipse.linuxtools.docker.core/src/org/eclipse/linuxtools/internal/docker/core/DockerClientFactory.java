@@ -104,6 +104,12 @@ public class DockerClientFactory {
 			builder.registryAuthSupplier(
 					new FixedRegistryAuthSupplier(registryAuth, configs));
 		}
+		// TODO This is giant hack to make jersey ClientBuilder initialized
+		// Should be removed before merging
+		System.setProperty("jakarta.ws.rs.client.ClientBuilder",
+				"org.glassfish.jersey.client.JerseyClientBuilder");
+		System.setProperty("jakarta.ws.rs.ext.RuntimeDelegate",
+				"org.glassfish.jersey.internal.RuntimeDelegateImpl");
 		return builder.build();
 	}
 
