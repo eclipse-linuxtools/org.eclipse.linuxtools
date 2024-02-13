@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.docker.core;
 
-import static javax.ws.rs.HttpMethod.GET;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
+import static jakarta.ws.rs.HttpMethod.GET;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +23,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import org.eclipse.linuxtools.internal.docker.core.DockerImageSearchResult;
 import org.eclipse.linuxtools.internal.docker.core.ImageSearchResultV1;
@@ -43,6 +36,13 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.mandas.docker.client.ObjectMapperProvider;
 import org.mandas.docker.client.messages.ImageSearchResult;
+
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
 /**
  * @since 2.0
