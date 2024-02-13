@@ -51,10 +51,6 @@
     <mirror-repo-name>updates-nightly</mirror-repo-name>
     <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
     <tycho-version>4.0.5</tycho-version>
-    <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-    <sonar.jacoco.reportPath>${project.basedir}/../../target/jacoco.exec</sonar.jacoco.reportPath>
-    <sonar.java.source>11</sonar.java.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <pluginRepositories>
@@ -233,37 +229,6 @@
             </execution>
           </executions>
         </plugin>
-       <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.11</version>
-        <executions>
-          <execution>
-           <id>pre-test</id>
-           <goals>
-             <goal>prepare-agent</goal>
-           </goals>
-	   <configuration>
-              <!-- Where to put jacoco coverage report -->
-              <destFile>${sonar.jacoco.reportPath}</destFile>
-              <includes>
-                <include>org.eclipse.linuxtools.*</include>
-              </includes>
-              <append>true</append>
-            </configuration>
-          </execution>
-          <execution>
-            <id>post-test</id>
-            <phase>post-integration-test</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-            <configuration>
-              <dataFile>${sonar.jacoco.reportPath}</dataFile>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
