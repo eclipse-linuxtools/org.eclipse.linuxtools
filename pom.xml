@@ -50,7 +50,7 @@
   <properties>
     <mirror-repo-name>updates-nightly</mirror-repo-name>
     <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
-    <tycho-version>4.0.5</tycho-version>
+    <tycho-version>4.0.6</tycho-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <pluginRepositories>
