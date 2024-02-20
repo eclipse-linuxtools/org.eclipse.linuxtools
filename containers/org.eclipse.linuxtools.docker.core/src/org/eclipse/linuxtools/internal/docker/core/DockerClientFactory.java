@@ -22,6 +22,7 @@ import java.util.Objects;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings.BindingType;
 import org.eclipse.linuxtools.docker.core.IRegistryAccount;
+import org.mandas.docker.client.DefaultDockerClient;
 import org.mandas.docker.client.DockerCertificates;
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.auth.FixedRegistryAuthSupplier;
@@ -106,11 +107,20 @@ public class DockerClientFactory {
 		}
 		// TODO This is giant hack to make jersey ClientBuilder initialized
 		// Should be removed before merging
-		System.setProperty("jakarta.ws.rs.client.ClientBuilder",
-				"org.glassfish.jersey.client.JerseyClientBuilder");
-		System.setProperty("jakarta.ws.rs.ext.RuntimeDelegate",
-				"org.glassfish.jersey.internal.RuntimeDelegateImpl");
-		return builder.build();
+		final String clientBuilderProperty = "jakarta.ws.rs.client.ClientBuilder"; //$NON-NLS-1$
+		String originalClientBuilder = System.setProperty(clientBuilderProperty,
+				"org.glassfish.jersey.client.JerseyClientBuilder"); //$NON-NLS-1$
+		final String runtimeDelegateProperty = "jakarta.ws.rs.ext.RuntimeDelegate"; //$NON-NLS-1$
+		System.setProperty(
+				runtimeDelegateProperty,
+				"org.glassfish.jersey.internal.RuntimeDelegateImpl"); //$NON-NLS-1$
+		DefaultDockerClient dockerClient = builder.build();
+		if (originalClientBuilder == null) {
+			System.clearProperty(clientBuilderProperty);
+		} else {
+			System.setProperty(clientBuilderProperty, originalClientBuilder);
+		}
+		return dockerClient;
 	}
 
 	private RegistryAuth buildAuthentication(final IRegistryAccount info) {
