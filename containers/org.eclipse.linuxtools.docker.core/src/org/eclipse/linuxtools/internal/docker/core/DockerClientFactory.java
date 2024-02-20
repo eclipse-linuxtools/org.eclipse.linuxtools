@@ -111,7 +111,7 @@ public class DockerClientFactory {
 		String originalClientBuilder = System.setProperty(clientBuilderProperty,
 				"org.glassfish.jersey.client.JerseyClientBuilder"); //$NON-NLS-1$
 		final String runtimeDelegateProperty = "jakarta.ws.rs.ext.RuntimeDelegate"; //$NON-NLS-1$
-		System.setProperty(
+		String originalRuntimeDelegate = System.setProperty(
 				runtimeDelegateProperty,
 				"org.glassfish.jersey.internal.RuntimeDelegateImpl"); //$NON-NLS-1$
 		DefaultDockerClient dockerClient = builder.build();
@@ -119,6 +119,12 @@ public class DockerClientFactory {
 			System.clearProperty(clientBuilderProperty);
 		} else {
 			System.setProperty(clientBuilderProperty, originalClientBuilder);
+		}
+		if (originalRuntimeDelegate == null) {
+			System.clearProperty(runtimeDelegateProperty);
+		} else {
+			System.setProperty(runtimeDelegateProperty,
+					originalRuntimeDelegate);
 		}
 		return dockerClient;
 	}

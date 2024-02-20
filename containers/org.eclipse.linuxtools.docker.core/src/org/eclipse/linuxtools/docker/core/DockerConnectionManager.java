@@ -56,6 +56,10 @@ public class DockerConnectionManager {
 				notifyListeners(connection,
 						IDockerConnectionManagerListener.ADD_EVENT);
 			}
+			final String runtimeDelegateProperty = "jakarta.ws.rs.ext.RuntimeDelegate"; //$NON-NLS-1$
+			String originalRuntimeDelegate = System.setProperty(
+					runtimeDelegateProperty,
+					"org.glassfish.jersey.internal.RuntimeDelegateImpl"); //$NON-NLS-1$
 			List<IDockerConnectionSettings> settings = connectionSettingsFinder
 					.getKnownConnectionSettings();
 			for (IDockerConnectionSettings setting : settings) {
@@ -78,6 +82,12 @@ public class DockerConnectionManager {
 					// flickering on the Docker Explorer view for each entry
 					addConnectionUnchecked(conn, false);
 				}
+			}
+			if (originalRuntimeDelegate == null) {
+				System.clearProperty(runtimeDelegateProperty);
+			} else {
+				System.setProperty(runtimeDelegateProperty,
+						originalRuntimeDelegate);
 			}
 		});
 		reloadThread.start();
