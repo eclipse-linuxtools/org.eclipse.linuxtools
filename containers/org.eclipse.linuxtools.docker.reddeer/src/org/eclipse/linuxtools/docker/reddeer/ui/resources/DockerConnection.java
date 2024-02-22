@@ -15,7 +15,6 @@ package org.eclipse.linuxtools.docker.reddeer.ui.resources;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.linuxtools.docker.reddeer.ui.AbstractDockerExplorerItem;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
@@ -86,10 +85,10 @@ public class DockerConnection extends AbstractDockerExplorerItem {
 
 	private boolean hasTag(String tag, TreeItem item) {
 		String[] styledTexts = treeViewerHandler.getStyledTexts(item);
-		if (styledTexts == null || styledTexts.length == 0) {
+		if (styledTexts == null || styledTexts.length == 0 || styledTexts[0] == null) {
 			return false;
 		}
-		return StringUtils.contains(styledTexts[0].trim(), tag);
+		return styledTexts[0].trim().contains(tag);
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017,2018 Red Hat, Inc.
+ * Copyright (c) 2017,2024 Red Hat, Inc.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.docker.reddeer.condition;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.linuxtools.docker.reddeer.ui.resources.DockerConnection;
 import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 
@@ -39,7 +38,7 @@ public class ImageIsDeployedCondition extends AbstractWaitCondition {
 
 	@Override
 	public boolean test() {
-		if (StringUtils.isBlank(tag)) {
+		if (tag == null || tag.isBlank()) {
 			return connection.imageIsDeployed(name);
 		} else {
 			return connection.getImage(name, tag) != null;
