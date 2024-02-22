@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (c) 2021, 2023 Red Hat Inc. and others
+ * Copyright (c) 2021, 2024 Red Hat Inc. and others
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -590,7 +590,7 @@ public class CopyFromDockerJob extends Job {
 		try (TarArchiveInputStream k = new TarArchiveInputStream(new BlockingInputStream(tarStream))) {
 			TarArchiveEntry te = null;
 
-			while ((te = k.getNextTarEntry()) != null) {
+			while ((te = k.getNextEntry()) != null) {
 
 				Path copypath = new Path(te.getName());
 				Path path = (Path) tarPath.append(copypath.removeFirstSegments(1));
