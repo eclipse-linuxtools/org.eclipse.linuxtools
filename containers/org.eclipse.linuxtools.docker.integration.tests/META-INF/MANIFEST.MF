@@ -29,8 +29,7 @@ Require-Bundle: org.junit,
  org.eclipse.swt
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
-Import-Package: javax.xml.bind;version="2.3.3", 
- org.eclipse.debug.core,
+Import-Package: org.eclipse.debug.core,
  org.eclipse.linuxtools.docker.reddeer,
  org.eclipse.linuxtools.docker.reddeer.condition,
  org.eclipse.linuxtools.docker.reddeer.core.ui.wizards,
