@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Javadocs Plug-in Tests
 Bundle-SymbolicName: org.eclipse.linuxtools.javadocs.tests
+Bundle-Vendor: Eclipse Linux Tools
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: org.eclipse.linuxtools.javadocs
 Bundle-RequiredExecutionEnvironment: JavaSE-17
