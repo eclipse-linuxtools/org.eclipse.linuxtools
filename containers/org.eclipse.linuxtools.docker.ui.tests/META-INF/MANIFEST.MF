@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: UI Tests
 Bundle-SymbolicName: org.eclipse.linuxtools.docker.ui.tests;singleton:=true
+Bundle-Vendor: Eclipse Linux Tools
 Bundle-Version: 2.2.0.qualifier
 Require-Bundle: org.eclipse.linuxtools.docker.ui;bundle-version="1.0.0",
  org.junit;bundle-version="4.12.0",
