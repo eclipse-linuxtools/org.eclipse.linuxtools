@@ -109,7 +109,6 @@ public class DockerClientFactory {
 		}
 		// TODO This is giant hack to make jersey ClientBuilder initialized
 		// Should be removed before merging
-		DefaultDockerClient dockerClient = null;
 		synchronized (synchronizeObject) {
 			final String clientBuilderProperty = "jakarta.ws.rs.client.ClientBuilder"; //$NON-NLS-1$
 			String originalClientBuilder = System.setProperty(
@@ -119,7 +118,7 @@ public class DockerClientFactory {
 			String originalRuntimeDelegate = System.setProperty(
 					runtimeDelegateProperty,
 					"org.glassfish.jersey.internal.RuntimeDelegateImpl"); //$NON-NLS-1$
-			dockerClient = builder.build();
+			DefaultDockerClient dockerClient = builder.build();
 			if (originalClientBuilder == null) {
 				System.clearProperty(clientBuilderProperty);
 			} else {
@@ -132,8 +131,8 @@ public class DockerClientFactory {
 				System.setProperty(runtimeDelegateProperty,
 						originalRuntimeDelegate);
 			}
+			return dockerClient;
 		}
-		return dockerClient;
 	}
 
 	private RegistryAuth buildAuthentication(final IRegistryAccount info) {
