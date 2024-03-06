@@ -4,6 +4,13 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 ## Next release...
 
+## 8.14.0
+
+### Docker Tooling
+
+Docker Tooling has updated to use Docker Client 7.0.7.  This new version of Docker Client supports the Docker v4.27 release.
+The Docker Client dependencies have been cleaned up and updated.
+
 ## 8.13.0
 
 ### Docker Editor
