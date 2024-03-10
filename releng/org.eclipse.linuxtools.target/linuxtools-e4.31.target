@@ -40,7 +40,7 @@
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
-<repository location="https://download.eclipse.org/cbi/updates/license"/>https://download.eclipse.org/wildwebdeveloper/snapshots/
+<repository location="https://download.eclipse.org/cbi/updates/license"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.wildwebdeveloper.embedder.node.feature.feature.group" version="0.0.0"/>
@@ -80,37 +80,37 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
-				<version>2.16.1</version>
+				<version>2.16.2</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-core</artifactId>
-				<version>2.16.1</version>
+				<version>2.16.2</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-				<version>2.16.1</version>
+				<version>2.16.2</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.datatype</groupId>
 				<artifactId>jackson-datatype-guava</artifactId>
-				<version>2.16.1</version>
+				<version>2.16.2</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.module</groupId>
 				<artifactId>jackson-module-jaxb-annotations</artifactId>
-				<version>2.16.1</version>
+				<version>2.16.2</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.module</groupId>
 				<artifactId>jackson-module-jakarta-xmlbind-annotations</artifactId>
-				<version>2.16.1</version>
+				<version>2.16.2</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
@@ -165,7 +165,7 @@
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-compress</artifactId>
-				<version>1.26.0</version>
+				<version>1.26.1</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
@@ -183,19 +183,19 @@
 			<dependency>
 				<groupId>org.glassfish.hk2</groupId>
 				<artifactId>hk2-api</artifactId>
-				<version>3.0.6</version>
+				<version>3.1.0</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.hk2</groupId>
 				<artifactId>hk2-locator</artifactId>
-				<version>3.0.6</version>
+				<version>3.1.0</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.hk2</groupId>
 				<artifactId>hk2-utils</artifactId>
-				<version>3.0.6</version>
+				<version>3.1.0</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
@@ -213,7 +213,7 @@
 			<dependency>
 				<groupId>jakarta.xml.bind</groupId>
 				<artifactId>jakarta.xml.bind-api</artifactId>
-				<version>4.0.1</version>
+				<version>4.0.2</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
