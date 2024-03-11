@@ -19,5 +19,6 @@ jobs:
     uses: eclipse/dash-licenses/.github/workflows/mavenLicenseCheck.yml@master
     with:
       projectId: tools.linuxtools
+      javaVersion: 21
     secrets:
       gitlabAPIToken: ${{ secrets.LINUXTOOLS_GITLAB_API_TOKEN }}
