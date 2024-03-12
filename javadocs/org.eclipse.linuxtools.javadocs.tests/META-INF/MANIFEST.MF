@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.eclipse.linuxtools.javadocs.tests
 Bundle-Vendor: Eclipse Linux Tools
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: org.eclipse.linuxtools.javadocs
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: junit-jupiter-api,
  org.eclipse.core.resources;bundle-version="3.9.1"
 Automatic-Module-Name: org.eclipse.linuxtools.javadocs.tests
