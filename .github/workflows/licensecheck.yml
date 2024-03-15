@@ -21,4 +21,6 @@ jobs:
       projectId: tools.linuxtools
       javaVersion: 21
     secrets:
-      gitlabAPIToken: ${{ secrets.LINUXTOOLS_GITLAB_API_TOKEN }}
+      gitlabAPIToken: ${{ secrets.GITLAB_API_TOKEN }}
+    permissions:
+      pull-requests: write
