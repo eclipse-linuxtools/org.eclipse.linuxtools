@@ -20,7 +20,7 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.28.0",
  org.eclipse.debug.core;bundle-version="3.21.100",
  org.apache.httpcomponents.httpcore;bundle-version="4.4.16",
  org.apache.httpcomponents.httpclient;bundle-version="4.5.14"
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.docker.core,
  org.eclipse.linuxtools.internal.docker.core;x-friends:="org.eclipse.linuxtools.docker.ui,org.eclipse.linuxtools.docker.ui.tests,org.eclipse.linuxtools.docker.integration.tests"
