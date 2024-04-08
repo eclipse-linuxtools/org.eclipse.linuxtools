@@ -11,7 +11,7 @@
 <unit id="org.apache.httpcomponents.httpclient" version="4.5.14"/>
 <unit id="org.codelibs.nekohtml" version="2.1.2.v20230802-0829"/>
 <unit id="org.codelibs.nekohtml.source" version="2.1.2.v20230802-0829"/>
-<repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2024-03"/>
+<repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2024-06"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
@@ -63,7 +63,7 @@
 <unit id="org.eclipse.zest.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.lsp4e" version="0.0.0"/>
 <unit id="org.eclipse.tm4e.feature.feature.group" version="0.0.0"/>
-<repository location="https://download.eclipse.org/releases/2024-03/"/>
+<repository location="https://download.eclipse.org/releases/2024-06/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.reddeer.eclipse.feature.feature.group" version="0.0.0"/>
@@ -171,13 +171,13 @@
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcpkix-jdk18on</artifactId>
-				<version>1.77</version>
+				<version>1.78</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcutil-jdk18on</artifactId>
-				<version>1.77</version>
+				<version>1.78</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
@@ -225,43 +225,43 @@
 			<dependency>
 				<groupId>org.glassfish.jersey.connectors</groupId>
 				<artifactId>jersey-apache-connector</artifactId>
-				<version>3.1.5</version>
+				<version>3.1.6</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey.core</groupId>
 				<artifactId>jersey-client</artifactId>
-				<version>3.1.5</version>
+				<version>3.1.6</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey.core</groupId>
 				<artifactId>jersey-common</artifactId>
-				<version>3.1.5</version>
+				<version>3.1.6</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey.core</groupId>
 				<artifactId>jersey-server</artifactId>
-				<version>3.1.5</version>
+				<version>3.1.6</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey.ext</groupId>
 				<artifactId>jersey-entity-filtering</artifactId>
-				<version>3.1.5</version>
+				<version>3.1.6</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey.media</groupId>
 				<artifactId>jersey-media-json-jackson</artifactId>
-				<version>3.1.5</version>
+				<version>3.1.6</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
-    				<groupId>org.glassfish.jersey.inject</groupId>
-    				<artifactId>jersey-hk2</artifactId>
-				<version>3.1.5</version>
+    			<groupId>org.glassfish.jersey.inject</groupId>
+    			<artifactId>jersey-hk2</artifactId>
+				<version>3.1.6</version>
 				<type>jar</type>
 			</dependency>	
 			<dependency>
