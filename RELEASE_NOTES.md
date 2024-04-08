@@ -4,6 +4,10 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 ## Next release...
 
+### Move Linux Tools plug-ins to Java 21
+
+Linux Tools plug-ins now require Java 21
+
 ## 8.14.0
 
 ### Docker Tooling
