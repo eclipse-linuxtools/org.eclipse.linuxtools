@@ -45,8 +45,8 @@
   </distributionManagement>
 
   <properties>
-    <mirror-repo-name>updates-nightly</mirror-repo-name>
-    <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
+    <mirror-repo-name>update-8.15.0</mirror-repo-name>
+    <mirror-docker-repo-name>update-docker-5.15.0</mirror-docker-repo-name>
     <tycho-version>4.0.7</tycho-version>
     <tycho.scmUrl>scm:git:https://github.com/eclipse-linuxtools/org.eclipse.linuxtools</tycho.scmUrl>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
