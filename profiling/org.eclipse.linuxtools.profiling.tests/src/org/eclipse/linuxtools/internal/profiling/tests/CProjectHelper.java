@@ -133,7 +133,6 @@ public class CProjectHelper {
             } finally {
                 try {
                     System.gc();
-                    System.runFinalization();
                     cproject.getProject().delete(true, true, null);
                 } catch (CoreException e2) {
                     fail(getMessage(e2.getStatus()));
