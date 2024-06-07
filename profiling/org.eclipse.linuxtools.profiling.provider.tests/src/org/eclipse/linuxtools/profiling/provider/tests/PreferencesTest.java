@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 Red Hat, Inc.
+ * Copyright (c) 2012, 2024 Red Hat, Inc.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -107,9 +107,6 @@ public class PreferencesTest extends AbstractTest{
         SWTWorkbenchBot bot = new SWTWorkbenchBot();
         try {
             bot.viewByTitle("Welcome").close(); //$NON-NLS-1$
-            // hide Subclipse Usage stats popup if present/installed
-            bot.shell("Subclipse Usage").activate(); //$NON-NLS-1$
-            bot.button("Cancel").click(); //$NON-NLS-1$
         } catch (WidgetNotFoundException e) {
             // ignore
         }

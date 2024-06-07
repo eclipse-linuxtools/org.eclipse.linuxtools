@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2019 Red Hat and others.
+ * Copyright (c) 2014, 2024 Red Hat and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -27,15 +27,12 @@ public abstract class AbstractSWTBotTest {
     protected static SWTBotTree projectExplorerViewTree;
 
     @BeforeClass
-    public static void beforeClass() throws Exception {
+	public static void beforeClass() {
         // delay click speed
         //System.setProperty("org.eclipse.swtbot.playback.delay", "200");
         bot = new SWTWorkbenchBot();
         try {
             bot.viewByTitle("Welcome").close();
-            // hide Subclipse Usage stats popup if present/installed
-            bot.shell("Subclipse Usage").activate();
-            bot.button("Cancel").click();
         } catch (WidgetNotFoundException e) {
             // ignore
         }
