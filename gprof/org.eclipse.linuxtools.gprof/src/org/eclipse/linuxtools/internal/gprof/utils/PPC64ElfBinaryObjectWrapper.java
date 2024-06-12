@@ -61,14 +61,14 @@ public class PPC64ElfBinaryObjectWrapper extends ElfBinaryObject {
             return symbols;
         }
 
-        symbols = super.getSymbols();
-        try {
-            if (dataSection == null) {
-                Elf elf = new Elf(getPath().toOSString());
-                dataSection = elf.getSectionByName(".data"); //$NON-NLS-1$
-            }
-        } catch  (IOException e) {
-        }
+		symbols = super.getSymbols();
+		if (dataSection == null) {
+			try (Elf elf = new Elf(getPath().toOSString())) {
+				dataSection = elf.getSectionByName(".data"); //$NON-NLS-1$
+			} catch (IOException e) {
+				// ignore
+			}
+		}
 
         //Failed to load data Section
         if (dataSection == null) {
