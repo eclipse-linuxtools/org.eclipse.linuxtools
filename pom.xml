@@ -174,7 +174,7 @@
             </environment>
           </environments>
           <target>
-          <file>${maven.multiModuleProjectDirectory}/releng/org.eclipse.linuxtools.target/linuxtools-e4.32.target</file>
+          <file>${maven.multiModuleProjectDirectory}/releng/org.eclipse.linuxtools.target/linuxtools-e4.33.target</file>
           </target>
         </configuration>
       </plugin>
