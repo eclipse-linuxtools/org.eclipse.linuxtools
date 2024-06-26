@@ -127,7 +127,6 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 					}
 					// Temporary buffer for changelog text
 					StringBuilder buf = new StringBuilder();
-					String changelogText = EMPTY_STRING;
 					String[] changelogLines = {};
 					int offset = doc.getLength();
 					int length = 0;
@@ -151,7 +150,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 					} else {
 						offset = changelogPartition.getOffset();
 						length = changelogPartition.getLength();
-						changelogText = doc.get(offset, length);
+						String changelogText = doc.get(offset, length);
 
 						// get old changelog text
 						changelogLines = changelogText.split("\n"); //$NON-NLS-1$
