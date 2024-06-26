@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2018 Alphonse Van Assche and others.
+ * Copyright (c) 2007, 2024 Alphonse Van Assche and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -68,7 +68,7 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements IWo
 		String lastLocale = getPreferenceStore().getString(PreferenceConstants.P_CHANGELOG_LOCAL);
 		String[] countries = Locale.getISOCountries();
 		for (int i = 0; i < countries.length; i++) {
-			Locale currentLocale = new Locale(countries[i]);
+			Locale currentLocale = Locale.of(countries[i]);
 			combo.add(countries[i] + " - " + currentLocale.getDisplayLanguage()); //$NON-NLS-1$
 			// get index of the Locale store in the preferences
 			if (countries[i].equals(lastLocale)) {
