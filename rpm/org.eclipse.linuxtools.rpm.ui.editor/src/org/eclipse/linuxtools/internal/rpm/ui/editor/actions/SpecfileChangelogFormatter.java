@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2018 Red Hat Inc.
+ * Copyright (c) 2007, 2024 Red Hat Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -90,7 +90,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 		cal.setTime(new Date());
 		// Get default locale
 		Locale defaultLocale = Locale.getDefault();
-		Locale.setDefault(new Locale(store.getString(PreferenceConstants.P_CHANGELOG_LOCAL)));
+		Locale.setDefault(Locale.of(store.getString(PreferenceConstants.P_CHANGELOG_LOCAL)));
 		String date = SIMPLE_DATE_FORMAT.format(new Date());
 		Locale.setDefault(defaultLocale);
 		return date;
