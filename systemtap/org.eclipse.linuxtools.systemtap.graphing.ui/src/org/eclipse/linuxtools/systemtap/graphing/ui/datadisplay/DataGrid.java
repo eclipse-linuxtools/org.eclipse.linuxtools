@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2018 IBM Corporation and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -139,10 +139,10 @@ public class DataGrid implements IUpdateListener {
 
         IDataSetFilter[] filters = filteredDataSet.getFilters();
         if (filters != null && filters.length > 0) {
-            for (int i = 0; i < filters.length; i++) {
+            for (IDataSetFilter filter : filters) {
                 item = new MenuItem(filterMenu, SWT.CASCADE);
-                item.setText(AvailableFilterTypes.getFilterName(filters[i].getID()));
-                item.setData(filters[i]);
+                item.setText(AvailableFilterTypes.getFilterName(filter.getID()));
+                item.setData(filter);
                 item.addSelectionListener(new RemoveFilterSelection());
             }
         } else {
@@ -156,9 +156,9 @@ public class DataGrid implements IUpdateListener {
         jumpToEntryMenuItem.setText(Localization.getString("DataGrid.JumpToEntry")); //$NON-NLS-1$
         jumpToEntryMenuItem.setSelection(prefs.getBoolean(GraphingPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY));
 
-        for (int i = 0; i < IFormattingStyles.FORMAT_TITLES.length; i++) {
+        for (String element : IFormattingStyles.FORMAT_TITLES) {
             item = new MenuItem(formatMenu, SWT.RADIO);
-            item.setText(IFormattingStyles.FORMAT_TITLES[i]);
+            item.setText(element);
             item.addSelectionListener(new MenuFormatSelection());
         }
 
@@ -209,7 +209,7 @@ public class DataGrid implements IUpdateListener {
     private class RemoveFilterSelection implements SelectionListener {
         @Override
         public void widgetSelected(SelectionEvent e) {
-            IDataSetFilter idsf = (IDataSetFilter)((MenuItem)e.widget).getData();
+			IDataSetFilter idsf = (IDataSetFilter) e.widget.getData();
             e.widget.dispose();
             if (filterMenu.getItemCount() == 0) {
                 removeFiltersMenuItem.setEnabled(false);
@@ -234,8 +234,8 @@ public class DataGrid implements IUpdateListener {
 
             int selectedCol = Math.max(1, getSelectedColumn());
 
-            for (int i = 0; i < items.length; i++) {
-                items[i].setSelection(false);
+            for (MenuItem item : items) {
+                item.setSelection(false);
             }
             items[columnFormat[selectedCol-1].getFormat()].setSelection(true);
 

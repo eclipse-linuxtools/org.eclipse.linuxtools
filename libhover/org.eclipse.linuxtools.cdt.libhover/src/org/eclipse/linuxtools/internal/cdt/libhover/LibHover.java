@@ -390,12 +390,12 @@ public class LibHover implements ICHelpProvider {
                     if (result[0] != null) {
                         final IBinding binding = result[0].getBinding();
                         // Check to see we have a member function.
-                        if (binding instanceof ICPPFunction) {
-                            methodType = ((ICPPFunction)binding).getType();
+                        if (binding instanceof ICPPFunction cppfunction) {
+                            methodType = cppfunction.getType();
                             // We have a member function, find the class name.
-                            IBinding owner = ((ICPPFunction)binding).getOwner();
-                            if (owner instanceof ICPPClassType) {
-                                className = getClassName((ICPPClassType)owner);
+                            IBinding owner = cppfunction.getOwner();
+                            if (owner instanceof ICPPClassType classType) {
+                                className = getClassName(classType);
                             }
                         }
                     }
