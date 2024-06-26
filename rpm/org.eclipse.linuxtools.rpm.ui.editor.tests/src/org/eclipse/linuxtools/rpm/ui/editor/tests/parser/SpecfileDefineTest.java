@@ -21,7 +21,6 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.UiUtils;
 import org.eclipse.linuxtools.rpm.core.utils.RPMQuery;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.SpecfileTestFailure;
 import org.junit.Before;
@@ -64,7 +63,7 @@ public class SpecfileDefineTest extends FileTestCase {
 		SpecfileDefine define1 = new SpecfileDefine("name", "testspec", specfile,
 				specfile.getPackages().getPackage(specfile.getName()));
 		specfile.addDefine(define1);
-		assertEquals("testspec", ((SpecfileElement) define1).resolve("%{name}"));
+		assertEquals("testspec", define1.resolve("%{name}"));
 	}
 
 	@Test

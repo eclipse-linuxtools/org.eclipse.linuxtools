@@ -46,7 +46,7 @@ public class PerfDoubleClickAction extends Action {
         try {
             if (obj instanceof PMLineRef line) {
                 // Open in editor
-                PMFile file = (PMFile) ((PMSymbol) line.getParent()).getParent();
+                PMFile file = (PMFile) line.getParent().getParent();
                 ProfileUIUtils.openEditorAndSelect(file.getPath(),Integer.parseInt(line.getName()), PerfPlugin.getDefault().getProfiledProject());
             } else if (obj instanceof PMFile file) {
                 ProfileUIUtils.openEditorAndSelect(file.getName(), 1);

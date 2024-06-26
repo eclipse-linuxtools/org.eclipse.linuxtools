@@ -34,7 +34,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 		newFile(testText);
 		element = parser.parseLine(testText, specfile, 0);
 		assertEquals(SpecfileSection.class, element.getClass());
-		assertEquals(testText.substring(1), ((SpecfileSection) element).getName());
+		assertEquals(testText.substring(1), element.getName());
 	}
 
 	@Test
