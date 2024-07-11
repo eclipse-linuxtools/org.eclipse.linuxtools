@@ -16,7 +16,7 @@ on:
 
 jobs:
   call-license-check:
-    uses: eclipse/dash-licenses/.github/workflows/mavenLicenseCheck.yml@master
+    uses: eclipse-dash/dash-licenses/.github/workflows/mavenLicenseCheck.yml@master
     with:
       projectId: tools.linuxtools
       javaVersion: 21
