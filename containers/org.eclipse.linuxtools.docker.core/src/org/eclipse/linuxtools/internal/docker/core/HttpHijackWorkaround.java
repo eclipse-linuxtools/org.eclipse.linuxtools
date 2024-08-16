@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Red Hat.
+ * Copyright (c) 2015, 2024 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -47,6 +47,7 @@ public class HttpHijackWorkaround {
 				"input", //$NON-NLS-1$
 				"in", //$NON-NLS-1$
 				"in", //$NON-NLS-1$
+				"in", //$NON-NLS-1$
 				"wrappedStream", //$NON-NLS-1$
 				"in", //$NON-NLS-1$
 				"inStream" //$NON-NLS-1$
@@ -57,6 +58,7 @@ public class HttpHijackWorkaround {
 				"org.glassfish.jersey.message.internal.EntityInputStream", //$NON-NLS-1$
 				FilterInputStream.class.getName(),
 				FilterInputStream.class.getName(),
+				"org.glassfish.jersey.apache.connector.ApacheConnector$CancellableInputStream",
 				"org.apache.http.conn.EofSensorInputStream", //$NON-NLS-1$
 				"org.apache.http.impl.io.IdentityInputStream", //$NON-NLS-1$
 				"org.apache.http.impl.io.SessionInputBufferImpl" }; //$NON-NLS-1$
