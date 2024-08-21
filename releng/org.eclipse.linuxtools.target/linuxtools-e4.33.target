@@ -162,13 +162,13 @@
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>33.2.1-jre</version>
+				<version>33.3.0-jre</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-compress</artifactId>
-				<version>1.27.0</version>
+				<version>1.27.1</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
