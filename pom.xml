@@ -259,6 +259,23 @@
 		</dependencies>
 	</plugin>
 	<plugin>
+		<groupId>org.eclipse.tycho</groupId>
+		<artifactId>tycho-gpg-plugin</artifactId>
+		<version>${tycho-version}</version>
+		<executions>
+			<execution>
+				<id>pgpsigner</id>
+				<goals>
+					<goal>sign-p2-artifacts</goal>
+				</goals>
+				<configuration>
+					<keyname>F5CBCFD82F07D82E</keyname>
+					<skipIfJarsigned>false</skipIfJarsigned>
+				</configuration>
+			</execution>
+		</executions>
+	</plugin>
+	<plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
           <version>3.3.1</version>
