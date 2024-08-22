@@ -6,7 +6,6 @@
 	}
   agent {
     kubernetes {
-      inheritFrom 'linuxtools-buildtest-pod'
       defaultContainer 'jnlp'
       yaml """
 apiVersion: v1
