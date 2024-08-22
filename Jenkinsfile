@@ -15,6 +15,7 @@ spec:
   containers:
   - name: container
     image: akurtakov/linuxtools-build-test-dependencies:latest
+    imagePullPolicy: "Always"
     tty: true
     command: [ "uid_entrypoint", "cat" ]
     resources:
