@@ -269,8 +269,9 @@
 					<goal>sign-p2-artifacts</goal>
 				</goals>
 				<configuration>
-					<keyname>F5CBCFD82F07D82E</keyname>
-					<skipIfJarsigned>false</skipIfJarsigned>
+					<signer>bc</signer>
+					<keyname>2F07D82E</keyname>
+					<skipIfJarsigned>true</skipIfJarsigned>
 				</configuration>
 			</execution>
 		</executions>
