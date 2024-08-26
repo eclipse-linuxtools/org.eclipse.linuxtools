@@ -55,21 +55,12 @@ spec:
         MAVEN_OPTS = "-Xmx2G"
   }
 	stages {
-		stage('Initialize PGP') {
-			steps {
-				container('container') {
-				withCredentials([file(credentialsId: 'secret-subkeys.asc', variable: 'KEYRING')]) {
-					sh 'gpg --batch --import "${KEYRING}"'
-					sh 'for fpr in $(gpg --list-keys --with-colons  | awk -F: \'/fpr:/ {print $10}\' | sort -u); do echo -e "5\ny\n" |  gpg --batch --command-fd 0 --expert --edit-key ${fpr} trust; done'
-				}}
-			}
-		}
 		stage('Build') {
 			steps {
 				container('container') {
-				withCredentials([string(credentialsId: 'gpg-passphrase', variable: 'KEYRING_PASSPHRASE')]) {
+				withCredentials([file(credentialsId: 'secret-subkeys.asc', variable: 'KEYRING'),string(credentialsId: 'gpg-passphrase', variable: 'KEYRING_PASSPHRASE') ]) {
 					wrap([$class: 'Xvnc', useXauthority: true]) {
-						sh """mvn clean verify -e ${env.BRANCH_NAME=='master' ? '-Psign': ''} -Dmaven.test.failure.ignore=true -ntp -Ddash.fail=true -Dgpg.passphrase="${KEYRING_PASSPHRASE}" """
+						sh '''mvn -e -Psign -Dmaven.test.failure.ignore=true -ntp -Ddash.fail=true -Dgpg.passphrase="${KEYRING_PASSPHRASE}" -Dtycho.pgp.signer.bc.secretKeys="${KEYRING}" clean verify'''
 					}
 				}}
 			}
