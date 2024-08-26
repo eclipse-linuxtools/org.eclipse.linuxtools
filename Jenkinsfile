@@ -17,7 +17,7 @@ spec:
     image: akurtakov/linuxtools-build-test-dependencies:latest
     imagePullPolicy: "Always"
     tty: true
-    command: [ "uid_entrypoint", "cat" ]
+    command: [ "cat" ]
     resources:
       requests:
         memory: "2Gi"
