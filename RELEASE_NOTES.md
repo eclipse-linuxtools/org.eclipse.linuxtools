@@ -4,6 +4,14 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 ## Next release...
 
+## 8.16.0
+
+### Docker Tooling
+
+Docker Tooling has been upgraded to 8.0.2.  This new version of Docker Client supports the latest Docker v4.33.  The Docker Client dependencies have been updated.
+
+## 8.15.0
+
 ### Move Linux Tools plug-ins to Java 21
 
 Linux Tools plug-ins now require Java 21
