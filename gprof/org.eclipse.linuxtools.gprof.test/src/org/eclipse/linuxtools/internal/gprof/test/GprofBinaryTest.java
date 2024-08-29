@@ -15,35 +15,21 @@ package org.eclipse.linuxtools.internal.gprof.test;
 import static org.eclipse.linuxtools.internal.gprof.test.STJunitUtils.BINARY_FILE;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.osgi.framework.FrameworkUtil;
 
-@RunWith(Parameterized.class)
 public class GprofBinaryTest {
 
-    @Parameters
-    public static Collection<Object[]> data() {
-        List<Object[]> params = new ArrayList<>();
-        for (File testDir : STJunitUtils.getTestDirs()) {
-            params.add(new Object[]{testDir.getName()+File.separator+BINARY_FILE});
-        }
-        return params;
+    public static Stream<String> testDirs() {
+        return Arrays.stream(STJunitUtils.getTestDirs()).map(p -> p.getName()+File.separator+BINARY_FILE);
     }
 
-    private String path;
-    public GprofBinaryTest(String path){
-        this.path = path;
-    }
-
-    @Test
-    public void testValidBinary() {
+    @ParameterizedTest @MethodSource("testDirs")
+    public void testValidBinary(String path) {
         STJunitUtils.getAbsolutePath(FrameworkUtil.getBundle(GprofBinaryTest.class).getSymbolicName(), path);
     }
 

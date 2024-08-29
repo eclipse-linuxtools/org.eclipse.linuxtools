@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gprof.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -85,7 +85,7 @@ public class STJunitUtils {
             } while (true);
 
             if (!equals) {
-                 assertEquals(message + ": not correspond ", true, false);
+                 fail(message + ": not correspond ");
             }
 
             is1.close();
@@ -96,11 +96,11 @@ public class STJunitUtils {
             }
         }catch (FileNotFoundException fnfe) {
             message += "... FAILED: One of these files may not exist";
-            assertNull(message, fnfe);
+            assertNull(fnfe, message);
         }
         catch (Exception e) {
             message += ": exception raised ... FAILED";
-            assertNull(message, e);
+            assertNull(e, message);
         }
         return equals;
     }
@@ -155,7 +155,7 @@ public class STJunitUtils {
                     }
                 }
                  msg.append("\n=========  end dump file  =========\n");
-                 assertEquals(msg.toString(), true, false);
+                 fail(msg.toString());
             }
 
             // delete dump only for successful tests
@@ -164,11 +164,11 @@ public class STJunitUtils {
             }
         }catch (FileNotFoundException e) {
             message += "... FAILED: One of these files may not exist";
-            assertNull(message, e);
+            assertNull(e, message);
         }
         catch (Exception e) {
             message += ": exception raised ... FAILED";
-            assertNull(message, e);
+            assertNull(e, message);
         }
         return equals;
     }
@@ -212,7 +212,7 @@ public class STJunitUtils {
         try {
             url = FileLocator.toFileURL(url);
         } catch (IOException e) {
-            assertNotNull("Problem locating " + relativeName + " in" + pluginId,e);
+            assertNotNull(e, "Problem locating " + relativeName + " in" + pluginId);
         }
         String filename = url.getFile();
         return filename;
@@ -237,7 +237,7 @@ public class STJunitUtils {
         );
 
         // test if there is any directory samples
-        assertNotNull("No project files to test",testDirs);
+        assertNotNull(testDirs, "No project files to test");
         return testDirs;
     }
 }

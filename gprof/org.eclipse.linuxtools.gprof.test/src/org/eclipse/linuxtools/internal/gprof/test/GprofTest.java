@@ -21,8 +21,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
 import org.eclipse.core.runtime.Path;
@@ -39,20 +39,17 @@ import org.eclipse.linuxtools.internal.gprof.view.FunctionHistogramContentProvid
 import org.eclipse.linuxtools.internal.gprof.view.GmonView;
 import org.eclipse.linuxtools.internal.gprof.view.fields.SampleProfField;
 import org.eclipse.swt.widgets.TreeColumn;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
-@RunWith(Parameterized.class)
 public class GprofTest {
 
-    @Parameters
-    public static Collection<Object[]> data() {
-        List<Object[]> params = new ArrayList<>();
+    public static Stream<Arguments> testDirs() {
+        List<Arguments> params = new ArrayList<>();
         boolean addr2line2_16 = false;
         try {
             Process p = Runtime.getRuntime().exec("addr2line --version");
@@ -132,53 +129,34 @@ public class GprofTest {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            params.add(new Object[] { gmonFile, gd, view_cg_RefFile,
-                    view_cg_DumpFile, CallGraphContentProvider.sharedInstance,
-                    false });
-            params.add(new Object[] { gmonFile, gd, view_cg2_RefFile,
-                    view_cg2_DumpFile, CallGraphContentProvider.sharedInstance,
-                    true });
-            params.add(new Object[] { gmonFile, gd, view_samplesFile_RefFile,
-                    view_samplesFile_DumpFile,
-                    FileHistogramContentProvider.sharedInstance, false });
-            params.add(new Object[] { gmonFile, gd, view_samplesFileT_RefFile,
-                    view_samplesFileT_DumpFile,
-                    FileHistogramContentProvider.sharedInstance, true });
-            params.add(new Object[] { gmonFile, gd,
-                    view_samplesFunction_RefFile,
-                    view_samplesFunction_DumpFile,
-                    FunctionHistogramContentProvider.sharedInstance, false });
-            params.add(new Object[] { gmonFile, gd,
-                    view_samplesFunctionT_RefFile,
-                    view_samplesFunctionT_DumpFile,
-                    FunctionHistogramContentProvider.sharedInstance, true });
-            params.add(new Object[] { gmonFile, gd, view_samplesFlat_RefFile,
-                    view_samplesFlat_DumpFile,
-                    FlatHistogramContentProvider.sharedInstance, false });
-            params.add(new Object[] { gmonFile, gd, view_samplesFlatT_RefFile,
-                    view_samplesFlatT_DumpFile,
-                    FlatHistogramContentProvider.sharedInstance, true });
+			params.add(Arguments.of(gmonFile, gd, view_cg_RefFile,
+					view_cg_DumpFile, CallGraphContentProvider.sharedInstance,
+					false));
+			params.add(Arguments.of(gmonFile, gd, view_cg2_RefFile,
+					view_cg2_DumpFile, CallGraphContentProvider.sharedInstance,
+					true));
+			params.add(Arguments.of(gmonFile, gd, view_samplesFile_RefFile,
+					view_samplesFile_DumpFile,
+					FileHistogramContentProvider.sharedInstance, false));
+			params.add(Arguments.of(gmonFile, gd, view_samplesFileT_RefFile,
+					view_samplesFileT_DumpFile,
+					FileHistogramContentProvider.sharedInstance, true));
+			params.add(Arguments.of(gmonFile, gd,
+					view_samplesFunction_RefFile,
+					view_samplesFunction_DumpFile,
+					FunctionHistogramContentProvider.sharedInstance, false));
+			params.add(Arguments.of(gmonFile, gd,
+					view_samplesFunctionT_RefFile,
+					view_samplesFunctionT_DumpFile,
+					FunctionHistogramContentProvider.sharedInstance, true));
+			params.add(Arguments.of(gmonFile, gd, view_samplesFlat_RefFile,
+					view_samplesFlat_DumpFile,
+					FlatHistogramContentProvider.sharedInstance, false));
+			params.add(Arguments.of(gmonFile, gd, view_samplesFlatT_RefFile,
+					view_samplesFlatT_DumpFile,
+					FlatHistogramContentProvider.sharedInstance, true));
         }
-        return params;
-    }
-
-    private File gmonFile;
-    private GmonDecoder gd;
-    private File refFile;
-    private File dumpFile;
-    private ITreeContentProvider contentProvider;
-    private boolean timeMode;
-
-    public GprofTest(File gmonFile, GmonDecoder gd, File refFile,
-            File dumpFile, ITreeContentProvider contentProvider,
-            boolean timeMode) {
-        this.gmonFile = gmonFile;
-        this.gd = gd;
-        this.refFile = refFile;
-        this.dumpFile = dumpFile;
-        this.contentProvider = contentProvider;
-        this.timeMode = timeMode;
-
+        return params.stream();
     }
 
     private void changeMode(GmonView view, boolean timeModeRequested) {
@@ -198,8 +176,10 @@ public class GprofTest {
         }
     }
 
-    @Test
-    public void testView() {
+    @ParameterizedTest @MethodSource("testDirs")
+    public void testView(File gmonFile, GmonDecoder gd, File refFile,
+            File dumpFile, ITreeContentProvider contentProvider,
+            boolean timeMode) {
         GmonView view = GmonView.displayGprofView(gd,
                 gmonFile.getAbsolutePath());
         SwitchContentProviderAction action = new SwitchContentProviderAction(

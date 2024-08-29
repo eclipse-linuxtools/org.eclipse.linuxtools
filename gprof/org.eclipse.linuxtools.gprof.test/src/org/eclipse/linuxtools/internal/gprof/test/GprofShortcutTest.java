@@ -12,8 +12,7 @@
 *******************************************************************************/
 package org.eclipse.linuxtools.internal.gprof.test;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.core.resources.ProjectScope;
@@ -34,9 +33,9 @@ import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.Provider
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchShortcut;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.FrameworkUtil;
 
 public class GprofShortcutTest extends AbstractTest {
@@ -53,7 +52,7 @@ public class GprofShortcutTest extends AbstractTest {
     ProviderLaunchShortcut shortcut;
     String launchConfigTypeId;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest2"); //$NON-NLS-1$
         ProjectScope ps = new ProjectScope(proj.getProject());
@@ -67,12 +66,8 @@ public class GprofShortcutTest extends AbstractTest {
         IConfigurationElement[] configs = extPoint.getConfigurationElements();
         for (IConfigurationElement cfg : configs) {
             if (cfg.getAttribute("id").equals(ID)){ //$NON-NLS-1$
-                try {
-                    shortcut = (ProviderLaunchShortcut) cfg.createExecutableExtension("class"); //$NON-NLS-1$
-                    launchConfigTypeId = cfg.getChildren("class")[0].getChildren("parameter")[1].getAttribute("value"); //$NON-NLS-1$
-                } catch (Exception e){
-                    fail (e.getMessage());
-                }
+                shortcut = (ProviderLaunchShortcut) cfg.createExecutableExtension("class"); //$NON-NLS-1$
+                launchConfigTypeId = cfg.getChildren("class")[0].getChildren("parameter")[1].getAttribute("value"); //$NON-NLS-1$
             }
         }
         config = createConfiguration(proj.getProject());
@@ -80,7 +75,7 @@ public class GprofShortcutTest extends AbstractTest {
          wc = config.getWorkingCopy();
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         deleteProject(proj);
         wc.delete();

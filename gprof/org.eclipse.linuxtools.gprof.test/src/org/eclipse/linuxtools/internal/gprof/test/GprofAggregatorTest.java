@@ -17,41 +17,25 @@ import static org.eclipse.linuxtools.internal.gprof.test.STJunitUtils.OUTPUT_FIL
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.stream.Stream;
 
 import org.eclipse.linuxtools.internal.gprof.utils.Aggregator;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
-@RunWith(Parameterized.class)
 public class GprofAggregatorTest {
 
-    @Parameters
-    public static Collection<Object[]> data() {
-        List<Object[]> params = new ArrayList<>();
-        for (File testDir : STJunitUtils.getTestDirs()) {
-            final String dirName = testDir.getName();
-            params.add(new Object[] { dirName });
-        }
-        return params;
+    public static Stream<String> testDirs() {
+    	return Arrays.stream(STJunitUtils.getTestDirs()).map(p -> p.getName());
     }
 
-    private String dir;
-
-    public GprofAggregatorTest(String dir) {
-        this.dir = dir;
-    }
-
-    @Test
-    public void testAggregation() throws IOException, InterruptedException {
+    @ParameterizedTest @MethodSource("testDirs")
+    public void testAggregation(String dir) throws IOException, InterruptedException {
         File directory = new File(STJunitUtils.getAbsolutePath(
                 "org.eclipse.linuxtools.gprof.test", dir));
         File gmonPath = new File(STJunitUtils.getAbsolutePath(
