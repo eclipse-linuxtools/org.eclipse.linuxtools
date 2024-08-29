@@ -4,6 +4,10 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 ## Next release...
 
+### Docker Editor
+
+Docker LS updated to version 0.13.0 from version 0.11.0 with the [following enhancements and fixes](https://github.com/rcjsuen/dockerfile-language-server/blob/v0.13.0/CHANGELOG.md#0130---2024-06-18)
+
 ## 8.16.0
 
 ### Docker Tooling
