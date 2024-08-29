@@ -19,46 +19,31 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.internal.gprof.parser.GmonDecoder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-@RunWith(Parameterized.class)
 public class GprofParserTest {
-    @Parameters
-    public static Collection<Object[]> data() {
-        List<Object[]> params = new ArrayList<>();
+    public static Stream<Arguments> testDirs() {
+        List<Arguments> params = new ArrayList<>();
         for (File testDir : STJunitUtils.getTestDirs()) {
-            params.add(new Object[] { new File(testDir, OUTPUT_FILE),
+            params.add(Arguments.of ( new File(testDir, OUTPUT_FILE),
                     new File(testDir, BINARY_FILE),
                     new File(testDir, "testParse.ref"),
-                    new File(testDir, "testParse.dump") });
+                    new File(testDir, "testParse.dump") ));
         }
-        return params;
+        return params.stream();
     }
 
-    private File gmonFile;
-    private File binaryFile;
-    private File parserRefFile;
-    private File parserDumpFile;
-
-    public GprofParserTest(File gmonFile, File binaryFile, File parserRefFile,
-            File parserDumpFile) {
-        this.gmonFile = gmonFile;
-        this.binaryFile = binaryFile;
-        this.parserRefFile = parserRefFile;
-        this.parserDumpFile = parserDumpFile;
-    }
-
-    @Test
-    public void testProcessGmonFile() throws IOException {
+    @ParameterizedTest @MethodSource("testDirs")
+    public void testProcessGmonFile(File gmonFile, File binaryFile, File parserRefFile,
+            File parserDumpFile) throws IOException {
         IBinaryObject binary = STSymbolManager.sharedInstance
                 .getBinaryObject(binaryFile.getAbsolutePath());
         final GmonDecoder gmondecoder = new GmonDecoder(binary,

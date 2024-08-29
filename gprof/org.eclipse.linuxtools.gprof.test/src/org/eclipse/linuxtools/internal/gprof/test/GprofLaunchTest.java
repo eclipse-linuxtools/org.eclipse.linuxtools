@@ -12,7 +12,8 @@
 *******************************************************************************/
 package org.eclipse.linuxtools.internal.gprof.test;
 
-import static org.junit.Assert.fail;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.core.resources.ProjectScope;
@@ -34,9 +35,9 @@ import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.Provider
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.linuxtools.profiling.ui.CProjectBuildHelpers;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.FrameworkUtil;
 
 public class GprofLaunchTest extends AbstractTest {
@@ -53,7 +54,7 @@ public class GprofLaunchTest extends AbstractTest {
     ProviderLaunchShortcut shortcut;
     String launchConfigTypeId;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest"); //$NON-NLS-1$
         ProjectScope ps = new ProjectScope(proj.getProject());
@@ -94,7 +95,7 @@ public class GprofLaunchTest extends AbstractTest {
         CProjectBuildHelpers.setOptionInCDT(proj.getProject(), optionId, true);
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         deleteProject(proj);
         wc.delete();
