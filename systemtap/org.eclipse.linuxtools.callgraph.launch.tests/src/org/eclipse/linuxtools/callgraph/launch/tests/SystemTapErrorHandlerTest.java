@@ -13,20 +13,21 @@
 
 package org.eclipse.linuxtools.callgraph.launch.tests;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapErrorHandler;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SystemTapErrorHandlerTest  {
 
     private SystemTapErrorHandler errHandler;
     private String errorString;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         errHandler = new SystemTapErrorHandler();
     }

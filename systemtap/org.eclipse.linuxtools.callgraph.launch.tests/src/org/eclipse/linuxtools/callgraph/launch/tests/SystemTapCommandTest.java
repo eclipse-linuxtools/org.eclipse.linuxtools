@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SystemTapCommandTest {
 

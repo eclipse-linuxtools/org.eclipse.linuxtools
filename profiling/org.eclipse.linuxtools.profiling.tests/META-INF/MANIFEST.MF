@@ -6,7 +6,8 @@ Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: %Bundle-Vendor.0
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.junit;bundle-version="4.10.0",
+ junit-jupiter-api,
+ org.opentest4j,
  org.eclipse.cdt.core,
  org.eclipse.ui.ide,
  org.eclipse.remote.core;bundle-version="2.0.0",

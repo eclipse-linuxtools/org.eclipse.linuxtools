@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.tools.launch.core.tests;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.remote.proxy.tests.AbstractProxyTest;
 import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class RuntimeProcessFactoryTest extends AbstractProxyTest {
 
@@ -53,11 +53,9 @@ public class RuntimeProcessFactoryTest extends AbstractProxyTest {
 				assertTrue(Path.isValidPosixPath(expectedCmdPath));
 				// If command does not exist it should return the command's name.
 				if(!expectedExist) {
-					assertTrue(testCaseMsg + "Command not exist",
-							actualCmd.contentEquals(expectedCmdPath));
+					assertTrue(actualCmd.contentEquals(expectedCmdPath), testCaseMsg + "Command not exist");
 				} else {
-					assertFalse(testCaseMsg + "Should had return a path different from command name",
-							actualCmd.contentEquals(expectedCmdPath));
+					assertFalse(actualCmd.contentEquals(expectedCmdPath), testCaseMsg + "Should had return a path different from command name");
 				}
 			} catch (IOException e) {
 				fail(testCaseMsg + "Should had returned valid path to '" + actualCmd + "' command");

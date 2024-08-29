@@ -13,9 +13,10 @@
 
 package org.eclipse.linuxtools.callgraph.tests;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-@RunWith(Suite.class)
-@Suite.SuiteClasses({MouseListenerTest.class, StapGraphParserTest.class, SystemTapGraphTest.class, SystemTapGraphViewTest.class })
+import org.junit.platform.suite.api.SelectClasses;
+import org.junit.platform.suite.api.Suite;
+
+@Suite
+@SelectClasses({MouseListenerTest.class, StapGraphParserTest.class, SystemTapGraphTest.class, SystemTapGraphViewTest.class })
 public class AllTests {
 }

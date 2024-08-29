@@ -15,7 +15,8 @@
  *     Jeff Johnston (Red Hat Inc.) - Modified for usage in Linux Tools project
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.profiling.tests;
-import static org.junit.Assert.fail;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.eclipse.cdt.core.CCProjectNature;
 import org.eclipse.cdt.core.CCorePlugin;

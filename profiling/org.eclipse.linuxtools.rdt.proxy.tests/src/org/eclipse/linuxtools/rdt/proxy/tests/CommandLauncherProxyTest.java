@@ -12,11 +12,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rdt.proxy.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +33,7 @@ import org.eclipse.linuxtools.internal.rdt.proxy.RDTCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.remote.proxy.tests.AbstractProxyTest;
 import org.eclipse.remote.core.IRemoteConnection;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("restriction")
 public class CommandLauncherProxyTest extends AbstractProxyTest {
@@ -44,7 +45,7 @@ public class CommandLauncherProxyTest extends AbstractProxyTest {
 		String[] args, env;
 		try {
 			cl =  proxyManager.getLauncher(syncProject.getProject());
-			assertTrue("Should have returned a remote launcher", cl instanceof RDTCommandLauncher);
+			assertInstanceOf(RDTCommandLauncher.class, cl, "Should have returned a remote launcher");
 		} catch (CoreException e) {
 			fail("Should have returned a launcher: " + e.getCause());
 		}
@@ -57,7 +58,7 @@ public class CommandLauncherProxyTest extends AbstractProxyTest {
 			p = cl.execute(commandPath, args, env, changeToDirectory, new NullProgressMonitor());
 			assertNotNull(p);
 			p.waitFor();
-			assertEquals("Process exited with failure", 0, p.exitValue());
+			assertEquals(0, p.exitValue(), "Process exited with failure");
 		} catch (Exception e) {
 			fail("Unable to execute " + commandPath + " on remote machine: " + e.getMessage());
 		}
@@ -81,7 +82,7 @@ public class CommandLauncherProxyTest extends AbstractProxyTest {
 			p = cl.execute(new Path("ls"), new String[]{}, new String[]{}, null, new NullProgressMonitor());
 			assertNotNull(p);
 			p.waitFor();
-			assertEquals("Process exited with failure", 0, p.exitValue());
+			assertEquals(0, p.exitValue(), "Process exited with failure");
 		} catch (CoreException | InterruptedException e) {
 			fail("Failed to open connection to execute a command: " + e.getMessage());
 		}
@@ -96,7 +97,7 @@ public class CommandLauncherProxyTest extends AbstractProxyTest {
 		String[] args, env;
 		try {
 			cl =  proxyManager.getLauncher(localProject.getProject());
-			assertTrue("Should have returned a local launcher", cl instanceof LocalLauncher);
+			assertInstanceOf(LocalLauncher.class, cl, "Should have returned a local launcher");
 		} catch (CoreException e) {
 			fail("Should have returned a launcher: " + e.getCause());
 		}
@@ -127,7 +128,7 @@ public class CommandLauncherProxyTest extends AbstractProxyTest {
 			while(p.isAlive()){}
 			// Call to waitFor() will drive to empty result
 			//p.waitFor();
-			assertEquals("Process exited with failure", 0, p.exitValue());
+			assertEquals(0, p.exitValue(), "Process exited with failure");
 		} catch (Exception e) {
 			fail("Unable to execute " + fullCmd.toString() + " on local machine: " + e.getMessage());
 		}
@@ -159,7 +160,7 @@ public class CommandLauncherProxyTest extends AbstractProxyTest {
 			} catch (IOException e) {
 				fail("Unable to read from Input Stream: " + e.getMessage());
 			}
-			assertEquals("Local proxy command output differs from Runtime.exec", ve, va);
+			assertEquals(ve, va, "Local proxy command output differs from Runtime.exec");
 		} while(va != -1);
 	}
 }

@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.profiling.tests;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
@@ -60,19 +60,19 @@ public abstract class AbstractRemoteTest extends AbstractTest {
         if (host != null) {
             HOST = host;
         }
-        assumeTrue("Skip remote tests due lack of host information", !HOST.isEmpty());
+        assumeFalse(HOST.isEmpty(), "Skip remote tests due lack of host information");
 
         String username = System.getenv("TEST_USERNAME");
         if (username != null) {
             USERNAME = username;
         }
-        assumeTrue("Skip remote tests due lack of an username for connection", !USERNAME.isEmpty());
+        assumeFalse(USERNAME.isEmpty(), "Skip remote tests due lack of an username for connection");
 
         String password = System.getenv("TEST_PASSWORD");
         if (password != null) {
             PASSWORD = password;
         }
-        assumeTrue("Skip remote tests due lack of an password for connection", !PASSWORD.isEmpty());
+        assumeFalse(PASSWORD.isEmpty(), "Skip remote tests due lack of an password for connection");
     }
 
      protected void deleteResource (String directory) {

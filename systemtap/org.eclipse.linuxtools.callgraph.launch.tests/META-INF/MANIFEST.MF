@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.callgraph.launch.tests
 Bundle-Version: 1.0.0.qualifier
-Require-Bundle: org.junit;bundle-version="4.7.0"
+Require-Bundle: junit-jupiter-api
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Fragment-Host: org.eclipse.linuxtools.callgraph.launch
