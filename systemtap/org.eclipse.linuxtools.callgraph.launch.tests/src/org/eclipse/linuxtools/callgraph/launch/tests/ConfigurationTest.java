@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.launch.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 
@@ -22,8 +22,8 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.internal.callgraph.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.callgraph.launch.LaunchStapGraph;
 import org.eclipse.linuxtools.internal.callgraph.launch.SystemTapLaunchConfigurationDelegate;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 public class ConfigurationTest extends AbstractStapTest {
 
@@ -103,7 +103,7 @@ public class ConfigurationTest extends AbstractStapTest {
         killStap();
     }
 
-    @After
+    @AfterEach
     public void deleteFiles() {
         File file = new File("/tmp/ThisFileDoesNothingDeleteIt");
         if (file.exists()) {

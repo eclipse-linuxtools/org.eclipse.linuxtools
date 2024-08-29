@@ -12,14 +12,15 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.remote.proxy.tests;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.ptp.rdt.sync.core.SyncConfig;
 import org.eclipse.ptp.rdt.sync.core.SyncConfigManager;
 import org.eclipse.ptp.rdt.sync.core.SyncFlag;
 import org.eclipse.ptp.rdt.sync.core.SyncManager;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.CoreException;
@@ -29,12 +30,9 @@ import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
 import org.eclipse.linuxtools.profiling.tests.AbstractRemoteTest;
 import org.eclipse.remote.core.IRemoteConnection;
 import org.eclipse.remote.core.exception.RemoteConnectionException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-@RunWith(JUnit4.class)
 public abstract class AbstractProxyTest extends AbstractRemoteTest {
 	protected static RemoteProxyManager proxyManager;
 	protected static final String CONNECTION_NAME = "test_connection";
@@ -43,17 +41,17 @@ public abstract class AbstractProxyTest extends AbstractRemoteTest {
 	protected ICProject syncProject = null;
 	protected final String PLUGIN = "org.eclipse.linuxtools.remote.proxy.tests";
 
-	@Before
+	@BeforeEach
 	public void setUp() throws RemoteConnectionException {
 		proxyManager = RemoteProxyManager.getInstance();
-		assertNotNull("RemoteProxyManager object should not be null", proxyManager);
+		assertNotNull(proxyManager, "RemoteProxyManager object should not be null");
 		if(connection == null) {
 			connection = createJSchConnection(CONNECTION_NAME, CONNECTION_TYPE_JSCH);
 		}
 		createTestProjects();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws CoreException {
 		if(localProject !=  null) {
 			deleteProject(localProject);

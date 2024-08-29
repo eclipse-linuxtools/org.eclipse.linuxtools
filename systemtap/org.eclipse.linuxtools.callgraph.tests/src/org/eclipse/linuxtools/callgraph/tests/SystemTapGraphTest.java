@@ -12,7 +12,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.tests;
 
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import org.eclipse.linuxtools.internal.callgraph.CallgraphView;
 import org.eclipse.linuxtools.internal.callgraph.StapGraphParser;
 import org.eclipse.linuxtools.internal.callgraph.core.StapUIJob;
 import org.eclipse.linuxtools.internal.callgraph.core.ViewFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SystemTapGraphTest {
 

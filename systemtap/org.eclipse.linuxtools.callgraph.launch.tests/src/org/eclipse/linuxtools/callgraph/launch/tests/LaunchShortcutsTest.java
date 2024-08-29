@@ -16,9 +16,9 @@ import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.internal.callgraph.launch.LaunchStapGraph;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class LaunchShortcutsTest extends AbstractStapTest {
 
@@ -27,12 +27,12 @@ public class LaunchShortcutsTest extends AbstractStapTest {
      * is sent.
      */
 
-    @Before
+    @BeforeEach
     public void prep() throws Exception {
         proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
     }
 
-    @After
+    @AfterEach
     public void clean() throws Exception {
         deleteProject(proj);
     }

@@ -21,7 +21,7 @@ import org.eclipse.linuxtools.internal.callgraph.launch.SystemTapOptionsTab;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 public class SystemTapTabTest {
 
     @Test

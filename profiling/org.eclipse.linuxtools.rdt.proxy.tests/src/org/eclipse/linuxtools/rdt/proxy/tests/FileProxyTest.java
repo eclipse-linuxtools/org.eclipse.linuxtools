@@ -12,11 +12,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rdt.proxy.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,7 +34,7 @@ import org.eclipse.linuxtools.remote.proxy.tests.AbstractProxyTest;
 import org.eclipse.ptp.rdt.sync.core.SyncConfig;
 import org.eclipse.ptp.rdt.sync.core.exceptions.MissingConnectionException;
 import org.eclipse.remote.core.IRemoteConnection;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("restriction")
 public class FileProxyTest extends AbstractProxyTest {
@@ -43,7 +44,7 @@ public class FileProxyTest extends AbstractProxyTest {
 		IRemoteFileProxy fileProxy = null;
 		try {
 			fileProxy =  proxyManager.getFileProxy(syncProject.getProject());
-			assertTrue("Should have returned a remote launcher", fileProxy instanceof RDTFileProxy);
+			assertInstanceOf(RDTFileProxy.class, fileProxy, "Should have returned a remote launcher");
 		} catch (CoreException e) {
 			fail("Should have returned a launcher: " + e.getCause());
 		}
@@ -67,7 +68,7 @@ public class FileProxyTest extends AbstractProxyTest {
 		 */
 		IFileStore fs = fileProxy.getResource(projectLocation);
 		assertNotNull(fs);
-		assertEquals("Remote connection and FileStore schemes diverge", connScheme, fs.toURI().getScheme());
+		assertEquals(connScheme, fs.toURI().getScheme(), "Remote connection and FileStore schemes diverge");
 		//assertTrue(fs.fetchInfo().isDirectory());
 
 		fs = fileProxy.getResource("/filenotexits");
@@ -127,7 +128,7 @@ public class FileProxyTest extends AbstractProxyTest {
 		IRemoteFileProxy fileProxy = null;
 		try {
 			fileProxy =  proxyManager.getFileProxy(localProject.getProject());
-			assertTrue("Should have returned a remote launcher", fileProxy instanceof LocalFileProxy);
+			assertInstanceOf(LocalFileProxy.class, fileProxy, "Should have returned a remote launcher");
 		} catch (CoreException e) {
 			fail("Should have returned a launcher: " + e.getCause());
 		}
@@ -149,7 +150,7 @@ public class FileProxyTest extends AbstractProxyTest {
 		} catch (CoreException e) {
 			fail("Unabled to get FileStore to local project: " + e.getMessage());
 		}
-		assertEquals("FileStore to local project folder diverge", expectedFileStore, actualFileStore);
+		assertEquals(expectedFileStore, actualFileStore, "FileStore to local project folder diverge");
 		assertTrue(actualFileStore.fetchInfo().isDirectory());
 
 		actualFileStore = fileProxy.getResource("/filenotexits");

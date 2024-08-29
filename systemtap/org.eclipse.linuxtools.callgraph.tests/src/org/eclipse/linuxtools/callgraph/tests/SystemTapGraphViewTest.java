@@ -13,11 +13,12 @@
 
 package org.eclipse.linuxtools.callgraph.tests;
 
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapTextView;
 import org.eclipse.linuxtools.internal.callgraph.core.ViewFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SystemTapGraphViewTest {
     private SystemTapTextView stapView = new SystemTapTextView();

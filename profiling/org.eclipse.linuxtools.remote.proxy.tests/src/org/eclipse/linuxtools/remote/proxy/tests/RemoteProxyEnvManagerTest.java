@@ -12,11 +12,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.remote.proxy.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +27,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.profiling.launch.IRemoteEnvProxyManager;
 import org.eclipse.linuxtools.profiling.launch.RemoteEnvProxyManager;
 import org.eclipse.remote.core.IRemoteConnection;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author wainersm
@@ -60,11 +61,11 @@ public class RemoteProxyEnvManagerTest extends AbstractProxyTest {
 		} catch (CoreException e) {
 			fail("Failed to get remote environment variables: " + e.getMessage());
 		}
-		assertTrue(!actualEnv.isEmpty());
+		assertFalse(actualEnv.isEmpty());
 		// Bug 469184 - it should be able to filter out some variables
 		for(Entry<String, String> entry: actualEnv.entrySet()) {
-			assertTrue("It should not hold exported functions: " + entry.getKey(), !entry.getKey().matches("BASH_FUNC_.*"));
-			assertTrue("It should not hold exported functions: " + entry.getKey(), !entry.getValue().matches("^\\("));
+			assertFalse(entry.getKey().matches("BASH_FUNC_.*"), "It should not hold exported functions: " + entry.getKey());
+			assertFalse(entry.getValue().matches("^\\("), "It should not hold exported functions: " + entry.getKey());
 		}
 
 		/*

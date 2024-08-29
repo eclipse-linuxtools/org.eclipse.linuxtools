@@ -12,13 +12,14 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.launch.tests;
 
-import static org.junit.Assert.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 
 import org.eclipse.linuxtools.internal.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.internal.callgraph.core.SystemTapCommandGenerator;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SystemTapCommandGeneratorTest extends AbstractStapTest {
 
