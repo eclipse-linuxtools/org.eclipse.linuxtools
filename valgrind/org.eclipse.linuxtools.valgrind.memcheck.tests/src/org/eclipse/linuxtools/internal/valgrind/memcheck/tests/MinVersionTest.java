@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -26,9 +26,9 @@ import org.eclipse.linuxtools.internal.valgrind.tests.ValgrindStubCommand;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class MinVersionTest extends AbstractMemcheckTest {
 
@@ -39,7 +39,7 @@ public class MinVersionTest extends AbstractMemcheckTest {
         }
     }
 
-    @Before
+    @BeforeEach
     public void prep() throws Exception {
         proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
 
@@ -52,7 +52,7 @@ public class MinVersionTest extends AbstractMemcheckTest {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws CoreException {
         restoreVersion();
 

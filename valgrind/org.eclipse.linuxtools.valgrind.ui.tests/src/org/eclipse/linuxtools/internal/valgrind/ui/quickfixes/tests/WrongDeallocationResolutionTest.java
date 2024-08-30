@@ -13,10 +13,10 @@
 
 package org.eclipse.linuxtools.internal.valgrind.ui.quickfixes.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -30,8 +30,8 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.linuxtools.internal.valgrind.tests.AbstractValgrindTest;
 import org.eclipse.linuxtools.internal.valgrind.ui.quickfixes.WrongDeallocationResolution;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 public class WrongDeallocationResolutionTest extends AbstractValgrindTest {
 
@@ -81,7 +81,7 @@ public class WrongDeallocationResolutionTest extends AbstractValgrindTest {
 	}
 
 	@Override
-	@After
+	@AfterEach
 	public void tearDown() throws CoreException {
 		deleteProject(proj);
 		super.tearDown();

@@ -12,7 +12,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.helgrind.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -30,9 +32,9 @@ import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindOptionsTab;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class LaunchConfigTabTest extends AbstractHelgrindTest {
 
@@ -41,7 +43,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
     private ValgrindOptionsTab tab;
     private HelgrindToolPage dynamicTab;
 
-    @Before
+    @BeforeEach
     public void prep() throws Exception {
         proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
 
@@ -53,7 +55,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws CoreException {
         tab.dispose();
         testShell.dispose();
@@ -87,7 +89,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
         ILaunchConfigurationWorkingCopy wc = initConfig();
         ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--tool=helgrind")); //$NON-NLS-1$
@@ -107,7 +109,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 
         ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--track-lockorders=no")); //$NON-NLS-1$
@@ -122,7 +124,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 
         ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--history-level=none")); //$NON-NLS-1$
@@ -137,7 +139,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 
         ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--history-level=approx")); //$NON-NLS-1$
@@ -153,7 +155,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 
         ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--conflict-cache-size=123456")); //$NON-NLS-1$

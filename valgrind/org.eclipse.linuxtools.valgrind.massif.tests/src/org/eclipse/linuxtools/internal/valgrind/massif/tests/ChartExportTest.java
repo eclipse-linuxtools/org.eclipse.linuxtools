@@ -12,8 +12,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,15 +29,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swtchart.extensions.charts.InteractiveChart;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PlatformUI;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ChartExportTest extends AbstractMassifTest {
     private String[] pathNames = new String[]{"chart.png", "chart.jpg", "chart.jpeg", "chart.bmp"};
     private ArrayList<IPath> paths = new ArrayList<>();
 
-    @Before
+    @BeforeEach
     public void prep() throws Exception {
         proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 
@@ -49,7 +50,7 @@ public class ChartExportTest extends AbstractMassifTest {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws CoreException {
         for (IPath path : paths) {
             File chartFile = path.toFile();
@@ -70,8 +71,7 @@ public class ChartExportTest extends AbstractMassifTest {
         IEditorInput input = PlatformUI.getWorkbench()
                 .getActiveWorkbenchWindow().getActivePage().getActiveEditor()
                 .getEditorInput();
-        assertTrue("input must be ChartEditorInput",
-                input instanceof ChartEditorInput);
+        assertInstanceOf(ChartEditorInput.class, input, "input must be ChartEditorInput");
 
         Composite control = ((ChartEditorInput) input).getChart().getChartControl();
         if (control.getSize().x == 0 || control.getSize().y == 0) {

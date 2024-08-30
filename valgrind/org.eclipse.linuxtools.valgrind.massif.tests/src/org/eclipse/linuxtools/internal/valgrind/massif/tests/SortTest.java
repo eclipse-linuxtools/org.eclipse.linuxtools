@@ -12,12 +12,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.Arrays;
-import java.util.Collection;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -30,29 +27,14 @@ import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
-@RunWith(Parameterized.class)
 public class SortTest extends AbstractMassifTest {
 
-    private int column;
-
-    public SortTest(int number) {
-        this.column = number;
-    }
-
-    @Parameters
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][] {
-        { 0 }, { 1 }, { 2 }, { 3 }, { 4 }, { 5 } });
-    }
-
-    @Before
+    @BeforeEach
     public void prep() throws Exception {
         proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 
@@ -64,14 +46,14 @@ public class SortTest extends AbstractMassifTest {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws CoreException {
         deleteProject(proj);
         super.tearDown();
     }
 
-    @Test
-    public void checkSortColumn() {
+    @ParameterizedTest @ValueSource(ints = { 0, 1, 2, 3, 4, 5 })
+    public void checkSortColumn(int column) {
         MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault()
                 .getView().getDynamicView();
         TableViewer viewer = view.getTableViewer();

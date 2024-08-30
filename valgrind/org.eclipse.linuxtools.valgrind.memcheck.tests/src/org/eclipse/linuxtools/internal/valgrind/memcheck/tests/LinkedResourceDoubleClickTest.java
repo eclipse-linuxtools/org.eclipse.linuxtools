@@ -12,15 +12,17 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -38,7 +40,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class LinkedResourceDoubleClickTest extends AbstractLinkedResourceMemcheckTest {
     private ValgrindStackFrame frame;
@@ -52,8 +54,7 @@ public class LinkedResourceDoubleClickTest extends AbstractLinkedResourceMemchec
         IEditorPart editor = PlatformUI.getWorkbench()
                 .getActiveWorkbenchWindow().getActivePage().getActiveEditor();
         IEditorInput input = editor.getEditorInput();
-        assertTrue("editor input must be file input",
-                input instanceof IFileEditorInput);
+        assertInstanceOf(IFileEditorInput.class, input, "editor input must be file input");
         IFileEditorInput fileInput = (IFileEditorInput) input;
         IFolder srcFolder = proj.getProject().getFolder("src"); //$NON-NLS-1$
         File expectedFile = new File(srcFolder.getLocation().toOSString(),
@@ -73,12 +74,11 @@ public class LinkedResourceDoubleClickTest extends AbstractLinkedResourceMemchec
 
         IEditorPart editor = PlatformUI.getWorkbench()
                 .getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-        assertTrue("editor must be text editor", editor instanceof ITextEditor);
+        assertInstanceOf(ITextEditor.class, editor, "editor must be text editor");
         ITextEditor textEditor = (ITextEditor) editor;
 
         ISelection selection = textEditor.getSelectionProvider().getSelection();
-        assertTrue("selection must be text one",
-                selection instanceof TextSelection);
+        assertInstanceOf(ITextSelection.class, selection, "selection must be text one");
         TextSelection textSelection = (TextSelection) selection;
         int line = textSelection.getStartLine() + 1; // zero-indexed
 

@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.cachegrind.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 
@@ -31,9 +31,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class LaunchConfigTabTest extends AbstractCachegrindTest {
 
@@ -42,7 +42,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
     private ValgrindOptionsTab tab;
     private CachegrindToolPage dynamicTab;
 
-    @Before
+    @BeforeEach
     public void prep() throws Exception {
         proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
 
@@ -54,7 +54,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws CoreException {
         tab.dispose();
         testShell.dispose();
@@ -85,7 +85,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
         ILaunchConfigurationWorkingCopy wc = initConfig();
         ILaunch launch = saveAndLaunch(wc, "testDefaults"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--tool=cachegrind")); //$NON-NLS-1$
@@ -122,7 +122,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 
         ILaunch launch = saveAndLaunch(wc, "testBranchSim"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--branch-sim=yes")); //$NON-NLS-1$
@@ -145,7 +145,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 
         ILaunch launch = saveAndLaunch(wc, "testI1Cache"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertTrue(cmd.contains("--I1=16384,1,16")); //$NON-NLS-1$
     }
@@ -167,7 +167,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 
         ILaunch launch = saveAndLaunch(wc, "testD1Cache"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertTrue(cmd.contains("--D1=16384,1,16")); //$NON-NLS-1$
     }
@@ -189,7 +189,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 
         ILaunch launch = saveAndLaunch(wc, "testL2Cache"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertTrue(cmd.contains("--L2=16384,1,16")); //$NON-NLS-1$
     }

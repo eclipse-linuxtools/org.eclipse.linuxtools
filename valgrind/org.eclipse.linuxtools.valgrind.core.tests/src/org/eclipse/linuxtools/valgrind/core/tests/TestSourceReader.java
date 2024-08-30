@@ -22,7 +22,6 @@ import java.util.List;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.junit.Assert;
 import org.osgi.framework.Bundle;
 
 /**
@@ -91,16 +90,6 @@ public class TestSourceReader {
      */
     public static StringBuilder[] getContentsForTest(Bundle bundle, String srcRoot, Class<?> clazz, final String testName,
             int numSections) throws IOException {
-        // Walk up the class inheritance chain until we find the test method.
-        try {
-            while (clazz.getMethod(testName).getDeclaringClass() != clazz) {
-                clazz = clazz.getSuperclass();
-            }
-        } catch (SecurityException e) {
-            Assert.fail(e.getMessage());
-        } catch (NoSuchMethodException e) {
-            Assert.fail(e.getMessage());
-        }
 
         while (true) {
             // Find and open the .java file for the class clazz.

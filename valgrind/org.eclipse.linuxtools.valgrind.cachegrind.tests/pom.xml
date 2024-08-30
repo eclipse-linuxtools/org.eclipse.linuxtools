@@ -33,7 +33,6 @@
          <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
           <product>org.eclipse.platform.ide</product>
-          <testClass>org.eclipse.linuxtools.internal.valgrind.cachegrind.tests.AllTests</testClass>
         </configuration>
       </plugin>
     </plugins>

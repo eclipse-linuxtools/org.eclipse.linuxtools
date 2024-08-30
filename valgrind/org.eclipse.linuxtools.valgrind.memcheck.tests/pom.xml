@@ -30,12 +30,7 @@
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-surefire-plugin</artifactId>
         <configuration>
-          <excludes>
-            <!-- test mojo matches TestProject be default and treats it as PojoTest -->
-            <exclude>**/Test*.class</exclude>
-          </excludes>
-          <testClass>org.eclipse.linuxtools.internal.valgrind.memcheck.tests.AllTests</testClass>
-             <useUIHarness>true</useUIHarness>
+          <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
         </configuration>
       </plugin>

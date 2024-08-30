@@ -12,7 +12,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.core;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,8 +22,10 @@ import java.io.IOException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 import org.eclipse.linuxtools.valgrind.core.tests.AbstractInlineDataTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mockito;
 
 public class ValgrindCoreParserTest extends AbstractInlineDataTest {
@@ -30,11 +34,13 @@ public class ValgrindCoreParserTest extends AbstractInlineDataTest {
 	private IValgrindMessage[] messages;
 	private ILaunch launchMock;
 	private File file;
+	@TempDir
+	File tmpfiles;
 
-	@Before
-	public void setUp() throws IOException {
+	@BeforeEach
+	public void setUp() {
 		launchMock = Mockito.mock(ILaunch.class);
-		file = tmpfiles.newFile(VALGRIND_OUT1);
+		file = new File(tmpfiles, VALGRIND_OUT1);
 	}
 
 	private void parse(File file, ILaunch l) throws IOException {
@@ -47,8 +53,8 @@ public class ValgrindCoreParserTest extends AbstractInlineDataTest {
 		parse(file, launchMock);
 	}
 
-	private void parseComment() throws IOException {
-		file = getAboveCommentAndSaveFile(VALGRIND_OUT2);
+	private void parseComment(TestInfo info) throws IOException {
+		file = getAboveCommentAndSaveFile(VALGRIND_OUT2, info);
 		parse();
 	}
 
@@ -58,24 +64,24 @@ public class ValgrindCoreParserTest extends AbstractInlineDataTest {
 		assertEquals(string, text);
 	}
 
-	@Test(expected = IOException.class)
-	public void test() throws IOException {
+	@Test
+	public void test() {
 		file.delete();
 		launchMock = null;
-		parse();
+		assertThrows(IOException.class, ()-> parse());
 	}
 
 	//this is pretend message which should be ignored
 	@Test
-	public void testLaunch() throws IOException {
-		parseComment();
+	public void testLaunch(TestInfo info) throws IOException {
+		parseComment(info);
 		assertEquals(0, messages.length);
 	}
 
 	//==00:00:00:01.175 52756728== bla bla
 	@Test
-	public void testTimestamp() throws IOException {
-		parseComment();
+	public void testTimestamp(TestInfo info) throws IOException {
+		parseComment(info);
 		assertEquals(1, messages.length);
 		assertEquals("bla bla [PID: 2]", messages[0].getText()); // TODO should be PID 52756728
 	}
@@ -83,8 +89,8 @@ public class ValgrindCoreParserTest extends AbstractInlineDataTest {
 	//==2== one
 	//==2==   two
 	@Test
-	public void testIndent() throws IOException {
-		parseComment();
+	public void testIndent(TestInfo info) throws IOException {
+		parseComment(info);
 		assertEquals(1, messages.length);
 		assertEquals(1, messages[0].getChildren().length);
 		checkMessage(0, messages, "one");
