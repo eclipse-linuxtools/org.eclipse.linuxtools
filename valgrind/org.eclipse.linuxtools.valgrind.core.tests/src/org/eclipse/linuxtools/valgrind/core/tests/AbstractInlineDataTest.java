@@ -12,17 +12,16 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.core.tests;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.io.TempDir;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 
@@ -31,52 +30,36 @@ import org.osgi.framework.FrameworkUtil;
  * Test plugin must have "src" folder on its bundle class path.
  */
 public abstract class AbstractInlineDataTest {
-	public static final String UTF_8 = "UTF-8"; //$NON-NLS-1$
-	public static final Charset CHARSET_UTF_8 = Charset.forName(UTF_8);
-	@Rule public TemporaryFolder tmpfiles = new TemporaryFolder();
-	@Rule public TestName testName = new TestName();
-
-	/**
-	 * Gets last comment section (comments that use //) above current test method
-	 * @return comment section without leading // and leading whitespaces
-	 */
-	protected String getAboveComment() {
-		return getAboveComment(getName());
-	}
-
-	/**
-	 * @return current test method name
-	 */
-	protected String getName() {
-		return testName.getMethodName();
-	}
-
+	
+	@TempDir
+	protected File tmpfiles;
+	
 	/**
 	 * Gets last comment section (comments that use //) above method with a given name
-	 * @param name method name
+	 * @param info Test info
 	 * @return comment section without leading // and leading whitespaces
 	 */
-	protected String getAboveComment(String name) {
-		return getContents(1, name)[0].toString();
+	protected String getAboveComment(TestInfo info) {
+		return getContents(1, info.getTestMethod().get().getName())[0].toString();
 	}
 
 	/**
 	 * Saves comment above test method in the named file in temp dir, if fileName is null it will get a random name.
 	 * File will be auto-removed after test is finished
 	 * @param fileName - base file name of the temp file or null
-	 * @return temp file
+	 * @param info Test info
 	 * @throws IOException if failed to write file
 	 */
-	protected File getAboveCommentAndSaveFile(String fileName) throws IOException {
-		String value = getAboveComment(getName());
-		File file = fileName == null ? tmpfiles.newFile() : tmpfiles.newFile(fileName);
+	protected File getAboveCommentAndSaveFile(String fileName, TestInfo info) throws IOException {
+		String value = getAboveComment(info);
+		File file = new File(tmpfiles, fileName);
 		saveToFile(value, file);
 		return file;
 	}
 
 	protected void saveToFile(String value, File file) throws IOException, FileNotFoundException {
 		try (FileOutputStream st = new FileOutputStream(file)) {
-			st.write(value.getBytes(CHARSET_UTF_8));
+			st.write(value.getBytes(StandardCharsets.UTF_8));
 		}
 	}
 

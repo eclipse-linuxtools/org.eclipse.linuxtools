@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.cachegrind.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 
@@ -40,18 +40,18 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class DoubleClickTest extends AbstractCachegrindTest {
-    @Before
+    @BeforeEach
     public void prep() throws Exception {
         proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws CoreException {
         deleteProject(proj);
         super.tearDown();

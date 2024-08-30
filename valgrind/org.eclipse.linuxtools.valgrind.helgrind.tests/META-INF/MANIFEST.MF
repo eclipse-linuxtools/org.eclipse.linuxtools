@@ -4,7 +4,7 @@ Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.helgrind.tests
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %Bundle-Vendor.0
-Require-Bundle: org.junit;bundle-version="4.7.0",
+Require-Bundle: junit-jupiter-api,
  org.eclipse.ui.ide;bundle-version="3.8.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy

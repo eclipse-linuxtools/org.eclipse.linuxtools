@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 
@@ -42,9 +42,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.Version;
 
 public class LaunchConfigTabTest extends AbstractMemcheckTest {
@@ -54,7 +54,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
     private ILaunchConfiguration config;
     private Shell testShell;
 
-    @Before
+    @BeforeEach
     public void setUpProject() throws Exception {
         proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
 
@@ -65,7 +65,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
         tab = new ValgrindOptionsTab();
     }
 
-    @After
+    @AfterEach
     public void cleanup() throws Exception {
         tab.dispose();
         testShell.dispose();
@@ -304,7 +304,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 
         ILaunch launch = doLaunch(config, "testAlignment"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--alignment=512")); //$NON-NLS-1$
@@ -332,7 +332,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
         dynamicTab.getLeakCheckButton().setSelection(false);
         ILaunch launch = saveAndLaunch(wc, "testNoLeakCheck"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--leak-check=no")); //$NON-NLS-1$
@@ -344,7 +344,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
         dynamicTab.getShowReachableButton().setSelection(true);
         ILaunch launch = saveAndLaunch(wc, "testShowReachable"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--show-reachable=yes")); //$NON-NLS-1$
@@ -359,7 +359,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
         dynamicTab.getLeakResCombo().select(ix);
         ILaunch launch = saveAndLaunch(wc, "testLeakResolutionMed"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--leak-resolution=med")); //$NON-NLS-1$
@@ -374,7 +374,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
         dynamicTab.getLeakResCombo().select(ix);
         ILaunch launch = saveAndLaunch(wc, "testLeakResolutionHigh"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--leak-resolution=high")); //$NON-NLS-1$
@@ -386,7 +386,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
         dynamicTab.getFreelistSpinner().setSelection(2000000);
         ILaunch launch = saveAndLaunch(wc, "testFreeListVol"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--freelist-vol=2000000")); //$NON-NLS-1$
@@ -398,7 +398,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
         dynamicTab.getGccWorkaroundButton().setSelection(true);
         ILaunch launch = saveAndLaunch(wc, "testWorkaroundGCCBugs"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--workaround-gcc296-bugs=yes")); //$NON-NLS-1$
@@ -410,7 +410,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
         dynamicTab.getPartialLoadsButton().setSelection(true);
         ILaunch launch = saveAndLaunch(wc, "testPartialLoads"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--partial-loads-ok=yes")); //$NON-NLS-1$
@@ -422,7 +422,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
         dynamicTab.getUndefValueButton().setSelection(false);
         ILaunch launch = saveAndLaunch(wc, "testUndefValueErrors"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--undef-value-errors=no")); //$NON-NLS-1$
@@ -442,7 +442,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
             tab.getMainStackSizeSpinner().setSelection(2048);
             ILaunch launch = saveAndLaunch(wc, "testMainStackFrame"); //$NON-NLS-1$
             IProcess[] p = launch.getProcesses();
-            assertTrue("process array should not be empty", p.length > 0);
+            assertTrue(p.length > 0, "process array should not be empty");
             String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
             assertEquals(0, p[0].getExitValue());
             assertTrue(cmd.contains("--main-stacksize=2048")); //$NON-NLS-1$
@@ -462,7 +462,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
             dynamicTab.getTrackOriginsButton().setSelection(true);
             ILaunch launch = saveAndLaunch(wc, "testTrackOrigins"); //$NON-NLS-1$
             IProcess[] p = launch.getProcesses();
-            assertTrue("process array should not be empty", p.length > 0);
+            assertTrue(p.length > 0, "process array should not be empty");
             String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
             assertEquals(0, p[0].getExitValue());
             assertTrue(cmd.contains("--track-origins=yes")); //$NON-NLS-1$
@@ -513,7 +513,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
         tab.getExtraOptionsText().setText(" -v  -v");
         ILaunch launch = saveAndLaunch(wc, "testExtraOptions"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("-v -v")); //$NON-NLS-1$

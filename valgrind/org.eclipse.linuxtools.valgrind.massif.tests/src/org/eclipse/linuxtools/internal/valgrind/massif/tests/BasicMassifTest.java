@@ -12,26 +12,27 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifViewPart;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class BasicMassifTest extends AbstractMassifTest {
 
-    @Before
+    @BeforeEach
     public void prep() throws Exception {
         proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws CoreException {
         deleteProject(proj);
         super.tearDown();

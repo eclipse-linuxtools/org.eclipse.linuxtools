@@ -43,8 +43,8 @@ import org.eclipse.linuxtools.internal.valgrind.launch.LaunchConfigurationConsta
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindOptionsTab;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 
@@ -61,7 +61,7 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 
 	private List<ILaunch> launches;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		launches = new ArrayList<>();
 
@@ -69,7 +69,7 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 		ValgrindLaunchPlugin.getDefault().setValgrindCommand(getValgrindCommand());
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws CoreException {
 		ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();
 		if (launches.size() > 0) {

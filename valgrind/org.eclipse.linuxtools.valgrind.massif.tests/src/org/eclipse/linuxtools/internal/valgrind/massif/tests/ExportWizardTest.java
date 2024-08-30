@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,9 +31,9 @@ import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindExportWizard;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindExportWizardPage;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ExportWizardTest extends AbstractMassifTest {
 
@@ -41,13 +41,13 @@ public class ExportWizardTest extends AbstractMassifTest {
     private WizardDialog dialog;
     private ValgrindExportWizardPage page;
 
-    @Before
+    @BeforeEach
     public void prep() throws Exception {
         proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws CoreException {
         deleteProject(proj);
         // close dialog just in case

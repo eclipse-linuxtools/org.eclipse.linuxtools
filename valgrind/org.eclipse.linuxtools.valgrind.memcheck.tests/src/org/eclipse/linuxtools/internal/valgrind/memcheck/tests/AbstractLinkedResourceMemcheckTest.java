@@ -12,7 +12,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.URL;
 
@@ -23,13 +24,13 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 public abstract class AbstractLinkedResourceMemcheckTest extends
         AbstractMemcheckTest {
 
-    @Before
+    @BeforeEach
     public void linkedResourceSetUp() throws Exception {
         proj = createProject(getBundle(), "linkedTest"); //$NON-NLS-1$
 
@@ -58,7 +59,7 @@ public abstract class AbstractLinkedResourceMemcheckTest extends
         buildProject(proj);
     }
 
-    @After
+    @AfterEach
     public void cleanupLinkedResource() throws CoreException {
         deleteProject(proj);
     }

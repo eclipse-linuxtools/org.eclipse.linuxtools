@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -33,9 +33,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class LaunchConfigTabTest extends AbstractMassifTest {
 
@@ -44,7 +44,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
     private ILaunchConfiguration config;
     private Shell testShell;
 
-    @Before
+    @BeforeEach
     public void prep() throws Exception {
         proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 
@@ -56,7 +56,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws CoreException {
         tab.dispose();
         testShell.dispose();
@@ -92,7 +92,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
         ILaunchConfigurationWorkingCopy wc = initConfig();
         ILaunch launch = saveAndLaunch(wc, "testDefaults"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--tool=massif")); //$NON-NLS-1$
@@ -127,7 +127,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
         dynamicTab.getHeapButton().setSelection(false);
         ILaunch launch = saveAndLaunch(wc, "testHeap"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--heap=no")); //$NON-NLS-1$
@@ -140,7 +140,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
         dynamicTab.getHeapAdminSpinner().setSelection(30);
         ILaunch launch = saveAndLaunch(wc, "testHeapAdmin"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--heap-admin=30")); //$NON-NLS-1$
@@ -153,7 +153,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
         dynamicTab.getStacksButton().setSelection(true);
         ILaunch launch = saveAndLaunch(wc, "testStacks"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--stacks=yes")); //$NON-NLS-1$
@@ -166,7 +166,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
         dynamicTab.getDepthSpinner().setSelection(50);
         ILaunch launch = saveAndLaunch(wc, "testDepth"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--depth=50")); //$NON-NLS-1$
@@ -179,7 +179,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
         dynamicTab.getAllocFnList().add("foo"); //$NON-NLS-1$
         ILaunch launch = saveAndLaunch(wc, "testAllocFn"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--alloc-fn=foo")); //$NON-NLS-1$
@@ -193,7 +193,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
         dynamicTab.getAllocFnList().add("bar"); //$NON-NLS-1$
         ILaunch launch = saveAndLaunch(wc, "testAllocFnMultiple"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--alloc-fn=foo")); //$NON-NLS-1$
@@ -207,7 +207,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
         dynamicTab.getAllocFnList().add("operator new(unsigned)"); //$NON-NLS-1$
         ILaunch launch = saveAndLaunch(wc, "testAllocFnSpace"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--alloc-fn=operator new(unsigned)")); //$NON-NLS-1$
@@ -220,7 +220,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
         dynamicTab.getThresholdSpinner().setSelection(20);
         ILaunch launch = saveAndLaunch(wc, "testThreshold"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--threshold=2.0")); //$NON-NLS-1$
@@ -233,7 +233,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
         dynamicTab.getPeakInaccuracySpinner().setSelection(0);
         ILaunch launch = saveAndLaunch(wc, "testPeakInaccuracy"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--peak-inaccuracy=0.0")); //$NON-NLS-1$
@@ -253,7 +253,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
         dynamicTab.getTimeUnitCombo().select(ix);
         ILaunch launch = saveAndLaunch(wc, "testTimeUnitBytes"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--time-unit=B")); //$NON-NLS-1$
@@ -273,7 +273,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
         dynamicTab.getTimeUnitCombo().select(ix);
         ILaunch launch = saveAndLaunch(wc, "testTimeUnitMilliseconds"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--time-unit=ms")); //$NON-NLS-1$
@@ -286,7 +286,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
         dynamicTab.getDetailedFreqSpinner().setSelection(1);
         ILaunch launch = saveAndLaunch(wc, "testDetailedFreq"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--detailed-freq=1")); //$NON-NLS-1$
@@ -299,7 +299,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
         dynamicTab.getMaxSnapshotsSpinner().setSelection(200);
         ILaunch launch = saveAndLaunch(wc, "testMaxSpapshots"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--max-snapshots=200")); //$NON-NLS-1$
@@ -323,7 +323,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 
         ILaunch launch = doLaunch(config, "testAlignment"); //$NON-NLS-1$
         IProcess[] p = launch.getProcesses();
-        assertTrue("process array should not be empty", p.length > 0);
+        assertTrue(p.length > 0, "process array should not be empty");
         String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
         assertEquals(0, p[0].getExitValue());
         assertTrue(cmd.contains("--alignment=512")); //$NON-NLS-1$

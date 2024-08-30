@@ -4,7 +4,7 @@ Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.massif.tests
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %Bundle-Vendor.0
-Require-Bundle: org.junit;bundle-version="4.7.0"
+Require-Bundle: junit-jupiter-api, junit-jupiter-params
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin

@@ -8,7 +8,7 @@ Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.junit;bundle-version="4.7.0"
+ junit-jupiter-api
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.cdt.launch,

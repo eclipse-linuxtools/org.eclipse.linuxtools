@@ -12,9 +12,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
@@ -51,7 +52,7 @@ public abstract class AbstractMassifTest extends AbstractValgrindTest {
         IEditorPart editor = PlatformUI.getWorkbench()
                 .getActiveWorkbenchWindow().getActivePage().getActiveEditor();
         IEditorInput input = editor.getEditorInput();
-        assertTrue(input instanceof IFileEditorInput);
+        assertInstanceOf(IFileEditorInput.class, input);
         IFileEditorInput fileInput = (IFileEditorInput) input;
         IResource expectedResource = proj.findMember(node.getFilename());
         assertNotNull(expectedResource);

@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.cachegrind.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.core.runtime.CoreException;
@@ -24,21 +24,21 @@ import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindFile;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindOutput;
 import org.eclipse.linuxtools.internal.valgrind.launch.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class MultiProcessTest extends AbstractCachegrindTest {
     private ICProject refProj;
 
-    @Before
+    @BeforeEach
     public void prep() throws Exception {
         refProj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
         proj = createProjectAndBuild("multiProcTest"); //$NON-NLS-1$
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws CoreException {
         deleteProject(proj);
         deleteProject(refProj);

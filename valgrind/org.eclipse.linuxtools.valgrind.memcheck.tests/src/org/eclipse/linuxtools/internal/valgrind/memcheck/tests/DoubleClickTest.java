@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
@@ -39,14 +39,14 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class DoubleClickTest extends AbstractMemcheckTest {
     private ValgrindStackFrame frame;
 
-    @Before
+    @BeforeEach
     public void prep() throws Exception {
         proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
     }
@@ -81,7 +81,7 @@ public class DoubleClickTest extends AbstractMemcheckTest {
     }
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws CoreException {
         deleteProject(proj);
         super.tearDown();
@@ -98,8 +98,7 @@ public class DoubleClickTest extends AbstractMemcheckTest {
                 .getActiveWorkbenchWindow().getActivePage().getActiveEditor();
         IEditorInput input = editor.getEditorInput();
 
-        assertTrue("Input should be IFileEditorInput",
-                input instanceof IFileEditorInput);
+        assertInstanceOf(IFileEditorInput.class, input, "Input should be IFileEditorInput");
         IFileEditorInput fileInput = (IFileEditorInput) input;
         File expectedFile = new File(proj.getProject().getLocation()
                 .toOSString(), frame.getFile());
@@ -118,13 +117,11 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 
         IEditorPart editor = PlatformUI.getWorkbench()
                 .getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-        assertTrue("editor should be ITextEditor",
-                editor instanceof ITextEditor);
+        assertInstanceOf(ITextEditor.class, editor, "editor should be ITextEditor");
         ITextEditor textEditor = (ITextEditor) editor;
 
         ISelection selection = textEditor.getSelectionProvider().getSelection();
-        assertTrue("selection must be TextSelection",
-                selection instanceof TextSelection);
+        assertInstanceOf(TextSelection.class, selection, "selection must be TextSelection");
         TextSelection textSelection = (TextSelection) selection;
         int line = textSelection.getStartLine() + 1; // zero-indexed
 
@@ -143,13 +140,11 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 
         IEditorPart editor = PlatformUI.getWorkbench()
                 .getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-        assertTrue("editor should be ITextEditor",
-                editor instanceof ITextEditor);
+        assertInstanceOf(ITextEditor.class, editor, "editor should be ITextEditor");
         ITextEditor textEditor = (ITextEditor) editor;
 
         ISelection selection = textEditor.getSelectionProvider().getSelection();
-        assertTrue("selection must be TextSelection",
-                selection instanceof TextSelection);
+        assertInstanceOf(TextSelection.class, selection, "selection must be TextSelection");
         TextSelection textSelection = (TextSelection) selection;
         int line = textSelection.getStartLine() + 1; // zero-indexed
 
