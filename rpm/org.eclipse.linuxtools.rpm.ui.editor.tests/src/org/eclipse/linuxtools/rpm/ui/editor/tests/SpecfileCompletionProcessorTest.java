@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -31,7 +31,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SpecfileCompletionProcessorTest extends FileTestCase {
 
@@ -101,14 +101,14 @@ public class SpecfileCompletionProcessorTest extends FileTestCase {
 		ICompletionProposal[] proposals = processor.computeCompletionProposals(editor.getSpecfileSourceViewer(),
 				BUILD_REQUIRES.length());
 
-		assertTrue("Cannot perform test; not enough proposals", proposals.length > 1);
+		assertTrue(proposals.length > 1, "Cannot perform test; not enough proposals");
 
 		ICompletionProposal previous = proposals[0];
 
 		for (int i = 1; i < proposals.length; i++) {
 			ICompletionProposal current = proposals[i];
-			assertTrue("Proposals are not in alphabetical order",
-					previous.getDisplayString().compareToIgnoreCase(current.getDisplayString()) < 0);
+			assertTrue(previous.getDisplayString().compareToIgnoreCase(current.getDisplayString()) < 0,
+					"Proposals are not in alphabetical order");
 			previous = current;
 		}
 

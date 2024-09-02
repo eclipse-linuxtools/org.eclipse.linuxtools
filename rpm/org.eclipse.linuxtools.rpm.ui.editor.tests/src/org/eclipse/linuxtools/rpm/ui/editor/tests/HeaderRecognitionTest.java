@@ -13,17 +13,13 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-/**
- * @author overholt
- *
- */
 public class HeaderRecognitionTest extends FileTestCase {
 
 	@Test

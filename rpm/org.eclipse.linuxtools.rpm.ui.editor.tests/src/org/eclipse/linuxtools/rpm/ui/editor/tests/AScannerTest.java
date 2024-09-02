@@ -19,7 +19,7 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 public abstract class AScannerTest extends FileTestCase {
 
@@ -32,7 +32,7 @@ public abstract class AScannerTest extends FileTestCase {
 	public SpecfileEditor editor;
 
 	@Override
-	@Before
+	@BeforeEach
 	public void setUp() throws CoreException {
 		super.setUp();
 		newFile(getContents());

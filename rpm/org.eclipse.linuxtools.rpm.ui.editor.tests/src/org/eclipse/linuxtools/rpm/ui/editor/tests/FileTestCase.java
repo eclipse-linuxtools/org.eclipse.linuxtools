@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -31,12 +31,11 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Test case providing all the objects needed for the rpm editor tests.
- *
  */
 public abstract class FileTestCase {
 
@@ -49,7 +48,7 @@ public abstract class FileTestCase {
 	FileEditorInput fei;
 	protected SpecfileEditor editor;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws CoreException {
 		testProject = new SpecfileTestProject();
 		String fileName = "test" + this.getClass().getSimpleName() + ".spec";
@@ -59,7 +58,7 @@ public abstract class FileTestCase {
 		specfile = new Specfile();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws CoreException {
 		testProject.dispose();
 	}

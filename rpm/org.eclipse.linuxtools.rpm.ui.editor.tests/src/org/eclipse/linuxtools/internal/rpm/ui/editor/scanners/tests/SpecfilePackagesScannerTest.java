@@ -12,9 +12,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,9 +30,9 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConst
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfilePackagesScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest;
 import org.eclipse.ui.PlatformUI;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class SpecfilePackagesScannerTest extends AScannerTest {
 
@@ -45,30 +44,22 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 	private static final String P_RPM_LIST_FILEPATH = "/tmp/pkglist1";
 	private static ColorRegistry colors;
 
-	@BeforeClass
-	public static void init() {
+	@BeforeAll
+	public static void init() throws IOException {
 		Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.P_RPM_LIST_FILEPATH,
 				P_RPM_LIST_FILEPATH);
 		Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD, false);
 
-		try {
-			Files.write(Paths.get(P_RPM_LIST_FILEPATH), "setup\ntest_underscore\n".getBytes());
-		} catch (IOException e) {
-			fail(e.getMessage());
-		}
+		Files.write(Paths.get(P_RPM_LIST_FILEPATH), "setup\ntest_underscore\n".getBytes());
 		// we ensure that proposals are rebuild
 		Activator.packagesList = null;
 		scanner = new SpecfilePackagesScanner();
 		colors = PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getColorRegistry();
 	}
 
-	@AfterClass
-	public static void cleanUp() {
-		try {
-			Files.deleteIfExists(Paths.get(P_RPM_LIST_FILEPATH));
-		} catch (IOException e) {
-			fail(e.getMessage());
-		}
+	@AfterAll
+	public static void cleanUp() throws IOException {
+		Files.deleteIfExists(Paths.get(P_RPM_LIST_FILEPATH));
 	}
 
 	@Override

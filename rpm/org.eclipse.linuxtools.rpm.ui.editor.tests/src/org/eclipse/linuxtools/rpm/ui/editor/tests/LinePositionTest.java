@@ -13,13 +13,13 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Collection;
 
 import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileSource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class LinePositionTest extends FileTestCase {
 	@Test

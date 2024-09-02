@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IRegion;
@@ -26,11 +26,11 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SourcesFileHyperlinkDetectorTest extends FileTestCase {
-	@Before
+	@BeforeEach
 	public void init() throws CoreException {
 		super.setUp();
 		String testText = "Source0: test.zip\n" + "Patch0: test.patch\n" + "Source1: www.example.com/test.zip\n"

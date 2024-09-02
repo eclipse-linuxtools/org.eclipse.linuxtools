@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.ui.editor.actions.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -24,9 +24,9 @@ import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SpecfileChangelogFormatterTest extends FileTestCase {
 
@@ -37,7 +37,7 @@ public class SpecfileChangelogFormatterTest extends FileTestCase {
 	public final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("EEE MMM d yyyy");
 
 	@Override
-	@Before
+	@BeforeEach
 	public void setUp() throws CoreException {
 		super.setUp();
 		newFile("%changelog");
@@ -47,7 +47,7 @@ public class SpecfileChangelogFormatterTest extends FileTestCase {
 	}
 
 	@Override
-	@After
+	@AfterEach
 	public void tearDown() {
 		closeEditor(editor);
 	}
