@@ -13,12 +13,12 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.eclipse.linuxtools.internal.rpm.ui.editor.outline.SpecfileLabelProvider;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case to make sure that the label provider is filtering out some macros
@@ -29,7 +29,7 @@ public class LabelProviderTest extends FileTestCase {
 	private SpecfileLabelProvider labelProvider;
 	private String correctResult = "eclipse-plugin";
 
-	@Before
+	@BeforeEach
 	public void initialize() {
 		labelProvider = new SpecfileLabelProvider();
 	}

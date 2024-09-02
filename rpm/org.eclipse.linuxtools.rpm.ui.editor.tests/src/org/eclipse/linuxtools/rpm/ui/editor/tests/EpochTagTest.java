@@ -13,10 +13,10 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class EpochTagTest extends FileTestCase {
 

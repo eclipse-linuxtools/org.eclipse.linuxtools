@@ -13,7 +13,7 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,14 +23,14 @@ import java.util.List;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmPackageProposalsList;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.preferences.PreferenceConstants;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class RpmPackageProposalsListTest {
 
 	private RpmPackageProposalsList packageProposalsList;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws IOException {
 		Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist");
 		Files.write(Paths.get("/tmp/pkglist"), "setup\ntest\nrpm\n".getBytes());

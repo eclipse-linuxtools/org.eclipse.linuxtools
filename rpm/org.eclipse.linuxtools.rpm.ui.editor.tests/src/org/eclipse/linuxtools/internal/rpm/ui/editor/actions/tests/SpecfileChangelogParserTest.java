@@ -12,17 +12,17 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.ui.editor.actions.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.linuxtools.internal.rpm.ui.editor.actions.SpecfileChangelogParser;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class SpecfileChangelogParserTest {
 
 	private static SpecfileChangelogParser parser;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() {
 		parser = new SpecfileChangelogParser();
 	}

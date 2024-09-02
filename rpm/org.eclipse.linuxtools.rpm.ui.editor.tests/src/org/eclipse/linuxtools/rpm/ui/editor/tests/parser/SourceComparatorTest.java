@@ -10,18 +10,17 @@
  * Contributors:
  *    Red Hat - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.linuxtools.rpm.ui.editor.tests.parser;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.linuxtools.internal.rpm.ui.editor.parser.SpecfileSource;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SourceComparatorTest extends FileTestCase {
 

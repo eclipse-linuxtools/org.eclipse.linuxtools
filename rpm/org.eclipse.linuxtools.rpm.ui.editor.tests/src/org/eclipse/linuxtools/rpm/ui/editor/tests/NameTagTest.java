@@ -10,12 +10,11 @@
  * Contributors:
  *    Red Hat - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class NameTagTest extends FileTestCase {
 	@Test

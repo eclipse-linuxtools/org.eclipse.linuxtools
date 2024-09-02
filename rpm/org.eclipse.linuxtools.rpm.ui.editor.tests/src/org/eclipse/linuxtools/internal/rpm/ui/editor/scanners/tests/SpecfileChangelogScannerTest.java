@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.text.TextAttribute;
@@ -24,8 +24,8 @@ import org.eclipse.linuxtools.internal.rpm.ui.editor.ISpecfileColorConstants;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.scanners.SpecfileChangelogScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest;
 import org.eclipse.ui.PlatformUI;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class SpecfileChangelogScannerTest extends AScannerTest {
 
@@ -36,7 +36,7 @@ public class SpecfileChangelogScannerTest extends AScannerTest {
 	private static SpecfileChangelogScanner scanner;
 	private static ColorRegistry colors;
 
-	@BeforeClass
+	@BeforeAll
 	public static void init() {
 		scanner = new SpecfileChangelogScanner();
 		colors = PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getColorRegistry();

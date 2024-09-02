@@ -12,16 +12,16 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink.tests;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.hyperlink.SourcesFileCreateHyperlink;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SourcesFileCreateHyperlinkTest extends FileTestCase {
-	@Before
+	@BeforeEach
 	public void init() throws CoreException {
 		super.setUp();
 		String testText = "Patch0: test\n";

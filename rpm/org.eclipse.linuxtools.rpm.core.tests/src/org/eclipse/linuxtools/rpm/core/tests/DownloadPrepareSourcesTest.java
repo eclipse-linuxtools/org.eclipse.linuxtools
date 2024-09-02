@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.core.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -39,10 +39,10 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
 import org.eclipse.linuxtools.rpm.core.utils.DownloadJob;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.FrameworkUtil;
 
 /**
@@ -60,7 +60,7 @@ public class DownloadPrepareSourcesTest {
 	/**
 	 * Prepare the workspace
 	 */
-	@BeforeClass
+	@BeforeAll
 	public static void setUpBeforeClass() {
 		workspace = ResourcesPlugin.getWorkspace();
 		root = workspace.getRoot();
@@ -72,7 +72,7 @@ public class DownloadPrepareSourcesTest {
 	 *
 	 * @throws CoreException
 	 */
-	@Before
+	@BeforeEach
 	public void setUpBeforeTests() throws CoreException {
 		testProject = root.getProject("testHelloWorld");
 		testProject.create(monitor);
@@ -85,7 +85,7 @@ public class DownloadPrepareSourcesTest {
 	 *
 	 * @throws CoreException
 	 */
-	@After
+	@AfterEach
 	public void cleanUpAfterTests() throws CoreException {
 		if (testProject != null && testProject.exists()) {
 			testProject.delete(true, true, monitor);
@@ -144,7 +144,7 @@ public class DownloadPrepareSourcesTest {
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		IStatus is = rpmProject.buildPrep(bos);
-		assertTrue("Status should have been OK but is:" + is.toString(), is.isOK());
+		assertTrue(is.isOK(), "Status should have been OK but is:" + is.toString());
 
 		checkPreparedSources(rpmProject, RPMProjectLayout.RPMBUILD);
 	}
@@ -167,7 +167,7 @@ public class DownloadPrepareSourcesTest {
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		IStatus is = rpmProject.buildPrep(bos);
-		assertTrue("Status should have been OK but is:" + is.toString(), is.isOK());
+		assertTrue(is.isOK(), "Status should have been OK but is:" + is.toString());
 
 		checkPreparedSources(rpmProject, RPMProjectLayout.FLAT);
 	}

@@ -10,11 +10,10 @@
  * Contributors:
  *    Red Hat - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.linuxtools.rpm.ui.editor.tests.parser;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.internal.rpm.ui.editor.UiUtils;
@@ -23,8 +22,8 @@ import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.SpecfileTestFailure;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SpecfileDefineTest extends FileTestCase {
 
@@ -51,7 +50,7 @@ public class SpecfileDefineTest extends FileTestCase {
 					"Version: 2.3.0" + "\n";
 
 	@Override
-	@Before
+	@BeforeEach
 	public void setUp() throws CoreException {
 		super.setUp();
 		newFile(testSpec);

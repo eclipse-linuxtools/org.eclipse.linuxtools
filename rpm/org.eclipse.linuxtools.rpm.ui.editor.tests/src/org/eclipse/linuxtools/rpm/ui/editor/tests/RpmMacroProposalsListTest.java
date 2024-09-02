@@ -10,24 +10,23 @@
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 
 import org.eclipse.linuxtools.internal.rpm.ui.editor.RpmMacroProposalsList;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class RpmMacroProposalsListTest {
 
 	RpmMacroProposalsList macroProposalsList;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		macroProposalsList = new RpmMacroProposalsList();
 	}
