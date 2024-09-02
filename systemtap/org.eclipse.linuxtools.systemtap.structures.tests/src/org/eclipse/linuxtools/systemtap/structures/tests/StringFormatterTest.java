@@ -10,20 +10,19 @@
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
-
 package org.eclipse.linuxtools.systemtap.structures.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.eclipse.linuxtools.systemtap.structures.IFormattingStyles;
 import org.eclipse.linuxtools.systemtap.structures.StringFormatter;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class StringFormatterTest {
 
-    @Before
+    @BeforeEach
     public void setUp(){
         formatter = new StringFormatter();
     }

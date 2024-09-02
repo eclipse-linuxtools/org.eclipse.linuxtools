@@ -10,58 +10,56 @@
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
-
 package org.eclipse.linuxtools.systemtap.structures.tests.runnable;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.systemtap.structures.runnable.Command;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class CommandTest {
 
-    @Before
+    @BeforeEach
     public void setUp() {
         tc = new Command(new String[] {"ls", "/home/"});
     }
 
     @Test
     public void testCommand() {
-        assertNotNull("Command not null", tc);
+        assertNotNull(tc, "Command not null");
 
         tc.dispose();
         tc = new Command(null);
-        assertNotNull("Command not null", tc);
+        assertNotNull(tc, "Command not null");
 
         tc.dispose();
         tc = new Command(new String[] {});
-        assertNotNull("Command not null", tc);
+        assertNotNull(tc, "Command not null");
 
         tc.dispose();
         tc = new Command(new String[] {""});
-        assertNotNull("Command not null", tc);
+        assertNotNull(tc, "Command not null");
 
         tc.dispose();
         tc = new Command(new String[] {"a"});
-        assertNotNull("Command not null", tc);
+        assertNotNull(tc, "Command not null");
 
         tc.dispose();
         tc = new Command(new String[] {"ls", "/"});
-        assertNotNull("Command not null", tc);
+        assertNotNull(tc, "Command not null");
     }
 
     @Test
     public void testIsFinished() {
-        assertTrue("Not finished", tc.isRunning());
+        assertTrue(tc.isRunning(), "Not finished");
         tc.stop();
-        assertFalse("Finished", tc.isRunning());
+        assertFalse(tc.isRunning(), "Finished");
     }
 
     @Test
@@ -107,7 +105,7 @@ public class CommandTest {
         assertTrue(tc.isDisposed());
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         tc.dispose();
         assertTrue(tc.isDisposed());

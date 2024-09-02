@@ -10,23 +10,22 @@
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
-
 package org.eclipse.linuxtools.systemtap.ui.consolelog.test.structures;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.consolelog.structures.ErrorStreamDaemon;
 import org.eclipse.linuxtools.systemtap.structures.runnable.StreamGobbler;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ConsoleStreamDaemon;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ErrorStreamDaemonTest {
 
-    @Before
+	@BeforeEach
     public void setUp() {
         StreamGobbler gobbler = new StreamGobbler(System.in);
         gobbler.start();

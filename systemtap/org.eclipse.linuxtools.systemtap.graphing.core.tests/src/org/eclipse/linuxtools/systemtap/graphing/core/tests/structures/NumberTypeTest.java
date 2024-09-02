@@ -10,14 +10,13 @@
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
-
 package org.eclipse.linuxtools.systemtap.graphing.core.tests.structures;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.linuxtools.systemtap.graphing.core.structures.NumberType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class NumberTypeTest {
     @Test

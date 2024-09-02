@@ -13,15 +13,15 @@
 
 package org.eclipse.linuxtools.systemtap.structures.tests.runnable;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.InputStream;
 
 import org.eclipse.linuxtools.systemtap.structures.runnable.StreamGobbler;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class StreamGobblerTest{
 
@@ -36,7 +36,7 @@ public class StreamGobblerTest{
         }
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         sg = new StreamGobbler(new TestStream());
         sg.start();
@@ -44,27 +44,27 @@ public class StreamGobblerTest{
 
     @Test
     public void testStreamGobbler() {
-        assertNotNull("StreamGobbler not null", sg);
+        assertNotNull(sg, "StreamGobbler not null");
 
         sg = new StreamGobbler(null);
-        assertNotNull("StreamGobbler not null", sg);
+        assertNotNull(sg, "StreamGobbler not null");
 
         sg = new StreamGobbler(new TestStream());
-        assertNotNull("StreamGobbler not null", sg);
+        assertNotNull(sg, "StreamGobbler not null");
     }
 
     @Test
     public void testIsRunning() {
-        assertTrue("StreamGobbler running", sg.isRunning());
+        assertTrue(sg.isRunning(), "StreamGobbler running");
         sg.stop();
-        assertFalse("StreamGobbler stopped", sg.isRunning());
+        assertFalse(sg.isRunning(), "StreamGobbler stopped");
     }
 
     @Test
     public void testStop() {
-        assertTrue("StreamGobbler running", sg.isRunning());
+        assertTrue(sg.isRunning(), "StreamGobbler running");
         sg.stop();
-        assertFalse("StreamGobbler stopped", sg.isRunning());
+        assertFalse(sg.isRunning(), "StreamGobbler stopped");
     }
 
     @Test

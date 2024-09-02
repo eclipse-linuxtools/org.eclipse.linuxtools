@@ -10,20 +10,19 @@
  * Contributors:
  *    IBM Corporation - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.linuxtools.systemtap.ui.consolelog.test.structures;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ScriptConsoleTest {
 
-    @Before
+	@BeforeEach
     public void setUp() {
         console = ScriptConsole.getInstance("test");
     }

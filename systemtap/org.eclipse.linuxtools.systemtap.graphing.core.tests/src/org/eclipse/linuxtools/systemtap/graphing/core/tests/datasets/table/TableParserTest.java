@@ -10,21 +10,19 @@
  * Contributors:
  *    IBM Corporation - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.linuxtools.systemtap.graphing.core.tests.datasets.table;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.IDataEntry;
 import org.eclipse.linuxtools.systemtap.graphing.core.datasets.table.TableParser;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TableParserTest {
-
-    @Before
+    @BeforeEach
     public void setUp() {
         parser = new TableParser(new String[] {"\\d+", "(\\D+)", "\\d+", "\\D+"}, "\n\n");
     }

@@ -13,26 +13,26 @@
 
 package org.eclipse.linuxtools.systemtap.structures.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.linuxtools.systemtap.structures.LoggingStreamDaemon;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class LoggingStreamDaemonTest {
 
     private List<File> tmpFiles = new ArrayList<>();
     private LoggingStreamDaemon daemon;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         tmpFiles.clear();
         daemon = new LoggingStreamDaemon();
@@ -117,7 +117,7 @@ public class LoggingStreamDaemonTest {
         assertNull(daemon.getOutput());
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         daemon.dispose();
         assertNull(daemon.getOutput());
