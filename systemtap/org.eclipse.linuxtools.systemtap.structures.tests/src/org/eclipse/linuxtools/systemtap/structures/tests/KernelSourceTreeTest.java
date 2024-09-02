@@ -13,26 +13,26 @@
 
 package org.eclipse.linuxtools.systemtap.structures.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.linuxtools.systemtap.structures.KernelSourceTree;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class KernelSourceTreeTest {
 
-    @Before
+    @BeforeEach
     public void setUp() {
         kst = new KernelSourceTree();
     }
 
     @Test
     public void testGetTree() {
-        assertNull("Inital tree is null", kst.getTree());
+        assertNull(kst.getTree(), "Inital tree is null");
     }
 
     @Test
@@ -42,26 +42,26 @@ public class KernelSourceTreeTest {
         String direct = null;    //Null
         String[] excluded = null;
         kst.buildKernelTree(direct, excluded);
-        assertNull("Null directory", kst.getTree());
+        assertNull(kst.getTree(), "Null directory");
 
         direct = "";    //Empty string for directory
         kst.buildKernelTree(direct, excluded);
-        assertNull("Empty string directory", kst.getTree());
+        assertNull(kst.getTree(), "Empty string directory");
 
         direct = "/noSuchDirectory/";    //Missing folder
         kst.buildKernelTree(direct, excluded);
-        assertEquals("Missing directory", 0, kst.getTree().getChildCount());
+        assertEquals(0, kst.getTree().getChildCount(), "Missing directory");
 
         direct = "/root/";    //Inaccessible
         kst.buildKernelTree(direct, excluded);
-        assertEquals("Inaccessable directory", 0, kst.getTree().getChildCount());
+        assertEquals(0, kst.getTree().getChildCount(), "Inaccessable directory");
 
         direct = "/bin/";    //No .c or .h files
         kst.buildKernelTree(direct, excluded);
         t = kst.getTree();
-        assertEquals("Bin folder item count", 0, t.getChildCount());
-        assertTrue("Bin folder name", "bin".equals(t.toString()));
-        assertTrue("Bin has file", t.getData() instanceof IFileStore);
+        assertEquals(0, t.getChildCount(), "Bin folder item count");
+        assertEquals("bin", t.toString(), "Bin folder name");
+        assertInstanceOf(IFileStore.class, t.getData(), "Bin has file");
 
         excluded = new String[] {".git"};
         direct = "/tmp/";    //No .c or .h files

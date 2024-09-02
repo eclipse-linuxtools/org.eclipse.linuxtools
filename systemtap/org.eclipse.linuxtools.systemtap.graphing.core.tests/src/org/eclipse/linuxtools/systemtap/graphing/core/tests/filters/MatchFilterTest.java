@@ -10,19 +10,18 @@
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
-
 package org.eclipse.linuxtools.systemtap.graphing.core.tests.filters;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.linuxtools.systemtap.graphing.core.filters.MatchFilter;
 import org.eclipse.linuxtools.systemtap.graphing.core.tests.MockDataSet;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class MatchFilterTest  {
 
@@ -65,5 +64,4 @@ public class MatchFilterTest  {
         MatchFilter filter = new MatchFilter(0, "", MatchFilter.KEEP_MATCHING);
         assertEquals(MatchFilter.ID, filter.getID());
     }
-
 }

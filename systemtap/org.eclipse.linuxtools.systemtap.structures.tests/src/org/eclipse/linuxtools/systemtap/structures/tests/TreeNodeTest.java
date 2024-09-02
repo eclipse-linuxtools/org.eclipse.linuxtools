@@ -10,21 +10,20 @@
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
-
 package org.eclipse.linuxtools.systemtap.structures.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TreeNodeTest {
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         data = new StringBuilder("Object");
@@ -45,60 +44,60 @@ public class TreeNodeTest {
         String s1 = "one";
 
         TreeNode t1 = new TreeNode(d1, s1, false);
-        assertEquals("Create child count", 0, t1.getChildCount());
-        assertEquals("Create child string", s1, t1.toString());
-        assertEquals("Create child data", d1, t1.getData());
-        assertFalse("Create child clickable", t1.isClickable());
+        assertEquals(0, t1.getChildCount(), "Create child count");
+        assertEquals(s1, t1.toString(), "Create child string");
+        assertEquals(d1, t1.getData(), "Create child data");
+        assertFalse(t1.isClickable(), "Create child clickable");
 
         TreeNode t2 = new TreeNode(d2, true);
-        assertEquals("Create child count", 0, t2.getChildCount());
-        assertTrue("Create child string", t2.toString().equals(d2));
-        assertEquals("Create child data", d2, t2.getData());
-        assertTrue("Create child clickable", t2.isClickable());
+        assertEquals(0, t2.getChildCount(), "Create child count");
+        assertTrue(t2.toString().equals(d2), "Create child string");
+        assertEquals(d2, t2.getData(), "Create child data");
+        assertTrue(t2.isClickable(), "Create child clickable");
 
         TreeNode t3 = new TreeNode(null, true);
-        assertEquals("Create child count", 0, t3.getChildCount());
-        assertEquals("Create child string", null, t3.toString());
-        assertEquals("Create child data", null, t3.getData());
-        assertTrue("Create child clickable", t3.isClickable());
+        assertEquals(0, t3.getChildCount(), "Create child count");
+        assertNull(t3.toString(), "Create child string");
+        assertNull(t3.getData(), "Create child data");
+        assertTrue(t3.isClickable(), "Create child clickable");
 
         TreeNode t4 = new TreeNode(d1, s1, false);
-        assertEquals("Create child count", 0, t4.getChildCount());
-        assertEquals("Create child string", s1, t4.toString());
-        assertEquals("Create child data", d1, t4.getData());
-        assertFalse("Create child clickable", t4.isClickable());
+        assertEquals(0, t4.getChildCount(), "Create child count");
+        assertEquals(s1, t4.toString(), "Create child string");
+        assertEquals(d1, t4.getData(), "Create child data");
+        assertFalse(t4.isClickable(), "Create child clickable");
     }
 
     @Test
     public void testAdd() {
         t.add(new TreeNode("One", "tne", false));
-        assertEquals("Add child", 3, t.getChildCount());
+        assertEquals(3, t.getChildCount(), "Add child");
 
         t.add(new TreeNode("two", false));
-        assertEquals("Add child2", 4, t.getChildCount());
+        assertEquals(4, t.getChildCount(), "Add child2");
     }
 
     @Test
     public void testAddAt() {
         TreeNode test1 = new TreeNode("one", false);
         t.addAt(test1, 0);
-        assertEquals("Child added to front", test1, t.getChildAt(0));
-        assertEquals("Child correctly added", 3, t.getChildCount());
+        assertEquals(test1, t.getChildAt(0), "Child added to front");
+        assertEquals(3, t.getChildCount(), "Child correctly added");
 
         TreeNode test2 = new TreeNode("two", false);
         t.addAt(test2, 1);
-        assertEquals("Child added to middle", test2, t.getChildAt(1));
-        assertEquals("Child correctly added", 4, t.getChildCount());
+        assertEquals(test2, t.getChildAt(1), "Child added to middle");
+        assertEquals(4, t.getChildCount(), "Child correctly added");
 
         TreeNode test3 = new TreeNode("three", false);
         t.addAt(test3, 3);
-        assertEquals("Child added to end", test3, t.getChildAt(3));
-        assertEquals("Child correctly added", 5, t.getChildCount());
+        assertEquals(test3, t.getChildAt(3), "Child added to end");
+        assertEquals(5, t.getChildCount(), "Child correctly added");
 
         TreeNode test4 = new TreeNode("four", false);
         t.addAt(test4, 30);
-        assertEquals("Child added to end", test4, t.getChildAt(5));
-        assertEquals("Child correctly added", 6, t.getChildCount());
+        assertEquals(test4, t.getChildAt(5), "Child added to end");
+        assertEquals(6, t.getChildCount(), "Child correctly added");
     }
 
     @Test
@@ -109,33 +108,33 @@ public class TreeNodeTest {
         t.add(child2);
 
         TreeNode c = t.getChildAt(0);
-        assertEquals("Retreive first child from tree", child, c);
+        assertEquals(child, c, "Retreive first child from tree");
 
         c = t.getChildAt(2);
-        assertEquals("Retreive middle child from tree", child1, c);
+        assertEquals(child1, c, "Retreive middle child from tree");
 
         c = t.getChildAt(3);
-        assertEquals("Retreive last child from tree", child2, c);
+        assertEquals(child2, c, "Retreive last child from tree");
 
-        assertNull("No child here", t.getChildAt(10));
+        assertNull(t.getChildAt(10), "No child here");
     }
 
     @Test
     public void testGetChildCount() {
-        assertEquals("Tree child count", 2, t.getChildCount());
-        assertEquals("Child child count", 0, t.getChildAt(0).getChildCount());
+        assertEquals(2, t.getChildCount(), "Tree child count");
+        assertEquals(0, t.getChildAt(0).getChildCount(), "Child child count");
     }
 
     @Test
     public void testGetData() {
-        assertEquals("Correct data", data, t.getData());
-        assertEquals("Correct data2", data2, t.getChildAt(0).getData());
+        assertEquals(data, t.getData(), "Correct data");
+        assertEquals(data2, t.getChildAt(0).getData(), "Correct data2");
     }
 
     @Test
     public void testIsClickable() {
-        assertFalse("Nonclickable root", t.isClickable());
-        assertTrue("Clickable child", t.getChildAt(0).isClickable());
+        assertFalse(t.isClickable(), "Nonclickable root");
+        assertTrue(t.getChildAt(0).isClickable(), "Clickable child");
     }
 
     @Test
@@ -147,19 +146,19 @@ public class TreeNodeTest {
         TreeNode child3 = new TreeNode("3", false);
         t.add(child3);
 
-        assertEquals("Full tree before remove", 5, t.getChildCount());
+        assertEquals(5, t.getChildCount(), "Full tree before remove");
 
         assertTrue(t.remove(1));
-        assertEquals("Remove middle child from tree", 4, t.getChildCount());
+        assertEquals(4, t.getChildCount(), "Remove middle child from tree");
 
         assertTrue(t.remove(0));
-        assertEquals("Remove first child from tree", 3, t.getChildCount());
+        assertEquals(3, t.getChildCount(),"Remove first child from tree");
 
         assertTrue(t.remove(1));
-        assertEquals("Remove last child from tree", 2, t.getChildCount());
+        assertEquals(2, t.getChildCount(), "Remove last child from tree");
 
         assertFalse(t.remove(10));
-        assertEquals("Remove IndexOutOfBounds", 2, t.getChildCount());
+        assertEquals(2, t.getChildCount(), "Remove IndexOutOfBounds");
     }
 
     @Test
@@ -167,28 +166,28 @@ public class TreeNodeTest {
         t.add(new TreeNode("Child", false));
 
         assertTrue(t.removeAll());
-        assertEquals("No children", 0, t.getChildCount());
+        assertEquals(0, t.getChildCount(), "No children");
 
         assertTrue(t.removeAll());
-        assertEquals("Still no children", 0, t.getChildCount());
+        assertEquals(0, t.getChildCount(), "Still no children");
     }
 
     @Test
     public void testSetData() {
         Object o = "asdf";
         t.setData(o);
-        assertEquals("Replaced data", o, t.getData());
+        assertEquals(o, t.getData(), "Replaced data");
 
         String o1 = "aaaa";
         t.setData(o1);
-        assertEquals("Replaced data with string", o1, t.getData());
+        assertEquals(o1, t.getData(), "Replaced data with string");
     }
 
     @Test
     public void testSetDisplay() {
         String s1 = "aaaa";
         t.setDisplay(s1);
-        assertEquals("Replaced display", s1, t.toString());
+        assertEquals(s1, t.toString(), "Replaced display");
     }
 
     @Test
@@ -201,10 +200,10 @@ public class TreeNodeTest {
         t.add(child3);
 
         t.sortTree();
-        assertEquals("Same number of children", 5, t.getChildCount());
-        assertEquals("Sorted first node correct", child2, t.getChildAt(0));
-        assertEquals("Sorted last node correct", child, t.getChildAt(3));
-        assertEquals("Sorted middle correct", child1, t.getChildAt(1));
+        assertEquals(5, t.getChildCount(), "Same number of children");
+        assertEquals(child2, t.getChildAt(0), "Sorted first node correct");
+        assertEquals(child, t.getChildAt(3), "Sorted last node correct");
+        assertEquals(child1, t.getChildAt(1), "Sorted middle correct");
     }
 
     @Test
@@ -218,16 +217,16 @@ public class TreeNodeTest {
 
 
         t.sortLevel();
-        assertEquals("Same number of children", 5, t.getChildCount());
-        assertEquals("Sorted first node correct", child2, t.getChildAt(0));
-        assertEquals("Sorted last node correct", child, t.getChildAt(3));
-        assertEquals("Sorted middle correct", child1, t.getChildAt(1));
+        assertEquals(5, t.getChildCount(), "Same number of children");
+        assertEquals(child2, t.getChildAt(0), "Sorted first node correct");
+        assertEquals(child, t.getChildAt(3),"Sorted last node correct");
+        assertEquals(child1, t.getChildAt(1), "Sorted middle correct");
     }
 
     @Test
     public void testToString() {
-        assertEquals("Object to string", data2, child.toString());
-        assertEquals("Dispaly to string", s, t.toString());
+        assertEquals(data2, child.toString(), "Object to string");
+        assertEquals(s, t.toString(), "Dispaly to string");
     }
 
     @Test

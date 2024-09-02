@@ -10,21 +10,20 @@
  * Contributors:
  *    IBM Corporation - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.linuxtools.systemtap.structures.tests;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
 import org.eclipse.linuxtools.systemtap.structures.CCodeFileFilter;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class CCodeFileFilterTest {
 
-    @Before
+    @BeforeEach
     public void setUp(){
         filter = new CCodeFileFilter();
     }

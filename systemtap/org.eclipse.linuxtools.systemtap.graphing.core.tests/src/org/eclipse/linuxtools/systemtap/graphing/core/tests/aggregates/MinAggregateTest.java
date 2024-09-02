@@ -10,15 +10,14 @@
  * Contributors:
  *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
  *******************************************************************************/
-
 package org.eclipse.linuxtools.systemtap.graphing.core.tests.aggregates;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.eclipse.linuxtools.systemtap.graphing.core.aggregates.MinAggregate;
 import org.eclipse.linuxtools.systemtap.graphing.core.tests.MockDataSet;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class MinAggregateTest  {
 
