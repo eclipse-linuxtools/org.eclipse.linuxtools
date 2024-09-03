@@ -4,7 +4,7 @@ Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.cdt.libhover.devhelp.tests
 Bundle-Version: 1.0.1.qualifier
 Bundle-Vendor: %provider
-Require-Bundle: org.junit,
+Require-Bundle: junit-jupiter-api,
  org.eclipse.core.resources
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-21

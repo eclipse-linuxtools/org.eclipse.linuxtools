@@ -9,10 +9,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.libhover.devhelp.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,8 +45,8 @@ import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.DevHelpToc;
 import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.DevHelpTocProvider;
 import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.ParseDevHelp;
 import org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences.PreferenceConstants;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleReference;
 
@@ -54,14 +54,14 @@ public class CheckDevhelpTest {
 
     public final static String CACHE_EXT_LIBHOVER = "org.eclipse.linuxtools.cdt.libhover.testCacheExtLibhover"; //$NON-NLS-1$
 
-    @Before
+    @BeforeEach
     public void setUp() {
         IPath p = LibhoverPlugin.getDefault().getStateLocation().append("C"); //$NON-NLS-1$
         File f = new File(p.toOSString());
         f.delete();
     }
 
-    @Test
+	@Test
     public void testParse() throws IOException {
         ParseDevHelp.DevHelpParser p = new ParseDevHelp.DevHelpParser(
                 "/usr/share/gtk-doc/html"); //$NON-NLS-1$
