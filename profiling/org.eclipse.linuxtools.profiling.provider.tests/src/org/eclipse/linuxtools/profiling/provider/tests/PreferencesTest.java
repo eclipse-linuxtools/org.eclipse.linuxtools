@@ -17,8 +17,8 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widget
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withRegex;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withStyle;
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceDescription;
@@ -36,7 +36,7 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
-import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
+import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
@@ -46,13 +46,13 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.PlatformUI;
 import org.hamcrest.Matcher;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.osgi.framework.FrameworkUtil;
 
-@RunWith(SWTBotJunit4ClassRunner.class)
+@ExtendWith(SWTBotJunit5Extension.class)
 public class PreferencesTest extends AbstractTest{
     private static final String PROJ_NAME = "fibTest"; //$NON-NLS-1$
     private static final String STUB_TOOLTIP = "tooltip test"; //$NON-NLS-1$
@@ -100,7 +100,7 @@ public class PreferencesTest extends AbstractTest{
         }
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpWorkbench() throws Exception {
         // Set up is based from from GcovTest{c,CPP}.
 
@@ -174,7 +174,7 @@ public class PreferencesTest extends AbstractTest{
         bot.button("Apply and Close").click(); //$NON-NLS-1$
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void testProfileProject() throws Exception {
         SWTWorkbenchBot bot = new SWTWorkbenchBot();

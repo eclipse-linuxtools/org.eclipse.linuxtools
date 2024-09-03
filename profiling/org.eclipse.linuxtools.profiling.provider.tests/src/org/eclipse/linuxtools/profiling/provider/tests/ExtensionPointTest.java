@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.profiling.provider.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 import org.eclipse.linuxtools.profiling.provider.tests.stubby.StubbyLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.profiling.provider.tests.stubby.StubbyLaunchConfigurationTabGroup;
 import org.eclipse.linuxtools.profiling.provider.tests.stubby.StubbyLaunchShortcut;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ExtensionPointTest {
 

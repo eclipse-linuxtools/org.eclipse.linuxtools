@@ -5,12 +5,12 @@ Bundle-SymbolicName: org.eclipse.linuxtools.profiling.provider.tests;singleton:=
 Bundle-Version: 1.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Fragment-Host: org.eclipse.linuxtools.profiling.launch
-Require-Bundle: org.junit;bundle-version="4.0.0",
+Require-Bundle: junit-jupiter-api,
  org.hamcrest,
  org.eclipse.linuxtools.profiling.tests,
- org.eclipse.swtbot.eclipse.finder;bundle-version="4.0.0"
+ org.eclipse.swtbot.eclipse.finder;bundle-version="4.0.0",
+ org.eclipse.swtbot.junit5_x
 Bundle-Localization: fragment
 Bundle-Vendor: %Bundle-Vendor
-Import-Package: org.eclipse.swtbot.swt.finder.junit,
- org.slf4j
+Import-Package: org.slf4j
 Automatic-Module-Name: org.eclipse.linuxtools.profiling.provider.tests
