@@ -34,28 +34,28 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
-import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
+import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
 import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.ui.PlatformUI;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.osgi.framework.FrameworkUtil;
 
 /**
  * Abstract SWTBot test for Perf views, sub-classes must implement the abstract
  * methods to specify the test view and logic.
  */
-@RunWith(SWTBotJunit4ClassRunner.class)
+@ExtendWith(SWTBotJunit5Extension.class)
 public abstract class AbstractSWTBotTest extends AbstractTest {
     private static final String PROJ_NAME = "fibTest";
     private static SWTBotView projectExplorer;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpWorkbench() throws Exception {
         SWTWorkbenchBot bot = new SWTWorkbenchBot();
         try {
@@ -87,7 +87,7 @@ public abstract class AbstractSWTBotTest extends AbstractTest {
         projectExplorer = bot.viewByTitle("Project Explorer");
     }
 
-    @AfterClass
+    @AfterAll
     public static void resetExplorerState() {
         exitProjectFolder(new SWTWorkbenchBot());
     }

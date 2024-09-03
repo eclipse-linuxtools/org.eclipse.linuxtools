@@ -12,11 +12,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,9 +37,9 @@ import org.eclipse.linuxtools.internal.perf.handlers.AbstractSaveDataHandler;
 import org.eclipse.linuxtools.internal.perf.handlers.PerfSaveSessionHandler;
 import org.eclipse.linuxtools.internal.perf.handlers.PerfSaveStatsHandler;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.FrameworkUtil;
 
 public class SaveSessionTest extends AbstractTest {
@@ -52,7 +52,7 @@ public class SaveSessionTest extends AbstractTest {
     private ArrayList<IPath> testFiles = new ArrayList<>();
     private IProject proj;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         try {
             proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest").getProject();
@@ -63,7 +63,7 @@ public class SaveSessionTest extends AbstractTest {
         }
     }
 
-    @After
+    @AfterEach
     public void tearDown(){
         for (IPath f : testFiles) {
             File file = f.toFile();
