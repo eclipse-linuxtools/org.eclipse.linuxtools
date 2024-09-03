@@ -13,6 +13,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gcov.test;
 
+import org.junit.jupiter.api.Test;
+
 public class GcovTestCLibrary extends GcovTest {
 
     @Override
@@ -35,6 +37,7 @@ public class GcovTestCLibrary extends GcovTest {
         return false;
     }
 
+    @Test
     @Override
     public void testGcovSummaryByLaunch() {
     }
