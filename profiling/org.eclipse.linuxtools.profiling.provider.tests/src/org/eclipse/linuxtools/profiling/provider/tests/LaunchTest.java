@@ -12,11 +12,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.profiling.provider.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
@@ -34,9 +34,9 @@ import org.eclipse.linuxtools.internal.profiling.launch.provider.ProviderProfile
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.internal.profiling.launch.provider.launch.ProviderLaunchShortcut;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.FrameworkUtil;
 
 public class LaunchTest extends AbstractTest {
@@ -49,7 +49,7 @@ public class LaunchTest extends AbstractTest {
     ProviderLaunchShortcut shortcut;
     String launchConfigTypeId;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()),
                 BIN_NAME);
@@ -68,7 +68,7 @@ public class LaunchTest extends AbstractTest {
         }
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         try {
             deleteProject(proj);
