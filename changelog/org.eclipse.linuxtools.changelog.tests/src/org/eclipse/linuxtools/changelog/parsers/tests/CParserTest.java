@@ -12,10 +12,10 @@ package org.eclipse.linuxtools.changelog.parsers.tests;
 import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.closeEditor;
 import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.getContent;
 import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.openEditor;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -34,9 +34,9 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.texteditor.IDocumentProvider;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * CParser test suite.
@@ -53,13 +53,13 @@ public class CParserTest {
     // The IEditorPart corresponding to the ChangeLog file
     private IEditorPart cppSourceEditorPart = null;
 
-    @Before
+	@BeforeEach
     public void setUp() throws Exception {
         cParser = ChangeLogExtensionManager.getExtensionManager().getParserContributor("CEditor");
         project = new ChangeLogTestProject("c-parser-test-project");
     }
 
-    @After
+	@AfterEach
     public void tearDown() throws Exception {
         // Tests in this class use javaSourceEditorPart. In order to avoid
         // spill-over from previous runs, truncate content (i.e. manually set

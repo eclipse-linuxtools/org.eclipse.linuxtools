@@ -9,7 +9,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core.formatters.tests;
 
-import static org.junit.Assert.*;
+import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.closeEditor;
+import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.getContent;
+import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.openEditor;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -18,20 +23,16 @@ import java.util.GregorianCalendar;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.changelog.tests.fixtures.ChangeLogTestProject;
 import org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper;
 import org.eclipse.linuxtools.internal.changelog.core.formatters.GNUFormat;
-
-import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.closeEditor;
-import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.openEditor;
-import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.getContent;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.texteditor.IDocumentProvider;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.eclipse.jface.text.IDocument;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class GNUFormatTest {
 
@@ -54,13 +55,13 @@ public class GNUFormatTest {
     private static final String FUNCTION_END_MARKER = ")";
     private static final String NEW_LINE = "\n";
 
-    @Before
+	@BeforeEach
     public void setUp() throws Exception {
         gnuFormatter = new GNUFormat();
         project = new ChangeLogTestProject("GNUFormatterTest");
     }
 
-    @After
+	@AfterEach
     public void tearDown() throws Exception {
         // Most tests in this class use changelogEditorPart. In order to avoid
         // spill-over from previous runs, truncate content (i.e. manually set

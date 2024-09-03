@@ -7,7 +7,7 @@ Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: 
  org.eclipse.jdt.core,
  org.eclipse.jdt.ui,
- org.junit;bundle-version="4.8.1"
+ junit-jupiter-api
 Fragment-Host: org.eclipse.linuxtools.changelog.core
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy

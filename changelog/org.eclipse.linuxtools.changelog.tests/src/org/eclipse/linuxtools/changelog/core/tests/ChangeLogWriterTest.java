@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -21,15 +21,15 @@ import java.util.GregorianCalendar;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.ui.IEditorPart;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib;
 import org.eclipse.linuxtools.changelog.tests.fixtures.ChangeLogTestProject;
 import org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper;
 import org.eclipse.linuxtools.internal.changelog.core.ChangeLogWriter;
 import org.eclipse.linuxtools.internal.changelog.core.formatters.GNUFormat;
+import org.eclipse.ui.IEditorPart;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ChangeLogWriterTest {
 
@@ -48,7 +48,7 @@ public class ChangeLogWriterTest {
             "\t* this/file/does/not/really/exist/SpringRoll.java: new file\n\n";
 
 
-    @Before
+	@BeforeEach
     public void setUp() throws Exception {
         clogWriter = new ChangeLogWriter();
         // create a testproject and add a file to it
@@ -63,7 +63,7 @@ public class ChangeLogWriterTest {
                 newFileInputStream);
     }
 
-    @After
+	@AfterEach
     public void tearDown() throws CoreException {
         // dispose testproject
         project.getTestProject().delete(true, null);
