@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.libhover.tests;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.internal.core.CCoreInternals;
@@ -27,8 +27,8 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 @SuppressWarnings("restriction")
 public class BaseUITestCase {
@@ -42,7 +42,7 @@ public class BaseUITestCase {
     protected static final int INDEXER_TIMEOUT_SEC =
             Integer.parseInt(System.getProperty(INDEXER_TIMEOUT_PROPERTY, DEFAULT_INDEXER_TIMEOUT_SEC));
 
-    @Before
+    @BeforeEach
     public void setUp() {
         CPPASTNameBase.sAllowRecursionBindings= false;
         CPPASTNameBase.sAllowNameComputation= false;
@@ -54,7 +54,7 @@ public class BaseUITestCase {
         }
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         runEventQueue(0);
         ResourceHelper.cleanUp();

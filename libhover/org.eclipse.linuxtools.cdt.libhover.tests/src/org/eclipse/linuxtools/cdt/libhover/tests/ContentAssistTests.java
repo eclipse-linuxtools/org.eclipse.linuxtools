@@ -14,9 +14,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.libhover.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -42,10 +42,10 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("restriction")
 public class ContentAssistTests extends BaseUITestCase {
@@ -53,7 +53,7 @@ public class ContentAssistTests extends BaseUITestCase {
     static IProject project;
     static ICProject cproject;
 
-    @Before
+    @BeforeEach
     public void setUpD() throws InterruptedException {
 
         if (project == null) {
@@ -95,7 +95,7 @@ public class ContentAssistTests extends BaseUITestCase {
         }
     }
 
-    @After
+    @AfterEach
     public void tearDownD() throws Exception {
         if (project == null || !project.exists()) {
             return;
@@ -191,7 +191,7 @@ public class ContentAssistTests extends BaseUITestCase {
         assertEquals( "veryLongName : int", results[0].getDisplayString() ); //$NON-NLS-1$
     }
 
-    @Test @Ignore
+    @Test @Disabled
     public void testBug428037() throws Exception {
         StringWriter writer = new StringWriter();
         writer.write( "class Strategy {                             \n"); //$NON-NLS-1$
