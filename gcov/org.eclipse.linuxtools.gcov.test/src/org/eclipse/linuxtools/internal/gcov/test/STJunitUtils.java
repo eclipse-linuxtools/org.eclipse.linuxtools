@@ -13,9 +13,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gcov.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -85,7 +85,7 @@ public class STJunitUtils {
         try {
             url = FileLocator.toFileURL(url);
         } catch (IOException e) {
-            assertNotNull("Problem locating " + relativeName + " in" + pluginId,e);
+            assertNotNull(e, "Problem locating " + relativeName + " in" + pluginId);
         }
         String filename = url.getFile();
         return filename;

@@ -13,6 +13,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.gcov.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,12 +57,11 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.navigator.CommonNavigator;
 import org.eclipse.ui.navigator.resources.ProjectExplorer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.FrameworkUtil;
 
 public abstract class GcovTest extends AbstractTest {
@@ -75,7 +77,7 @@ public abstract class GcovTest extends AbstractTest {
     abstract protected boolean useDefaultBin();
     abstract protected boolean getTestProducedReference();
 
-    @BeforeClass
+    @BeforeAll
     public static void init() {
         display = Display.getDefault();
         display.syncExec(() -> {
@@ -87,12 +89,12 @@ public abstract class GcovTest extends AbstractTest {
 		        }
 		        PlatformUI.getWorkbench().showPerspective(CUIPlugin.ID_CPERSPECTIVE, window);
 		    } catch (WorkbenchException e) {
-		        Assert.fail("Couldn't open C/C++ perspective.");
+		        fail("Couldn't open C/C++ perspective.");
 		    }
 		});
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
     	if (project == null) {
     		ICProject cproject = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), getTestProjectName());
@@ -113,7 +115,7 @@ public abstract class GcovTest extends AbstractTest {
     	}
     }
 
-    @After
+    @AfterEach
     public void cleanUp() {
         display.syncExec(() -> {
 		    Shell[] shells = Display.getCurrent().getShells();
@@ -127,12 +129,12 @@ public abstract class GcovTest extends AbstractTest {
 		});
     }
 
-    @AfterClass
+    @AfterAll
     public static void finalCleanUp() {
         try {
             project.delete(true, null);
         } catch (CoreException e) {
-            Assert.fail("Project deletion failed");
+            fail("Project deletion failed");
         } finally {
             project = null;
         }
@@ -164,7 +166,7 @@ public abstract class GcovTest extends AbstractTest {
 		                return;
 		            }
 		        }
-		        Assert.fail("Editor for file " + targetFile + " was not opened,"
+		        fail("Editor for file " + targetFile + " was not opened,"
 		                + " instead opened " + openedFile + ".");
 		    }
 		});
@@ -193,7 +195,7 @@ public abstract class GcovTest extends AbstractTest {
                 csvAction = (STExportToCSVAction) ((ActionContributionItem) item).getAction();
             }
         }
-        Assert.assertNotNull("CSV-Export toolbar button does not exist.", csvAction);
+        assertNotNull(csvAction, "CSV-Export toolbar button does not exist.");
 
         for (IContributionItem item : items) {
             if (item instanceof ActionContributionItem) {
@@ -262,12 +264,12 @@ public abstract class GcovTest extends AbstractTest {
 		            }
 		        }
 		    } catch (PartInitException e1) {
-		        Assert.fail("Cannot show Project Explorer.");
+		        fail("Cannot show Project Explorer.");
 		    }
 		    try {
 		        window.getActivePage().showView("org.eclipse.linuxtools.gcov.view");
 		    } catch (PartInitException e2) {
-		        Assert.fail("Cannot show GCov View.");
+		        fail("Cannot show GCov View.");
 		    }
 		});
 
