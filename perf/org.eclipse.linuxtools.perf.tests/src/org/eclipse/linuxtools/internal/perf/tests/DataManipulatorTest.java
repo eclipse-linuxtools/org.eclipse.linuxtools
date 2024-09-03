@@ -12,8 +12,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -34,8 +33,8 @@ import org.eclipse.linuxtools.internal.perf.SourceDisassemblyData;
 import org.eclipse.linuxtools.internal.perf.StatData;
 import org.eclipse.linuxtools.internal.perf.handlers.PerfStatDataOpenHandler;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.FrameworkUtil;
 
 public class DataManipulatorTest extends AbstractTest {
@@ -43,14 +42,9 @@ public class DataManipulatorTest extends AbstractTest {
     private static final String output = "output"; //$NON-NLS-1$
     private IProject proj;
 
-    @Before
-    public void setUp() {
-        try {
-            proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest").getProject();
-        } catch (InvocationTargetException | CoreException | URISyntaxException | InterruptedException | IOException e) {
-            e.printStackTrace();
-            fail("Failed to create test project");
-        }
+    @BeforeEach
+    public void setUp() throws InvocationTargetException, CoreException, URISyntaxException, InterruptedException, IOException {
+        proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest").getProject();
     }
 
     @Test

@@ -7,7 +7,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Fragment-Host: org.eclipse.linuxtools.perf
 Require-Bundle: 
- org.junit,
+ junit-jupiter-api,
  org.eclipse.linuxtools.profiling.tests
 Bundle-Vendor: %provider
 Automatic-Module-Name: org.eclipse.linuxtools.perf.tests

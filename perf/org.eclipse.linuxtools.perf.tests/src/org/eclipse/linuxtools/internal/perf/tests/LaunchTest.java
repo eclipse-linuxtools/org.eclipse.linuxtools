@@ -28,9 +28,9 @@ import org.eclipse.linuxtools.internal.perf.launch.PerfEventsTab;
 import org.eclipse.linuxtools.internal.perf.launch.PerfLaunchConfigDelegate;
 import org.eclipse.linuxtools.internal.perf.launch.PerfOptionsTab;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.FrameworkUtil;
 
 public class LaunchTest extends AbstractTest {
@@ -40,7 +40,7 @@ public class LaunchTest extends AbstractTest {
     protected ILaunch launch;
     protected ILaunchConfigurationWorkingCopy wc;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest"); //$NON-NLS-1$
         config = createConfiguration(proj.getProject());
@@ -51,7 +51,7 @@ public class LaunchTest extends AbstractTest {
         setProfileAttributes(wc);
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws CoreException {
         deleteProject(proj);
         wc.delete();

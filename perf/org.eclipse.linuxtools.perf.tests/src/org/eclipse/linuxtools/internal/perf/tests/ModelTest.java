@@ -12,12 +12,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.tests;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -53,16 +53,16 @@ import org.eclipse.linuxtools.internal.perf.ui.PerfProfileView;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.FrameworkUtil;
 
 public class ModelTest extends AbstractTest {
     private ILaunchConfiguration config;
     private Stack<Class<?>> stack;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest"); //$NON-NLS-1$
         config = createConfiguration(proj.getProject());
@@ -73,7 +73,7 @@ public class ModelTest extends AbstractTest {
         Collections.addAll(stack, klassList);
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         deleteProject(proj);
     }

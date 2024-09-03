@@ -29,9 +29,9 @@ import org.eclipse.linuxtools.internal.perf.launch.PerfEventsTab;
 import org.eclipse.linuxtools.internal.perf.launch.PerfLaunchConfigDelegate;
 import org.eclipse.linuxtools.internal.perf.remote.launch.PerfOptionsTab;
 import org.eclipse.linuxtools.profiling.tests.AbstractRemoteTest;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class LaunchRemoteTest extends AbstractRemoteTest {
 
@@ -43,7 +43,7 @@ public class LaunchRemoteTest extends AbstractRemoteTest {
 
     private final String CONNECTION_DIR = "/tmp/eclipse-perf-ext_project_test/"; //$NON-NLS-1$
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         if ((!(AbstractRemoteTest.USERNAME.isEmpty()))) {
             project = null;
@@ -56,7 +56,7 @@ public class LaunchRemoteTest extends AbstractRemoteTest {
         }
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (!(AbstractRemoteTest.USERNAME.isEmpty())) {
             deleteResource(CONNECTION_DIR);

@@ -8,10 +8,10 @@ Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Fragment-Host: org.eclipse.linuxtools.perf
-Require-Bundle: org.junit,
+Require-Bundle: junit-jupiter-api, junit-platform-suite-api,
  org.eclipse.linuxtools.profiling.tests,
  org.eclipse.swtbot.eclipse.finder;bundle-version="4.0.0",
- org.hamcrest
-Import-Package: org.eclipse.swtbot.swt.finder.junit,
- org.slf4j
+ org.hamcrest,
+ org.eclipse.swtbot.junit5_x
+Import-Package: org.slf4j
 Automatic-Module-Name: org.eclipse.linuxtools.perf.swtbot.tests

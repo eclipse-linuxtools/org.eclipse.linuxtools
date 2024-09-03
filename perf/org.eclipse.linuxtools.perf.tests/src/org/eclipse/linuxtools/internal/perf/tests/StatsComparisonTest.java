@@ -12,11 +12,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.tests;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -27,8 +27,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.perf.StatComparisonData;
 import org.eclipse.linuxtools.internal.perf.model.PMStatEntry;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class StatsComparisonTest {
     private PMStatEntry statEntry;
@@ -37,7 +37,7 @@ public class StatsComparisonTest {
     private PMStatEntry statEntry4;
     private static final String STAT_RES = "resources/stat-data/";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         String event = "event";
         String units = "unit";

@@ -12,13 +12,13 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.linuxtools.internal.perf.ui.SourceDisassemblyView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for perf source disassembly find text dialog.
@@ -57,10 +57,9 @@ public class FindActionTest {
         int expected = -1;
         for(int actual : indices){
             expected =  searchStr.indexOf(findStr, offset);
-            assertEquals("Failed on the following case:"
+            assertEquals(expected, actual, "Failed on the following case:"
                     + " offset= " + offset
-                    + " substring= " + findStr,
-                    expected, actual);
+                    + " substring= " + findStr);
         }
     }
 
@@ -85,10 +84,9 @@ public class FindActionTest {
         int expected = -1;
         for(int actual : indices){
             expected =  searchStr.lastIndexOf(findStr, offset - 1);
-            assertEquals("Failed on the following case:"
+            assertEquals(expected, actual, "Failed on the following case:"
                     + " offset= " + offset
-                    + " substring= " + findStr,
-                    expected, actual);
+                    + " substring= " + findStr);
         }
     }
 
