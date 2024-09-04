@@ -557,10 +557,7 @@ public class ParseNewlibTexinfo {
             BuildXMLFromTexinfo2(srcdir, builddir, os, "libm");
 
             CreateTrailer(os);
-
-            os.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Output File IOException: " + e);
             return;
         }

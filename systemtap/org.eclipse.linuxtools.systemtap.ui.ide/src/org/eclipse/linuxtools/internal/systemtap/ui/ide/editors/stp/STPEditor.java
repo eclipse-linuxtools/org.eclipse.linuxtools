@@ -185,7 +185,6 @@ public class STPEditor extends TextEditor {
         try (FileOutputStream fos = new FileOutputStream(file);
                 PrintStream ps = new PrintStream(fos)){
             ps.print(s);
-            ps.close();
         } catch (IOException fnfe) {
             // Pass
         }

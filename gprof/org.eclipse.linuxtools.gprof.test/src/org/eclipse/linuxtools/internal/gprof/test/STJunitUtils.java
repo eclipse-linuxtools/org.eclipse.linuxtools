@@ -88,8 +88,6 @@ public class STJunitUtils {
                  fail(message + ": not correspond ");
             }
 
-            is1.close();
-            is2.close();
             // delete dump only for successful tests
             if (equals && deleteDumpFileIfOk) {
                 new File(dumpFile).delete();
@@ -143,8 +141,6 @@ public class STJunitUtils {
                 }
             } while (true);
 
-            is1.close();
-            is2.close();
             if (!equals) {
                 StringBuilder msg = new StringBuilder(message + ": not correspond ");
                  msg.append("\n========= begin dump file =========\n");

@@ -54,7 +54,7 @@ public class SystemTapErrorHandler {
 
         // READ FROM THE PROP FILE AND DETERMINE TYPE OF ERROR
         File file = new File(PluginConstants.getPluginLocation() + FILE_PROP);
-        try (BufferedReader buff1 = new BufferedReader(new FileReader(file))) {
+		try {
             String line;
             for (String message : errorsList) {
                 try (BufferedReader innerBuff = new BufferedReader(

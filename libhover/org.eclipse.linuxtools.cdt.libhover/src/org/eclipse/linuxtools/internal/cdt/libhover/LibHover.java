@@ -128,7 +128,6 @@ public class LibHover implements ICHelpProvider {
                         try (FileOutputStream f = new FileOutputStream(locationDir.append("tmpFile").toOSString()); //$NON-NLS-1$
                                 ObjectOutputStream out = new ObjectOutputStream(f)) {
                             out.writeObject(l.getHoverInfo());
-                            out.close();
                             File tmp = new File(locationDir.append("tmpFile").toOSString()); //$NON-NLS-1$
                             tmp.renameTo(target);
                         }
