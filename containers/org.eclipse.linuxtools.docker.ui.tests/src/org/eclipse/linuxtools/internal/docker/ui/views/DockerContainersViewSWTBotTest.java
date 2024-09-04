@@ -74,7 +74,8 @@ public class DockerContainersViewSWTBotTest {
 				.withDefaultTCPConnectionSettings();
 		dockerConnection.removeContainerListener(DockerContainerRefreshManager.getInstance());
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		SWTUtils.asyncExec(() -> {try {
+		bot.getDisplay().asyncExec(() -> {
+			try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 					.showView(DockerContainersView.VIEW_ID);
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()

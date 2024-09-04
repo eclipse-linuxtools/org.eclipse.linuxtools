@@ -78,7 +78,7 @@ public class DockerExplorerViewSWTBotTest {
 	@Before
 	public void setup() {
 		this.bot = new SWTWorkbenchBot();
-		SWTUtils.asyncExec(() -> {
+		bot.getDisplay().asyncExec(() -> {
 			try {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 						.showView(DockerExplorerView.VIEW_ID);
@@ -113,7 +113,7 @@ public class DockerExplorerViewSWTBotTest {
 	}
 
 	private void selectContainersInTreeView(final String connectionName, final String... containerNames) {
-		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
+		bot.getDisplay().asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
 		// When a second call to expand the container is done (because the first
 		// expandAll stopped with a "Loading..." job that retrieved the
 		// containers)
@@ -124,12 +124,12 @@ public class DockerExplorerViewSWTBotTest {
 	}
 
 	private void selectImagesInTreeView(final String connectionName, final String... imageNames) {
-		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
+		bot.getDisplay().asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
 		// when a second call to expand the container is done (because the first
 		// expandAll stopped with a "Loading..." job that retrieved the
 		// containers)
 		final SWTBotTreeItem imagesTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, connectionName, "Images");
-		SWTUtils.asyncExec(() -> imagesTreeItem.expand());
+		bot.getDisplay().asyncExec(() -> imagesTreeItem.expand());
 		// select both images
 		SWTUtils.select(imagesTreeItem, imageNames);
 	}
@@ -188,7 +188,7 @@ public class DockerExplorerViewSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
+		bot.getDisplay().asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
 		Conditions.waitForJobs(DockerExplorerView.class, "Docker Explorer View jobs");
 		// one connection
 		final SWTBotTreeItem connection = SWTUtils.expand(dockerExplorerViewBot.bot().tree(), "Test");
@@ -203,7 +203,7 @@ public class DockerExplorerViewSWTBotTest {
 		dockerConnection.setClient(updatedClient);
 		dockerExplorerViewBot.bot().tree().select(containersTreeItem);
 		dockerExplorerViewBot.bot().tree().contextMenu("Refresh").click();
-		SWTUtils.asyncExec(() -> containersTreeItem.expand());
+		bot.getDisplay().asyncExec(() -> containersTreeItem.expand());
 
 		// then check that there are images now
 		Assertions.assertThat(containersTreeItem.isExpanded()).isTrue();
@@ -258,7 +258,7 @@ public class DockerExplorerViewSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
+		bot.getDisplay().asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
 		// when
 		final SWTBotTreeItem volumesTreeItem = SWTUtils.expand(dockerExplorerViewBot.bot().tree(), "Test", "Containers",
 				"foo_bar", "Volumes");
@@ -292,7 +292,7 @@ public class DockerExplorerViewSWTBotTest {
 		// when refreshing the container
 		dockerExplorerViewBot.bot().tree().select(containers);
 		dockerExplorerViewBot.bot().tree().contextMenu("Refresh").click();
-		SWTUtils.asyncExec(() -> containers.expand());
+		bot.getDisplay().asyncExec(() -> containers.expand());
 		// then all items should remain expanded (after they were reloaded)
 		SWTBotTreeItemAssertions.assertThat(SWTUtils.getTreeItem(containers, "foo_bar", "Links")).isExpanded();
 		SWTBotTreeItemAssertions.assertThat(SWTUtils.getTreeItem(containers, "foo_bar", "Ports")).isExpanded();
@@ -601,10 +601,10 @@ public class DockerExplorerViewSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		SWTUtils.asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
+		bot.getDisplay().asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
 		final SWTBotTreeItem imagesTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images");
 		// when
-		SWTUtils.asyncExec(() -> imagesTreeItem.expand());
+		bot.getDisplay().asyncExec(() -> imagesTreeItem.expand());
 		// then 2 images should be displayed
 		final SWTBotTreeItem[] images = imagesTreeItem.getItems();
 		assertThat(images).hasSize(2);

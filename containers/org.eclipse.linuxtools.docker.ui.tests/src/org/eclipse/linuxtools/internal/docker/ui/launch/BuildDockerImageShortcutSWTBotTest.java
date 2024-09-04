@@ -43,11 +43,10 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
-
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.ProgressHandler;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 
 /**
  * Testing the {@link BuildDockerImageShortcut}
@@ -97,12 +96,12 @@ public class BuildDockerImageShortcutSWTBotTest {
 		// given no connection
 		ClearConnectionManagerRule.removeAllConnections(DockerConnectionManager.getInstance());
 		// when
-		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
+		bot.getDisplay().asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
 		// then expect an error dialog because no Docker connection exists
 		assertThat(bot.shell(LaunchMessages.getString("BuildDockerImageShortcut.no.connections.msg")))
 				.isNotNull();
 		// closing the wizard
-		SWTUtils.syncExec(() -> {
+		bot.getDisplay().syncExec(() -> {
 			bot.button("No").click();
 		});
 	}
@@ -116,12 +115,12 @@ public class BuildDockerImageShortcutSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when
-		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
+		bot.getDisplay().asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
 		// then expect a dialog, fill the "repository" text field and click "Ok"
 		assertThat(bot.shell(WizardMessages.getString("ImageBuildDialog.title"))).isNotNull();
 		bot.textWithLabel(WizardMessages.getString("ImageBuildDialog.repoNameLabel")).setText("foo/bar:latest");
 		// when launching the build
-		SWTUtils.syncExec(() -> {
+		bot.getDisplay().syncExec(() -> {
 			bot.button("OK").click();
 		});
 		// then the 'DockerConnection#buildImage(...) method should have been
@@ -140,12 +139,12 @@ public class BuildDockerImageShortcutSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when
-		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
+		bot.getDisplay().asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
 		// then expect a dialog, fill the "repository" text field and click "Ok"
 		assertThat(bot.shell(WizardMessages.getString("ImageBuildDialog.title"))).isNotNull();
 		bot.textWithLabel(WizardMessages.getString("ImageBuildDialog.repoNameLabel")).setText("foo/bar:latest");
 		// when launching the build
-		SWTUtils.syncExec(() -> {
+		bot.getDisplay().syncExec(() -> {
 			bot.button("OK").click();
 		});
 		// then the 'DockerConnection#buildImage(...) method should have been
@@ -154,7 +153,7 @@ public class BuildDockerImageShortcutSWTBotTest {
 				ArgumentMatchers.any(Path.class), ArgumentMatchers.any(String.class),
 				ArgumentMatchers.any(ProgressHandler.class), ArgumentMatchers.any());
 		// when trying to call again, there should be no dialog
-		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
+		bot.getDisplay().asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
 		// then a second call should have been done
 		Mockito.verify(client, Mockito.timeout((int) TimeUnit.SECONDS.toMillis(3)).times(2)).build(
 				ArgumentMatchers.any(Path.class), ArgumentMatchers.any(String.class),
@@ -170,12 +169,12 @@ public class BuildDockerImageShortcutSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when
-		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
+		bot.getDisplay().asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
 		// then expect a dialog, fill the "repository" text field and click "Ok"
 		assertThat(bot.shell(WizardMessages.getString("ImageBuildDialog.title"))).isNotNull();
 		bot.textWithLabel(WizardMessages.getString("ImageBuildDialog.repoNameLabel")).setText("foo/bar:latest");
 		// when launching the build
-		SWTUtils.syncExec(() -> {
+		bot.getDisplay().syncExec(() -> {
 			bot.button("OK").click();
 		});
 		// then the 'DockerConnection#buildImage(...) method should have been
@@ -195,7 +194,7 @@ public class BuildDockerImageShortcutSWTBotTest {
 			shell.bot().button(IDialogConstants.CLOSE_LABEL).click();
 		}, false);
 		// do not save the config while closing
-		SWTUtils.syncExec(() -> {
+		bot.getDisplay().syncExec(() -> {
 			bot.button(IDialogConstants.NO_LABEL).click();
 		});
 	}
@@ -208,12 +207,12 @@ public class BuildDockerImageShortcutSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when
-		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
+		bot.getDisplay().asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
 		// then expect a dialog, fill the "repository" text field and click "Ok"
 		assertThat(bot.shell(WizardMessages.getString("ImageBuildDialog.title"))).isNotNull();
 		bot.textWithLabel(WizardMessages.getString("ImageBuildDialog.repoNameLabel")).setText("foo/bar:latest");
 		// when launching the build
-		SWTUtils.syncExec(() -> {
+		bot.getDisplay().syncExec(() -> {
 			bot.button("OK").click();
 		});
 		// then the 'DockerConnection#buildImage(...) method should have been
@@ -225,12 +224,12 @@ public class BuildDockerImageShortcutSWTBotTest {
 		// be an error dialog
 		final DockerConnection dockerConnection2 = MockDockerConnectionFactory.from("Test 2", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection2);
-		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
+		bot.getDisplay().asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
 		// then expect a dialog, fill the "repository" text field and click "Ok"
 		assertThat(bot.shell(WizardMessages.getString("ImageBuildDialog.title"))).isNotNull();
 		bot.textWithLabel(WizardMessages.getString("ImageBuildDialog.repoNameLabel")).setText("foo/bar:latest");
 		// when launching the build
-		SWTUtils.syncExec(() -> {
+		bot.getDisplay().syncExec(() -> {
 			bot.button("OK").click();
 		});
 		// then the 'DockerConnection#buildImage(...) method should have been
@@ -250,12 +249,12 @@ public class BuildDockerImageShortcutSWTBotTest {
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when
-		SWTUtils.asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
+		bot.getDisplay().asyncExec(() -> getRunAsdockerImageBuildContextMenu("foo", "Dockerfile").click());
 		// then expect a dialog, fill the "repository" text field and click "Ok"
 		assertThat(bot.shell(WizardMessages.getString("ImageBuildDialog.title"))).isNotNull();
 		bot.textWithLabel(WizardMessages.getString("ImageBuildDialog.repoNameLabel")).setText("foo/bar:latest");
 		// when launching the build
-		SWTUtils.syncExec(() -> {
+		bot.getDisplay().syncExec(() -> {
 			bot.button("OK").click();
 		});
 		// then the 'DockerConnection#buildImage(...) method should have been
@@ -270,7 +269,7 @@ public class BuildDockerImageShortcutSWTBotTest {
 		final SWTBotShell shell = bot.shell(JobMessages.getString("BuildImageJob.title")); //$NON-NLS-1$
 		assertThat(shell).isNotNull();
 		// closing the dialog
-		SWTUtils.syncExec(() -> {
+		bot.getDisplay().syncExec(() -> {
 			shell.bot().button(IDialogConstants.OK_LABEL).click();
 		});
 	}
