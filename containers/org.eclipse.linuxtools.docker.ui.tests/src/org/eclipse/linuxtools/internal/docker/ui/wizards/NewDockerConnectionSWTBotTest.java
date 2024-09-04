@@ -13,6 +13,9 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -24,7 +27,6 @@ import org.eclipse.linuxtools.internal.docker.core.SystemUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionSettingsFinder;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ButtonAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CheckBoxAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseShellRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
@@ -54,7 +56,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.mandas.docker.client.DockerClient;
 
 /**
@@ -88,7 +89,7 @@ public class NewDockerConnectionSWTBotTest {
 		dockerExplorerViewBot = bot.viewById(DockerExplorerView.VIEW_ID);
 		dockerExplorerViewBot.show();
 		bot.views().stream().filter(v -> v.getReference().getId().equals(DockerContainersView.VIEW_ID)
-				|| v.getReference().getId().equals(DockerImagesView.VIEW_ID)).forEach(v -> v.close());
+				|| v.getReference().getId().equals(DockerImagesView.VIEW_ID)).forEach(SWTBotView::close);
 		dockerExplorerViewBot.setFocus();
 		this.addConnectionButton = dockerExplorerViewBot.toolbarButton("&Add Connection");
 	}
@@ -225,7 +226,7 @@ public class NewDockerConnectionSWTBotTest {
 		bot.text(0).setText("foo");
 		// then the wizard should not allow for completion because a connection
 		// with the connection settings already exists.
-		ButtonAssertions.assertThat(bot.button("Finish")).isNotEnabled();
+		assertFalse(bot.button("Finish").isEnabled());
 	}
 
 	@Test
@@ -241,7 +242,7 @@ public class NewDockerConnectionSWTBotTest {
 		bot.text(0).setText("foo");
 		// then the wizard should not allow for completion because a connection
 		// with the connection settings already exists.
-		ButtonAssertions.assertThat(bot.button("Finish")).isNotEnabled();
+		assertFalse(bot.button("Finish").isEnabled());
 	}
 
 	@Test
@@ -260,7 +261,7 @@ public class NewDockerConnectionSWTBotTest {
 		bot.text(1).setText(otherDockerSocketTmpPath);
 		// then the wizard should not allow for completion because a connection
 		// with the connection settings already exists.
-		ButtonAssertions.assertThat(bot.button("Finish")).isEnabled();
+		assertFalse(bot.button("Finish").isEnabled());
 	}
 
 	@Test
@@ -278,7 +279,7 @@ public class NewDockerConnectionSWTBotTest {
 		bot.text(2).setText("https://bar:1234");
 		// then the wizard should not allow for completion because a connection
 		// with the connection settings already exists.
-		ButtonAssertions.assertThat(bot.button("Finish")).isEnabled();
+		assertTrue(bot.button("Finish").isEnabled());
 	}
 
 	@Test

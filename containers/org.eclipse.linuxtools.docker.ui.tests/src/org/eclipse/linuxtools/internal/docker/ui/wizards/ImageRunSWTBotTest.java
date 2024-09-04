@@ -14,6 +14,7 @@
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,7 +39,6 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerHostConfigF
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageInfoFactory;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ButtonAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseShellRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
@@ -52,9 +52,6 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
-
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.exceptions.DockerException;
 import org.mandas.docker.client.messages.Container;
@@ -62,6 +59,8 @@ import org.mandas.docker.client.messages.ContainerCreation;
 import org.mandas.docker.client.messages.ContainerInfo;
 import org.mandas.docker.client.messages.Image;
 import org.mandas.docker.client.messages.ImageInfo;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 
 /**
  * Testing the {@link ImageRun} wizard
@@ -119,7 +118,7 @@ public class ImageRunSWTBotTest {
 		// wait for https://bugs.eclipse.org/bugs/show_bug.cgi?id=482889 to be
 		// able to check the wizard validation message
 		//assertThat(bot.text(WizardMessages.getString("ImageRunSelectionPage.containerWithSameName"))).isNotNull();
-		ButtonAssertions.assertThat(bot.button("Finish")).isNotEnabled();
+		assertFalse(bot.button("Finish").isEnabled());
 	}
 
 	@Test

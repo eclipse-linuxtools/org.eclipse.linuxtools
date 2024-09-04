@@ -14,6 +14,7 @@
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,7 +29,6 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFacto
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockRegistryAccountManagerFactory;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ButtonAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseShellRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
@@ -43,11 +43,10 @@ import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
-
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.exceptions.DockerException;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 
 /**
  * Testing the {@link ImagePull} wizard
@@ -105,7 +104,7 @@ public class ImagePullSWTBotTest {
 		// when
 		bot.text(0).setText("jboss/wildfly:latest");
 		// then
-		ButtonAssertions.assertThat(bot.button("Finish")).isNotEnabled();
+		assertFalse(bot.button("Finish").isEnabled());
 	}
 
 	@Test
@@ -114,7 +113,7 @@ public class ImagePullSWTBotTest {
 		openPullWizard();
 		// when no data is input for the images name
 		// then
-		ButtonAssertions.assertThat(bot.button("Finish")).isNotEnabled();
+		assertFalse(bot.button("Finish").isEnabled());
 	}
 
 	@Test

@@ -14,6 +14,7 @@
 package org.eclipse.linuxtools.internal.docker.ui.launch;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -35,7 +36,6 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFacto
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.ProjectInitializationRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.RunWithProject;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ButtonAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearConnectionManagerRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ClearLaunchConfigurationsRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseShellRule;
@@ -297,7 +297,7 @@ public class DockerComposeSWTBotTest {
 		// "OK" button
 		ComboAssertions.assertThat(bot.comboBox(0)).isEnabled().itemSelected("Test");
 		TextAssertions.assertThat(bot.text(2)).isEnabled().textEquals("/foo");
-		ButtonAssertions.assertThat(bot.button("Run")).isEnabled();
+		assertTrue(bot.button("Run").isEnabled());
 
 	}
 }
