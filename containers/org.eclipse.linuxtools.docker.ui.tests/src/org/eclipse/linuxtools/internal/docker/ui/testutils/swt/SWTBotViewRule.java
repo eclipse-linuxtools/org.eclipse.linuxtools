@@ -13,11 +13,12 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
+import static org.junit.Assert.fail;
+
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
-import org.junit.Assert;
 import org.junit.rules.ExternalResource;
 
 /**
@@ -39,12 +40,12 @@ public class SWTBotViewRule extends ExternalResource {
 
 	@Override
 	protected void before() {
-		SWTUtils.asyncExec(() -> {
+		bot.getDisplay().asyncExec(() -> {
 			try {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(this.viewId);
 			} catch (Exception e) {
 				e.printStackTrace();
-				Assert.fail("Failed to open view with id '" + this.viewId + "': " + e.getMessage());
+				fail("Failed to open view with id '" + this.viewId + "': " + e.getMessage());
 			}
 		});
 		this.botView = this.bot.viewById(this.viewId);

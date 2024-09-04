@@ -34,7 +34,6 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.mandas.docker.client.DockerClient;
 
 /**
@@ -55,7 +54,7 @@ public class CommandUtilsSWTBotTest {
 
 	@Before
 	public void lookupDockerExplorerView() {
-		SWTUtils.asyncExec(() -> {
+		bot.getDisplay().asyncExec(() -> {
 			try {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 						.showView("org.eclipse.linuxtools.docker.ui.dockerExplorerView");
@@ -69,7 +68,7 @@ public class CommandUtilsSWTBotTest {
 		bot.views().stream()
 				.filter(v -> v.getReference().getId().equals("org.eclipse.linuxtools.docker.ui.dockerContainersView")
 						|| v.getReference().getId().equals("org.eclipse.linuxtools.docker.ui.dockerImagesView"))
-				.forEach(v -> v.close());
+				.forEach(SWTBotView::close);
 	}
 
 	@Test

@@ -43,12 +43,11 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
-
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.ProgressHandler;
 import org.mandas.docker.client.exceptions.DockerException;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 
 /**
  * Testing the {@link ImagePush} wizard
@@ -96,7 +95,7 @@ public class ImagePushSWTBotTests {
 	}
 
 	private void openPushWizard() {
-		SWTUtils.syncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
+		bot.getDisplay().syncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
 		final SWTBotTreeItem imageTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images", "foo/bar");
 		// when opening the "Push Image..." wizard
 		final SWTBotTree dockerExplorerViewTreeBot = dockerExplorerViewBot.bot().tree();

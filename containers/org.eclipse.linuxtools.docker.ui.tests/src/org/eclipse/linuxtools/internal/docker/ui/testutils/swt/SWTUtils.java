@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Control;
@@ -37,7 +36,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper;
@@ -77,17 +75,6 @@ public class SWTUtils {
 
 	/**
 	 * Executes <strong>synchronously</strong> the given {@link Runnable} in the
-	 * default Display
-	 *
-	 * @param runnable
-	 *            the {@link Runnable} to execute
-	 */
-	public static void syncExec(final Runnable runnable) {
-		Display.getDefault().syncExec(runnable);
-	}
-
-	/**
-	 * Executes <strong>synchronously</strong> the given {@link Runnable} in the
 	 * default Display. The given {@link Runnable} is ran into a rapping
 	 * {@link Runnable} that will catch the {@link ComparisonFailure} that may
 	 * be raised during an assertion.
@@ -117,18 +104,6 @@ public class SWTUtils {
 		if (!swtException.isEmpty()) {
 			throw swtException.poll();
 		}
-	}
-
-	/**
-	 * Executes the given {@link Runnable} <strong>asynchronously</strong> in
-	 * the default {@link Display} and waits until all jobs are done before
-	 * completing.
-	 *
-	 * @param runnable
-	 * @throws InterruptedException
-	 */
-	public static void asyncExec(final Runnable runnable) {
-		asyncExec(runnable, true);
 	}
 
 	/**
@@ -176,18 +151,6 @@ public class SWTUtils {
 		while (!Job.getJobManager().isIdle()) {
 			wait(1, TimeUnit.SECONDS);
 		}
-	}
-
-	/**
-	 * Waits for all {@link Job} to complete.
-	 *
-	 * @throws InterruptedException
-	 */
-	public static void waitForJobsToComplete(Object familly) {
-		// while (Job.getJobManager().find(familly).length > 0) {
-		// wait(1, TimeUnit.SECONDS);
-		// }
-		Conditions.waitForJobs(DockerExplorerView.class, "Docker Explorer View jobs");
 	}
 
 	/**
@@ -330,19 +293,6 @@ public class SWTUtils {
 				treeItem -> Stream.of(matchItems).anyMatch(matchItem -> treeItem.getText().startsWith(matchItem)))
 				.map(SWTBotTreeItem::getText).toList();
 		return parentTree.select(fullyQualifiedItems.toArray(new String[0]));
-	}
-
-	/**
-	 * Selects the given <code>treeItem</code> whose labels match the given
-	 * <code>items</code>.
-	 *
-	 * @param treeItem
-	 *            the parent tree item
-	 * @param matchItems
-	 *            the items to select
-	 */
-	public static void select(SWTBotTreeItem treeItem) {
-		treeItem.select();
 	}
 
 	/**

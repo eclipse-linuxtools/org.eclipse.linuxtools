@@ -33,11 +33,11 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFacto
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionStorageManagerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
+import org.eclipse.swt.widgets.Display;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.mandas.docker.client.DockerClient;
 
 public class DockerConnectionManagerTest {
@@ -65,7 +65,7 @@ public class DockerConnectionManagerTest {
 				.withDefaultTCPConnectionSettings();
 		dockerConnectionManager
 				.setConnectionStorageManager(MockDockerConnectionStorageManagerFactory.providing(dockerConnection));
-		SWTUtils.syncExec(() -> dockerConnectionManager.reloadConnections());
+		Display.getDefault().syncExec(() -> dockerConnectionManager.reloadConnections());
 		// when
 		dockerConnection.getContainers();
 		// then
@@ -80,11 +80,11 @@ public class DockerConnectionManagerTest {
 				.withDefaultTCPConnectionSettings();
 		dockerConnectionManager
 				.setConnectionStorageManager(MockDockerConnectionStorageManagerFactory.providing(dockerConnection));
-		SWTUtils.syncExec(() -> dockerConnectionManager.reloadConnections());
+		Display.getDefault().syncExec(() -> dockerConnectionManager.reloadConnections());
 		dockerConnection.getContainers();
 		Assertions.assertThat(dockerContainersRefreshManager.getConnections()).contains(dockerConnection);
 		// when
-		SWTUtils.syncExec(() -> dockerConnectionManager.removeConnection(dockerConnection));
+		Display.getDefault().syncExec(() -> dockerConnectionManager.removeConnection(dockerConnection));
 		SWTUtils.wait(1, TimeUnit.SECONDS);
 		// then
 		Assertions.assertThat(!dockerContainersRefreshManager.getConnections().contains(dockerConnection));

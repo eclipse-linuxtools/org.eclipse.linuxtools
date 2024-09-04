@@ -70,7 +70,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 	@Before
 	public void setupViews() {
 		this.bot = new SWTWorkbenchBot();
-		SWTUtils.asyncExec(() -> {
+		bot.getDisplay().asyncExec(() -> {
 			try {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 						.showView(DockerExplorerView.VIEW_ID);
@@ -151,7 +151,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		final SWTBotView dockerImageHierarchyViewBot = bot.viewById(DockerImageHierarchyView.VIEW_ID);
 		final DockerImageHierarchyView dockerImageHierarchyView = (DockerImageHierarchyView) (dockerImageHierarchyViewBot
 				.getViewReference().getView(true));
-		SWTUtils.asyncExec(() -> dockerImageHierarchyView.getCommonViewer().expandAll());
+		bot.getDisplay().asyncExec(() -> dockerImageHierarchyView.getCommonViewer().expandAll());
 		// when a second call to expand the container is done (because the first
 		// expandAll stopped with a "Loading..." job that retrieved the
 		// containers)

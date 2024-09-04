@@ -77,7 +77,7 @@ public class NewDockerConnectionSWTBotTest {
 
 	@Before
 	public void lookupDockerExplorerView() throws Exception {
-		SWTUtils.asyncExec(() -> {
+		bot.getDisplay().asyncExec(() -> {
 			try {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 						.showView(DockerExplorerView.VIEW_ID);

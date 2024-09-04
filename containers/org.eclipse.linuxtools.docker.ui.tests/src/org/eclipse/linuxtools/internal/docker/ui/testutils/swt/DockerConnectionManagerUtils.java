@@ -57,7 +57,7 @@ public class DockerConnectionManagerUtils {
 		final SWTWorkbenchBot bot = new SWTWorkbenchBot();
 		final SWTBotView dockerExplorerBotView = SWTUtils.getSWTBotView(bot, DockerExplorerView.VIEW_ID);
 		final SWTBotView dockerContainersBotView = SWTUtils.getSWTBotView(bot, DockerContainersView.VIEW_ID);
-		SWTUtils.syncExec(() -> {
+		bot.getDisplay().syncExec(() -> {
 			DockerConnectionManager.getInstance().reloadConnections();
 			if (dockerExplorerBotView != null) {
 				final DockerExplorerView dockerExplorerView = (DockerExplorerView) dockerExplorerBotView
