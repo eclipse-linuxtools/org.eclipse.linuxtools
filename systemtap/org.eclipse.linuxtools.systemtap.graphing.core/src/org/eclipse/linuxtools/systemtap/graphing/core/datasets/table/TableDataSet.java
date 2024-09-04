@@ -67,7 +67,6 @@ public class TableDataSet implements IHistoricalDataSet, IBlockDataSet {
                     entry.add(line.split(", ")); //$NON-NLS-1$
                 }
             }
-            br.close();
             return true;
         } catch(IOException|ArrayIndexOutOfBoundsException e) {}
         return false;

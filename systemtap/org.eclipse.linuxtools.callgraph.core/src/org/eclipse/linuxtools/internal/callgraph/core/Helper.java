@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2009, 2018 Red Hat, Inc.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -15,7 +15,6 @@ package org.eclipse.linuxtools.internal.callgraph.core;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -53,11 +52,7 @@ public class Helper {
             while ((tmp = bw.readLine()) != null) {
                 output+=tmp + "\n"; //$NON-NLS-1$
             }
-            bw.close();
-
             return output;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,8 +64,7 @@ public class Helper {
             File f = new File(absoluteFilePath);
             f.delete();
             f.createNewFile();
-            FileWriter fstream;
-            fstream = new FileWriter(absoluteFilePath, true);
+            FileWriter fstream = new FileWriter(absoluteFilePath, true);
             return new BufferedWriter(fstream);
         } catch (IOException e) {
             SystemTapUIErrorMessages err = new SystemTapUIErrorMessages

@@ -95,7 +95,6 @@ public class SSHProxyManager implements IRemoteEnvProxyManager {
             if((errorLine = error.readLine()) != null){
                 throw new IOException(errorLine);
             }
-            error.close();
         } catch (IOException e) {
 			Activator.getDefault().getLog().log(Status.error(e.getMessage(), e));
             return Collections.emptyMap();

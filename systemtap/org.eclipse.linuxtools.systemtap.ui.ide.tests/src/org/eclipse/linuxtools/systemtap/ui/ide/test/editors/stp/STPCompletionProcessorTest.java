@@ -18,10 +18,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
@@ -82,8 +80,7 @@ public class STPCompletionProcessorTest {
 		path = path.append("TreeSettings").addFileExtension("xml"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		try (InputStream is = FileLocator.openStream(FrameworkUtil.getBundle(STPCompletionProcessorTest.class),
-				new Path("helpers/TreeSettings.xml"), false);
-				OutputStream outStream = new FileOutputStream(path.toFile())) {
+				new Path("helpers/TreeSettings.xml"), false)) {
 			Files.copy(is, path.toFile().toPath(), StandardCopyOption.REPLACE_EXISTING);
 			TapsetLibrary.readTreeFile();
 		} catch (IOException e) {

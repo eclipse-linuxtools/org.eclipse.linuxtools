@@ -164,7 +164,6 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
             while ((temp = scriptReader.readLine()) != null) {
                 toWrite += temp + "\n"; //$NON-NLS-1$
             }
-            scriptReader.close();
         }
 
         return toWrite;
