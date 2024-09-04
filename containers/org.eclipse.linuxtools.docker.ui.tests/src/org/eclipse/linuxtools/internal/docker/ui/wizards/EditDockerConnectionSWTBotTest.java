@@ -14,6 +14,8 @@
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +48,6 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionS
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerContainerConfigFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerHostConfigFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerImageFactory;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ButtonAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CheckBoxAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseShellRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.CloseWelcomePageRule;
@@ -69,10 +70,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
+import org.mandas.docker.client.DockerClient;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-
-import org.mandas.docker.client.DockerClient;
 
 /**
  * Testing the {@link EditDockerConnection} {@link Wizard}
@@ -240,11 +240,11 @@ public class EditDockerConnectionSWTBotTest {
 		// given
 		configureUnixSocketConnection();
 		openConnectionEditionWizard("Test");
-		ButtonAssertions.assertThat(getFinishButton()).isEnabled();
+		assertTrue(getFinishButton().isEnabled());
 		// when
 		bot.text(0).setText("");
 		// then
-		ButtonAssertions.assertThat(getFinishButton()).isNotEnabled();
+		assertFalse(getFinishButton().isEnabled());
 	}
 
 	@Test
@@ -252,11 +252,11 @@ public class EditDockerConnectionSWTBotTest {
 		// given
 		configureUnixSocketConnection();
 		openConnectionEditionWizard("Test");
-		ButtonAssertions.assertThat(getFinishButton()).isEnabled();
+		assertTrue(getFinishButton().isEnabled());
 		// when
 		bot.text(1).setText("");
 		// then
-		ButtonAssertions.assertThat(getFinishButton()).isNotEnabled();
+		assertFalse(getFinishButton().isEnabled());
 	}
 
 	@Test
@@ -264,11 +264,11 @@ public class EditDockerConnectionSWTBotTest {
 		// given
 		configureUnixSocketConnection();
 		openConnectionEditionWizard("Test");
-		ButtonAssertions.assertThat(getFinishButton()).isEnabled();
+		assertTrue(getFinishButton().isEnabled());
 		// when
 		bot.text(1).setText("/invalid/path");
 		// then
-		ButtonAssertions.assertThat(getFinishButton()).isNotEnabled();
+		assertFalse(getFinishButton().isEnabled());
 	}
 
 	@Test
@@ -276,11 +276,11 @@ public class EditDockerConnectionSWTBotTest {
 		// given
 		configureTCPConnection();
 		openConnectionEditionWizard("Test");
-		ButtonAssertions.assertThat(getFinishButton()).isEnabled();
+		assertTrue(getFinishButton().isEnabled());
 		// when
 		bot.text(2).setText("");
 		// then
-		ButtonAssertions.assertThat(getFinishButton()).isNotEnabled();
+		assertFalse(getFinishButton().isEnabled());
 	}
 
 	@Test
@@ -288,11 +288,11 @@ public class EditDockerConnectionSWTBotTest {
 		// given
 		configureTCPConnection();
 		openConnectionEditionWizard("Test");
-		ButtonAssertions.assertThat(getFinishButton()).isEnabled();
+		assertTrue(getFinishButton().isEnabled());
 		// when
 		bot.text(2).setText("foo");
 		// then
-		ButtonAssertions.assertThat(getFinishButton()).isNotEnabled();
+		assertFalse(getFinishButton().isEnabled());
 	}
 
 	@Test
@@ -300,11 +300,11 @@ public class EditDockerConnectionSWTBotTest {
 		// given
 		configureTCPConnection();
 		openConnectionEditionWizard("Test");
-		ButtonAssertions.assertThat(getFinishButton()).isEnabled();
+		assertTrue(getFinishButton().isEnabled());
 		// when
 		bot.text(2).setText("ftp://foo");
 		// then
-		ButtonAssertions.assertThat(getFinishButton()).isNotEnabled();
+		assertFalse(getFinishButton().isEnabled());
 	}
 
 	@Test
@@ -312,11 +312,11 @@ public class EditDockerConnectionSWTBotTest {
 		// given
 		configureTCPConnection();
 		openConnectionEditionWizard("Test");
-		ButtonAssertions.assertThat(getFinishButton()).isEnabled();
+		assertTrue(getFinishButton().isEnabled());
 		// when
 		bot.text(2).setText("http://foo");
 		// then
-		ButtonAssertions.assertThat(getFinishButton()).isNotEnabled();
+		assertFalse(getFinishButton().isEnabled());
 	}
 
 	@Test
@@ -324,11 +324,11 @@ public class EditDockerConnectionSWTBotTest {
 		// given
 		configureTCPConnection();
 		openConnectionEditionWizard("Test");
-		ButtonAssertions.assertThat(getFinishButton()).isEnabled();
+		assertTrue(getFinishButton().isEnabled());
 		// when
 		bot.text(3).setText("");
 		// then
-		ButtonAssertions.assertThat(getFinishButton()).isNotEnabled();
+		assertFalse(getFinishButton().isEnabled());
 	}
 
 	@Test
@@ -336,11 +336,11 @@ public class EditDockerConnectionSWTBotTest {
 		// given
 		configureTCPConnection();
 		openConnectionEditionWizard("Test");
-		ButtonAssertions.assertThat(getFinishButton()).isEnabled();
+		assertTrue(getFinishButton().isEnabled());
 		// when
 		bot.text(3).setText("/invalid/path");
 		// then
-		ButtonAssertions.assertThat(getFinishButton()).isNotEnabled();
+		assertFalse(getFinishButton().isEnabled());
 	}
 
 	@Test
