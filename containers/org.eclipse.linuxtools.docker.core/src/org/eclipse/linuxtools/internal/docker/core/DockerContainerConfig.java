@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2020 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -22,9 +22,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.linuxtools.docker.core.IDockerContainerConfig;
-
 import org.mandas.docker.client.messages.ContainerConfig;
 import org.mandas.docker.client.messages.HostConfig;
+import org.mandas.docker.client.messages.ImageConfig;
 
 public class DockerContainerConfig implements IDockerContainerConfig {
 
@@ -55,7 +55,7 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 	private final List<String> onBuild;
 	private final Map<String, String> labels;
 
-	public DockerContainerConfig(final ContainerConfig containerConfig) {
+	public DockerContainerConfig(final ImageConfig containerConfig) {
 		this.hostname = containerConfig != null ? containerConfig.hostname()
 				: null;
 		this.domainname = containerConfig != null ? containerConfig.domainname()
@@ -109,6 +109,74 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 		this.networkDisabled = containerConfig != null
 				&& containerConfig.networkDisabled() != null
 				? containerConfig.networkDisabled() : false;
+		this.onBuild = containerConfig != null ? containerConfig.onBuild()
+				: null;
+		this.labels = containerConfig != null ? containerConfig.labels() : null;
+	}
+
+	public DockerContainerConfig(final ContainerConfig containerConfig) {
+		this.hostname = containerConfig != null ? containerConfig.hostname()
+				: null;
+		this.domainname = containerConfig != null ? containerConfig.domainname()
+				: null;
+		this.user = containerConfig != null ? containerConfig.user() : null;
+		final HostConfig hc = containerConfig != null
+				? containerConfig.hostConfig()
+				: null;
+		this.memory = hc != null ? hc.memory() : null;
+		this.memorySwap = hc != null ? hc.memorySwap() : null;
+		this.cpuShares = hc != null ? hc.cpuShares() : null;
+		this.cpuset = hc != null ? hc.cpusetCpus() : null;
+		this.attachStdin = containerConfig != null
+				&& containerConfig.attachStdin() != null
+						? containerConfig.attachStdin()
+						: false;
+		this.attachStdout = containerConfig != null
+				&& containerConfig.attachStdout() != null
+						? containerConfig.attachStdout()
+						: false;
+		this.attachStderr = containerConfig != null
+				&& containerConfig.attachStderr() != null
+						? containerConfig.attachStderr()
+						: false;
+		this.portSpecs = containerConfig != null ? containerConfig.portSpecs()
+				: null;
+		this.exposedPorts = containerConfig != null
+				? containerConfig.exposedPorts()
+				: null;
+		this.tty = containerConfig != null && containerConfig.tty() != null
+				? containerConfig.tty()
+				: false;
+		this.openStdin = containerConfig != null
+				&& containerConfig.openStdin() != null
+						? containerConfig.openStdin()
+						: false;
+		this.stdinOnce = containerConfig != null
+				&& containerConfig.stdinOnce() != null
+						? containerConfig.stdinOnce()
+						: false;
+		this.env = containerConfig != null ? containerConfig.env() : null;
+		this.cmd = containerConfig != null ? containerConfig.cmd() : null;
+		this.image = containerConfig != null ? containerConfig.image() : null;
+
+		@SuppressWarnings("rawtypes")
+		Map<String, Map> res = new HashMap<>();
+		try {
+			if (containerConfig != null && containerConfig.volumes() != null) {
+				containerConfig.volumes()
+						.forEach(v -> res.put(v, Collections.emptyMap()));
+			}
+		} catch (NullPointerException e) {
+		}
+		this.volumes = res;
+		this.workingDir = containerConfig != null ? containerConfig.workingDir()
+				: null;
+		this.entrypoint = containerConfig != null ? containerConfig.entrypoint()
+				: null;
+		this.networkDisabled = containerConfig != null
+				&& containerConfig.networkDisabled() != null
+						? containerConfig.networkDisabled()
+						: false;
 		this.onBuild = containerConfig != null ? containerConfig.onBuild()
 				: null;
 		this.labels = containerConfig != null ? containerConfig.labels() : null;
@@ -600,7 +668,7 @@ public class DockerContainerConfig implements IDockerContainerConfig {
 
 		/**
 		 * Create a proper command list after handling quotation.
-		 * 
+		 *
 		 * @param command
 		 *            the command as a single {@link String}
 		 * @return the command splitted in a list of ars or <code>null</code> if

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.mandas.docker.client.messages.ContainerConfig;
+import org.mandas.docker.client.messages.ImageConfig;
 import org.mandas.docker.client.messages.ImageInfo;
 import org.mockito.Mockito;
 
@@ -76,7 +77,8 @@ public class MockImageInfoFactory {
 		public ImageInfo build() {
 			final ContainerConfig config = Mockito.mock(ContainerConfig.class);
 			final ContainerConfig containerConfig = Mockito.mock(ContainerConfig.class);
-			Mockito.when(this.imageInfo.config()).thenReturn(config);
+			final ImageConfig imageConfig = Mockito.mock(ImageConfig.class);
+			Mockito.when(this.imageInfo.config()).thenReturn(imageConfig);
 			Mockito.when(this.imageInfo.containerConfig()).thenReturn(containerConfig);
 			Mockito.when(config.cmd()).thenReturn(List.copyOf(this.command));
 			Mockito.when(config.entrypoint()).thenReturn(List.copyOf(this.entrypoint));
