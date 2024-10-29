@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2020 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -16,7 +16,6 @@ import java.util.Date;
 
 import org.eclipse.linuxtools.docker.core.IDockerContainerConfig;
 import org.eclipse.linuxtools.docker.core.IDockerImageInfo;
-
 import org.mandas.docker.client.messages.ImageInfo;
 
 public class DockerImageInfo implements IDockerImageInfo {
@@ -41,7 +40,8 @@ public class DockerImageInfo implements IDockerImageInfo {
 		this.created = info != null ? info.created() : null;
 		this.container = info != null ? info.container() : null;
 		this.containerConfig = info != null
-				? new DockerContainerConfig(info.containerConfig()) : null;
+				? new DockerContainerConfig(info.config())
+				: null;
 		this.dockerVersion = info != null ? info.dockerVersion() : null;
 		this.author = info != null ? info.author() : null;
 		this.config = info != null ? new DockerContainerConfig(info.config())
