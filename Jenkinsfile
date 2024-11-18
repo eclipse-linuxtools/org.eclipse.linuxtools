@@ -58,9 +58,9 @@ spec:
 		stage('Build') {
 			steps {
 				container('container') {
-				withCredentials([file(credentialsId: 'secret-subkeys.asc', variable: 'KEYRING'),string(credentialsId: 'gpg-passphrase', variable: 'KEYRING_PASSPHRASE') ]) {
+				withCredentials([file(credentialsId: 'secret-subkeys.asc', variable: 'KEYRING'),string(credentialsId: 'gpg-passphrase', variable: 'MAVEN_GPG_PASSPHRASE') ]) {
 					wrap([$class: 'Xvnc', useXauthority: true]) {
-						sh '''mvn -e -Psign -Dmaven.test.failure.ignore=true -ntp -Ddash.fail=true -Dgpg.passphrase="${KEYRING_PASSPHRASE}" -Dtycho.pgp.signer.bc.secretKeys="${KEYRING}" clean verify'''
+						sh '''mvn -e -Psign -Dmaven.test.failure.ignore=true -ntp -Ddash.fail=true -Dtycho.pgp.signer.bc.secretKeys="${KEYRING}" clean verify'''
 					}
 				}}
 			}
