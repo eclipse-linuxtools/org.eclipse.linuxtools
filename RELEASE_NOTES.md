@@ -2,7 +2,11 @@
 
 This page describes the noteworthy improvements provided by each release of Eclipse Linux Tools.
 
-## Next release...
+## 8.17.0
+
+### Docker Tooling
+
+Docker Tooling has been upgraded to 8.0.3.
 
 ### Docker Editor
 
