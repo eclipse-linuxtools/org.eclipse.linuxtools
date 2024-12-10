@@ -25,7 +25,7 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
  * Aggregate View. This avoids needing to design a Layout Algorithm
  * from scratch.
  */
-public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
+public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm.Zest1{
 
     private ArrayList<Long> list;
     private Long totalTime;
