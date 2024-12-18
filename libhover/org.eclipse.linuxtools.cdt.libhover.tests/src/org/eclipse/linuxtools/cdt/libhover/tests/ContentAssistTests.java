@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2018 IBM Corporation and others.
+ * Copyright (c) 2004, 2024 IBM Corporation and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,8 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.io.StringWriter;
 
 import org.eclipse.cdt.core.dom.IPDOMManager;
@@ -126,12 +124,10 @@ public class ContentAssistTests extends BaseUITestCase {
         //Obtain file handle
         IFile file = project.getProject().getFile(fileName);
 
-        InputStream stream = new ByteArrayInputStream( contents.getBytes() );
-        //Create file input stream
         if( file.exists() )
-            file.setContents( stream, false, false, monitor );
+            file.setContents( contents.getBytes(), false, false, monitor );
         else
-            file.create( stream, false, monitor );
+            file.create( contents.getBytes(), false,false, monitor );
 
         return file;
     }
