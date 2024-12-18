@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2018 Red Hat, Inc.
+ * Copyright (c) 2008, 2024 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -84,7 +83,7 @@ public abstract class FileTestCase {
 
 	protected void newFile(String contents) {
 		try {
-			testFile.setContents(new ByteArrayInputStream(contents.getBytes()), false, false, null);
+			testFile.setContents(contents.getBytes(), false, false, null);
 		} catch (CoreException e) {
 			fail(e.getMessage());
 		}
