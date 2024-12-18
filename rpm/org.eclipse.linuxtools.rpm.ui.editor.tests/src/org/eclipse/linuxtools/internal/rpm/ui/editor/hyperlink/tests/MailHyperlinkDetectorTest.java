@@ -33,9 +33,15 @@ public class MailHyperlinkDetectorTest extends FileTestCase {
 
 	@Test
 	public void testDetectHyperlinks() throws PartInitException {
-		String testText = "Version: 0.0\n" + "Release: 0\n" + "%changelog\n"
-				+ "* Fri Feb 27 2009 Test <someone@smth.com> 3.3.2.4-6\n-\n"
-				+ "* Fri Feb 27 2009 Test someone@smth.com 3.3.2.4-6\n-\n";
+		String testText = """
+				Version: 0.0
+				Release: 0
+				%changelog
+				* Fri Feb 27 2009 Test <someone@smth.com> 3.3.2.4-6
+				-
+				* Fri Feb 27 2009 Test someone@smth.com 3.3.2.4-6
+				-
+				""";
 		newFile(testText);
 
 		IEditorPart openEditor = IDE.openEditor(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(),
