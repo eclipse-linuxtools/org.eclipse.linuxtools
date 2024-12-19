@@ -31,8 +31,8 @@ public class ScatterChartBuilder extends LineChartBuilder {
     }
 
     @Override
-    protected ISeries createChartISeries(int i) {
-        ILineSeries series = (ILineSeries)super.createChartISeries(i);
+	protected ISeries<?> createChartISeries(int i) {
+		ILineSeries<?> series = (ILineSeries<?>) super.createChartISeries(i);
         series.setSymbolColor(COLORS[i % COLORS.length]);
         series.setLineStyle(LineStyle.NONE);
         return series;

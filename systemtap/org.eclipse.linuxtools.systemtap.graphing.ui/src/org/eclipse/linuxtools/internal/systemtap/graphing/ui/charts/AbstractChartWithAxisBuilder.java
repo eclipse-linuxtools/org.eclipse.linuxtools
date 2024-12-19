@@ -79,7 +79,7 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
      * @param i The index of the series to create.
      * @return The newly created series.
      */
-    protected abstract ISeries createChartISeries(int i);
+	protected abstract ISeries<?> createChartISeries(int i);
 
     @Override
     protected void updateProperties(PropertyChangeEvent event) {
@@ -265,8 +265,8 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
         // Now create dense arrays of x/y values that exclude null values,
         // and plot those values to the chart.
 
-        ISeries allSeries[] = chart.getSeriesSet().getSeries();
-        ISeries series = null;
+		ISeries<?> allSeries[] = chart.getSeriesSet().getSeries();
+		ISeries<?> series = null;
         for (int i = 0; i < leny; i++) {
             if (i >= allSeries.length) {
                 series = createChartISeries(i);

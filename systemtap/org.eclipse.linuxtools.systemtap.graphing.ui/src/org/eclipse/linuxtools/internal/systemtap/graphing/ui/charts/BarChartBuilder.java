@@ -46,9 +46,9 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
     }
 
     @Override
-    protected ISeries createChartISeries(int i) {
-        IBarSeries series = (IBarSeries)chart.getSeriesSet().
-            createSeries(SeriesType.BAR, adapter.getLabels()[i+1]);
+	protected ISeries<?> createChartISeries(int i) {
+		IBarSeries<?> series = (IBarSeries<?>) chart.getSeriesSet()
+				.createSeries(SeriesType.BAR, adapter.getLabels()[i + 1]);
         series.setBarColor(COLORS[i % COLORS.length]);
         return series;
     }
@@ -104,9 +104,9 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
         String[] valxTrim = new String[lenTrim];
         System.arraycopy(valx, 0, valxTrim, 0, lenTrim);
 
-        ISeries allSeries[] = chart.getSeriesSet().getSeries();
+		ISeries<?> allSeries[] = chart.getSeriesSet().getSeries();
         for (int i = 0; i < leny; i++) {
-            ISeries series;
+			ISeries<?> series;
             if (i >= allSeries.length) {
                 series = createChartISeries(i);
             } else {

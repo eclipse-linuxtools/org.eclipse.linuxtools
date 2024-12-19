@@ -86,13 +86,13 @@ public class PieChart extends InteractiveChart {
      */
     public void addPieChartSeries(String[] labels, double[][] val) {
         setSeriesNames(val[0].length);
-        for (ISeries s : this.getSeriesSet().getSeries()) {
+        for (ISeries<?> s : this.getSeriesSet().getSeries()) {
             this.getSeriesSet().deleteSeries(s.getId());
         }
 
         int size = Math.min(labels.length, val.length);
         for (int i = 0; i < size; i++) {
-            IBarSeries s = (IBarSeries) this.getSeriesSet().createSeries(ISeries.SeriesType.BAR, labels[i]);
+            IBarSeries<?> s = (IBarSeries<?>) this.getSeriesSet().createSeries(ISeries.SeriesType.BAR, labels[i]);
             double[] d = new double[val[i].length];
             for (int j = 0; j < val[i].length; j++) {
                 d[j] = val[i][j];
@@ -158,7 +158,7 @@ public class PieChart extends InteractiveChart {
      */
     public double getSlicePercent(int pieIndex, int sliceIndex) {
         double max = 0;
-        ISeries[] series = getSeriesSet().getSeries();
+        ISeries<?>[] series = getSeriesSet().getSeries();
         for (int i = 0; i < series.length; i++) {
             max += series[i].getXSeries()[pieIndex];
         }

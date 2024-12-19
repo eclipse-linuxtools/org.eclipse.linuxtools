@@ -7,7 +7,7 @@ Bundle-Activator: org.eclipse.linuxtools.internal.valgrind.massif.MassifPlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.swtchart.extensions
+ org.eclipse.swtchart.extensions;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin

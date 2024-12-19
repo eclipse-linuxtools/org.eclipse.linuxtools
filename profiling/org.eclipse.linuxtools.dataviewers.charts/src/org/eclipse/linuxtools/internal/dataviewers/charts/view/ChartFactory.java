@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -33,7 +33,7 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * A utility class that handles the charts creation (pie chart and bar chart)
- * 
+ *
  */
 public final class ChartFactory {
 
@@ -118,13 +118,12 @@ public final class ChartFactory {
 
     public static InteractiveChart produceBarChart(Object[] objects, final ISTDataViewersField nameField,
             List<IChartField> valFields, String title, boolean horizontal) {
-        ChartView view;
         try {
             final Color WHITE = PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_WHITE);
             final Color BLACK = PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_BLACK);
             final Color GRAD = PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
 
-            view = (ChartView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+			ChartView view = (ChartView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                     .showView(ChartView.VIEW_ID, String.valueOf(ChartView.getSecId()), IWorkbenchPage.VIEW_ACTIVATE);
             InteractiveChart chart = new InteractiveChart(view.getParent(), SWT.NONE);
 
@@ -167,7 +166,7 @@ public final class ChartFactory {
 
             // data
             for (IChartField field : valFields) {
-                final IBarSeries bs = (IBarSeries) chart.getSeriesSet().createSeries(SeriesType.BAR,
+				final IBarSeries<?> bs = (IBarSeries<?>) chart.getSeriesSet().createSeries(SeriesType.BAR,
                         field.getColumnHeaderText());
                 bs.setBarColor(new Color(Display.getDefault(), getRC(), getRC(), getRC()));
                 double[] doubleValues = new double[objects.length];
