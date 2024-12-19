@@ -22,7 +22,6 @@ package org.eclipse.linuxtools.internal.perf.launch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URI;
@@ -163,8 +162,7 @@ public class PerfLaunchConfigDelegate extends AbstractCLaunchDelegate {
                 MessageConsoleStream stream = console.newMessageStream();
 
                 if (pProxy != null) {
-                    try (BufferedReader error = new BufferedReader(
-                            new InputStreamReader(pProxy.getErrorStream()))) {
+                    try (BufferedReader error = pProxy.errorReader()) {
                         String err = error.readLine();
                         while (err != null) {
                             stream.println(err);

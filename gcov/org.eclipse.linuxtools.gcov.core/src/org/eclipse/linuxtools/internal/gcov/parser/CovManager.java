@@ -22,7 +22,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -274,7 +273,7 @@ public class CovManager implements Serializable {
                 Process process = Runtime.getRuntime().exec(new String[] {"sh", "-c", "echo $OSTYPE"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
                 String firstLine = null;
-                try (BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+				try (BufferedReader stdout = process.inputReader()) {
                     firstLine = stdout.readLine();
                 }
                 if (firstLine != null) {
@@ -457,14 +456,13 @@ public class CovManager implements Serializable {
         @Override
         public void run() {
             try {
-                populateGCDAFiles(p.getInputStream());
+				populateGCDAFiles(p.inputReader());
             } catch (IOException e) {
             }
         }
 
-        private void populateGCDAFiles(InputStream s) throws IOException {
-            InputStreamReader isr = new InputStreamReader(s);
-            LineNumberReader lnr = new LineNumberReader(isr);
+		private void populateGCDAFiles(BufferedReader r) throws IOException {
+			LineNumberReader lnr = new LineNumberReader(r);
             String line = null;
             while ((line = lnr.readLine()) != null) {
                 if (line.endsWith(".gcda")) //$NON-NLS-1$

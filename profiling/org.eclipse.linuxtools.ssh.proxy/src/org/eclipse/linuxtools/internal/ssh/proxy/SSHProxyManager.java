@@ -16,7 +16,6 @@ package org.eclipse.linuxtools.internal.ssh.proxy;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -26,6 +25,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
@@ -91,12 +91,12 @@ public class SSHProxyManager implements IRemoteEnvProxyManager {
         Process p = cmdLauncher.execute(new Path("/bin/env"), new String[] {}, new String[] {}, null, null); //$NON-NLS-1$
 
         String errorLine;
-        try (BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()))){
+		try (BufferedReader error = p.errorReader()) {
             if((errorLine = error.readLine()) != null){
                 throw new IOException(errorLine);
             }
         } catch (IOException e) {
-			Activator.getDefault().getLog().log(Status.error(e.getMessage(), e));
+			ILog.get().log(Status.error(e.getMessage(), e));
             return Collections.emptyMap();
         }
         /*
@@ -116,8 +116,7 @@ public class SSHProxyManager implements IRemoteEnvProxyManager {
         Pattern variablePattern = Pattern.compile("^(.+)=([^\\(\\)\\s{].*|)$"); //$NON-NLS-1$
         Matcher m;
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-                p.getInputStream()))) {
+		try (BufferedReader reader = p.inputReader()) {
             String readLine = reader.readLine();
             while (readLine != null) {
                 m = variablePattern.matcher(readLine);
@@ -127,7 +126,7 @@ public class SSHProxyManager implements IRemoteEnvProxyManager {
                 readLine = reader.readLine();
             }
         } catch (IOException e) {
-			Activator.getDefault().getLog().log(Status.error(e.getMessage(), e));
+			ILog.get().log(Status.error(e.getMessage(), e));
             return Collections.emptyMap();
         }
         return env;
@@ -153,7 +152,7 @@ public class SSHProxyManager implements IRemoteEnvProxyManager {
                 return new URI(SCHEME_ID, uri.getRawUserInfo(), uri.getHost(), uri.getPort(), uri.getRawPath()
                         , uri.getRawQuery(), uri.getRawFragment());
             } catch (URISyntaxException e) {
-				Activator.getDefault().getLog().log(Status.error(e.getMessage(), e));
+				ILog.get().log(Status.error(e.getMessage(), e));
             }
         }
         return uri;

@@ -85,16 +85,16 @@ public abstract class AbstractDataManipulator extends BaseDataManipulator
 
             switch (fd) {
             case 2:
-                buffData = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-                buffTemp = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+                buffData = proc.errorReader();
+                buffTemp = proc.inputReader();
                 readStream(buffTemp, temp);
                 readStream(buffData, data);
                 break;
             case 1:
                 // fall through to default case
             default:
-                buffData = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-                buffTemp = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+                buffData = proc.inputReader();
+                buffTemp = proc.errorReader();
                 readStream(buffData, data);
                 readStream(buffTemp, temp);
                 break;

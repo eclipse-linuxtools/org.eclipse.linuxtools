@@ -16,8 +16,6 @@ package org.eclipse.linuxtools.internal.docker.core;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -171,9 +169,7 @@ public class ProcessLauncher {
 			process.waitFor();
 			if (process.exitValue() == 0) {
 				final List<String> result = new ArrayList<>();
-				try (final InputStream inputStream = process.getInputStream();
-						final BufferedReader buff = new BufferedReader(
-								new InputStreamReader(inputStream))) {
+				try (final BufferedReader buff = process.inputReader()) {
 					String line;
 					while ((line = buff.readLine()) != null) {
 						result.add(line);
@@ -181,10 +177,8 @@ public class ProcessLauncher {
 				}
 				return result.toArray(new String[0]);
 			} else {
-					final StringBuilder errorMessage = new StringBuilder();
-				try (final InputStream errorStream = process.getErrorStream();
-						final BufferedReader buff = new BufferedReader(
-								new InputStreamReader(errorStream))) {
+				final StringBuilder errorMessage = new StringBuilder();
+				try (final BufferedReader buff = process.errorReader()) {
 					String line;
 					while ((line = buff.readLine()) != null) {
 						errorMessage.append(line).append('\n'); // $NON-NLS-1$

@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.internal.perf;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.URI;
 import java.util.ArrayList;
@@ -167,7 +166,7 @@ public class PerfCore {
              * Old versions of Perf will send events list to stderr instead of stdout
              * Checking if stdout is empty then read from stderr
              */
-            input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            input = p.inputReader();
 
         } catch( IOException e ) {
             logException(e);
@@ -234,7 +233,7 @@ public class PerfCore {
             return null;
         }
 
-        BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        BufferedReader input = p.inputReader();
 
         String perfVersion = spitStream(input, "Perf --version", null); //$NON-NLS-1$
         int index = perfVersion.indexOf('-');
@@ -401,8 +400,8 @@ public class PerfCore {
                 PerfPlugin.getDefault().setWorkingDir(workingDir);
             }
 
-            input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+            input = p.inputReader();
+            error = p.errorReader();
             //spitting error stream moved to end of while loop, due to commenting of p.waitFor()
         } catch( IOException e ) {
             logException(e);
@@ -590,8 +589,8 @@ public class PerfCore {
                                     al.add(sb.toString());
                                     p = RuntimeProcessFactory.getFactory().exec(al.toArray(new String[]{}), project);
                                 }
-                                input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                                error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+                                input = p.inputReader();
+                                error = p.errorReader();
                             } catch (IOException e) {
                                 logException(e);
                             }

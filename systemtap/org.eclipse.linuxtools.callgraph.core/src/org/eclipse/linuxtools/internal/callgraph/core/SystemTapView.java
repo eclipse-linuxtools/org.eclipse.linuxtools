@@ -18,7 +18,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -222,8 +221,7 @@ public abstract class SystemTapView extends ViewPart {
             public void run() {
                 try {
                     Process pr = RuntimeProcessFactory.getFactory().exec("stap -V", null); //$NON-NLS-1$
-                    BufferedReader buf = new BufferedReader(
-                            new InputStreamReader(pr.getErrorStream()));
+					BufferedReader buf = pr.errorReader();
                     String line = ""; //$NON-NLS-1$
                     String message = ""; //$NON-NLS-1$
 

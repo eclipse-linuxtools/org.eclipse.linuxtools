@@ -16,7 +16,6 @@ package org.eclipse.linuxtools.internal.systemtap.ui.ide.preferences;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -68,7 +67,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         String version = ""; //$NON-NLS-1$
         try {
             Process process = RuntimeProcessFactory.getFactory().exec("uname -r", null, null);//$NON-NLS-1$
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			BufferedReader reader = process.inputReader();
             version = reader.readLine();
         } catch (IOException e) {
             // Could not run uname use an empty String

@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -124,8 +125,7 @@ public class ManParser {
 			Process process = builder.start();
 			stdout = process.getInputStream();
 		} catch (IOException e) {
-			Bundle bundle = FrameworkUtil.getBundle(this.getClass());
-			Platform.getLog(bundle).log(Status.error(e.getMessage()));
+			ILog.get().log(Status.error(e.getMessage()));
 		}
 		return stdout;
 	}
@@ -148,8 +148,7 @@ public class ManParser {
 				sb.append(reader.lines().collect(Collectors.joining("\n"))); //$NON-NLS-1$
 			}
 		} catch (IOException e) {
-			Bundle bundle = FrameworkUtil.getBundle(this.getClass());
-			Platform.getLog(bundle).log(Status.error(e.getMessage()));
+			ILog.get().log(Status.error(e.getMessage()));
 		}
 		return sb;
 	}

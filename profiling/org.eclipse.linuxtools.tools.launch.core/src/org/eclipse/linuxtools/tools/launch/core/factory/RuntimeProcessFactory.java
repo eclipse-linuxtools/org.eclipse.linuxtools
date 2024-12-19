@@ -15,7 +15,6 @@ package org.eclipse.linuxtools.tools.launch.core.factory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -107,7 +106,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 					new NullProgressMonitor());
 			if (pProxy != null) {
 				ArrayList<String> lines = new ArrayList<>();
-				try (BufferedReader reader = new BufferedReader(new InputStreamReader(pProxy.getInputStream()))) {
+				try (BufferedReader reader = pProxy.inputReader()) {
 					String readLine = reader.readLine();
 					while (readLine != null) {
 						lines.add(readLine);

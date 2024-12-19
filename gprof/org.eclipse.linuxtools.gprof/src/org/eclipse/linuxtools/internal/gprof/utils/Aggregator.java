@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.internal.gprof.utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
@@ -91,7 +90,7 @@ public class Aggregator {
         @Override
         public void run() {
             try {
-                LineNumberReader lnr = new LineNumberReader(new InputStreamReader(p.getErrorStream()));
+				LineNumberReader lnr = new LineNumberReader(p.errorReader());
                 do {
                     String s = lnr.readLine();
                     if (s == null)
