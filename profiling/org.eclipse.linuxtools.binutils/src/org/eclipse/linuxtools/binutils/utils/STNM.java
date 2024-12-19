@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -15,8 +15,6 @@ package org.eclipse.linuxtools.binutils.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,12 +64,11 @@ public class STNM {
             System.arraycopy(params, 0, args, 1, params.length);
         }
         Process process = CdtSpawnerProcessFactory.getFactory().exec(args, project);
-        parseOutput(process.getInputStream());
+		parseOutput(process.inputReader());
         process.destroy();
     }
 
-    private void parseOutput(InputStream stream) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+	private void parseOutput(BufferedReader reader) throws IOException {
         String line;
 
         // See matcher.java for regular expression string data definitions.

@@ -16,7 +16,6 @@ import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -438,8 +437,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 			cmd.addAll(Arrays.asList(args));
 			Process p = Runtime.getRuntime().exec(cmd.toArray(new String[0]),
 					envp, vagrantDir);
-			BufferedReader buff = new BufferedReader(
-					new InputStreamReader(p.getInputStream()));
+			BufferedReader buff = p.inputReader();
 			if (p.waitFor() == 0) {
 				String line;
 				while ((line = buff.readLine()) != null) {
@@ -448,8 +446,7 @@ public class VagrantConnection implements IVagrantConnection, Closeable {
 			} else {
 				return new String[0];
 			}
-		} catch (IOException e) {
-		} catch (InterruptedException e) {
+		} catch (IOException | InterruptedException e) {
 		}
 		return result.toArray(new String[0]);
 	}

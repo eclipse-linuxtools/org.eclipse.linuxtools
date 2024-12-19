@@ -17,7 +17,6 @@ package org.eclipse.linuxtools.internal.valgrind.launch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -73,8 +72,7 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
             Process p = RuntimeProcessFactory.getFactory().exec(cmdArray,
                     project);
 
-            try (BufferedReader stdout = new BufferedReader(
-                    new InputStreamReader(p.getInputStream()))) {
+            try (BufferedReader stdout = p.inputReader()) {
                 return stdout.readLine();
             }
         } catch (IOException e) {
@@ -237,13 +235,13 @@ public class ValgrindRemoteProxyLaunchDelegate extends ValgrindLaunchConfigurati
                 String line = null;
 
                 StringBuilder valgrindOutSB = new StringBuilder();
-                BufferedReader valgrindOut = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                BufferedReader valgrindOut = p.inputReader();
                 while((line = valgrindOut.readLine()) != null ){
                     valgrindOutSB.append(line);
                 }
 
                 StringBuilder valgrindErrSB = new StringBuilder();
-                BufferedReader valgrindErr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+                BufferedReader valgrindErr = p.errorReader();
                 while((line = valgrindErr.readLine()) != null ){
                     valgrindErrSB.append(line);
                 }

@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.docker.editor.ls;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -41,7 +40,7 @@ public class InitializeLaunchConfigurations {
 		BufferedReader reader = null;
 		try {
 			Process p = Runtime.getRuntime().exec(command);
-			reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			reader = p.inputReader();
 			res = reader.readLine();
 		} catch (IOException e) {
 			// try other defaults
