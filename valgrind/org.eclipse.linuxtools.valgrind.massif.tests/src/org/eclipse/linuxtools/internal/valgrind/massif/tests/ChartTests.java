@@ -104,7 +104,7 @@ public class ChartTests extends AbstractMassifTest {
                 .getActivePage().getActiveEditor();
         assertTrue(part instanceof ChartEditor);
         Chart control = ((ChartEditor) part).getControl();
-        ILineSeries lsTotal = (ILineSeries) control.getSeriesSet().getSeries(
+        ILineSeries<?> lsTotal = (ILineSeries<?>) control.getSeriesSet().getSeries(
                 Messages.getString("HeapChart.Total_Heap")); //$NON-NLS-1$
         Point p1 = lsTotal.getPixelCoordinates(4);
 

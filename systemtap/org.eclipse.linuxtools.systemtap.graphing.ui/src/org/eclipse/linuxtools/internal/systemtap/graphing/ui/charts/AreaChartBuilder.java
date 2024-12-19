@@ -34,8 +34,8 @@ public class AreaChartBuilder extends LineChartBuilder {
     }
 
     @Override
-    protected ISeries createChartISeries(int i) {
-        ILineSeries series = (ILineSeries) super.createChartISeries(i);
+	protected ISeries<?> createChartISeries(int i) {
+		ILineSeries<?> series = (ILineSeries<?>) super.createChartISeries(i);
         series.enableArea(true);
         return series;
     }

@@ -39,9 +39,9 @@ public class ChartWithAxisMouseMoveListener extends ToolTipChartMouseMoveListene
         super.mouseMove(e);
         double closestDistance = DIST_TOLERANCE;
         int closestIndex = -1;
-        ISeries closestSeries = null;
+		ISeries<?> closestSeries = null;
         Point closestPoint = null;
-        for (ISeries series : chart.getSeriesSet().getSeries()) {
+		for (ISeries<?> series : chart.getSeriesSet().getSeries()) {
             for (int i = 0; i < series.getXSeries().length; i++) {
                 Point dataPoint = series.getPixelCoordinates(i);
                 if (dataPoint.x >= 0 && dataPoint.y >= 0) {

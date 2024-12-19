@@ -31,7 +31,7 @@ public class PieChartMouseMoveListener extends ToolTipChartMouseMoveListener {
     @Override
     public void mouseMove(MouseEvent e) {
         super.mouseMove(e);
-        ISeries[] allSeries = chart.getSeriesSet().getSeries();
+		ISeries<?>[] allSeries = chart.getSeriesSet().getSeries();
         int numPies = allSeries.length > 0 ? allSeries[0].getXSeries().length : 0;
         int pieIndex = 0, sliceIndex = -1;
         for (; pieIndex < numPies; pieIndex++) {

@@ -32,8 +32,8 @@ public class LineChartBuilder extends AbstractChartWithAxisBuilder {
 	}
 
 	@Override
-	protected ISeries createChartISeries(int i) {
-		ILineSeries series = (ILineSeries) chart.getSeriesSet().createSeries(SeriesType.LINE,
+	protected ISeries<?> createChartISeries(int i) {
+		ILineSeries<?> series = (ILineSeries<?>) chart.getSeriesSet().createSeries(SeriesType.LINE,
 				adapter.getLabels()[i + 1]);
 		series.setSymbolColor(COLORS[i % COLORS.length]);
 		series.setLineColor(COLORS[i % COLORS.length]);

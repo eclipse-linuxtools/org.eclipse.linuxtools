@@ -36,7 +36,7 @@ public class BarChartMouseMoveListener extends ToolTipChartMouseMoveListener {
     @Override
     public void mouseMove(MouseEvent e) {
         super.mouseMove(e);
-        ISeries[] allSeries = chart.getSeriesSet().getSeries();
+		ISeries<?>[] allSeries = chart.getSeriesSet().getSeries();
         if (allSeries.length == 0) {
             return;
         }
