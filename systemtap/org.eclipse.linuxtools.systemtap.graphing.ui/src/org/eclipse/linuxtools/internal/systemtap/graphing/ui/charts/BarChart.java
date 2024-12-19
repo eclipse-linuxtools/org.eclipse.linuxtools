@@ -155,7 +155,7 @@ public class BarChart extends InteractiveChart {
         Range rangeX = xAxis.getRange();
         double bottomY = getAxisSet().getYAxis(0).getRange().lower;
         double nonNegBottomY = Math.max(0, bottomY);
-        ISeries[] allSeries = getSeriesSet().getSeries();
+		ISeries<?>[] allSeries = getSeriesSet().getSeries();
         actualYSeries = new double[allSeries.length][];
 
         for (int i = 0, n = allSeries.length; i < n; i++) {

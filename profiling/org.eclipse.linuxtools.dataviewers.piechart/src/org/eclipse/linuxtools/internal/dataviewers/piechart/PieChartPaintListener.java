@@ -172,7 +172,7 @@ public class PieChartPaintListener implements PaintListener {
                     pieSliceAngles[chartnum][i - 1] = 90 - initialAngle;
                 }
 
-                gc.setBackground(((IBarSeries) chart.getSeriesSet().getSeries()[i]).getBarColor());
+                gc.setBackground(((IBarSeries<?>) chart.getSeriesSet().getSeries()[i]).getBarColor());
 
                 if (i == (nelemSeries - 1)) {
                     sweepAngle = 360 - incrementAngle;
@@ -200,7 +200,7 @@ public class PieChartPaintListener implements PaintListener {
     }
 
     private void getPieSeriesArray() {
-        ISeries series[] = this.chart.getSeriesSet().getSeries();
+        ISeries<?> series[] = this.chart.getSeriesSet().getSeries();
         if (series == null || series.length == 0) {
             seriesValues = new double[0][0];
             seriesNames = new String[0];

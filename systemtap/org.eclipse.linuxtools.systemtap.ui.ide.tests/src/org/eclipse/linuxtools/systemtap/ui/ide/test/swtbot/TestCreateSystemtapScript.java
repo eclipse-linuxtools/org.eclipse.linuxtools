@@ -205,13 +205,13 @@ public class TestCreateSystemtapScript {
          */
         public ChartHasUpdated(Chart chart, int expectedCount) {
             this.chart = chart;
-            ISeries[] seriesSet = chart.getSeriesSet().getSeries();
+            ISeries<?>[] seriesSet = chart.getSeriesSet().getSeries();
             this.oldCount = seriesSet.length > 0 ? seriesSet[0].getXSeries().length : 0;
             this.expectedCount = expectedCount;
         }
         @Override
         public boolean test() {
-            ISeries[] seriesSet = chart.getSeriesSet().getSeries();
+            ISeries<?>[] seriesSet = chart.getSeriesSet().getSeries();
             int newCount = seriesSet.length > 0 ? seriesSet[0].getXSeries().length : 0;
             return expectedCount < 0 ? newCount > oldCount : newCount == expectedCount;
         }
@@ -858,7 +858,7 @@ public class TestCreateSystemtapScript {
         graphEditorA.bot().cTabItem(graphTitle1).activate();
         Matcher<AbstractChartBuilder> matcher = widgetOfType(AbstractChartBuilder.class);
         AbstractChartBuilder cb = bot.widget(matcher);
-        ISeries[] series = cb.getChart().getSeriesSet().getSeries();
+        ISeries<?>[] series = cb.getChart().getSeriesSet().getSeries();
         assertEquals(2, series.length);
         assertEquals(10, series[0].getXSeries().length);
         assertEquals(10, series[1].getXSeries().length);

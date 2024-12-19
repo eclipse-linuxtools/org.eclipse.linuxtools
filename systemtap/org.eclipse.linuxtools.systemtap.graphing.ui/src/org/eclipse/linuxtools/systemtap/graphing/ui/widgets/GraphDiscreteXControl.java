@@ -112,7 +112,7 @@ public class GraphDiscreteXControl extends Composite implements IUpdateListener 
     }
 
     private int getNumItems() {
-        ISeries[] series = builder.getChart().getSeriesSet().getSeries();
+		ISeries<?>[] series = builder.getChart().getSeriesSet().getSeries();
         return series.length > 0 ? series[0].getXSeries().length : 0;
     }
 

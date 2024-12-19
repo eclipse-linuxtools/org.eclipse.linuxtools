@@ -132,7 +132,7 @@ public class ChartEditor extends EditorPart {
         control.getLegend().setPosition(SWT.BOTTOM);
 
         // data
-        final ILineSeries lsUseful = (ILineSeries) control.getSeriesSet().
+		final ILineSeries<?> lsUseful = (ILineSeries<?>) control.getSeriesSet().
                 createSeries(SeriesType.LINE, Messages.getString("HeapChart.Useful_Heap")); //$NON-NLS-1$;
         lsUseful.setXSeries(heapChart.time);
         lsUseful.setYSeries(heapChart.dataUseful);
@@ -140,7 +140,7 @@ public class ChartEditor extends EditorPart {
         lsUseful.setSymbolColor(RED);
         lsUseful.setLineColor(RED);
 
-        final ILineSeries lsExtra = (ILineSeries) control.getSeriesSet().
+		final ILineSeries<?> lsExtra = (ILineSeries<?>) control.getSeriesSet().
                 createSeries(SeriesType.LINE, Messages.getString("HeapChart.Extra_Heap")); //$NON-NLS-1$;
         lsExtra.setXSeries(heapChart.time);
         lsExtra.setYSeries(heapChart.dataExtra);
@@ -149,7 +149,8 @@ public class ChartEditor extends EditorPart {
         lsExtra.setLineColor(ORANGE);
 
         if (heapChart.dataStacks != null){
-            final ILineSeries lsStack = (ILineSeries) control.getSeriesSet().
+			final ILineSeries<?> lsStack = (ILineSeries<?>) control.getSeriesSet()
+					.
                     createSeries(SeriesType.LINE, Messages.getString("HeapChart.Stacks")); //$NON-NLS-1$;
             lsStack.setXSeries(heapChart.time);
             lsStack.setYSeries(heapChart.dataStacks);
@@ -158,7 +159,8 @@ public class ChartEditor extends EditorPart {
             lsStack.setLineColor(DARK_BLUE);
         }
 
-        final ILineSeries lsTotal = (ILineSeries) control.getSeriesSet().
+		final ILineSeries<?> lsTotal = (ILineSeries<?>) control.getSeriesSet()
+				.
                 createSeries(SeriesType.LINE, Messages.getString("HeapChart.Total_Heap")); //$NON-NLS-1$;
         lsTotal.setXSeries(heapChart.time);
         lsTotal.setYSeries(heapChart.dataTotal);

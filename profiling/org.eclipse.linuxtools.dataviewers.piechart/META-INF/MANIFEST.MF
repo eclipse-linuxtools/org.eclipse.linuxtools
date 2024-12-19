@@ -6,7 +6,7 @@ Bundle-Version: 3.0.0.qualifier
 Bundle-Vendor: %bundleProvider
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
- org.eclipse.swtchart
+ org.eclipse.swtchart;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.dataviewers.piechart, org.eclipse.linuxtools.internal.dataviewers.piechart;x-internal:=true
