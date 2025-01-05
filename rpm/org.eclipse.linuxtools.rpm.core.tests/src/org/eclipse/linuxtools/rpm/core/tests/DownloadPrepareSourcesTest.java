@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2023 Red Hat, Inc.
+ * Copyright (c) 2013, 2025 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -20,6 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 
 import org.eclipse.core.resources.IContainer;
@@ -212,16 +213,16 @@ public class DownloadPrepareSourcesTest {
 		switch (layout) {
 			case RPMBUILD:
 				assertNotNull(buildFolder.getParent().findMember("BUILD"));
-				assertEquals(2, buildFolder.members().length);
+				assertEquals(1, buildFolder.members().length);
 				// check if the file exists under BUILD folder
-				helloBuildFolder = buildFolder.getFolder(new Path("hello-2.12.1"));
+				helloBuildFolder = buildFolder.getFolder(new Path("hello-2.12.1-build"));
 				assertTrue(helloBuildFolder.exists());
 				// there should be some stuff within hello-2.8/ folder
 				assertTrue(helloBuildFolder.members().length >= 1);
 				break;
 			case FLAT:
-				assertEquals(10, buildFolder.members().length);
-				helloBuildFolder = buildFolder.getFolder(new Path("hello-2.12.1"));
+				assertEquals(9, buildFolder.members().length);
+				helloBuildFolder = buildFolder.getFolder(new Path("hello-2.12.1-build"));
 				assertTrue(helloBuildFolder.exists());
 				// there should be some stuff within hello-2.12.1/ folder
 				assertTrue(helloBuildFolder.members().length >= 1);
@@ -238,7 +239,7 @@ public class DownloadPrepareSourcesTest {
 	 */
 	public void downloadFile(RPMProject project) throws IOException, InterruptedException {
 		// connect to the URL
-		URL url = new URL("http://ftp.gnu.org/gnu/hello/hello-2.8.tar.gz");
+		URL url = URI.create("http://ftp.gnu.org/gnu/hello/hello-2.8.tar.gz").toURL();
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		assertEquals(HttpURLConnection.HTTP_OK, connection.getResponseCode());
 
