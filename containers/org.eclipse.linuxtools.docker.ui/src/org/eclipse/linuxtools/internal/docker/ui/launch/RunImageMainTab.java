@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2015, 2025 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -22,7 +22,7 @@ import java.util.Set;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.IValueChangeListener;
+import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.CoreException;
@@ -124,13 +124,13 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 							ImageRunSelectionModel.SELECTED_CONNECTION_NAME)
 					.observe(model);
 			connectionSelectionObservable
-					.addValueChangeListener(onConnectionSelectionChange());
+					.addValueChangeListener(this::connectionSelectionChange);
 			final IObservableValue imageSelectionObservable = BeanProperties
 					.value(ImageRunSelectionModel.class,
 							ImageRunSelectionModel.SELECTED_IMAGE_NAME)
 					.observe(model);
 			imageSelectionObservable
-					.addValueChangeListener(onImageSelectionChange());
+					.addValueChangeListener(this::imageSelectionChange);
 		}
 		setControl(container);
 	}
@@ -316,40 +316,36 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 		};
 	}
 
-	private IValueChangeListener onImageSelectionChange() {
-		return event -> {
-			final IDockerImage selectedImage = model.getSelectedImage();
-			// skip if the selected image does not exist in the local Docker
-			// host
-			if (selectedImage == null) {
+	private void imageSelectionChange(@SuppressWarnings("unused") ValueChangeEvent<?> e) {
+		final IDockerImage selectedImage = model.getSelectedImage();
+		// skip if the selected image does not exist in the local Docker
+		// host
+		if (selectedImage == null) {
+			model.setExposedPorts(new ArrayList<>());
+			return;
+		}
+		findImageInfo(selectedImage);
+		volumesModel.setSelectedImage(selectedImage);
+	}
+
+	private void connectionSelectionChange(ValueChangeEvent<?> e) {
+		// do this first as we might return and not reset connection
+		networkModel.setConnection(model.getSelectedConnection());
+		IDockerImage selectedImage = model.getSelectedImage();
+		// skip if the selected image does not exist in the local Docker
+		// host
+		if (selectedImage == null) {
+			List<String> imageNames = model.getImageNames();
+			if (imageNames.size() > 0) {
+				model.setSelectedImageName(imageNames.get(0));
+				selectedImage = model.getSelectedImage();
+			} else {
 				model.setExposedPorts(new ArrayList<>());
 				return;
 			}
-			findImageInfo(selectedImage);
-			volumesModel.setSelectedImage(selectedImage);
-		};
-	}
-
-	private IValueChangeListener onConnectionSelectionChange() {
-		return event -> {
-			// do this first as we might return and not reset connection
-			networkModel.setConnection(model.getSelectedConnection());
-			IDockerImage selectedImage = model.getSelectedImage();
-			// skip if the selected image does not exist in the local Docker
-			// host
-			if (selectedImage == null) {
-				List<String> imageNames = model.getImageNames();
-				if (imageNames.size() > 0) {
-					model.setSelectedImageName(imageNames.get(0));
-					selectedImage = model.getSelectedImage();
-				} else {
-					model.setExposedPorts(new ArrayList<>());
-					return;
-				}
-			}
-			findImageInfo(selectedImage);
-			volumesModel.setSelectedImage(selectedImage);
-		};
+		}
+		findImageInfo(selectedImage);
+		volumesModel.setSelectedImage(selectedImage);
 	}
 
 	private static final class FindImageInfoRunnable

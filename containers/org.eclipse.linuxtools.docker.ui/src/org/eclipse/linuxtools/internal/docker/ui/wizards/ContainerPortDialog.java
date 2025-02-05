@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2015, 2025 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -15,7 +15,7 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.typed.BeanProperties;
-import org.eclipse.core.databinding.observable.value.IValueChangeListener;
+import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.dialogs.Dialog;
@@ -147,17 +147,13 @@ public class ContainerPortDialog extends Dialog {
 		dbc.bindValue(hostPortObservable, BeanProperties
 				.value(ContainerPortDialogModel.class, ContainerPortDialogModel.HOST_PORT).observe(model));
 
-		containerPortObservable.addValueChangeListener(onContainerPortSettingsChanged());
-		hostPortObservable.addValueChangeListener(onContainerPortSettingsChanged());
-		hostAddressObservable.addValueChangeListener(onContainerPortSettingsChanged());
+		containerPortObservable.addValueChangeListener(this::validateInput);
+		hostPortObservable.addValueChangeListener(this::validateInput);
+		hostAddressObservable.addValueChangeListener(this::validateInput);
 		return container;
 	}
 
-	private IValueChangeListener onContainerPortSettingsChanged() {
-		return event -> validateInput();
-	}
-
-	private void validateInput() {
+	private void validateInput(@SuppressWarnings("unused") ValueChangeEvent<?> e) {
 		final String containerPort = model.getContainerPort();
 		if (containerPort == null || containerPort.isEmpty()) {
 			setOkButtonEnabled(false);

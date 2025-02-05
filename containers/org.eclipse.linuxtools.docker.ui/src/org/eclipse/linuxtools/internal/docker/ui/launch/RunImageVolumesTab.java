@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2025 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -205,7 +205,7 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 	private void bind(final StructuredViewer viewer,
 			final IObservableList input,
 			final IBeanValueProperty[] labelProperties) {
-		final ObservableListContentProvider contentProvider = new ObservableListContentProvider();
+		final ObservableListContentProvider contentProvider = new ObservableListContentProvider<>();
 		if (viewer.getInput() != null) {
 			viewer.setInput(null);
 		}

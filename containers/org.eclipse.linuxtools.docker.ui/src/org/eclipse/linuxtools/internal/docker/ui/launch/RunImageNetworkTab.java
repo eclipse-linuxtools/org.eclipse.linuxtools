@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2019 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2017, 2025 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -215,7 +215,7 @@ public class RunImageNetworkTab extends AbstractLaunchConfigurationTab {
 	private Binding bindButton(final Button button, final String strValue) {
 		return dbc.bindValue(WidgetProperties.widgetSelection().observe(button),
 				BeanProperties.value(ImageRunNetworkModel.class, ImageRunNetworkModel.NETWORK_MODE).observe(model),
-				new UpdateValueStrategy() {
+				new UpdateValueStrategy<>() {
 					@Override
 					public Object convert(Object value) {
 						if (value.equals(Boolean.TRUE)) {
@@ -224,7 +224,7 @@ public class RunImageNetworkTab extends AbstractLaunchConfigurationTab {
 						return null;
 					}
 
-				}, new UpdateValueStrategy() {
+				}, new UpdateValueStrategy<>() {
 					@Override
 					public Object convert(final Object value) {
 						return value.equals(strValue);

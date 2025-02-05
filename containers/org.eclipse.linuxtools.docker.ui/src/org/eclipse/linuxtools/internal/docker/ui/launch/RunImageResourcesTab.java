@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2019 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2015, 2025 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -201,7 +201,7 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * Binds the given <code>cpuShares</code> value to the given {@link Button}
 	 * when it is selected.
-	 * 
+	 *
 	 * @param button
 	 *            the {@link Button} to bind
 	 * @param cpuShares
@@ -214,7 +214,7 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 						.value(ImageRunResourceVolumesVariablesModel.class,
 								ImageRunResourceVolumesVariablesModel.CPU_SHARE_WEIGHT)
 						.observe(model),
-				new UpdateValueStrategy() {
+				new UpdateValueStrategy<>() {
 					@Override
 					public Object convert(Object value) {
 						if (value.equals(Boolean.TRUE)) {
@@ -223,7 +223,7 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 						return 0l;
 					}
 
-				}, new UpdateValueStrategy() {
+				}, new UpdateValueStrategy<>() {
 					@Override
 					public Object convert(final Object value) {
 						return value.equals(cpuShares);

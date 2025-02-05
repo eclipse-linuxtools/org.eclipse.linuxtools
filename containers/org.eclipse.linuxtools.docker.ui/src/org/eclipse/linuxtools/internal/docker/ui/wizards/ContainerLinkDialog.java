@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2019 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2015, 2025 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.typed.BeanProperties;
-import org.eclipse.core.databinding.observable.value.IValueChangeListener;
+import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.dialogs.Dialog;
@@ -167,13 +167,9 @@ public class ContainerLinkDialog extends Dialog {
 
 		dbc.bindValue(containerAliasObservable, BeanProperties
 				.value(ContainerLinkDialogModel.class, ContainerLinkDialogModel.CONTAINER_ALIAS).observe(model));
-		containerNameObservable.addValueChangeListener(onContainerLinkSettingsChanged());
-		containerAliasObservable.addValueChangeListener(onContainerLinkSettingsChanged());
+		containerNameObservable.addValueChangeListener(this::validateInput);
+		containerAliasObservable.addValueChangeListener(this::validateInput);
 		return container;
-	}
-
-	private IValueChangeListener onContainerLinkSettingsChanged() {
-		return event -> validateInput();
 	}
 
 	public String getContainerName() {
@@ -187,7 +183,7 @@ public class ContainerLinkDialog extends Dialog {
 	/**
 	 * Creates an {@link IContentProposalProvider} to propose
 	 * {@link IDockerContainer} names based on the current text.
-	 * 
+	 *
 	 * @param items
 	 * @return
 	 */
@@ -205,7 +201,7 @@ public class ContainerLinkDialog extends Dialog {
 		};
 	}
 
-	private void validateInput() {
+	private void validateInput(@SuppressWarnings("unused") ValueChangeEvent<?> e) {
 		final String selectedContainerName = model.getContainerName();
 		final Object[] containerNames = model.getContainerNames().toArray();
 		final String containerAlias = model.getContainerAlias();
