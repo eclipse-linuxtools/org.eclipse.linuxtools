@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2025 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -310,7 +310,7 @@ public class ContainerDataVolumeDialog extends Dialog {
 		return dbc.bindValue(WidgetProperties.widgetSelection().observe(button),
 				BeanProperties.value(DataVolumeModel.class,
 						DataVolumeModel.MOUNT_TYPE).observe(model),
-				new UpdateValueStrategy() {
+				new UpdateValueStrategy<>() {
 					@Override
 					public Object convert(Object value) {
 						if (value.equals(Boolean.TRUE)) {
@@ -327,7 +327,7 @@ public class ContainerDataVolumeDialog extends Dialog {
 							control.setEnabled(enabled);
 						}
 					}
-				}, new UpdateValueStrategy() {
+				}, new UpdateValueStrategy<>() {
 					@Override
 					public Object convert(final Object value) {
 						if (mountType.equals(value)) {

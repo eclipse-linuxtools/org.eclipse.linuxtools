@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2019 Red Hat Inc. and others.
- * 
+ * Copyright (c) 2015, 2025 Red Hat Inc. and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -60,7 +60,7 @@ public class DockerComposeUpDialog extends Dialog {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param parentShell
 	 *            the parent {@link Shell}
 	 */
@@ -80,7 +80,6 @@ public class DockerComposeUpDialog extends Dialog {
 		return new Point(400, super.getInitialSize().y);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected Control createDialogArea(final Composite parent) {
 		final int COLUMNS = 2;
@@ -125,7 +124,7 @@ public class DockerComposeUpDialog extends Dialog {
 				}, getConnectionNameContentProposalProvider(
 						containerSelectionCombo),
 				null, null);
-		final ISWTObservableValue connnectionNameObservable = WidgetProperties
+		final ISWTObservableValue<?> connnectionNameObservable = WidgetProperties
 				.widgetSelection().observe(connectionSelectionComboViewer.getCombo());
 		// pre-select with first connection
 		if (!connectionNames.isEmpty()) {
@@ -198,7 +197,7 @@ public class DockerComposeUpDialog extends Dialog {
 
 	/**
 	 * Validates that the selected {@link IDockerConnection} exists.
-	 * 
+	 *
 	 * @return a validation status
 	 */
 	private IStatus validateInput() {
@@ -227,7 +226,7 @@ public class DockerComposeUpDialog extends Dialog {
 	/**
 	 * Creates an {@link IContentProposalProvider} to propose
 	 * {@link IDockerContainer} names based on the current text.
-	 * 
+	 *
 	 * @param items
 	 * @return
 	 */

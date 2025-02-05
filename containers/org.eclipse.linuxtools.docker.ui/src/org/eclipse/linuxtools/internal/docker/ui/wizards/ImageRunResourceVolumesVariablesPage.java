@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2019 Red Hat Inc. and others.
+ * Copyright (c) 2015, 2025 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -301,7 +301,7 @@ image);
 						.value(ImageRunResourceVolumesVariablesModel.class,
 								ImageRunResourceVolumesVariablesModel.CPU_SHARE_WEIGHT)
 						.observe(model),
-				new UpdateValueStrategy() {
+				new UpdateValueStrategy<>() {
 					@Override
 					public Object convert(Object value) {
 						if (value.equals(Boolean.TRUE)) {
@@ -310,7 +310,7 @@ image);
 						return 0l;
 					}
 
-				}, new UpdateValueStrategy() {
+				}, new UpdateValueStrategy<>() {
 					@Override
 					public Object convert(final Object value) {
 						return value.equals(cpuShares);

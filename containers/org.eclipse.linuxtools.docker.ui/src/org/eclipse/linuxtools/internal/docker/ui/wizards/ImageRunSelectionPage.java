@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2020 Red Hat Inc. and others.
+ * Copyright (c) 2014, 2025 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -40,6 +40,7 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
+import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.databinding.validation.MultiValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
@@ -203,7 +204,7 @@ public class ImageRunSelectionPage extends WizardPage {
 						ImageRunSelectionModel.SELECTED_IMAGE_NAME)
 				.observe(model);
 		imageSelectionObservable
-				.addValueChangeListener(onImageSelectionChange());
+				.addValueChangeListener(this::imageSelectionChange);
 		writeValue = new WritableValue<>("", String.class); //$NON-NLS-1$
 		// setup validation support
 		WizardPageSupport.create(this, dbc);
@@ -212,10 +213,10 @@ public class ImageRunSelectionPage extends WizardPage {
 		final ImageSelectionValidator imageSelectionValidator = new ImageSelectionValidator(
 				imageSelectionObservable);
 		imageSelectionObservable
-			.addValueChangeListener(onImageSelectionChange());
+			.addValueChangeListener(this::imageSelectionChange);
 		dbc.addValidationStatusProvider(imageSelectionValidator);
 		imageSelectionObservable
-				.addValueChangeListener(onImageSelectionChange());
+				.addValueChangeListener(this::imageSelectionChange);
 		final IObservableValue containerNameObservable = BeanProperties
 				.value(ImageRunSelectionModel.class,
 						ImageRunSelectionModel.CONTAINER_NAME)
@@ -730,20 +731,16 @@ public class ImageRunSelectionPage extends WizardPage {
 		};
 	}
 
-	private IValueChangeListener onImageSelectionChange() {
-		return event -> {
-			final IDockerImage selectedImage = model.getSelectedImage();
-			// skip if the selected image does not exist in the local Docker
-			// host
-			if (selectedImage == null) {
-				model.setExposedPorts(
-						Collections.emptyList());
-				return;
-			}
-			final IDockerImageInfo selectedImageInfo = getImageInfo(
-					selectedImage);
-			applyImageInfo(selectedImageInfo);
-		};
+	private void imageSelectionChange(@SuppressWarnings("unused") ValueChangeEvent<?> e) {
+		final IDockerImage selectedImage = model.getSelectedImage();
+		// skip if the selected image does not exist in the local Docker
+		// host
+		if (selectedImage == null) {
+			model.setExposedPorts(Collections.emptyList());
+			return;
+		}
+		final IDockerImageInfo selectedImageInfo = getImageInfo(selectedImage);
+		applyImageInfo(selectedImageInfo);
 	}
 
 	private SelectionListener onPullImage() {
