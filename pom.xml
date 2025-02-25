@@ -47,7 +47,7 @@
   <properties>
     <mirror-repo-name>updates-nightly</mirror-repo-name>
     <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
-    <tycho-version>4.0.11</tycho-version>
+    <tycho-version>4.0.12</tycho-version>
     <tycho.scmUrl>scm:git:https://github.com/eclipse-linuxtools/org.eclipse.linuxtools</tycho.scmUrl>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
