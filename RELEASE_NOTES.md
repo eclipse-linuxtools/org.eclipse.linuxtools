@@ -4,6 +4,12 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 ## Next release...
 
+## 8.18.0
+
+### Docker Tooling
+
+Docker Tooling has been upgraded to 9.0
+
 ## 8.17.0
 
 ### Docker Tooling
