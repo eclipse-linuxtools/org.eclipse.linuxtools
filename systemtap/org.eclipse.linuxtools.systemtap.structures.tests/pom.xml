@@ -15,7 +15,7 @@
   <parent>
     <artifactId>linuxtools-systemtap-parent</artifactId>
     <groupId>org.eclipse.linuxtools.systemtap</groupId>
-    <version>8.18.0</version>
+    <version>8.18.1</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.systemtap.structures.tests</artifactId>

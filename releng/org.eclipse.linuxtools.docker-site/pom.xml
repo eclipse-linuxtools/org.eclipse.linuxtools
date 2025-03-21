@@ -18,7 +18,7 @@
 	<parent>
 		<groupId>org.eclipse.linuxtools.releng</groupId>
 		<artifactId>linuxtools-releng-parent</artifactId>
-		<version>8.18.0</version>
+		<version>8.18.1</version>
 	</parent>
 	<artifactId>org.eclipse.linuxtools.docker-site</artifactId>
 	<packaging>eclipse-repository</packaging>

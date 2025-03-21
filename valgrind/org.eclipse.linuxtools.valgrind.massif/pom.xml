@@ -15,7 +15,7 @@
   <parent>
     <artifactId>linuxtools-valgrind-parent</artifactId>
     <groupId>org.eclipse.linuxtools.valgrind</groupId>
-    <version>8.18.0</version>
+    <version>8.18.1</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.valgrind.massif</artifactId>
