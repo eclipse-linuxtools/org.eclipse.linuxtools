@@ -2,6 +2,12 @@
 
 This page describes the noteworthy improvements provided by each release of Eclipse Linux Tools.
 
+## 8.18.1
+
+### Docker Tooling
+
+Docker Tooling has been upgraded to 9.0.3 which fixes problems with 9.0 connecting to Docker.
+
 ## 8.18.0
 
 ### Docker Tooling

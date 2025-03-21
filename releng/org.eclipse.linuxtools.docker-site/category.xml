@@ -103,7 +103,7 @@
    <iu id="org.glassfish.hk2.utils" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
-   <iu id="org.glassfish.jersey.connectors.jersey-apache5-connector" version="0.0.0">
+   <iu id="org.glassfish.jersey.connectors.jersey-apache-connector" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
    <iu id="org.glassfish.jersey.core.jersey-client" version="0.0.0">

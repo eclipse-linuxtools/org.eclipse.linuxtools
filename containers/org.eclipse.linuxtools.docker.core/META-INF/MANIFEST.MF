@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Docker Core Plugin
 Bundle-SymbolicName: org.eclipse.linuxtools.docker.core;singleton:=true
-Bundle-Version: 5.18.0.qualifier
+Bundle-Version: 5.18.1.qualifier
 Bundle-Activator: org.eclipse.linuxtools.docker.core.Activator
 Bundle-Vendor: Eclipse Linux Tools
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.28.0",
@@ -26,5 +26,5 @@ Import-Package: com.fasterxml.jackson.annotation;version="2.10.3",
  jakarta.ws.rs;version="2.0.1",
  jakarta.ws.rs.core;version="2.0.1",
  jakarta.ws.rs.client;version="2.0.1",
- org.glassfish.jersey.apache5.connector
+ org.glassfish.jersey.apache.connector
 Automatic-Module-Name: org.eclipse.linuxtools.docker.core
