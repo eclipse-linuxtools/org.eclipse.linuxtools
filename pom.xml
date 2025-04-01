@@ -178,6 +178,11 @@
             <compilerId>javac</compilerId>
           </configuration>
 	 </plugin>
+	 <plugin>
+          <groupId>org.eclipse.tycho.extras</groupId>
+          <artifactId>tycho-version-bump-plugin</artifactId>
+          <version>${tycho-version}</version>
+	 </plugin>
 	<plugin>
 	  <groupId>org.eclipse.tycho</groupId>
 	  <artifactId>tycho-surefire-plugin</artifactId>
