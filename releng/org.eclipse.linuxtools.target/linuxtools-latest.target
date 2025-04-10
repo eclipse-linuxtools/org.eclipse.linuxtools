@@ -163,7 +163,7 @@
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>33.4.6-jre</version>
+				<version>33.4.7-jre</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
@@ -218,12 +218,6 @@
 				<groupId>jakarta.xml.bind</groupId>
 				<artifactId>jakarta.xml.bind-api</artifactId>
 				<version>4.0.2</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>org.glassfish.hk2</groupId>
-				<artifactId>osgi-resource-locator</artifactId>
-				<version>1.0.3</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
