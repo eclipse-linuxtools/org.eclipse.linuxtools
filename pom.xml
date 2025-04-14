@@ -36,7 +36,7 @@
     </license>
   </licenses>
   <distributionManagement>
-    <downloadUrl>http://eclipse.org/linuxtools/downloads.php</downloadUrl>
+    <downloadUrl>https://eclipse.dev/linuxtools/downloads.html</downloadUrl>
     <site>
       <id>linuxtools.website</id>
       <name>Eclipe Linux Tools Website</name>
