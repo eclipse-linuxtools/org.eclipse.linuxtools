@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2024 Red Hat, Inc.
+ * Copyright (c) 2012, 2025 Red Hat, Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -148,7 +148,7 @@ public class PreferencesTest extends AbstractTest{
 
         // Open preferences shell.
         SWTBotMenu windowsMenu = bot.menu("Window"); //$NON-NLS-1$
-        windowsMenu.menu("Preferences").click(); //$NON-NLS-1$
+        windowsMenu.menu("Preferences...").click(); //$NON-NLS-1$
         SWTBotShell shell = bot.shell("Preferences"); //$NON-NLS-1$
         shell.activate();
 
@@ -224,7 +224,7 @@ public class PreferencesTest extends AbstractTest{
 
         // Open preferences shell.
         SWTBotMenu windowsMenu = bot.menu("Window"); //$NON-NLS-1$
-        windowsMenu.menu("Preferences").click(); //$NON-NLS-1$
+        windowsMenu.menu("Preferences...").click(); //$NON-NLS-1$
         SWTBotShell shell = bot.shell("Preferences"); //$NON-NLS-1$
         shell.activate();
 
