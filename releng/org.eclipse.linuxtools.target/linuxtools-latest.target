@@ -51,7 +51,7 @@
 <unit id="org.eclipse.cdt.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.launchbar.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.remote.feature.group" version="0.0.0"/>
-<repository location="https://ci.eclipse.org/cdt/job/cdt/job/main/lastSuccessfulBuild/artifact/releng/org.eclipse.cdt.repo/target/repository/"/>
+<repository location="https://download.eclipse.org/tools/cdt/builds/cdt/main/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.dstore.core" version="0.0.0"/>
