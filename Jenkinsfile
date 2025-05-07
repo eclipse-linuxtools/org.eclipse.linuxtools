@@ -81,6 +81,8 @@ spec:
                     sh 'ssh genie.linuxtools@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/linuxtools/updates-docker-nightly/*'
                     sh 'scp -r releng/org.eclipse.linuxtools.releng-site/target/repository/* genie.linuxtools@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly/'
                     sh 'scp -r releng/org.eclipse.linuxtools.docker-site/target/repository/* genie.linuxtools@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/linuxtools/updates-docker-nightly/'
+                    sh 'scp -pr genie.linuxtools@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/linuxtools/updates-docker-nightly/ genie.linuxtools@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/linuxtools/update-2025-06-docker-m2/'
+                    sh 'scp -pr genie.linuxtools@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/linuxtools/updates-nightly/ genie.linuxtools@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/linuxtools/update-2025-06-m2/'
                 }
             }
         }
