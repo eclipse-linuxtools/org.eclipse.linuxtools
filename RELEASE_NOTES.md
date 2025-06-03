@@ -2,7 +2,13 @@
 
 This page describes the noteworthy improvements provided by each release of Eclipse Linux Tools.
 
-## Next release...
+## 8.19.0
+
+Docker Tooling has changed to Use dockerfile grammar from tm4e.
+
+## 8.18.1
+
+Docker Tooling has been upgraded to 9.0.3.
 
 ## 8.18.0
 
