@@ -157,13 +157,6 @@
                 <goal>plugin-source</goal>
               </goals>
             </execution>
-            <execution>
-              <id>feature-source</id>
-              <phase>package</phase>
-              <goals>
-                <goal>feature-source</goal>
-              </goals>
-            </execution>
           </executions>
         </plugin>
     </plugins>

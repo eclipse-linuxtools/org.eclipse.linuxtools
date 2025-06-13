@@ -18,40 +18,8 @@
   </parent>
 
   <artifactId>org.eclipse.linuxtools.jdt.docker.launcher.feature</artifactId>
-  <version>5.20.0-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
   <name>Linux Tools JDT Docker Launch Feature</name>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>feature-source</id>
-            <phase>package</phase>
-            <goals>
-              <goal>feature-source</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-p2-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-p2-metadata</id>
-            <phase>package</phase>
-            <goals>
-              <goal>p2-metadata</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>

@@ -46,6 +46,7 @@
 					</execution>
 				</executions>
 				<configuration>
+					<includeAllSources>true</includeAllSources>
 					<extraArtifactRepositoryProperties>
 						<p2.statsURI>https://download.eclipse.org/stats</p2.statsURI>
 						<p2.mirrorsURL>
