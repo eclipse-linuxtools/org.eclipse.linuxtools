@@ -74,66 +74,6 @@
    <iu id="org.codelibs.nekohtml" version="0.0.0">
       <category name="Linux Tools"/>
    </iu>
-   <feature url="features/org.eclipse.linuxtools.cdt.libhover.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.feature.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.cdt.libhover.newlib.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.newlib.feature.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.cdt.libhover.devhelp.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.devhelp.feature.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.changelog.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.changelog.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.changelog.c.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.changelog.c.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.changelog.java.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.changelog.java.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.dataviewers.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.dataviewers.feature.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.gprof.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.gprof.feature.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.man.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.man.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.profiling.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.profiling.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.rpm.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.rpm.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.systemtap.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.systemtap.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.callgraph.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.callgraph.feature.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.valgrind.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.valgrind.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.gcov.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.gcov.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.perf.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.perf.feature.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.profiling.remote.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.profiling.remote.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.valgrind.remote.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.valgrind.remote.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.perf.remote.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.perf.remote.feature.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.javadocs.feature.source_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.javadocs.feature.source" version="0.0.0">
-      <category name="Linux Tools Sources"/>
-   </feature>
    <category-def name="Linux Tools" label="Linux Tools">
       <description>
          Eclipse Linux Tools
@@ -142,11 +82,6 @@
    <category-def name="Linux Tools Additional Library API Hoverhelp" label="Linux Tools Additional Library API Hoverhelp">
       <description>
          Optional library API documentation for use with C/C++ hover help and completion
-      </description>
-   </category-def>
-   <category-def name="Linux Tools Sources" label="Linux Tools Sources">
-      <description>
-         Eclipse Linux Tools source features and bundles
       </description>
    </category-def>
 </site>
