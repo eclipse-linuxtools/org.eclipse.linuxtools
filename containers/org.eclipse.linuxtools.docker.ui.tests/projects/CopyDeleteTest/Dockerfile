@@ -8,7 +8,7 @@
 
 
 
-FROM bash:latest
+FROM mirror.gcr.io/library/bash:latest
 
 # Default is still the alpine ash
 SHELL ["/usr/local/bin/bash", "-c"]
