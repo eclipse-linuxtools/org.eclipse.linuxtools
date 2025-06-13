@@ -35,6 +35,7 @@
 <unit id="jakarta.activation-api" version="0.0.0"/>
 <unit id="jakarta.inject.jakarta.inject-api" version="2.0.1"/>
 <unit id="bcprov" version="0.0.0"/>
+<unit id="bcutil" version="0.0.0"/>
 <repository location="https://download.eclipse.org/eclipse/updates/I-builds/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -175,13 +176,7 @@
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcpkix-jdk18on</artifactId>
-				<version>1.80</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>org.bouncycastle</groupId>
-				<artifactId>bcutil-jdk18on</artifactId>
-				<version>1.80</version>
+				<version>1.81</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
