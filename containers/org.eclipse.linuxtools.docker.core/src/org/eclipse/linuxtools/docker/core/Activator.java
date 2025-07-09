@@ -18,7 +18,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.terminal.view.core.ITerminalService;
 import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.ServiceTracker;
 
 public class Activator extends Plugin {
 
@@ -80,6 +82,18 @@ public class Activator extends Plugin {
 			status = Status.error(e.getMessage(), e);
 		}
 		log(status);
+	}
+
+	private static ServiceTracker<ITerminalService, ITerminalService> serviceTracker;
+
+	public static synchronized ITerminalService getTerminalService() {
+		if (serviceTracker == null) {
+			serviceTracker = new ServiceTracker<>(
+					getDefault().getBundle().getBundleContext(),
+					ITerminalService.class, null);
+			serviceTracker.open();
+		}
+		return serviceTracker.getService();
 	}
 
 }

@@ -93,10 +93,9 @@ import org.eclipse.linuxtools.docker.core.IRegistryAccount;
 import org.eclipse.linuxtools.docker.core.Messages;
 import org.eclipse.linuxtools.internal.docker.core.DockerImage.DockerImageQualifier;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.tm.terminal.view.core.TerminalServiceFactory;
-import org.eclipse.tm.terminal.view.core.interfaces.ITerminalService;
-import org.eclipse.tm.terminal.view.core.interfaces.ITerminalServiceOutputStreamMonitorListener;
-import org.eclipse.tm.terminal.view.core.interfaces.constants.ITerminalsConnectorConstants;
+import org.eclipse.terminal.view.core.ITerminalService;
+import org.eclipse.terminal.view.core.ITerminalServiceOutputStreamMonitorListener;
+import org.eclipse.terminal.view.core.ITerminalsConnectorConstants;
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.DockerClient.AttachParameter;
 import org.mandas.docker.client.DockerClient.BuildParam;
@@ -2352,13 +2351,13 @@ public class DockerConnection
 
 			TerminalOutputMonitorListener monitor = new TerminalOutputMonitorListener(out);
 
-			// org.eclipse.tm.terminal.connector.ssh.controls.SshWizardConfigurationPanel
+			// org.eclipse.terminal.connector.ssh.controls.SshWizardConfigurationPanel
 			Map<String, Object> properties = new HashMap<>();
 			properties.put(ITerminalsConnectorConstants.PROP_DELEGATE_ID,
-					"org.eclipse.tm.terminal.connector.streams.launcher.streams"); //$NON-NLS-1$
+					"org.eclipse.terminal.connector.streams.launcher.streams"); //$NON-NLS-1$
 			properties.put(
 					ITerminalsConnectorConstants.PROP_TERMINAL_CONNECTOR_ID,
-					"org.eclipse.tm.terminal.connector.streams.StreamsConnector"); //$NON-NLS-1$
+					"org.eclipse.terminal.connector.streams.StreamsConnector"); //$NON-NLS-1$
 			properties.put(ITerminalsConnectorConstants.PROP_TITLE, name);
 			properties.put(ITerminalsConnectorConstants.PROP_LOCAL_ECHO, false);
 			properties.put(ITerminalsConnectorConstants.PROP_FORCE_NEW, true);
@@ -2381,8 +2380,10 @@ public class DockerConnection
 			if (out != null) {
 				out.setTerminalProperties(properties);
 			}
-			ITerminalService service = TerminalServiceFactory.getService();
-			service.openConsole(properties, null);
+			ITerminalService service = Activator.getTerminalService();
+			if (service != null) {
+				service.openConsole(properties, null);
+			}
 		} catch (Exception e) {
 			throw new DockerException(e);
 		}

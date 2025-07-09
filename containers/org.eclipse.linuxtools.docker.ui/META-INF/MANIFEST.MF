@@ -26,8 +26,6 @@ Require-Bundle: org.eclipse.ui,
  org.mandas.docker-client;bundle-version="7.0.7",
  org.eclipse.e4.ui.workbench;bundle-version="1.4.0",
  org.eclipse.e4.ui.model.workbench;bundle-version="1.2.0",
- org.eclipse.tm.terminal.view.ui;bundle-version="4.1.0",
- org.eclipse.tm.terminal.view.core;bundle-version="4.0.0",
  org.apache.commons.commons-compress;bundle-version="1.23.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
@@ -43,3 +41,4 @@ Export-Package: org.eclipse.linuxtools.docker.ui,
  org.eclipse.linuxtools.internal.docker.ui.views;x-friends:="org.eclipse.linuxtools.docker.ui.tests",
  org.eclipse.linuxtools.internal.docker.ui.wizards;x-friends:="org.eclipse.linuxtools.docker.ui.tests"
 Automatic-Module-Name: org.eclipse.linuxtools.docker.ui
+Import-Package: org.eclipse.terminal.view.core;version="[1.0.0,2.0.0)"

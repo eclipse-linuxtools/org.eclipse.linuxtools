@@ -688,7 +688,7 @@ public class ContainerLauncher {
 						IWorkbenchPage page = PlatformUI.getWorkbench()
 								.getActiveWorkbenchWindow().getActivePage();
 						IViewPart terminalView = page.findView(
-								"org.eclipse.tm.terminal.view.ui.TerminalsView");
+								"org.eclipse.terminal.view.ui.TerminalsView");
 						CTabFolder ctabfolder = terminalView
 								.getAdapter(CTabFolder.class);
 						if (ctabfolder != null) {

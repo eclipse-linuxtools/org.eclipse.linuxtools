@@ -22,11 +22,11 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jsch.internal.core.JSchCorePlugin;
 import org.eclipse.linuxtools.internal.vagrant.core.VagrantConnection;
+import org.eclipse.linuxtools.internal.vagrant.ui.Activator;
 import org.eclipse.linuxtools.vagrant.core.IVagrantVM;
 import org.eclipse.linuxtools.vagrant.core.VagrantService;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.tm.terminal.connector.ssh.launcher.SshLauncherDelegate;
 
 public class SSHVMCommandHandler extends BaseVMCommandHandler {
 
@@ -42,12 +42,12 @@ public class SSHVMCommandHandler extends BaseVMCommandHandler {
 					Messages.SSHVMCommandHandler_bad_credentials));
 			return;
 		}
-		// org.eclipse.tm.terminal.connector.ssh.controls.SshWizardConfigurationPanel
+		// org.eclipse.terminal.connector.ssh.controls.SshWizardConfigurationPanel
 		Map<String, Object> properties = new HashMap<>();
 		properties.put("ssh.keep_alive", 300); //$NON-NLS-1$
 		properties.put("ip.port", vm.port()); //$NON-NLS-1$
 		properties.put("delegateId", //$NON-NLS-1$
-				"org.eclipse.tm.terminal.connector.ssh.launcher.ssh"); //$NON-NLS-1$
+				"org.eclipse.terminal.connector.ssh.launcher.ssh"); //$NON-NLS-1$
 		properties.put("selection", null); //$NON-NLS-1$
 		properties.put("ssh.password", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		// TODO: Do this through API later
@@ -56,14 +56,15 @@ public class SSHVMCommandHandler extends BaseVMCommandHandler {
 				&& !conn.isTrackedKey(vm.identityFile())) {
 			setupKeyPreferences(vm.identityFile());
 		}
+		String connectorId = "org.eclipse.terminal.connector.ssh.SshConnector";
 		properties.put("tm.terminal.connector.id", //$NON-NLS-1$
-				"org.eclipse.tm.terminal.connector.ssh.SshConnector"); //$NON-NLS-1$
+				connectorId); // $NON-NLS-1$
 		properties.put("ip.host", vm.ip()); //$NON-NLS-1$
 		properties.put("ssh.user", vm.user()); //$NON-NLS-1$
 		properties.put("encoding", null); //$NON-NLS-1$
 		properties.put("timeout", 0); //$NON-NLS-1$
-		SshLauncherDelegate delegate = new SshLauncherDelegate();
-		delegate.execute(properties, null);
+		Activator.getLaunchDelegateManager().findLauncherDelegate(connectorId, true)
+				.ifPresent(launcherDelegate -> launcherDelegate.execute(properties, null));
 	}
 
 	private void setupKeyPreferences(String identityFile) {
