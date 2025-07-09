@@ -23,8 +23,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.terminal.view.ui.launcher.ILauncherDelegateManager;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -98,6 +100,17 @@ public class Activator extends AbstractUIPlugin {
 		else
 			status = Status.error(e.getMessage(), e);
 		log(status);
+	}
+
+	private static ServiceTracker<ILauncherDelegateManager, ILauncherDelegateManager> launchDelegateServiceTracker;
+
+	public static synchronized ILauncherDelegateManager getLaunchDelegateManager() {
+		if (launchDelegateServiceTracker == null) {
+			launchDelegateServiceTracker = new ServiceTracker<>(getDefault().getBundle().getBundleContext(),
+					ILauncherDelegateManager.class, null);
+			launchDelegateServiceTracker.open();
+		}
+		return launchDelegateServiceTracker.getService();
 	}
 
 }
