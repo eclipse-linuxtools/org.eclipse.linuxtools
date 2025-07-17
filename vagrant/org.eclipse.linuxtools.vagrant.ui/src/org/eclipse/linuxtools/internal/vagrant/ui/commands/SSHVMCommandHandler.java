@@ -64,7 +64,7 @@ public class SSHVMCommandHandler extends BaseVMCommandHandler {
 		properties.put("encoding", null); //$NON-NLS-1$
 		properties.put("timeout", 0); //$NON-NLS-1$
 		Activator.getLaunchDelegateManager().findLauncherDelegate(connectorId, true)
-				.ifPresent(launcherDelegate -> launcherDelegate.execute(properties, null));
+				.ifPresent(launcherDelegate -> launcherDelegate.execute(properties));
 	}
 
 	private void setupKeyPreferences(String identityFile) {

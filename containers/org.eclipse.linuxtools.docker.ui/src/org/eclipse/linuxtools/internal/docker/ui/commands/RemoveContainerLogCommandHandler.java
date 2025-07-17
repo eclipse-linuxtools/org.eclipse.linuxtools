@@ -56,7 +56,7 @@ public class RemoveContainerLogCommandHandler extends AbstractHandler {
 			properties.put(ITerminalsConnectorConstants.PROP_TITLE,
 					info.name());
 			ITerminalService service = Activator.getTerminalService();
-			service.closeConsole(properties, null);
+			service.closeConsole(properties);
 			return null;
 		}
 		final RunConsole rc = RunConsole.findConsole(container);
