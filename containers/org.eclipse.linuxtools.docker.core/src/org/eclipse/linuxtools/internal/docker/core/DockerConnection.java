@@ -2382,7 +2382,7 @@ public class DockerConnection
 			}
 			ITerminalService service = Activator.getTerminalService();
 			if (service != null) {
-				service.openConsole(properties, null);
+				service.openConsole(properties);
 			}
 		} catch (Exception e) {
 			throw new DockerException(e);
