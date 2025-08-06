@@ -40,7 +40,7 @@
 							<arguments>
 								<arg>install</arg>
 								<arg>--no-bin-links</arg>
-								<arg>dockerfile-language-server-nodejs@0.13.0</arg>
+								<arg>dockerfile-language-server-nodejs@0.14.1</arg>
 							</arguments>
 							<workingDirectory>language-server/</workingDirectory>
 						</configuration>
