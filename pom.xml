@@ -269,7 +269,7 @@
 	<plugin>
 	  <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-	  <version>3.11.2</version>
+	  <version>3.11.3</version>
           <configuration>
             <excludePackageNames>org.eclipse.linuxtools.internal.*:*.test*:org.eclipse.linuxtools.docker.reddeer*</excludePackageNames>
           </configuration>
