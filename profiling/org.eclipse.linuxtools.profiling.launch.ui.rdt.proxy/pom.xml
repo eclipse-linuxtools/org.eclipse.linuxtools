@@ -16,7 +16,7 @@
   <parent>
     <artifactId>linuxtools-profiling-parent</artifactId>
     <groupId>org.eclipse.linuxtools.profiling</groupId>
-    <version>8.20.0-SNAPSHOT</version>
+    <version>8.20.0</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.profiling.launch.ui.rdt.proxy</artifactId>
