@@ -7,15 +7,17 @@
 	<ignoreVersions>
 		<ignoreVersion type="regex">.+[-.](alpha|beta|M|RC|rc|pre.1)\d*$</ignoreVersion>
 	</ignoreVersions>
-	<rule artifactId="osgi-resource-locator" comparisonMethod="maven">
-		<ignoreVersions>
-			<ignoreVersion>3.0.0</ignoreVersion>
-		</ignoreVersions>
-	</rule>
-	<rule artifactId="jakarta.ws.rs-api" comparisonMethod="maven">
-		<ignoreVersions>
-			<ignoreVersion>4.0.0</ignoreVersion>
-		</ignoreVersions>
-	</rule>
+	<rules>
+		<rule artifactId="osgi-resource-locator" comparisonMethod="maven">
+			<ignoreVersions>
+				<ignoreVersion>3.0.0</ignoreVersion>
+			</ignoreVersions>
+		</rule>
+		<rule artifactId="jakarta.ws.rs-api" comparisonMethod="maven">
+			<ignoreVersions>
+				<ignoreVersion>4.0.0</ignoreVersion>
+			</ignoreVersions>
+		</rule>
+	</rules>
 
 </ruleset>
