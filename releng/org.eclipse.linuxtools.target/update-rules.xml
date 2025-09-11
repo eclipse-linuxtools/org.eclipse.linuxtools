@@ -5,7 +5,7 @@
 	<!-- see
 	https://www.mojohaus.org/versions/versions-maven-plugin/version-rules.html -->
 	<ignoreVersions>
-		<ignoreVersion type="regex">.+[-.](alpha|beta|M|RC|rc|pre.1)\d*$</ignoreVersion>
+		<ignoreVersion type="regex">.+[-.](alpha|beta|b|M|RC|rc|pre.1)\d*$</ignoreVersion>
 	</ignoreVersions>
 	<rules>
 		<rule artifactId="osgi-resource-locator" comparisonMethod="maven">
