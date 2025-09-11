@@ -11,6 +11,7 @@
 		<rule artifactId="osgi-resource-locator" comparisonMethod="maven">
 			<ignoreVersions>
 				<ignoreVersion>3.0.0</ignoreVersion>
+				<ignoreVersion>2.4.0</ignoreVersion>
 			</ignoreVersions>
 		</rule>
 		<rule artifactId="jakarta.ws.rs-api" comparisonMethod="maven">
