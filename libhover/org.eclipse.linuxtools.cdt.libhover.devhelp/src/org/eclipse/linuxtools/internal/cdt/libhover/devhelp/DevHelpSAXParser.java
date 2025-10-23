@@ -16,6 +16,18 @@ import java.util.TreeMap;
 
 import org.eclipse.linuxtools.cdt.libhover.FunctionInfo;
 
-interface DevHelpSAXParser {
-    public TreeMap<String, FunctionInfo> getFunctionInfos();
+class DevHelpSAXParser extends org.codelibs.nekohtml.sax.HTMLSAXParser {
+	 private TreeMap<String, FunctionInfo> infos = new TreeMap<>();
+
+     public DevHelpSAXParser(IDevhelpContentHandler provider) {
+         super();
+         this.setContentHandler(provider);
+         provider.setHtmlsaxParser(this);
+         
+     }
+    
+	public TreeMap<String, FunctionInfo> getFunctionInfos() {
+         return infos;
+     }
+
 }
