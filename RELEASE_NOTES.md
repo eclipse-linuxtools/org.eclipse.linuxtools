@@ -4,6 +4,22 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 ## Next release...
 
+## 8.21.0
+
+Various dependency upgrades have been made such as upgrading nekohtml to 3.0.1.
+
+## 8.20.0
+
+Docker Tooling has been upgraded to 9.0.4 and Docker LS has been upgraded to 0.14.1.  As well, terminal support has been modified to use the new terminal view bundles in Eclipse platform.
+
+## 8.19.0
+
+Docker Tooling has changed to Use dockerfile grammar from tm4e.
+
+## 8.18.1
+
+Docker Tooling has been upgraded to 9.0.3.
+
 ## 8.18.0
 
 ### Docker Tooling
