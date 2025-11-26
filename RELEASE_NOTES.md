@@ -2,8 +2,6 @@
 
 This page describes the noteworthy improvements provided by each release of Eclipse Linux Tools.
 
-## Next release...
-
 ## 8.21.0
 
 Various dependency upgrades have been made such as upgrading nekohtml to 3.0.1.
