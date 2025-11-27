@@ -69,19 +69,22 @@ public class DockerClientFactory {
 			final IDockerConnectionSettings connectionSettings,
 			final IRegistryAccount registryAccount)
 			throws DockerCertificateException {
-		final DockerClientBuilder builder = DockerClientBuilder.fromEnv()
-				.uri((URI) null);
+		final DockerClientBuilder builder = DockerClientBuilder.fromEnv();
 		if (connectionSettings
 				.getType() == BindingType.UNIX_SOCKET_CONNECTION) {
 			final UnixSocketConnectionSettings unixSocketConnectionSettings = (UnixSocketConnectionSettings) connectionSettings;
 			if (unixSocketConnectionSettings.hasPath()) {
-				builder.uri(unixSocketConnectionSettings.getPath());
+				String path = unixSocketConnectionSettings.getPath();
+				builder.uri(path);
+			} else {
+				return null;
 			}
 
 		} else {
 			final TCPConnectionSettings tcpConnectionSettings = (TCPConnectionSettings) connectionSettings;
 			if (tcpConnectionSettings.hasHost()) {
-				builder.uri(URI.create(tcpConnectionSettings.getHost()));
+				String host = tcpConnectionSettings.getHost();
+				builder.uri(URI.create(host));
 				if (tcpConnectionSettings.getPathToCertificates() != null
 						&& !tcpConnectionSettings.getPathToCertificates()
 								.isEmpty()) {
@@ -89,11 +92,9 @@ public class DockerClientFactory {
 							tcpConnectionSettings.getPathToCertificates())
 									.toPath()));
 				}
+			} else {
+				return null;
 			}
-		}
-		// skip if no URI exists
-		if (builder.uri() == null) {
-			return null;
 		}
 
 		if (registryAccount != null) {
