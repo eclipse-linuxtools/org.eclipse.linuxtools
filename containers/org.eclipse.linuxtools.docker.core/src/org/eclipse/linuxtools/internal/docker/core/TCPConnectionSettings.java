@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2015, 2018 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -44,7 +44,7 @@ public class TCPConnectionSettings extends BaseConnectionSettings {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param host
 	 *            host to connect to
 	 * @param pathToCertificates
@@ -53,7 +53,11 @@ public class TCPConnectionSettings extends BaseConnectionSettings {
 	public TCPConnectionSettings(final String host,
 			final String pathToCertificates) {
 		super();
-		this.host = new HostBuilder(host).enableTLS(pathToCertificates);
+		if (host != null) {
+			this.host = new HostBuilder(host).enableTLS(pathToCertificates);
+		} else {
+			this.host = null;
+		}
 		this.pathToCertificates = pathToCertificates;
 	}
 
