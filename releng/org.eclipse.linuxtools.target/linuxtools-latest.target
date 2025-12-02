@@ -37,7 +37,7 @@
 <unit id="bcprov" version="0.0.0"/>
 <unit id="bcutil" version="0.0.0"/>
 <unit id="org.eclipse.terminal.feature.feature.group" version="0.0.0"/>
-<repository location="https://download.eclipse.org/eclipse/updates/I-builds/"/>
+<repository location="https://download.eclipse.org/eclipse/updates/4.38-I-builds/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
