@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
+ * Copyright (c) 2009, 2026 STMicroelectronics and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -55,11 +55,9 @@ public class GprofAggregatorTest {
         String gprof2use = "gprof";
         File f = Aggregator.aggregate(gprof2use, binary, s, directory);
 
-        Process p = Runtime.getRuntime().exec(
-                new String[] { gprof2use, binary, f.getAbsolutePath() });
-        Process p2 = Runtime.getRuntime().exec(
-                new String[] { gprof2use, binary,
-                        directory + File.separator + "gmon.sum.ref" });
+        Process p = new ProcessBuilder().command(gprof2use, binary, f.getAbsolutePath()).start();
+		Process p2 = new ProcessBuilder().command(gprof2use, binary, directory + File.separator + "gmon.sum.ref")
+				.start();
 
         STJunitUtils.compare(p.getInputStream(), p2.getInputStream());
         p.waitFor();
