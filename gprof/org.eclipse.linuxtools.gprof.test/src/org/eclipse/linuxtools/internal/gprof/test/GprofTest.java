@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
+ * Copyright (c) 2009, 2026 STMicroelectronics and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,7 +17,6 @@ import static org.eclipse.linuxtools.internal.gprof.test.STJunitUtils.OUTPUT_FIL
 
 import java.io.File;
 import java.io.IOException;
-import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -46,145 +45,83 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 public class GprofTest {
 
-    public static Stream<Arguments> testDirs() {
-        List<Arguments> params = new ArrayList<>();
-        boolean addr2line2_16 = false;
-        try {
-            Process p = Runtime.getRuntime().exec("addr2line --version");
-			LineNumberReader reader = new LineNumberReader(
-					p.inputReader());
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.contains("addr2line 2.16.")) {
-                    addr2line2_16 = true;
-                    break;
-                }
-            }
-        } catch (IOException e) {
-        }
+	public static Stream<Arguments> testDirs() throws IOException {
+		List<Arguments> params = new ArrayList<>();
 
-        for (File testDir : STJunitUtils.getTestDirs()) {
-            final File gmonFile = new File(testDir, OUTPUT_FILE);
-            final File binaryFile = new File(testDir, BINARY_FILE);
+		for (File testDir : STJunitUtils.getTestDirs()) {
+			final File gmonFile = new File(testDir, OUTPUT_FILE);
+			final File binaryFile = new File(testDir, BINARY_FILE);
 
-            File view_cg_RefFile_default = new File(testDir,
-                    "testCallgraphView.ref");
-            File view_cg_RefFile_alternate = new File(testDir,
-                    "testCallgraphView.ref.binutils-2.16");
-            File view_cg2_RefFile_default = new File(testDir,
-                    "testCallgraphTimeView.ref");
-            File view_cg2_RefFile_alternate = new File(testDir,
-                    "testCallgraphTimeView.ref.binutils-2.16");
-            final File view_cg_RefFile;
-            final File view_cg2_RefFile;
-            if (addr2line2_16 && view_cg_RefFile_alternate.exists()) {
-                view_cg_RefFile = view_cg_RefFile_alternate;
-            } else {
-                view_cg_RefFile = view_cg_RefFile_default;
-            }
-            if (addr2line2_16 && view_cg2_RefFile_alternate.exists()) {
-                view_cg2_RefFile = view_cg2_RefFile_alternate;
-            } else {
-                view_cg2_RefFile = view_cg2_RefFile_default;
-            }
-            final File view_cg2_DumpFile = new File(testDir,
-                    "testCallgraphTimeView.dump");
-            final File view_cg_DumpFile = new File(testDir,
-                    "testCallgraphView.dump");
+			File view_cg_RefFile_default = new File(testDir, "testCallgraphView.ref");
+			File view_cg2_RefFile_default = new File(testDir, "testCallgraphTimeView.ref");
+			final File view_cg2_RefFile = view_cg2_RefFile_default;
+			final File view_cg_RefFile = view_cg_RefFile_default;
+			final File view_cg2_DumpFile = new File(testDir, "testCallgraphTimeView.dump");
+			final File view_cg_DumpFile = new File(testDir, "testCallgraphView.dump");
 
-            final File view_samplesFile_RefFile = new File(testDir,
-                    "testSampleView.ref");
-            final File view_samplesFile_DumpFile = new File(testDir,
-                    "testSampleView.dump");
-            final File view_samplesFileT_RefFile = new File(testDir,
-                    "testTimeView.ref");
-            final File view_samplesFileT_DumpFile = new File(testDir,
-                    "testTimeView.dump");
+			final File view_samplesFile_RefFile = new File(testDir, "testSampleView.ref");
+			final File view_samplesFile_DumpFile = new File(testDir, "testSampleView.dump");
+			final File view_samplesFileT_RefFile = new File(testDir, "testTimeView.ref");
+			final File view_samplesFileT_DumpFile = new File(testDir, "testTimeView.dump");
 
-            final File view_samplesFunction_RefFile = new File(testDir,
-                    "testFunctionSampleView.ref");
-            final File view_samplesFunction_DumpFile = new File(testDir,
-                    "testFunctionSampleView.dump");
-            final File view_samplesFunctionT_RefFile = new File(testDir,
-                    "testFunctionTimeView.ref");
-            final File view_samplesFunctionT_DumpFile = new File(testDir,
-                    "testFunctionTimeView.dump");
-            final File view_samplesFlat_RefFile = new File(testDir,
-                    "testFlatSampleView.ref");
-            final File view_samplesFlat_DumpFile = new File(testDir,
-                    "testFlatSampleView.dump");
-            final File view_samplesFlatT_RefFile = new File(testDir,
-                    "testFlatTimeView.ref");
-            final File view_samplesFlatT_DumpFile = new File(testDir,
-                    "testFlatTimeView.dump");
+			final File view_samplesFunction_RefFile = new File(testDir, "testFunctionSampleView.ref");
+			final File view_samplesFunction_DumpFile = new File(testDir, "testFunctionSampleView.dump");
+			final File view_samplesFunctionT_RefFile = new File(testDir, "testFunctionTimeView.ref");
+			final File view_samplesFunctionT_DumpFile = new File(testDir, "testFunctionTimeView.dump");
+			final File view_samplesFlat_RefFile = new File(testDir, "testFlatSampleView.ref");
+			final File view_samplesFlat_DumpFile = new File(testDir, "testFlatSampleView.dump");
+			final File view_samplesFlatT_RefFile = new File(testDir, "testFlatTimeView.ref");
+			final File view_samplesFlatT_DumpFile = new File(testDir, "testFlatTimeView.dump");
 
-            IBinaryObject binary = STSymbolManager.sharedInstance
-                    .getBinaryObject(new Path(binaryFile.getAbsolutePath()));
-            final GmonDecoder gd = new GmonDecoder(binary, null);
-            try {
-                gd.read(gmonFile.getAbsolutePath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-			params.add(Arguments.of(gmonFile, gd, view_cg_RefFile,
-					view_cg_DumpFile, CallGraphContentProvider.sharedInstance,
-					false));
-			params.add(Arguments.of(gmonFile, gd, view_cg2_RefFile,
-					view_cg2_DumpFile, CallGraphContentProvider.sharedInstance,
-					true));
-			params.add(Arguments.of(gmonFile, gd, view_samplesFile_RefFile,
-					view_samplesFile_DumpFile,
+			IBinaryObject binary = STSymbolManager.sharedInstance
+					.getBinaryObject(new Path(binaryFile.getAbsolutePath()));
+			final GmonDecoder gd = new GmonDecoder(binary, null);
+			gd.read(gmonFile.getAbsolutePath());
+			params.add(Arguments.of(gmonFile, gd, view_cg_RefFile, view_cg_DumpFile,
+					CallGraphContentProvider.sharedInstance, false));
+			params.add(Arguments.of(gmonFile, gd, view_cg2_RefFile, view_cg2_DumpFile,
+					CallGraphContentProvider.sharedInstance, true));
+			params.add(Arguments.of(gmonFile, gd, view_samplesFile_RefFile, view_samplesFile_DumpFile,
 					FileHistogramContentProvider.sharedInstance, false));
-			params.add(Arguments.of(gmonFile, gd, view_samplesFileT_RefFile,
-					view_samplesFileT_DumpFile,
+			params.add(Arguments.of(gmonFile, gd, view_samplesFileT_RefFile, view_samplesFileT_DumpFile,
 					FileHistogramContentProvider.sharedInstance, true));
-			params.add(Arguments.of(gmonFile, gd,
-					view_samplesFunction_RefFile,
-					view_samplesFunction_DumpFile,
+			params.add(Arguments.of(gmonFile, gd, view_samplesFunction_RefFile, view_samplesFunction_DumpFile,
 					FunctionHistogramContentProvider.sharedInstance, false));
-			params.add(Arguments.of(gmonFile, gd,
-					view_samplesFunctionT_RefFile,
-					view_samplesFunctionT_DumpFile,
+			params.add(Arguments.of(gmonFile, gd, view_samplesFunctionT_RefFile, view_samplesFunctionT_DumpFile,
 					FunctionHistogramContentProvider.sharedInstance, true));
-			params.add(Arguments.of(gmonFile, gd, view_samplesFlat_RefFile,
-					view_samplesFlat_DumpFile,
+			params.add(Arguments.of(gmonFile, gd, view_samplesFlat_RefFile, view_samplesFlat_DumpFile,
 					FlatHistogramContentProvider.sharedInstance, false));
-			params.add(Arguments.of(gmonFile, gd, view_samplesFlatT_RefFile,
-					view_samplesFlatT_DumpFile,
+			params.add(Arguments.of(gmonFile, gd, view_samplesFlatT_RefFile, view_samplesFlatT_DumpFile,
 					FlatHistogramContentProvider.sharedInstance, true));
-        }
-        return params.stream();
-    }
+		}
+		return params.stream();
+	}
 
-    private void changeMode(GmonView view, boolean timeModeRequested) {
-        AbstractSTTreeViewer gmonViewer = (AbstractSTTreeViewer) view
-                .getSTViewer();
-        GmonDecoder decoder = (GmonDecoder) gmonViewer.getInput();
-        int prof_rate = decoder.getHistogramDecoder().getProfRate();
-        if (prof_rate == 0) {
-            return;
-        }
+	private void changeMode(GmonView view, boolean timeModeRequested) {
+		AbstractSTTreeViewer gmonViewer = (AbstractSTTreeViewer) view.getSTViewer();
+		GmonDecoder decoder = (GmonDecoder) gmonViewer.getInput();
+		int prof_rate = decoder.getHistogramDecoder().getProfRate();
+		if (prof_rate == 0) {
+			return;
+		}
 
-        TreeColumn tc = gmonViewer.getViewer().getTree().getColumn(1);
-        SampleProfField spf = (SampleProfField) tc.getData();
+		TreeColumn tc = gmonViewer.getViewer().getTree().getColumn(1);
+		SampleProfField spf = (SampleProfField) tc.getData();
 
-        if (spf.getColumnHeaderText().endsWith("Samples") ^ !timeModeRequested) {
-            new SwitchSampleTimeAction(view).run();
-        }
-    }
+		if (spf.getColumnHeaderText().endsWith("Samples") ^ !timeModeRequested) {
+			new SwitchSampleTimeAction(view).run();
+		}
+	}
 
-    @ParameterizedTest @MethodSource("testDirs")
-    public void testView(File gmonFile, GmonDecoder gd, File refFile,
-            File dumpFile, ITreeContentProvider contentProvider,
-            boolean timeMode) {
-        GmonView view = GmonView.displayGprofView(gd,
-                gmonFile.getAbsolutePath());
-        SwitchContentProviderAction action = new SwitchContentProviderAction(
-                "testAction", "icons/ch_callees.png" /* to avoid error */, view
-                        .getSTViewer().getViewer(), contentProvider);
-        action.run();
-        changeMode(view, timeMode);
-        STJunitUtils.testCSVExport(view, dumpFile.getAbsolutePath(),
-                refFile.getAbsolutePath());
-    }
+	@ParameterizedTest
+	@MethodSource("testDirs")
+	public void testView(File gmonFile, GmonDecoder gd, File refFile, File dumpFile,
+			ITreeContentProvider contentProvider, boolean timeMode) {
+		GmonView view = GmonView.displayGprofView(gd, gmonFile.getAbsolutePath());
+		SwitchContentProviderAction action = new SwitchContentProviderAction("testAction",
+				"icons/ch_callees.png" /* to avoid error */, view.getSTViewer().getViewer(), contentProvider);
+		action.run();
+		changeMode(view, timeMode);
+		STJunitUtils.testCSVExport(view, dumpFile.getAbsolutePath(), refFile.getAbsolutePath());
+	}
 }

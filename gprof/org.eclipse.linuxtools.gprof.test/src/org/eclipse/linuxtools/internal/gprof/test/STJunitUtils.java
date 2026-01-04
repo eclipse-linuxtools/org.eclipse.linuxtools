@@ -224,12 +224,7 @@ public class STJunitUtils {
         String filename = getAbsolutePath("org.eclipse.linuxtools.gprof.test", ".");
         File dir = new File(filename);
         File[] testDirs = dir.listFiles(
-            new FileFilter() {
-                @Override
-                public boolean accept(File arg0) {
-                    return (arg0.isDirectory() && arg0.getName().matches(".*" + DIRECTORY_SUFFIX));
-                }
-            }
+            (FileFilter) arg0 -> (arg0.isDirectory() && arg0.getName().matches(".*" + DIRECTORY_SUFFIX))
         );
 
         // test if there is any directory samples
