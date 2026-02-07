@@ -19,6 +19,26 @@
 				<ignoreVersion>4.0.0</ignoreVersion>
 			</ignoreVersions>
 		</rule>
+		<rule groupId="org.glassfish.jersey.core" comparisonMethod="maven">
+			<ignoreVersions>
+				<ignoreVersion>4.0.2</ignoreVersion>
+			</ignoreVersions>
+		</rule>
+		<rule groupId="org.glassfish.jersey.ext" comparisonMethod="maven">
+			<ignoreVersions>
+				<ignoreVersion>4.0.2</ignoreVersion>
+			</ignoreVersions>
+		</rule>
+		<rule groupId="org.glassfish.jersey.media" comparisonMethod="maven">
+			<ignoreVersions>
+				<ignoreVersion>4.0.2</ignoreVersion>
+			</ignoreVersions>
+		</rule>
+		<rule groupId="org.glassfish.jersey.inject" comparisonMethod="maven">
+			<ignoreVersions>
+				<ignoreVersion>4.0.2</ignoreVersion>
+			</ignoreVersions>
+		</rule>
 	</rules>
 
 </ruleset>
