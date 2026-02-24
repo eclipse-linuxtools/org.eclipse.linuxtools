@@ -4,6 +4,12 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 ## Next release...
 
+## 8.22.0
+
+Various dependency upgrades have been made such as upgrading jackson to 2.21.
+Change usage of deprecated Runtime.exec to ProcessBuilder.start.  Support
+for binutils 2.16 (released 2005) is dropped.
+
 ## 8.21.0
 
 Various dependency upgrades have been made such as upgrading nekohtml to 3.0.1.
