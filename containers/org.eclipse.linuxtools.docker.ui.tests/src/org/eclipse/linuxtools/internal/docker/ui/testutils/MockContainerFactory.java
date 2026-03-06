@@ -16,6 +16,7 @@ package org.eclipse.linuxtools.internal.docker.ui.testutils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -30,8 +31,13 @@ import org.mockito.Mockito;
  */
 public class MockContainerFactory {
 
-	public static Builder id(final String id) {
-		return new Builder().id(id);
+	public static Container of(final String id) {
+		return new Container(id, List.of(), "", "", "", 0L, "", "", List.of(), Map.of(), 0L, 0L, null, List.of());
+	}
+
+	public static Container of(final String id, String imageName, String status, String... names) {
+		return new Container(id, List.of(names), imageName, "", "", 0L, "", status, List.of(), Map.of(), 0L, 0L, null,
+				List.of());
 	}
 
 	public static Builder name(final String repoTag, final String... otherRepoTags) {
@@ -46,11 +52,6 @@ public class MockContainerFactory {
 
 		private Builder() {
 			this.container = Mockito.mock(Container.class);
-		}
-
-		private Builder id(final String id) {
-			Mockito.when(this.container.id()).thenReturn(id);
-			return this;
 		}
 
 		private Builder randomId() {

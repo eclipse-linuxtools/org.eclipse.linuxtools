@@ -82,7 +82,7 @@ public class ImagePushSWTBotTests {
 
 	@Before
 	public void setupDockerClient() {
-		this.client = MockDockerClientFactory.image(MockImageFactory.name("bar:latest", "foo/bar:latest").build())
+		this.client = MockDockerClientFactory.images(MockImageFactory.of("", "", "bar:latest", "foo/bar:latest"))
 				.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();

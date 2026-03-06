@@ -28,7 +28,6 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFacto
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
 import org.junit.Test;
-
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.exceptions.DockerCertificateException;
 import org.mandas.docker.client.messages.Container;
@@ -42,8 +41,8 @@ public class DockerConnectionTest {
 	@Test
 	public void shouldLoadContainers() throws DockerException {
 		// given
-		final Container fooContainer = MockContainerFactory.id("foo").build();
-		final Container barContainer = MockContainerFactory.id("bar").build();
+		final Container fooContainer = MockContainerFactory.of("foo");
+		final Container barContainer = MockContainerFactory.of("bar");
 		final DockerClient client = MockDockerClientFactory.container(fooContainer).container(barContainer).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		dockerConnection.open(false);
@@ -56,9 +55,9 @@ public class DockerConnectionTest {
 	@Test
 	public void shouldLoadImages() throws DockerException {
 		// given
-		final Image fooImage = MockImageFactory.id("foo").build();
-		final Image barImage = MockImageFactory.id("bar").build();
-		final DockerClient client = MockDockerClientFactory.image(fooImage).image(barImage).build();
+		final Image fooImage = MockImageFactory.of("foo");
+		final Image barImage = MockImageFactory.of("bar");
+		final DockerClient client = MockDockerClientFactory.images(fooImage).image(barImage).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		dockerConnection.open(false);
 		// when
@@ -71,9 +70,9 @@ public class DockerConnectionTest {
 	@Test
 	public void hasImageTest() throws DockerException {
 		// given
-		final Image fooImage = MockImageFactory.id("foo")
-				.name("foo", "foo:latest", "foo:1.0", "org/foo", "org/foo:1.0", "org/foo:latest").build();
-		final DockerClient client = MockDockerClientFactory.image(fooImage).build();
+		final Image fooImage = MockImageFactory.of("foo",
+				List.of("foo", "foo:latest", "foo:1.0", "org/foo", "org/foo:1.0", "org/foo:latest"));
+		final DockerClient client = MockDockerClientFactory.images(fooImage).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		// when

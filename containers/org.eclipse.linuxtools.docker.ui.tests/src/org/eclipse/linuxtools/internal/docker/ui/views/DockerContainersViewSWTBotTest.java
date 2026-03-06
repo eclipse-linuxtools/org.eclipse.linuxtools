@@ -69,7 +69,7 @@ public class DockerContainersViewSWTBotTest {
 		this.bot = new SWTWorkbenchBot();
 		final DockerClient client = MockDockerClientFactory
 				.container(MockContainerFactory.name("defaultcon").status("Running").build())
-				.image(MockImageFactory.id("987654321abcde").name("default:1").build()).build();
+				.image(MockImageFactory.of("987654321abcde", "", "default:1")).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Default", client)
 				.withDefaultTCPConnectionSettings();
 		dockerConnection.removeContainerListener(DockerContainerRefreshManager.getInstance());

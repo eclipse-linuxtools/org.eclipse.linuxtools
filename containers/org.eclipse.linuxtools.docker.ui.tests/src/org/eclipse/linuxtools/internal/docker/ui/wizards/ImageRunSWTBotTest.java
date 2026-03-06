@@ -101,7 +101,7 @@ public class ImageRunSWTBotTest {
 	@Test
 	public void shouldReportErrorIfContainerWithSameNameExists() {
 		// given
-		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("foo:latest").build())
+		final DockerClient client = MockDockerClientFactory.images(MockImageFactory.of("", "", "foo:latest"))
 				.container(MockContainerFactory.name("foo_bar").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
@@ -123,7 +123,7 @@ public class ImageRunSWTBotTest {
 
 	@Test
 	public void testNetworkModeBridge() throws CoreException {
-		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("foo:latest").build())
+		final DockerClient client = MockDockerClientFactory.images(MockImageFactory.of("", "", "foo:latest"))
 				.container(MockContainerFactory.name("foo_bar").build()).build();
 		final DockerConnection connection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
@@ -140,7 +140,7 @@ public class ImageRunSWTBotTest {
 
 	@Test
 	public void testNetworkModeHost() throws CoreException {
-		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("foo:latest").build())
+		final DockerClient client = MockDockerClientFactory.images(MockImageFactory.of("", "", "foo:latest"))
 				.container(MockContainerFactory.name("foo_bar").build()).build();
 		final DockerConnection connection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
@@ -157,7 +157,7 @@ public class ImageRunSWTBotTest {
 
 	@Test
 	public void testNetworkModeDefault() throws CoreException {
-		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("foo:latest").build())
+		final DockerClient client = MockDockerClientFactory.images(MockImageFactory.of("", "", "foo:latest"))
 				.container(MockContainerFactory.name("foo_bar").build()).build();
 		final DockerConnection connection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
@@ -174,7 +174,7 @@ public class ImageRunSWTBotTest {
 
 	@Test
 	public void testNetworkModeContainer() throws CoreException {
-		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("foo:latest").build())
+		final DockerClient client = MockDockerClientFactory.images(MockImageFactory.of("", "", "foo:latest"))
 				.container(MockContainerFactory.name("foo_bar").build()).build();
 		final DockerConnection connection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
@@ -192,7 +192,7 @@ public class ImageRunSWTBotTest {
 
 	@Test
 	public void testNetworkModeOther() throws CoreException {
-		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("foo:latest").build())
+		final DockerClient client = MockDockerClientFactory.images(MockImageFactory.of("", "", "foo:latest"))
 				.container(MockContainerFactory.name("foo_bar").build()).build();
 		final DockerConnection connection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
@@ -210,7 +210,7 @@ public class ImageRunSWTBotTest {
 	@Test
 	public void shouldNotReportErrorIfNoContainerWithSameNameExists() {
 		// given
-		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("foo:latest").build())
+		final DockerClient client = MockDockerClientFactory.images(MockImageFactory.of("", "", "foo:latest"))
 				.container(MockContainerFactory.name("foo_bar").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
@@ -231,13 +231,13 @@ public class ImageRunSWTBotTest {
 			throws InterruptedException, DockerException, CoreException {
 		// images to use
 		final String imageName = "foo/bar:latest";
-		final Image image = MockImageFactory.id("1a2b3c4d5e6f7g").name(imageName).build();
+		final Image image = MockImageFactory.of("1a2b3c4d5e6f7g", "", imageName);
 		final ImageInfo imageInfo = MockImageInfoFactory.volume("/foo/bar")
 				.command(Arrays.asList("the", "command")).entrypoint(Arrays.asList("the", "entrypoint")).build();
 		// container to be created
 		final String containerName = "foo_bar";
-		final Container createdContainer = MockContainerFactory.id("MockContainer").name(containerName)
-				.imageName("1a2b3c4d5e6f7g").status("Started 1 second ago").build();
+		final Container createdContainer = MockContainerFactory.of("MockContainer", "1a2b3c4d5e6f7g",
+				"Started 1 second ago", containerName);
 		final ContainerInfo containerInfo = MockContainerInfoFactory.build();
 		final DockerClient client = MockDockerClientFactory.image(image, imageInfo)
 				//.container(createdContainer, containerInfo)
