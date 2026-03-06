@@ -36,9 +36,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mandas.docker.client.DockerClient;
 
-/**
- *
- */
 public class CommandUtilsSWTBotTest {
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
@@ -204,7 +201,7 @@ public class CommandUtilsSWTBotTest {
 	@Test
 	public void shouldRetrieveConnectionFromSelectedImagesCategory() {
 		// given
-		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("foo").build())
+		final DockerClient client = MockDockerClientFactory.images(MockImageFactory.of("", "", "foo"))
 				.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
@@ -218,7 +215,7 @@ public class CommandUtilsSWTBotTest {
 	@Test
 	public void shouldRetrieveConnectionFromSelectedImage() {
 		// given
-		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("foo").build())
+		final DockerClient client = MockDockerClientFactory.images(MockImageFactory.of("", "", "foo"))
 				.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);

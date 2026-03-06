@@ -97,22 +97,20 @@ public class DockerImageHierarchyViewSWTBotTest {
 		// |- bar_image11
 		// _|- bar_container1
 
-		final Image rootImage = MockImageFactory.id("sha256:root_image").name("root_image").build();
-		final Image fooImage1 = MockImageFactory.id("sha256:foo_image1").name("foo_image1")
-				.parentId("sha256:root_image").build();
-		final Image fooImage2 = MockImageFactory.id("sha256:foo_image2").name("foo_image2", "foo_image2_alias")
-				.parentId("sha256:foo_image1").build();
-		final Container fooContainer1 = MockContainerFactory.id("sha256:foo_container1").name("foo_container1")
-				.imageName("foo_image1").status("Up").build();
-		final Container fooContainer21 = MockContainerFactory.id("sha256:foo_container21").name("foo_container21")
-				.imageName("foo_image2").status("Exited").build();
-		final Container fooContainer22 = MockContainerFactory.id("sha256:foo_container22").name("foo_container22")
-				.imageName("foo_image2_alias").status("Up (Paused)").build();
-		final Image barImage1 = MockImageFactory.id("sha256:bar_image1").name("bar_image1")
-				.parentId("sha256:root_image").build();
-		final Container barContainer1 = MockContainerFactory.id("sha256:bar_container1").name("bar_container1")
-				.imageName("bar_image1").build();
-		final DockerClient client = MockDockerClientFactory.image(rootImage).image(fooImage1).container(fooContainer1)
+		final Image rootImage = MockImageFactory.of("sha256:root_image", List.of("root_image"));
+		final Image fooImage1 = MockImageFactory.of("sha256:foo_image1", "sha256:root_image", "foo_image1");
+		final Image fooImage2 = MockImageFactory.of("sha256:foo_image2", "sha256:foo_image1", "foo_image2",
+				"foo_image2_alias");
+		final Container fooContainer1 = MockContainerFactory.of("sha256:foo_container1", "foo_image1", "Up",
+				"foo_container1");
+		final Container fooContainer21 = MockContainerFactory.of("sha256:foo_container21", "foo_image2", "Exited",
+				"foo_container21");
+		final Container fooContainer22 = MockContainerFactory.of("sha256:foo_container22", "foo_image2_alias","Up (Paused)","foo_container22")
+				;
+		final Image barImage1 = MockImageFactory.of("sha256:bar_image1", "sha256:root_image", "bar_image1");
+		final Container barContainer1 = MockContainerFactory.of("sha256:bar_container1", "bar_image1", "",
+				"bar_container1");
+		final DockerClient client = MockDockerClientFactory.images(rootImage, fooImage1).container(fooContainer1)
 				.image(fooImage2).container(fooContainer21).container(fooContainer22).image(barImage1)
 				.container(barContainer1).build();
 		this.connection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();

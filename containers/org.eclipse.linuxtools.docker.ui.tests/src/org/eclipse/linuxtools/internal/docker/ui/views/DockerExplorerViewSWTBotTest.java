@@ -167,7 +167,7 @@ public class DockerExplorerViewSWTBotTest {
 		final SWTBotTreeItem imagesTreeItem = SWTUtils.expand(connection, "Images");
 		Assertions.assertThat(imagesTreeItem.getItems().length).isEqualTo(0);
 		// update the client
-		final DockerClient updatedClient = MockDockerClientFactory.image(MockImageFactory.name("foo/bar").build())
+		final DockerClient updatedClient = MockDockerClientFactory.images(MockImageFactory.of("foo/bar"))
 				.build();
 		dockerConnection.setClient(updatedClient);
 		// when locating the 'Images' node and hit refresh
@@ -495,8 +495,8 @@ public class DockerExplorerViewSWTBotTest {
 	@Test
 	public void shouldProvideEnabledRemoveCommandOnMultipleImagesAtOnce() {
 		// given
-		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("angry_bar").build())
-				.image(MockImageFactory.name("gentle_foo").build()).build();
+		final DockerClient client = MockDockerClientFactory
+				.images(MockImageFactory.of("angry_bar"), MockImageFactory.of("gentle_foo")).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
@@ -552,7 +552,7 @@ public class DockerExplorerViewSWTBotTest {
 	@Test
 	public void shouldShowSelectedImageInPropertiesView() {
 		// given
-		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("angry_bar").build()).build();
+		final DockerClient client = MockDockerClientFactory.images(MockImageFactory.of("angry_bar")).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
@@ -575,7 +575,7 @@ public class DockerExplorerViewSWTBotTest {
 	@Test
 	public void shouldRemoveListenersWhenClosingView() {
 		// given
-		final DockerClient client = MockDockerClientFactory.image(MockImageFactory.name("angry_bar").build())
+		final DockerClient client = MockDockerClientFactory.images(MockImageFactory.of("angry_bar"))
 				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
@@ -595,8 +595,8 @@ public class DockerExplorerViewSWTBotTest {
 	@Test
 	public void shouldShowAllImageVariants() {
 		// given
-		final DockerClient client = MockDockerClientFactory.image(
-				MockImageFactory.id("1a2b3c4d5e6f7g").name("foo:1.0", "foo:latest", "bar:1.0", "bar:latest").build())
+		final DockerClient client = MockDockerClientFactory.images(
+				MockImageFactory.of("1a2b3c4d5e6f7g", "", "foo:1.0", "foo:latest", "bar:1.0", "bar:latest"))
 				.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();

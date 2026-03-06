@@ -25,9 +25,6 @@ import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
-
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.exceptions.DockerException;
 import org.mandas.docker.client.messages.Container;
@@ -36,6 +33,8 @@ import org.mandas.docker.client.messages.Image;
 import org.mandas.docker.client.messages.ImageInfo;
 import org.mandas.docker.client.messages.ImageSearchResult;
 import org.mandas.docker.client.messages.Info;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 
 /**
  * Factory for mocked {@link IDockerConnection}
@@ -46,7 +45,7 @@ public class MockDockerClientFactory {
 	 * @return an {@link DockerClient} with no {@link IDockerImage} and no {@link IDockerContainer}.
 	 */
 	public static DockerClient build() {
-		return image(null).build();
+		return images().build();
 	}
 
 	/**
@@ -54,18 +53,7 @@ public class MockDockerClientFactory {
 	 *            the {@link Image} to use to build the {@link DockerClient}
 	 * @return a {@link Builder} to build a {@link DockerClient}
 	 */
-	public static Builder image(final Image image) {
-		final Builder builder = new Builder();
-		builder.image(image);
-		return builder;
-	}
-
-	/**
-	 * @param images
-	 *            the {@link Image} to use to build the {@link DockerClient}
-	 * @return a {@link Builder} to build a {@link DockerClient}
-	 */
-	public static Builder images(final Image[] images) {
+	public static Builder images(final Image... images) {
 		final Builder builder = new Builder();
 		Stream.of(images).forEach(i -> builder.image(i));
 		return builder;
@@ -125,8 +113,47 @@ public class MockDockerClientFactory {
 		private Builder() {
 			this.dockerClient = Mockito.mock(DockerClient.class);
 			try {
-				final Info info = Mockito.mock(Info.class);
-				Mockito.when(info.memTotal()).thenReturn(1024L);
+				final Info info = new Info(  "",
+						  "",
+						  "",
+						  0,
+						  0,
+						  0,
+						  0,
+						  false,
+						  false,
+						  false,
+						  "",
+						  "",
+						  List.of(),
+						  false,
+						  "",
+						  "",
+						  "",
+						  false,
+						 0,
+						 "",
+						  "",
+						  "",
+						  "",
+						  List.of(),						  1024L,
+						  false,
+						  0,
+						  0,
+						  0,
+						  0,
+						  "",
+						  "",
+						  false,
+						  "",
+						  "",
+						  "",
+						  null,
+						  null,
+						  "",
+						 false,
+						  null,
+						List.of(), null);
 				Mockito.when(dockerClient.info()).thenReturn(info);
 			} catch (DockerException | InterruptedException e) {
 				// ignore while setting-up the mock instance
@@ -199,7 +226,7 @@ public class MockDockerClientFactory {
 	 */
 	public static void addContainer(DockerClient dockerClient, Container container, ContainerInfo containerInfo) {
 		try {
-			final List<Container> containers = dockerClient.listContainers(new DockerClient.ListContainersParam[0]);
+			final List<Container> containers = dockerClient.listContainers();
 		containers.add(container);
 		Mockito.when(dockerClient.inspectContainer(container.id())).thenReturn(containerInfo);
 			Mockito.when(dockerClient.listContainers(ArgumentMatchers.any())).thenReturn(containers);

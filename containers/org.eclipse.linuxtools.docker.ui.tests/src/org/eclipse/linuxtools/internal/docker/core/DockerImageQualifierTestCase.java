@@ -32,7 +32,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.messages.Image;
 
@@ -74,18 +73,17 @@ public class DockerImageQualifierTestCase {
 	public static Collection<Object[]> getData() {
 		final ParameterizedDataset dataset = new ParameterizedDataset();
 		// top level because it has a repo and a tag
-		dataset.add(TOP_LEVEL, MockImageFactory.id("foo").name("foo:latest").build());
-		dataset.add(TOP_LEVEL, MockImageFactory.id("foo").name("foo:latest", "foo:1.0").build());
+		dataset.add(TOP_LEVEL, MockImageFactory.of("foo", "", "foo:latest"));
+		dataset.add(TOP_LEVEL, MockImageFactory.of("foo", "", "foo:latest", "foo:1.0"));
 		// top level because it has a name
-		dataset.add(TOP_LEVEL, MockImageFactory.id("foo").name("foo:<none>").build());
+		dataset.add(TOP_LEVEL, MockImageFactory.of("foo", "", "foo:<none>"));
 		// intermediate because it has a child image
-		dataset.add(INTERMEDIATE, MockImageFactory.id("foo").name("<none>:<none>").build(),
-				MockImageFactory.id("bar").parentId("foo").name("bar:latest").build());
-		dataset.add(INTERMEDIATE, MockImageFactory.id("foo").build(),
-				MockImageFactory.id("bar").parentId("foo").name("bar:latest").build());
+		dataset.add(INTERMEDIATE, MockImageFactory.of("foo", "", "<none>:<none>"),
+				MockImageFactory.of("bar", "foo", "bar:latest"));
+		dataset.add(INTERMEDIATE, MockImageFactory.of("foo"), MockImageFactory.of("bar", "foo", "bar:latest"));
 		// dangling because untagged because it is a leaf
-		dataset.add(DANGLING, MockImageFactory.id("foo").name("<none>:<none>").build());
-		dataset.add(DANGLING, MockImageFactory.id("foo").build());
+		dataset.add(DANGLING, MockImageFactory.of("foo", "", "<none>:<none>"));
+		dataset.add(DANGLING, MockImageFactory.of("foo"));
 		return dataset.toList();
 	}
 
