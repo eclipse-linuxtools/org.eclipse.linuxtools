@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat.
+ * Copyright (c) 2016, 2026 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -39,7 +39,7 @@ public class ImageSearchResultV2 {
 	public List<ImageSearchResult> getRepositories() {
 		List<ImageSearchResult> result = new ArrayList<>();
 		for (String repo : repositories) {
-			result.add(new ImageResultV2(repo));
+			result.add(new ImageSearchResult("", false, false, repo, 0));
 		}
 		return result;
 	}
@@ -48,40 +48,6 @@ public class ImageSearchResultV2 {
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
 				.add("results", getRepositories()).toString(); //$NON-NLS-1$
-	}
-
-	private class ImageResultV2 implements ImageSearchResult {
-
-		private String name;
-
-		public ImageResultV2(String name) {
-			this.name = name;
-		}
-
-		@Override
-		public String description() {
-			return "";
-		}
-
-		@Override
-		public boolean official() {
-			return false;
-		}
-
-		@Override
-		public boolean automated() {
-			return false;
-		}
-
-		@Override
-		public String name() {
-			return name;
-		}
-
-		@Override
-		public int starCount() {
-			return 0;
-		}
 	}
 
 }
