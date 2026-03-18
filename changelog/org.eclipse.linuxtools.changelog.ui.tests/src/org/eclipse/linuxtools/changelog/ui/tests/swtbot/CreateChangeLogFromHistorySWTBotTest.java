@@ -10,7 +10,6 @@
 package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
 import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
-import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -39,9 +38,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.eclipse.ui.IEditorReference;
-import org.hamcrest.Matcher;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -128,11 +124,7 @@ public class CreateChangeLogFromHistorySWTBotTest extends AbstractSWTBotTest {
 
         ProjectExplorer.expandProject(projectExplorerViewTree, PROJECT_NAME,
                 teamProviderString).expandNode(pasteFile).select().doubleClick();
-        Matcher<IEditorReference> editorMatcher = allOf(
-                IsInstanceOf.instanceOf(IEditorReference.class),
-                withPartName(pasteFile)
-                );
-        bot.waitUntil(Conditions.waitForEditor(editorMatcher));
+		bot.waitUntil(Conditions.waitForEditor(withPartName(pasteFile)));
         oldTimeout = SWTBotPreferences.TIMEOUT;
         SWTBotPreferences.TIMEOUT = oldTimeout;
         SWTBotEditor swtBoteditor = bot.activeEditor();

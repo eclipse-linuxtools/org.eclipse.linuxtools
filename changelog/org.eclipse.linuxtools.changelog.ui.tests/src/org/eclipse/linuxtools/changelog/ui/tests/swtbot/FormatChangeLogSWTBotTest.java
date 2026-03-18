@@ -10,7 +10,6 @@
 package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
 import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
-import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -28,9 +27,6 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.eclipse.ui.IEditorReference;
-import org.hamcrest.Matcher;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -90,11 +86,7 @@ public class FormatChangeLogSWTBotTest extends AbstractSWTBotTest {
         oldTimeout = SWTBotPreferences.TIMEOUT;
         SWTBotPreferences.TIMEOUT = 3 * 5000;
         // Wait for ChangeLog editor to open
-        Matcher<IEditorReference> editorMatcher = allOf(
-                IsInstanceOf.instanceOf(IEditorReference.class),
-                withPartName("ChangeLog")
-                );
-        bot.waitUntil(Conditions.waitForEditor(editorMatcher));
+		bot.waitUntil(Conditions.waitForEditor(withPartName("ChangeLog")));
         SWTBotEditor swtBoteditor = bot.activeEditor();
         assertEquals("ChangeLog", swtBoteditor.getTitle());
 

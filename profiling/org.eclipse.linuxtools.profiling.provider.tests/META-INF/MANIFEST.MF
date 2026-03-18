@@ -6,7 +6,6 @@ Bundle-Version: 1.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Fragment-Host: org.eclipse.linuxtools.profiling.launch
 Require-Bundle: junit-jupiter-api,
- org.hamcrest,
  org.eclipse.linuxtools.profiling.tests,
  org.eclipse.swtbot.eclipse.finder;bundle-version="4.0.0",
  org.eclipse.swtbot.junit5_x

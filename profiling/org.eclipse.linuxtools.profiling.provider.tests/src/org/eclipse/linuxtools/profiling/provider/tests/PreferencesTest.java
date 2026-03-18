@@ -45,7 +45,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.PlatformUI;
-import org.hamcrest.Matcher;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -273,7 +272,7 @@ public class PreferencesTest extends AbstractTest{
     private static void deselectSelectionByName(final String name, final SWTWorkbenchBot bot) {
 		UIThreadRunnable.syncExec(() -> {
 			@SuppressWarnings("unchecked")
-			Matcher<Button> matcher = allOf(widgetOfType(Button.class), withStyle(SWT.RADIO, "SWT.RADIO"), //$NON-NLS-1$
+			var matcher = allOf(widgetOfType(Button.class), withStyle(SWT.RADIO, "SWT.RADIO"), //$NON-NLS-1$
 					withRegex(name + ".*")); //$NON-NLS-1$
 
 			Button b = bot.widget(matcher); // the current selection

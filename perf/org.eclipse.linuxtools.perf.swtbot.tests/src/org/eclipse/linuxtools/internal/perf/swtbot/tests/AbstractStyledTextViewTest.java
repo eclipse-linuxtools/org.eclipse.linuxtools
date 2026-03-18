@@ -12,15 +12,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.perf.swtbot.tests;
 
-import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
-import org.eclipse.ui.IViewReference;
-import org.hamcrest.Matcher;
 
 /**
  * Specialized abstract SWTBot test for views containing
@@ -32,8 +29,7 @@ public abstract class AbstractStyledTextViewTest extends AbstractSWTBotTest {
     protected void testPerfView() {
         SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
-        Matcher<IViewReference> withPartName = withPartName(getViewId());
-        SWTBotView view = bot.view(withPartName);
+        SWTBotView view = bot.viewByTitle(getViewId());
         assertNotNull(view);
 
         view.setFocus();
