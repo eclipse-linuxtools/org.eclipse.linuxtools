@@ -10,9 +10,9 @@
 package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
 import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.ByteArrayInputStream;
 
@@ -38,10 +38,10 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * UI tests for creating changelogs from SVN history (commit messages).
@@ -57,7 +57,7 @@ public class CreateChangeLogFromHistorySWTBotTest extends AbstractSWTBotTest {
     private final String SVN_PROJECT_URL = "svn://dev.eclipse.org/svnroot/technology/" +
         "org.eclipse.linuxtools/changelog/trunk";
 
-    @Before
+	@BeforeEach
     public void setUp() throws Exception {
         // Do an SVN checkout of the changelog.tests plugin
         subversionProject = new SVNProject(bot);
@@ -66,7 +66,7 @@ public class CreateChangeLogFromHistorySWTBotTest extends AbstractSWTBotTest {
         ProjectExplorer.openView();
     }
 
-    @After
+	@AfterEach
     public void tearDown() throws Exception {
         this.project.delete(true, null);
         // discard existing repo from previous test runs
@@ -83,7 +83,7 @@ public class CreateChangeLogFromHistorySWTBotTest extends AbstractSWTBotTest {
      * @throws Exception
      */
     @Test
-    @Ignore
+	@Disabled
     public void canPrepareChangeLogFromSVNHistory() throws Exception {
         // select ChangeLog file
         String teamProviderString = "[changelog/trunk/" + PROJECT_NAME + "]";

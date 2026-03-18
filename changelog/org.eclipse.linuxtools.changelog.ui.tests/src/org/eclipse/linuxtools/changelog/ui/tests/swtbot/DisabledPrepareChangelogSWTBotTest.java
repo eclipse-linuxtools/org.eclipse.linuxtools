@@ -9,10 +9,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
 
@@ -22,10 +22,10 @@ import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorer;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * UI test for "Prepare ChangeLog" when project not shared.
@@ -35,12 +35,12 @@ public class DisabledPrepareChangelogSWTBotTest extends AbstractSWTBotTest {
     private final String projectName = "not-shared";
     private ChangeLogTestProject project;
 
-    @Before
+	@BeforeEach
     public void setUp() throws Exception {
         project = new ChangeLogTestProject(projectName);
     }
 
-    @After
+	@AfterEach
     public void tearDown() throws Exception {
         this.project.getTestProject().delete(true, null);
     }
@@ -52,7 +52,7 @@ public class DisabledPrepareChangelogSWTBotTest extends AbstractSWTBotTest {
      * @throws Exception
      */
     @Test
-    @Ignore
+	@Disabled
     public void cannotPrepareChangeLogOnNonCVSOrSVNProject() throws Exception {
         assertNull(project.getTestProject().findMember(new Path("/ChangeLog")));
 

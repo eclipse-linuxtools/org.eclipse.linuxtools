@@ -10,9 +10,9 @@
 package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
 import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.ByteArrayInputStream;
 
@@ -27,9 +27,9 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * UI tests for formatting ChangeLog files.
@@ -40,21 +40,19 @@ public class FormatChangeLogSWTBotTest extends AbstractSWTBotTest {
     // The name of the test project, we create
     private final String PROJECT_NAME = "org.eclipse.linuxtools.changelog.ui.formattestproject";
 
-    @Before
+	@BeforeEach
     public void setUp() throws Exception {
         project = new ChangeLogTestProject(PROJECT_NAME);
 		projectExplorerViewTree = ProjectExplorer.getTree();
     }
 
-    @After
+	@AfterEach
     public void tearDown() throws Exception {
         this.project.getTestProject().delete(true, null);
     }
 
     /**
      * Simple test for ChangeLog formatting.
-     *
-     * @throws Exception
      */
     @Test
     public void canFormatChangeLogFile() throws Exception {
