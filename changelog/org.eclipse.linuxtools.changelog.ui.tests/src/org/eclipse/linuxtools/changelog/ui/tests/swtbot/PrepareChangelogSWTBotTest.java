@@ -10,9 +10,9 @@
 package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
 import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 
@@ -32,16 +32,16 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * UI tests for "Prepare ChangeLog" (CTRL+ALT+P) and the clipboard magic
  * (CTRL+ALT+V).
  */
-@Ignore
+@Disabled
 public class PrepareChangelogSWTBotTest extends AbstractSWTBotTest {
 
     private SVNProject subversionProject;
@@ -52,7 +52,7 @@ public class PrepareChangelogSWTBotTest extends AbstractSWTBotTest {
     private final String SVN_PROJECT_URL = "svn://dev.eclipse.org/svnroot/technology/" +
         "org.eclipse.linuxtools/changelog/trunk";
 
-    @Before
+	@BeforeEach
     public void setUp() throws Exception {
         // Do an SVN checkout of the changelog.tests plugin
         subversionProject = new SVNProject(bot);
@@ -61,7 +61,7 @@ public class PrepareChangelogSWTBotTest extends AbstractSWTBotTest {
         ProjectExplorer.openView();
     }
 
-    @After
+	@AfterEach
     public void tearDown() throws Exception {
         this.project.delete(true, null);
         // discard existing repo from previous test runs
@@ -78,7 +78,6 @@ public class PrepareChangelogSWTBotTest extends AbstractSWTBotTest {
      * @throws Exception
      */
     @Test
-    @Ignore
     public void canPrepareChangeLog() throws Exception {
         // Find manifest file
         IResource manifest = project.findMember(new Path("/META-INF/MANIFEST.MF"));
@@ -111,11 +110,8 @@ public class PrepareChangelogSWTBotTest extends AbstractSWTBotTest {
     /**
      * Should be able to save changes to ChangeLog file in clipboard.
      * Tests CTRL + ALT + V functionality.
-     *
-     * @throws Exception
      */
     @Test
-    @Ignore
     public void canPrepareChangeLogAndSaveChangesInChangeLogFileToClipboard() throws Exception {
         // Find manifest file
         IResource manifest = project.findMember(new Path("/META-INF/MANIFEST.MF"));

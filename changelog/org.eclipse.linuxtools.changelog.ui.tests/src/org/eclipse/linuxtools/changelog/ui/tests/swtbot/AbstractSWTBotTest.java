@@ -15,18 +15,18 @@ package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorer;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
+import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(SWTBotJunit4ClassRunner.class)
+@ExtendWith(SWTBotJunit5Extension.class)
 public abstract class AbstractSWTBotTest {
 
     protected static SWTWorkbenchBot bot;
     protected static SWTBotTree projectExplorerViewTree;
 
-    @BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
         // delay click speed
         //System.setProperty("org.eclipse.swtbot.playback.delay", "200");

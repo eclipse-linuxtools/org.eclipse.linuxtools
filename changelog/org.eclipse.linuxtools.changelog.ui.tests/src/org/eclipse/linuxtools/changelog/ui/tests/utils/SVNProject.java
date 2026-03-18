@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.ui.tests.utils;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;

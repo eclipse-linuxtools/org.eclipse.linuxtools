@@ -10,11 +10,11 @@
 package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
 import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -31,12 +31,10 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * UI tests for "ChangeLog Entry" (CTRL+ALT+C).
@@ -48,10 +46,8 @@ public class AddChangelogEntrySWTBotTest extends AbstractSWTBotTest {
     private static final String OFFSET_MARKER = "<-- SELECT -->";
     // The name of the test project, we create
     private final String PROJECT_NAME = "changelog-java-project";
-	@Rule
-	public TestName name = new TestName();
 
-    @Before
+	@BeforeEach
     public void setUp() throws Exception {
         // Create an empty test project
         project = new ChangeLogTestProject(PROJECT_NAME);
@@ -59,7 +55,7 @@ public class AddChangelogEntrySWTBotTest extends AbstractSWTBotTest {
 		projectExplorerViewTree = ProjectExplorer.getTree();
     }
 
-    @After
+	@AfterEach
     public void tearDown() throws Exception {
         this.project.getTestProject().delete(true, null);
     }
@@ -71,11 +67,10 @@ public class AddChangelogEntrySWTBotTest extends AbstractSWTBotTest {
      *
      * @throws Exception
      */
-	@Ignore
+	@Disabled
     @Test
     public void canAddChangeLogEntryUsingShortCutIfSourceIsActive() throws Exception {
         // Add a Java source file
-		System.out.println(name.getMethodName());
         String sourceCode = "package src;\n" +
             "public class JavaTest {\n" +
                 "public static void main(String args[]) {\n" +
@@ -179,28 +174,24 @@ public class AddChangelogEntrySWTBotTest extends AbstractSWTBotTest {
     }
 
     /**
-     * FIXME: Disable menu item instead of showing it and doing nothing.
-     *
-     * This test throws WidgetNotFountException (i.e. shouldn't open any editor).
-     */
-     @Test(expected=WidgetNotFoundException.class)
-    public void shouldDoNothingIfNoEditorIsActive() {
+	 * FIXME: Disable menu item instead of showing it and doing nothing.
+	 *
+	 * This test throws WidgetNotFountException (i.e. shouldn't open any editor).
+	 */
+	@Test
+	public void shouldDoNothingIfNoEditorIsActive() throws CoreException {
         assertNull(project.getTestProject().findMember( new Path("/src/dummy")));
-        try {
-            project.addFileToProject("src", "dummy", new ByteArrayInputStream("".getBytes()));
-        } catch (CoreException e) {
-            fail("Could not add /src/dummy file to project");
-        }
+		project.addFileToProject("src", "dummy", new ByteArrayInputStream("".getBytes()));
         assertNotNull(project.getTestProject().findMember( new Path("/src/dummy")));
         // Make sure we are in the project explorer view and no editors are open
         bot.closeAllEditors();
         projectExplorerViewTree.expandNode(PROJECT_NAME).expandNode("src");
         // Try to create ChangeLog
-        bot.menu("Edit").menu("ChangeLog Entry").click();
+		assertThrows(WidgetNotFoundException.class, () -> bot.menu("Edit").menu("ChangeLog Entry").click());
         // Don't wait 5 secs
         long oldTimeout = SWTBotPreferences.TIMEOUT;
         SWTBotPreferences.TIMEOUT = 1000; // give it a full second :)
-        bot.activeEditor();
+		assertThrows(WidgetNotFoundException.class, () -> bot.activeEditor());
         SWTBotPreferences.TIMEOUT = oldTimeout;
     }
 
