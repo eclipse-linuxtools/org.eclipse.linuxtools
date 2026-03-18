@@ -20,108 +20,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.linuxtools.internal.profiling.launch.LocalFileProxy;
-import org.eclipse.linuxtools.internal.rdt.proxy.RDTFileProxy;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.remote.proxy.tests.AbstractProxyTest;
-import org.eclipse.ptp.rdt.sync.core.SyncConfig;
-import org.eclipse.ptp.rdt.sync.core.exceptions.MissingConnectionException;
-import org.eclipse.remote.core.IRemoteConnection;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("restriction")
 public class FileProxyTest extends AbstractProxyTest {
 
-	@Test
-	public void testRemoteFileProxyOnSyncProject() {
-		IRemoteFileProxy fileProxy = null;
-		try {
-			fileProxy =  proxyManager.getFileProxy(syncProject.getProject());
-			assertInstanceOf(RDTFileProxy.class, fileProxy, "Should have returned a remote launcher");
-		} catch (CoreException e) {
-			fail("Should have returned a launcher: " + e.getCause());
-		}
-		String ds = fileProxy.getDirectorySeparator();
-		assertNotNull(ds);
-
-		SyncConfig config = getSyncConfig(syncProject.getProject());
-		String projectLocation = config.getLocation();
-		assertNotNull(projectLocation);
-		IRemoteConnection conn = null;
-		String connScheme = null;
-		try {
-			conn = config.getRemoteConnection();
-			connScheme = conn.getConnectionType().getScheme();
-		} catch (MissingConnectionException e) {
-			fail("Unabled to get remote connection: " + e.getMessage());
-		}
-
-		/*
-		 *  Test getResource()
-		 */
-		IFileStore fs = fileProxy.getResource(projectLocation);
-		assertNotNull(fs);
-		assertEquals(connScheme, fs.toURI().getScheme(), "Remote connection and FileStore schemes diverge");
-		//assertTrue(fs.fetchInfo().isDirectory());
-
-		fs = fileProxy.getResource("/filenotexits");
-		assertNotNull(fs);
-		IFileInfo fileInfo = fs.fetchInfo();
-		assertNotNull(fileInfo);
-		assertFalse(fileInfo.exists());
-
-		/*
-		 * Test getWorkingDir()
-		 */
-		URI workingDir = fileProxy.getWorkingDir();
-		assertNotNull(workingDir);
-		assertEquals("Remote connection and URI schemes diverge", connScheme, workingDir.getScheme());
-
-		/*
-		 * Test toPath()
-		 */
-		URI uri = null;
-		try {
-			uri = new URI(connScheme, conn.getName(), projectLocation, null, null);
-		} catch (URISyntaxException e) {
-			fail("Failed to build URI for the test: " + e.getMessage());
-		}
-		assertEquals(projectLocation, fileProxy.toPath(uri));
-
-		/*
-		 * Test it opens connection
-		 */
-		assertNotNull(conn);
-		conn.close();
-		assertFalse(conn.isOpen());
-		try {
-			fileProxy =  proxyManager.getFileProxy(syncProject.getProject());
-			assertNotNull(fileProxy);
-		} catch (CoreException e) {
-			fail("Failed to obtain file proxy when connection is closed: " + e.getMessage());
-		}
-		fs = fileProxy.getResource("/tmp/somedir");
-		assertNotNull(fs);
-		assertFalse(fs.fetchInfo().exists());
-		try {
-			fs.mkdir(EFS.SHALLOW, new NullProgressMonitor());
-		} catch (CoreException e) {
-			fail("should be able to create a directory when connection is closed: " + e.getMessage());
-		}
-		assertTrue(fs.fetchInfo().exists());
-		try {
-			fs.delete(EFS.NONE, new NullProgressMonitor());
-		} catch (CoreException e) {
-			fail("Failed to delete file: " + e.getMessage());
-		}
-	}
 
 	@Test
 	public void testLocalFileProxy() {
