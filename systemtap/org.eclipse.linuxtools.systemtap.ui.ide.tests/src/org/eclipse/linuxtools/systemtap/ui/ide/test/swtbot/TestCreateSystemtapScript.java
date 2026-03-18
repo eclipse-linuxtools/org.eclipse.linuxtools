@@ -16,7 +16,6 @@ package org.eclipse.linuxtools.systemtap.ui.ide.test.swtbot;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withStyle;
-import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withText;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -50,7 +49,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
@@ -79,7 +77,6 @@ import org.eclipse.swtchart.Chart;
 import org.eclipse.swtchart.IAxis;
 import org.eclipse.swtchart.ISeries;
 import org.eclipse.swtchart.Range;
-import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -479,10 +476,7 @@ public class TestCreateSystemtapScript {
         item = item.getNode(0);
         item.doubleClick();
 
-        {
-            Matcher<Shell> withText = withText(dialogTitle);
-            bot.waitUntil(Conditions.waitForShell(withText));
-        }
+        bot.waitUntil(Conditions.shellIsActive(dialogTitle));
 
         shell = bot.shell(dialogTitle);
         shell.setFocus();
@@ -856,7 +850,7 @@ public class TestCreateSystemtapScript {
         assertEquals("4", dataTable.cell(2, 2));
 
         graphEditorA.bot().cTabItem(graphTitle1).activate();
-        Matcher<AbstractChartBuilder> matcher = widgetOfType(AbstractChartBuilder.class);
+        var matcher = widgetOfType(AbstractChartBuilder.class);
         AbstractChartBuilder cb = bot.widget(matcher);
         ISeries<?>[] series = cb.getChart().getSeriesSet().getSeries();
         assertEquals(2, series.length);
@@ -1012,7 +1006,7 @@ public class TestCreateSystemtapScript {
         String titlePie = title + " - Pie Chart";
         String titleLine = title + " - Line Graph";
         graphEditor.bot().cTabItem(titleLine).activate();
-        Matcher<AbstractChartBuilder> matcher = widgetOfType(AbstractChartBuilder.class);
+        var matcher = widgetOfType(AbstractChartBuilder.class);
         AbstractChartBuilder cb = bot.widget(matcher);
         assertEquals(numNumberItems, cb.getChart().getSeriesSet().getSeries()[0].getXSeries().length);
 
@@ -1262,7 +1256,7 @@ public class TestCreateSystemtapScript {
 
         // Perform mouse hover tests on graphs.
         bot.activeEditor().bot().cTabItem(title.concat(" - Bar Graph")).activate();
-        final Matcher<AbstractChartBuilder> matcher = widgetOfType(AbstractChartBuilder.class);
+        var matcher = widgetOfType(AbstractChartBuilder.class);
         AbstractChartBuilder cb = bot.widget(matcher);
         String tooltipFormat = "{0}: {1}";
         checkTooltipAtDataPoint(cb, 0, MessageFormat.format(tooltipFormat, "Column 1", "1"), true);
@@ -1443,8 +1437,7 @@ public class TestCreateSystemtapScript {
     private static void deselectDefaultSelection(final int currSelection) {
 		UIThreadRunnable.syncExec(() -> {
 			@SuppressWarnings("unchecked")
-			Matcher<Button> matcher = allOf(widgetOfType(Button.class), withStyle(SWT.RADIO, "SWT.RADIO"));
-			Button b = bot.widget(matcher, currSelection);
+			Button b = bot.widget(allOf(widgetOfType(Button.class), withStyle(SWT.RADIO, "SWT.RADIO")), currSelection);
 			b.setSelection(false);
 		});
     }

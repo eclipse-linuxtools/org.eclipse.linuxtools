@@ -14,10 +14,9 @@
 package org.eclipse.linuxtools.changelog.ui.tests.utils;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
-import static org.hamcrest.core.AllOf.allOf;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 import java.util.Arrays;
+import java.util.function.Predicate;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
@@ -29,7 +28,6 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.WidgetResult;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBot;
-import org.hamcrest.Matcher;
 
 public class ContextMenuHelper {
 
@@ -50,18 +48,16 @@ public class ContextMenuHelper {
             final String... texts) {
 
         // show
-        final MenuItem menuItem = UIThreadRunnable
-				.syncExec((WidgetResult<MenuItem>) () -> {
-					MenuItem theItem = getMenuItem(bot, texts);
-					if (theItem != null && !theItem.isEnabled())
-						throw new IllegalStateException("Menu item is diabled");
+		final MenuItem menuItem = UIThreadRunnable.syncExec((WidgetResult<MenuItem>) () -> {
+			MenuItem theItem = getMenuItem(bot, texts);
+			if (theItem != null && !theItem.isEnabled())
+				throw new IllegalStateException("Menu item is diabled");
 
-					return theItem;
-				});
-        if (menuItem == null) {
-            throw new WidgetNotFoundException("Could not find menu: "
-                    + Arrays.asList(texts));
-        }
+			return theItem;
+		});
+		if (menuItem == null) {
+			throw new WidgetNotFoundException("Could not find menu: " + Arrays.asList(texts));
+		}
 
         // click
         click(menuItem);
@@ -82,9 +78,7 @@ public class ContextMenuHelper {
         control.notifyListeners(SWT.MenuDetect, new Event());
         Menu menu = control.getMenu();
         for (String text : texts) {
-            Matcher<MenuItem> matcher = allOf(instanceOf(MenuItem.class),
-                    withMnemonic(text));
-            theItem = show(menu, matcher);
+			theItem = show(menu, item -> withMnemonic(text).matches(item));
             if (theItem != null) {
                 menu = theItem.getMenu();
             } else {
@@ -95,12 +89,12 @@ public class ContextMenuHelper {
         return theItem;
     }
 
-    private static MenuItem show(final Menu menu, final Matcher<MenuItem> matcher) {
+	private static MenuItem show(final Menu menu, final Predicate<MenuItem> matcher) {
         if (menu != null) {
             menu.notifyListeners(SWT.Show, new Event());
             MenuItem[] items = menu.getItems();
             for (final MenuItem menuItem : items) {
-                if (matcher.matches(menuItem)) {
+				if (matcher.test(menuItem)) {
                     return menuItem;
                 }
             }
