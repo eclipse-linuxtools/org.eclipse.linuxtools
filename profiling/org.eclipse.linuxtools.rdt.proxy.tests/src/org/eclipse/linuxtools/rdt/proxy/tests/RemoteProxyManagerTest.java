@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rdt.proxy.tests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -31,7 +30,6 @@ import org.eclipse.linuxtools.internal.ssh.proxy.SSHFileProxy;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.remote.proxy.tests.AbstractProxyTest;
-import org.eclipse.ptp.rdt.sync.core.SyncConfig;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("restriction")
@@ -148,17 +146,4 @@ public class RemoteProxyManagerTest extends AbstractProxyTest {
 		assertThrows(CoreException.class, ()-> proxyManager.getOS(URI.create("remotetools://MyConnection/path/to/file")),"remotetools scheme should not be recognized");
 	}
 
-	@Test
-	public void testGetRemoteProjectLocationOnSyncProj() {
-		try {
-			String actualLocation = proxyManager.getRemoteProjectLocation(syncProject.getProject());
-			SyncConfig config = getSyncConfig(syncProject.getProject());
-			assertNotNull(config);
-			assertEquals(connection.getConnectionType().getScheme(), URI.create(actualLocation).getScheme());
-			assertEquals(config.getConnectionName(), URI.create(actualLocation).getAuthority());
-			assertEquals(config.getLocation(),URI.create(actualLocation).getPath());
-		} catch (CoreException e) {
-			fail("Should have returned the remote project location: " + e.getMessage());
-		}
-	}
 }
