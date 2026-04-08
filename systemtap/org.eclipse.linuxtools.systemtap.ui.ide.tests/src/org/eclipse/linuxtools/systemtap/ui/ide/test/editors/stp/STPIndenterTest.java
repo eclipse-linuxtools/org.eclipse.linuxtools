@@ -13,14 +13,14 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.ui.ide.test.editors.stp;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.LineRange;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.IndentUtil;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPDocumentProvider;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for the CIndenter.

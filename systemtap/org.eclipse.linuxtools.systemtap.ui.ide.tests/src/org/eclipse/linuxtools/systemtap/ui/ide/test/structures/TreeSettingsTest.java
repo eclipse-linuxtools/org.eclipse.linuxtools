@@ -13,9 +13,9 @@
 
 package org.eclipse.linuxtools.systemtap.ui.ide.test.structures;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TreeSettings;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.FuncparamNodeData;
@@ -24,12 +24,12 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.Prob
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.nodedata.ProbevarNodeData;
 import org.eclipse.linuxtools.systemtap.structures.TreeDefinitionNode;
 import org.eclipse.linuxtools.systemtap.structures.TreeNode;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TreeSettingsTest {
 
-    @Before
+    @BeforeEach
     public void setUp() {
         TreeSettings.setTrees(new TreeNode("func", false), new TreeNode("probe", false));
     }
@@ -41,24 +41,24 @@ public class TreeSettingsTest {
         TreeNode t2 = new TreeNode(null, false);
         TreeNode t3 = null;
 
-        assertTrue("Set tree fine1", TreeSettings.setTrees(t, t));
-        assertTrue("Set tree fine2", TreeSettings.setTrees(t1, t1));
-        assertTrue("Set tree null obj", TreeSettings.setTrees(t2, t2));
-        assertFalse("Set trees null", TreeSettings.setTrees(t3, t3));
-        assertFalse("Set func null", TreeSettings.setTrees(t3, t));
-        assertFalse("Set probe null", TreeSettings.setTrees(t, t3));
+        assertTrue(TreeSettings.setTrees(t, t), "Set tree fine1");
+        assertTrue(TreeSettings.setTrees(t1, t1), "Set tree fine2");
+        assertTrue(TreeSettings.setTrees(t2, t2), "Set tree null obj");
+        assertFalse(TreeSettings.setTrees(t3, t3), "Set trees null");
+        assertFalse(TreeSettings.setTrees(t3, t), "Set func null");
+        assertFalse(TreeSettings.setTrees(t, t3), "Set probe null");
     }
 
     @Test
     public void testGetTreeFileDate() {
         long d1 = TreeSettings.getTreeFileDate();
         long d2 = TreeSettings.getTreeFileDate();
-        assertEquals("TreeDate same", d1, d2);
+        assertEquals(d1, d2, "TreeDate same");
 
         TreeSettings.setTrees(new TreeNode("f", false), new TreeNode("p", false));
         d2 = TreeSettings.getTreeFileDate();
 
-        assertTrue("TreeDate changed", d1 < d2);
+        assertTrue(d1 < d2, "TreeDate changed");
     }
 
     @Test
@@ -70,32 +70,32 @@ public class TreeSettingsTest {
 
         TreeSettings.setTrees(t, t);
         temp = TreeSettings.getFunctionTree();
-        assertEquals("Funcs no children", 0, temp.getChildCount());
-        assertEquals("Funcs object", t.getData().toString(), temp.getData().toString());
-        assertEquals("Funcs display", t.toString(), temp.toString());
-        assertEquals("Funcs clickable", t.isClickable(), temp.isClickable());
+        assertEquals(0, temp.getChildCount(), "Funcs no children");
+        assertEquals(t.getData().toString(), temp.getData().toString(), "Funcs object");
+        assertEquals(t.toString(), temp.toString(), "Funcs display");
+        assertEquals(t.isClickable(), temp.isClickable(), "Funcs clickable");
 
         TreeSettings.setTrees(t1, t);
         temp = TreeSettings.getFunctionTree();
-        assertEquals("Funcs no children", 0, temp.getChildCount());
-        assertEquals("Funcs object", t1.getData(), temp.getData());
-        assertEquals("Funcs display", t1.toString(), temp.toString());
-        assertEquals("Funcs clickable", t1.isClickable(), temp.isClickable());
+        assertEquals(0, temp.getChildCount(), "Funcs no children");
+        assertEquals(t1.getData(), temp.getData(), "Funcs object");
+        assertEquals(t1.toString(), temp.toString(), "Funcs display");
+        assertEquals(t1.isClickable(), temp.isClickable(), "Funcs clickable");
 
         TreeSettings.setTrees(t2, t);
         temp = TreeSettings.getFunctionTree();
-        assertEquals("Funcs no children", 0, temp.getChildCount());
-        assertEquals("Funcs object", t2.getData().toString(), temp.getData());
-        assertEquals("Funcs display", t2.toString(), temp.toString());
-        assertEquals("Funcs clickable", t2.isClickable(), temp.isClickable());
+        assertEquals(0, temp.getChildCount(), "Funcs no children");
+        assertEquals(t2.getData().toString(), temp.getData(), "Funcs object");
+        assertEquals(t2.toString(), temp.toString(), "Funcs display");
+        assertEquals(t2.isClickable(), temp.isClickable(), "Funcs clickable");
 
         t.add(t2);
         t.add(t1);
         TreeSettings.setTrees(t, t);
         temp = TreeSettings.getFunctionTree();
-        assertEquals("Funcs has children", 2, temp.getChildCount());
-        assertEquals("Funcs child object", t2.getData().toString(), temp.getChildAt(0).getData());
-        assertEquals("Funcs child display", t2.toString(), temp.getChildAt(0).toString());
+        assertEquals(2, temp.getChildCount(), "Funcs has children");
+        assertEquals(t2.getData().toString(), temp.getChildAt(0).getData(), "Funcs child object");
+        assertEquals(t2.toString(), temp.getChildAt(0).toString(), "Funcs child display");
     }
 
     @Test
@@ -107,32 +107,32 @@ public class TreeSettingsTest {
 
         TreeSettings.setTrees(t, t);
         temp = TreeSettings.getProbeTree();
-        assertEquals("Probs no children", 0, temp.getChildCount());
-        assertEquals("Probs object", t.getData().toString(), temp.getData().toString());
-        assertEquals("Probs display", t.toString(), temp.toString());
-        assertEquals("Probs clickable", t.isClickable(), temp.isClickable());
+        assertEquals(0, temp.getChildCount(), "Probs no children");
+        assertEquals(t.getData().toString(), temp.getData().toString(), "Probs object");
+        assertEquals(t.toString(), temp.toString(), "Probs display");
+        assertEquals(t.isClickable(), temp.isClickable(), "Probs clickable");
 
         TreeSettings.setTrees(t, t1);
         temp = TreeSettings.getProbeTree();
-        assertEquals("Probs no children", 0, temp.getChildCount());
-        assertEquals("Probs object", t1.getData(), temp.getData());
-        assertEquals("Probs display", t1.toString(), temp.toString());
-        assertEquals("Probs clickable", t1.isClickable(), temp.isClickable());
+        assertEquals(0, temp.getChildCount(), "Probs no children");
+        assertEquals(t1.getData(), temp.getData(), "Probs object");
+        assertEquals(t1.toString(), temp.toString(), "Probs display");
+        assertEquals(t1.isClickable(), temp.isClickable(), "Probs clickable");
 
         TreeSettings.setTrees(t, t2);
         temp = TreeSettings.getProbeTree();
-        assertEquals("Probs no children", 0, temp.getChildCount());
-        assertEquals("Probs object", t2.getData().toString(), temp.getData());
-        assertEquals("Probs display", t2.toString(), temp.toString());
-        assertEquals("Probs clickable", t2.isClickable(), temp.isClickable());
+        assertEquals(0, temp.getChildCount(), "Probs no children");
+        assertEquals(t2.getData().toString(), temp.getData(), "Probs object");
+        assertEquals(t2.toString(), temp.toString(), "Probs display");
+        assertEquals(t2.isClickable(), temp.isClickable(), "Probs clickable");
 
         t.add(t2);
         t.add(t1);
         TreeSettings.setTrees(t, t);
         temp = TreeSettings.getProbeTree();
-        assertEquals("Probs has children", 2, temp.getChildCount());
-        assertEquals("Probs child object", t2.getData().toString(), temp.getChildAt(0).getData());
-        assertEquals("Probs child display", t2.toString(), temp.getChildAt(0).toString());
+        assertEquals(2, temp.getChildCount(), "Probs has children");
+        assertEquals(t2.getData().toString(), temp.getChildAt(0).getData(), "Probs child object");
+        assertEquals(t2.toString(), temp.getChildAt(0).toString(), "Probs child display");
     }
 
     @Test
@@ -143,18 +143,18 @@ public class TreeSettingsTest {
 
         TreeSettings.setTrees(t1, t2);
         temp = TreeSettings.getFunctionTree();
-        assertTrue("Tree should have been saved as a definition node", temp instanceof TreeDefinitionNode);
-        assertEquals("Funcs definition", t1.getDefinition(), ((TreeDefinitionNode) temp).getDefinition());
-        assertEquals("Funcs object", t1.getData(), temp.getData());
-        assertEquals("Funcs display", t1.toString(), temp.toString());
-        assertEquals("Funcs clickable", t1.isClickable(), temp.isClickable());
+        assertTrue(temp instanceof TreeDefinitionNode, "Tree should have been saved as a definition node");
+        assertEquals(t1.getDefinition(), ((TreeDefinitionNode) temp).getDefinition(), "Funcs definition");
+        assertEquals(t1.getData(), temp.getData(), "Funcs object");
+        assertEquals(t1.toString(), temp.toString(), "Funcs display");
+        assertEquals(t1.isClickable(), temp.isClickable(), "Funcs clickable");
 
         temp = TreeSettings.getProbeTree();
-        assertTrue("Even with a null definition, tree should have been saved as a definition node", temp instanceof TreeDefinitionNode);
-        assertEquals("Probs definition", t2.getDefinition(), ((TreeDefinitionNode) temp).getDefinition());
-        assertEquals("Probs object", t2.getData(), temp.getData());
-        assertEquals("Probs display", t2.toString(), temp.toString());
-        assertEquals("Probs clickable", t2.isClickable(), temp.isClickable());
+        assertTrue(temp instanceof TreeDefinitionNode, "Even with a null definition, tree should have been saved as a definition node");
+        assertEquals(t2.getDefinition(), ((TreeDefinitionNode) temp).getDefinition(), "Probs definition");
+        assertEquals(t2.getData(), temp.getData(), "Probs object");
+        assertEquals(t2.toString(), temp.toString(), "Probs display");
+        assertEquals(t2.isClickable(), temp.isClickable(), "Probs clickable");
     }
 
     @Test
@@ -168,19 +168,17 @@ public class TreeSettingsTest {
 
         TreeSettings.setTrees(t1, t2);
         temp = TreeSettings.getFunctionTree();
-        assertTrue("Improper data type - expected FunctionNodeData but was "+ temp.getData().getClass().getSimpleName(), temp.getData() instanceof FunctionNodeData);
-        assertEquals("Function data not saved", t1.getData().toString(), temp.getData().toString());
-        assertEquals("Funcs has children", t1.getChildCount(), temp.getChildCount());
-        assertTrue("Improper data type", temp.getChildAt(0).getData() instanceof FuncparamNodeData);
-        assertEquals("Function parameter data not saved",
-                t1.getChildAt(0).getData().toString(), temp.getChildAt(0).getData().toString());
+        assertTrue(temp.getData() instanceof FunctionNodeData, "Improper data type - expected FunctionNodeData but was "+ temp.getData().getClass().getSimpleName());
+        assertEquals(t1.getData().toString(), temp.getData().toString(), "Function data not saved");
+        assertEquals(t1.getChildCount(), temp.getChildCount(), "Funcs has children");
+        assertTrue(temp.getChildAt(0).getData() instanceof FuncparamNodeData, "Improper data type");
+        assertEquals(t1.getChildAt(0).getData().toString(), temp.getChildAt(0).getData().toString(), "Function parameter data not saved");
 
         temp = TreeSettings.getProbeTree();
-        assertTrue("Improper data type", temp.getData() instanceof ProbeNodeData);
-        assertEquals("Probe data not saved", t2.getData().toString(), temp.getData().toString());
-        assertEquals("Probs has children", t2.getChildCount(), temp.getChildCount());
-        assertTrue("Improper data type", temp.getChildAt(0).getData() instanceof ProbevarNodeData);
-        assertEquals("Probe variable data not saved",
-                t2.getChildAt(0).getData().toString(), temp.getChildAt(0).getData().toString());
+        assertTrue(temp.getData() instanceof ProbeNodeData, "Improper data type");
+        assertEquals(t2.getData().toString(), temp.getData().toString(), "Probe data not saved");
+        assertEquals(t2.getChildCount(), temp.getChildCount(), "Probs has children");
+        assertTrue(temp.getChildAt(0).getData() instanceof ProbevarNodeData, "Improper data type");
+        assertEquals(t2.getChildAt(0).getData().toString(), temp.getChildAt(0).getData().toString(), "Probe variable data not saved");
     }
 }

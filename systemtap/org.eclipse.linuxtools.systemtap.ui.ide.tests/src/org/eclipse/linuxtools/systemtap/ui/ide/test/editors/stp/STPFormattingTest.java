@@ -13,7 +13,7 @@
 
 package org.eclipse.linuxtools.systemtap.ui.ide.test.editors.stp;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
@@ -25,7 +25,7 @@ import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPAutoEditStrategy;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPPartitionScanner;
 import org.eclipse.linuxtools.systemtap.ui.ide.test.editors.stp.AbstractAutoEditTest.AutoEditTester;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class STPFormattingTest {
 
