@@ -13,10 +13,10 @@
 
 package org.eclipse.linuxtools.systemtap.ui.ide.test.editors.stp;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,8 +34,8 @@ import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPCompletio
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPDocumentProvider;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.structures.TapsetLibrary;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.FrameworkUtil;
 
 public class STPCompletionProcessorTest {
@@ -72,7 +72,7 @@ public class STPCompletionProcessorTest {
     /**
      * Use pre-written contents to populate the Function & Probe views.
      */
-    @BeforeClass
+    @BeforeAll
 	public static void prepareTrees() {
 		TapsetLibrary.stop();
 		IPath path = new Path(System.getenv("HOME")).append(".systemtapgui"); //$NON-NLS-1$ //$NON-NLS-2$

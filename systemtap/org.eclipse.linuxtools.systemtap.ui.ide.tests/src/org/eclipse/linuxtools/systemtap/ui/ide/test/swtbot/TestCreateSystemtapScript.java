@@ -16,10 +16,10 @@ package org.eclipse.linuxtools.systemtap.ui.ide.test.swtbot;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withStyle;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -56,7 +56,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
-import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
+import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -77,15 +77,15 @@ import org.eclipse.swtchart.Chart;
 import org.eclipse.swtchart.IAxis;
 import org.eclipse.swtchart.ISeries;
 import org.eclipse.swtchart.Range;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(SWTBotJunit4ClassRunner.class)
-@Ignore("fails with Oxygen")
+@ExtendWith(SWTBotJunit5Extension.class)
+@Disabled("fails with Oxygen")
 public class TestCreateSystemtapScript {
     private static final String SYSTEMTAP_PROJECT_NAME = "SystemtapTest";
 
@@ -257,7 +257,7 @@ public class TestCreateSystemtapScript {
         menu.click();
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() {
         SWTBotPreferences.TIMEOUT = 20000;
         bot = new SWTWorkbenchBot();
@@ -349,7 +349,7 @@ public class TestCreateSystemtapScript {
         TapsetLibrary.readTreeFile();
     }
 
-    @After
+    @AfterEach
     public void cleanUp() {
         SWTBotShell[] shells = bot.shells();
         for (final SWTBotShell shell : shells) {
@@ -368,7 +368,7 @@ public class TestCreateSystemtapScript {
         mainShell.activate();
     }
 
-    @AfterClass
+    @AfterAll
     public static void finalCleanUp() {
         projectExplorer.setFocus();
         SWTBotToolbarButton forwardButton = projectExplorer.toolbarPushButton("Forward");
@@ -583,8 +583,8 @@ public class TestCreateSystemtapScript {
         assertFalse(runButton.isEnabled());
         for (int i = 0, n = table.rowCount(); i < n; i++) {
             String itemTitle = table.getTableItem(i).getText();
-            assertTrue("Graph " + i + " should be invalid, but it's not: " + itemTitle,
-                    table.getTableItem(i).getText().contains(Messages.SystemTapScriptGraphOptionsTab_invalidGraph));
+            assertTrue(table.getTableItem(i).getText().contains(Messages.SystemTapScriptGraphOptionsTab_invalidGraph),
+                    "Graph " + i + " should be invalid, but it's not: " + itemTitle);
         }
 
         setupGraphGeneral("Safe", 1, graphID, true, false);
@@ -598,9 +598,9 @@ public class TestCreateSystemtapScript {
         assertFalse(runButton.isEnabled());
         for (int i = 0, n = table.rowCount(); i < n; i++) {
             String itemTitle = table.getTableItem(i).getText();
-            assertTrue("Graph " + i + " has incorrect validity: " + itemTitle,
-                    !itemTitle.contains(Messages.SystemTapScriptGraphOptionsTab_invalidGraph)
-                    || itemTitle.contains("Unsafe"));
+            assertTrue(!itemTitle.contains(Messages.SystemTapScriptGraphOptionsTab_invalidGraph)
+                    || itemTitle.contains("Unsafe"),
+                    "Graph " + i + " has incorrect validity: " + itemTitle);
         }
 
         table.select(3);
@@ -1245,7 +1245,7 @@ public class TestCreateSystemtapScript {
         assertTrue(range2.upper - range2.lower == range.upper - range.lower && range2.upper > range.upper && getAxisScroll(cb, isXAxis) > scroll);
     }
 
-    @Test @Ignore
+    @Test @Disabled
     public void testGraphTooltips() {
         createAndViewDummyData(new String[]{"Column 1"}, new Integer[]{1,2,3,4,5});
 

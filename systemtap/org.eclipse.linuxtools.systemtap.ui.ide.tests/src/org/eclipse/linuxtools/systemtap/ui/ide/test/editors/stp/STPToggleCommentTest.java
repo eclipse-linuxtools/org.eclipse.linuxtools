@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.ui.ide.test.editors.stp;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
@@ -22,8 +22,8 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.Region;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.editors.stp.STPDocumentProvider;
 import org.eclipse.linuxtools.internal.systemtap.ui.ide.handlers.ToggleCommentHandler;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test class for {@link ToggleCommentHandler}.
@@ -43,7 +43,7 @@ public class STPToggleCommentTest {
     private static ToggleCommentHandler cmdHandler;
     private static IDocument document;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() {
         StringBuilder stpScriptBuff = new StringBuilder();
         for (String scriptLine : PARTITIONED_SCRIPT) {
@@ -121,7 +121,7 @@ public class STPToggleCommentTest {
             ITextSelection selection = new MockTextSelection(offset, lineLength, i, i, scriptLine);
             IRegion actualRegion = cmdHandler.getTextBlockFromSelection( selection, document);
             IRegion expectedRegion = new Region(offset, lineLength);
-            assertEquals(scriptLine + " :", expectedRegion, actualRegion);
+            assertEquals(expectedRegion, actualRegion, scriptLine + " :");
 
             curPos = offset + lineLength;
             i++;
