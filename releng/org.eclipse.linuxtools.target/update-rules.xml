@@ -47,6 +47,21 @@
 				<ignoreVersion>4.0.0</ignoreVersion>
 			</ignoreVersions>
 		</rule>
+		<rule groupId="hk2-utils" comparisonMethod="maven">
+			<ignoreVersions>
+				<ignoreVersion>4.0.0</ignoreVersion>
+			</ignoreVersions>
+		</rule>
+		<rule groupId="hk2-locator" comparisonMethod="maven">
+			<ignoreVersions>
+				<ignoreVersion>4.0.0</ignoreVersion>
+			</ignoreVersions>
+		</rule>
+		<rule groupId="hk2-api" comparisonMethod="maven">
+			<ignoreVersions>
+				<ignoreVersion>4.0.0</ignoreVersion>
+			</ignoreVersions>
+		</rule>
 	</rules>
 
 </ruleset>
