@@ -47,17 +47,7 @@
 				<ignoreVersion>4.0.0</ignoreVersion>
 			</ignoreVersions>
 		</rule>
-		<rule groupId="hk2-utils" comparisonMethod="maven">
-			<ignoreVersions>
-				<ignoreVersion>4.0.0</ignoreVersion>
-			</ignoreVersions>
-		</rule>
-		<rule groupId="hk2-locator" comparisonMethod="maven">
-			<ignoreVersions>
-				<ignoreVersion>4.0.0</ignoreVersion>
-			</ignoreVersions>
-		</rule>
-		<rule groupId="hk2-api" comparisonMethod="maven">
+		<rule groupId="org.glassfish.hk2" comparisonMethod="maven">
 			<ignoreVersions>
 				<ignoreVersion>4.0.0</ignoreVersion>
 			</ignoreVersions>
