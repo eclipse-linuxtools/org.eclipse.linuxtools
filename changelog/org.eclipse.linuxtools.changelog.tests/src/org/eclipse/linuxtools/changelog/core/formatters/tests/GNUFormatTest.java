@@ -22,7 +22,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.changelog.tests.fixtures.ChangeLogTestProject;
 import org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper;
@@ -141,7 +140,7 @@ public class GNUFormatTest {
                          firstChangeComment + NEW_LINE +
                          TAB + NEW_LINE; // produces an empty line which should be removed
 
-        assertNull(project.getTestProject().findMember(new Path("/path/to/ChangeLog")));
+        assertNull(project.getTestProject().findMember("/path/to/ChangeLog"));
 
         // add a ChangeLog file to our test project
         InputStream newFileInputStream = new ByteArrayInputStream(
@@ -149,7 +148,7 @@ public class GNUFormatTest {
         IFile changelogFile = project.addFileToProject( "/path/to", "ChangeLog",
                 newFileInputStream);
 
-        assertNotNull(project.getTestProject().findMember(new Path("/path/to/ChangeLog")));
+        assertNotNull(project.getTestProject().findMember("/path/to/ChangeLog"));
 
         // Open a document and get the IEditorPart
         changelogEditorPart = EditorHelper.openEditor(changelogFile);
@@ -206,7 +205,7 @@ public class GNUFormatTest {
                          firstMethodName + FUNCTION_END_MARKER + FILE_ENTRY_END_MARKER +
                          firstChangeComment + NEW_LINE;
 
-        assertNull(project.getTestProject().findMember(new Path("/path/to/ChangeLog")));
+        assertNull(project.getTestProject().findMember("/path/to/ChangeLog"));
 
         // add a ChangeLog file to our test project
         InputStream newFileInputStream = new ByteArrayInputStream(
@@ -214,7 +213,7 @@ public class GNUFormatTest {
         IFile changelogFile = project.addFileToProject( "/path/to", "ChangeLog",
                 newFileInputStream);
 
-        assertNotNull(project.getTestProject().findMember(new Path("/path/to/ChangeLog")));
+        assertNotNull(project.getTestProject().findMember("/path/to/ChangeLog"));
 
         // Open a document and get the IEditorPart
         changelogEditorPart = openEditor(changelogFile);
@@ -262,7 +261,7 @@ public class GNUFormatTest {
         // No existing content in ChangeLog file
         String content = "";
 
-        assertNull(project.getTestProject().findMember(new Path("/path/to/ChangeLog")));
+        assertNull(project.getTestProject().findMember("/path/to/ChangeLog"));
 
         // add a ChangeLog file to our test project
         InputStream newFileInputStream = new ByteArrayInputStream(
@@ -325,7 +324,7 @@ public class GNUFormatTest {
         // Content to merge into
         String content = "";
 
-        assertNull(project.getTestProject().findMember(new Path("/path/to/ChangeLog")));
+        assertNull(project.getTestProject().findMember("/path/to/ChangeLog"));
 
         // add a ChangeLog file to our test project
         InputStream newFileInputStream = new ByteArrayInputStream(

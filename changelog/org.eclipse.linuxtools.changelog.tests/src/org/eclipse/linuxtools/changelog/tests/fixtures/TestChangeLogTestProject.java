@@ -24,7 +24,6 @@ import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,21 +61,21 @@ public class TestChangeLogTestProject {
         IProject p = project.getTestProject();
 
         // Paths along the way should have been created
-        IResource member = p.findMember(new Path("/this"));
+        IResource member = p.findMember("/this");
         assertNotNull(member);
         assertEquals("this", member.getName());
-        member = p.findMember(new Path("/this/is"));
+        member = p.findMember("/this/is");
         assertNotNull(member);
         assertEquals("is", member.getName());
-        member = p.findMember(new Path("/this/is/a"));
+        member = p.findMember("/this/is/a");
         assertNotNull(member);
         assertEquals("a", member.getName());
-        member = p.findMember(new Path("/this/is/a/testpath"));
+        member = p.findMember("/this/is/a/testpath");
         assertNotNull(member);
         assertEquals("testpath", member.getName());
 
         // Testfile should be around
-        IResource createdFile = p.findMember(new Path("/this/is/a/testpath/testfile.txt"));
+        IResource createdFile = p.findMember("/this/is/a/testpath/testfile.txt");
         assertNotNull(createdFile);
         assertEquals("this/is/a/testpath/testfile.txt", createdFile.getProjectRelativePath().toString());
         assertEquals("testfile.txt", createdFile.getName());

@@ -21,7 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.linuxtools.changelog.core.IParserChangeLogContrib;
@@ -91,8 +90,7 @@ public class JavaParserTest {
                     + "}\n"
                 + "}\n";
 
-        assertNull(project.getTestProject().findMember( new Path(
-                                "/src/org/eclipse/changelog/tests/JavaParserExampleClass.java")));
+        assertNull(project.getTestProject().findMember("/src/org/eclipse/changelog/tests/JavaParserExampleClass.java"));
 
         // Add JavaParserExampleClass.java to project
         InputStream newFileInputStream = new ByteArrayInputStream(
@@ -101,8 +99,7 @@ public class JavaParserTest {
                 "/src/org/eclipse/changelog/tests",
                 "JavaParserExampleClass.java", newFileInputStream);
 
-        assertNotNull(project.getTestProject().findMember( new Path(
-                                "/src/org/eclipse/changelog/tests/JavaParserExampleClass.java")));
+        assertNotNull(project.getTestProject().findMember("/src/org/eclipse/changelog/tests/JavaParserExampleClass.java"));
 
         // Open a source file and get the IEditorPart
         javaSourceEditorPart = openEditor(javaSourceFile);
@@ -141,8 +138,7 @@ public class JavaParserTest {
                     + "}\n"
                 + "}\n";
 
-        assertNull(project.getTestProject().findMember( new Path(
-                                "/src/org/eclipse/changelog/tests/JavaParserExampleClass.java")));
+        assertNull(project.getTestProject().findMember("/src/org/eclipse/changelog/tests/JavaParserExampleClass.java"));
 
         // Add JavaParserExampleClass.java to project
         InputStream newFileInputStream = new ByteArrayInputStream(
@@ -151,8 +147,7 @@ public class JavaParserTest {
                 "/src/org/eclipse/changelog/tests",
                 "JavaParserExampleClass.java", newFileInputStream);
 
-        assertNotNull(project.getTestProject().findMember( new Path(
-                                "/src/org/eclipse/changelog/tests/JavaParserExampleClass.java")));
+        assertNotNull(project.getTestProject().findMember("/src/org/eclipse/changelog/tests/JavaParserExampleClass.java"));
 
         // Open a source file and get the IEditorPart
         javaSourceEditorPart = openEditor(javaSourceFile);
@@ -195,8 +190,7 @@ public class JavaParserTest {
                     + "}\n"
                 + "}\n";
 
-        assertNull(project.getTestProject().findMember( new Path(
-                                "/src/org/eclipse/changelog/tests/JavaParserExampleClass.java")));
+        assertNull(project.getTestProject().findMember("/src/org/eclipse/changelog/tests/JavaParserExampleClass.java"));
 
         // Add JavaParserExampleClass.java to project
         InputStream newFileInputStream = new ByteArrayInputStream(
@@ -205,8 +199,7 @@ public class JavaParserTest {
                 "/src/org/eclipse/changelog/tests",
                 "JavaParserExampleClass.java", newFileInputStream);
 
-        assertNotNull(project.getTestProject().findMember( new Path(
-                                "/src/org/eclipse/changelog/tests/JavaParserExampleClass.java")));
+        assertNotNull(project.getTestProject().findMember("/src/org/eclipse/changelog/tests/JavaParserExampleClass.java"));
 
         // Open a source file and get the IEditorPart
         javaSourceEditorPart = openEditor(javaSourceFile);
@@ -249,8 +242,7 @@ public class JavaParserTest {
                     + "}\n"
                 + "}\n";
 
-        assertNull(project.getTestProject().findMember( new Path(
-                                "/src/org/eclipse/changelog/tests/JavaParserExampleClass.java")));
+        assertNull(project.getTestProject().findMember("/src/org/eclipse/changelog/tests/JavaParserExampleClass.java"));
 
         // Add JavaParserExampleClass.java to project
         InputStream newFileInputStream = new ByteArrayInputStream(
@@ -259,8 +251,7 @@ public class JavaParserTest {
                 "/src/org/eclipse/changelog/tests",
                 "JavaParserExampleClass.java", newFileInputStream);
 
-        assertNotNull(project.getTestProject().findMember( new Path(
-                                "/src/org/eclipse/changelog/tests/JavaParserExampleClass.java")));
+        assertNotNull(project.getTestProject().findMember("/src/org/eclipse/changelog/tests/JavaParserExampleClass.java"));
 
         // Open a source file and get the IEditorPart
         javaSourceEditorPart = openEditor(javaSourceFile);
@@ -310,8 +301,7 @@ public class JavaParserTest {
                     + "}\n"
                 + "}\n";
 
-        assertNull(project.getTestProject().findMember( new Path(
-                                "/src/org/eclipse/changelog/tests/JavaParserExampleClass.java")));
+        assertNull(project.getTestProject().findMember("/src/org/eclipse/changelog/tests/JavaParserExampleClass.java"));
 
         // Add JavaParserExampleClass.java to project
         InputStream newFileInputStream = new ByteArrayInputStream(
@@ -320,8 +310,7 @@ public class JavaParserTest {
                 "/src/org/eclipse/changelog/tests",
                 "JavaParserExampleClass.java", newFileInputStream);
 
-        assertNotNull(project.getTestProject().findMember( new Path(
-                                "/src/org/eclipse/changelog/tests/JavaParserExampleClass.java")));
+        assertNotNull(project.getTestProject().findMember("/src/org/eclipse/changelog/tests/JavaParserExampleClass.java"));
 
         // Open a source file and get the IEditorPart
         javaSourceEditorPart = openEditor(javaSourceFile);
@@ -373,8 +362,7 @@ public class JavaParserTest {
                     + "}\n"
                 + "}\n";
 
-        assertNull(project.getTestProject().findMember( new Path(
-                                "/src/org/eclipse/changelog/tests/JavaParserExampleClass.java")));
+        assertNull(project.getTestProject().findMember("/src/org/eclipse/changelog/tests/JavaParserExampleClass.java"));
 
         // Add JavaParserExampleClass.java to project
         InputStream newFileInputStream = new ByteArrayInputStream(
@@ -383,8 +371,7 @@ public class JavaParserTest {
                 "/src/org/eclipse/changelog/tests",
                 "JavaParserExampleClass.java", newFileInputStream);
 
-        assertNotNull(project.getTestProject().findMember( new Path(
-                                "/src/org/eclipse/changelog/tests/JavaParserExampleClass.java")));
+        assertNotNull(project.getTestProject().findMember("/src/org/eclipse/changelog/tests/JavaParserExampleClass.java"));
 
         // Open a source file and get the IEditorPart
         javaSourceEditorPart = openEditor(javaSourceFile);
@@ -429,8 +416,7 @@ public class JavaParserTest {
                 + "}\n"
             + "}\n";
 
-        assertNull(project.getTestProject().findMember( new Path(
-                                "/src/org/eclipse/changelog/tests/JavaParserExampleClass.java")));
+        assertNull(project.getTestProject().findMember("/src/org/eclipse/changelog/tests/JavaParserExampleClass.java"));
 
         // Add JavaParserExampleClass.java to project
         InputStream newFileInputStream = new ByteArrayInputStream(
@@ -439,8 +425,7 @@ public class JavaParserTest {
                 "/src/org/eclipse/changelog/tests",
                 "JavaParserExampleClass.java", newFileInputStream);
 
-        assertNotNull(project.getTestProject().findMember( new Path(
-                                "/src/org/eclipse/changelog/tests/JavaParserExampleClass.java")));
+        assertNotNull(project.getTestProject().findMember("/src/org/eclipse/changelog/tests/JavaParserExampleClass.java"));
 
         // Open a source file and get the IEditorPart
         javaSourceEditorPart = openEditor(javaSourceFile);

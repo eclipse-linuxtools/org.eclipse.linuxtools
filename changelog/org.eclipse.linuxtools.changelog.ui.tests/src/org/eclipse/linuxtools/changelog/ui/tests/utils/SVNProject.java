@@ -135,7 +135,7 @@ public class SVNProject {
 
         // A quick sanity check
         IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
-        IProject changelogTestsProject = (IProject)wsRoot.findMember(new Path(projectName));
+        IProject changelogTestsProject = (IProject)wsRoot.findMember(projectName);
         assertNotNull(changelogTestsProject);
         try {
             changelogTestsProject.refreshLocal(IResource.DEPTH_INFINITE, null);
@@ -143,7 +143,7 @@ public class SVNProject {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        IResource manifest = changelogTestsProject.findMember(new Path("/META-INF/MANIFEST.MF"));
+        IResource manifest = changelogTestsProject.findMember("/META-INF/MANIFEST.MF");
         assertNotNull(manifest);
         return changelogTestsProject;
     }
