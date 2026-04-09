@@ -22,7 +22,6 @@ import java.io.InputStream;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IStorage;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.linuxtools.changelog.core.IParserChangeLogContrib;
@@ -96,8 +95,7 @@ public class CParserTest {
                     + "return 0;\n"
                 + "}\n";
 
-        assertNull(project.getTestProject().findMember( new Path(
-                                "/src/some_c_file.c")));
+        assertNull(project.getTestProject().findMember("/src/some_c_file.c"));
 
         // Add some_c_file.c to project
         InputStream newFileInputStream = new ByteArrayInputStream(
@@ -106,8 +104,7 @@ public class CParserTest {
                 "/src",
                 "some_c_file.c", newFileInputStream);
 
-        assertNotNull(project.getTestProject().findMember( new Path(
-                                "/src/some_c_file.c")));
+        assertNotNull(project.getTestProject().findMember("/src/some_c_file.c"));
 
         // Open a source file and get the IEditorPart
         cppSourceEditorPart = openEditor(cSourceFile);
@@ -148,8 +145,7 @@ public class CParserTest {
                     + "return 0;\n"
                 + "}\n";
 
-        assertNull(project.getTestProject().findMember( new Path(
-                                "/src/some_c_file.c")));
+        assertNull(project.getTestProject().findMember("/src/some_c_file.c"));
 
         // Add some_c_file.c to project
         InputStream newFileInputStream = new ByteArrayInputStream(
@@ -158,8 +154,7 @@ public class CParserTest {
                 "/src",
                 "some_c_file.c", newFileInputStream);
 
-        assertNotNull(project.getTestProject().findMember( new Path(
-                                "/src/some_c_file.c")));
+        assertNotNull(project.getTestProject().findMember("/src/some_c_file.c"));
 
         // Open a source file and get the IEditorPart
         cppSourceEditorPart = openEditor(cSourceFile);
@@ -203,8 +198,7 @@ public class CParserTest {
                 + "void set_color(int color);\n"
             +"}\n";
 
-        assertNull(project.getTestProject().findMember( new Path(
-                                "/src/shape.h")));
+        assertNull(project.getTestProject().findMember("/src/shape.h"));
 
         // Add shape.h to project
         InputStream newFileInputStream = new ByteArrayInputStream(
@@ -213,8 +207,7 @@ public class CParserTest {
                 "/src",
                 "shape.h", newFileInputStream);
 
-        assertNotNull(project.getTestProject().findMember( new Path(
-                                "/src/shape.h")));
+        assertNotNull(project.getTestProject().findMember("/src/shape.h"));
 
         // Open a source file and get the IEditorPart
         cppSourceEditorPart = openEditor(cppSourceFile);
@@ -259,8 +252,7 @@ public class CParserTest {
                 + "void set_color(int color);\n"
             +"}\n";
 
-        assertNull(project.getTestProject().findMember( new Path(
-                                "/src/shape.h")));
+        assertNull(project.getTestProject().findMember("/src/shape.h"));
 
         // Add shape.h to project
         InputStream newFileInputStream = new ByteArrayInputStream(
@@ -269,8 +261,7 @@ public class CParserTest {
                 "/src",
                 "shape.h", newFileInputStream);
 
-        assertNotNull(project.getTestProject().findMember( new Path(
-                                "/src/shape.h")));
+        assertNotNull(project.getTestProject().findMember("/src/shape.h"));
 
         // Open a source file and get the IEditorPart
         cppSourceEditorPart = openEditor(cppSourceFile);
@@ -312,8 +303,7 @@ public class CParserTest {
                 + "return this->radius * this-> radius * M_PI\n"
             + "}\n";
 
-        assertNull(project.getTestProject().findMember( new Path(
-                                "/src/circle.cpp")));
+        assertNull(project.getTestProject().findMember("/src/circle.cpp"));
 
         // Add shape.h to project
         InputStream newFileInputStream = new ByteArrayInputStream(
@@ -322,8 +312,7 @@ public class CParserTest {
                 "/src",
                 "circle.cpp", newFileInputStream);
 
-        assertNotNull(project.getTestProject().findMember( new Path(
-                                "/src/circle.cpp")));
+        assertNotNull(project.getTestProject().findMember("/src/circle.cpp"));
 
         // Open a source file and get the IEditorPart
         cppSourceEditorPart = openEditor(cppSourceFile);
@@ -369,8 +358,7 @@ public class CParserTest {
                 + "return 0;\n"
             + "}\n";
 
-        assertNull(project.getTestProject().findMember( new Path(
-                                "/src/circle.cpp")));
+        assertNull(project.getTestProject().findMember("/src/circle.cpp"));
 
         // Add shape.h to project
         InputStream newFileInputStream = new ByteArrayInputStream(
@@ -379,8 +367,7 @@ public class CParserTest {
                 "/src",
                 "circle.cpp", newFileInputStream);
 
-        assertNotNull(project.getTestProject().findMember( new Path(
-                                "/src/circle.cpp")));
+        assertNotNull(project.getTestProject().findMember("/src/circle.cpp"));
 
         // Open a source file and get the IEditorPart
         cppSourceEditorPart = openEditor(cppSourceFile);

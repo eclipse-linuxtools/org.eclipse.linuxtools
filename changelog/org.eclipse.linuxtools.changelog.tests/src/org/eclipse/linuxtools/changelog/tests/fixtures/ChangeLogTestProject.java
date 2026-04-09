@@ -77,7 +77,7 @@ public class ChangeLogTestProject {
             if (segment.equals("")) {
                 continue; // ignore
             }
-            IResource segmentResource = parent.findMember(new Path(IPath.SEPARATOR + segment));
+            IResource segmentResource = parent.findMember(IPath.SEPARATOR + segment);
             if (segmentResource == null) {
                 // create folder
                 IFolder newFolder = parent.getFolder(new Path(segment));

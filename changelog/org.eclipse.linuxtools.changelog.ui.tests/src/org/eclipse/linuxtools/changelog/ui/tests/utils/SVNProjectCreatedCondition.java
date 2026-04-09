@@ -33,7 +33,7 @@ public class SVNProjectCreatedCondition implements ICondition {
     @Override
     public boolean test() {
         IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
-        IProject project = (IProject)wsRoot.findMember(new Path(projectName));
+        IProject project = (IProject)wsRoot.findMember(projectName);
         if (project == null) {
             return false;
         } else {
