@@ -147,9 +147,9 @@ public class SWTUtils {
 	 * @throws InterruptedException
 	 */
 	public static void waitForJobsToComplete() {
-		wait(1, TimeUnit.SECONDS);
+		wait(200, TimeUnit.MILLISECONDS);
 		while (!Job.getJobManager().isIdle()) {
-			wait(1, TimeUnit.SECONDS);
+			wait(200, TimeUnit.MILLISECONDS);
 		}
 	}
 

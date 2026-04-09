@@ -15,8 +15,6 @@ package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.concurrent.TimeUnit;
-
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.linuxtools.docker.core.AbstractRegistry;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
@@ -130,7 +128,7 @@ public class ImagePushSWTBotTests {
 		bot.button("Finish").click();
 		// wait for the push job to complete
 		// then the 'push()' method on the client should have been called
-		SWTUtils.wait(1, TimeUnit.SECONDS);
+		SWTUtils.waitForJobsToComplete();
 		Mockito.verify(client, Mockito.times(1)).tag("foo/bar:latest", "foo.com/foo/bar:latest", false);
 		Mockito.verify(client, Mockito.times(1)).push(ArgumentMatchers.eq("foo.com/foo/bar:latest"),
 				ArgumentMatchers.any(ProgressHandler.class));
@@ -145,7 +143,7 @@ public class ImagePushSWTBotTests {
 		bot.button("Finish").click();
 		// wait for the push job to complete
 		// then the 'push()' method on the client should have been called
-		SWTUtils.wait(1, TimeUnit.SECONDS);
+		SWTUtils.waitForJobsToComplete();
 		Mockito.verify(client, Mockito.never()).tag(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(),
 				ArgumentMatchers.anyBoolean());
 		Mockito.verify(client, Mockito.times(1)).push(ArgumentMatchers.eq("foo/bar:latest"),
@@ -166,7 +164,7 @@ public class ImagePushSWTBotTests {
 		bot.button("Finish").click();
 		// wait for the push job to complete
 		// then the 'push()' method on the client should have been called
-		SWTUtils.wait(1, TimeUnit.SECONDS);
+		SWTUtils.waitForJobsToComplete();
 		Mockito.verify(client, Mockito.times(1)).tag("foo/bar:latest", "localhost:5000/foo/bar:latest", false);
 		Mockito.verify(client, Mockito.times(1)).push(ArgumentMatchers.eq("localhost:5000/foo/bar:latest"),
 				ArgumentMatchers.any(ProgressHandler.class));
@@ -189,7 +187,7 @@ public class ImagePushSWTBotTests {
 		bot.button("Finish").click();
 		// wait for the push job to complete
 		// then the 'push()' method on the client should have been called
-		SWTUtils.wait(1, TimeUnit.SECONDS);
+		SWTUtils.waitForJobsToComplete();
 		Mockito.verify(client, Mockito.times(1)).tag("foo/bar:latest", "foo.com/foo/bar:latest", true);
 		Mockito.verify(client, Mockito.times(1)).push(ArgumentMatchers.any(),
 				ArgumentMatchers.any(ProgressHandler.class));
@@ -211,7 +209,7 @@ public class ImagePushSWTBotTests {
 		bot.button("Finish").click();
 		// wait for the push job to complete
 		// then the 'push()' method on the client should have been called
-		SWTUtils.wait(1, TimeUnit.SECONDS);
+		SWTUtils.waitForJobsToComplete();
 		Mockito.verify(client, Mockito.times(1)).tag("foo/bar:latest", "foo.com/foo/bar:latest", false);
 		Mockito.verify(client, Mockito.times(1)).push(ArgumentMatchers.any(),
 				ArgumentMatchers.any(ProgressHandler.class));
@@ -229,7 +227,7 @@ public class ImagePushSWTBotTests {
 		bot.button("Finish").click();
 		// wait for the push job to complete
 		// then the 'push()' method on the client should have been called
-		SWTUtils.wait(1, TimeUnit.SECONDS);
+		SWTUtils.waitForJobsToComplete();
 		Mockito.verify(client, Mockito.times(1)).tag("foo/bar:latest", "another/name:latest", false);
 		Mockito.verify(client, Mockito.times(1)).push(ArgumentMatchers.any(),
 				ArgumentMatchers.any(ProgressHandler.class));
@@ -252,7 +250,7 @@ public class ImagePushSWTBotTests {
 		bot.button("Finish").click();
 		// wait for the push job to complete
 		// then the 'push()' method on the client should have been called
-		SWTUtils.wait(1, TimeUnit.SECONDS);
+		SWTUtils.waitForJobsToComplete();
 		Mockito.verify(client, Mockito.times(1)).tag("foo/bar:latest", "foo.com/another/name:latest", false);
 		Mockito.verify(client, Mockito.times(1)).push(ArgumentMatchers.any(),
 				ArgumentMatchers.any(ProgressHandler.class));
@@ -272,7 +270,7 @@ public class ImagePushSWTBotTests {
 		// finish
 		bot.button("OK").click();
 		// wait for the model updates to complete
-		SWTUtils.wait(1, TimeUnit.SECONDS);
+		SWTUtils.waitForJobsToComplete();
 		assertThat(bot.comboBox(0).getText()).isEqualTo(registryAddress);
 	}
 
