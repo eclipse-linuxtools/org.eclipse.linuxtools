@@ -87,13 +87,13 @@ public class ChartEditor extends EditorPart {
 		control = new InteractiveChart(parent, SWT.FILL);
         heapChart.setChartControl(control);
 
-        final Color LIGHTYELLOW = new Color(Display.getDefault(), 255, 255, 225);
+        final Color LIGHTYELLOW = new Color(255, 255, 225);
         final Color WHITE = Display.getDefault().getSystemColor(SWT.COLOR_WHITE);
         final Color BLACK = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
         final Color RED = Display.getDefault().getSystemColor(SWT.COLOR_RED);
-        final Color ORANGE = new Color(Display.getDefault(), 255, 165, 0);
+        final Color ORANGE = new Color(255, 165, 0);
         final Color GREEN = Display.getDefault().getSystemColor(SWT.COLOR_GREEN);
-        final Color DARK_BLUE = new Color(Display.getDefault(), 64, 128, 128);
+        final Color DARK_BLUE = new Color(64, 128, 128);
         final int TICK_GAP = 40;
 
         control.setBackground(WHITE);

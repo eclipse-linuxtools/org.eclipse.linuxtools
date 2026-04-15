@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Display;
 public class SystemTapTextView extends SystemTapView {
     private StyledText viewer;
 
-    private Display display;
     private int previousEnd;
 
 
@@ -52,7 +51,6 @@ public class SystemTapTextView extends SystemTapView {
         Font font = new Font(parent.getDisplay(), "Monospace", 11, SWT.NORMAL); //$NON-NLS-1$
         viewer.setFont(font);
         masterComposite = parent;
-        display = masterComposite.getDisplay();
     }
 
     /**
@@ -127,7 +125,7 @@ public class SystemTapTextView extends SystemTapView {
                 if (G < 0) G = 0;
                 if (B < 0) B = 0;
 
-                Color newColor = new Color(display, R, G, B);
+                Color newColor = new Color(R, G, B);
 
                 // Find the offset of the current line
                 lineOffset = viewer.getOffsetAtLine(viewer.getLineCount() - 1);

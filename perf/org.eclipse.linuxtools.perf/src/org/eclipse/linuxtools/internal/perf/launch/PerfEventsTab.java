@@ -152,7 +152,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 					updateLaunchConfigurationDialog();
 				}));
                 l = new Label(right, SWT.NONE);
-                l.setForeground(new Color(right.getDisplay(), 100,100,100));
+                l.setForeground(new Color(100,100,100));
                 if (tabNames[i].equals(PerfPlugin.STRINGS_HWBREAKPOINTS)) {
                     l.setText(Messages.PerfEventsTab_ForExample);
                 }
@@ -175,7 +175,7 @@ public class PerfEventsTab extends AbstractLaunchConfigurationTab {
 					updateLaunchConfigurationDialog();
 				}));
                 l = new Label(right, SWT.NONE);
-                l.setForeground(new Color(right.getDisplay(), 100,100,100));
+                l.setForeground(new Color(100,100,100));
                 l.setText(Messages.PerfEventsTab_Note);
                 l.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, false,2,1));
 

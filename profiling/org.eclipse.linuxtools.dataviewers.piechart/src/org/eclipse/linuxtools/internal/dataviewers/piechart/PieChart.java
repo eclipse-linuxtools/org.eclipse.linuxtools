@@ -101,7 +101,7 @@ public class PieChart extends InteractiveChart {
             if (customColors != null) {
                 s.setBarColor(customColors[i % customColors.length]);
             } else {
-                s.setBarColor(new Color(this.getDisplay(), sliceColor(i)));
+                s.setBarColor(new Color(sliceColor(i)));
             }
         }
     }

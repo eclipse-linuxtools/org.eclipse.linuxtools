@@ -34,7 +34,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -324,7 +323,7 @@ public class STDataViewersExportToCSVDialog extends Dialog {
         previewGroup.setLayout(layout);
 
         previewText = new Text(previewGroup, SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-        previewText.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
+        previewText.setBackground(new Color(255, 255, 255));
         previewText.setFont(JFaceResources.getTextFont());
         layoutData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 8);
         previewText.setLayoutData(layoutData);

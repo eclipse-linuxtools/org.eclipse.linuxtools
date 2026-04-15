@@ -44,9 +44,9 @@ import org.eclipse.ui.texteditor.FindReplaceAction;
  */
 public class SourceDisassemblyView extends ViewPart implements IFindReplaceTarget{
 
-    private static final Color RED = new Color(Display.getDefault(), 150, 0, 0);
-    private static final Color ORANGE = new Color(Display.getDefault(), 150, 100, 0);
-    private static final Color GREEN = new Color(Display.getDefault(), 0, 100, 0);
+    private static final Color RED = new Color(150, 0, 0);
+    private static final Color ORANGE = new Color(150, 100, 0);
+    private static final Color GREEN = new Color(0, 100, 0);
     private static String ASM = "\\s+([0-9]+\\.[0-9]+ )?:\\s+[0-9a-f]+:\\s+[0-9a-z]+\\s+.*"; //$NON-NLS-1$
     private static String CODE = "\\s+:\\s+.*"; //$NON-NLS-1$
     private static String WORD_BOUNDARY = "\\b"; //$NON-NLS-1$'

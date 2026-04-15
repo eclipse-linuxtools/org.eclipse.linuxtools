@@ -20,7 +20,6 @@ import org.eclipse.linuxtools.internal.dataviewers.charts.Activator;
 import org.eclipse.linuxtools.internal.dataviewers.piechart.PieChart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtchart.IAxis;
 import org.eclipse.swtchart.IBarSeries;
 import org.eclipse.swtchart.ISeries.SeriesType;
@@ -168,7 +167,7 @@ public final class ChartFactory {
             for (IChartField field : valFields) {
 				final IBarSeries<?> bs = (IBarSeries<?>) chart.getSeriesSet().createSeries(SeriesType.BAR,
                         field.getColumnHeaderText());
-                bs.setBarColor(new Color(Display.getDefault(), getRC(), getRC(), getRC()));
+                bs.setBarColor(new Color(getRC(), getRC(), getRC()));
                 double[] doubleValues = new double[objects.length];
 
                 for (int i = 0; i < objects.length; i++) {

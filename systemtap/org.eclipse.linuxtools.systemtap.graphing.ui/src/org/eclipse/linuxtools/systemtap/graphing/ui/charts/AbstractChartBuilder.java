@@ -78,9 +78,9 @@ public abstract class AbstractChartBuilder extends Composite implements IUpdateL
         Display.getDefault().getSystemColor(SWT.COLOR_MAGENTA),
         Display.getDefault().getSystemColor(SWT.COLOR_CYAN),
         BLACK,
-        new Color(Display.getDefault(), 64, 128, 128),
-        new Color(Display.getDefault(), 255, 165, 0),
-        new Color(Display.getDefault(), 128, 128, 128),
+        new Color(64, 128, 128),
+        new Color(255, 165, 0),
+        new Color(128, 128, 128),
     };
     /**
      * Chart instance.
