@@ -1,5 +1,5 @@
 /*******************************************************************************
- * (C) Copyright 2010, 2018 IBM Corp. and others.
+ * (C) Copyright 2010, 2026 IBM Corp. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -28,6 +28,7 @@ import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -122,7 +123,7 @@ public class PerfCore {
         URI projectURI = project.getLocationURI();
         if (projectURI == null) {
         	IStatus status = Status.warning(NLS.bind(Messages.MsgNoProjectError, projectName));
-            PerfPlugin.getDefault().getLog().log(status);
+            ILog.get().log(status);
             return null;
         }
         return project.getLocationURI().getHost();
@@ -226,7 +227,7 @@ public class PerfCore {
             p = RuntimeProcessFactory.getFactory().exec(new String [] {PerfPlugin.PERF_COMMAND, "--version"}, project); //$NON-NLS-1$
         } catch (IOException e) {
         	// Issue warning to avoid AERI reports whenever user is missing perf
-            PerfPlugin.getDefault().getLog().log(Status.warning(e.getMessage(),e));
+            ILog.get().log(Status.warning(e.getMessage(),e));
         }
 
         if (p == null) {
@@ -723,6 +724,6 @@ public class PerfCore {
      */
     public static void logException(Exception e) {
         IStatus status = Status.error(e.getMessage(),e);
-        PerfPlugin.getDefault().getLog().log(status);
+        ILog.get().log(status);
     }
 }

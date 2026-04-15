@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.docker.reddeer;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
@@ -54,8 +55,8 @@ public class Activator extends Plugin {
 	}
 
 	public static void log(IStatus status) {
-		if (Activator.getDefault() != null && Activator.getDefault().getLog() != null) {
-			Activator.getDefault().getLog().log(status);
+		if (Activator.getDefault() != null) {
+			ILog.get().log(status);
 		}
 	}
 

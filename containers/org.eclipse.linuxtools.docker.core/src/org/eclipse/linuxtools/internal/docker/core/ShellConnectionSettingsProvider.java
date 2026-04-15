@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Red Hat.
+ * Copyright (c) 2016, 2026 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -23,12 +23,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.docker.core.Activator;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettingsProvider;
 import org.eclipse.linuxtools.docker.core.Messages;
+import org.osgi.framework.FrameworkUtil;
 
 public class ShellConnectionSettingsProvider implements IDockerConnectionSettingsProvider {
 
@@ -37,8 +39,7 @@ public class ShellConnectionSettingsProvider implements IDockerConnectionSetting
 		try {
 			final String connectionSettingsDetectionScriptName = getConnectionSettingsDetectionScriptName();
 			if (connectionSettingsDetectionScriptName == null) {
-				Activator.log(Status
-						.error(Messages.Docker_No_Settings_Description_Script));
+				ILog.get().log(Status.error(Messages.Docker_No_Settings_Description_Script));
 				return Collections.emptyList();
 			}
 			final File connectionSettingsDetectionScript = getConnectionSettingsDetectionScript(
@@ -66,13 +67,12 @@ public class ShellConnectionSettingsProvider implements IDockerConnectionSetting
 							.getErrorStream();
 					final String errorMessage = streamToString(
 							processErrorStream);
-					Activator.log(Status.error(errorMessage));
+					ILog.get().log(Status.error(errorMessage));
 				}
 			}
 		} catch (IOException | IllegalArgumentException
 				| InterruptedException e) {
-			Activator.log(Status
-					.error(Messages.Retrieve_Default_Settings_Failure, e));
+			ILog.get().log(Status.error(Messages.Retrieve_Default_Settings_Failure, e));
 		}
 		return Collections.emptyList();
 	}
@@ -104,12 +104,11 @@ public class ShellConnectionSettingsProvider implements IDockerConnectionSetting
 	 * @return the script {@link File}
 	 */
 	private File getConnectionSettingsDetectionScript(final String scriptName) {
-		final File script = Activator.getDefault().getBundle()
-				.getDataFile(scriptName);
+		final File script = FrameworkUtil.getBundle(ShellConnectionSettingsProvider.class).getDataFile(scriptName);
 		// if the script file does not exist or is outdated.
 		if (script != null
-				&& (!script.exists() || script.lastModified() < Activator
-						.getDefault().getBundle().getLastModified())) {
+				&& (!script.exists() || script.lastModified() < FrameworkUtil
+						.getBundle(ShellConnectionSettingsProvider.class).getLastModified())) {
 			try (final FileOutputStream output = new FileOutputStream(script);
 					final InputStream is = DockerConnection.class
 							.getResourceAsStream("/resources/" + scriptName)) { //$NON-NLS-1$

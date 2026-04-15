@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2018 Red Hat, Inc.
+ * Copyright (c) 2007, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -16,6 +16,7 @@ import org.eclipse.core.filebuffers.IDocumentSetupParticipant;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -57,7 +58,7 @@ public class ChangeLogDocumentSetupParticipant implements
 
                         editorContrib.setup(document);
                     } catch (CoreException e) {
-						ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
+						ILog.get().log(Status.error(e.getMessage(), e));
 					}
                 }
             }

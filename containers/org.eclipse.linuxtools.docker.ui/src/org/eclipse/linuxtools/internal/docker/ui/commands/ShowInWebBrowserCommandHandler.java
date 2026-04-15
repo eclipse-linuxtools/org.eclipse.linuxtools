@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -104,7 +105,7 @@ public class ShowInWebBrowserCommandHandler extends AbstractHandler {
 								CommandMessages.getString("ShowInWebBrowserCommandHandler.internal.browser.tooltip")); //$NON-NLS-1$
 				browser.openURL(location);
 			} catch (Exception e) {
-				Activator.log(Status.error(CommandMessages.getString("command.showIn.webBrowser.failure"), //$NON-NLS-1$
+				ILog.get().log(Status.error(CommandMessages.getString("command.showIn.webBrowser.failure"), //$NON-NLS-1$
 						e));
 			}
 		});

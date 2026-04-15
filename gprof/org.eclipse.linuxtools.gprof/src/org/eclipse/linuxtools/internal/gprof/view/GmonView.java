@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
+ * Copyright (c) 2009, 2026 STMicroelectronics and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,6 +18,7 @@ import java.io.IOException;
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -35,7 +36,6 @@ import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.TreeColumnViewerFilter;
 import org.eclipse.linuxtools.dataviewers.actions.STExportToCSVAction;
 import org.eclipse.linuxtools.dataviewers.charts.actions.ChartAction;
-import org.eclipse.linuxtools.internal.gprof.Activator;
 import org.eclipse.linuxtools.internal.gprof.Messages;
 import org.eclipse.linuxtools.internal.gprof.action.SwitchContentProviderAction;
 import org.eclipse.linuxtools.internal.gprof.action.SwitchSampleTimeAction;
@@ -250,7 +250,7 @@ public class GmonView extends AbstractSTDataView {
             decoder.read(gmonPath);
         } catch (IOException e) {
 			IStatus status = Status.error(e.getMessage(), e);
-            Activator.getDefault().getLog().log(status);
+            ILog.get().log(status);
         }
         return displayGprofView(decoder, gmonPath);
     }
@@ -284,7 +284,7 @@ public class GmonView extends AbstractSTDataView {
                 gmonview.action1.run();
             }
         } catch (CoreException e) {
-			Activator.getDefault().getLog().log(Status.error(e.getMessage(), e));
+			ILog.get().log(Status.error(e.getMessage(), e));
         }
         return gmonview;
     }

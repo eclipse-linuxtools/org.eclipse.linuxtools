@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import org.eclipse.core.runtime.ILog;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -96,11 +97,11 @@ public class EnvironmentsManager {
 				ois.close();
 				bis.close();
 			} catch (IOException ioe) {
-				Activator.getDefault().getLog().log(createStatus(ioe, READ));
+				ILog.get().log(createStatus(ioe, READ));
 			} catch (ClassNotFoundException cnfe) {
-				Activator.getDefault().getLog().log(createStatus(cnfe, READ));
+				ILog.get().log(createStatus(cnfe, READ));
 			} catch (StorageException se) {
-				Activator.getDefault().getLog().log(createStatus(se, READ));
+				ILog.get().log(createStatus(se, READ));
 			}
 		}
 
@@ -120,9 +121,9 @@ public class EnvironmentsManager {
 				prefs.putByteArray(ENVIRONMENT_ATTRIBUTE, toSave, true);
 				prefs.flush();
 			} catch (IOException ioe) {
-				Activator.getDefault().getLog().log(createStatus(ioe, WRITE));
+				ILog.get().log(createStatus(ioe, WRITE));
 			} catch (StorageException se) {
-				Activator.getDefault().getLog().log(createStatus(se, WRITE));
+				ILog.get().log(createStatus(se, WRITE));
 			}
 		}
 

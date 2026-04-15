@@ -17,6 +17,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -26,7 +27,6 @@ import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerInfo;
 import org.eclipse.linuxtools.docker.core.IDockerImageHierarchyContainerNode;
-import org.eclipse.linuxtools.docker.ui.Activator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
@@ -99,7 +99,7 @@ public class ContainerInspectPropertySection extends BasePropertySection {
 		try {
 			return result.poll(2, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
-			Activator.log(Status.error(DVMessages.getFormattedString(PropertiesInfoError, connection.getName()), e));
+			ILog.get().log(Status.error(DVMessages.getFormattedString(PropertiesInfoError, connection.getName()), e));
 			return null;
 		}
 	}

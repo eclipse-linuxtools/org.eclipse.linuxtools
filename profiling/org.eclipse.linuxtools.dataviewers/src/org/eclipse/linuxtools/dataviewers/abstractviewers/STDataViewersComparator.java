@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
+ * Copyright (c) 2009, 2026 STMicroelectronics and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,11 +14,11 @@ package org.eclipse.linuxtools.dataviewers.abstractviewers;
 
 import java.util.Comparator;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
-import org.eclipse.linuxtools.dataviewers.STDataViewersActivator;
 import org.eclipse.swt.widgets.Item;
 
 /**
@@ -77,7 +77,7 @@ public class STDataViewersComparator extends ViewerComparator implements Compara
                 this.priorities = priorities;
                 this.directions = directions;
             } else {
-				STDataViewersActivator.getDefault().getLog().log(
+				ILog.get().log(
 						Status.warning("Invalid parameters:" + " priorities and/or directions number don't match with"
 								+ " viewer's columns count. Applying defaults settings."));
 				resetState();

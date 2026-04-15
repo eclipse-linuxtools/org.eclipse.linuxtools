@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.eclipse.core.runtime.ILog;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -81,7 +82,7 @@ public class RDTProxyManager implements IRemoteEnvProxyManager {
                 connection.open(null);
             } catch (RemoteConnectionException e) {
                 IStatus status = Status.error(e.getMessage(), e);
-                Activator.getDefault().getLog().log(status);
+                ILog.get().log(status);
                 return Collections.emptyMap();
             }
         }

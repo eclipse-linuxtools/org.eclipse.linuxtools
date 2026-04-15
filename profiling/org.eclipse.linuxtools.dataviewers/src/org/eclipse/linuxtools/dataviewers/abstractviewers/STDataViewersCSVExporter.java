@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
+ * Copyright (c) 2009, 2026 STMicroelectronics and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -35,7 +36,6 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
-import org.eclipse.linuxtools.dataviewers.STDataViewersActivator;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Item;
 
@@ -241,7 +241,7 @@ public class STDataViewersCSVExporter {
     }
 
     private void logStatus(IStatus s) {
-        STDataViewersActivator.getDefault().getLog().log(s);
+        ILog.get().log(s);
     }
 
     public void exportTo(String filePath) {
@@ -377,7 +377,7 @@ public class STDataViewersCSVExporter {
             try {
                 c.refreshLocal(1, new NullProgressMonitor());
             } catch (CoreException e) {
-                STDataViewersActivator.getDefault().getLog().log(e.getStatus());
+                ILog.get().log(e.getStatus());
             }
         }
 

@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.internal.rdt.proxy;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import org.eclipse.core.runtime.ILog;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -80,7 +81,7 @@ public class Activator extends AbstractUIPlugin {
     }
 
     public static void log(int severity, String msg, Exception e) {
-        getDefault().getLog().log(new Status(severity, PLUGIN_ID, IStatus.OK, msg, e));
+        ILog.get().log(new Status(severity, PLUGIN_ID, IStatus.OK, msg, e));
     }
 
     /**

@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Map;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -138,7 +139,7 @@ public class BuildDockerImageJob extends Job implements IDockerProgressHandler {
 				final int numberOfBuildOperations = countLines(
 						pathToDockerfile.toOSString()); // $NON-NLS-1$
 				if (numberOfBuildOperations == 0) {
-					Activator.log(Status.warning(JobMessages.getString(SKIP_EMPTY_DOCKERFILE)));
+					ILog.get().log(Status.warning(JobMessages.getString(SKIP_EMPTY_DOCKERFILE)));
 				} else {
 					this.console.clearConsole();
 					this.console.activate();

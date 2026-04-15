@@ -19,6 +19,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.eclipse.core.runtime.ILog;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
@@ -149,7 +150,7 @@ public class SystemTapErrorHandler {
      * time.
      */
     private void writeToLog() {
-		CallgraphCorePlugin.getDefault().getLog().log(Status.info(logContents.toString()));
+		ILog.get().log(Status.info(logContents.toString()));
         logContents = new StringBuilder();
     }
 

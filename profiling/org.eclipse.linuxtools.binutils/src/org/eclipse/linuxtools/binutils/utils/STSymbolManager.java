@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
+ * Copyright (c) 2009, 2026 STMicroelectronics and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -47,12 +47,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.internal.Activator;
 
 /**
  * This class Is a utility on top of c++filt and addr2line. It allows an easy conversion between address and source
@@ -101,7 +101,7 @@ public class STSymbolManager {
 		        } while (true);
 		    } catch (Exception e2) {
 				IStatus s = Status.error(e2.getMessage(), e2);
-		        Activator.getDefault().getLog().log(s);
+		        ILog.get().log(s);
 		    }
 		};
         new Thread(worker, "ST System Analysis Symbol Manager").start(); //$NON-NLS-1$
@@ -123,9 +123,7 @@ public class STSymbolManager {
             iter.remove();
         }
 
-        Iterator<Entry<String, AutoDisposeCPPFilt>> iter2 = cppfilts.entrySet().iterator();
-        while (iter2.hasNext()) {
-            Entry<String, AutoDisposeCPPFilt> entry = iter2.next();
+        for (Entry<String, AutoDisposeCPPFilt> entry : cppfilts.entrySet()) {
             AutoDisposeCPPFilt adcppf = entry.getValue();
             adcppf.cppfilt.dispose();
             adcppf.cppfilt = null;
@@ -401,7 +399,7 @@ public class STSymbolManager {
             try {
                 defaultparser = CCorePlugin.getDefault().getDefaultBinaryParser();
             } catch (CoreException e) {
-                Activator.getDefault().getLog().log(e.getStatus());
+                ILog.get().log(e.getStatus());
             }
         }
         if (defaultparser != null) {

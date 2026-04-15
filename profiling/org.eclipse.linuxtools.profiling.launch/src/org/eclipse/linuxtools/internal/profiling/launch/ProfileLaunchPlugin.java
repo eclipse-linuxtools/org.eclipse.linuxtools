@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2018 Red Hat, Inc. and others.
+ * Copyright (c) 2008, 2026 Red Hat, Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.profiling.launch;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Shell;
@@ -91,16 +92,6 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
     }
 
     /**
-     * Logs the specified status with this plug-in's log.
-     *
-     * @param status
-     *            status to log
-     * @since 1.1
-     */
-    public static void log(IStatus status) {
-        getDefault().getLog().log(status);
-    }
-    /**
      * Logs an internal error with the specified message.
      *
      * @param message
@@ -108,7 +99,7 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
      * @since 1.1
      */
     public static void logErrorMessage(String message) {
-        log(Status.error(message));
+        ILog.get().log(Status.error(message));
     }
 
     /**
@@ -119,11 +110,11 @@ public class ProfileLaunchPlugin extends AbstractUIPlugin {
      * @since 1.1
      */
     public static void log(Throwable e) {
-        log(Status.error(e.getMessage(), e));
+    	ILog.get().log(Status.error(e.getMessage(), e));
     }
 
     public static void log(int status, String msg, Throwable e) {
-        plugin.getLog().log(new Status(status, PLUGIN_ID, IStatus.OK, msg, e));
+    	ILog.get().log(new Status(status, PLUGIN_ID, IStatus.OK, msg, e));
     }
 
     public static void log(int status, String msg) {

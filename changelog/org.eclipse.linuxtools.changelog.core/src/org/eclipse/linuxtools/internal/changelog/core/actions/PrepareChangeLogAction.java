@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2006, 2026 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -32,6 +32,7 @@ import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -44,7 +45,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib;
 import org.eclipse.linuxtools.changelog.core.IParserChangeLogContrib;
 import org.eclipse.linuxtools.internal.changelog.core.ChangeLogWriter;
-import org.eclipse.linuxtools.internal.changelog.core.ChangelogPlugin;
 import org.eclipse.linuxtools.internal.changelog.core.LineComparator;
 import org.eclipse.linuxtools.internal.changelog.core.Messages;
 import org.eclipse.linuxtools.internal.changelog.core.editors.ChangeLogEditor;
@@ -116,7 +116,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
         try {
             return parser.parseCurrentFunction(input, offset);
         } catch (CoreException e) {
-			ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
+			ILog.get().log(Status.error(e.getMessage(), e));
         }
         return "";
     }
@@ -137,7 +137,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
         try {
             pd.run(false /* fork */, false /* cancelable */, code);
 		} catch (InvocationTargetException|InterruptedException e) {
-			ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
+			ILog.get().log(Status.error(e.getMessage(), e));
         }
     }
 
@@ -513,7 +513,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
                     .getEditorDescriptor(patchFileInfo.getPath().toOSString(), true, false);
             editorName = ed.getId().substring(ed.getId().lastIndexOf(".") + 1); // $NON-NLS-1$
         } catch (PartInitException e1) {
-			ChangelogPlugin.getDefault().getLog().log(Status.error(e1.getMessage(), e1));
+			ILog.get().log(Status.error(e1.getMessage(), e1));
 			return new String[0];
         }
 
@@ -570,7 +570,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
             fnames = nameList.toArray(fnames);
 
         } catch (CoreException|BadLocationException e) {
-			ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
+			ILog.get().log(Status.error(e.getMessage(), e));
 		}
         return fnames;
     }

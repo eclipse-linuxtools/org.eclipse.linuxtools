@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2018 Red Hat, Inc.
+ * Copyright (c) 2008, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -218,7 +219,7 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 	 * */
 	public static void log(IStatus status) {
 		if (plugin != null)
-			getDefault().getLog().log(status);
+			ILog.get().log(status);
 		else {
 			// log on console when plugin is not loaded, can happen when run junit without osgi
 			System.err.println(status.getMessage());

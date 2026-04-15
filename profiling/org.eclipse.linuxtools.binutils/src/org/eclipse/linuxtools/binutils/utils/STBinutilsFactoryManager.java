@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
- * 
+ * Copyright (c) 2009, 2026 STMicroelectronics and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -25,8 +25,8 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.linuxtools.internal.Activator;
 
 /**
  * This class is on charge of managing "org.eclipse.linuxtools.binutils.crossCompilerBinutils" extension point.
@@ -74,7 +74,7 @@ public class STBinutilsFactoryManager {
                 }
             }
         } catch (CoreException e) {
-            Activator.getDefault().getLog().log(e.getStatus());
+            ILog.get().log(e.getStatus());
         }
         if (defaultFactory == null) {
             defaultFactory = new DefaultBinutilsFactory();
