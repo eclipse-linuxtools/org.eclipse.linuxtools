@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.docker.ui;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Shell;
@@ -57,17 +58,13 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	public static void log(IStatus status) {
-		Activator.getDefault().getLog().log(status);
-	}
-
 	public static void logWarningMessage(final String message) {
-		log(Status.warning(message));
+		ILog.get().log(Status.warning(message));
 	}
 
 	public static void logErrorMessage(final String message,
 			final Throwable e) {
-		log(Status.error(message, e));
+		ILog.get().log(Status.error(message, e));
 	}
 
 	public static void log(Throwable e) {
@@ -78,7 +75,7 @@ public class Activator extends AbstractUIPlugin {
 			status = ((CoreException) e).getStatus();
 		else
 			status = Status.error(e.getMessage(), e);
-		log(status);
+		ILog.get().log(status);
 	}
 
 	public static Shell getActiveWorkbenchShell() {

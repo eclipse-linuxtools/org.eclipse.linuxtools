@@ -53,6 +53,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
@@ -237,7 +238,7 @@ public class LaunchConfigurationUtils {
 			}
 			return workingCopy.doSave();
 		} catch (CoreException e) {
-			Activator.log(Status.error(LaunchMessages.getString("RunDockerImageLaunchConfiguration.creation.failure"), //$NON-NLS-1$
+			ILog.get().log(Status.error(LaunchMessages.getString("RunDockerImageLaunchConfiguration.creation.failure"), //$NON-NLS-1$
 					e));
 		}
 		return null;

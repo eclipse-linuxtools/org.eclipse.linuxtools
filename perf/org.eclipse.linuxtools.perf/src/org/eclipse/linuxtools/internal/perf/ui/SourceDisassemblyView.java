@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Red Hat Inc.
+ * Copyright (c) 2013, 2026 Red Hat Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,6 +18,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IFindReplaceTarget;
@@ -143,7 +144,7 @@ public class SourceDisassemblyView extends ViewPart implements IFindReplaceTarge
 		                        Integer.toString(SECONDARY_ID++),
 		                        IWorkbenchPage.VIEW_CREATE);
 		    } catch (PartInitException e) {
-		        PerfPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
+		        ILog.get().log(Status.error(e.getMessage(), e));
 		    }
 		});
     }

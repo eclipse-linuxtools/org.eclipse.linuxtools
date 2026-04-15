@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.ssh.proxy;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -60,6 +61,6 @@ public class Activator extends AbstractUIPlugin {
     }
 
     public static void log(int severity, String msg, Exception e) {
-        getDefault().getLog().log(new Status(severity, PLUGIN_ID, IStatus.OK, msg, e));
+        ILog.get().log(new Status(severity, PLUGIN_ID, IStatus.OK, msg, e));
     }
 }

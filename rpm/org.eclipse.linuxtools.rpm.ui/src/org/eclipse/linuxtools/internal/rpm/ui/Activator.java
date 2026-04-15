@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpm.ui;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -57,6 +58,6 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static void logError(String message, Throwable exception) {
 		IStatus status = Status.error(message, exception);
-		getDefault().getLog().log(status);
+		ILog.get().log(status);
 	}
 }

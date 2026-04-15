@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2006, 2026 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -21,6 +21,7 @@ import java.util.regex.PatternSyntaxException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib;
@@ -86,7 +87,7 @@ public final class ChangeLogExtensionManager {
                         return (IParserChangeLogContrib) bob
                                 .createExecutableExtension("class"); // $NON-NLS-1$
                     } catch (CoreException e) {
-						ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
+						ILog.get().log(Status.error(e.getMessage(), e));
 					}
 
                 }
@@ -159,8 +160,7 @@ public final class ChangeLogExtensionManager {
                 IConfigurationElement patternElement = patternElementTmp[0];
 
                 if (patternElement.getAttribute("pattern") == null) { // $NON-NLS-1$
-					ChangelogPlugin.getDefault().getLog()
-							.log(Status.error(Messages.getString("ChangeLog.ErrNonPattern"), // $NON-NLS-1$
+					ILog.get().log(Status.error(Messages.getString("ChangeLog.ErrNonPattern"), // $NON-NLS-1$
 									new Exception(Messages.getString("ChangeLog.ErrNonPattern")))); // $NON-NLS-1$
 				} else {
                     String filePattern = patternElement.getAttribute("pattern"); // $NON-NLS-1$
@@ -177,7 +177,7 @@ public final class ChangeLogExtensionManager {
                             break;
                         }
                     } catch (PatternSyntaxException e) {
-						ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
+						ILog.get().log(Status.error(e.getMessage(), e));
 					}
                 }
 
@@ -209,8 +209,7 @@ public final class ChangeLogExtensionManager {
                 formatterConfigElementToUse = cachedPrefFormatter;
 
                 if (formatterConfigElementToUse == null) {
-					ChangelogPlugin.getDefault().getLog()
-							.log(Status.error(Messages.getString("ChangeLog.ErrRetrieveFormatter"), // $NON-NLS-1$
+					ILog.get().log(Status.error(Messages.getString("ChangeLog.ErrRetrieveFormatter"), // $NON-NLS-1$
 									new Exception(Messages.getString("ChangeLog.ErrRetrieveFormatter")))); // $NON-NLS-1$
 
 					return null;
@@ -226,7 +225,7 @@ public final class ChangeLogExtensionManager {
                     .createExecutableExtension("class"); // $NON-NLS-1$
 
         } catch (CoreException e) {
-			ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
+			ILog.get().log(Status.error(e.getMessage(), e));
 			e.printStackTrace();
         }
         return null;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2006, 2026 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -28,11 +28,11 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.linuxtools.internal.changelog.core.ChangelogPlugin;
 import org.eclipse.linuxtools.internal.changelog.core.LineComparator;
 import org.eclipse.linuxtools.internal.changelog.core.Messages;
 import org.eclipse.swt.dnd.Clipboard;
@@ -63,7 +63,7 @@ public class PrepareCommitHandler extends ChangeLogAction implements IHandler {
         try {
             pd.run(false /* fork */, false /* cancelable */, code);
 		} catch (InvocationTargetException|InterruptedException e) {
-			ChangelogPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
+			ILog.get().log(Status.error(e.getMessage(), e));
 		}
 
         return null;

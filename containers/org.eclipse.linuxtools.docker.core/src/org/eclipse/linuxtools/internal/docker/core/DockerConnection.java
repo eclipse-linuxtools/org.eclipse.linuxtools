@@ -38,6 +38,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -819,16 +820,12 @@ public class DockerConnection
 				}
 			} catch (DockerTimeoutException e) {
 				if (isOpen()) {
-					Activator.log(Status
-							.warning(Messages.Docker_Connection_Timeout, e));
+					ILog.get().log(Status.warning(Messages.Docker_Connection_Timeout, e));
 				}
-			} catch (org.mandas.docker.client.exceptions.DockerException
-					| InterruptedException e) {
-				if (isOpen() && e.getCause() != null
-						&& e.getCause().getCause() != null && e.getCause()
-								.getCause() instanceof ProcessingException) {
-					Activator.log(Status.warning(
-							Messages.List_Docker_Containers_Failure, e));
+			} catch (org.mandas.docker.client.exceptions.DockerException | InterruptedException e) {
+				if (isOpen() && e.getCause() != null && e.getCause().getCause() != null
+						&& e.getCause().getCause() instanceof ProcessingException) {
+					ILog.get().log(Status.warning(Messages.List_Docker_Containers_Failure, e));
 				} else {
 					throw new DockerException(e);
 				}
@@ -894,8 +891,7 @@ public class DockerConnection
 			}
 		} catch (DockerTimeoutException e) {
 			if (isOpen()) {
-				Activator.log(
-						Status.warning(Messages.Docker_Connection_Timeout, e));
+				ILog.get().log(Status.warning(Messages.Docker_Connection_Timeout, e));
 				close();
 			}
 		} catch (org.mandas.docker.client.exceptions.DockerException
@@ -950,8 +946,7 @@ public class DockerConnection
 			return null;
 		} catch (org.mandas.docker.client.exceptions.DockerException
 				| InterruptedException e) {
-			Activator.log(Status.error(ProcessMessages.getFormattedString(
-							"Container_Inspect_Exception", id), //$NON-NLS-1$
+			ILog.get().log(Status.error(ProcessMessages.getFormattedString("Container_Inspect_Exception", id), //$NON-NLS-1$
 					e));
 			return null;
 		}
@@ -980,8 +975,7 @@ public class DockerConnection
 			return null;
 		} catch (org.mandas.docker.client.exceptions.DockerException
 				| InterruptedException e) {
-			Activator.log(Status.error(ProcessMessages.getFormattedString(
-							"Image_Inspect_Exception", id), //$NON-NLS-1$
+			ILog.get().log(Status.error(ProcessMessages.getFormattedString("Image_Inspect_Exception", id), //$NON-NLS-1$
 					e));
 			return null;
 		}
@@ -1128,18 +1122,14 @@ public class DockerConnection
 				}
 			} catch (org.mandas.docker.client.exceptions.DockerTimeoutException e) {
 				if (isOpen()) {
-					Activator.log(Status
-							.warning(Messages.Docker_Connection_Timeout, e));
+					ILog.get().log(Status.warning(Messages.Docker_Connection_Timeout, e));
 				}
 			} catch (org.mandas.docker.client.exceptions.DockerRequestException e) {
 				throw new DockerException(e);
-			} catch (org.mandas.docker.client.exceptions.DockerException
-					| InterruptedException e) {
-				if (isOpen() && e.getCause() != null
-						&& e.getCause().getCause() != null && e.getCause()
-								.getCause() instanceof ProcessingException) {
-					Activator.log(Status
-							.warning(Messages.List_Docker_Images_Failure, e));
+			} catch (org.mandas.docker.client.exceptions.DockerException | InterruptedException e) {
+				if (isOpen() && e.getCause() != null && e.getCause().getCause() != null
+						&& e.getCause().getCause() instanceof ProcessingException) {
+					ILog.get().log(Status.warning(Messages.List_Docker_Images_Failure, e));
 				} else {
 					throw new DockerException(
 							NLS.bind(Messages.List_Docker_Images_Failure,

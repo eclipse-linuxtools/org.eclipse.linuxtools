@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.internal.vagrant.ui;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
+import org.eclipse.core.runtime.ILog;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -84,7 +85,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	public static void log(IStatus status) {
-		Activator.getDefault().getLog().log(status);
+		ILog.get().log(status);
 	}
 
 	public static void logErrorMessage(String message) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Red Hat, Inc.
+ * Copyright (c) 2013, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -20,6 +20,7 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.swt.widgets.Display;
@@ -105,7 +106,7 @@ public class ProjectBuildListener implements IResourceChangeListener {
             // clear valgrind error view
             Display.getDefault().syncExec(() -> ValgrindUIPlugin.getDefault().resetView());
         } catch (CoreException e) {
-            ValgrindLaunchPlugin.getDefault().getLog().log(Status.error(e.getMessage(), e));
+            ILog.get().log(Status.error(e.getMessage(), e));
         }
     }
 }

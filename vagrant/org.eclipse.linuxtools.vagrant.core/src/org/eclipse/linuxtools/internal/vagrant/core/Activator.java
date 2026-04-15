@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat.
+ * Copyright (c) 2014, 2026 Red Hat.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.internal.vagrant.core;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
@@ -50,12 +51,8 @@ public class Activator extends Plugin {
 		return plugin;
 	}
 
-	public static void log(IStatus status) {
-		Activator.getDefault().getLog().log(status);
-	}
-
 	public static void logErrorMessage(String message) {
-		log(Status.error(message));
+		ILog.get().log(Status.error(message));
 	}
 
 	public static void log(Throwable e) {
@@ -67,7 +64,7 @@ public class Activator extends Plugin {
 		} else {
 			status = Status.error(e.getMessage(), e);
 		}
-		log(status);
+		ILog.get().log(status);
 	}
 
 }

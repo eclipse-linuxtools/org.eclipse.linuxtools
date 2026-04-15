@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2006, 2026 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.changelog.core;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib;
 import org.eclipse.ui.IEditorPart;
@@ -105,8 +106,7 @@ public class ChangeLogWriter {
         if (entryFilePath == null || guessedFName == null || formatter == null
                 || changelog == null || dateLine == null
                 || changelogLocation == null) {
-			ChangelogPlugin.getDefault().getLog()
-					.log(Status.error(Messages.getString("ChangeLogWriter.ErrUninitialized"), null)); // $NON-NLS-1$
+			ILog.get().log(Status.error(Messages.getString("ChangeLogWriter.ErrUninitialized"), null)); // $NON-NLS-1$
 
 			return;
         }

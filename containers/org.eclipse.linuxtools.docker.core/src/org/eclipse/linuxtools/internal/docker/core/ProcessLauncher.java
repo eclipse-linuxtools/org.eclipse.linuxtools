@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.docker.core.Activator;
 import org.eclipse.linuxtools.docker.core.DockerCommandNotFoundException;
 import org.eclipse.linuxtools.docker.core.DockerException;
 
@@ -184,16 +184,12 @@ public class ProcessLauncher {
 						errorMessage.append(line).append('\n'); // $NON-NLS-1$
 					}
 				}
-				Activator.log(Status.warning(
-						ProcessMessages.getFormattedString("Process_Error", //$NON-NLS-1$
-								this.getCommand(), process.exitValue(),
-								errorMessage.toString())));
+				ILog.get().log(Status.warning(ProcessMessages.getFormattedString("Process_Error", //$NON-NLS-1$
+						this.getCommand(), process.exitValue(), errorMessage.toString())));
 			}
 			} catch (IOException | InterruptedException e) {
-				Activator.log(Status.error(
-						ProcessMessages.getFormattedString("Process_Exception", //$NON-NLS-1$
-								this.getCommand(), e.getMessage()),
-						e));
+				ILog.get().log(Status.error(ProcessMessages.getFormattedString("Process_Exception", //$NON-NLS-1$
+						this.getCommand(), e.getMessage()), e));
 			}
 			return new String[0];
 		}

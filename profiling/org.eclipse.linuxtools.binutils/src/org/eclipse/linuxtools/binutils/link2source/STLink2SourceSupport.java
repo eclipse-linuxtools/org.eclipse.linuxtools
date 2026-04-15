@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2019 STMicroelectronics and others.
+ * Copyright (c) 2009, 2026 STMicroelectronics and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -38,6 +38,7 @@ import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.sourcelookup.AbstractSourceLookupDirector;
@@ -46,7 +47,6 @@ import org.eclipse.debug.core.sourcelookup.containers.LocalFileStorage;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
-import org.eclipse.linuxtools.internal.Activator;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -156,7 +156,7 @@ public final class STLink2SourceSupport {
                     IFileStore ifs = EFS.getStore(file.toURI());
                     return new FileStoreEditorInput(ifs);
                 } catch (CoreException e) {
-                    Activator.getDefault().getLog().log(e.getStatus());
+                    ILog.get().log(e.getStatus());
                 }
             }
         }
@@ -197,7 +197,7 @@ public final class STLink2SourceSupport {
             try {
                 getAllReferencedProjects(allProjects, project);
             } catch (CoreException e) {
-                Activator.getDefault().getLog().log(e.getStatus());
+                ILog.get().log(e.getStatus());
             }
             if (allProjects != null) {
                 for (IProject project2 : allProjects) {
@@ -287,7 +287,7 @@ public final class STLink2SourceSupport {
                     }
 
                 } catch (CModelException e) {
-                    Activator.getDefault().getLog().log(e.getStatus());
+                    ILog.get().log(e.getStatus());
                 }
             }
         }

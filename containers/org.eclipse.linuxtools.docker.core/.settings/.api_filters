@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="org.eclipse.linuxtools.docker.core" version="2">
+    <resource path="src/org/eclipse/linuxtools/docker/core/Activator.java" type="org.eclipse.linuxtools.docker.core.Activator">
+        <filter id="338792546">
+            <message_arguments>
+                <message_argument value="org.eclipse.linuxtools.docker.core.Activator"/>
+                <message_argument value="log(IStatus)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Red Hat.
+ * Copyright (c) 2014, 2026 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.docker.core;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
@@ -53,20 +54,13 @@ public class Activator extends Plugin {
 		return plugin;
 	}
 
-	public static void log(IStatus status) {
-		if (Activator.getDefault() != null
-				&& Activator.getDefault().getLog() != null) {
-			Activator.getDefault().getLog().log(status);
-		}
-	}
-
 	public static void logWarningMessage(final String message) {
-		log(Status.warning(message));
+		ILog.get().log(Status.warning(message));
 	}
 
 	public static void logErrorMessage(final String message,
 			final Throwable e) {
-		log(Status.error(message, e));
+		ILog.get().log(Status.error(message, e));
 	}
 
 	public static void log(Throwable e) {
@@ -81,16 +75,14 @@ public class Activator extends Plugin {
 		} else {
 			status = Status.error(e.getMessage(), e);
 		}
-		log(status);
+		ILog.get().log(status);
 	}
 
 	private static ServiceTracker<ITerminalService, ITerminalService> serviceTracker;
 
 	public static synchronized ITerminalService getTerminalService() {
 		if (serviceTracker == null) {
-			serviceTracker = new ServiceTracker<>(
-					getDefault().getBundle().getBundleContext(),
-					ITerminalService.class, null);
+			serviceTracker = new ServiceTracker<>(getContext(), ITerminalService.class, null);
 			serviceTracker.open();
 		}
 		return serviceTracker.getService();

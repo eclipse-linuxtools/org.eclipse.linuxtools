@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 STMicroelectronics and others.
+ * Copyright (c) 2009, 2026 STMicroelectronics and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,9 +14,9 @@ package org.eclipse.linuxtools.internal.dataviewers.charts.view;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.ISTDataViewersField;
 import org.eclipse.linuxtools.dataviewers.charts.provider.IChartField;
-import org.eclipse.linuxtools.internal.dataviewers.charts.Activator;
 import org.eclipse.linuxtools.internal.dataviewers.piechart.PieChart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -95,7 +95,7 @@ public final class ChartFactory {
 
             return chart;
         } catch (PartInitException e) {
-            Activator.getDefault().getLog().log(e.getStatus());
+            ILog.get().log(e.getStatus());
         }
         return null;
     }
@@ -183,7 +183,7 @@ public final class ChartFactory {
 
             return chart;
         } catch (PartInitException e) {
-            Activator.getDefault().getLog().log(e.getStatus());
+            ILog.get().log(e.getStatus());
         }
         return null;
     }

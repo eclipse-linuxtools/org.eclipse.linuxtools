@@ -81,8 +81,7 @@ public class JavaDocContentProducer implements IHelpContentProducer {
         }
 
         catch (CoreException e) {
-            ILog eLog = JavaDocPlugin.getDefault().getLog();
-            eLog.log(e.getStatus());
+            ILog.get().log(e.getStatus());
         }
 
         return stream;

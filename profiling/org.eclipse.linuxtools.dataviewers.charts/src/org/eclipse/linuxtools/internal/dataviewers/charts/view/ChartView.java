@@ -13,8 +13,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.dataviewers.charts.view;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.internal.dataviewers.charts.Activator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -59,7 +59,7 @@ public class ChartView extends ViewPart {
 
 		        }
 		    } catch (PartInitException e) {
-				Activator.getDefault().getLog().log(Status.error(e.getMessage(), e));
+				ILog.get().log(Status.error(e.getMessage(), e));
 		    }
 		});
 

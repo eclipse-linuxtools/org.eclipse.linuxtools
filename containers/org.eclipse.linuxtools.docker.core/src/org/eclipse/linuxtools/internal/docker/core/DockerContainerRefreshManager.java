@@ -19,9 +19,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.docker.core.Activator;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerContainerListener;
@@ -168,9 +168,8 @@ public class DockerContainerRefreshManager implements IDockerContainerListener {
 					// otherwise..continue
 				}
 			}
-			Activator.log(Status
-					.info("Stopped monitor container changes for connection '"
-							+ connection.getName() + "'"));
+			ILog.get().log(
+					Status.info("Stopped monitor container changes for connection '" + connection.getName() + "'"));
 		}
 	}
 

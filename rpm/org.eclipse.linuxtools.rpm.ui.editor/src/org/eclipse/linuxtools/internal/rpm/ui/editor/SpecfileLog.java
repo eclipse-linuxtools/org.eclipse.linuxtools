@@ -13,6 +13,7 @@
 
 package org.eclipse.linuxtools.internal.rpm.ui.editor;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -92,6 +93,6 @@ public final class SpecfileLog {
 	 * @param status The status to log.
 	 */
 	public static void log(IStatus status) {
-		Activator.getDefault().getLog().log(status);
+		ILog.get().log(status);
 	}
 }

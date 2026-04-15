@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.internal.callgraph.core;
 
 import java.io.IOException;
 import java.net.URL;
+import org.eclipse.core.runtime.ILog;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
@@ -89,7 +90,7 @@ public class CallgraphCorePlugin extends AbstractUIPlugin {
      * @param e Exception to log.
      */
     public static void logException(Exception e) {
-		CallgraphCorePlugin.getDefault().getLog().log(Status.error(e.getMessage()));
+		ILog.get().log(Status.error(e.getMessage()));
     }
 
 }
