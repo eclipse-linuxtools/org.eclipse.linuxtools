@@ -68,13 +68,13 @@ public class GmonView extends AbstractSTDataView {
     /** WHITE color */
     public static final Color DEFAULT_BG = PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
     /** GREEN1 color : for children category */
-    public static final Color GREEN1 = new Color(PlatformUI.getWorkbench().getDisplay(), 207, 255, 207);
+    public static final Color GREEN1 = new Color(207, 255, 207);
     /** GREEN2 color : for children */
-    public static final Color GREEN2 = new Color(PlatformUI.getWorkbench().getDisplay(), 175, 255, 175);
+    public static final Color GREEN2 = new Color(175, 255, 175);
     /** BLUE1 color : for parent category */
-    public static final Color BLUE1 = new Color(PlatformUI.getWorkbench().getDisplay(), 207, 207, 255);
+    public static final Color BLUE1 = new Color(207, 207, 255);
     /** BLUE2 color : for parents */
-    public static final Color BLUE2 = new Color(PlatformUI.getWorkbench().getDisplay(), 175, 175, 255);
+    public static final Color BLUE2 = new Color(175, 175, 255);
 
     public static final int CALL_GRAPH_MODE = 0;
     public static final int SAMPLE_MODE = 1;

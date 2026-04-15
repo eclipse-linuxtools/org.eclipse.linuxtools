@@ -42,7 +42,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
@@ -64,12 +63,9 @@ public class StapGraph extends Graph {
     public static final int CONSTANT_MAX_NUMBER_OF_RADIAL_SIBLINGS = 15;
     public static final int CONSTANT_VERTICAL_INCREMENT = 50;
     public static final int CONSTANT_HORIZONTAL_SPACING_FOR_LEVEL = 150;
-    public static final Color CONSTANT_HAS_PARENT = new Color(
-            Display.getCurrent(), 240, 200, 200);
-    public static final Color CONSTANT_HAS_CHILDREN = new Color(
-            Display.getCurrent(), 200, 250, 200);
-    public static final Color CONSTANT_MARKED = new Color(Display.getCurrent(),
-            210, 112, 214);
+    public static final Color CONSTANT_HAS_PARENT = new Color(240, 200, 200);
+    public static final Color CONSTANT_HAS_CHILDREN = new Color(200, 250, 200);
+    public static final Color CONSTANT_MARKED = new Color(210, 112, 214);
     private int ANIMATION_TIME = 500;
     // Draw level management
     private int topLevelToDraw;
@@ -499,10 +495,10 @@ public class StapGraph extends Graph {
             primary = Math.min(primary, 255);
             secondary = Math.min(secondary, 255);
 
-            Color c = new Color(this.getDisplay(), primary, 0, secondary);
+            Color c = new Color(primary, 0, secondary);
             n.setBackgroundColor(c);
             n.setHighlightColor(c);
-            n.setForegroundColor(new Color(this.getDisplay(), 255, 255, 255));
+            n.setForegroundColor(new Color(255, 255, 255));
             n.setTooltip(new Label(
                     Messages.getString("StapGraph.Func") + key + "\n" //$NON-NLS-1$ //$NON-NLS-2$
                             + Messages.getString("StapGraph.Time") + num.format(percentage_time) + "%" + "\n" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

@@ -45,7 +45,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -56,8 +55,8 @@ import org.eclipse.ui.PlatformUI;
 public class StatComparisonView extends Viewer {
 
     // color values constasts
-    private static final Color RED = new Color(Display.getDefault(), 150, 0, 0);
-    private static final Color GREEN = new Color(Display.getDefault(), 0, 100, 0);
+    private static final Color RED = new Color(150, 0, 0);
+    private static final Color GREEN = new Color(0, 100, 0);
 
     // event occurrence reg-ex
     private static String OCCURRENCE = "\\s*(\\-?+" //$NON-NLS-1$

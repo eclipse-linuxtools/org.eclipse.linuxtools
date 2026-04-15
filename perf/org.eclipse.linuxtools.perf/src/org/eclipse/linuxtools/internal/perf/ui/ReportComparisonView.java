@@ -45,7 +45,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -56,10 +55,10 @@ import org.eclipse.ui.PlatformUI;
 public class ReportComparisonView extends Viewer {
 
     // Color values constants
-    private static final Color RED = new Color(Display.getDefault(), 150, 0, 0);
-    private static final Color GREEN = new Color(Display.getDefault(), 0, 50, 0);
-    private static final Color LIGHT_GREEN = new Color(Display.getDefault(), 0, 105, 0);
-    private static final Color ORANGE = new Color(Display.getDefault(), 150, 100, 0);
+    private static final Color RED = new Color(150, 0, 0);
+    private static final Color GREEN = new Color(0, 50, 0);
+    private static final Color LIGHT_GREEN = new Color(0, 105, 0);
+    private static final Color ORANGE = new Color(150, 100, 0);
 
     // Regex for a generic entry in a perf comparison report.
     private static final String DIFF_ENTRY = "\\s+(\\d+(\\.\\d+)?)\\%\\s+([\\+\\-]?\\d+(\\.\\d+)?)\\%.*"; //$NON-NLS-1$
