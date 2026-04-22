@@ -7,47 +7,5 @@
 	<ignoreVersions>
 		<ignoreVersion type="regex">.+[-.](alpha|beta|b|M|RC|rc|pre.1)\d*$</ignoreVersion>
 	</ignoreVersions>
-	<rules>
-		<rule artifactId="jakarta.ws.rs-api" comparisonMethod="maven">
-			<ignoreVersions>
-				<ignoreVersion>4.0.0</ignoreVersion>
-			</ignoreVersions>
-		</rule>
-		<rule groupId="org.glassfish.jersey.core" comparisonMethod="maven">
-			<ignoreVersions>
-				<ignoreVersion>4.0.2</ignoreVersion>
-				<ignoreVersion>4.0.1</ignoreVersion>
-				<ignoreVersion>4.0.0</ignoreVersion>
-			</ignoreVersions>
-		</rule>
-		<rule groupId="org.glassfish.jersey.ext" comparisonMethod="maven">
-			<ignoreVersions>
-				<ignoreVersion>4.0.2</ignoreVersion>
-				<ignoreVersion>4.0.1</ignoreVersion>
-				<ignoreVersion>4.0.0</ignoreVersion>
-			</ignoreVersions>
-		</rule>
-		<rule groupId="org.glassfish.jersey.media" comparisonMethod="maven">
-			<ignoreVersions>
-				<ignoreVersion>4.0.2</ignoreVersion>
-				<ignoreVersion>4.0.1</ignoreVersion>
-				<ignoreVersion>4.0.0</ignoreVersion>
-			</ignoreVersions>
-		</rule>
-		<rule groupId="org.glassfish.jersey.inject" comparisonMethod="maven">
-			<ignoreVersions>
-				<ignoreVersion>4.0.2</ignoreVersion>
-				<ignoreVersion>4.0.1</ignoreVersion>
-				<ignoreVersion>4.0.0</ignoreVersion>
-			</ignoreVersions>
-		</rule>
-		<rule groupId="org.glassfish.hk2" comparisonMethod="maven">
-			<ignoreVersions>
-				<ignoreVersion>4.0.0</ignoreVersion>
-				<ignoreVersion>3.0.0</ignoreVersion>
-				<ignoreVersion>2.4.0</ignoreVersion>
-			</ignoreVersions>
-		</rule>
-	</rules>
 
 </ruleset>

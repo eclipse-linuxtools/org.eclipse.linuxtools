@@ -29,7 +29,7 @@
 <unit id="org.apache.commons.commons-io" version="0.0.0"/>
 <unit id="org.hamcrest" version="0.0.0"/>
 <unit id="slf4j.api" version="0.0.0"/>
-<unit id="jakarta.annotation-api" version="2.1.1"/>
+<unit id="jakarta.annotation-api" version="0.0.0"/>
 <unit id="jakarta.activation-api" version="0.0.0"/>
 <unit id="jakarta.inject.jakarta.inject-api" version="2.0.1"/>
 <unit id="bcprov" version="0.0.0"/>
@@ -68,6 +68,12 @@
 </location>
 	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="error" type="Maven">
 		<dependencies>
+			<dependency>
+			    <groupId>jakarta.annotation</groupId>
+			    <artifactId>jakarta.annotation-api</artifactId>
+			    <version>3.0.0</version>
+			    <type>jar</type>
+			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
@@ -168,31 +174,31 @@
 			<dependency>
 				<groupId>org.glassfish.hk2</groupId>
 				<artifactId>hk2-api</artifactId>
-				<version>3.1.1</version>
+				<version>4.0.0</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.hk2</groupId>
 				<artifactId>hk2-locator</artifactId>
-				<version>3.1.1</version>
+				<version>4.0.0</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.hk2</groupId>
 				<artifactId>hk2-utils</artifactId>
-				<version>3.1.1</version>
+				<version>4.0.0</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.hk2</groupId>
 				<artifactId>osgi-resource-locator</artifactId>
-				<version>1.0.4</version>
+				<version>3.0.0</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>jakarta.ws.rs</groupId>
 				<artifactId>jakarta.ws.rs-api</artifactId>
-				<version>3.1.0</version>
+				<version>4.0.0</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
@@ -203,44 +209,44 @@
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey.connectors</groupId>
-				<artifactId>jersey-apache-connector</artifactId>
-				<version>3.1.11</version>
+				<artifactId>jersey-apache5-connector</artifactId>
+				<version>4.0.2</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey.core</groupId>
 				<artifactId>jersey-client</artifactId>
-				<version>3.1.11</version>
+				<version>4.0.2</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey.core</groupId>
 				<artifactId>jersey-common</artifactId>
-				<version>3.1.11</version>
+				<version>4.0.2</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey.core</groupId>
 				<artifactId>jersey-server</artifactId>
-				<version>3.1.11</version>
+				<version>4.0.2</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey.ext</groupId>
 				<artifactId>jersey-entity-filtering</artifactId>
-				<version>3.1.11</version>
+				<version>4.0.2</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey.media</groupId>
 				<artifactId>jersey-media-json-jackson</artifactId>
-				<version>3.1.11</version>
+				<version>4.0.2</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
     			<groupId>org.glassfish.jersey.inject</groupId>
     			<artifactId>jersey-hk2</artifactId>
-				<version>3.1.11</version>
+				<version>4.0.2</version>
 				<type>jar</type>
 			</dependency>	
 			<dependency>
