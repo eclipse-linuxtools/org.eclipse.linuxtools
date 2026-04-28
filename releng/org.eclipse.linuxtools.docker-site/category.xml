@@ -49,6 +49,9 @@
    <iu id="jakarta.ws.rs-api" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
+   <iu id="jakarta.annotation-api" version="0.0.0">
+        <category name="Docker Client Dependencies"/>
+   </iu>
    <iu id="jakarta.xml.bind-api" version="0.0.0">
         <category name="Docker Client Dependencies"/>
    </iu>
