@@ -57,18 +57,51 @@ public class DockerClientFactory {
 	 * Creates a new {@link DockerClient} from the given
 	 * {@link IDockerConnectionSettings}.
 	 *
-	 * @param connectionSettings
-	 *            the connection settings
-	 * @return the {@link DockerClient} or <code>null</code> if the connection
-	 *         URI (Unix socker path or TCP host) was missing (ie,
-	 *         <code>null</code> or empty)
-	 * @throws DockerCertificateException
-	 *             if the path to Docker certificates is invalid (missing files)
+	 * @param connectionSettings the connection settings
+	 * @param infiniteTimeOut    true if socket read time out should be set to 0
+	 * @return the {@link DockerClient}
+	 * @throws DockerCertificateException if the path to Docker certificates is
+	 *                                    invalid (missing files)
+	 */
+	public DockerClient getClient(final IDockerConnectionSettings connectionSettings, final boolean infiniteTimeOut)
+			throws DockerCertificateException {
+		return getClient(connectionSettings, null, infiniteTimeOut);
+	}
+
+	/**
+	 * Creates a new {@link DockerClient} from the given
+	 * {@link IDockerConnectionSettings}.
+	 *
+	 * @param connectionSettings the connection settings
+	 * @param registryAccount    the registry account or null
+	 * @return the {@link DockerClient} or <code>null</code> if the connection URI
+	 *         (Unix socker path or TCP host) was missing (ie, <code>null</code> or
+	 *         empty)
+	 * @throws DockerCertificateException if the path to Docker certificates is
+	 *                                    invalid (missing files)
 	 */
 	public DockerClient getClient(
 			final IDockerConnectionSettings connectionSettings,
 			final IRegistryAccount registryAccount)
 			throws DockerCertificateException {
+		return getClient(connectionSettings, registryAccount, false);
+	}
+
+	/**
+	 * Creates a new {@link DockerClient} from the given
+	 * {@link IDockerConnectionSettings}.
+	 *
+	 * @param connectionSettings the connection settings
+	 * @param registryAccount    the registry account or null
+	 * @param infiniteTimeOut    true if socket read time out should be set to 0
+	 * @return the {@link DockerClient} or <code>null</code> if the connection URI
+	 *         (Unix socker path or TCP host) was missing (ie, <code>null</code> or
+	 *         empty)
+	 * @throws DockerCertificateException if the path to Docker certificates is
+	 *                                    invalid (missing files)
+	 */
+	public DockerClient getClient(final IDockerConnectionSettings connectionSettings,
+			final IRegistryAccount registryAccount, final boolean infiniteTimeOut) throws DockerCertificateException {
 		final DockerClientBuilder builder = DockerClientBuilder.fromEnv();
 		if (connectionSettings
 				.getType() == BindingType.UNIX_SOCKET_CONNECTION) {
@@ -116,6 +149,9 @@ public class DockerClientFactory {
 		String originalRuntimeDelegate = System.setProperty(
 				runtimeDelegateProperty,
 				"org.glassfish.jersey.internal.RuntimeDelegateImpl"); //$NON-NLS-1$
+		if (infiniteTimeOut) {
+			builder.readTimeoutMillis(0);
+		}
 		DefaultDockerClient dockerClient = builder.build();
 		if (originalClientBuilder == null) {
 			System.clearProperty(clientBuilderProperty);

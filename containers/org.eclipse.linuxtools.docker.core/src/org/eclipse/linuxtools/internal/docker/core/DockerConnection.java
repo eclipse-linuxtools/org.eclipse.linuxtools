@@ -573,7 +573,7 @@ public class DockerConnection
 	 */
 	private DockerClient getClientCopy() throws DockerException {
 		try {
-			return dockerClientFactory.getClient(this.connectionSettings);
+			return dockerClientFactory.getClient(this.connectionSettings, true);
 		} catch (org.mandas.docker.client.exceptions.DockerCertificateException e) {
 			throw new DockerException(NLS.bind(Messages.Open_Connection_Failure,
 					this.name, this.getUri()));
