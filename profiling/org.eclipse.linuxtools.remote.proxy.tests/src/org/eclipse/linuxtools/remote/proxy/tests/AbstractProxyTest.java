@@ -12,12 +12,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.remote.proxy.tests;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.ptp.rdt.sync.core.SyncConfig;
-import org.eclipse.ptp.rdt.sync.core.SyncConfigManager;
-import org.eclipse.ptp.rdt.sync.core.SyncFlag;
-import org.eclipse.ptp.rdt.sync.core.SyncManager;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -67,32 +61,6 @@ public abstract class AbstractProxyTest extends AbstractRemoteTest {
 		}
 	}
 
-    /**
-     * Prepare a sync project from an already available local project
-     *
-     * @param project any local project
-     * @param conn remote connection
-     * @param location sync'ed folder path in remote machine
-     * @throws CoreException
-     */
-    protected static void convertToSyncProject(IProject project, IRemoteConnection conn, String location) throws CoreException {
-        // Convert to sync project without file filters
-        SyncManager.makeSyncProject(project, conn.getName() + "_sync", SYNC_SERVICE_GIT, conn, location, null);
-        // Synchronize project from local to remote
-        SyncManager.sync(null, project, SyncFlag.LR_ONLY, null);
-    }
-
-    /**
-     * Get the *active* synchronize configuration associated with the project
-     *
-     * @param project A sync project
-     * @return the active synchronize configuration
-     */
-    protected static SyncConfig getSyncConfig(IProject project) {
-        return SyncConfigManager.getActive(project);
-    }
-
-
 	@Override
 	public ILaunchConfigurationType getLaunchConfigType() {
 		// This testsuite does not care about LaunchConfig
@@ -118,7 +86,6 @@ public abstract class AbstractProxyTest extends AbstractRemoteTest {
 			ICProject project = null;
 			try {
 				project = createProject(Platform.getBundle(PLUGIN), "syncTestProject");
-				convertToSyncProject(project.getProject(), connection, "/tmp/" + PLUGIN);
 			} catch (Exception e) {
 				fail("Failed to create synchronized project for the tests: " + e.getMessage());
 			}
