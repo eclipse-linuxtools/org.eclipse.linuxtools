@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2018 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -41,9 +41,9 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		// set docker-machine preferences based on the user's platform
 		if (SystemUtils.isWindows()) {
 			store.setDefault(DOCKER_MACHINE_INSTALLATION_DIRECTORY,
-					"C:\\Program Files\\Docker Toolbox"); //$NON-NLS-1$
+					"C:\\Program Files\\Docker\\Docker\\resources\\bin"); //$NON-NLS-1$
 			store.setDefault(DOCKER_COMPOSE_INSTALLATION_DIRECTORY,
-					"C:\\Program Files\\Docker Toolbox"); //$NON-NLS-1$
+					"C:\\Program Files\\Docker\\Docker\\resources\\bin"); //$NON-NLS-1$
 			store.setDefault(VM_DRIVER_INSTALLATION_DIRECTORY,
 					"C:\\Program Files\\Oracle\\VirtualBox"); //$NON-NLS-1$
 		} else if (SystemUtils.isMac() || SystemUtils.isLinux()) {
