@@ -4,6 +4,14 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 ## Next release...
 
+## 8.23.0
+
+Various dependency upgrades including upgrade of docker-client to 11.0.
+
+## 8.22.1
+
+Fixed problem with Docker containers timing out for C build jobs.
+
 ## 8.22.0
 
 Various dependency upgrades have been made such as upgrading jackson to 2.21.
