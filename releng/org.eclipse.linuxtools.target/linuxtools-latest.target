@@ -275,7 +275,7 @@
 			<dependency>
 			    <groupId>org.codelibs</groupId>
 			    <artifactId>nekohtml</artifactId>
-			    <version>3.0.3</version>
+			    <version>3.0.4</version>
 			    <type>jar</type>
 			</dependency>
 		</dependencies>
