@@ -51,8 +51,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.progress.UIJob;
-import org.junit.Assert;
-import org.junit.ComparisonFailure;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * Utility class for SWT
@@ -76,23 +75,23 @@ public class SWTUtils {
 	/**
 	 * Executes <strong>synchronously</strong> the given {@link Runnable} in the
 	 * default Display. The given {@link Runnable} is ran into a rapping
-	 * {@link Runnable} that will catch the {@link ComparisonFailure} that may
+	 * {@link Runnable} that will catch the {@link AssertionError} that may
 	 * be raised during an assertion.
 	 *
 	 * @param runnable
 	 *            the {@link Runnable} to execute
-	 * @throws ComparisonFailure
+	 * @throws AssertionError
 	 *             if an assertion failed.
 	 * @throws SWTException
 	 *             if an {@link SWTException} occurred
 	 */
-	public static void syncAssert(final Runnable runnable) throws SWTException, ComparisonFailure {
-		final Queue<ComparisonFailure> failure = new ArrayBlockingQueue<>(1);
+	public static void syncAssert(final Runnable runnable) throws SWTException {
+		final Queue<AssertionError> failure = new ArrayBlockingQueue<>(1);
 		final Queue<SWTException> swtException = new ArrayBlockingQueue<>(1);
 		Display.getDefault().syncExec(() -> {
 			try {
 				runnable.run();
-			} catch (ComparisonFailure e1) {
+			} catch (AssertionError e1) {
 				failure.add(e1);
 			} catch (SWTException e2) {
 				swtException.add(e2);
@@ -119,12 +118,12 @@ public class SWTUtils {
 	 * @throws InterruptedException
 	 */
 	public static void asyncExec(final Runnable runnable, final boolean waitForJobsToComplete) {
-		final Queue<ComparisonFailure> failure = new ArrayBlockingQueue<>(1);
+		final Queue<AssertionError> failure = new ArrayBlockingQueue<>(1);
 		final Queue<SWTException> swtException = new ArrayBlockingQueue<>(1);
 		Display.getDefault().asyncExec(() -> {
 			try {
 				runnable.run();
-			} catch (ComparisonFailure e1) {
+			} catch (AssertionError e1) {
 				failure.add(e1);
 			} catch (SWTException e2) {
 				swtException.add(e2);
@@ -306,7 +305,7 @@ public class SWTUtils {
 	public static SWTBotMenu getContextMenu(final SWTBotTree tree, String... path) {
 		final SWTBotMenu contextMenu = tree.contextMenu(path[0]);
 		if (contextMenu == null) {
-			Assert.fail("Failed to find context menu '" + path[0] + "'.");
+			Assertions.fail("Failed to find context menu '" + path[0] + "'.");
 		}
 		if (path.length == 1) {
 			return contextMenu;
@@ -357,7 +356,7 @@ public class SWTUtils {
 	public static SWTBotMenu getSubMenu(final SWTBotMenu menu, String... path) {
 		final SWTBotMenu subMenu = menu.menu(path[0]);
 		if (subMenu == null) {
-			Assert.fail("Failed to find submenu '" + path[0] + "'.");
+			Assertions.fail("Failed to find submenu '" + path[0] + "'.");
 		}
 		if (path.length == 1) {
 			return subMenu;

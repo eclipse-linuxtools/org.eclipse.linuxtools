@@ -17,20 +17,21 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.junit.Rule;
-import org.junit.rules.ExternalResource;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
- * A JUnit {@link Rule} to open the Project Explorer view.
+ * A JUnit {@link org.junit.jupiter.api.extension.Extension} to open the Project
+ * Explorer view.
  */
-public class ProjectExplorerViewRule extends ExternalResource {
+public class ProjectExplorerViewRule implements BeforeEachCallback {
 
 	private SWTBotView projectExplorerBotView;
 
 	public static final String PROJECT_EXPLORER_VIEW_ID = "org.eclipse.ui.navigator.ProjectExplorer";
 
 	@Override
-	protected void before() {
+	public void beforeEach(final ExtensionContext context) {
 		final SWTWorkbenchBot bot = new SWTWorkbenchBot();
 		SWTUtils.syncExec(() -> {
 			try {

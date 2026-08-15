@@ -18,12 +18,13 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
-import org.junit.rules.ExternalResource;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
  * Closes the Welcome page and optionally opens a given perspective
  */
-public class CloseWelcomePageRule extends ExternalResource {
+public class CloseWelcomePageRule implements BeforeAllCallback {
 
 	public static final String DOCKER_PERSPECTIVE_ID = "org.eclipse.linuxtools.docker.ui.perspective";
 
@@ -44,7 +45,7 @@ public class CloseWelcomePageRule extends ExternalResource {
 	}
 
 	@Override
-	protected void before() {
+	public void beforeAll(final ExtensionContext context) {
 		Display.getDefault().syncExec(() -> {
 			final IWorkbench workbench = PlatformUI.getWorkbench();
 			if (workbench.getIntroManager().getIntro() != null) {

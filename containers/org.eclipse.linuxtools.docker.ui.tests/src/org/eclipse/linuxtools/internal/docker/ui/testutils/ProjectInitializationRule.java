@@ -13,11 +13,10 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -33,19 +32,16 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
-import org.junit.rules.ExternalResource;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.Extension;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
- * JUnit {@link TestRule} to initialize a {@link IProject} in the test
+ * JUnit {@link Extension} to initialize a {@link IProject} in the test
  * workspace, by reading the {@link RunWithProject} annotation on the test
  * method.
  */
-public class ProjectInitializationRule extends ExternalResource {
-
-	private Description description;
+public class ProjectInitializationRule implements BeforeEachCallback {
 
 	private IProject project = null;
 
@@ -54,41 +50,28 @@ public class ProjectInitializationRule extends ExternalResource {
 	}
 
 	@Override
-	public Statement apply(final Statement base, final Description description) {
-		this.description = description;
-		return super.apply(base, description);
-	}
-
-	@Override
-	protected void before() throws Throwable {
-		if (description == null) {
-			fail("No method description available while trying to setup test project");
-		}
-		final String projectName = getProjectName();
+	public void beforeEach(final ExtensionContext context) throws Exception {
+		final String projectName = getProjectName(context);
 		final IWorkspace junitWorkspace = ResourcesPlugin.getWorkspace();
 		this.project = getTargetWorkspaceProject(getSampleProjectPath(projectName), junitWorkspace);
 	}
 
 	/**
 	 * @return the name of the project to setup before running the JUnit test.
-	 * @throws NoSuchMethodException
-	 * @throws ClassNotFoundException
 	 */
-	private String getProjectName() throws NoSuchMethodException, ClassNotFoundException {
-		final String className = description.getClassName();
-		final String methodName = description.getMethodName();
-		final Class<?> testClass = Class.forName(className);
-		final Method testMethod = testClass.getMethod(methodName);
-		final RunWithProject runWithProjectMethodAnnotation = testMethod.getAnnotation(RunWithProject.class);
+	private static String getProjectName(final ExtensionContext context) {
+		final RunWithProject runWithProjectMethodAnnotation = context.getRequiredTestMethod()
+				.getAnnotation(RunWithProject.class);
 		if (runWithProjectMethodAnnotation != null) {
 			return runWithProjectMethodAnnotation.value();
 		}
-		final RunWithProject runWithProjectTypeAnnotation = testClass.getAnnotation(RunWithProject.class);
+		final RunWithProject runWithProjectTypeAnnotation = context.getRequiredTestClass()
+				.getAnnotation(RunWithProject.class);
 		if (runWithProjectTypeAnnotation != null) {
 			return runWithProjectTypeAnnotation.value();
 		}
-		fail("No '@RunWithProject' annotation found while running test " + className + "." + methodName);
-		return null;
+		return fail("No '@RunWithProject' annotation found while running test "
+				+ context.getRequiredTestClass().getName() + "." + context.getRequiredTestMethod().getName());
 	}
 
 	/**
@@ -100,8 +83,7 @@ public class ProjectInitializationRule extends ExternalResource {
 		if (System.getProperty("user.dir") != null) {
 			return new Path(System.getProperty("user.dir")).append("projects").append(projectName).makeAbsolute();
 		}
-		fail("The sample project was not found in the launcher workspace under name '" + projectName + "'");
-		return null;
+		return fail("The sample project was not found in the launcher workspace under name '" + projectName + "'");
 	}
 
 	/**

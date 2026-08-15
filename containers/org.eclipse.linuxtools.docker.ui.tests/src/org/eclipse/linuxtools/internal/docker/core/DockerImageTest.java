@@ -23,7 +23,7 @@ import java.util.Map;
 import org.assertj.core.data.MapEntry;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerImageFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Testing the {@link DockerImage} implementation and its utility methods

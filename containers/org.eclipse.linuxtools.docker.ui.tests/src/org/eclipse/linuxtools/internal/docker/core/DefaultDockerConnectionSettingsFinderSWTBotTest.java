@@ -19,7 +19,7 @@ import java.util.Properties;
 
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings;
 import org.eclipse.linuxtools.docker.core.IDockerConnectionSettings.BindingType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Testing the {@link DefaultDockerConnectionSettingsFinder} class

@@ -18,8 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import org.eclipse.linuxtools.internal.docker.core.RegistryInfo;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * Testing the logic to retrieve the list of tags from a given Docker image name
@@ -28,7 +28,7 @@ import org.junit.Test;
  * NOTE: tests are ignored because they fail on Hudson (timeout) - need to
  * verify if the Hudson slave can connect to Docker Hub.
  */
-@Ignore
+@Disabled
 public class ImageTagsListTest {
 
 	private RegistryInfo dockerHubRegistry = new RegistryInfo(AbstractRegistry.DOCKERHUB_REGISTRY, true);

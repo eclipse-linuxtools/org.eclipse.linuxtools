@@ -14,8 +14,8 @@
 package org.eclipse.linuxtools.docker.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,10 +34,10 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionF
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionStorageManagerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.swt.widgets.Display;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mandas.docker.client.DockerClient;
 
 public class DockerConnectionManagerTest {
@@ -46,13 +46,13 @@ public class DockerConnectionManagerTest {
 	private final DockerContainerRefreshManager dockerContainersRefreshManager = DockerContainerRefreshManager
 			.getInstance();
 
-	@AfterClass
+	@AfterAll
 	public static void restoreDefaultConfig() {
 		DockerConnectionManager.getInstance().setConnectionStorageManager(new DefaultDockerConnectionStorageManager());
 	}
 
-	@Before
-	@After
+	@BeforeEach
+	@AfterEach
 	public void reset() {
 		dockerContainersRefreshManager.reset();
 	}

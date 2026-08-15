@@ -14,8 +14,8 @@
 package org.eclipse.linuxtools.internal.docker.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.exceptions.DockerCertificateException;
 import org.mandas.docker.client.messages.Container;

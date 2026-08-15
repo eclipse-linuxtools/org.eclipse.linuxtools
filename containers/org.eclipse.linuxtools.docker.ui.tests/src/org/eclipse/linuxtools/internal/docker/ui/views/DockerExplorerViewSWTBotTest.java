@@ -41,19 +41,17 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
+import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.PropertySheet;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.exceptions.DockerException;
 import org.mockito.Mockito;
@@ -61,21 +59,21 @@ import org.mockito.Mockito;
 /**
  * Testing the {@link DockerExplorerView} {@link Viewer}
  */
-@RunWith(SWTBotJunit4ClassRunner.class)
+@ExtendWith(SWTBotJunit5Extension.class)
 public class DockerExplorerViewSWTBotTest {
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 	private SWTBotView dockerExplorerViewBot;
 	private DockerExplorerView dockerExplorerView;
 
-	@ClassRule
+	@RegisterExtension
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
 			CloseWelcomePageRule.DOCKER_PERSPECTIVE_ID);
 
-	@Rule
+	@RegisterExtension
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		this.bot = new SWTWorkbenchBot();
 		bot.getDisplay().asyncExec(() -> {
@@ -84,7 +82,7 @@ public class DockerExplorerViewSWTBotTest {
 						.showView(DockerExplorerView.VIEW_ID);
 			} catch (Exception e) {
 				e.printStackTrace();
-				Assert.fail("Failed to open Docker Explorer view: " + e.getMessage());
+				org.junit.jupiter.api.Assertions.fail("Failed to open Docker Explorer view: " + e.getMessage());
 			}
 		});
 		this.dockerExplorerViewBot = bot.viewById(DockerExplorerView.VIEW_ID);
@@ -96,7 +94,7 @@ public class DockerExplorerViewSWTBotTest {
 				.forEach(SWTBotView::close);
 	}
 
-	@After
+	@AfterEach
 	public void hideMenu() {
 		try {
 			SWTUtils.hideMenu(dockerExplorerViewBot.bot().tree());

@@ -18,41 +18,38 @@ import static org.eclipse.linuxtools.internal.docker.ui.consoles.StyledTextBuild
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.swt.custom.StyledText;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Testing that the colored output are properly generated into
  * {@link StyledText}.
  */
-@RunWith(Parameterized.class)
 public class StyledConsoleLogsTest {
 
 	private static class ParametersBuilder {
 
-		private final List<Object[]> parameters = new ArrayList<>();
+		private final List<Arguments> parameters = new ArrayList<>();
 
 		ParametersBuilder add(final String lineText, final StyledString expectation) {
-			parameters.add(new Object[] { lineText, expectation });
+			parameters.add(Arguments.of(lineText, expectation));
 			return this;
 		}
 
-		Object[][] build() {
-			return parameters.toArray(new Object[0][0]);
+		Stream<Arguments> build() {
+			return parameters.stream();
 		}
 	}
 
-	@Parameters() // don't use name = "{0}" to display the unit test name, as it
-					// breaks the build on Hudson because of an invalid XML
-					// character
-	public static Object[][] getData() {
+	// don't use name = "{0}" to display the unit test name, as it breaks the build
+	// on Hudson because of an invalid XML character
+	public static Stream<Arguments> getData() {
 		final ParametersBuilder parametersBuilder = new ParametersBuilder();
 		parametersBuilder.add(ESC + "[33mcontainerid|" + ESC + "[0mstandard_content",
 				new StyledString().append("containerid|", StylerBuilder.styler(33)).append("standard_content",
@@ -84,14 +81,9 @@ public class StyledConsoleLogsTest {
 		return parametersBuilder.build();
 	}
 
-	@Parameter(0)
-	public String lineText;
-
-	@Parameter(1)
-	public StyledString expectedStyledString;
-
-	@Test
-	public void shouldGenerateStyledString() {
+	@ParameterizedTest
+	@MethodSource("getData")
+	public void shouldGenerateStyledString(final String lineText, final StyledString expectedStyledString) {
 		// given
 		// when
 		final StyledString result = StyledTextBuilder.parse(lineText);

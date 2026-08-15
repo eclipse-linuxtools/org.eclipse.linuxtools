@@ -25,17 +25,16 @@ import org.assertj.core.api.Assertions;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.linuxtools.docker.testCategory.NativeLinuxDocker;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.ui.jobs.CopyFromDockerJob;
 import org.eclipse.linuxtools.internal.docker.ui.jobs.CopyFromDockerJob.CopyType;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-@Category({ NativeLinuxDocker.class })
+@Tag("NativeLinuxDocker")
 public class CopyFromDockerJobTest {
 
 	static final String connectionUri = "unix:///var/run/docker.sock";
@@ -68,24 +67,24 @@ public class CopyFromDockerJobTest {
 
 	}
 
-	@Before
+	@BeforeEach
 	public void buildCopyTestEnv() throws DockerException, InterruptedException {
 		imgCopyTestEnv = buildImage(dockerfileCopyTestEnv);
 	}
 
-	@Before
+	@BeforeEach
 	public void createTemp() throws IOException {
 		localTempWork = Files.createTempDirectory("eclipse-docker-");
 		logger.info("Tempdir: " + localTempWork);
 	}
 
-	@Before
+	@BeforeEach
 	public void setConnection() {
 		connection = (DockerConnection) DockerConnectionManager.getInstance().getFirstConnection();
 		Assertions.assertThat(connection).isNotNull();
 	}
 
-	@After
+	@AfterEach
 	public void cleanTemp() throws IOException {
 		var paths = Files.walk(localTempWork).toList();
 		// Must delete recursively
@@ -301,7 +300,7 @@ public class CopyFromDockerJobTest {
 		Assertions.assertThat(getTempLs()).isEqualTo(exp);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	// This needs additional support
 	public void FolderFromImageSymlinksBack() throws Exception {

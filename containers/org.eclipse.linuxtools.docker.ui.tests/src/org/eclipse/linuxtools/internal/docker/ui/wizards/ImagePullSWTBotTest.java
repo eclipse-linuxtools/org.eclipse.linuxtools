@@ -14,7 +14,7 @@
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.concurrent.TimeUnit;
 
@@ -37,12 +37,12 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.MenuAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.Test;
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.exceptions.DockerException;
 import org.mockito.ArgumentMatchers;
@@ -56,19 +56,21 @@ public class ImagePullSWTBotTest {
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 	private SWTBotView dockerExplorerViewBot;
 
-	@ClassRule
+	@RegisterExtension
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
 			CloseWelcomePageRule.DOCKER_PERSPECTIVE_ID);
 
-	@Rule
+	@Order(2)
+	@RegisterExtension
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
 
-	@Rule
+	@Order(1)
+	@RegisterExtension
 	public CloseShellRule closeShell = new CloseShellRule(IDialogConstants.CANCEL_LABEL);
 	private RegistryAccountStorageManager defaultRegistryAccountStorageManager;
 	private DockerClient client;
 
-	@Before
+	@BeforeEach
 	public void lookupDockerExplorerView() {
 		this.dockerExplorerViewBot = bot.viewById("org.eclipse.linuxtools.docker.ui.dockerExplorerView");
 		this.dockerExplorerViewBot.show();
@@ -76,7 +78,7 @@ public class ImagePullSWTBotTest {
 		this.defaultRegistryAccountStorageManager = RegistryAccountManager.getInstance().getStorageManager();
 	}
 
-	@Before
+	@BeforeEach
 	public void setupDockerClient() {
 		this.client = MockDockerClientFactory.images(MockImageFactory.of("", "", "bar:latest", "foo/bar:latest"))
 				.build();
@@ -85,7 +87,7 @@ public class ImagePullSWTBotTest {
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 	}
 
-	@After
+	@AfterEach
 	public void restoreRegistryAccountStorageManager() {
 		RegistryAccountManager.getInstance().setStorageManager(this.defaultRegistryAccountStorageManager);
 	}
@@ -96,7 +98,7 @@ public class ImagePullSWTBotTest {
 		dockerExplorerViewBot.bot().tree().contextMenu("Pull...").click();
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void shoulDisableSearchButtonWhenNoRegistrySelected() {
 		// given

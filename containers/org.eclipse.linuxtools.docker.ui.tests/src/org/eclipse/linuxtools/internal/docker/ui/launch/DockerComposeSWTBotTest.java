@@ -14,8 +14,8 @@
 package org.eclipse.linuxtools.internal.docker.ui.launch;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -52,11 +52,11 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.Test;
 import org.mandas.docker.client.DockerClient;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -66,34 +66,40 @@ import org.mockito.Mockito;
  */
 public class DockerComposeSWTBotTest {
 
-	@ClassRule
+	@RegisterExtension
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
 			CloseWelcomePageRule.DOCKER_PERSPECTIVE_ID);
 
-	@Rule
+	@Order(6)
+	@RegisterExtension
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
 
-	@Rule
+	@Order(1)
+	@RegisterExtension
 	public ProjectInitializationRule projectInit = new ProjectInitializationRule();
 
-	@Rule
+	@Order(5)
+	@RegisterExtension
 	public ClearLaunchConfigurationsRule clearLaunchConfig = new ClearLaunchConfigurationsRule(
 			IDockerComposeLaunchConfigurationConstants.CONFIG_TYPE_ID);
 
-	@Rule
+	@Order(4)
+	@RegisterExtension
 	public CloseShellRule closeShell = new CloseShellRule(IDialogConstants.CLOSE_LABEL);
 
-	@Rule
+	@Order(3)
+	@RegisterExtension
 	public ConsoleViewRule consoleViewRule = new ConsoleViewRule();
 
-	@Rule
+	@Order(2)
+	@RegisterExtension
 	public ProjectExplorerViewRule projectExplorerViewRule = new ProjectExplorerViewRule();
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
 	private CountDownLatch latch;
 
-	@Before
+	@BeforeEach
 	public void setupMockedProcessLauncher() throws DockerException, InterruptedException {
 		// configure the 'docker-compose up' mocks with a CountDownLatch to
 		// simulate a long-running process
@@ -277,7 +283,7 @@ public class DockerComposeSWTBotTest {
 
 	@Test
 	@RunWithProject("foo")
-	@Ignore // ignored for now because the "Run" menu from the toolbar remains
+	@Disabled // ignored for now because the "Run" menu from the toolbar remains
 			// visible (on macOS) and this
 	// has side-effects on the other tests that fail because the widgets are not
 	// found.

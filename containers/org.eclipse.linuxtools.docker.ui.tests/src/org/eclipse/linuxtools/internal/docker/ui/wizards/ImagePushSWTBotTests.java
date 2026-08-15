@@ -36,11 +36,11 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.Test;
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.ProgressHandler;
 import org.mandas.docker.client.exceptions.DockerException;
@@ -56,20 +56,22 @@ public class ImagePushSWTBotTests {
 	private DockerExplorerView dockerExplorerView;
 	private SWTBotView dockerExplorerViewBot;
 
-	@ClassRule
+	@RegisterExtension
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
 			CloseWelcomePageRule.DOCKER_PERSPECTIVE_ID);
 
-	@Rule
+	@Order(2)
+	@RegisterExtension
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
 
-	@Rule
+	@Order(1)
+	@RegisterExtension
 	public CloseShellRule closeShell = new CloseShellRule(IDialogConstants.CANCEL_LABEL);
 
 	private RegistryAccountStorageManager defaultRegistryAccountStorageManager;
 	private DockerClient client;
 
-	@Before
+	@BeforeEach
 	public void lookupDockerExplorerView() {
 		this.dockerExplorerViewBot = SWTUtils.getSWTBotView(bot, DockerExplorerView.VIEW_ID);
 		this.dockerExplorerView = (DockerExplorerView) (dockerExplorerViewBot.getViewReference().getView(true));
@@ -78,7 +80,7 @@ public class ImagePushSWTBotTests {
 		this.defaultRegistryAccountStorageManager = RegistryAccountManager.getInstance().getStorageManager();
 	}
 
-	@Before
+	@BeforeEach
 	public void setupDockerClient() {
 		this.client = MockDockerClientFactory.images(MockImageFactory.of("", "", "bar:latest", "foo/bar:latest"))
 				.build();
@@ -87,7 +89,7 @@ public class ImagePushSWTBotTests {
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 	}
 
-	@After
+	@AfterEach
 	public void restoreRegistryAccountStorageManager() {
 		RegistryAccountManager.getInstance().setStorageManager(this.defaultRegistryAccountStorageManager);
 	}

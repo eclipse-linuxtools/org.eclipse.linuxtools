@@ -13,27 +13,25 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.validators;
 
+import java.util.stream.Stream;
+
 import org.eclipse.linuxtools.internal.docker.ui.launch.BuildDockerImageUtils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Testing the {@link BuildDockerImageUtils}.
  */
-@RunWith(Parameterized.class)
 public class BuildDockerImageUtilsTest {
 
-	private static Object[] match(final String imageName, final String expectedRepository, final String expectedName, final String expectedTag) {
-		return new Object[] { imageName, expectedRepository, expectedName, expectedTag };
+	private static Arguments match(final String imageName, final String expectedRepository, final String expectedName, final String expectedTag) {
+		return Arguments.of(imageName, expectedRepository, expectedName, expectedTag);
 	}
 
-	@Parameters(name = "{0} -> {1}/{2}:{3}")
-	public static Object[][] data() {
-		return new Object[][] { match("", null, null, null),
+	public static Stream<Arguments> data() {
+		return Stream.of(match("", null, null, null),
 			match("£", null, null, null), // because £ is an invalid character
 			match("wildfly", null, "wildfly", null),
 			match("jboss/", null, null, null),
@@ -54,41 +52,37 @@ public class BuildDockerImageUtilsTest {
 			match("localhost:5000/jboss/wildfly/", null, null, null), // because trailing '/' causes invalid value
 			match("localhost:5000/jboss/wildfly", "jboss", "wildfly", null),
 			match("localhost:5000/jboss/wildfly:", null, null, null), // because ':' causes invalid value
-			match("localhost:5000/jboss/wildfly:latest", "jboss", "wildfly", "latest"),
-		};
+			match("localhost:5000/jboss/wildfly:latest", "jboss", "wildfly", "latest"));
 	}
 
-	@Parameter(value = 0)
-	public String imageName;
-	@Parameter(value = 1)
-	public String expectedRepository;
-	@Parameter(value = 2)
-	public String expectedName;
-	@Parameter(value = 3)
-	public String expectedTag;
-
-	@Test
-	public void verifyRepository() {
+	@ParameterizedTest(name = "{0} -> {1}/{2}:{3}")
+	@MethodSource("data")
+	public void verifyRepository(final String imageName, final String expectedRepository, final String expectedName,
+			final String expectedTag) {
 		// when
 		final String actualRepository = BuildDockerImageUtils.getRepository(imageName);
 		// then
-		Assert.assertEquals(expectedRepository, actualRepository);
+		Assertions.assertEquals(expectedRepository, actualRepository);
 	}
 
-	@Test
-	public void verifyName() {
+	@ParameterizedTest(name = "{0} -> {1}/{2}:{3}")
+	@MethodSource("data")
+	public void verifyName(final String imageName, final String expectedRepository, final String expectedName,
+			final String expectedTag) {
 		// when
 		final String actualName = BuildDockerImageUtils.getName(imageName);
 		// then
-		Assert.assertEquals(expectedName, actualName);
+		Assertions.assertEquals(expectedName, actualName);
 	}
 
-	@Test
-	public void verifyTag() {
+	@ParameterizedTest(name = "{0} -> {1}/{2}:{3}")
+	@MethodSource("data")
+	public void verifyTag(final String imageName, final String expectedRepository, final String expectedName,
+			final String expectedTag) {
 		// when
 		final String actualTagName = BuildDockerImageUtils.getTag(imageName);
 		// then
-		Assert.assertEquals(expectedTag, actualTagName);
+		Assertions.assertEquals(expectedTag, actualTagName);
 	}
 
 }

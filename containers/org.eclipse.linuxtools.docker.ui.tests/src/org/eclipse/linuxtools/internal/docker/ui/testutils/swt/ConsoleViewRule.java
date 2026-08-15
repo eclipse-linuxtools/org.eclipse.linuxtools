@@ -17,15 +17,16 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.ui.console.IConsoleConstants;
-import org.junit.rules.ExternalResource;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
- * An {@link ExternalResource} to close the Console view.
+ * An extension to close the Console view.
  */
-public class ConsoleViewRule extends ExternalResource {
+public class ConsoleViewRule implements BeforeEachCallback {
 
 	@Override
-	protected void before() {
+	public void beforeEach(final ExtensionContext context) {
 		Display.getDefault().syncExec(() -> {
 			final SWTBotView consoleView = SWTUtils.getSWTBotView(new SWTWorkbenchBot(),
 					IConsoleConstants.ID_CONSOLE_VIEW);
