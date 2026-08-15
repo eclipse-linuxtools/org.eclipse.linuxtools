@@ -25,12 +25,6 @@
 
             <path name="Linux_Tools_Project/SpecfileEditor/User_Guide" title="Specfile Editor User Guide" generateToc="false" />
             <stylesheet url="book.css" />
-            <pageAppendum>
-= Updating This Document =
-
-This document is maintained in a collaborative wiki.  If you wish to update or modify this document please visit
-https://wiki.eclipse.org/Linux_Tools_Project/SpecfileEditor/User_Guide .
-                                 </pageAppendum>
         </mediawiki-to-eclipse-help>
         <antcall target="test" />
     </target>
