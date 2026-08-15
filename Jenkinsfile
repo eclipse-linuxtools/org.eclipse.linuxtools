@@ -15,7 +15,7 @@ spec:
   containers:
   - name: container
     image: akurtakov/linuxtools-build-test-dependencies:latest
-    imagePullPolicy: "Always"
+    imagePullPolicy: "IfNotPresent"
     tty: true
     command: [ "cat" ]
     resources:
