@@ -25,12 +25,6 @@
 
             <path name="Linux_Tools_Project/GCov/User_Guide" title="GCov Plug-in User Guide" generateToc="false"/>
             <stylesheet url="book.css" />
-            <pageAppendum>
-= Updating This Document =
-
-This document is maintained in a collaborative wiki.  If you wish to update or modify this document please visit
-https://wiki.eclipse.org/Linux_Tools_Project/GCov/User_Guide
-            </pageAppendum>
         </mediawiki-to-eclipse-help>
         <antcall target="test" />
     </target>

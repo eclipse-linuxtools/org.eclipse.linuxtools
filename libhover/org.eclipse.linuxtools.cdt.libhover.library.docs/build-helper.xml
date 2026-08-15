@@ -12,12 +12,6 @@
 
             <path name="Linux_Tools_Project/Libhover/Developers_Guide" title="Libhover Developer's Guide" generateToc="false" />
             <stylesheet url="book.css" />
-            <pageAppendum>
-    = Updating This Document =
-
-    This document is maintained in a collaborative wiki.  If you wish to update or modify this document please visit
-    https://wiki.eclipse.org/Linux_Tools_Project/Libhover/Developers_Guide .
-                                     </pageAppendum>
         </mediawiki-to-eclipse-help>
         <antcall target="test" />
     </target>
