@@ -26,7 +26,7 @@ import org.assertj.core.data.MapEntry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.docker.core.IDockerPortBinding;
 import org.eclipse.linuxtools.internal.docker.core.DockerPortBinding;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class LaunchConfigurationUtilsTest {
 

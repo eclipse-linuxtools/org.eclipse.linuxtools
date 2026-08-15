@@ -5,12 +5,13 @@ Bundle-SymbolicName: org.eclipse.linuxtools.docker.ui.tests;singleton:=true
 Bundle-Vendor: Eclipse Linux Tools
 Bundle-Version: 2.2.0.qualifier
 Require-Bundle: org.eclipse.linuxtools.docker.ui;bundle-version="1.0.0",
- org.junit;bundle-version="4.12.0",
+ junit-jupiter-api,
+ junit-jupiter-params,
  org.eclipse.core.runtime,
  org.hamcrest;bundle-version="2.2.0",
  org.eclipse.core.databinding;bundle-version="1.5.0",
  org.mandas.docker-client;bundle-version="7.0.7",
- org.eclipse.swtbot.junit4_x;bundle-version="2.3.0",
+ org.eclipse.swtbot.junit5_x;bundle-version="[4.3.0,5.0.0)",
  org.eclipse.swtbot.swt.finder;bundle-version="2.3.0",
  org.eclipse.swtbot.eclipse.finder;bundle-version="2.3.0",
  org.eclipse.ui;bundle-version="3.107.0",

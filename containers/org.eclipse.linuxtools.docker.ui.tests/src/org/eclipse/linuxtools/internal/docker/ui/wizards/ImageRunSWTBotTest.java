@@ -14,7 +14,7 @@
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,10 +48,10 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.Test;
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.exceptions.DockerException;
 import org.mandas.docker.client.messages.Container;
@@ -81,17 +81,19 @@ public class ImageRunSWTBotTest {
 		return runImageLaunchConfiguration.getName();
 	}
 
-	@ClassRule
+	@RegisterExtension
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
 			CloseWelcomePageRule.DOCKER_PERSPECTIVE_ID);
 
-	@Rule
+	@Order(2)
+	@RegisterExtension
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
 
-	@Rule
+	@Order(1)
+	@RegisterExtension
 	public CloseShellRule closeShell = new CloseShellRule(IDialogConstants.CANCEL_LABEL);
 
-	@Before
+	@BeforeEach
 	public void lookupDockerExplorerView() {
 		dockerExplorerViewBot = bot.viewById("org.eclipse.linuxtools.docker.ui.dockerExplorerView");
 		dockerExplorerViewBot.show();

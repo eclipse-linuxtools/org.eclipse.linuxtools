@@ -40,9 +40,9 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.Test;
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.ProgressHandler;
 import org.mockito.ArgumentMatchers;
@@ -53,21 +53,25 @@ import org.mockito.Mockito;
  */
 public class BuildDockerImageShortcutSWTBotTest {
 
-	@ClassRule
+	@RegisterExtension
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
 			"org.eclipse.linuxtools.docker.ui.perspective");
 
-	@Rule
+	@Order(4)
+	@RegisterExtension
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
 
-	@Rule
+	@Order(1)
+	@RegisterExtension
 	public ProjectInitializationRule projectInit = new ProjectInitializationRule();
 
-	@Rule
+	@Order(3)
+	@RegisterExtension
 	public ClearLaunchConfigurationsRule clearLaunchConfig = new ClearLaunchConfigurationsRule(
 			IBuildDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID);
 
-	@Rule
+	@Order(2)
+	@RegisterExtension
 	public ProjectExplorerViewRule projectExplorerViewRule = new ProjectExplorerViewRule();
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();

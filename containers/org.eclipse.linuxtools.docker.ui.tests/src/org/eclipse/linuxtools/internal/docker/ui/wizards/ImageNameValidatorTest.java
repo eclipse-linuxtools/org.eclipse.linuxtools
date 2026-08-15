@@ -12,27 +12,25 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
+import java.util.stream.Stream;
+
 import org.eclipse.core.runtime.IStatus;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Testing the {@link ImageNameValidator} class
  */
-@RunWith(Parameterized.class)
 public class ImageNameValidatorTest {
 
-	private static Object[] match(final String imageName, final int expectedSeverity) {
-		return new Object[]{imageName, expectedSeverity};
+	private static Arguments match(final String imageName, final int expectedSeverity) {
+		return Arguments.of(imageName, expectedSeverity);
 	}
 
-	@Parameters(name="{0} -> {1}")
-	public static Object[][] data() {
-		return new Object[][] {
+	public static Stream<Arguments> data() {
+		return Stream.of(
 			match("", IStatus.CANCEL),
 			match("£", IStatus.WARNING),
 			match("wildfly", IStatus.WARNING),
@@ -55,21 +53,15 @@ public class ImageNameValidatorTest {
 			match("localhost:5000/jboss/wildfly/", IStatus.WARNING),
 			match("localhost:5000/jboss/wildfly", IStatus.WARNING),
 			match("localhost:5000/jboss/wildfly:", IStatus.WARNING),
-			match("localhost:5000/jboss/wildfly:latest", IStatus.OK),
-		};
+			match("localhost:5000/jboss/wildfly:latest", IStatus.OK));
 	}
 
-	@Parameter(value=0)
-	public String imageName;
-	@Parameter(value=1)
-	public int expectedSeverity;
-
-
-	@Test
-	public void verifyData() {
+	@ParameterizedTest(name = "{0} -> {1}")
+	@MethodSource("data")
+	public void verifyData(final String imageName, final int expectedSeverity) {
 		final IStatus status = new ImageNameValidator().validate(imageName);
 		// then
-		Assert.assertEquals(expectedSeverity, status.getSeverity());
+		Assertions.assertEquals(expectedSeverity, status.getSeverity());
 	}
 
 }

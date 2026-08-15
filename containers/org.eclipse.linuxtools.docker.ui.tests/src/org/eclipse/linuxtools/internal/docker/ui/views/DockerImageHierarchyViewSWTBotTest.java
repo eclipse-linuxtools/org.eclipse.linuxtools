@@ -40,12 +40,11 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.PropertySheet;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.Test;
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.messages.Container;
 import org.mandas.docker.client.messages.Image;
@@ -59,15 +58,15 @@ public class DockerImageHierarchyViewSWTBotTest {
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 	private SWTBotView dockerExplorerViewBot;
 
-	@ClassRule
+	@RegisterExtension
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
 			CloseWelcomePageRule.DOCKER_PERSPECTIVE_ID);
 
-	@Rule
+	@RegisterExtension
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
 	private DockerConnection connection;
 
-	@Before
+	@BeforeEach
 	public void setupViews() {
 		this.bot = new SWTWorkbenchBot();
 		bot.getDisplay().asyncExec(() -> {
@@ -76,7 +75,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 						.showView(DockerExplorerView.VIEW_ID);
 			} catch (Exception e) {
 				e.printStackTrace();
-				Assert.fail("Failed to open Docker Explorer view: " + e.getMessage());
+				Assertions.fail("Failed to open Docker Explorer view: " + e.getMessage());
 			}
 		});
 		this.dockerExplorerViewBot = bot.viewById(DockerExplorerView.VIEW_ID);
@@ -85,7 +84,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 				.forEach(SWTBotView::close);
 	}
 
-	@Before
+	@BeforeEach
 	public void setupData() {
 		// data is built as follows:
 		// root_image
@@ -120,7 +119,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 
 	}
 
-	@After
+	@AfterEach
 	public void hideMenu() {
 		try {
 			SWTUtils.hideMenu(dockerExplorerViewBot.bot().tree());

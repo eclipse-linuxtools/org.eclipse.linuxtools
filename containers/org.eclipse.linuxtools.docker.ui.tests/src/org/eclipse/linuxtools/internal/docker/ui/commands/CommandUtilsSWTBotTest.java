@@ -29,11 +29,9 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.PlatformUI;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.Test;
 import org.mandas.docker.client.DockerClient;
 
 public class CommandUtilsSWTBotTest {
@@ -42,14 +40,14 @@ public class CommandUtilsSWTBotTest {
 	private SWTBotView dockerExplorerViewBot;
 	private DockerExplorerView dockerExplorerView;
 
-	@ClassRule
+	@RegisterExtension
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
 			CloseWelcomePageRule.DOCKER_PERSPECTIVE_ID);
 
-	@Rule
+	@RegisterExtension
 	public ClearConnectionManagerRule clearConnectionManager = new ClearConnectionManagerRule();
 
-	@Before
+	@BeforeEach
 	public void lookupDockerExplorerView() {
 		bot.getDisplay().asyncExec(() -> {
 			try {
@@ -57,7 +55,7 @@ public class CommandUtilsSWTBotTest {
 						.showView("org.eclipse.linuxtools.docker.ui.dockerExplorerView");
 			} catch (Exception e) {
 				e.printStackTrace();
-				Assert.fail("Failed to open Docker Explorer view: " + e.getMessage());
+				org.junit.jupiter.api.Assertions.fail("Failed to open Docker Explorer view: " + e.getMessage());
 			}
 		});
 		dockerExplorerViewBot = SWTUtils.getSWTBotView(bot, "org.eclipse.linuxtools.docker.ui.dockerExplorerView");

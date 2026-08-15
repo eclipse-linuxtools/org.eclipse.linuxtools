@@ -20,12 +20,13 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.ui.PlatformUI;
-import org.junit.rules.ExternalResource;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
  * Closes the wizard(s) after each test, if the "Cancel" button is available
  */
-public class CloseShellRule extends ExternalResource {
+public class CloseShellRule implements AfterEachCallback {
 
 	private final String buttonLabel;
 
@@ -34,7 +35,7 @@ public class CloseShellRule extends ExternalResource {
 	}
 
 	@Override
-	protected void after() {
+	public void afterEach(final ExtensionContext context) {
 		final SWTWorkbenchBot bot = new SWTWorkbenchBot();
 		try {
 			while (isInDialog(bot) && getButton(bot, this.buttonLabel) != null) {

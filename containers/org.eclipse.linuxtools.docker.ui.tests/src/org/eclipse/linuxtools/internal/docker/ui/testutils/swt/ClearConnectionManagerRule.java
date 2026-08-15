@@ -19,15 +19,16 @@ import java.util.List;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DefaultDockerConnectionSettingsFinder;
-import org.junit.rules.ExternalResource;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
  * Clears the connection manager after each test.
  */
-public class ClearConnectionManagerRule extends ExternalResource {
+public class ClearConnectionManagerRule implements AfterEachCallback {
 
 	@Override
-	protected void after() {
+	public void afterEach(final ExtensionContext context) {
 		removeAllConnections(DockerConnectionManager.getInstance());
 		DockerConnectionManagerUtils.configureConnectionManager();
 		DockerConnectionManager.getInstance().setConnectionSettingsFinder(new DefaultDockerConnectionSettingsFinder());

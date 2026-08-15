@@ -13,18 +13,19 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
-import org.junit.rules.ExternalResource;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
  *
  */
-public class SWTBotViewRule extends ExternalResource {
+public class SWTBotViewRule implements BeforeEachCallback {
 
 	private final SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
@@ -39,7 +40,7 @@ public class SWTBotViewRule extends ExternalResource {
 	}
 
 	@Override
-	protected void before() {
+	public void beforeEach(final ExtensionContext context) {
 		bot.getDisplay().asyncExec(() -> {
 			try {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(this.viewId);

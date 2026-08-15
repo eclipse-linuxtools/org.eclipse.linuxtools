@@ -17,94 +17,84 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.stream.Stream;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mandas.docker.client.exceptions.DockerRequestException;
 
 /**
  * Testing the {@link DockerException} class
  */
-@RunWith(Parameterized.class)
 public class DockerExceptionTest {
 
-	@Parameters
-	public static Object[][] getData() throws URISyntaxException {
-		final Object[][] data = new Object[][] {
+	public static Stream<Arguments> getData() throws URISyntaxException {
+		return Stream.of(
 				// 0: Normal exceptions
-				new Object[] { new DockerException("this is an error"), "this is an error" },
+				Arguments.of(new DockerException("this is an error"), "this is an error"),
 				// 1:
-				new Object[] { new DockerException("error with message: 232"), "error with message: 232" },
+				Arguments.of(new DockerException("error with message: 232"), "error with message: 232"),
 				// 2: Use passed message or message from original exception - Behave like
 				// Throwable
-				new Object[] { new DockerException(null, new RuntimeException("This is a test")),
-						"java.lang.RuntimeException: This is a test" },
+				Arguments.of(new DockerException(null, new RuntimeException("This is a test")),
+						"java.lang.RuntimeException: This is a test"),
 				// 3:
-				new Object[] { new DockerException("First", new RuntimeException("This is a test")), "First" },
+				Arguments.of(new DockerException("First", new RuntimeException("This is a test")), "First"),
 				// 4: Do not parse passed message
-				new Object[] {
+				Arguments.of(
 						new DockerException(
 								"{\"message\":\"invalid reference format: repository name must be lowercase\"}"),
-						"{\"message\":\"invalid reference format: repository name must be lowercase\"}" },
+						"{\"message\":\"invalid reference format: repository name must be lowercase\"}"),
 				// 5: Decode DockerRequestException
-				new Object[] { new DockerException(null, new DockerRequestException("m", new URI("http://none"), 404,
+				Arguments.of(new DockerException(null, new DockerRequestException("m", new URI("http://none"), 404,
 						"{\"message\":\"invalid reference format: repository name must be lowercase\"}", null)),
 						"invalid reference format: repository name must be lowercase"
-				},
+				),
 				// 6: DockerRequestException and prefix message
-				new Object[] { new DockerException("Additional info", new DockerRequestException("m", new URI("http://none"), 404,
+				Arguments.of(new DockerException("Additional info", new DockerRequestException("m", new URI("http://none"), 404,
 						"{\"message\":\"invalid reference format: repository name must be lowercase\"}", null)),
 						"Additional info; invalid reference format: repository name must be lowercase"
-				},
+				),
 				// 7: DockerRequestException Without Json-message - use toString
-				new Object[] {
+				Arguments.of(
 						new DockerException(
 								new DockerRequestException("Hello", new URI("http://none"), 404, "Response", null)),
-						"org.mandas.docker.client.exceptions.DockerRequestException: Request error: Hello http://none: 404, body: Response" },
+						"org.mandas.docker.client.exceptions.DockerRequestException: Request error: Hello http://none: 404, body: Response"),
 				// 8:
-				new Object[] {
+				Arguments.of(
 						new DockerException("Additional info",
 								new DockerRequestException("Hello", new URI("http://none"), 404, "Response", null)),
-						"Additional info" },
+						"Additional info"),
 				// 9: Search DockerRequestException
-				new Object[] { new DockerException(null,
+				Arguments.of(new DockerException(null,
 						new RuntimeException(new DockerRequestException("m", new URI("http://none"), 404,
 								"{\"message\":\"invalid reference format: repository name must be lowercase\"}",
 								null))),
-						"invalid reference format: repository name must be lowercase" },
+						"invalid reference format: repository name must be lowercase"),
 				// 10: Wrapped in exception with message
-				new Object[] { new DockerException(null, new RuntimeException("Hello", new DockerRequestException("m",
+				Arguments.of(new DockerException(null, new RuntimeException("Hello", new DockerRequestException("m",
 						new URI("http://none"), 404,
 								"{\"message\":\"invalid reference format: repository name must be lowercase\"}",
 								null))),
-						"invalid reference format: repository name must be lowercase" },
+						"invalid reference format: repository name must be lowercase"),
 				// 11: Wrapped twice
-				new Object[] {
+				Arguments.of(
 						new DockerException(null,
 								new RuntimeException(new RuntimeException(new DockerRequestException("m",
 										new URI("http://none"), 404,
 										"{\"message\":\"invalid reference format: repository name must be lowercase\"}",
 										null)))),
-						"invalid reference format: repository name must be lowercase" },
+						"invalid reference format: repository name must be lowercase"),
 				// 12: Wrapped without message
-				new Object[] { new DockerException(null, new RuntimeException("Hello",
+				Arguments.of(new DockerException(null, new RuntimeException("Hello",
 						new DockerRequestException("m", new URI("http://none"), 404, "Do not show this", null))),
-						"java.lang.RuntimeException: Hello" },
-		};
-		return data;
+						"java.lang.RuntimeException: Hello"));
 	}
 
-	@Parameter(0)
-	public DockerException dockerException;
-
-	@Parameter(1)
-	public String expectedMessage;
-
-	@Test
-	public void shouldGetCorrectExceptionMessage() {
+	@ParameterizedTest
+	@MethodSource("getData")
+	public void shouldGetCorrectExceptionMessage(final DockerException dockerException, final String expectedMessage) {
 		// when
 		final String message = dockerException.getMessage();
 		// then

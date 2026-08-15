@@ -13,8 +13,8 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,37 +45,36 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
+import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.ui.PlatformUI;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mandas.docker.client.DockerClient;
 
 /**
  * Testing the {@link NewDockerConnection} {@link Wizard}
  */
-@RunWith(SWTBotJunit4ClassRunner.class)
+@ExtendWith(SWTBotJunit5Extension.class)
 public class NewDockerConnectionSWTBotTest {
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 	private SWTBotToolbarButton addConnectionButton;
 	private SWTBotView dockerExplorerViewBot;
 
-	@ClassRule
+	@RegisterExtension
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
 			CloseWelcomePageRule.DOCKER_PERSPECTIVE_ID);
 
-	@Rule
+	@RegisterExtension
 	public CloseShellRule closeShell = new CloseShellRule(IDialogConstants.CANCEL_LABEL);
 
-	@Before
+	@BeforeEach
 	public void lookupDockerExplorerView() throws Exception {
 		bot.getDisplay().asyncExec(() -> {
 			try {
@@ -83,7 +82,7 @@ public class NewDockerConnectionSWTBotTest {
 						.showView(DockerExplorerView.VIEW_ID);
 			} catch (Exception e) {
 				e.printStackTrace();
-				Assert.fail("Failed to open Docker Explorer view: " + e.getMessage());
+				Assertions.fail("Failed to open Docker Explorer view: " + e.getMessage());
 			}
 		});
 		dockerExplorerViewBot = bot.viewById(DockerExplorerView.VIEW_ID);
@@ -94,7 +93,7 @@ public class NewDockerConnectionSWTBotTest {
 		this.addConnectionButton = dockerExplorerViewBot.toolbarButton("&Add Connection");
 	}
 
-	@Before
+	@BeforeEach
 	public void clearClipboards() {
 		// Clear all clipboards
 		Display.getDefault().syncExec(() -> {
@@ -292,7 +291,7 @@ public class NewDockerConnectionSWTBotTest {
 	public void shouldPopulateConnectionWithSelectionClipboard() {
 		// SELECTION_CLIPBOARD does not seem to be supported on platforms other
 		// than Linux (GTK/Motif)
-		Assume.assumeTrue("This test only runs on Linux", SystemUtils.isLinux());
+		Assumptions.assumeTrue(SystemUtils.isLinux(), "This test only runs on Linux");
 		verifyPopulateConnectionWithClipboard(DND.SELECTION_CLIPBOARD);
 	}
 

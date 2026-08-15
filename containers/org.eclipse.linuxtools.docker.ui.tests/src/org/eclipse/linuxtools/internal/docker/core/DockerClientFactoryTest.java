@@ -15,7 +15,7 @@ package org.eclipse.linuxtools.internal.docker.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.exceptions.DockerCertificateException;

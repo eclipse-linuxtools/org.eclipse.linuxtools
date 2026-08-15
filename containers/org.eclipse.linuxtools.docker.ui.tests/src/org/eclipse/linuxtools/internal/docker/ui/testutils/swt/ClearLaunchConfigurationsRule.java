@@ -13,7 +13,7 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.stream.Stream;
 
@@ -22,12 +22,13 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.linuxtools.internal.docker.ui.launch.LaunchConfigurationUtils;
-import org.junit.rules.ExternalResource;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
  * Removes all {@link ILaunchConfiguration} of a given type
  */
-public class ClearLaunchConfigurationsRule extends ExternalResource {
+public class ClearLaunchConfigurationsRule implements BeforeEachCallback {
 
 	/** the id of {@link ILaunchConfiguration} type to remove. */
 	private final String launchConfigTypeId;
@@ -43,7 +44,7 @@ public class ClearLaunchConfigurationsRule extends ExternalResource {
 	}
 
 	@Override
-	protected void before() throws Throwable {
+	public void beforeEach(final ExtensionContext context) throws Exception {
 		final ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 		final ILaunchConfigurationType launchConfigType = LaunchConfigurationUtils
 				.getLaunchConfigType(launchConfigTypeId);

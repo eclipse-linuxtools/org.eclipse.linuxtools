@@ -14,11 +14,13 @@
 package org.eclipse.linuxtools.internal.docker.ui.wizards;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -60,16 +62,16 @@ import org.eclipse.linuxtools.internal.docker.ui.views.DockerContainersView;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerImagesView;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
+import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mandas.docker.client.DockerClient;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -77,33 +79,37 @@ import org.mockito.Mockito;
 /**
  * Testing the {@link EditDockerConnection} {@link Wizard}
  */
-@RunWith(SWTBotJunit4ClassRunner.class)
+@ExtendWith(SWTBotJunit5Extension.class)
 public class EditDockerConnectionSWTBotTest {
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
 	private static String PATH_TO_CERTS = System.getProperty("java.io.tmpdir");
 
-	@ClassRule
+	@RegisterExtension
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
 			CloseWelcomePageRule.DOCKER_PERSPECTIVE_ID);
 
-	@Rule
+	@Order(4)
+	@RegisterExtension
 	public CloseShellRule closeShell = new CloseShellRule(IDialogConstants.CANCEL_LABEL);
 
-	@Rule
-	public TemporaryFolder folder = new TemporaryFolder();
+	@TempDir
+	public Path folder;
 
-	@Rule
+	@Order(2)
+	@RegisterExtension
 	public SWTBotViewRule dockerExplorer = new SWTBotViewRule(DockerExplorerView.VIEW_ID);
 
-	@Rule
+	@Order(1)
+	@RegisterExtension
 	public SWTBotViewRule dockerImages = new SWTBotViewRule(DockerImagesView.VIEW_ID);
 
-	@Rule
+	@Order(3)
+	@RegisterExtension
 	public SWTBotViewRule dockerContainers = new SWTBotViewRule(DockerContainersView.VIEW_ID);
 
-	@Before
+	@BeforeEach
 	public void setFocusOnDockerExplorerView() {
 		this.dockerExplorer.bot().setFocus();
 	}
@@ -464,7 +470,7 @@ public class EditDockerConnectionSWTBotTest {
 		final IDockerConnection connection = configureUnixSocketConnection("Test");
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
-		final File tmpDockerSocketFile = folder.newFile("docker.sock");
+		final File tmpDockerSocketFile = Files.createFile(folder.resolve("docker.sock")).toFile();
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(1).setText(tmpDockerSocketFile.getAbsolutePath());
@@ -532,7 +538,7 @@ public class EditDockerConnectionSWTBotTest {
 		DockerConnectionManagerUtils.configureConnectionManager(connectionStorageManager);
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
-		final File tmpDockerSocketFile = folder.newFile("docker.sock");
+		final File tmpDockerSocketFile = Files.createFile(folder.resolve("docker.sock")).toFile();
 		// let's ignore the connection savings that may have occurred when
 		// adding elements from the extension points
 		Mockito.reset(connectionStorageManager);
@@ -608,7 +614,7 @@ public class EditDockerConnectionSWTBotTest {
 		DockerConnectionManagerUtils.configureConnectionManager(connectionStorageManager);
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
-		final File tmpDockerSocketFile = folder.newFile("docker.sock");
+		final File tmpDockerSocketFile = Files.createFile(folder.resolve("docker.sock")).toFile();
 		assertThat(connection.getState()).isEqualTo(EnumDockerConnectionState.UNKNOWN);
 		// when
 		openConnectionEditionWizard("Test");

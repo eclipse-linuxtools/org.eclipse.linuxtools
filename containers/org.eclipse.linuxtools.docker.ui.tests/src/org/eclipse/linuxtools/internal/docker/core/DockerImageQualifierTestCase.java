@@ -18,8 +18,8 @@ import static org.eclipse.linuxtools.internal.docker.core.DockerImage.DockerImag
 import static org.eclipse.linuxtools.internal.docker.core.DockerImage.DockerImageQualifier.TOP_LEVEL;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.eclipse.linuxtools.docker.core.DockerException;
 import org.eclipse.linuxtools.internal.docker.core.DockerImage.DockerImageQualifier;
@@ -27,11 +27,9 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.DockerImageAssertions
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerClientFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockDockerConnectionFactory;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockImageFactory;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mandas.docker.client.DockerClient;
 import org.mandas.docker.client.messages.Image;
 
@@ -39,17 +37,15 @@ import org.mandas.docker.client.messages.Image;
  * Verifying that images are properly qualified as {@code Top-Level},
  * {@code Intermediate} or {@code Dangling}.
  */
-@RunWith(Parameterized.class)
 public class DockerImageQualifierTestCase {
 
 	/**
-	 * A helper class to prepare dataset for test classes running with the
-	 * {@link Parameterized} JUnit runner.
+	 * A helper class to prepare dataset for parameterized test classes.
 	 *
 	 */
 	static class ParameterizedDataset {
 
-		private final List<Object[]> data = new ArrayList<>();
+		private final List<Arguments> data = new ArrayList<>();
 
 		/**
 		 * Adds a pair of elements to the dataset
@@ -57,20 +53,19 @@ public class DockerImageQualifierTestCase {
 		 * @return this {@link ParameterizedDataset} for fluent method chaining
 		 */
 		public ParameterizedDataset add(final DockerImageQualifier qualifier, final Image... images) {
-			this.data.add(new Object[] { qualifier, images });
+			this.data.add(Arguments.of(qualifier, images));
 			return this;
 		}
 
 		/**
-		 * @return the {@link List} of data in the dataset
+		 * @return the data in the dataset
 		 */
-		public List<Object[]> toList() {
-			return this.data;
+		public Stream<Arguments> stream() {
+			return this.data.stream();
 		}
 	}
 
-	@Parameters
-	public static Collection<Object[]> getData() {
+	public static Stream<Arguments> getData() {
 		final ParameterizedDataset dataset = new ParameterizedDataset();
 		// top level because it has a repo and a tag
 		dataset.add(TOP_LEVEL, MockImageFactory.of("foo", "", "foo:latest"));
@@ -84,17 +79,13 @@ public class DockerImageQualifierTestCase {
 		// dangling because untagged because it is a leaf
 		dataset.add(DANGLING, MockImageFactory.of("foo", "", "<none>:<none>"));
 		dataset.add(DANGLING, MockImageFactory.of("foo"));
-		return dataset.toList();
+		return dataset.stream();
 	}
 
-	@Parameter(0)
-	public DockerImageQualifier qualifier;
-
-	@Parameter(1)
-	public Image[] images;
-
-	@Test
-	public void verifyImageQualifier() throws DockerException {
+	@ParameterizedTest
+	@MethodSource("getData")
+	public void verifyImageQualifier(final DockerImageQualifier qualifier, final Image[] images)
+			throws DockerException {
 		// given
 		final DockerClient client = MockDockerClientFactory.images(images).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
