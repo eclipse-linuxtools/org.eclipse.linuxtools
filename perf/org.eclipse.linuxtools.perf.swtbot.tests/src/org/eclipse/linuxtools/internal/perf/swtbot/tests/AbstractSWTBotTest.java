@@ -25,14 +25,10 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.internal.perf.IPerfData;
 import org.eclipse.linuxtools.internal.perf.PerfCore;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
 import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
@@ -162,7 +158,7 @@ public abstract class AbstractSWTBotTest extends AbstractTest {
         treeBot.select(new String [] {first, second});
 
         // Workaround for context menu on multiple selections
-        click(ContextMenuHelper.contextMenu(treeBot, "Compare With", "Each Other"));
+        treeBot.contextMenu().menu("Compare With", "Each Other").click();
         exitProjectFolder(bot);
     }
 
@@ -188,24 +184,6 @@ public abstract class AbstractSWTBotTest extends AbstractTest {
         } catch (WidgetNotFoundException e) {
             // Already exited from project folder
         }
-    }
-
-    /**
-     * Click specfied menu item.
-     *
-     * @param menuItem
-     *            menu item to click
-     */
-    public static void click(final MenuItem menuItem) {
-        final Event event = new Event();
-        event.time = (int) System.currentTimeMillis();
-        event.widget = menuItem;
-        event.display = menuItem.getDisplay();
-        event.type = SWT.Selection;
-
-		UIThreadRunnable.asyncExec(menuItem.getDisplay(), () -> {
-			menuItem.notifyListeners(SWT.Selection, event);
-		});
     }
 
     @Override

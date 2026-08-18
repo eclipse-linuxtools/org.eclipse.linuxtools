@@ -57,6 +57,6 @@ public class SVNReporsitoriesView {
      */
     private void clickOnDiscardRepo(SWTBotTree svnReposTree) {
         String menuItem = "Discard location";
-        ContextMenuHelper.clickContextMenu(svnReposTree, menuItem);
+        svnReposTree.contextMenu().menu(menuItem).click();
     }
 }
