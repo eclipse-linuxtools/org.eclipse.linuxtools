@@ -331,7 +331,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		// when
 		selectImageInTreeView(bot, "root");
 		// show image info in Properties view
-		SWTUtils.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Show In", "Properties")
+		bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree().contextMenu().menu("Show In", "Properties")
 				.click();
 		// the properties view should be visible and filled with images details
 		TabDescriptorAssertions.assertThat(SWTUtils.waitForSelectedPropertiesTab(bot, "org.eclipse.linuxtools.docker.ui.properties.image.info"))
@@ -346,7 +346,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		// when
 		selectImageInTreeView(bot, "root", "foo_image1", "foo_container1");
 		// show container info in Properties view
-		SWTUtils.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Show In", "Properties")
+		bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree().contextMenu().menu("Show In", "Properties")
 				.click();
 		// the properties view should be visible and filled with container details
 		TabDescriptorAssertions.assertThat(SWTUtils.waitForSelectedPropertiesTab(bot, "org.eclipse.linuxtools.docker.ui.properties.container.info"))
@@ -359,8 +359,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		shouldDisplayImageHierarchyViewWhenSelectingImage();
 		// when
 		selectImageInTreeView(bot, "root");
-		final SWTBotMenu menu = SWTUtils
-				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Remove");
+		final SWTBotMenu menu = bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree().contextMenu().menu("Remove");
 		// then
 		MenuAssertion.assertThat(menu).isVisible().isEnabled();
 	}
@@ -371,8 +370,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		shouldDisplayImageHierarchyViewWhenSelectingImage();
 		// when
 		selectImageInTreeView(bot, "root");
-		final SWTBotMenu menu = SWTUtils
-				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Add Tag");
+		final SWTBotMenu menu = bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree().contextMenu().menu("Add Tag");
 		// then
 		MenuAssertion.assertThat(menu).isVisible().isEnabled();
 	}
@@ -383,8 +381,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		shouldDisplayImageHierarchyViewWhenSelectingImage();
 		// when
 		selectImageInTreeView(bot, "root");
-		final SWTBotMenu menu = SWTUtils
-				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Push...");
+		final SWTBotMenu menu = bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree().contextMenu().menu("Push...");
 		// then
 		MenuAssertion.assertThat(menu).isVisible().isEnabled();
 	}
@@ -395,8 +392,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		shouldDisplayImageHierarchyViewWhenSelectingImage();
 		// when
 		selectImageInTreeView(bot, "root", "foo_image1", "foo_image2", "foo_container21");
-		final SWTBotMenu menu = SWTUtils
-				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Start");
+		final SWTBotMenu menu = bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree().contextMenu().menu("Start");
 		// then
 		MenuAssertion.assertThat(menu).isVisible().isEnabled();
 	}
@@ -407,8 +403,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		shouldDisplayImageHierarchyViewWhenSelectingImage();
 		// when
 		selectImageInTreeView(bot, "root", "foo_image1", "foo_container1");
-		final SWTBotMenu menu = SWTUtils
-				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Pause");
+		final SWTBotMenu menu = bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree().contextMenu().menu("Pause");
 		// then
 		MenuAssertion.assertThat(menu).isVisible().isEnabled();
 	}
@@ -419,8 +414,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		shouldDisplayImageHierarchyViewWhenSelectingImage();
 		// when
 		selectImageInTreeView(bot, "root", "foo_image1", "foo_image2", "foo_container22");
-		final SWTBotMenu menu = SWTUtils
-				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Unpause");
+		final SWTBotMenu menu = bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree().contextMenu().menu("Unpause");
 		// then
 		MenuAssertion.assertThat(menu).isVisible().isEnabled();
 	}
@@ -431,8 +425,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		shouldDisplayImageHierarchyViewWhenSelectingImage();
 		// when
 		selectImageInTreeView(bot, "root", "foo_image1", "foo_container1");
-		final SWTBotMenu menu = SWTUtils
-				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Kill");
+		final SWTBotMenu menu = bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree().contextMenu().menu("Kill");
 		// then
 		MenuAssertion.assertThat(menu).isVisible().isEnabled();
 	}
@@ -443,8 +436,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		shouldDisplayImageHierarchyViewWhenSelectingImage();
 		// when
 		selectImageInTreeView(bot, "root", "foo_image1", "foo_image2", "foo_container21");
-		final SWTBotMenu menu = SWTUtils
-				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Remove");
+		final SWTBotMenu menu = bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree().contextMenu().menu("Remove");
 		// then
 		MenuAssertion.assertThat(menu).isVisible().isEnabled();
 	}
@@ -455,8 +447,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		shouldDisplayImageHierarchyViewWhenSelectingImage();
 		// when
 		selectImageInTreeView(bot, "root", "foo_image1", "foo_image2", "foo_container21");
-		final SWTBotMenu menu = SWTUtils
-				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Commit");
+		final SWTBotMenu menu = bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree().contextMenu().menu("Commit");
 		// then
 		MenuAssertion.assertThat(menu).isVisible().isEnabled();
 	}
@@ -467,8 +458,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		shouldDisplayImageHierarchyViewWhenSelectingImage();
 		// when
 		selectImageInTreeView(bot, "root", "foo_image1", "foo_image2", "foo_container21");
-		final SWTBotMenu menu = SWTUtils
-				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Display Log");
+		final SWTBotMenu menu = bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree().contextMenu().menu("Display Log");
 		// then
 		MenuAssertion.assertThat(menu).isVisible().isEnabled();
 	}
@@ -479,8 +469,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 		shouldDisplayImageHierarchyViewWhenSelectingImage();
 		// when
 		selectImageInTreeView(bot, "root", "foo_image1", "foo_image2", "foo_container21");
-		final SWTBotMenu menu = SWTUtils
-				.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Remove Log");
+		final SWTBotMenu menu = bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree().contextMenu().menu("Remove Log");
 		// then
 		MenuAssertion.assertThat(menu).isVisible().isEnabled();
 	}

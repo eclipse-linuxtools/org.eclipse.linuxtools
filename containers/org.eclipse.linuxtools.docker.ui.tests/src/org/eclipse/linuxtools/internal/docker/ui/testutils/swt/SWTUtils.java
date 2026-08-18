@@ -30,7 +30,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
@@ -43,8 +42,6 @@ import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
-import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBot;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
@@ -56,7 +53,6 @@ import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.views.properties.PropertySheet;
 import org.eclipse.ui.views.properties.tabbed.ITabDescriptor;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
-import org.junit.jupiter.api.Assertions;
 
 /**
  * Utility class for SWT
@@ -340,27 +336,6 @@ public class SWTUtils {
 	}
 
 	/**
-	 * @param tree
-	 *            the root {@link SWTBotTree}
-	 * @param path
-	 *            the path for the menu
-	 * @return the child {@link SWTBotMenu} named with the first item in the
-	 *         given <code>path</code> from the given {@link SWTBotTree}
-	 */
-	public static SWTBotMenu getContextMenu(final SWTBotTree tree, String... path) {
-		final SWTBotMenu contextMenu = tree.contextMenu(path[0]);
-		if (contextMenu == null) {
-			Assertions.fail("Failed to find context menu '" + path[0] + "'.");
-		}
-		if (path.length == 1) {
-			return contextMenu;
-		}
-		final String[] remainingPath = new String[path.length - 1];
-		System.arraycopy(path, 1, remainingPath, 0, remainingPath.length);
-		return getSubMenu(contextMenu, remainingPath);
-	}
-
-	/**
 	 * Hides the menu for the given <code>tree</code>
 	 *
 	 * @param tree
@@ -388,27 +363,6 @@ public class SWTUtils {
 			// tree in the
 			// Docker Explorer view for the test that just ran.
 		}
-	}
-
-	/**
-	 * @param menu
-	 *            the parent menu
-	 * @param path
-	 *            the path for the menu
-	 * @return the child {@link SWTBotMenu} named with the first item in the
-	 *         given <code>path</code> from the given {@link SWTBotMenu}
-	 */
-	public static SWTBotMenu getSubMenu(final SWTBotMenu menu, String... path) {
-		final SWTBotMenu subMenu = menu.menu(path[0]);
-		if (subMenu == null) {
-			Assertions.fail("Failed to find submenu '" + path[0] + "'.");
-		}
-		if (path.length == 1) {
-			return subMenu;
-		}
-		final String[] remainingPath = new String[path.length - 1];
-		System.arraycopy(path, 1, remainingPath, 0, remainingPath.length);
-		return getSubMenu(subMenu, remainingPath);
 	}
 
 	public static SWTBotTreeItem expand(final SWTBotTree tree, final String... paths) {
@@ -577,23 +531,6 @@ public class SWTUtils {
 
 	public static void closeView(final SWTWorkbenchBot bot, final String viewId) {
 		bot.views().stream().filter(v -> v.getReference().getId().equals(viewId)).forEach(SWTBotView::close);
-	}
-
-	/**
-	 * Creates a new {@link SWTBotMenu} from the context. This avoids some
-	 * unexpected "Widget is disposed" errors.
-	 *
-	 * @param bot
-	 *            the bot
-	 * @param menuName
-	 *            the name of the menu to find
-	 * @return the context menu
-	 * @see <a href=
-	 *      "https://www.eclipse.org/forums/index.php?t=msg&th=11863&start=0&">Eclipse
-	 *      forum</a>
-	 */
-	public static SWTBotMenu getContextMenu(final AbstractSWTBot<? extends Control> bot, final String menuName) {
-		return bot.contextMenu().menu(menuName);
 	}
 
 }

@@ -391,7 +391,7 @@ public class DockerExplorerViewSWTBotTest {
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// open the context menu on one of the containers
 		selectContainersInTreeView("Test", "gentle_foo", "angry_bar");
-		final SWTBotMenu menuCommand = SWTUtils.getContextMenu(dockerExplorerViewBot.bot().tree(), "Pause");
+		final SWTBotMenu menuCommand = dockerExplorerViewBot.bot().tree().contextMenu().menu("Pause");
 		// then
 		MenuAssertion.assertThat(menuCommand).isVisible().isNotEnabled();
 	}
@@ -521,11 +521,11 @@ public class DockerExplorerViewSWTBotTest {
 		// open the context menu on one the container
 		selectConnectionInTreeView("Test");
 		// show container info in Properties view
-		SWTUtils.getContextMenu(dockerExplorerViewBot.bot().tree(), "Show In", "Properties").click();
+		dockerExplorerViewBot.bot().tree().contextMenu().menu("Show In", "Properties").click();
 		// the properties view should be visible
 		assertThat(this.bot.viewById("org.eclipse.ui.views.PropertySheet").isActive()).isEqualTo(true);
 		SWTBotView propertiesViewBot = bot.viewById("org.eclipse.ui.views.PropertySheet");
-		SWTUtils.getContextMenu(propertiesViewBot.bot().tree().select(1), "Copy").click();
+		propertiesViewBot.bot().tree().select(1).contextMenu().menu("Copy").click();
 		this.dockerExplorerView = (DockerExplorerView) (dockerExplorerViewBot.getViewReference().getView(true));
 	}
 
@@ -540,7 +540,7 @@ public class DockerExplorerViewSWTBotTest {
 		// open the context menu on one the container
 		selectContainersInTreeView("Test", "angry_bar");
 		// show container info in Properties view
-		SWTUtils.getContextMenu(dockerExplorerViewBot.bot().tree(), "Show In", "Properties").click();
+		dockerExplorerViewBot.bot().tree().contextMenu().menu("Show In", "Properties").click();
 		// the properties view should be visible
 		assertThat(this.bot.viewById("org.eclipse.ui.views.PropertySheet").isActive()).isEqualTo(true);
 		// then the properties view should have a selected tab with the
@@ -560,7 +560,7 @@ public class DockerExplorerViewSWTBotTest {
 		// open the context menu on one the container
 		selectImagesInTreeView("Test", "angry_bar");
 		// show images info in Properties view
-		SWTUtils.getContextMenu(dockerExplorerViewBot.bot().tree(), "Show In", "Properties").click();
+		dockerExplorerViewBot.bot().tree().contextMenu().menu("Show In", "Properties").click();
 		// the properties view should be visible
 		assertThat(this.bot.viewById("org.eclipse.ui.views.PropertySheet").isActive()).isEqualTo(true);
 		// then the properties view should have a selected tab with the
@@ -654,7 +654,7 @@ public class DockerExplorerViewSWTBotTest {
 		assertThat(initialConnections).contains("Test1", "Test2");
 		// when
 		SWTUtils.select(dockerExplorerViewBot.bot().tree(), "Test1", "Test2");
-		SWTUtils.getContextMenu(dockerExplorerViewBot.bot().tree(), "Remove").click();
+		dockerExplorerViewBot.bot().tree().contextMenu().menu("Remove").click();
 		// then
 		final List<String> remainingConnections = Stream.of(dockerExplorerViewBot.bot().tree().getAllItems())
 				.map(SWTBotTreeItem::getText).toList();
