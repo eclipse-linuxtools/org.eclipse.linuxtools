@@ -15,7 +15,6 @@ package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.ui.console.IConsoleConstants;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -27,13 +26,7 @@ public class ConsoleViewRule implements BeforeEachCallback {
 
 	@Override
 	public void beforeEach(final ExtensionContext context) {
-		Display.getDefault().syncExec(() -> {
-			final SWTBotView consoleView = SWTUtils.getSWTBotView(new SWTWorkbenchBot(),
-					IConsoleConstants.ID_CONSOLE_VIEW);
-			if (consoleView != null) {
-				consoleView.close();
-			}
-		});
+		Display.getDefault().syncExec(() -> SWTUtils.closeView(new SWTWorkbenchBot(), IConsoleConstants.ID_CONSOLE_VIEW));
 	}
 
 }
