@@ -83,8 +83,11 @@ public class CommandUtilsSWTBotTest {
 	@Test
 	public void shouldRetrieveConnectionFromSelectedContainer() {
 		// given
+		// the container needs inspect info: expanding it in the explorer loads
+		// that info in the background and shows "Loading..." until it arrives,
+		// which with an unstubbed inspectContainer() is never
 		final DockerClient client = MockDockerClientFactory
-				.container(MockContainerFactory.name("foo_bar").build()).build();
+				.container(MockContainerFactory.name("foo_bar").build(), MockContainerInfoFactory.build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		final SWTBotTreeItem container = SWTUtils.expand(dockerExplorerViewBot.bot().tree(), "Test", "Containers",
