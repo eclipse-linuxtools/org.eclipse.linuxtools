@@ -395,6 +395,18 @@ public class SWTUtils {
 		return treeItem;
 	}
 
+	/**
+	 * Looks up a view that may not be open. Unlike
+	 * {@link SWTWorkbenchBot#viewById(String)}, which throws when the view is
+	 * missing, this answers <code>null</code> so that callers can treat a
+	 * closed view as an expected state.
+	 *
+	 * @param bot
+	 *            the workbench bot
+	 * @param viewId
+	 *            the id of the view to look up
+	 * @return the view, or <code>null</code> if it is not open
+	 */
 	public static SWTBotView getSWTBotView(final SWTWorkbenchBot bot, final String viewId) {
 		return bot.views().stream().filter(v -> v.getViewReference().getId().equals(viewId)).findFirst().orElse(null);
 	}

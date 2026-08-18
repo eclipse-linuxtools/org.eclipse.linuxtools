@@ -58,7 +58,7 @@ public class CommandUtilsSWTBotTest {
 				org.junit.jupiter.api.Assertions.fail("Failed to open Docker Explorer view: " + e.getMessage());
 			}
 		});
-		dockerExplorerViewBot = SWTUtils.getSWTBotView(bot, "org.eclipse.linuxtools.docker.ui.dockerExplorerView");
+		dockerExplorerViewBot = bot.viewById("org.eclipse.linuxtools.docker.ui.dockerExplorerView");
 		dockerExplorerView = (DockerExplorerView) (dockerExplorerViewBot.getViewReference().getView(true));
 		bot.views().stream()
 				.filter(v -> v.getReference().getId().equals("org.eclipse.linuxtools.docker.ui.dockerContainersView")

@@ -73,7 +73,7 @@ public class ImagePushSWTBotTests {
 
 	@BeforeEach
 	public void lookupDockerExplorerView() {
-		this.dockerExplorerViewBot = SWTUtils.getSWTBotView(bot, DockerExplorerView.VIEW_ID);
+		this.dockerExplorerViewBot = bot.viewById(DockerExplorerView.VIEW_ID);
 		this.dockerExplorerView = (DockerExplorerView) (dockerExplorerViewBot.getViewReference().getView(true));
 		this.dockerExplorerViewBot.show();
 		this.dockerExplorerViewBot.setFocus();
