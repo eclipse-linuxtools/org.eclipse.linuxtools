@@ -40,7 +40,6 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
@@ -608,7 +607,7 @@ public class SWTUtils {
 	 *      forum</a>
 	 */
 	public static SWTBotMenu getContextMenu(final AbstractSWTBot<? extends Control> bot, final String menuName) {
-		return new SWTBotMenu(ContextMenuHelper.contextMenu(bot, menuName));
+		return bot.contextMenu().menu(menuName);
 	}
 
 }

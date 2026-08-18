@@ -54,7 +54,6 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
@@ -882,7 +881,7 @@ public class TestCreateSystemtapScript {
         graphEditorA.show();
         graphEditorA.bot().cTabItem("Data View").activate();
         dataTable = bot.table();
-        new SWTBotMenu(ContextMenuHelper.contextMenu(dataTable, "Add filter...")).click();
+        dataTable.contextMenu().menu("Add filter...").click();
         SWTBotShell shell = bot.shell("Create Filter");
         shell.setFocus();
 
@@ -917,9 +916,8 @@ public class TestCreateSystemtapScript {
         graphEditorA.show();
         graphEditorA.bot().cTabItem("Data View").activate();
         dataTable = bot.table();
-        new SWTBotMenu(ContextMenuHelper.contextMenu(dataTable,
-                "Remove filter...",
-                "Match Filter: \"" + valA1 + "\" removing \"2\"")).click();
+        dataTable.contextMenu().menu("Remove filter...",
+                "Match Filter: \"" + valA1 + "\" removing \"2\"").click();
         bot.waitUntil(new TableHasUpdated(graphEditorA.bot().table(), 10, true));
         assertEquals("2", dataTable.cell(2, 1));
         assertEquals("4", dataTable.cell(2, 2));
@@ -1320,9 +1318,8 @@ public class TestCreateSystemtapScript {
     private static void openRunConfigurations(String scriptName) {
         // Focus on project explorer view.
         projectExplorer.setFocus();
-        new SWTBotMenu(ContextMenuHelper.contextMenu(
-                projectExplorer.bot().tree().select(scriptName),
-                "Run As", "Run Configurations...")).click();
+        projectExplorer.bot().tree().select(scriptName).contextMenu()
+                .menu("Run As", "Run Configurations...").click();
     }
 
     private static void setupGraphWithTests(String title, boolean isTab) {

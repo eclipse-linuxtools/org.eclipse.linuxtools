@@ -21,7 +21,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.bindings.keys.KeyStroke;
-import org.eclipse.linuxtools.changelog.ui.tests.utils.ContextMenuHelper;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorer;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorerTreeItemAppearsCondition;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.SVNProject;
@@ -149,7 +148,7 @@ public class CreateChangeLogFromHistorySWTBotTest extends AbstractSWTBotTest {
      */
     private void clickOnGenerateChangeLog(SWTBotTable table) {
         String menuItem = "Generate ChangeLog...";
-        ContextMenuHelper.clickContextMenu(table, menuItem);
+        table.contextMenu().menu(menuItem).click();
     }
 
     /**
@@ -158,7 +157,7 @@ public class CreateChangeLogFromHistorySWTBotTest extends AbstractSWTBotTest {
     private void clickOnShowHistory(SWTBotTree tree) {
         String menuItem = "Team";
         String subMenuItem = "Show History";
-        ContextMenuHelper.clickContextMenu(tree, menuItem, subMenuItem);
+        tree.contextMenu().menu(menuItem, subMenuItem).click();
     }
 
 }
