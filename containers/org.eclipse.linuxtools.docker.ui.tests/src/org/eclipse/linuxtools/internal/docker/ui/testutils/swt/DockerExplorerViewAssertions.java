@@ -13,8 +13,6 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
-import static org.hamcrest.Matchers.notNullValue;
-
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
 
@@ -32,7 +30,7 @@ public class DockerExplorerViewAssertions extends AbstractAssert<DockerExplorerV
 	}
 
 	public DockerExplorerViewAssertions isEmpty() {
-		notNullValue();
+		isNotNull();
 		try {
 			// let's make sure changes in the UI were taken into account before
 			// performing assertions
@@ -47,7 +45,7 @@ public class DockerExplorerViewAssertions extends AbstractAssert<DockerExplorerV
 	}
 
 	public DockerExplorerViewAssertions isNotEmpty() {
-		notNullValue();
+		isNotNull();
 		if(!actual.isShowingConnectionsPane()) {
 			failWithMessage("Expected Docker Explorer View to show the connections pane but it did not");
 		}

@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
-import static org.hamcrest.Matchers.notNullValue;
-
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 
@@ -31,7 +29,7 @@ public class ComboAssertions extends AbstractSWTBotAssertions<ComboAssertions, S
 	}
 
 	public ComboAssertions itemSelected(final String expectedItem) {
-		notNullValue();
+		isNotNull();
 		if (actual.selectionIndex() < 0) {
 			failWithMessage("Expected combo to have selection to '%s' but it had none", expectedItem);
 		} else if (!actual.selection().equals(expectedItem)) {
@@ -42,7 +40,7 @@ public class ComboAssertions extends AbstractSWTBotAssertions<ComboAssertions, S
 	}
 
 	public ComboAssertions indexItemSelected(final int expectedItemIndex) {
-		notNullValue();
+		isNotNull();
 		if (actual.selectionIndex() < 0) {
 			failWithMessage("Expected combo to have selection index to '%s' but it had none", expectedItemIndex);
 		} else if (actual.selectionIndex() != expectedItemIndex) {

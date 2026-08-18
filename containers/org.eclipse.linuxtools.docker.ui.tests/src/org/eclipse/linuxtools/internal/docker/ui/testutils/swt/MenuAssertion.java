@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
-import static org.hamcrest.Matchers.notNullValue;
-
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 
@@ -31,7 +29,7 @@ public class MenuAssertion extends AbstractSWTBotAssertions<MenuAssertion, SWTBo
 	}
 
 	public MenuAssertion isVisible() {
-		notNullValue();
+		isNotNull();
 		if (!actual.isVisible()) {
 			failWithMessage("Expected menu with text '%s' to be visible but it was not", actual.getText());
 		}
@@ -39,7 +37,7 @@ public class MenuAssertion extends AbstractSWTBotAssertions<MenuAssertion, SWTBo
 	}
 
 	public MenuAssertion isNotVisible() {
-		notNullValue();
+		isNotNull();
 		if (actual.isVisible()) {
 			failWithMessage("Expected menu with text '%s' to be visible but it was not", actual.getText());
 		}

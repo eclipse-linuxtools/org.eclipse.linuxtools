@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
-import static org.hamcrest.Matchers.notNullValue;
-
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 
 /**
@@ -30,7 +28,7 @@ public class RadioAssertion extends AbstractSWTBotAssertions<RadioAssertion, SWT
 	}
 
 	public RadioAssertion isSelected() {
-		notNullValue();
+		isNotNull();
 		if(!actual.isSelected()) {
 			failWithMessage("Expected checkbox with text '%s' to be checked but it was not", actual.getText());
 		}
@@ -38,7 +36,7 @@ public class RadioAssertion extends AbstractSWTBotAssertions<RadioAssertion, SWT
 	}
 
 	public RadioAssertion isNotSelected() {
-		notNullValue();
+		isNotNull();
 		if(actual.isSelected()) {
 			failWithMessage("Expected checkbox with text '%s' to be unchecked but it was not", actual.getText());
 		}
