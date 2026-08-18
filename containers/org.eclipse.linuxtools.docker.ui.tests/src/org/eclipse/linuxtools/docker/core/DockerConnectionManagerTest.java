@@ -87,7 +87,7 @@ public class DockerConnectionManagerTest {
 		Display.getDefault().syncExec(() -> dockerConnectionManager.removeConnection(dockerConnection));
 		SWTUtils.wait(1, TimeUnit.SECONDS);
 		// then
-		Assertions.assertThat(!dockerContainersRefreshManager.getConnections().contains(dockerConnection));
+		Assertions.assertThat(dockerContainersRefreshManager.getConnections()).doesNotContain(dockerConnection);
 	}
 
 	@Test
