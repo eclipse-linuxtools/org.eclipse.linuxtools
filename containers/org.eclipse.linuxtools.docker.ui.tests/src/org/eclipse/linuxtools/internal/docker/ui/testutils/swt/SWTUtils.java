@@ -19,7 +19,6 @@ import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -66,20 +65,6 @@ public class SWTUtils {
 
 	/** the label of the stub shown by the Docker Explorer while a node loads. */
 	public static final String LOADING_STUB_TEXT = "Loading..."; //$NON-NLS-1$
-
-	/**
-	 * Calls <strong>synchronously</strong> the given {@link Supplier} in the
-	 * default Display and returns the result
-	 *
-	 * @param supplier
-	 *            the Supplier to call
-	 * @return the supplier's result
-	 */
-	public static <V> V syncExec(final Supplier<V> supplier) {
-		final Queue<V> result = new ArrayBlockingQueue<>(1);
-		Display.getDefault().syncExec(() -> result.add(supplier.get()));
-		return result.poll();
-	}
 
 	/**
 	 * Executes <strong>synchronously</strong> the given {@link Runnable} in the
@@ -571,8 +556,9 @@ public class SWTUtils {
 
 			@Override
 			public boolean test() {
-				final PropertySheet propertySheet = syncExec(
-						() -> getView(workbenchBot, "org.eclipse.ui.views.PropertySheet", true)); //$NON-NLS-1$
+				final PropertySheet propertySheet = UIThreadRunnable.syncExec(
+						() -> SWTUtils.<PropertySheet>getView(workbenchBot, "org.eclipse.ui.views.PropertySheet", //$NON-NLS-1$
+								true));
 				if (propertySheet != null
 						&& propertySheet.getCurrentPage() instanceof TabbedPropertySheetPage tabbedPage) {
 					selectedTab[0] = tabbedPage.getSelectedTab();

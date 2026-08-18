@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.ui.PlatformUI;
@@ -189,7 +190,9 @@ public class DockerImagesViewSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		SWTUtils.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
+		UIThreadRunnable.syncExec(() -> {
+			SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true);
+		});
 		this.dockerImagesView.setFocus();
 		// select the image in the table
 		selectImageInTable("angry_bar");
@@ -208,7 +211,9 @@ public class DockerImagesViewSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		SWTUtils.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
+		UIThreadRunnable.syncExec(() -> {
+			SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true);
+		});
 		this.dockerImagesView.setFocus();
 		// select the container in the table
 		selectImageInTable("angry_bar");

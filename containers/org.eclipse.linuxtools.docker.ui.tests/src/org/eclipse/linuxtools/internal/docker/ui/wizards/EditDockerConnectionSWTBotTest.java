@@ -62,6 +62,7 @@ import org.eclipse.linuxtools.internal.docker.ui.views.DockerContainersView;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerImagesView;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -513,7 +514,7 @@ public class EditDockerConnectionSWTBotTest {
 		SWTUtils.wait(2, TimeUnit.SECONDS);
 		// then
 		final DockerImagesView dockerImagesView = dockerImages.view();
-		final String formTitle = SWTUtils.syncExec(() -> dockerImagesView.getFormTitle());
+		final String formTitle = UIThreadRunnable.syncExec(() -> dockerImagesView.getFormTitle());
 		assertThat(formTitle).contains("foo");
 	}
 
@@ -530,7 +531,7 @@ public class EditDockerConnectionSWTBotTest {
 		SWTUtils.wait(2, TimeUnit.SECONDS);
 		// then
 		final DockerContainersView dockerContainersView = dockerContainers.view();
-		final String formTitle = SWTUtils.syncExec(() -> dockerContainersView.getFormTitle());
+		final String formTitle = UIThreadRunnable.syncExec(() -> dockerContainersView.getFormTitle());
 		assertThat(formTitle).contains("foo");
 	}
 

@@ -50,6 +50,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TextAssertions;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.WizardMessages;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
@@ -186,13 +187,13 @@ public class DockerComposeSWTBotTest {
 		projectExplorerBotView.setFocus();
 		final SWTBotTreeItem fooProjectTreeItem = SWTUtils.getTreeItem(projectExplorerBotView, projectName);
 		assertThat(fooProjectTreeItem).isNotNull();
-		SWTUtils.syncExec(() -> fooProjectTreeItem.expand());
+		UIThreadRunnable.syncExec(() -> fooProjectTreeItem.expand());
 		final SWTBotTreeItem dockerfileTreeItem = SWTUtils.getTreeItem(fooProjectTreeItem, dockerComposeFileName);
 		assertThat(dockerfileTreeItem).isNotNull();
 		// select the item itself: SWTUtils.select(item, matchers...) with no matchers
 		// filters the children against nothing and ends up selecting nothing at all,
 		// which leaves the workbench selection empty and the "Run As" menu absent
-		SWTUtils.syncExec(() -> dockerfileTreeItem.select());
+		UIThreadRunnable.syncExec(() -> dockerfileTreeItem.select());
 		final SWTBotMenu runAsDockerComposeMenu = SWTUtils.getContextMenu(
 				projectExplorerBotView.bot().tree(),
 				"Run As", "1 Docker Compose");

@@ -22,6 +22,7 @@ import org.eclipse.linuxtools.internal.docker.core.DefaultDockerConnectionSettin
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.ui.PlatformUI;
@@ -60,7 +61,7 @@ public class CloseShellRule implements AfterEachCallback {
 	 *         most recently opened) first.
 	 */
 	private static List<SWTBotShell> dialogShells(final SWTWorkbenchBot bot) {
-		final Shell workbenchShell = SWTUtils
+		final Shell workbenchShell = UIThreadRunnable
 				.syncExec(() -> PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
 		final List<SWTBotShell> dialogShells = new ArrayList<>();
 		for (SWTBotShell shell : bot.shells()) {
