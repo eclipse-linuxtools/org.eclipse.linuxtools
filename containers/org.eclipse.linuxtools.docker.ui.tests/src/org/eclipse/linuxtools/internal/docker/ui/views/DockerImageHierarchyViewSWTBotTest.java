@@ -17,6 +17,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
+import org.eclipse.e4.ui.model.application.ui.MElementContainer;
+import org.eclipse.e4.ui.model.application.ui.MUIElement;
+import org.eclipse.e4.ui.model.application.ui.advanced.MPlaceholder;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.linuxtools.docker.core.IDockerContainer;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
 import org.eclipse.linuxtools.docker.core.IDockerImageHierarchyNode;
@@ -37,9 +43,9 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.views.properties.PropertySheet;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -144,20 +150,51 @@ public class DockerImageHierarchyViewSWTBotTest {
 		return (DockerImageHierarchyView) hierarchyViewBot.getViewReference().getView(true);
 	}
 
+	/**
+	 * The Docker perspective has no placeholder for the Image Hierarchy view, so
+	 * it opens in the Console/Properties stack. The Properties view ignores
+	 * activation of parts that share its stack while it is hidden behind them
+	 * (see {@code PropertySheet#partActivated}), which breaks 'Show In >
+	 * Properties'. Move the view next to the Docker Explorer view, as a user
+	 * would do by dragging it there.
+	 */
+	private static void moveImageHierarchyViewNextToDockerExplorerView() {
+		SWTUtils.syncExec(() -> {
+			final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			final IViewPart hierarchyView = page.findView(DockerImageHierarchyView.VIEW_ID);
+			final IViewPart explorerView = page.findView(DockerExplorerView.VIEW_ID);
+			final EModelService modelService = hierarchyView.getSite().getService(EModelService.class);
+			final MPart hierarchyPart = hierarchyView.getSite().getService(MPart.class);
+			final MPart explorerPart = explorerView.getSite().getService(MPart.class);
+			final MWindow window = modelService.getTopLevelWindowFor(hierarchyPart);
+			final MPlaceholder hierarchyPlaceholder = modelService.findPlaceholderFor(window, hierarchyPart);
+			final MPlaceholder explorerPlaceholder = modelService.findPlaceholderFor(window, explorerPart);
+			final MUIElement toMove = hierarchyPlaceholder != null ? hierarchyPlaceholder : hierarchyPart;
+			final MElementContainer<MUIElement> target = (explorerPlaceholder != null ? explorerPlaceholder
+					: explorerPart).getParent();
+			if (toMove.getParent() != target) {
+				modelService.move(toMove, target);
+			}
+			page.activate(hierarchyView);
+			return null;
+		});
+	}
+
 	private static SWTBotTreeItem selectImageInTreeView(final SWTWorkbenchBot bot, final String... path) {
 		final SWTBotView dockerImageHierarchyViewBot = bot.viewById(DockerImageHierarchyView.VIEW_ID);
-		final DockerImageHierarchyView dockerImageHierarchyView = (DockerImageHierarchyView) (dockerImageHierarchyViewBot
-				.getViewReference().getView(true));
-		bot.getDisplay().asyncExec(() -> dockerImageHierarchyView.getCommonViewer().expandAll());
-		// when a second call to expand the container is done (because the first
-		// expandAll stopped with a "Loading..." job that retrieved the
-		// containers)
+		// the command handler opens the view without activating it, but the
+		// context menu contributions and the handlers are evaluated against the
+		// selection of the *active* part, so activate the view first.
+		dockerImageHierarchyViewBot.show();
+		// the hierarchy is already fully expanded by DockerImageHierarchyView#show()
 		return SWTUtils.getTreeItem(dockerImageHierarchyViewBot, path).select();
 	}
 
 	@Test
 	public void shouldDisplayImageHierarchyViewWhenSelectingImage() {
 		// given
+		// the command handler resolves the selected image from the active part
+		dockerExplorerViewBot.show();
 		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images", "foo_image1").select();
 		// when
 		dockerExplorerViewBot.bot().tree().contextMenu("Open Image Hierarchy").click(); //$NON-NLS-1$
@@ -289,35 +326,30 @@ public class DockerImageHierarchyViewSWTBotTest {
 	@Test
 	public void shouldShowSelectedImageInPropertiesView() {
 		// given
-		final PropertySheet propertySheet = SWTUtils
-				.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
 		shouldDisplayImageHierarchyViewWhenSelectingImage();
+		moveImageHierarchyViewNextToDockerExplorerView();
 		// when
 		selectImageInTreeView(bot, "root");
-		// show container info in Properties view
+		// show image info in Properties view
 		SWTUtils.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Show In", "Properties")
 				.click();
 		// the properties view should be visible and filled with images details
-		assertThat(propertySheet.getCurrentPage()).isInstanceOf(TabbedPropertySheetPage.class);
-		final TabbedPropertySheetPage currentPage = (TabbedPropertySheetPage) propertySheet.getCurrentPage();
-		TabDescriptorAssertions.assertThat(currentPage.getSelectedTab()).isNotNull()
+		TabDescriptorAssertions.assertThat(SWTUtils.waitForSelectedPropertiesTab(bot, "org.eclipse.linuxtools.docker.ui.properties.image.info"))
 				.hasId("org.eclipse.linuxtools.docker.ui.properties.image.info");
 	}
 
 	@Test
 	public void shouldShowSelectedContainerInPropertiesView() {
 		// given
-		final PropertySheet propertySheet = SWTUtils
-				.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
 		shouldDisplayImageHierarchyViewWhenSelectingImage();
+		moveImageHierarchyViewNextToDockerExplorerView();
 		// when
 		selectImageInTreeView(bot, "root", "foo_image1", "foo_container1");
 		// show container info in Properties view
 		SWTUtils.getContextMenu(bot.viewById(DockerImageHierarchyView.VIEW_ID).bot().tree(), "Show In", "Properties")
 				.click();
-		assertThat(propertySheet.getCurrentPage()).isInstanceOf(TabbedPropertySheetPage.class);
-		final TabbedPropertySheetPage currentPage = (TabbedPropertySheetPage) propertySheet.getCurrentPage();
-		TabDescriptorAssertions.assertThat(currentPage.getSelectedTab()).isNotNull()
+		// the properties view should be visible and filled with container details
+		TabDescriptorAssertions.assertThat(SWTUtils.waitForSelectedPropertiesTab(bot, "org.eclipse.linuxtools.docker.ui.properties.container.info"))
 				.hasId("org.eclipse.linuxtools.docker.ui.properties.container.info");
 	}
 

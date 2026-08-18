@@ -37,6 +37,8 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.MenuAssertion;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -69,6 +71,8 @@ public class ImagePullSWTBotTest {
 	public CloseShellRule closeShell = new CloseShellRule(IDialogConstants.CANCEL_LABEL);
 	private RegistryAccountStorageManager defaultRegistryAccountStorageManager;
 	private DockerClient client;
+	/** bot scoped to the "Pull Image" wizard shell, see {@link #openPullWizard()}. */
+	private SWTBot wizardBot;
 
 	@BeforeEach
 	public void lookupDockerExplorerView() {
@@ -92,10 +96,29 @@ public class ImagePullSWTBotTest {
 		RegistryAccountManager.getInstance().setStorageManager(this.defaultRegistryAccountStorageManager);
 	}
 
+	/**
+	 * Opens the "Pull Image..." wizard from the Docker Explorer view and scopes
+	 * {@link #wizardBot} to its shell, so that widget lookups do not depend on
+	 * which shell happens to be active.
+	 */
 	private void openPullWizard() {
-		// when opening the "Push Image..." wizard
 		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images").select();
 		dockerExplorerViewBot.bot().tree().contextMenu("Pull...").click();
+		this.wizardBot = SWTUtils.waitForShell(bot, WizardMessages.getString("ImagePull.title")); //$NON-NLS-1$
+	}
+
+	private SWTBotText imageNameText() {
+		return wizardBot.textWithLabel(WizardMessages.getString("ImagePullPushPage.name.label")); //$NON-NLS-1$
+	}
+
+	/**
+	 * Verifies that the given image was pulled through the mocked client. The
+	 * pull runs in a background job once the wizard finishes, so this waits
+	 * for it.
+	 */
+	private void verifyImagePulled(final String imageName) throws DockerException, InterruptedException {
+		Mockito.verify(client, Mockito.timeout(TimeUnit.SECONDS.toMillis(10)).times(1)).pull(
+				ArgumentMatchers.eq(imageName), ArgumentMatchers.any(DockerProgressHandler.class));
 	}
 
 	@Disabled
@@ -104,9 +127,9 @@ public class ImagePullSWTBotTest {
 		// given
 		openPullWizard();
 		// when
-		bot.text(0).setText("jboss/wildfly:latest");
+		imageNameText().setText("jboss/wildfly:latest");
 		// then
-		assertFalse(bot.button("Finish").isEnabled());
+		assertFalse(wizardBot.button("Finish").isEnabled());
 	}
 
 	@Test
@@ -115,7 +138,7 @@ public class ImagePullSWTBotTest {
 		openPullWizard();
 		// when no data is input for the images name
 		// then
-		assertFalse(bot.button("Finish").isEnabled());
+		assertFalse(wizardBot.button("Finish").isEnabled());
 	}
 
 	@Test
@@ -123,11 +146,10 @@ public class ImagePullSWTBotTest {
 		// given
 		openPullWizard();
 		// when
-		bot.text(0).setText("jboss/wildfly:latest");
-		bot.button("Finish").click();
+		imageNameText().setText("jboss/wildfly:latest");
+		wizardBot.button("Finish").click();
 		// then
-		Mockito.verify(client, Mockito.times(1)).pull(ArgumentMatchers.eq("jboss/wildfly:latest"),
-				ArgumentMatchers.any(DockerProgressHandler.class));
+		verifyImagePulled("jboss/wildfly:latest");
 	}
 
 	@Test
@@ -135,11 +157,10 @@ public class ImagePullSWTBotTest {
 		// given
 		openPullWizard();
 		// when
-		bot.text(0).setText("jboss/wildfly");
-		bot.button("Finish").click();
+		imageNameText().setText("jboss/wildfly");
+		wizardBot.button("Finish").click();
 		// then
-		Mockito.verify(client, Mockito.times(1)).pull(ArgumentMatchers.eq("jboss/wildfly:latest"),
-				ArgumentMatchers.any(DockerProgressHandler.class));
+		verifyImagePulled("jboss/wildfly:latest");
 	}
 
 	@Test
@@ -151,13 +172,13 @@ public class ImagePullSWTBotTest {
 				.build();
 		openPullWizard();
 		// when selecting other registry
-		bot.comboBox(0).setSelection("foo@http://foo.com");
+		wizardBot.comboBoxWithLabel(WizardMessages.getString("ImagePullPushPage.registry.account.label")) //$NON-NLS-1$
+				.setSelection("foo@http://foo.com");
 		// when
-		bot.text(0).setText("jboss/wildfly:latest");
-		bot.button("Finish").click();
+		imageNameText().setText("jboss/wildfly:latest");
+		wizardBot.button("Finish").click();
 		// then
-		Mockito.verify(client, Mockito.times(1)).pull(ArgumentMatchers.eq("foo.com/jboss/wildfly:latest"),
-				ArgumentMatchers.any(DockerProgressHandler.class));
+		verifyImagePulled("foo.com/jboss/wildfly:latest");
 	}
 
 	@Test

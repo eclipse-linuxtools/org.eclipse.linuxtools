@@ -86,6 +86,13 @@ public class MockDockerConnectionFactory {
 				// return same dockerClient with auth arg
 				Mockito.when(dockerClientFactory.getClient(ArgumentMatchers.any(), ArgumentMatchers.any()))
 						.thenReturn(dockerClient);
+				// ... and for the overloads taking the 'infiniteTimeOut' flag, which
+				// is what DockerConnection#getClientCopy() (build, pull, push, ...)
+				// goes through
+				Mockito.when(dockerClientFactory.getClient(ArgumentMatchers.any(), ArgumentMatchers.anyBoolean()))
+						.thenReturn(dockerClient);
+				Mockito.when(dockerClientFactory.getClient(ArgumentMatchers.any(), ArgumentMatchers.any(),
+						ArgumentMatchers.anyBoolean())).thenReturn(dockerClient);
 			} catch (DockerCertificateException e) {
 				// rest assured, nothing will happen while mocking the DockerClientFactory
 			}

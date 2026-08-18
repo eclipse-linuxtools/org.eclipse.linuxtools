@@ -14,6 +14,7 @@
 package org.eclipse.linuxtools.internal.docker.ui.testutils;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +22,6 @@ import java.util.Set;
 import org.mandas.docker.client.messages.ContainerConfig;
 import org.mandas.docker.client.messages.ImageConfig;
 import org.mandas.docker.client.messages.ImageInfo;
-import org.mockito.Mockito;
 
 /**
  * A factory for mock {@link ImageInfo}s.
@@ -34,8 +34,6 @@ public class MockImageInfoFactory {
 
 	public static class Builder {
 
-		private final ImageInfo imageInfo;
-
 		private Set<String> volumes;
 
 		private List<String> command;
@@ -45,7 +43,6 @@ public class MockImageInfoFactory {
 		private List<String> env;
 
 		private Builder() {
-			this.imageInfo = Mockito.mock(ImageInfo.class, Mockito.RETURNS_DEEP_STUBS);
 		}
 
 		public Builder volume(final String volume) {
@@ -75,16 +72,19 @@ public class MockImageInfoFactory {
 		}
 
 		public ImageInfo build() {
-			final ContainerConfig config = Mockito.mock(ContainerConfig.class);
-			final ContainerConfig containerConfig = Mockito.mock(ContainerConfig.class);
-			final ImageConfig imageConfig = Mockito.mock(ImageConfig.class);
-			Mockito.when(this.imageInfo.config()).thenReturn(imageConfig);
-			Mockito.when(this.imageInfo.containerConfig()).thenReturn(containerConfig);
-			Mockito.when(config.cmd()).thenReturn(List.copyOf(this.command));
-			Mockito.when(config.entrypoint()).thenReturn(List.copyOf(this.entrypoint));
-			Mockito.when(config.volumes()).thenReturn(Set.copyOf(this.volumes));
-			Mockito.when(config.env()).thenReturn(List.copyOf(this.env));
-			return imageInfo;
+			// the builder fields are optional, so copy defensively: List.copyOf(null)
+			// throws rather than yielding an empty list
+			final Set<String> volumes = this.volumes == null ? Set.of() : Set.copyOf(this.volumes);
+			final ImageConfig config = ImageConfig.builder().cmd(copyOf(this.command))
+					.entrypoint(copyOf(this.entrypoint)).volumes(volumes).env(copyOf(this.env)).build();
+			final ContainerConfig containerConfig = ContainerConfig.builder().cmd(copyOf(this.command))
+					.entrypoint(copyOf(this.entrypoint)).volumes(volumes).env(copyOf(this.env)).build();
+			return new ImageInfo(null, null, null, new Date(), null, containerConfig, null, null, config, null, null,
+					null, null);
+		}
+
+		private static List<String> copyOf(final List<String> values) {
+			return values == null ? List.of() : List.copyOf(values);
 		}
 	}
 

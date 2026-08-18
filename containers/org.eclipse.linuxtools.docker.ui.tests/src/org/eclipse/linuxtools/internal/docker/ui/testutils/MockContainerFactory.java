@@ -24,7 +24,6 @@ import java.util.stream.Stream;
 
 import org.eclipse.linuxtools.docker.core.Messages;
 import org.mandas.docker.client.messages.Container;
-import org.mockito.Mockito;
 
 /**
  * A factory for mock {@link Container}s.
@@ -48,18 +47,24 @@ public class MockContainerFactory {
 
 		private static char[] hexa = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
-		private final Container container;
+		// Container is a record, so it is built rather than mocked: the inline
+		// mock maker has to retransform a record to mock it and the JVM rejects
+		// the result with a ClassFormatError. Building the real value is also
+		// simply the right thing to do for an immutable data carrier.
+		private String id;
+		private List<String> names = List.of();
+		private String image = "";
+		private String status = "";
+		private Long created = 0L;
 
 		private Builder() {
-			this.container = Mockito.mock(Container.class);
 		}
 
 		private Builder randomId() {
 			// generate a random id for the container
-			final String id = IntStream.range(0, 12)
+			this.id = IntStream.range(0, 12)
 					.mapToObj(i -> Character.valueOf(hexa[new Random().nextInt(16)]).toString())
 					.collect(Collectors.joining());
-			Mockito.when(this.container.id()).thenReturn(id);
 			return this;
 		}
 
@@ -67,29 +72,30 @@ public class MockContainerFactory {
 			final List<String> repoTags = new ArrayList<>();
 			repoTags.add(name);
 			Stream.of(otherNames).forEach(r -> repoTags.add(r));
-			Mockito.when(this.container.status()).thenReturn(Messages.Running_specifier);
-			Mockito.when(this.container.names()).thenReturn(List.copyOf(repoTags));
-			Mockito.when(this.container.created()).thenReturn(new Date().getTime());
+			this.status = Messages.Running_specifier;
+			this.names = List.copyOf(repoTags);
+			this.created = new Date().getTime();
 			return this;
 		}
 
 		public Builder imageName(final String imageId) {
-			Mockito.when(this.container.image()).thenReturn(imageId);
+			this.image = imageId;
 			return this;
 		}
 
 		public Builder status(final String status) {
-			Mockito.when(this.container.status()).thenReturn(status);
+			this.status = status;
 			return this;
 		}
 
 		public Builder statusProvider(final MockStatusProvider statusProvider) {
-			Mockito.when(this.container.status()).thenReturn(statusProvider.getStatus());
+			this.status = statusProvider.getStatus();
 			return this;
 		}
 
 		public Container build() {
-			return container;
+			return new Container(id, names, image, "", "", created, "", status, List.of(), Map.of(), 0L, 0L, null,
+					List.of());
 		}
 
 	}

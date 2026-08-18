@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 import static org.assertj.core.api.Assertions.fail;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -37,13 +38,16 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.ContextMenuHelper;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
@@ -51,12 +55,18 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.progress.UIJob;
+import org.eclipse.ui.views.properties.PropertySheet;
+import org.eclipse.ui.views.properties.tabbed.ITabDescriptor;
+import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.junit.jupiter.api.Assertions;
 
 /**
  * Utility class for SWT
  */
 public class SWTUtils {
+
+	/** the label of the stub shown by the Docker Explorer while a node loads. */
+	public static final String LOADING_STUB_TEXT = "Loading..."; //$NON-NLS-1$
 
 	/**
 	 * Calls <strong>synchronously</strong> the given {@link Supplier} in the
@@ -153,6 +163,23 @@ public class SWTUtils {
 	}
 
 	/**
+	 * Waits for the shell with the given title (eg: a wizard dialog) to show up
+	 * and returns a bot scoped to it, so that widget lookups do not depend on
+	 * which shell happens to be active.
+	 *
+	 * @param bot
+	 *            the workbench bot
+	 * @param title
+	 *            the title of the shell to wait for
+	 * @return a {@link SWTBot} restricted to that shell
+	 */
+	public static SWTBot waitForShell(final SWTWorkbenchBot bot, final String title) {
+		final SWTBotShell shell = bot.shell(title);
+		shell.activate();
+		return shell.bot();
+	}
+
+	/**
 	 * @param viewBot
 	 *            the {@link SWTBotView} containing the {@link Tree} to traverse
 	 * @param paths
@@ -225,15 +252,49 @@ public class SWTUtils {
 
 	private static SWTBotTreeItem getTreeItem(final SWTBotTreeItem[] treeItems, final String[] paths) {
 		final SWTBotTreeItem swtBotTreeItem = Stream.of(treeItems).filter(item -> item.getText().startsWith(paths[0]))
-				.findFirst().orElseThrow(() -> new RuntimeException("Only available items: "
-						+ Stream.of(treeItems).map(SWTBotTreeItem::getText).collect(Collectors.joining(", "))));
+				.findFirst().orElseThrow(() -> new RuntimeException("No item matching '" + paths[0]
+						+ "', only available items: " + Stream.of(treeItems).map(item -> "'" + item.getText() + "'")
+								.collect(Collectors.joining(", "))));
 		if (paths.length > 1) {
-			syncExec(() -> swtBotTreeItem.expand());
+			// let SWTBot drive the expansion from the test thread: it posts the
+			// Expand notification asynchronously to the UI thread, so calling it
+			// from within a syncExec would mark the item expanded before the viewer
+			// had a chance to create its children.
+			swtBotTreeItem.expand();
 			final String[] remainingPath = new String[paths.length - 1];
 			System.arraycopy(paths, 1, remainingPath, 0, remainingPath.length);
-			return getTreeItem(swtBotTreeItem.getItems(), remainingPath);
+			return getTreeItem(getLoadedItems(swtBotTreeItem), remainingPath);
 		}
 		return swtBotTreeItem;
+	}
+
+	/**
+	 * Returns the children of the given tree item once they are loaded. The
+	 * Docker Explorer content provider answers a "Loading..." stub for a node
+	 * whose children are still being fetched by a background job, and replaces
+	 * it once the job is done, so wait for that to happen before looking at the
+	 * children.
+	 *
+	 * @param parentTreeItem
+	 *            the expanded parent tree item
+	 * @return its children, without any "Loading..." stub
+	 */
+	public static SWTBotTreeItem[] getLoadedItems(final SWTBotTreeItem parentTreeItem) {
+		final SWTBot bot = new SWTBot();
+		bot.waitUntil(new DefaultCondition() {
+
+			@Override
+			public boolean test() {
+				return Stream.of(parentTreeItem.getItems())
+						.noneMatch(item -> item.getText().startsWith(LOADING_STUB_TEXT));
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "Children of '" + parentTreeItem.getText() + "' were still loading";
+			}
+		}, TimeUnit.SECONDS.toMillis(30));
+		return parentTreeItem.getItems();
 	}
 
 	public static SWTBotTableItem getListItem(final SWTBotTable table, final String name) {
@@ -441,9 +502,92 @@ public class SWTUtils {
 				.anyMatch(v -> v.getViewReference().getId().equals(IConsoleConstants.ID_CONSOLE_VIEW));
 	}
 
+	/**
+	 * Waits until the Console view is visible: the console manager reveals it
+	 * from its own (delayed) job, so it may not be there yet right after the
+	 * launch job completed.
+	 *
+	 * @param workbenchBot
+	 *            the {@link SWTWorkbenchBot}
+	 */
+	public static void waitForConsoleView(final SWTWorkbenchBot workbenchBot) {
+		workbenchBot.waitUntil(new DefaultCondition() {
+
+			@Override
+			public boolean test() {
+				return isConsoleViewVisible(workbenchBot);
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "The Console view did not show up";
+			}
+		});
+	}
+
+	/**
+	 * Returns the button with the given tooltip in the toolbar of the Console
+	 * view, waiting for it to show up: the console page contributing it is
+	 * usually opened asynchronously by a background job or thread.
+	 */
 	public static SWTBotToolbarButton getConsoleToolbarButtonWithTooltipText(final SWTWorkbenchBot bot, final String tooltipText) {
-		return bot.viewById(IConsoleConstants.ID_CONSOLE_VIEW).getToolbarButtons().stream()
-				.filter(button -> button.getToolTipText().equals(tooltipText)).findFirst().get();
+		final SWTBotView consoleView = bot.viewById(IConsoleConstants.ID_CONSOLE_VIEW);
+		bot.waitUntil(new DefaultCondition() {
+
+			@Override
+			public boolean test() {
+				return findToolbarButton(consoleView, tooltipText).isPresent();
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "No button with tooltip '" + tooltipText + "' in the Console view toolbar";
+			}
+		});
+		return findToolbarButton(consoleView, tooltipText).get();
+	}
+
+	private static Optional<SWTBotToolbarButton> findToolbarButton(final SWTBotView view,
+			final String tooltipText) {
+		return view.getToolbarButtons().stream().filter(button -> tooltipText.equals(button.getToolTipText()))
+				.findFirst();
+	}
+
+	/**
+	 * Waits until the Properties view shows a tabbed page whose selected tab has
+	 * the given id. The Properties view follows the selection of the active part
+	 * asynchronously, so the tab cannot be checked right after selecting an
+	 * element.
+	 *
+	 * @param workbenchBot
+	 *            the {@link SWTWorkbenchBot}
+	 * @param tabId
+	 *            the id of the tab that is expected to be selected
+	 * @return the selected {@link ITabDescriptor}
+	 */
+	public static ITabDescriptor waitForSelectedPropertiesTab(final SWTWorkbenchBot workbenchBot,
+			final String tabId) {
+		final ITabDescriptor[] selectedTab = new ITabDescriptor[1];
+		workbenchBot.waitUntil(new DefaultCondition() {
+
+			@Override
+			public boolean test() {
+				final PropertySheet propertySheet = syncExec(
+						() -> getView(workbenchBot, "org.eclipse.ui.views.PropertySheet", true)); //$NON-NLS-1$
+				if (propertySheet != null
+						&& propertySheet.getCurrentPage() instanceof TabbedPropertySheetPage tabbedPage) {
+					selectedTab[0] = tabbedPage.getSelectedTab();
+				}
+				return selectedTab[0] != null && tabId.equals(selectedTab[0].getId());
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "Expected tab section with id '" + tabId + "' to be selected but it was "
+						+ (selectedTab[0] != null ? "'" + selectedTab[0].getId() + "'" : "none");
+			}
+		}, TimeUnit.SECONDS.toMillis(10));
+		return selectedTab[0];
 	}
 
 	public static void closeView(final SWTWorkbenchBot bot, final String viewId) {

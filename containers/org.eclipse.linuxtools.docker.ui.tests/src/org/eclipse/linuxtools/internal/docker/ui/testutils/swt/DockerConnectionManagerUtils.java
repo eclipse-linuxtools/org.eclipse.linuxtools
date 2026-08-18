@@ -57,8 +57,15 @@ public class DockerConnectionManagerUtils {
 		final SWTWorkbenchBot bot = new SWTWorkbenchBot();
 		final SWTBotView dockerExplorerBotView = SWTUtils.getSWTBotView(bot, DockerExplorerView.VIEW_ID);
 		final SWTBotView dockerContainersBotView = SWTUtils.getSWTBotView(bot, DockerContainersView.VIEW_ID);
+		// reloadConnections() does its work on a background thread, so refreshing
+		// the viewers straight away can race it and leave them showing an empty
+		// tree. Every accessor on the manager joins that thread first, so asking
+		// for the connections is what makes the reload observable. Do it off the
+		// UI thread: the reload notifies listeners, and joining it from the UI
+		// thread risks a deadlock.
+		DockerConnectionManager.getInstance().reloadConnections();
+		DockerConnectionManager.getInstance().getAllConnections();
 		bot.getDisplay().syncExec(() -> {
-			DockerConnectionManager.getInstance().reloadConnections();
 			if (dockerExplorerBotView != null) {
 				final DockerExplorerView dockerExplorerView = (DockerExplorerView) dockerExplorerBotView
 						.getViewReference().getView(false);

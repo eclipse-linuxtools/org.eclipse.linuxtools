@@ -73,6 +73,9 @@ public abstract class BaseResourceAwareLaunchShortcut implements ILaunchShortcut
 	 */
 	private static IResource getResourceFromSelection(
 			final ISelection selection) {
+		if (selection.isEmpty()) {
+			return null;
+		}
 		final Object selectedElement = ((IStructuredSelection) selection)
 				.toArray()[0];
 		if (selectedElement instanceof IResource r) {

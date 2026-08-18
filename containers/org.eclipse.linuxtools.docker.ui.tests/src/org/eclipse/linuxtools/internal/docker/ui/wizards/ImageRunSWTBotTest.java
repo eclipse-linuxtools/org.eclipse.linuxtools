@@ -18,7 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -46,8 +48,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionM
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.waits.Conditions;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -69,16 +70,35 @@ public class ImageRunSWTBotTest {
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 	private SWTBotView dockerExplorerViewBot;
+	/** bot scoped to the "Run Image" wizard shell, see {@link #openRunImageWizard()}. */
+	private SWTBot wizardBot;
 
 	private String configureRunImageLaunchConfiguration(final IDockerConnection connection, final String networkMode) {
+		return configureRunImageLaunchConfiguration(connection,
+				MockDockerHostConfigFactory.publishAllPorts(true).networkMode(networkMode).build(),
+				MockDockerContainerConfigFactory.cmd("cmd").build());
+	}
+
+	private String configureRunImageLaunchConfiguration(final IDockerConnection connection,
+			final IDockerHostConfig hostConfig, final DockerContainerConfig containerConfig) {
 		final IDockerImage image = MockDockerImageFactory.name("images").connection(connection).build();
-		final DockerContainerConfig containerConfig = MockDockerContainerConfigFactory.cmd("cmd").build();
-		final IDockerHostConfig hostConfig = MockDockerHostConfigFactory.publishAllPorts(true).networkMode(networkMode)
-				.build();
 		final ILaunchConfiguration runImageLaunchConfiguration = LaunchConfigurationUtils
 				.createRunImageLaunchConfiguration(image, containerConfig, hostConfig, new ArrayList<>(),
 						"some_container", false);
 		return runImageLaunchConfiguration.getName();
+	}
+
+	private ILaunchConfiguration launchConfigurationFor(final IDockerHostConfig hostConfig,
+			final DockerContainerConfig containerConfig) throws CoreException {
+		final DockerClient client = MockDockerClientFactory.images(MockImageFactory.of("", "", "foo:latest"))
+				.container(MockContainerFactory.name("foo_bar").build()).build();
+		final DockerConnection connection = MockDockerConnectionFactory.from("Test", client)
+				.withDefaultTCPConnectionSettings();
+		final String name = configureRunImageLaunchConfiguration(connection, hostConfig, containerConfig);
+		final ILaunchConfiguration launchConfiguration = LaunchConfigurationUtils.getLaunchConfigurationByName(
+				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, name);
+		assertThat(launchConfiguration).isNotNull();
+		return launchConfiguration;
 	}
 
 	@RegisterExtension
@@ -100,6 +120,16 @@ public class ImageRunSWTBotTest {
 		dockerExplorerViewBot.setFocus();
 	}
 
+	/**
+	 * Opens the "Run Image..." wizard on the image currently selected in the
+	 * Docker Explorer view and scopes {@link #wizardBot} to its shell, so that
+	 * widget lookups do not depend on which shell happens to be active.
+	 */
+	private void openRunImageWizard() {
+		dockerExplorerViewBot.bot().tree().contextMenu("Run...").click();
+		this.wizardBot = SWTUtils.waitForShell(bot, WizardMessages.getString("ImageRun.title")); //$NON-NLS-1$
+	}
+
 	@Test
 	public void shouldReportErrorIfContainerWithSameNameExists() {
 		// given
@@ -111,16 +141,15 @@ public class ImageRunSWTBotTest {
 		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images", "foo").select();
 
 		// when opening the "Run Image..." wizard
-		final SWTBotTree dockerExplorerViewTreeBot = dockerExplorerViewBot.bot().tree();
-		dockerExplorerViewTreeBot.contextMenu("Run...").click();
+		openRunImageWizard();
 
 		// when use an existing container name
-		bot.textWithLabel(WizardMessages.getString("ImageRunSelectionPage.containerName")).setText("foo_bar");
+		wizardBot.textWithLabel(WizardMessages.getString("ImageRunSelectionPage.containerName")).setText("foo_bar");
 		// then
 		// wait for https://bugs.eclipse.org/bugs/show_bug.cgi?id=482889 to be
 		// able to check the wizard validation message
 		//assertThat(bot.text(WizardMessages.getString("ImageRunSelectionPage.containerWithSameName"))).isNotNull();
-		assertFalse(bot.button("Finish").isEnabled());
+		assertFalse(wizardBot.button("Finish").isEnabled());
 	}
 
 	@Test
@@ -210,6 +239,66 @@ public class ImageRunSWTBotTest {
 	}
 
 	@Test
+	public void testNetworkModeNone() throws CoreException {
+		final DockerClient client = MockDockerClientFactory.images(MockImageFactory.of("", "", "foo:latest"))
+				.container(MockContainerFactory.name("foo_bar").build()).build();
+		final DockerConnection connection = MockDockerConnectionFactory.from("Test", client)
+				.withDefaultTCPConnectionSettings();
+		final String runImageLaunchConfigurationName = configureRunImageLaunchConfiguration(connection, "none");
+		final ILaunchConfiguration runDockerImageLaunchConfig = LaunchConfigurationUtils.getLaunchConfigurationByName(
+				IRunDockerImageLaunchConfigurationConstants.CONFIG_TYPE_ID, runImageLaunchConfigurationName);
+		assertThat(runDockerImageLaunchConfig).isNotNull();
+		assertThat(
+				runDockerImageLaunchConfig.getAttribute(IRunDockerImageLaunchConfigurationConstants.NETWORK_MODE, ""))
+						.isEqualTo("none");
+	}
+
+	@Test
+	public void shouldRunContainerInPrivilegedMode() throws CoreException {
+		final ILaunchConfiguration launchConfiguration = launchConfigurationFor(
+				MockDockerHostConfigFactory.privileged(true).build(),
+				MockDockerContainerConfigFactory.cmd("cmd").build());
+		assertThat(launchConfiguration.getAttribute(IRunDockerImageLaunchConfigurationConstants.PRIVILEGED, false))
+				.isTrue();
+	}
+
+	@Test
+	public void shouldNotRunContainerInPrivilegedModeByDefault() throws CoreException {
+		final ILaunchConfiguration launchConfiguration = launchConfigurationFor(
+				MockDockerHostConfigFactory.privileged(false).build(),
+				MockDockerContainerConfigFactory.cmd("cmd").build());
+		assertThat(launchConfiguration.getAttribute(IRunDockerImageLaunchConfigurationConstants.PRIVILEGED, true))
+				.isFalse();
+	}
+
+	@Test
+	public void shouldRunContainerWithReadonlyRootFilesystem() throws CoreException {
+		final ILaunchConfiguration launchConfiguration = launchConfigurationFor(
+				MockDockerHostConfigFactory.readonlyRootfs(true).build(),
+				MockDockerContainerConfigFactory.cmd("cmd").build());
+		assertThat(launchConfiguration.getAttribute(IRunDockerImageLaunchConfigurationConstants.READONLY, false))
+				.isTrue();
+	}
+
+	@Test
+	public void shouldNotRunContainerWithReadonlyRootFilesystemByDefault() throws CoreException {
+		final ILaunchConfiguration launchConfiguration = launchConfigurationFor(
+				MockDockerHostConfigFactory.readonlyRootfs(false).build(),
+				MockDockerContainerConfigFactory.cmd("cmd").build());
+		assertThat(launchConfiguration.getAttribute(IRunDockerImageLaunchConfigurationConstants.READONLY, true))
+				.isFalse();
+	}
+
+	@Test
+	public void shouldRunContainerWithLabels() throws CoreException {
+		final ILaunchConfiguration launchConfiguration = launchConfigurationFor(
+				MockDockerHostConfigFactory.publishAllPorts(true).build(),
+				MockDockerContainerConfigFactory.cmd("cmd").labels(Map.of("foo", "bar")).build());
+		assertThat(launchConfiguration.getAttribute(IRunDockerImageLaunchConfigurationConstants.LABELS,
+				Collections.<String, String> emptyMap())).containsEntry("foo", "bar");
+	}
+
+	@Test
 	public void shouldNotReportErrorIfNoContainerWithSameNameExists() {
 		// given
 		final DockerClient client = MockDockerClientFactory.images(MockImageFactory.of("", "", "foo:latest"))
@@ -219,13 +308,12 @@ public class ImageRunSWTBotTest {
 		// expand the 'Images' node and select the 'foo' images
 		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images", "foo").select();
 		// when opening the "Run Image..." wizard
-		final SWTBotTree dockerExplorerViewTreeBot = dockerExplorerViewBot.bot().tree();
-		dockerExplorerViewTreeBot.contextMenu("Run...").click();
+		openRunImageWizard();
 
 		// when use an existing container name
-		bot.textWithLabel(WizardMessages.getString("ImageRunSelectionPage.containerName")).setText("foo_bar_baz");
+		wizardBot.textWithLabel(WizardMessages.getString("ImageRunSelectionPage.containerName")).setText("foo_bar_baz");
 		// then
-		assertThat(bot.button("Finish").isEnabled()).isEqualTo(true);
+		assertThat(wizardBot.button("Finish").isEnabled()).isEqualTo(true);
 	}
 
 	@Test
@@ -245,8 +333,7 @@ public class ImageRunSWTBotTest {
 				//.container(createdContainer, containerInfo)
 				.build();
 		// expected response when creating the container
-		final ContainerCreation containerCreation = Mockito.mock(ContainerCreation.class);
-		Mockito.when(containerCreation.id()).thenReturn("MockContainer");
+		final ContainerCreation containerCreation = new ContainerCreation("MockContainer", List.of());
 		Mockito.when(client.createContainer(ArgumentMatchers.any(), ArgumentMatchers.any()))
 				.thenReturn(containerCreation);
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client).withDefaultTCPConnectionSettings();
@@ -254,14 +341,13 @@ public class ImageRunSWTBotTest {
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when select images and click on run to open the wizard
 		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images", "foo/bar").select();
-		dockerExplorerViewBot.bot().tree().contextMenu("Run...").click();
-		bot.waitUntil(Conditions.shellIsActive("Run a Docker Image"), TimeUnit.SECONDS.toMillis(1)); //$NON-NLS-1$
+		openRunImageWizard();
 		// configure container
-		bot.text(0).setText(containerName);
+		wizardBot.textWithLabel(WizardMessages.getString("ImageRunSelectionPage.containerName")).setText(containerName);
 		// bot.button("Next >").click();
 		// update the client to make sure the container exists once the call to "Finish" is done
 		MockDockerClientFactory.addContainer(client, createdContainer, containerInfo);
-		bot.button("Finish").click();
+		wizardBot.button("Finish").click();
 		// wait for background job to complete
 		SWTUtils.waitForJobsToComplete();
 
