@@ -100,7 +100,7 @@ public class ImagePushSWTBotTests {
 		// when opening the "Push Image..." wizard
 		final SWTBotTree dockerExplorerViewTreeBot = dockerExplorerViewBot.bot().tree();
 		dockerExplorerViewTreeBot.select(imageTreeItem);
-		SWTUtils.getContextMenu(dockerExplorerViewTreeBot, "Push...").click();
+		dockerExplorerViewTreeBot.contextMenu().menu("Push...").click();
 	}
 
 	@Test

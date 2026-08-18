@@ -158,7 +158,7 @@ public class DockerContainersViewSWTBotTest {
 		SWTUtils.closeView(this.bot, DockerImageHierarchyView.VIEW_ID);
 		// open the context menu on one of the containers
 		selectContainerInTable("angry_bar");
-		SWTUtils.getContextMenu(dockerContainersViewBot.bot().table(), "Open Image Hierarchy").click();
+		dockerContainersViewBot.bot().table().contextMenu().menu("Open Image Hierarchy").click();
 		// wait 1sec
 		SWTUtils.wait(1, TimeUnit.SECONDS);
 		DockerImageHierarchyViewAssertions.assertThat(SWTUtils.getView(bot, DockerImageHierarchyView.VIEW_ID))

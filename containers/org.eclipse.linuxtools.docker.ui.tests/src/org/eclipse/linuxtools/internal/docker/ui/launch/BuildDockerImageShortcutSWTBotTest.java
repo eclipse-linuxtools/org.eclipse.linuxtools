@@ -105,8 +105,8 @@ public class BuildDockerImageShortcutSWTBotTest {
 		// filters the children against nothing and ends up selecting nothing at all,
 		// which leaves the workbench selection empty and the "Run As" menu absent
 		UIThreadRunnable.syncExec(() -> dockerfileTreeItem.select());
-		final SWTBotMenu runAsDockerImageBuildMenu = SWTUtils.getContextMenu(projectExplorerBotView.bot().tree(),
-				"Run As", "1 Docker Image Build");
+		final SWTBotMenu runAsDockerImageBuildMenu = projectExplorerBotView.bot().tree().contextMenu()
+				.menu("Run As", "1 Docker Image Build");
 		return runAsDockerImageBuildMenu;
 	}
 
