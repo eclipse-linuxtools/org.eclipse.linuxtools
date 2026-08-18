@@ -28,6 +28,11 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionM
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,6 +49,12 @@ public class ImageSearchSWTBotTest {
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 	private SWTBotView dockerExplorerViewBot;
+	/** bot scoped to the "Pull Image" wizard shell, see {@link #openPullWizard(DockerClient)}. */
+	private SWTBot pullWizardBot;
+	/** the "Search" wizard shell, see {@link #openSearchWizard()}. */
+	private SWTBotShell searchWizardShell;
+	/** bot scoped to the "Search" wizard shell, see {@link #openSearchWizard()}. */
+	private SWTBot searchWizardBot;
 
 	@RegisterExtension
 	public static CloseWelcomePageRule closeWelcomePage = new CloseWelcomePageRule(
@@ -72,11 +83,11 @@ public class ImageSearchSWTBotTest {
 		// when opening the pull wizard...
 		openPullWizard(client);
 		// ... and specifying a term...
-		bot.textWithLabel(WizardMessages.getString("ImagePullPushPage.name.label")).setText("foo");
+		pullWizardBot.textWithLabel(WizardMessages.getString("ImagePullPushPage.name.label")).setText("foo");
 		// ... and then opening the search wizard
 		openSearchWizard();
 		// then the search should have been triggered and results should be available
-		assertThat(bot.table().rowCount()).isEqualTo(1);
+		assertThat(searchResultsTable(1).rowCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -88,8 +99,8 @@ public class ImageSearchSWTBotTest {
 		openPullWizard(client);
 		// ... and directly opening the search wizard
 		openSearchWizard();
-		// then the search should have been triggered and results should be available
-		assertThat(bot.table().rowCount()).isEqualTo(0);
+		// then no search should have been triggered and no result should be available
+		assertThat(searchResultsTable(0).rowCount()).isEqualTo(0);
 	}
 
 	@Test
@@ -102,12 +113,12 @@ public class ImageSearchSWTBotTest {
 		// when opening the pull wizard...
 		openPullWizard(client);
 		// ... and specifying a term...
-		bot.textWithLabel(WizardMessages.getString("ImagePullPushPage.name.label")).setText("foo/bar");
+		pullWizardBot.textWithLabel(WizardMessages.getString("ImagePullPushPage.name.label")).setText("foo/bar");
 		// ... and then opening the search wizard
 		openSearchWizard();
 		// then the search should have been triggered and a single result should be
 		// available
-		assertThat(bot.table().rowCount()).isEqualTo(1);
+		assertThat(searchResultsTable(1).rowCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -120,12 +131,12 @@ public class ImageSearchSWTBotTest {
 		// when opening the pull wizard...
 		openPullWizard(client);
 		// ... and specifying a term...
-		bot.textWithLabel(WizardMessages.getString("ImagePullPushPage.name.label")).setText("bar");
+		pullWizardBot.textWithLabel(WizardMessages.getString("ImagePullPushPage.name.label")).setText("bar");
 		// ... and then opening the search wizard
 		openSearchWizard();
 		// then the search should have been triggered and both results should be
 		// available
-		assertThat(bot.table().rowCount()).isEqualTo(2);
+		assertThat(searchResultsTable(2).rowCount()).isEqualTo(2);
 	}
 
 	private void openPullWizard(final DockerClient client) {
@@ -138,11 +149,42 @@ public class ImageSearchSWTBotTest {
 		final SWTBotTree dockerExplorerViewTreeBot = dockerExplorerViewBot.bot().tree();
 		imagesTreeItem.select();
 		dockerExplorerViewTreeBot.contextMenu("Pull...").click();
+		this.pullWizardBot = SWTUtils.waitForShell(bot, WizardMessages.getString("ImagePull.title")); //$NON-NLS-1$
 	}
 
+	/**
+	 * Clicks on the "Search..." button of the Pull wizard and waits for the
+	 * search wizard to show up. The search itself runs in the background and
+	 * fills the results table asynchronously, so use
+	 * {@link #searchResultsTable(int)} to get to the results.
+	 */
 	private void openSearchWizard() {
 		// click on the "Search..." button
-		bot.button(WizardMessages.getString("ImagePull.search.label")).click();
+		pullWizardBot.button(WizardMessages.getString("ImagePull.search.label")).click();
+		this.searchWizardShell = bot.shell(WizardMessages.getString("ImageSearch.title")); //$NON-NLS-1$
+		this.searchWizardShell.activate();
+		this.searchWizardBot = this.searchWizardShell.bot();
+	}
+
+	/**
+	 * @return the search results table of the search wizard, once it holds the
+	 *         given number of rows.
+	 */
+	private SWTBotTable searchResultsTable(final int expectedRowCount) {
+		final SWTBotTable table = searchWizardBot.table();
+		searchWizardBot.waitUntil(new DefaultCondition() {
+
+			@Override
+			public boolean test() {
+				return table.rowCount() == expectedRowCount;
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "Expected " + expectedRowCount + " search result(s) but the table shows " + table.rowCount();
+			}
+		});
+		return table;
 	}
 
 	@Test
@@ -155,22 +197,28 @@ public class ImageSearchSWTBotTest {
 		// when opening the "Pull..." wizard
 		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images").select();
 		dockerExplorerViewBot.bot().tree().contextMenu("Pull...").click();
+		this.pullWizardBot = SWTUtils.waitForShell(bot, WizardMessages.getString("ImagePull.title")); //$NON-NLS-1$
 
 		// when specifying a term
-		bot.textWithLabel(WizardMessages.getString("ImagePullPushPage.name.label")).setText("foo");
+		pullWizardBot.textWithLabel(WizardMessages.getString("ImagePullPushPage.name.label")).setText("foo");
 
 		// when clicking on the "Search..." button
-		bot.button(WizardMessages.getString("ImagePull.search.label")).click();
+		openSearchWizard();
 
 		// then the search should have been triggered and results should be
 		// available
-		assertThat(bot.table().rowCount()).isEqualTo(1);
-		assertThat(bot.button("Next >").isEnabled()).isTrue();
-		assertThat(bot.button("Finish").isEnabled()).isTrue();
-		bot.button("Finish").click();
+		final SWTBotTable searchResultsTable = searchResultsTable(1);
+		assertThat(searchResultsTable.rowCount()).isEqualTo(1);
+		// the first result is selected once the table is filled, which enables the
+		// wizard buttons
+		searchWizardBot.waitUntil(Conditions.widgetIsEnabled(searchWizardBot.button("Finish")));
+		assertThat(searchWizardBot.button("Next >").isEnabled()).isTrue();
+		assertThat(searchWizardBot.button("Finish").isEnabled()).isTrue();
+		searchWizardBot.button("Finish").click();
 
 		// when back to Pull wizard, the Image name field should be filled
-		assertThat(bot.textWithLabel(WizardMessages.getString("ImagePullPushPage.name.label")).getText())
+		bot.waitUntil(Conditions.shellCloses(searchWizardShell));
+		assertThat(pullWizardBot.textWithLabel(WizardMessages.getString("ImagePullPushPage.name.label")).getText())
 				.isEqualTo("foo:latest");
 	}
 

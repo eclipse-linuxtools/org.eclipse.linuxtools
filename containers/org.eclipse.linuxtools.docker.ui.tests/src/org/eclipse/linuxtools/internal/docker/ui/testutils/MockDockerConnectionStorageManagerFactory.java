@@ -13,7 +13,8 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.eclipse.linuxtools.docker.core.IDockerConnection;
@@ -28,14 +29,18 @@ public class MockDockerConnectionStorageManagerFactory {
 	public static IDockerConnectionStorageManager loadNone() {
 		final IDockerConnectionStorageManager connectionStorageManager = Mockito
 				.mock(IDockerConnectionStorageManager.class);
-		Mockito.when(connectionStorageManager.loadConnections()).thenReturn(Collections.emptyList());
+		Mockito.when(connectionStorageManager.loadConnections()).thenReturn(new ArrayList<>());
 		return connectionStorageManager;
 	}
 
 	public static IDockerConnectionStorageManager providing(final IDockerConnection... mockedConnections) {
 		final IDockerConnectionStorageManager connectionStorageManager = Mockito
 				.mock(IDockerConnectionStorageManager.class);
-		Mockito.when(connectionStorageManager.loadConnections()).thenReturn(Stream.of(mockedConnections).toList());
+		// must be mutable: DockerConnectionManager adds to and removes from the
+		// very list returned here, and the real DefaultDockerConnectionStorageManager
+		// hands back an ArrayList
+		final List<IDockerConnection> connections = new ArrayList<>(Stream.of(mockedConnections).toList());
+		Mockito.when(connectionStorageManager.loadConnections()).thenReturn(connections);
 		return connectionStorageManager;
 	}
 

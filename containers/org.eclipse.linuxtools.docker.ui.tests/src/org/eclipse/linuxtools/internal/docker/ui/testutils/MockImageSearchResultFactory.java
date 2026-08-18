@@ -13,12 +13,10 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils;
 
-import org.mockito.Mockito;
-
 import org.mandas.docker.client.messages.ImageSearchResult;
 
 /**
- * Factory for mocked {@link ImageSearchResult} instances.
+ * Factory for {@link ImageSearchResult} test instances.
  */
 public class MockImageSearchResultFactory {
 
@@ -35,9 +33,7 @@ public class MockImageSearchResultFactory {
 		}
 
 		public ImageSearchResult build() {
-			final ImageSearchResult imageSearchResult = Mockito.mock(ImageSearchResult.class);
-			Mockito.when(imageSearchResult.name()).thenReturn(this.name);
-			return imageSearchResult;
+			return new ImageSearchResult("", false, false, this.name, 0);
 		}
 
 	}

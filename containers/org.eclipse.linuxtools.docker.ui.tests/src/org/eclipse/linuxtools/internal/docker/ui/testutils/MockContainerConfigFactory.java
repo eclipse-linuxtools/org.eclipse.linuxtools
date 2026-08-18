@@ -15,7 +15,6 @@ package org.eclipse.linuxtools.internal.docker.ui.testutils;
 import java.util.Map;
 
 import org.mandas.docker.client.messages.ContainerConfig;
-import org.mockito.Mockito;
 
 public class MockContainerConfigFactory {
 
@@ -25,23 +24,18 @@ public class MockContainerConfigFactory {
 
 	public static class Builder {
 
-		private final ContainerConfig containerConfig;
-		private Map<String, String> labels;
+		private Map<String, String> labels = Map.of();
 
 		private Builder() {
-			this.containerConfig = Mockito.mock(ContainerConfig.class, Mockito.RETURNS_DEEP_STUBS);
-			labels = Map.of();
 		}
 
 		public Builder labels(Map<String, String> labels) {
 			this.labels = labels;
-			Mockito.when(this.containerConfig.labels()).thenReturn(this.labels);
 			return this;
 		}
 
 		public ContainerConfig build() {
-			Mockito.when(this.containerConfig.labels()).thenReturn(this.labels);
-			return this.containerConfig;
+			return ContainerConfig.builder().labels(this.labels).build();
 		}
 	}
 

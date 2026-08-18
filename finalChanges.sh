@@ -183,8 +183,6 @@ add_plugin_version_docker "containers/org.eclipse.linuxtools.docker.ui/pom.xml"
 update_parent_version_docker "containers/org.eclipse.linuxtools.docker.docs/pom.xml"
 update_parent_version_docker "containers/org.eclipse.linuxtools.docker.editor.ls.tests/pom.xml"
 update_parent_version_docker "containers/org.eclipse.linuxtools.docker.editor.ls/pom.xml"
-update_parent_version_docker "containers/org.eclipse.linuxtools.docker.integration.tests/pom.xml"
-update_parent_version_docker "containers/org.eclipse.linuxtools.docker.reddeer/pom.xml"
 update_parent_version_docker "containers/org.eclipse.linuxtools.docker.ui.tests/pom.xml"
 update_parent_version_docker "containers/org.eclipse.linuxtools.jdt.docker.launcher/pom.xml"
 

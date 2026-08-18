@@ -38,8 +38,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.views.properties.PropertySheet;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -195,16 +193,15 @@ public class DockerContainersViewSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		final PropertySheet propertySheet = SWTUtils
-				.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
+		SWTUtils.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
 		this.dockerContainersView.setFocus();
 		// select the container in the table
 		selectContainerInTable("angry_bar");
 		// then the properties view should have a selected tab with container
-		// info
-		assertThat(propertySheet.getCurrentPage()).isInstanceOf(TabbedPropertySheetPage.class);
-		final TabbedPropertySheetPage currentPage = (TabbedPropertySheetPage) propertySheet.getCurrentPage();
-		TabDescriptorAssertions.assertThat(currentPage.getSelectedTab()).isNotNull()
+		// info (the Properties view follows the selection asynchronously)
+		TabDescriptorAssertions
+				.assertThat(SWTUtils.waitForSelectedPropertiesTab(bot,
+						"org.eclipse.linuxtools.docker.ui.properties.container.info"))
 				.hasId("org.eclipse.linuxtools.docker.ui.properties.container.info");
 	}
 

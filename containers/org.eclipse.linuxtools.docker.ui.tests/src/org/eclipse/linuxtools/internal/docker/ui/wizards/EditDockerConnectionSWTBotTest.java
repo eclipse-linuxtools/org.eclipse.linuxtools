@@ -63,7 +63,10 @@ import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerImagesView;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
+import org.eclipse.swtbot.swt.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.jupiter.api.BeforeEach;
@@ -114,14 +117,30 @@ public class EditDockerConnectionSWTBotTest {
 		this.dockerExplorer.bot().setFocus();
 	}
 
-	private IDockerConnection configureUnixSocketConnection() {
+	/**
+	 * The wizard only accepts a Unix socket path that exists and is
+	 * readable/writable, and {@link DockerConnection#ping()} refuses to open a
+	 * connection whose socket does not exist. The CI machines have no Docker
+	 * daemon (hence no <code>/var/run/docker.sock</code>), so the initial Unix
+	 * socket connection points to a temporary file instead.
+	 */
+	private File initialDockerSocketFile;
+
+	private String initialDockerSocketPath() throws IOException {
+		if (initialDockerSocketFile == null) {
+			initialDockerSocketFile = Files.createFile(folder.resolve("initial-docker.sock")).toFile();
+		}
+		return initialDockerSocketFile.getAbsolutePath();
+	}
+
+	private IDockerConnection configureUnixSocketConnection() throws IOException {
 		return configureUnixSocketConnection("Test");
 	}
 
-	private IDockerConnection configureUnixSocketConnection(final String connectionName) {
+	private IDockerConnection configureUnixSocketConnection(final String connectionName) throws IOException {
 		final DockerClient client = MockDockerClientFactory.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from(connectionName, client)
-				.withUnixSocketConnectionSettings("/var/run/docker.sock");
+				.withUnixSocketConnectionSettings(initialDockerSocketPath());
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		return dockerConnection;
 	}
@@ -143,10 +162,84 @@ public class EditDockerConnectionSWTBotTest {
 		final SWTBotTree dockerExplorerViewTreeBot = dockerExplorer.bot().bot().tree();
 		dockerExplorerViewTreeBot.select(connectionItem);
 		dockerExplorerViewTreeBot.contextMenu(WizardMessages.getString("ImageRunSelectionPage.editButton")).click(); //$NON-NLS-1$
+		// Wait for the wizard and keep it activated. Without this the lookups
+		// below race the dialog, and because bot.text(int) resolves against
+		// whichever shell is currently active they silently return widgets of
+		// the workbench window instead of the ones in this dialog.
+		final SWTBotShell wizardShell = bot.shell(WizardMessages.getString("EditDockerConnection.title")); //$NON-NLS-1$
+		bot.waitUntil(Conditions.shellIsActive(WizardMessages.getString("EditDockerConnection.title"))); //$NON-NLS-1$
+		wizardShell.activate();
 	}
 
 	private SWTBotButton getFinishButton() {
 		return bot.button("Finish"); //$NON-NLS-1$
+	}
+
+	/**
+	 * Waits until the given connection is established. The Docker Explorer view
+	 * (re)opens any connection it shows that is not established yet in a
+	 * background job, and the mocked client makes that succeed, so a connection
+	 * that was just configured or whose settings were just changed becomes
+	 * established shortly after.
+	 */
+	private void waitUntilConnectionIsOpen(final IDockerConnection connection) {
+		bot.waitUntil(new DefaultCondition() {
+
+			@Override
+			public boolean test() {
+				return connection.isOpen();
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "Connection '" + connection.getName() + "' was not established, state is "
+						+ connection.getState();
+			}
+		}, TimeUnit.SECONDS.toMillis(10));
+	}
+
+	/**
+	 * Waits until the given (spied) connection was opened again after its
+	 * invocations were cleared and is established.
+	 */
+	private void waitUntilConnectionIsReopened(final IDockerConnection connection) {
+		bot.waitUntil(new DefaultCondition() {
+
+			@Override
+			public boolean test() {
+				return connection.isOpen() && Mockito.mockingDetails(connection).getInvocations().stream()
+						.anyMatch(invocation -> invocation.getMethod().getName().equals("open")
+								&& Boolean.TRUE.equals(invocation.getArgument(0)));
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "Connection '" + connection.getName() + "' was not opened again, state is "
+						+ connection.getState();
+			}
+		}, TimeUnit.SECONDS.toMillis(10));
+	}
+
+	/**
+	 * Waits until the Docker Explorer view shows a connection whose label
+	 * starts with the given name and contains the given text.
+	 */
+	private SWTBotTreeItem waitForConnectionTreeItem(final String connectionName, final String expectedText) {
+		bot.waitUntil(new DefaultCondition() {
+
+			@Override
+			public boolean test() {
+				final SWTBotTreeItem item = SWTUtils.getTreeItem(dockerExplorer.bot().bot().tree(), connectionName);
+				return item != null && item.getText().contains(expectedText);
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "Docker Explorer view did not show connection '" + connectionName + "' with '" + expectedText
+						+ "'";
+			}
+		}, TimeUnit.SECONDS.toMillis(10));
+		return SWTUtils.getTreeItem(dockerExplorer.bot(), connectionName);
 	}
 
 	private String configureRunImageLaunchConfiguration(final IDockerConnection connection, final String networkMode) {
@@ -172,7 +265,7 @@ public class EditDockerConnectionSWTBotTest {
 	}
 
 	@Test
-	public void shouldShowUnixSocketConnectionSettingsWithValidConnectionAvailable() {
+	public void shouldShowUnixSocketConnectionSettingsWithValidConnectionAvailable() throws IOException {
 		// given
 		configureUnixSocketConnection();
 		openConnectionEditionWizard("Test");
@@ -183,7 +276,7 @@ public class EditDockerConnectionSWTBotTest {
 		// "Unix socket" radio should be enabled and selected
 		RadioAssertion.assertThat(bot.radio(0)).isEnabled().isSelected();
 		// "Unix socket path" text should be disabled and not empty
-		TextAssertions.assertThat(bot.text(1)).isEnabled().textEquals("unix:///var/run/docker.sock");
+		TextAssertions.assertThat(bot.text(1)).isEnabled().textEquals("unix://" + initialDockerSocketPath());
 		// "TCP Connection" radio should be unselected and disabled
 		RadioAssertion.assertThat(bot.radio(1)).isEnabled().isNotSelected();
 		// "URI" should be disabled and empty
@@ -220,7 +313,7 @@ public class EditDockerConnectionSWTBotTest {
 	}
 
 	@Test
-	public void shouldUpdateTCPConnectionSettingsWithValidConnectionAvailable() {
+	public void shouldUpdateTCPConnectionSettingsWithValidConnectionAvailable() throws IOException {
 		// given
 		configureTCPConnection();
 		openConnectionEditionWizard("Test");
@@ -228,7 +321,7 @@ public class EditDockerConnectionSWTBotTest {
 		// when: switch to TCP connection settings and save
 		bot.text(0).setText("foo");
 		bot.radio(0).click();
-		bot.text(1).setText("/var/run/docker.sock");
+		bot.text(1).setText(initialDockerSocketPath());
 		getFinishButton().click();
 
 		// then
@@ -238,11 +331,11 @@ public class EditDockerConnectionSWTBotTest {
 		assertThat(fooConnection.getSettings()).isInstanceOf(UnixSocketConnectionSettings.class);
 		final UnixSocketConnectionSettings connectionSettings = (UnixSocketConnectionSettings) fooConnection
 				.getSettings();
-		assertThat(connectionSettings.getPath()).isEqualTo("unix:///var/run/docker.sock");
+		assertThat(connectionSettings.getPath()).isEqualTo("unix://" + initialDockerSocketPath());
 	}
 
 	@Test
-	public void shouldReportProblemWhenMissingName() {
+	public void shouldReportProblemWhenMissingName() throws IOException {
 		// given
 		configureUnixSocketConnection();
 		openConnectionEditionWizard("Test");
@@ -254,7 +347,7 @@ public class EditDockerConnectionSWTBotTest {
 	}
 
 	@Test
-	public void shouldReportProblemWhenMissingUnixSocketPath() {
+	public void shouldReportProblemWhenMissingUnixSocketPath() throws IOException {
 		// given
 		configureUnixSocketConnection();
 		openConnectionEditionWizard("Test");
@@ -266,7 +359,7 @@ public class EditDockerConnectionSWTBotTest {
 	}
 
 	@Test
-	public void shouldReportProblemWhenInvalidUnixSocketPath() {
+	public void shouldReportProblemWhenInvalidUnixSocketPath() throws IOException {
 		// given
 		configureUnixSocketConnection();
 		openConnectionEditionWizard("Test");
@@ -470,19 +563,23 @@ public class EditDockerConnectionSWTBotTest {
 		final IDockerConnection connection = configureUnixSocketConnection("Test");
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
+		waitUntilConnectionIsOpen(connection);
+		Mockito.clearInvocations(connection);
 		final File tmpDockerSocketFile = Files.createFile(folder.resolve("docker.sock")).toFile();
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(1).setText(tmpDockerSocketFile.getAbsolutePath());
 		getFinishButton().click();
-		SWTUtils.wait(2, TimeUnit.SECONDS);
 		// then
-		final SWTBotTreeItem updatedConnectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
+		final SWTBotTreeItem updatedConnectionTreeItem = waitForConnectionTreeItem("Test",
+				tmpDockerSocketFile.getAbsolutePath());
 		assertThat(updatedConnectionTreeItem).isNotNull();
 		assertThat(updatedConnectionTreeItem.getText()).contains(tmpDockerSocketFile.getAbsolutePath());
-		// list of containers and images should have been refreshed
-		Mockito.verify(connection, Mockito.times(0)).getContainers(true);
-		Mockito.verify(connection, Mockito.times(0)).getImages(true);
+		// the connection is re-established with the new settings, which
+		// refreshes the list of containers and images
+		waitUntilConnectionIsReopened(connection);
+		Mockito.verify(connection, Mockito.atLeastOnce()).getContainers(true);
+		Mockito.verify(connection, Mockito.atLeastOnce()).getImages(true);
 	}
 
 	@Test
@@ -493,18 +590,21 @@ public class EditDockerConnectionSWTBotTest {
 		final IDockerConnection connection = configureTCPConnection("Test");
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
+		waitUntilConnectionIsOpen(connection);
+		Mockito.clearInvocations(connection);
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(2).setText("https://foo.bar:1234");
 		getFinishButton().click();
-		SWTUtils.wait(2, TimeUnit.SECONDS);
 		// then
-		final SWTBotTreeItem updatedConnectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
+		final SWTBotTreeItem updatedConnectionTreeItem = waitForConnectionTreeItem("Test", "https://foo.bar:1234");
 		assertThat(updatedConnectionTreeItem).isNotNull();
 		assertThat(updatedConnectionTreeItem.getText()).contains("https://foo.bar:1234");
-		// list of containers and images should have been refreshed
-		Mockito.verify(connection, Mockito.times(0)).getContainers(true);
-		Mockito.verify(connection, Mockito.times(0)).getImages(true);
+		// the connection is re-established with the new settings, which
+		// refreshes the list of containers and images
+		waitUntilConnectionIsReopened(connection);
+		Mockito.verify(connection, Mockito.atLeastOnce()).getContainers(true);
+		Mockito.verify(connection, Mockito.atLeastOnce()).getImages(true);
 	}
 
 	@Test
@@ -615,7 +715,8 @@ public class EditDockerConnectionSWTBotTest {
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
 		final File tmpDockerSocketFile = Files.createFile(folder.resolve("docker.sock")).toFile();
-		assertThat(connection.getState()).isEqualTo(EnumDockerConnectionState.UNKNOWN);
+		waitUntilConnectionIsOpen(connection);
+		Mockito.clearInvocations(connection);
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(1).setText(tmpDockerSocketFile.getAbsolutePath());
@@ -625,7 +726,10 @@ public class EditDockerConnectionSWTBotTest {
 		assertThat(foundConnection).isNotNull();
 		assertThat(foundConnection.getSettings()).isNotNull()
 				.isEqualTo(new UnixSocketConnectionSettings(tmpDockerSocketFile.getAbsolutePath()));
-		assertThat(foundConnection.getState()).isEqualTo(EnumDockerConnectionState.UNKNOWN);
+		// the connection state was reset, so the Docker Explorer view opens the
+		// connection again, this time with the new settings
+		waitUntilConnectionIsReopened(connection);
+		assertThat(foundConnection.getState()).isEqualTo(EnumDockerConnectionState.ESTABLISHED);
 	}
 
 	@Test
@@ -639,6 +743,8 @@ public class EditDockerConnectionSWTBotTest {
 		DockerConnectionManagerUtils.configureConnectionManager(connectionStorageManager);
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "Test");
 		assertThat(connectionTreeItem).isNotNull();
+		waitUntilConnectionIsOpen(connection);
+		Mockito.clearInvocations(connection);
 		// when
 		openConnectionEditionWizard("Test");
 		bot.text(2).setText("https://foo.bar:1234");
@@ -648,7 +754,10 @@ public class EditDockerConnectionSWTBotTest {
 		assertThat(foundConnection).isNotNull();
 		assertThat(foundConnection.getSettings()).isNotNull()
 				.isEqualTo(new TCPConnectionSettings("https://foo.bar:1234", PATH_TO_CERTS));
-		assertThat(foundConnection.getState()).isEqualTo(EnumDockerConnectionState.UNKNOWN);
+		// the connection state was reset, so the Docker Explorer view opens the
+		// connection again, this time with the new settings
+		waitUntilConnectionIsReopened(connection);
+		assertThat(foundConnection.getState()).isEqualTo(EnumDockerConnectionState.ESTABLISHED);
 	}
 
 }

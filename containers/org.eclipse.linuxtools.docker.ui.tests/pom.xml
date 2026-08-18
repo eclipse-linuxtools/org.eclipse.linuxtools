@@ -12,8 +12,12 @@
 
 
 	<properties>
-		<tycho.test.jvmArgs>-Xmx800m</tycho.test.jvmArgs>
-		<tycho.surefire.timeout>900</tycho.surefire.timeout>
+		<!-- EnableDynamicAgentLoading: Mockito's default inline mock maker attaches
+		     the ByteBuddy agent at runtime; without it JDK 21+ only warns, later
+		     JDKs refuse. The docker-client message records themselves are not
+		     mocked (retransforming a record fails), see the Mock*Factory classes -->
+		<tycho.test.jvmArgs>-Xmx800m -XX:+EnableDynamicAgentLoading</tycho.test.jvmArgs>
+		<tycho.surefire.timeout>1800</tycho.surefire.timeout>
 	</properties>
 
 
@@ -51,9 +55,6 @@
 							<includes>
 								<include>**/*Test.class</include>
 							</includes>
-							<excludes>
-								<exclude>**/*SWTBotTest.class</exclude>
-							</excludes>
 							<excludedGroups>NativeLinuxDocker</excludedGroups>
 						</configuration>
 					</plugin>
@@ -70,7 +71,7 @@
 			<properties>
 				<!-- Workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=388084 -->
 				<!-- THE FOLLOWING LINE MUST NOT BE BROKEN BY AUTOFORMATTING -->
-				<tycho.test.jvmArgs>-Xmx800m -XstartOnFirstThread</tycho.test.jvmArgs>
+				<tycho.test.jvmArgs>-Xmx800m -XstartOnFirstThread -XX:+EnableDynamicAgentLoading</tycho.test.jvmArgs>
 			</properties>
 			<build>
 				<plugins>

@@ -109,23 +109,33 @@ public class ProjectInitializationRule implements BeforeEachCallback {
 			project.delete(true, null);
 		} else if (project.exists() && !project.isOpen()) {
 			project.open(null);
-		} else if (!project.exists()) {
-			createProject(description, projectName, targetWorkspace, project);
-			final SyncFileSystemStructureProvider syncFileSystemStructureProvider = new SyncFileSystemStructureProvider.Builder(
-					projectSourcePath, project.getLocation()).ignoreRelativeSourcePaths(".svn", ".git", "target", "bin")
-							.build();
-			final List<File> filesToImport = syncFileSystemStructureProvider.getChildren(projectSourcePath.toFile());
-			if (filesToImport != null && filesToImport.size() > 0) {
-				ImportOperation operation = new ImportOperation(project.getFullPath(), projectSourcePath.toFile(),
-						syncFileSystemStructureProvider, pathString -> IOverwriteQuery.YES, filesToImport);
-				operation.setContext(null);
-				// need to overwrite modified files
-				operation.setOverwriteResources(true);
-				operation.setCreateContainerStructure(false);
-				operation.run(null);
-			}
 		}
+		if (!project.exists()) {
+			createProject(description, projectName, targetWorkspace, project);
+		}
+		// Always re-import, not just when the project is first created: tests are
+		// free to delete resources out of the workspace copy (and some do, to check
+		// what happens when a Dockerfile goes missing), and without this they would
+		// stay deleted for every later test that asks for the same project.
+		importProjectContent(projectSourcePath, project);
 		return project;
+	}
+
+	private static void importProjectContent(final IPath projectSourcePath, final IProject project)
+			throws InvocationTargetException, InterruptedException {
+		final SyncFileSystemStructureProvider syncFileSystemStructureProvider = new SyncFileSystemStructureProvider.Builder(
+				projectSourcePath, project.getLocation()).ignoreRelativeSourcePaths(".svn", ".git", "target", "bin")
+						.build();
+		final List<File> filesToImport = syncFileSystemStructureProvider.getChildren(projectSourcePath.toFile());
+		if (filesToImport != null && !filesToImport.isEmpty()) {
+			final ImportOperation operation = new ImportOperation(project.getFullPath(), projectSourcePath.toFile(),
+					syncFileSystemStructureProvider, pathString -> IOverwriteQuery.YES, filesToImport);
+			operation.setContext(null);
+			// need to overwrite modified files
+			operation.setOverwriteResources(true);
+			operation.setCreateContainerStructure(false);
+			operation.run(null);
+		}
 	}
 
 	/**

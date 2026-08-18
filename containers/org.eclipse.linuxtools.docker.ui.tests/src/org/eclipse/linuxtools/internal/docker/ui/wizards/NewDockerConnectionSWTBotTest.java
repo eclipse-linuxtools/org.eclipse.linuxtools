@@ -47,6 +47,7 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.ui.PlatformUI;
 import org.junit.jupiter.api.Assertions;
@@ -95,11 +96,26 @@ public class NewDockerConnectionSWTBotTest {
 
 	@BeforeEach
 	public void clearClipboards() {
-		// Clear all clipboards
+		// Clear all clipboards.
+		//
+		// clearContents() only takes effect while this application still owns the
+		// selection, so on its own it lets content set by an earlier test survive
+		// into the next one. That matters because the connection wizard prefills
+		// itself from the clipboard when it holds a DOCKER_HOST payload, and then
+		// never consults the default connection settings at all. Overwriting with
+		// a harmless placeholder is the part that actually sticks; an empty string
+		// is not accepted by TextTransfer.
 		Display.getDefault().syncExec(() -> {
-			Clipboard clip = new Clipboard(Display.getCurrent());
-			clip.clearContents(DND.CLIPBOARD);
-			clip.clearContents(DND.SELECTION_CLIPBOARD);
+			final Clipboard clip = new Clipboard(Display.getCurrent());
+			try {
+				clip.setContents(new Object[] { "-" }, new Transfer[] { TextTransfer.getInstance() }, DND.CLIPBOARD);
+				clip.setContents(new Object[] { "-" }, new Transfer[] { TextTransfer.getInstance() },
+						DND.SELECTION_CLIPBOARD);
+				clip.clearContents(DND.CLIPBOARD);
+				clip.clearContents(DND.SELECTION_CLIPBOARD);
+			} finally {
+				clip.dispose();
+			}
 		});
 	}
 
@@ -119,12 +135,25 @@ public class NewDockerConnectionSWTBotTest {
 		return dockerConnection;
 	}
 
+	/**
+	 * Opens the "New Docker Connection" wizard and makes sure it is the active
+	 * shell: {@code bot.text(int)} and friends resolve against whichever shell
+	 * is active, so without this they silently pick up the widgets of the
+	 * workbench window instead of the ones in the wizard.
+	 */
+	private void openNewConnectionWizard() {
+		addConnectionButton.click();
+		final SWTBotShell wizardShell = bot.shell(WizardMessages.getString("NewDockerConnection.title")); //$NON-NLS-1$
+		bot.waitUntil(Conditions.shellIsActive(WizardMessages.getString("NewDockerConnection.title"))); //$NON-NLS-1$
+		wizardShell.activate();
+	}
+
 	@Test
 	public void shouldShowCustomUnixSocketSettingsWhenNoConnectionAvailable() {
 		// given
 		MockDockerConnectionSettingsFinder.noDockerConnectionAvailable();
 		// when
-		addConnectionButton.click();
+		openNewConnectionWizard();
 		// then
 		// Empty Connection name
 		TextAssertions.assertThat(bot.text(0)).isEnabled().isEmpty();
@@ -149,7 +178,7 @@ public class NewDockerConnectionSWTBotTest {
 		// given
 		MockDockerConnectionSettingsFinder.validUnixSocketConnectionAvailable();
 		// when
-		addConnectionButton.click();
+		openNewConnectionWizard();
 		// then
 		// Connection name
 		TextAssertions.assertThat(bot.text(0)).isEnabled().textEquals("mock");
@@ -174,8 +203,7 @@ public class NewDockerConnectionSWTBotTest {
 		// given
 		MockDockerConnectionSettingsFinder.validTCPConnectionAvailable();
 		// when
-		addConnectionButton.click();
-		bot.waitUntil(Conditions.shellIsActive(WizardMessages.getString("NewDockerConnection.title"))); //$NON-NLS-1$
+		openNewConnectionWizard();
 		// then
 		// Connection name
 		TextAssertions.assertThat(bot.text(0)).isEnabled().textEquals("mock");
@@ -202,8 +230,7 @@ public class NewDockerConnectionSWTBotTest {
 		MockDockerConnectionSettingsFinder.validUnixSocketConnectionAvailable("Mock",
 				"unix://" + dockerSocketTmpFile.getAbsolutePath());
 		// when open wizard
-		addConnectionButton.click();
-		bot.waitUntil(Conditions.shellIsActive(WizardMessages.getString("NewDockerConnection.title"))); //$NON-NLS-1$
+		openNewConnectionWizard();
 		// when click on "OK"
 		bot.button("Finish").click();
 		// then the Docker Explorer view should have a connection named "Mock"
@@ -219,8 +246,7 @@ public class NewDockerConnectionSWTBotTest {
 		// add an existing connection based on the settings above
 		configureUnixSocketConnection("Mock", dockerSocketTmpPath);
 		// when open wizard
-		addConnectionButton.click();
-		bot.waitUntil(Conditions.shellIsActive(WizardMessages.getString("NewDockerConnection.title"))); //$NON-NLS-1$
+		openNewConnectionWizard();
 		// when changing connection name
 		bot.text(0).setText("foo");
 		// then the wizard should not allow for completion because a connection
@@ -235,8 +261,7 @@ public class NewDockerConnectionSWTBotTest {
 		// add an existing connection based on the settings above
 		configureTCPConnection("Mock", "https://foo:1234");
 		// when open wizard
-		addConnectionButton.click();
-		bot.waitUntil(Conditions.shellIsActive(WizardMessages.getString("NewDockerConnection.title"))); //$NON-NLS-1$
+		openNewConnectionWizard();
 		// when changing connection name
 		bot.text(0).setText("foo");
 		// then the wizard should not allow for completion because a connection
@@ -252,15 +277,14 @@ public class NewDockerConnectionSWTBotTest {
 		MockDockerConnectionSettingsFinder.validUnixSocketConnectionAvailable("Mock", "unix://" + dockerSocketTmpPath);
 		final String otherDockerSocketTmpPath = File.createTempFile("docker", ".sock").getAbsolutePath();
 		// when open wizard
-		addConnectionButton.click();
-		bot.waitUntil(Conditions.shellIsActive(WizardMessages.getString("NewDockerConnection.title"))); //$NON-NLS-1$
+		openNewConnectionWizard();
 		// when changing connection name
 		bot.text(0).setText("foo");
 		bot.checkBox(0).select();
 		bot.text(1).setText(otherDockerSocketTmpPath);
-		// then the wizard should not allow for completion because a connection
-		// with the connection settings already exists.
-		assertFalse(bot.button("Finish").isEnabled());
+		// then the wizard should allow for completion because no connection
+		// with the same connection settings exists.
+		assertTrue(bot.button("Finish").isEnabled());
 	}
 
 	@Test
@@ -270,14 +294,13 @@ public class NewDockerConnectionSWTBotTest {
 		// add an existing connection based on the settings above
 		configureTCPConnection("Mock", "https://foo");
 		// when open wizard
-		addConnectionButton.click();
-		bot.waitUntil(Conditions.shellIsActive(WizardMessages.getString("NewDockerConnection.title"))); //$NON-NLS-1$
+		openNewConnectionWizard();
 		// when changing connection name
 		bot.text(0).setText("foo");
 		bot.checkBox(0).select();
 		bot.text(2).setText("https://bar:1234");
-		// then the wizard should not allow for completion because a connection
-		// with the connection settings already exists.
+		// then the wizard should allow for completion because no connection
+		// with the same connection settings exists.
 		assertTrue(bot.button("Finish").isEnabled());
 	}
 
@@ -304,7 +327,7 @@ public class NewDockerConnectionSWTBotTest {
 			clip.setContents(connectionData, new Transfer[] { TextTransfer.getInstance() }, clipboardType);
 		});
 		// when
-		addConnectionButton.click();
+		openNewConnectionWizard();
 		// then
 		// Connection name
 		TextAssertions.assertThat(bot.text(0)).isEnabled().isEmpty();

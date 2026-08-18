@@ -13,11 +13,20 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils;
 
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.linuxtools.docker.core.IDockerHostConfig;
-import org.mockito.Mockito;
+import org.eclipse.linuxtools.internal.docker.core.DockerHostConfig;
 
 /**
- * A factory for mock {@link IDockerHostConfig}s.
+ * A factory for {@link IDockerHostConfig}s.
+ * <p>
+ * This builds a real {@link DockerHostConfig} rather than a Mockito mock,
+ * because consumers such as
+ * {@code LaunchConfigurationUtils#createRunImageLaunchConfiguration} downcast
+ * {@link IDockerHostConfig} to {@link DockerHostConfig} to reach
+ * {@code readonlyRootfs()}, which a mocked interface cannot satisfy.
  */
 public class MockDockerHostConfigFactory {
 
@@ -29,29 +38,77 @@ public class MockDockerHostConfigFactory {
 		return new Builder().networkMode(networkMode);
 	}
 
+	public static Builder privileged(final boolean privileged) {
+		return new Builder().privileged(privileged);
+	}
+
+	public static Builder readonlyRootfs(final boolean readonlyRootfs) {
+		return new Builder().readonlyRootfs(readonlyRootfs);
+	}
+
+	public static Builder securityOpt(final String... securityOpt) {
+		return new Builder().securityOpt(securityOpt);
+	}
+
 	public static class Builder {
 
-		private final IDockerHostConfig hostConfig;
+		private final DockerHostConfig.Builder hostConfig;
 
 		private Builder() {
-			this.hostConfig = Mockito
-					.mock(IDockerHostConfig.class, Mockito.RETURNS_DEEP_STUBS);
+			// consumers iterate these without null-checking, and the mock this
+			// factory used to return handed back empty collections via deep stubs
+			this.hostConfig = DockerHostConfig.builder()
+					.binds(List.of())
+					.volumesFrom(List.of())
+					.links(List.of())
+					.securityOpt(List.of())
+					.capDrop(List.of())
+					.tmpfs(Map.of());
 		}
 
 		public Builder publishAllPorts(final boolean publishAllPorts) {
-			Mockito.when(this.hostConfig.publishAllPorts()).thenReturn(publishAllPorts);
+			this.hostConfig.publishAllPorts(publishAllPorts);
 			return this;
 		}
 
 		public Builder networkMode(final String networkMode) {
-			Mockito.when(this.hostConfig.networkMode()).thenReturn(networkMode);
+			this.hostConfig.networkMode(networkMode);
+			return this;
+		}
+
+		public Builder privileged(final boolean privileged) {
+			this.hostConfig.privileged(privileged);
+			return this;
+		}
+
+		public Builder readonlyRootfs(final boolean readonlyRootfs) {
+			this.hostConfig.readonlyRootfs(readonlyRootfs);
+			return this;
+		}
+
+		public Builder tmpfs(final Map<String, String> tmpfs) {
+			this.hostConfig.tmpfs(tmpfs);
+			return this;
+		}
+
+		public Builder securityOpt(final String... securityOpt) {
+			this.hostConfig.securityOpt(securityOpt);
+			return this;
+		}
+
+		public Builder capDrop(final String... capDrop) {
+			this.hostConfig.capDrop(capDrop);
+			return this;
+		}
+
+		public Builder capDrop(final List<String> capDrop) {
+			this.hostConfig.capDrop(capDrop);
 			return this;
 		}
 
 		public IDockerHostConfig build() {
-			return this.hostConfig;
+			return this.hostConfig.build();
 		}
 	}
-
 
 }

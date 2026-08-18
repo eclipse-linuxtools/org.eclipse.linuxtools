@@ -37,7 +37,7 @@ public class MockDockerContainerConfigFactory {
 	public static class Builder {
 
 		private final DockerContainerConfig containerConfig;
-		private final Map<String, String> labels;
+		private Map<String, String> labels;
 
 		private Builder() {
 			this.containerConfig = Mockito.mock(DockerContainerConfig.class, Mockito.RETURNS_DEEP_STUBS);
@@ -45,7 +45,7 @@ public class MockDockerContainerConfigFactory {
 		}
 
 		public Builder labels(final Map<String, String> labels) {
-			Mockito.when(this.containerConfig.labels()).thenReturn(labels);
+			this.labels = labels;
 			return this;
 		}
 

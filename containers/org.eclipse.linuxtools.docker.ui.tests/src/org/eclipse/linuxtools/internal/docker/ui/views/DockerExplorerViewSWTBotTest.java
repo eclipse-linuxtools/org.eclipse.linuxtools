@@ -22,6 +22,7 @@ import java.util.stream.Stream;
 import org.assertj.core.api.Assertions;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.linuxtools.docker.core.DockerConnectionManager;
+import org.eclipse.linuxtools.docker.core.EnumDockerConnectionState;
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerRefreshManager;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.MockContainerFactory;
@@ -42,11 +43,10 @@ import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.views.properties.PropertySheet;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -122,12 +122,11 @@ public class DockerExplorerViewSWTBotTest {
 	}
 
 	private void selectImagesInTreeView(final String connectionName, final String... imageNames) {
-		bot.getDisplay().asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
-		// when a second call to expand the container is done (because the first
-		// expandAll stopped with a "Loading..." job that retrieved the
-		// containers)
 		final SWTBotTreeItem imagesTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, connectionName, "Images");
-		bot.getDisplay().asyncExec(() -> imagesTreeItem.expand());
+		// the images are retrieved by a background job once the node is
+		// expanded, so wait for them before selecting
+		SWTUtils.syncExec(() -> imagesTreeItem.expand());
+		SWTUtils.getLoadedItems(imagesTreeItem);
 		// select both images
 		SWTUtils.select(imagesTreeItem, imageNames);
 	}
@@ -165,8 +164,8 @@ public class DockerExplorerViewSWTBotTest {
 		final SWTBotTreeItem imagesTreeItem = SWTUtils.expand(connection, "Images");
 		Assertions.assertThat(imagesTreeItem.getItems().length).isEqualTo(0);
 		// update the client
-		final DockerClient updatedClient = MockDockerClientFactory.images(MockImageFactory.of("foo/bar"))
-				.build();
+		final DockerClient updatedClient = MockDockerClientFactory
+				.images(MockImageFactory.of("sha256:foo_bar", "", "foo/bar")).build();
 		dockerConnection.setClient(updatedClient);
 		// when locating the 'Images' node and hit refresh
 		dockerExplorerViewBot.bot().tree().select(imagesTreeItem);
@@ -348,9 +347,11 @@ public class DockerExplorerViewSWTBotTest {
 
 	@Test
 	public void shouldProvideDisabledStopCommandOnMultipleContainersAtOnce() {
-		// given
+		// given: none of the selected containers can be stopped, since the command
+		// is contributed with <iterate operator="or"> and is therefore enabled as
+		// soon as a single container in the selection qualifies
 		final DockerClient client = MockDockerClientFactory
-				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockContainerFactory.name("gentle_foo").status("Stopped").build())
 				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
@@ -444,9 +445,11 @@ public class DockerExplorerViewSWTBotTest {
 
 	@Test
 	public void shouldProvideDisabledKillCommandOnMultipleContainersAtOnce() {
-		// given
+		// given: none of the selected containers can be killed, since the command
+		// is contributed with <iterate operator="or"> and is therefore enabled as
+		// soon as a single container in the selection qualifies
 		final DockerClient client = MockDockerClientFactory
-				.container(MockContainerFactory.name("gentle_foo").status("Running").build())
+				.container(MockContainerFactory.name("gentle_foo").status("Stopped").build())
 				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
@@ -494,7 +497,9 @@ public class DockerExplorerViewSWTBotTest {
 	public void shouldProvideEnabledRemoveCommandOnMultipleImagesAtOnce() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.images(MockImageFactory.of("angry_bar"), MockImageFactory.of("gentle_foo")).build();
+				.images(MockImageFactory.of("sha256:angry_bar", "", "angry_bar"),
+						MockImageFactory.of("sha256:gentle_foo", "", "gentle_foo"))
+				.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
@@ -537,20 +542,17 @@ public class DockerExplorerViewSWTBotTest {
 		SWTUtils.getContextMenu(dockerExplorerViewBot.bot().tree(), "Show In", "Properties").click();
 		// the properties view should be visible
 		assertThat(this.bot.viewById("org.eclipse.ui.views.PropertySheet").isActive()).isEqualTo(true);
-		// then the properties view should have a selected tab with container
-		// info
-		final PropertySheet propertySheet = SWTUtils
-				.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
-		assertThat(propertySheet.getCurrentPage()).isInstanceOf(TabbedPropertySheetPage.class);
-		final TabbedPropertySheetPage currentPage = (TabbedPropertySheetPage) propertySheet.getCurrentPage();
-		TabDescriptorAssertions.assertThat(currentPage.getSelectedTab()).isNotNull()
+		// then the properties view should have a selected tab with the
+		// element's info
+		TabDescriptorAssertions.assertThat(SWTUtils.waitForSelectedPropertiesTab(bot, "org.eclipse.linuxtools.docker.ui.properties.container.info"))
 				.hasId("org.eclipse.linuxtools.docker.ui.properties.container.info");
 	}
 
 	@Test
 	public void shouldShowSelectedImageInPropertiesView() {
 		// given
-		final DockerClient client = MockDockerClientFactory.images(MockImageFactory.of("angry_bar")).build();
+		final DockerClient client = MockDockerClientFactory
+				.images(MockImageFactory.of("sha256:angry_bar", "", "angry_bar")).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
@@ -560,20 +562,17 @@ public class DockerExplorerViewSWTBotTest {
 		SWTUtils.getContextMenu(dockerExplorerViewBot.bot().tree(), "Show In", "Properties").click();
 		// the properties view should be visible
 		assertThat(this.bot.viewById("org.eclipse.ui.views.PropertySheet").isActive()).isEqualTo(true);
-		// then the properties view should have a selected tab with container
-		// info
-		final PropertySheet propertySheet = SWTUtils
-				.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
-		assertThat(propertySheet.getCurrentPage()).isInstanceOf(TabbedPropertySheetPage.class);
-		final TabbedPropertySheetPage currentPage = (TabbedPropertySheetPage) propertySheet.getCurrentPage();
-		TabDescriptorAssertions.assertThat(currentPage.getSelectedTab()).isNotNull()
+		// then the properties view should have a selected tab with the
+		// element's info
+		TabDescriptorAssertions.assertThat(SWTUtils.waitForSelectedPropertiesTab(bot, "org.eclipse.linuxtools.docker.ui.properties.image.info"))
 				.hasId("org.eclipse.linuxtools.docker.ui.properties.image.info");
 	}
 
 	@Test
 	public void shouldRemoveListenersWhenClosingView() {
 		// given
-		final DockerClient client = MockDockerClientFactory.images(MockImageFactory.of("angry_bar"))
+		final DockerClient client = MockDockerClientFactory
+				.images(MockImageFactory.of("sha256:angry_bar", "", "angry_bar"))
 				.container(MockContainerFactory.name("angry_bar").status("Stopped").build()).build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
@@ -619,9 +618,25 @@ public class DockerExplorerViewSWTBotTest {
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when
-		final SWTBotTreeItem connectionTreeItem = SWTUtils.expand(dockerExplorerViewBot.bot().tree(), "Test");
-		// then
-		assertThat(connectionTreeItem.getItems()).isEmpty();
+		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test");
+		SWTUtils.syncExec(() -> connectionTreeItem.expand());
+		// then the ping should fail and the connection should be closed...
+		bot.waitUntil(new DefaultCondition() {
+
+			@Override
+			public boolean test() {
+				return dockerConnection.getState() == EnumDockerConnectionState.CLOSED;
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "Expected connection state to be CLOSED but was " + dockerConnection.getState();
+			}
+		});
+		// ...and the explorer should keep retrying to open it (showing a
+		// "Loading..." stub) rather than listing images and containers
+		assertThat(connectionTreeItem.getItems()).extracting(SWTBotTreeItem::getText)
+				.containsExactly(SWTUtils.LOADING_STUB_TEXT);
 	}
 
 	@Test

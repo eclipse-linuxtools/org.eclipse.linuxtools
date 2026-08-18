@@ -47,9 +47,14 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.DockerConnectionM
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ProjectExplorerViewRule;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TextAssertions;
+import org.eclipse.linuxtools.internal.docker.ui.wizards.WizardMessages;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.jupiter.api.BeforeEach;
@@ -126,9 +131,20 @@ public class DockerComposeSWTBotTest {
 								CustomMatchers.arrayContains("up"))
 						.workingDir(ArgumentMatchers.anyString()).start())
 				.thenReturn(mockDockerComposeUpProcess);
-		latch = new CountDownLatch(1);
+		final CountDownLatch processLatch = new CountDownLatch(1);
+		this.latch = processLatch;
 		Mockito.when(mockDockerComposeUpProcess.waitFor()).then(invocation -> {
-			latch.await(5, TimeUnit.SECONDS);
+			processLatch.await(5, TimeUnit.SECONDS);
+			return 0;
+		});
+		// behave like a running process until the latch is released: the debug
+		// framework relies on 'exitValue()' throwing to tell that a process is
+		// still alive
+		Mockito.when(mockDockerComposeUpProcess.isAlive()).then(invocation -> processLatch.getCount() > 0);
+		Mockito.when(mockDockerComposeUpProcess.exitValue()).then(invocation -> {
+			if (processLatch.getCount() > 0) {
+				throw new IllegalThreadStateException("process has not exited");
+			}
 			return 0;
 		});
 	}
@@ -148,8 +164,9 @@ public class DockerComposeSWTBotTest {
 								CustomMatchers.arrayContains("stop"))
 						.workingDir(ArgumentMatchers.anyString()).start())
 				.thenReturn(mockDockerComposeStopProcess);
+		final CountDownLatch processLatch = this.latch;
 		Mockito.when(mockDockerComposeStopProcess.waitFor()).then(invocation -> {
-			latch.countDown();
+			processLatch.countDown();
 			return 0;
 		});
 	}
@@ -160,19 +177,65 @@ public class DockerComposeSWTBotTest {
 	 */
 	private SWTBotMenu getRunAsDockerComposeContextMenu(final String projectName, final String dockerComposeFileName) {
 		final SWTBotView projectExplorerBotView = this.projectExplorerViewRule.getProjectExplorerBotView();
-		// make sure the project explorer view is visible, in case it was hidden
-		// by another view.
+		// make sure the project explorer view is the active part: the "Run As"
+		// contextual menu and the launch shortcut are computed from the selection
+		// of the active part, and a previous launch activates the console view
+		// (from a job scheduled with a delay, hence the wait).
+		SWTUtils.waitForJobsToComplete();
+		projectExplorerBotView.show();
 		projectExplorerBotView.setFocus();
 		final SWTBotTreeItem fooProjectTreeItem = SWTUtils.getTreeItem(projectExplorerBotView, projectName);
 		assertThat(fooProjectTreeItem).isNotNull();
 		SWTUtils.syncExec(() -> fooProjectTreeItem.expand());
 		final SWTBotTreeItem dockerfileTreeItem = SWTUtils.getTreeItem(fooProjectTreeItem, dockerComposeFileName);
 		assertThat(dockerfileTreeItem).isNotNull();
-		SWTUtils.select(dockerfileTreeItem);
+		// select the item itself: SWTUtils.select(item, matchers...) with no matchers
+		// filters the children against nothing and ends up selecting nothing at all,
+		// which leaves the workbench selection empty and the "Run As" menu absent
+		SWTUtils.syncExec(() -> dockerfileTreeItem.select());
 		final SWTBotMenu runAsDockerComposeMenu = SWTUtils.getContextMenu(
 				projectExplorerBotView.bot().tree(),
 				"Run As", "1 Docker Compose");
 		return runAsDockerComposeMenu;
+	}
+
+	/**
+	 * Waits for the "Stop services" button of the Docker Compose console to be
+	 * in the given enablement state and returns it. The button is looked up
+	 * again on each poll, since the console page toolbar may be rebuilt.
+	 */
+	private SWTBotToolbarButton waitForStopButton(final boolean enabled) {
+		final String tooltip = ConsoleMessages.getString("DockerComposeStopAction.tooltip"); //$NON-NLS-1$
+		bot.waitUntil(new DefaultCondition() {
+
+			@Override
+			public boolean test() {
+				return SWTUtils.getConsoleToolbarButtonWithTooltipText(DockerComposeSWTBotTest.this.bot, tooltip)
+						.isEnabled() == enabled;
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "The '" + tooltip + "' console button was not " + (enabled ? "enabled" : "disabled");
+			}
+		});
+		return SWTUtils.getConsoleToolbarButtonWithTooltipText(bot, tooltip);
+	}
+
+	/**
+	 * Confirms the "Docker Compose Up" dialog that prompts for the connection to
+	 * use. The dialog has to be activated and its "OK" button looked up through
+	 * its own bot: lookups on the global bot go to whichever shell is active,
+	 * which without a window manager is still the workbench window.
+	 */
+	private void confirmDockerComposeUpDialog() {
+		final String title = WizardMessages.getString("DockerComposeUpDialog.title"); //$NON-NLS-1$
+		final SWTBotShell dialog = bot.shell(title);
+		bot.waitUntil(Conditions.shellIsActive(title));
+		dialog.activate();
+		final SWTBotButton okButton = dialog.bot().button(IDialogConstants.OK_LABEL);
+		bot.waitUntil(Conditions.widgetIsEnabled(okButton));
+		bot.getDisplay().syncExec(() -> okButton.click());
 	}
 
 	@Test
@@ -181,13 +244,14 @@ public class DockerComposeSWTBotTest {
 		// given no connection
 		ClearConnectionManagerRule.removeAllConnections(DockerConnectionManager.getInstance());
 		// when
-		bot.getDisplay().asyncExec(() -> getRunAsDockerComposeContextMenu("foo", "docker-compose.yml").click());
+		final SWTBotMenu composeMenu = getRunAsDockerComposeContextMenu("foo", "docker-compose.yml");
+		bot.getDisplay().asyncExec(() -> composeMenu.click());
 		// then expect an error dialog because no Docker connection exists
-		assertThat(bot.shell(LaunchMessages.getString("DockerComposeUpShortcut.no.connections.msg"))).isNotNull();
-		// closing the wizard
-		bot.getDisplay().syncExec(() -> {
-			bot.button("No").click();
-		});
+		final SWTBotShell noConnectionShell = bot
+				.shell(LaunchMessages.getString("DockerComposeUpShortcut.no.connections.msg"));
+		assertThat(noConnectionShell).isNotNull();
+		// closing the dialog
+		noConnectionShell.bot().button(IDialogConstants.NO_LABEL).click();
 	}
 
 	@Test
@@ -199,16 +263,18 @@ public class DockerComposeSWTBotTest {
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when
-		bot.getDisplay().asyncExec(() -> getRunAsDockerComposeContextMenu("foo", "docker-compose.yml").click());
+		final SWTBotMenu composeMenu = getRunAsDockerComposeContextMenu("foo", "docker-compose.yml");
+		bot.getDisplay().asyncExec(() -> composeMenu.click());
 		// then confirm the connection
-		bot.button("OK").click();
+		confirmDockerComposeUpDialog();
 		// wait for the job to run
 		SWTUtils.waitForJobsToComplete();
-		// then expect the console to be displayed
-		assertThat(SWTUtils.isConsoleViewVisible(this.bot)).isTrue();
-		// expect the 'stop' button to be enabled
-		final SWTBotToolbarButton consoleToolbarStopButton = SWTUtils.getConsoleToolbarButtonWithTooltipText(bot,
-				ConsoleMessages.getString("DockerComposeStopAction.tooltip"));
+		// then expect the console to be displayed (it is revealed by the console
+		// manager's own job, so wait for it)
+		SWTUtils.waitForConsoleView(this.bot);
+		// expect the 'stop' button to be enabled (the 'docker-compose up' command
+		// runs on its own thread once the launch job is done)
+		final SWTBotToolbarButton consoleToolbarStopButton = waitForStopButton(true);
 		assertTrue(consoleToolbarStopButton.isEnabled());
 		// verify that the launch configuration was saved
 		final ILaunchConfiguration launchConfiguration = LaunchConfigurationUtils.getLaunchConfigurationByName(
@@ -229,10 +295,12 @@ public class DockerComposeSWTBotTest {
 		final IFile dockerComposeScript = projectInit.getProject().getFile("docker-compose.yml");
 		LaunchConfigurationUtils.createDockerComposeUpLaunchConfiguration(dockerConnection, dockerComposeScript);
 		// when
-		bot.getDisplay().asyncExec(() -> getRunAsDockerComposeContextMenu("foo", "docker-compose.yml").click());
-		// then confirm the connection
-		final SWTBotToolbarButton consoleToolbarStopButton = SWTUtils.getConsoleToolbarButtonWithTooltipText(bot,
-				ConsoleMessages.getString("DockerComposeStopAction.tooltip"));
+		final SWTBotMenu composeMenu = getRunAsDockerComposeContextMenu("foo", "docker-compose.yml");
+		bot.getDisplay().asyncExec(() -> composeMenu.click());
+		// then there is no dialog to confirm the connection: wait for the job to
+		// run and for the console to show up with its 'stop' button enabled
+		SWTUtils.waitForJobsToComplete();
+		final SWTBotToolbarButton consoleToolbarStopButton = waitForStopButton(true);
 		assertTrue(consoleToolbarStopButton.isEnabled());
 	}
 
@@ -246,11 +314,12 @@ public class DockerComposeSWTBotTest {
 				ConsoleMessages.getString("DockerComposeStopAction.tooltip"));
 		assertTrue(consoleToolbarStopButton.isEnabled());
 		consoleToolbarStopButton.click();
-		// then
+		// then wait for the 'docker-compose stop' job to run
+		SWTUtils.waitForJobsToComplete();
 		// verify the latch is down
 		assertThat(latch.getCount()).isEqualTo(0);
 		// verify the stop button is disabled
-		assertFalse(consoleToolbarStopButton.isEnabled());
+		assertFalse(waitForStopButton(false).isEnabled());
 	}
 
 	@Test
@@ -262,8 +331,9 @@ public class DockerComposeSWTBotTest {
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when starting without launch config
-		bot.getDisplay().asyncExec(() -> getRunAsDockerComposeContextMenu("foo", "docker-compose.yml").click());
-		bot.button("OK").click();
+		final SWTBotMenu composeMenu = getRunAsDockerComposeContextMenu("foo", "docker-compose.yml");
+		bot.getDisplay().asyncExec(() -> composeMenu.click());
+		confirmDockerComposeUpDialog();
 		// wait for the job to run
 		SWTUtils.waitForJobsToComplete();
 		// when stopping
@@ -271,14 +341,16 @@ public class DockerComposeSWTBotTest {
 				ConsoleMessages.getString("DockerComposeStopAction.tooltip"));
 		assertTrue(consoleToolbarStopButton.isEnabled());
 		consoleToolbarStopButton.click();
+		// wait for the 'docker-compose stop' job to run
+		SWTUtils.waitForJobsToComplete();
 		// redo the setup to get a new mock process
 		setupMockedProcessLauncher();
 		// when restarting
-		bot.getDisplay().asyncExec(() -> getRunAsDockerComposeContextMenu("foo", "docker-compose.yml").click());
-		// wait for the job to run
-		SWTUtils.waitForJobsToComplete();
-		// then
-		assertTrue(consoleToolbarStopButton.isEnabled());
+		final SWTBotMenu composeMenu2 = getRunAsDockerComposeContextMenu("foo", "docker-compose.yml");
+		bot.getDisplay().asyncExec(() -> composeMenu2.click());
+		// then the 'docker-compose up' command runs on its own thread once the
+		// launch job is done, so wait for the stop button to be enabled again
+		assertTrue(waitForStopButton(true).isEnabled());
 	}
 
 	@Test

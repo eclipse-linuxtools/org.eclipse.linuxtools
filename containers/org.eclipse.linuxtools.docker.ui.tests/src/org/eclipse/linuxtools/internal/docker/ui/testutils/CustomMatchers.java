@@ -23,7 +23,9 @@ import org.mockito.ArgumentMatchers;
 public class CustomMatchers {
 
 	public static String[] arrayContains(final String expectation) {
-		return ArgumentMatchers.argThat(items -> Stream.of(items).anyMatch(item -> item.equals(expectation)));
+		// null-safe: the arguments passed to 'docker-compose' may contain null
+		// elements, e.g. '-H null' for a connection without a host
+		return ArgumentMatchers.argThat(items -> Stream.of(items).anyMatch(expectation::equals));
 	}
 
 }

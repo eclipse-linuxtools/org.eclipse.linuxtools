@@ -24,7 +24,6 @@ import org.mandas.docker.client.messages.ContainerInfo;
 import org.mandas.docker.client.messages.HostConfig;
 import org.mandas.docker.client.messages.NetworkSettings;
 import org.mandas.docker.client.messages.PortBinding;
-import org.mockito.Mockito;
 
 /**
  * A factory for mock {@link ContainerInfo}s.
@@ -77,7 +76,9 @@ public class MockContainerInfoFactory {
 
 	public static class Builder {
 
-		private final ContainerInfo containerInfo;
+		private String id;
+
+		private String image;
 
 		private Map<String, String> labels;
 
@@ -96,25 +97,6 @@ public class MockContainerInfoFactory {
 		private List<String> securityOpt;
 
 		private Builder() {
-			this.containerInfo = Mockito.mock(ContainerInfo.class, Mockito.RETURNS_DEEP_STUBS);
-			Mockito.when(this.containerInfo.created()).thenReturn(new Date());
-			Mockito.when(this.containerInfo.path()).thenReturn(null);
-			Mockito.when(this.containerInfo.args()).thenReturn(null);
-			Mockito.when(this.containerInfo.hostConfig()).thenReturn(null);
-			Mockito.when(this.containerInfo.state()).thenReturn(null);
-			Mockito.when(this.containerInfo.image()).thenReturn(null);
-			Mockito.when(this.containerInfo.networkSettings()).thenReturn(null);
-			Mockito.when(this.containerInfo.resolvConfPath()).thenReturn(null);
-			Mockito.when(this.containerInfo.hostnamePath()).thenReturn(null);
-			Mockito.when(this.containerInfo.hostsPath()).thenReturn(null);
-			Mockito.when(this.containerInfo.name()).thenReturn(null);
-			Mockito.when(this.containerInfo.driver()).thenReturn(null);
-			Mockito.when(this.containerInfo.execDriver()).thenReturn(null);
-			Mockito.when(this.containerInfo.processLabel()).thenReturn(null);
-			Mockito.when(this.containerInfo.hostsPath()).thenReturn(null);
-			Mockito.when(this.containerInfo.mountLabel()).thenReturn(null);
-			Mockito.when(this.containerInfo.mounts()).thenReturn(null);
-
 		}
 
 		public Builder labels(Map<String, String> labels) {
@@ -133,7 +115,7 @@ public class MockContainerInfoFactory {
 		}
 
 		public Builder id(String id) {
-			Mockito.when(this.containerInfo.id()).thenReturn(id);
+			this.id = id;
 			return this;
 		}
 
@@ -176,7 +158,7 @@ public class MockContainerInfoFactory {
 		}
 
 		public Builder image(final String image) {
-			Mockito.when(this.containerInfo.image()).thenReturn(image);
+			this.image = image;
 			return this;
 		}
 
@@ -184,9 +166,7 @@ public class MockContainerInfoFactory {
 			if (this.ports == null) {
 				this.ports = Map.of();
 			}
-			final PortBinding binding = Mockito.mock(PortBinding.class);
-			Mockito.when(binding.hostIp()).thenReturn(hostIp);
-			Mockito.when(binding.hostPort()).thenReturn(hostPort);
+			final PortBinding binding = new PortBinding(hostIp, hostPort);
 
 			HashMap<String, List<PortBinding>> tmp = new HashMap<>(this.ports);
 			tmp.put(privatePort, new ArrayList<>());
@@ -196,21 +176,14 @@ public class MockContainerInfoFactory {
 		}
 
 		public ContainerInfo build() {
-			final NetworkSettings networkSettings = Mockito.mock(NetworkSettings.class);
-			Mockito.when(this.containerInfo.networkSettings()).thenReturn(networkSettings);
-			Mockito.when(networkSettings.ports()).thenReturn(this.ports);
-			Mockito.when(networkSettings.ipAddress()).thenReturn(this.ipAddress);
-			final HostConfig hostConfig = Mockito.mock(HostConfig.class);
-			Mockito.when(this.containerInfo.hostConfig()).thenReturn(hostConfig);
-			Mockito.when(hostConfig.links()).thenReturn(this.links);
-			Mockito.when(hostConfig.securityOpt()).thenReturn(this.securityOpt);
-			Mockito.when(hostConfig.binds()).thenReturn(this.volumes);
-			Mockito.when(hostConfig.networkMode()).thenReturn(this.networkMode);
-			Mockito.when(hostConfig.privileged()).thenReturn(this.privilegedMode);
-			final ContainerConfig containerConfig = Mockito.mock(ContainerConfig.class);
-			Mockito.when(this.containerInfo.config()).thenReturn(containerConfig);
-			Mockito.when(containerConfig.labels()).thenReturn(this.labels);
-			return containerInfo;
+			final NetworkSettings networkSettings = NetworkSettings.builder().nullValuedPorts(this.ports)
+					.ipAddress(this.ipAddress).build();
+			final HostConfig hostConfig = HostConfig.builder().links(this.links).securityOpt(this.securityOpt)
+					.binds(this.volumes).networkMode(this.networkMode).privileged(this.privilegedMode).build();
+			final ContainerConfig containerConfig = ContainerConfig.builder().labels(this.labels).build();
+			return new ContainerInfo(this.id, new Date(), null, null, containerConfig, hostConfig, null, this.image,
+					networkSettings, null, null, null, null, null, null, null, null, null, null, null, null, null,
+					null);
 		}
 	}
 

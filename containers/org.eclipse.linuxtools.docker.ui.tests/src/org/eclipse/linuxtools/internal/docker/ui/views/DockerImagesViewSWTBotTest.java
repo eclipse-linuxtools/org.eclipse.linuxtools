@@ -37,8 +37,6 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.views.properties.PropertySheet;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -191,16 +189,15 @@ public class DockerImagesViewSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		final PropertySheet propertySheet = SWTUtils
-				.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
+		SWTUtils.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
 		this.dockerImagesView.setFocus();
-		// select the container in the table
+		// select the image in the table
 		selectImageInTable("angry_bar");
-		// then the properties view should have a selected tab with container
-		// info
-		assertThat(propertySheet.getCurrentPage()).isInstanceOf(TabbedPropertySheetPage.class);
-		final TabbedPropertySheetPage currentPage = (TabbedPropertySheetPage) propertySheet.getCurrentPage();
-		TabDescriptorAssertions.assertThat(currentPage.getSelectedTab()).isNotNull()
+		// then the properties view should have a selected tab with image info
+		// (the Properties view follows the selection asynchronously)
+		TabDescriptorAssertions
+				.assertThat(SWTUtils.waitForSelectedPropertiesTab(bot,
+						"org.eclipse.linuxtools.docker.ui.properties.image.info"))
 				.hasId("org.eclipse.linuxtools.docker.ui.properties.image.info");
 	}
 
