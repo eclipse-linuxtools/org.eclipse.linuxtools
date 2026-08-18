@@ -22,12 +22,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
@@ -45,7 +40,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.console.IConsoleConstants;
-import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.views.properties.PropertySheet;
 import org.eclipse.ui.views.properties.tabbed.ITabDescriptor;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
@@ -256,8 +250,22 @@ public class SWTUtils {
 	 * @return its children, without any "Loading..." stub
 	 */
 	public static SWTBotTreeItem[] getLoadedItems(final SWTBotTreeItem parentTreeItem) {
-		final SWTBot bot = new SWTBot();
-		bot.waitUntil(new DefaultCondition() {
+		waitForChildrenToLoad(parentTreeItem);
+		return parentTreeItem.getItems();
+	}
+
+	/**
+	 * Waits until the given tree item shows no "Loading..." stub any more. The
+	 * Docker Explorer content provider answers that stub straight away and
+	 * fills in the real children from a background job, so this is what tells
+	 * an expansion apart from a finished one. An item with no children at all
+	 * satisfies this immediately.
+	 *
+	 * @param parentTreeItem
+	 *            the expanded parent tree item
+	 */
+	private static void waitForChildrenToLoad(final SWTBotTreeItem parentTreeItem) {
+		new SWTBot().waitUntil(new DefaultCondition() {
 
 			@Override
 			public boolean test() {
@@ -270,7 +278,6 @@ public class SWTUtils {
 				return "Children of '" + parentTreeItem.getText() + "' were still loading";
 			}
 		}, TimeUnit.SECONDS.toMillis(30));
-		return parentTreeItem.getItems();
 	}
 
 	public static SWTBotTableItem getListItem(final SWTBotTable table, final String name) {
@@ -369,29 +376,11 @@ public class SWTUtils {
 	}
 
 	private static SWTBotTreeItem expandTreeItem(final SWTBotTreeItem treeItem) {
-		final UIJob expandJob = new UIJob("expanding tree") {
-
-			@Override
-			public IStatus runInUIThread(IProgressMonitor monitor) {
-				treeItem.expand();
-				return Status.OK_STATUS;
-			}
-		};
-		expandJob.addJobChangeListener(new JobChangeAdapter() {
-			@Override
-			public void done(IJobChangeEvent event) {
-				final int maxAttempts = 30;
-				int currentAttempt = 0;
-				while (currentAttempt < maxAttempts && treeItem.getItems().length == 1
-						&& treeItem.getItems()[0].getText().isEmpty()) {
-					SWTUtils.wait(1, TimeUnit.SECONDS);
-					currentAttempt++;
-				}
-
-			}
-		});
-		expandJob.schedule();
-		SWTUtils.wait(1, TimeUnit.SECONDS);
+		// let SWTBot drive the expansion from the test thread: it notifies the
+		// tree from a syncExec, so the viewer has created the children (or the
+		// "Loading..." stub) by the time expand() returns.
+		treeItem.expand();
+		waitForChildrenToLoad(treeItem);
 		return treeItem;
 	}
 
