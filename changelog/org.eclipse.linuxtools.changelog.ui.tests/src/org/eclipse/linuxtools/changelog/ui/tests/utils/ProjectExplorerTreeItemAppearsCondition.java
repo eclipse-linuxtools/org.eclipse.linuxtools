@@ -51,7 +51,8 @@ public class ProjectExplorerTreeItemAppearsCondition implements ICondition {
 
     @Override
     public String getFailureMessage() {
-        return null;
+        return "Timed out waiting for a node containing '" + itemName + "' to appear under project '" + parent
+                + "' in the Project Explorer";
     }
 
 }

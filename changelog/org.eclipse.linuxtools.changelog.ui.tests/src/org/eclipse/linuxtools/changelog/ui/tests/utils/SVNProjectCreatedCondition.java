@@ -48,7 +48,7 @@ public class SVNProjectCreatedCondition implements ICondition {
 
     @Override
     public String getFailureMessage() {
-        return null;
+        return "Timed out waiting for project '" + projectName + "' to appear in the workspace";
     }
 
 }

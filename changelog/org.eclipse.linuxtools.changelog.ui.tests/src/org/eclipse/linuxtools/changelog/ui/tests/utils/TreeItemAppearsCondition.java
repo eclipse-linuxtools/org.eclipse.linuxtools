@@ -49,7 +49,7 @@ public class TreeItemAppearsCondition implements ICondition {
 
     @Override
     public String getFailureMessage() {
-        return null;
+        return "Timed out waiting for a node containing '" + itemName + "' to appear under '" + parent + "'";
     }
 
 }
