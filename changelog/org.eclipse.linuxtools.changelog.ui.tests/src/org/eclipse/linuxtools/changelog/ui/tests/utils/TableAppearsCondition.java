@@ -44,7 +44,7 @@ public class TableAppearsCondition implements ICondition {
 
     @Override
     public String getFailureMessage() {
-        return null;
+        return "Timed out waiting for a table with at least one row to appear";
     }
 
 }
