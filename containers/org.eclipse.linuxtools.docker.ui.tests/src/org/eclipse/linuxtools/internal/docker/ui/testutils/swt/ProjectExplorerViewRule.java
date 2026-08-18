@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -33,13 +34,12 @@ public class ProjectExplorerViewRule implements BeforeEachCallback {
 	@Override
 	public void beforeEach(final ExtensionContext context) {
 		final SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		SWTUtils.syncExec(() -> {
+		UIThreadRunnable.syncExec(() -> {
 			try {
-				return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 						.showView(PROJECT_EXPLORER_VIEW_ID);
 			} catch (PartInitException e) {
 				e.printStackTrace();
-				return null;
 			}
 		});
 		this.projectExplorerBotView = bot.viewById(PROJECT_EXPLORER_VIEW_ID);

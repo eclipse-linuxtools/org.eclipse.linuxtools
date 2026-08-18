@@ -42,6 +42,7 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
@@ -125,7 +126,7 @@ public class DockerExplorerViewSWTBotTest {
 		final SWTBotTreeItem imagesTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, connectionName, "Images");
 		// the images are retrieved by a background job once the node is
 		// expanded, so wait for them before selecting
-		SWTUtils.syncExec(() -> imagesTreeItem.expand());
+		UIThreadRunnable.syncExec(() -> imagesTreeItem.expand());
 		SWTUtils.getLoadedItems(imagesTreeItem);
 		// select both images
 		SWTUtils.select(imagesTreeItem, imageNames);
@@ -619,7 +620,7 @@ public class DockerExplorerViewSWTBotTest {
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test");
-		SWTUtils.syncExec(() -> connectionTreeItem.expand());
+		UIThreadRunnable.syncExec(() -> connectionTreeItem.expand());
 		// then the ping should fail and the connection should be closed...
 		bot.waitUntil(new DefaultCondition() {
 

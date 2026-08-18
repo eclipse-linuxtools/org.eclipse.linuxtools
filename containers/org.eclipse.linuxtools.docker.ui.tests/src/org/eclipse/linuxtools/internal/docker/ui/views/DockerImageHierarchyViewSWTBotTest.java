@@ -41,6 +41,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TabDescriptorAsse
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IViewPart;
@@ -159,7 +160,7 @@ public class DockerImageHierarchyViewSWTBotTest {
 	 * would do by dragging it there.
 	 */
 	private static void moveImageHierarchyViewNextToDockerExplorerView() {
-		SWTUtils.syncExec(() -> {
+		UIThreadRunnable.syncExec(() -> {
 			final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 			final IViewPart hierarchyView = page.findView(DockerImageHierarchyView.VIEW_ID);
 			final IViewPart explorerView = page.findView(DockerExplorerView.VIEW_ID);
@@ -176,7 +177,6 @@ public class DockerImageHierarchyViewSWTBotTest {
 				modelService.move(toMove, target);
 			}
 			page.activate(hierarchyView);
-			return null;
 		});
 	}
 

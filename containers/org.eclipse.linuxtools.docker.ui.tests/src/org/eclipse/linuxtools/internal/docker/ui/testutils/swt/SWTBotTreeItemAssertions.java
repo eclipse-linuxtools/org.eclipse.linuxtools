@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
 import org.assertj.core.api.Assertions;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 
 /**
@@ -49,8 +50,8 @@ public class SWTBotTreeItemAssertions extends AbstractSWTBotAssertions<SWTBotTre
 			failWithMessage("Expected tree item %s to be have %s items but it had %s.", actual.getText(), expectedCount, actual.getItems().length);
 		}
 		for (SWTBotTreeItem swtBotTreeItem : actual.getItems()) {
-			final String treeItemText = SWTUtils.syncExec(() -> swtBotTreeItem.getText());
-			final Image treeItemWidgetImage = SWTUtils.syncExec(() -> swtBotTreeItem.widget.getImage());
+			final String treeItemText = UIThreadRunnable.syncExec(() -> swtBotTreeItem.getText());
+			final Image treeItemWidgetImage = UIThreadRunnable.syncExec(() -> swtBotTreeItem.widget.getImage());
 			Assertions.assertThat(treeItemText).isNotNull();
 			Assertions.assertThat(treeItemWidgetImage).isNotNull();
 		}

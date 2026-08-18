@@ -34,6 +34,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.TabDescriptorAsse
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
@@ -193,7 +194,9 @@ public class DockerContainersViewSWTBotTest {
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
-		SWTUtils.syncExec(() -> SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true));
+		UIThreadRunnable.syncExec(() -> {
+			SWTUtils.getView(bot, "org.eclipse.ui.views.PropertySheet", true);
+		});
 		this.dockerContainersView.setFocus();
 		// select the container in the table
 		selectContainerInTable("angry_bar");

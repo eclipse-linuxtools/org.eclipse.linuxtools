@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.eclipse.jface.viewers.StyledString;
-import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -88,8 +88,8 @@ public class StyledConsoleLogsTest {
 		// when
 		final StyledString result = StyledTextBuilder.parse(lineText);
 		// then
-		assertThat(SWTUtils.syncExec(() -> result.getStyleRanges()))
-				.isEqualTo(SWTUtils.syncExec(() -> expectedStyledString.getStyleRanges()));
+		assertThat(UIThreadRunnable.syncExec(() -> result.getStyleRanges()))
+				.isEqualTo(UIThreadRunnable.syncExec(() -> expectedStyledString.getStyleRanges()));
 		assertThat(result.getString()).isEqualTo(expectedStyledString.getString());
 	}
 

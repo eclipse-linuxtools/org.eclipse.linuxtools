@@ -39,6 +39,7 @@ import org.eclipse.linuxtools.internal.docker.ui.wizards.WizardMessages;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
@@ -97,13 +98,13 @@ public class BuildDockerImageShortcutSWTBotTest {
 		projectExplorerBotView.setFocus();
 		final SWTBotTreeItem fooProjectTreeItem = SWTUtils.getTreeItem(projectExplorerBotView, projectName);
 		assertThat(fooProjectTreeItem).isNotNull();
-		SWTUtils.syncExec(() -> fooProjectTreeItem.expand());
+		UIThreadRunnable.syncExec(() -> fooProjectTreeItem.expand());
 		final SWTBotTreeItem dockerfileTreeItem = SWTUtils.getTreeItem(fooProjectTreeItem, dockerFileName);
 		assertThat(dockerfileTreeItem).isNotNull();
 		// select the item itself: SWTUtils.select(item, matchers...) with no matchers
 		// filters the children against nothing and ends up selecting nothing at all,
 		// which leaves the workbench selection empty and the "Run As" menu absent
-		SWTUtils.syncExec(() -> dockerfileTreeItem.select());
+		UIThreadRunnable.syncExec(() -> dockerfileTreeItem.select());
 		final SWTBotMenu runAsDockerImageBuildMenu = SWTUtils.getContextMenu(projectExplorerBotView.bot().tree(),
 				"Run As", "1 Docker Image Build");
 		return runAsDockerImageBuildMenu;
