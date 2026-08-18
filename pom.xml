@@ -187,6 +187,9 @@
 	  <configuration>
 	    <useUIHarness>true</useUIHarness>
 	    <useUIThread>true</useUIThread>
+	    <!-- SWTBot still drags JUnit 4 onto the test classpath, which makes
+	         Tycho auto-detect the junit4 provider. Force JUnit 6 everywhere. -->
+	    <providerHint>junit6</providerHint>
             <dependencies>
                <dependency>
                  <type>p2-installable-unit</type>

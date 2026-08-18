@@ -6,10 +6,11 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %bundleProvider
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.eclipse.swtbot.go,
+Require-Bundle: org.eclipse.swtbot.swt.finder,
+ org.eclipse.swtbot.eclipse.finder,
  org.eclipse.linuxtools.systemtap.graphing.core,
  org.eclipse.swtbot.junit5_x;bundle-version="[4.3.0,5.0.0)",
- junit-jupiter-api
+ junit-jupiter-api;bundle-version="[6.0.0,7.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Fragment-Host: org.eclipse.linuxtools.systemtap.ui.ide
 Import-Package: org.eclipse.swtchart

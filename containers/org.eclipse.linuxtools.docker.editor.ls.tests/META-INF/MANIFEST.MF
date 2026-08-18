@@ -8,8 +8,8 @@ Fragment-Host: org.eclipse.linuxtools.docker.editor.ls
 Automatic-Module-Name: org.eclipse.linuxtools.docker.editor.ls.tests
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.eclipse.core.resources,
- junit-jupiter-api,
- junit-jupiter-params,
+ junit-jupiter-api;bundle-version="[6.0.0,7.0.0)",
+ junit-jupiter-params;bundle-version="[6.0.0,7.0.0)",
  org.eclipse.ui.workbench,
  org.eclipse.equinox.preferences,
  org.eclipse.ui.workbench.texteditor,

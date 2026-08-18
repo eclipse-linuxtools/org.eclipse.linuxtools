@@ -5,8 +5,8 @@ Bundle-SymbolicName: org.eclipse.linuxtools.docker.ui.tests;singleton:=true
 Bundle-Vendor: Eclipse Linux Tools
 Bundle-Version: 2.2.0.qualifier
 Require-Bundle: org.eclipse.linuxtools.docker.ui;bundle-version="1.0.0",
- junit-jupiter-api,
- junit-jupiter-params,
+ junit-jupiter-api;bundle-version="[6.0.0,7.0.0)",
+ junit-jupiter-params;bundle-version="[6.0.0,7.0.0)",
  org.eclipse.core.runtime,
  org.hamcrest;bundle-version="2.2.0",
  org.eclipse.core.databinding;bundle-version="1.5.0",
