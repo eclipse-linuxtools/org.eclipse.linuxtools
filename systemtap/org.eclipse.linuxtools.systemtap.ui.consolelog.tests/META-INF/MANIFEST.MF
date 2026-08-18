@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %bundleProvider
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
-Require-Bundle: junit-jupiter-api
+Require-Bundle: junit-jupiter-api;bundle-version="[6.0.0,7.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Fragment-Host: org.eclipse.linuxtools.systemtap.ui.consolelog
 Automatic-Module-Name: org.eclipse.linuxtools.systemtap.ui.consolelog.tests

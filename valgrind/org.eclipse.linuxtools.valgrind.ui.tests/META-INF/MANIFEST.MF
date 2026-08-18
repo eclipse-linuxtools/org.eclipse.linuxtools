@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.ui.tests
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %Bundle-Vendor.0
 Fragment-Host: org.eclipse.linuxtools.valgrind.ui
-Require-Bundle: junit-jupiter-api,
+Require-Bundle: junit-jupiter-api;bundle-version="[6.0.0,7.0.0)",
  org.eclipse.linuxtools.valgrind.memcheck,
  org.eclipse.cdt.codan.ui.cxx
 Bundle-RequiredExecutionEnvironment: JavaSE-21
