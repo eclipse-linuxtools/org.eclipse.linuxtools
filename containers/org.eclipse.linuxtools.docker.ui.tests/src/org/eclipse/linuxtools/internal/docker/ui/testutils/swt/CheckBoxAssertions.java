@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
-import static org.hamcrest.Matchers.notNullValue;
-
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 
 /**
@@ -30,7 +28,7 @@ public class CheckBoxAssertions extends AbstractSWTBotAssertions<CheckBoxAsserti
 	}
 
 	public CheckBoxAssertions isChecked() {
-		notNullValue();
+		isNotNull();
 		if(!actual.isChecked()) {
 			failWithMessage("Expected checkbox with text '%s' to be checked but it was not", actual.getText());
 		}
@@ -38,7 +36,7 @@ public class CheckBoxAssertions extends AbstractSWTBotAssertions<CheckBoxAsserti
 	}
 
 	public CheckBoxAssertions isNotChecked() {
-		notNullValue();
+		isNotNull();
 		if(actual.isChecked()) {
 			failWithMessage("Expected checkbox with text '%s' to be unchecked but it was not", actual.getText());
 		}

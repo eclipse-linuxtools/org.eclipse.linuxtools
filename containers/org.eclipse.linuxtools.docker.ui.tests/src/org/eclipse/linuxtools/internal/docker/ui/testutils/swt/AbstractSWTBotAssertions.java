@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
-import static org.hamcrest.Matchers.notNullValue;
-
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBot;
 
@@ -30,7 +28,7 @@ public abstract class AbstractSWTBotAssertions<Assertion extends AbstractSWTBotA
 
 	@SuppressWarnings("unchecked")
 	public Assertion isEnabled() {
-		notNullValue();
+		isNotNull();
 		if(!actual.isEnabled()) {
 			failWithMessage("Expected widget with text '%s (%s)' to be enabled but it was not", actual.getText(),
 					actual.getToolTipText());
@@ -40,7 +38,7 @@ public abstract class AbstractSWTBotAssertions<Assertion extends AbstractSWTBotA
 
 	@SuppressWarnings("unchecked")
 	public Assertion isNotEnabled() {
-		notNullValue();
+		isNotNull();
 		if(actual.isEnabled()) {
 			failWithMessage("Expected widget with text '%s (%s)' to be disabled but it was not", actual.getText(),
 					actual.getToolTipText());

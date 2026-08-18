@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
-import static org.hamcrest.Matchers.notNullValue;
-
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.ui.views.properties.tabbed.ITabDescriptor;
 
@@ -31,7 +29,7 @@ public class TabDescriptorAssertions extends AbstractAssert<TabDescriptorAsserti
 	}
 
 	public TabDescriptorAssertions hasId(final String id) {
-		notNullValue();
+		isNotNull();
 		if (!actual.getId().equals(id)) {
 			failWithMessage("Expected tab section with id '%s' to be selected but it was '%s'", id, actual.getId());
 		}

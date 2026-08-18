@@ -13,8 +13,6 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
-import static org.hamcrest.Matchers.notNullValue;
-
 import org.assertj.core.api.Assertions;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -33,7 +31,7 @@ public class SWTBotTreeItemAssertions extends AbstractSWTBotAssertions<SWTBotTre
 	}
 
 	public SWTBotTreeItemAssertions isExpanded() {
-		notNullValue();
+		isNotNull();
 		if(!actual.isExpanded()) {
 			failWithMessage("Expected tree item %s to be expanded but it was not.", actual.getText());
 		}
@@ -46,7 +44,7 @@ public class SWTBotTreeItemAssertions extends AbstractSWTBotAssertions<SWTBotTre
 	 * @return
 	 */
 	public SWTBotTreeItemAssertions hasChildItems(final int expectedCount) {
-		notNullValue();
+		isNotNull();
 		if(actual.getItems().length != expectedCount) {
 			failWithMessage("Expected tree item %s to be have %s items but it had %s.", actual.getText(), expectedCount, actual.getItems().length);
 		}
@@ -60,7 +58,7 @@ public class SWTBotTreeItemAssertions extends AbstractSWTBotAssertions<SWTBotTre
 	}
 
 	public SWTBotTreeItemAssertions hasText(final String expectedText) {
-		notNullValue();
+		isNotNull();
 		if(!actual.getText().equals(expectedText)) {
 			failWithMessage("Expected node to have text %s but it was %s", expectedText, actual.getText());
 		}

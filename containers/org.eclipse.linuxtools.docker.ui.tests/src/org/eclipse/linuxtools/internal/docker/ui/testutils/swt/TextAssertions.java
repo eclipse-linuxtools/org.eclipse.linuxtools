@@ -13,8 +13,6 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
-import static org.hamcrest.Matchers.notNullValue;
-
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 
 /**
@@ -31,7 +29,7 @@ public class TextAssertions extends AbstractSWTBotAssertions<TextAssertions, SWT
 	}
 
 	public TextAssertions isEmpty() {
-		notNullValue();
+		isNotNull();
 		if(!actual.getText().isEmpty()) {
 			failWithMessage("Expected text widget to be empty but it contained '%s'", actual.getText());
 		}
@@ -39,7 +37,7 @@ public class TextAssertions extends AbstractSWTBotAssertions<TextAssertions, SWT
 	}
 
 	public TextAssertions textEquals(final String expectedContent) {
-		notNullValue();
+		isNotNull();
 		if(!actual.getText().equals(expectedContent)) {
 			failWithMessage("Expected text widget to contain '%s' but it contained '%s'", expectedContent, actual.getText());
 		}

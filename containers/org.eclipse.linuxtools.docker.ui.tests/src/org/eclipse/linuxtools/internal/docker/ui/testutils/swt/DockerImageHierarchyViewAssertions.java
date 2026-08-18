@@ -13,8 +13,6 @@
 
 package org.eclipse.linuxtools.internal.docker.ui.testutils.swt;
 
-import static org.hamcrest.Matchers.notNullValue;
-
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.docker.core.IDockerImage;
@@ -36,7 +34,7 @@ public class DockerImageHierarchyViewAssertions
 	}
 
 	public DockerImageHierarchyViewAssertions isEmpty() {
-		notNullValue();
+		isNotNull();
 		try {
 			// let's make sure changes in the UI were taken into account before
 			// performing assertions
@@ -51,7 +49,7 @@ public class DockerImageHierarchyViewAssertions
 	}
 
 	public DockerImageHierarchyViewAssertions isNotEmpty() {
-		notNullValue();
+		isNotNull();
 		if(!actual.isShowingConnectionsPane()) {
 			failWithMessage("Expected Docker Explorer View to show the connections pane but it did not");
 		}
@@ -59,7 +57,7 @@ public class DockerImageHierarchyViewAssertions
 	}
 
 	public void hasSelectedElement(final IDockerImage expectedSelection) {
-		notNullValue();
+		isNotNull();
 		final IStructuredSelection selection = actual.getCommonViewer().getStructuredSelection();
 		if (selection.size() != 1) {
 			failWithMessage("Expected Docker Image Hierarchy view to have <%s> selected elements, but there was <%s>",
@@ -83,7 +81,7 @@ public class DockerImageHierarchyViewAssertions
 	}
 
 	public void hasSelectedElement(final Object expectedSelection) {
-		notNullValue();
+		isNotNull();
 		final IStructuredSelection selection = actual.getCommonViewer().getStructuredSelection();
 		if (selection.size() != 1) {
 			failWithMessage("Expected Docker Image Hierarchy view to have <%s> selected elements, but there was <%s>",
