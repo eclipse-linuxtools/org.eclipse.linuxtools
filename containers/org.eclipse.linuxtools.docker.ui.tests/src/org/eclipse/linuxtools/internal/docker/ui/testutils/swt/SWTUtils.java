@@ -28,20 +28,16 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
-import org.eclipse.swtbot.swt.finder.results.Result;
-import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotRootMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
@@ -336,32 +332,17 @@ public class SWTUtils {
 	}
 
 	/**
-	 * Hides the menu for the given <code>tree</code>
+	 * Hides the context menu left open on the given <code>tree</code>, if any.
+	 * The menu is taken from the widget rather than through
+	 * {@link SWTBotTree#contextMenu()}, which would open a new one.
 	 *
 	 * @param tree
 	 *            the tree whose {@link Menu} should be hidden
 	 */
 	public static void hideMenu(final SWTBotTree tree) {
-		try {
-			final Menu menu = UIThreadRunnable.syncExec((Result<Menu>) () -> tree.widget.getMenu());
-			UIThreadRunnable.syncExec(new VoidResult() {
-
-				@Override
-				public void run() {
-					hide(menu);
-				}
-
-				private void hide(final Menu menu) {
-					menu.notifyListeners(SWT.Hide, new Event());
-					if (menu.getParentMenu() != null) {
-						hide(menu.getParentMenu());
-					}
-				}
-			});
-		} catch (WidgetNotFoundException e) {
-			// ignore if widget is not found, that's probably because there's no
-			// tree in the
-			// Docker Explorer view for the test that just ran.
+		final Menu menu = UIThreadRunnable.syncExec(() -> tree.widget.getMenu());
+		if (menu != null) {
+			new SWTBotRootMenu(menu).hide();
 		}
 	}
 
