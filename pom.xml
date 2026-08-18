@@ -168,7 +168,6 @@
           <version>${tycho-version}</version>
           <configuration>
             <encoding>UTF-8</encoding>
-            <compilerId>javac</compilerId>
           </configuration>
 	 </plugin>
 	 <plugin>
