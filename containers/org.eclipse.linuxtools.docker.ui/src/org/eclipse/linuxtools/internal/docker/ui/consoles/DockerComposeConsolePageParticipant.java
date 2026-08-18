@@ -17,7 +17,9 @@ import java.util.stream.Stream;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.console.IConsolePageParticipant;
@@ -34,6 +36,19 @@ public class DockerComposeConsolePageParticipant
 
 	private boolean dockerComposeConsoleTerminated = false;
 
+	/**
+	 * Follows the {@link IProcess} associated with the console: the process is
+	 * created, and its {@link DebugEvent#CREATE} event dispatched, before the
+	 * console learns about it, so that event alone cannot be relied upon.
+	 */
+	private final IPropertyChangeListener consoleProcessListener = event -> {
+		if (DockerComposeConsole.PROPERTY_DOCKER_COMPOSE_PROCESS.equals(event.getProperty())) {
+			final IProcess process = (IProcess) event.getNewValue();
+			this.dockerComposeConsoleTerminated = process == null || process.isTerminated();
+			this.stopAction.setEnabled(!this.dockerComposeConsoleTerminated);
+		}
+	};
+
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 		return null;
@@ -49,10 +64,12 @@ public class DockerComposeConsolePageParticipant
 		// contribute to toolbar
 		configureToolBar(dockerComposeConsolePage.getSite().getActionBars()
 				.getToolBarManager());
-		if (this.dockerComposeConsole.getDockerComposeProcess() == null
-				|| this.dockerComposeConsoleTerminated) {
+		final IProcess process = this.dockerComposeConsole.getDockerComposeProcess();
+		if (process == null || process.isTerminated()) {
+			this.dockerComposeConsoleTerminated = true;
 			this.stopAction.setEnabled(false);
 		}
+		this.dockerComposeConsole.addPropertyChangeListener(this.consoleProcessListener);
 		DebugPlugin.getDefault().addDebugEventListener(this);
 	}
 
@@ -66,6 +83,8 @@ public class DockerComposeConsolePageParticipant
 
 	@Override
 	public void dispose() {
+		DebugPlugin.getDefault().removeDebugEventListener(this);
+		this.dockerComposeConsole.removePropertyChangeListener(this.consoleProcessListener);
 	}
 
 	@Override

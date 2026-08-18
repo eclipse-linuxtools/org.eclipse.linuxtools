@@ -34,6 +34,9 @@ public class DockerComposeConsole extends IOConsole {
 
 	public static final String CONSOLE_TYPE = "org.eclipse.linuxtools.internal.docker.ui.consoles.DockerComposeConsole";
 
+	/** the property fired when the {@link IProcess} of this console changes. */
+	public static final String PROPERTY_DOCKER_COMPOSE_PROCESS = "dockerComposeProcess"; //$NON-NLS-1$
+
 	private final IDockerConnection connection;
 
 	private final String workingDir;
@@ -62,7 +65,12 @@ public class DockerComposeConsole extends IOConsole {
 	}
 
 	public void setDockerComposeProcess(final IProcess dockerComposeProcess) {
+		final IProcess previousProcess = this.dockerComposeProcess;
 		this.dockerComposeProcess = dockerComposeProcess;
+		// let the page participant(s) know: the process is created (and its
+		// CREATE debug event fired) before it can be set here, so they cannot
+		// rely on that event alone.
+		firePropertyChange(this, PROPERTY_DOCKER_COMPOSE_PROCESS, previousProcess, dockerComposeProcess);
 		// activate and clear the console if it has previous content
 		activate();
 		clearConsole();
