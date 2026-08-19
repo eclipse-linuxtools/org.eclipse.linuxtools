@@ -38,7 +38,6 @@ import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.osgi.framework.FrameworkUtil;
 
@@ -132,7 +131,6 @@ public class RPMProjectTest {
 	}
 
 	@Test
-	@Disabled
 	public void testBuildPrepHelloWorld() throws Exception {
 		// Create a project for the test
 		IProject testProject = root.getProject("testBuildPrepHelloWorld");
@@ -140,17 +138,18 @@ public class RPMProjectTest {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		rpmProject.buildPrep(bos);
 
-		// Make sure we got everything in the build directory
+		// Make sure we got everything in the build directory. rpm >= 4.20
+		// unpacks into a per-package subdirectory of the build folder.
 		IContainer builddir = rpmProject.getConfiguration().getBuildFolder();
 		IFolder helloworldFolder = builddir.getFolder(new Path("helloworld-2"));
-		assertTrue(helloworldFolder.exists());
+		IFolder nestedFolder = builddir.getFolder(new Path("helloworld-2-build/helloworld-2"));
+		assertTrue(helloworldFolder.exists() || nestedFolder.exists());
 
 		// Clean up
 		testProject.delete(true, true, monitor);
 	}
 
 	@Test
-	@Disabled
 	public void testBuildSourceRPMHelloWorld() throws Exception {
 		// Create a project for the test
 		IProject testProject = root.getProject("testBuildSourceRPMHelloWorld1");
@@ -166,7 +165,6 @@ public class RPMProjectTest {
 	}
 
 	@Test
-	@Disabled
 	public void testBuildBinaryRPMHelloWorld() throws Exception {
 		// Create a project for the test
 		IProject testProject = root.getProject("testBuildBinaryRPMHelloWorld1");
@@ -186,7 +184,6 @@ public class RPMProjectTest {
 	}
 
 	@Test
-	@Disabled
 	public void testBuildAllRPMHelloWorld() throws Exception {
 		// Create a project for the test
 		IProject testProject = root.getProject("testBuildAllRPMHelloWorld1");
@@ -227,7 +224,6 @@ public class RPMProjectTest {
 	}
 
 	@Test
-	@Disabled
 	public void testGetSourcesFolder() throws Exception {
 
 		// Create a project for the test
