@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.egit.core.Activator;
+import org.eclipse.egit.core.GitCorePreferences;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorer;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
@@ -28,6 +31,13 @@ public abstract class AbstractSWTBotTest {
 
 	@BeforeAll
 	public static void beforeClass() {
+        // EGit automatically shares every new project that is located inside
+        // a git working tree, which the test workspace is when the build runs
+        // from a git checkout. That would share "unshared" test projects and
+        // map the GitTestProject to the enclosing repository, so turn it off
+        // before any test project is created.
+        InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID)
+                .putBoolean(GitCorePreferences.core_autoShareProjects, false);
         // delay click speed
         //System.setProperty("org.eclipse.swtbot.playback.delay", "200");
         bot = new SWTWorkbenchBot();
