@@ -24,7 +24,6 @@ import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class BasicHelgrindTest extends AbstractHelgrindTest {
@@ -41,7 +40,6 @@ public class BasicHelgrindTest extends AbstractHelgrindTest {
         super.tearDown();
     }
 
-    @Disabled
     @Test
     public void testNumErrors() throws CoreException, URISyntaxException, IOException   {
         ILaunchConfiguration config = createConfiguration(proj.getProject());
