@@ -71,6 +71,24 @@ public class ProjectExplorer {
     }
 
     /**
+     * Expand the given project regardless of any label decoration (e.g. the
+     * repository and branch EGit appends to shared projects).
+     *
+     * @param projectExplorerTree The Project Explorer tree.
+     * @param projectName The plain project name.
+     * @return The expanded project item, or {@code null} if there is none.
+     */
+    public static SWTBotTreeItem expandProject(SWTBotTree projectExplorerTree, String projectName) {
+        for (SWTBotTreeItem item : projectExplorerTree.getAllItems()) {
+            String itemName = item.getText();
+            if (itemName.equals(projectName) || itemName.startsWith(projectName + " ")) {
+                return item.expand();
+            }
+        }
+        return null;
+    }
+
+    /**
      * Expand the given project (optionally stripping off the team provider bits)
      *
      * @param projectName

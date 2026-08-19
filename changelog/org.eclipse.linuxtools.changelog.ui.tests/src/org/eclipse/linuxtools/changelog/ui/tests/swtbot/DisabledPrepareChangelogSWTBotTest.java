@@ -11,7 +11,6 @@ package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
@@ -19,12 +18,11 @@ import java.io.ByteArrayInputStream;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.ChangeLogTestProject;
 import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorer;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -46,14 +44,13 @@ public class DisabledPrepareChangelogSWTBotTest extends AbstractSWTBotTest {
     }
 
     /**
-     * If the project is not shared by any CVS or SVN team provider, "Prepare ChangeLog"
-     * should be disabled.
+     * If the project is not shared by any team provider, "Prepare Changelog"
+     * should not be offered in the Project menu.
      *
      * @throws Exception
      */
     @Test
-	@Disabled
-    public void cannotPrepareChangeLogOnNonCVSOrSVNProject() throws Exception {
+    public void cannotPrepareChangeLogOnUnsharedProject() throws Exception {
         assertNull(project.getTestProject().findMember(new Path("/ChangeLog")));
 
         final String changeLogContent = "2010-12-08  Will Probe  <will@example.com>\n\n" +
@@ -63,19 +60,19 @@ public class DisabledPrepareChangelogSWTBotTest extends AbstractSWTBotTest {
         assertNotNull(project.getTestProject().findMember(new Path("/ChangeLog")));
 
         // select ChangeLog file
-        String teamProviderString = "n/a";
-        SWTBotTreeItem projectItem = ProjectExplorer.expandProject(projectExplorerViewTree, projectName, teamProviderString);
+        SWTBotTreeItem projectItem = ProjectExplorer.expandProject(projectExplorerViewTree, projectName);
         SWTBotTreeItem changeLogItem = ProjectExplorer.getProjectItem(projectItem, "ChangeLog");
         changeLogItem.select();
         long oldTimeout = SWTBotPreferences.TIMEOUT;
         SWTBotPreferences.TIMEOUT = 100;
         try {
-            bot.menu("Prepare ChangeLog").click(); // Should be disabled (throws exception)
-            fail("'Prepare ChangeLog' should be disabled");
-        } catch (TimeoutException e) {
-            assertTrue(e.getMessage().contains("The widget with mnemonic 'Prepare ChangeLog' was not enabled."));
+            bot.menu("Prepare Changelog").click(); // Should be hidden (throws exception)
+            fail("'Prepare Changelog' should not be available");
+        } catch (WidgetNotFoundException e) {
+            // expected: the menu item is only visible for shared projects
+        } finally {
+            SWTBotPreferences.TIMEOUT = oldTimeout;
         }
-        SWTBotPreferences.TIMEOUT = oldTimeout;
     }
 
 }
