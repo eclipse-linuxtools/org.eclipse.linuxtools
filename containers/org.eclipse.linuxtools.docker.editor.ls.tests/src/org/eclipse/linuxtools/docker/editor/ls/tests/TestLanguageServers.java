@@ -13,6 +13,7 @@
 package org.eclipse.linuxtools.docker.editor.ls.tests;
 
 import java.io.ByteArrayInputStream;
+import java.util.function.BooleanSupplier;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -20,12 +21,12 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
-import org.eclipse.ui.tests.harness.util.DisplayHelper;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -65,12 +66,28 @@ class TestLanguageServers {
 				.openEditor(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(), file, "org.eclipse.ui.genericeditor.GenericEditor");
 		editor.getDocumentProvider().getDocument(editor.getEditorInput()).set("MAINTAINER alex");
 		Assertions.assertTrue(
-				DisplayHelper.waitForCondition(PlatformUI.getWorkbench().getDisplay(), 5000, () -> {
+				waitForCondition(PlatformUI.getWorkbench().getDisplay(), 5000, () -> {
 					try {
 						return file.findMarkers("org.eclipse.lsp4e.diagnostic", true, IResource.DEPTH_ZERO).length != 0;
 					} catch (CoreException e) {
 						return false;
 					}
 				}), "Diagnostic not published");
+	}
+
+	private static boolean waitForCondition(Display display, long timeoutMillis, BooleanSupplier condition) {
+		long deadline = System.currentTimeMillis() + timeoutMillis;
+		while (!condition.getAsBoolean()) {
+			if (System.currentTimeMillis() > deadline) {
+				return false;
+			}
+			if (!display.readAndDispatch()) {
+				// wake up periodically so the condition is re-checked even without UI events
+				display.timerExec(100, () -> {
+				});
+				display.sleep();
+			}
+		}
+		return true;
 	}
 }
