@@ -4,6 +4,10 @@ This page describes the noteworthy improvements provided by each release of Ecli
 
 ## Next release...
 
+## 8.24.0
+
+Rewrite of the test-suite to use JUnit 6 and SWTBot instead of RedDeer.  Also various dependency upgrades including upgrade of docker-client to 11.0.2.
+
 ## 8.23.0
 
 Various dependency upgrades including upgrade of docker-client to 11.0.
