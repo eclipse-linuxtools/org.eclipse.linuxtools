@@ -14,11 +14,12 @@ package org.eclipse.linuxtools.internal.man.parser;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -27,13 +28,10 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.ILog;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.linuxtools.internal.man.preferences.PreferenceConstants;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 
 import com.jcraft.jsch.Channel;
@@ -50,6 +48,39 @@ public class ManParser {
 	private static final int DEFAULT_SSH_PORT = 22;
 
 	/**
+	 * The separator used by man in the output of "man -w". It is always a colon
+	 * and not the platform path separator, e.g. Cygwin's man on Windows still
+	 * separates its paths by a colon.
+	 */
+	private static final String MAN_PATH_SEPARATOR = ":"; //$NON-NLS-1$
+
+	/**
+	 * Tells whether the configured man executable is present on this machine.
+	 *
+	 * Man is not available on every platform, e.g. on Windows it only exists if
+	 * a POSIX environment like Cygwin is installed and the man path preference
+	 * points into it. Look-ups are skipped instead of failing with an error for
+	 * every man page that gets requested.
+	 *
+	 * @return <code>true</code> if the man executable can be executed
+	 */
+	public static boolean isManAvailable() {
+		String executable = getManExecutable();
+		try {
+			Path executablePath = Paths.get(executable);
+			if (executablePath.getRoot() == null
+					&& executablePath.getNameCount() == 1) {
+				// A plain command name is looked up in the PATH by the OS, so
+				// it can not be checked upfront.
+				return true;
+			}
+			return Files.isExecutable(executablePath);
+		} catch (InvalidPathException e) {
+			return false;
+		}
+	}
+
+	/**
 	 * Gets the list of paths returned when one runs "man -w" with no other
 	 * parameters. This is the list of directories that is searched by man for
 	 * man pages.
@@ -58,12 +89,16 @@ public class ManParser {
 	 *         order that man would return them
 	 */
 	public static List<Path> getManPaths() {
+		List<Path> manPaths = new ArrayList<>();
+		if (!isManAvailable()) {
+			return manPaths;
+		}
+
 		// Build param list
 		List<String> params = new ArrayList<>();
 		params.add(getManExecutable());
 		params.add("-w"); //$NON-NLS-1$
 
-		List<Path> manPaths = new ArrayList<>();
 		ProcessBuilder builder = new ProcessBuilder(params);
 		try (InputStream stdout = builder.start().getInputStream()) {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -72,13 +107,11 @@ public class ManParser {
 				bos.write(x);
 			}
 			for (String path : bos.toString().trim()
-					.split(File.pathSeparator)) {
+					.split(MAN_PATH_SEPARATOR)) {
 				manPaths.add(Paths.get(path));
 			}
 		} catch (IOException e) {
-			Bundle bundle = FrameworkUtil.getBundle(ManParser.class);
-			IStatus status = Status.error(e.getMessage());
-			Platform.getLog(bundle).log(status);
+			ILog.get().log(Status.error(e.getMessage(), e));
 		}
 		return manPaths;
 	}
@@ -95,10 +128,15 @@ public class ManParser {
 	 * @param sections
 	 *            a string array of manual sections in which to look for the
 	 *            given man page
-	 * @return a new input stream, the caller is responsible for closing it
+	 * @return a new input stream, the caller is responsible for closing it, or
+	 *         <code>null</code> if the man page could not be opened
 	 */
 	public InputStream getManPage(String page, boolean html,
 			String... sections) {
+		if (!isManAvailable()) {
+			return null;
+		}
+
 		StringBuilder sectionParam = new StringBuilder();
 		for (String section : sections) {
 			if (sectionParam.length() > 0) {
@@ -125,7 +163,7 @@ public class ManParser {
 			Process process = builder.start();
 			stdout = process.getInputStream();
 		} catch (IOException e) {
-			ILog.get().log(Status.error(e.getMessage()));
+			ILog.get().log(Status.error(e.getMessage(), e));
 		}
 		return stdout;
 	}
@@ -148,7 +186,7 @@ public class ManParser {
 				sb.append(reader.lines().collect(Collectors.joining("\n"))); //$NON-NLS-1$
 			}
 		} catch (IOException e) {
-			ILog.get().log(Status.error(e.getMessage()));
+			ILog.get().log(Status.error(e.getMessage(), e));
 		}
 		return sb;
 	}
