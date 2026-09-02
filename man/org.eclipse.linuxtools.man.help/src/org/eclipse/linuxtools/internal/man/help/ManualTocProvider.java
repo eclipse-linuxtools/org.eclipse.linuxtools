@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.internal.man.help;
 import org.eclipse.help.AbstractTocProvider;
 import org.eclipse.help.IToc;
 import org.eclipse.help.ITocContribution;
+import org.eclipse.linuxtools.internal.man.parser.ManParser;
 import org.osgi.framework.FrameworkUtil;
 
 /**
@@ -26,6 +27,11 @@ public class ManualTocProvider extends AbstractTocProvider {
 
 	@Override
 	public ITocContribution[] getTocContributions(String locale) {
+		if (!ManParser.isManAvailable()) {
+			// No man executable, e.g. plain Windows, so don't contribute an
+			// empty manual to the help system.
+			return new ITocContribution[0];
+		}
 		ITocContribution contribution = new ITocContribution() {
 			@Override
 			public String getId() {
