@@ -320,7 +320,7 @@ image);
 
 	private IChangeListener onEnableResourceLimitation(
 			final Composite container) {
-		return event -> toggleResourceLimitationControls(container);
+		return _ -> toggleResourceLimitationControls(container);
 	}
 
 	private void toggleResourceLimitationControls(Composite container) {
@@ -503,7 +503,7 @@ image);
 
 	private SelectionListener onAddDataVolume(
 			final CheckboxTableViewer dataVolumesTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final ContainerDataVolumeDialog dialog = new ContainerDataVolumeDialog(
 					getShell(), model.getConnection());
 			dialog.create();
@@ -519,7 +519,7 @@ image);
 
 	private SelectionListener onEditDataVolume(
 			final CheckboxTableViewer dataVolumesTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final IStructuredSelection selection = dataVolumesTableViewer.getStructuredSelection();
 			if (selection.isEmpty()) {
 				return;
@@ -548,7 +548,7 @@ image);
 
 	private SelectionListener onRemoveDataVolumes(
 			final TableViewer dataVolumesTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final IStructuredSelection selection = dataVolumesTableViewer
 					.getStructuredSelection();
 			for (@SuppressWarnings("unchecked")
@@ -649,7 +649,7 @@ image);
 	}
 
 	private SelectionListener onAddLabelVariable() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final ContainerLabelVariableDialog dialog = new ContainerLabelVariableDialog(
 					getShell());
 			dialog.create();
@@ -661,7 +661,7 @@ image);
 
 	private SelectionListener onEditLabelVariable(
 			final TableViewer LabelVariablesTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final LabelVariableModel selectedVariable = (LabelVariableModel) LabelVariablesTableViewer
 					.getStructuredSelection().getFirstElement();
 			final ContainerLabelVariableDialog dialog = new ContainerLabelVariableDialog(
@@ -677,7 +677,7 @@ image);
 
 	private SelectionListener onRemoveLabelVariables(
 			final TableViewer linksTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final IStructuredSelection selection = linksTableViewer
 					.getStructuredSelection();
 			for (@SuppressWarnings("unchecked")
@@ -760,7 +760,7 @@ image);
 	}
 
 	private SelectionListener onAddEnvironmentVariable() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final ContainerEnvironmentVariableDialog dialog = new ContainerEnvironmentVariableDialog(
 					getShell());
 			dialog.create();
@@ -773,7 +773,7 @@ image);
 
 	private SelectionListener onEditEnvironmentVariable(
 			final TableViewer environmentVariablesTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final EnvironmentVariableModel selectedVariable = (EnvironmentVariableModel) environmentVariablesTableViewer
 					.getStructuredSelection().getFirstElement();
 			final ContainerEnvironmentVariableDialog dialog = new ContainerEnvironmentVariableDialog(
@@ -791,7 +791,7 @@ image);
 
 	private SelectionListener onRemoveEnvironmentVariables(
 			final TableViewer linksTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final IStructuredSelection selection = linksTableViewer
 					.getStructuredSelection();
 			for (@SuppressWarnings("unchecked")

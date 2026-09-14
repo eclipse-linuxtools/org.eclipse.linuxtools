@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2015, 2023 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -180,7 +180,7 @@ public class RunImageEnvironmentTab extends AbstractLaunchConfigurationTab {
 
 	private SelectionListener onAddEnvironmentVariable(
 			final TableViewer environmentVariablesTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final ContainerEnvironmentVariableDialog dialog = new ContainerEnvironmentVariableDialog(
 					getShell());
 			dialog.create();
@@ -197,7 +197,7 @@ public class RunImageEnvironmentTab extends AbstractLaunchConfigurationTab {
 
 	private SelectionListener onEditEnvironmentVariable(
 			final TableViewer environmentVariablesTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final EnvironmentVariableModel selectedVariable = (EnvironmentVariableModel) environmentVariablesTableViewer
 					.getStructuredSelection().getFirstElement();
 			final ContainerEnvironmentVariableDialog dialog = new ContainerEnvironmentVariableDialog(
@@ -216,7 +216,7 @@ public class RunImageEnvironmentTab extends AbstractLaunchConfigurationTab {
 
 	private SelectionListener onRemoveEnvironmentVariables(
 			final TableViewer environmentVariablesTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final IStructuredSelection selection = environmentVariablesTableViewer
 					.getStructuredSelection();
 			for (@SuppressWarnings("unchecked")

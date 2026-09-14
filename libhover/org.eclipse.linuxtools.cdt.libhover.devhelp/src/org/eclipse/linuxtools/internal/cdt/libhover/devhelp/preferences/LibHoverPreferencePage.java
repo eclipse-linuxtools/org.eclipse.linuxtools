@@ -81,7 +81,7 @@ public class LibHoverPreferencePage extends FieldEditorPreferencePage implements
         generateButton = new Button(parent, SWT.NONE);
         generateButton.setFont(parent.getFont());
         generateButton.setText(Messages.LibHoverPreferencePage_GenButtonLabel);
-        generateButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> regenerate()));
+        generateButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> regenerate()));
         GridData gd = new GridData();
 
         gd.horizontalAlignment = GridData.FILL;

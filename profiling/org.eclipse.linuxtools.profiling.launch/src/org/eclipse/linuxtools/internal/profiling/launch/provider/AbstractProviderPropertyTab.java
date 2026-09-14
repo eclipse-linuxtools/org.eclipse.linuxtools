@@ -77,7 +77,7 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
         useProjectSetting.setText(Messages.UseProjectSetting_0);
         useProjectSetting.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
         useProjectSetting.setSelection(getPreferenceStore().getBoolean(ProviderProfileConstants.USE_PROJECT_SETTINGS + getType()));
-		useProjectSetting.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> updateOptionsEnable()));
+		useProjectSetting.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> updateOptionsEnable()));
 
         String highestProviderId = ProviderFramework.getHighestProviderId(getType());
         if (highestProviderId != null) {
@@ -90,7 +90,7 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
         fLink.setText(Messages.PreferenceLink_0);
         fLink.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, true, false, 1, 1));
 		fLink.addSelectionListener(SelectionListener.widgetSelectedAdapter(
-				e -> PreferencesUtil.createPreferenceDialogOn(parent.getShell(), getPrefPageId(), null, null).open()));
+				_ -> PreferencesUtil.createPreferenceDialogOn(parent.getShell(), getPrefPageId(), null, null).open()));
 
 
         HashMap<String, String> map = ProviderFramework
@@ -142,7 +142,7 @@ public abstract class AbstractProviderPropertyTab extends AbstractCPropertyTab {
 			radio.addSelectionListener(
 					SelectionListener.widgetSelectedAdapter(event -> value = (String) event.widget.getData()));
         }
-        projectSettingsGroup.addDisposeListener(event -> {
+        projectSettingsGroup.addDisposeListener(_ -> {
 		    projectSettingsGroup = null;
 		    radioButtons = null;
 		});

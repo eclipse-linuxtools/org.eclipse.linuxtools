@@ -131,11 +131,11 @@ public class OpenGmonDialog extends Dialog {
         Button binBrowseWorkspaceButton = new Button(cbBin, SWT.PUSH);
         binBrowseWorkspaceButton.setText(Messages.OpenGmonDialog_WORKSPACE);
 		binBrowseWorkspaceButton.addSelectionListener(SelectionListener
-				.widgetSelectedAdapter(e -> handleBrowseWorkspace(Messages.OpenGmonDialog_OPEN_BINARY_FILE, binText)));
+				.widgetSelectedAdapter(_ -> handleBrowseWorkspace(Messages.OpenGmonDialog_OPEN_BINARY_FILE, binText)));
         Button binBrowseFileSystemButton = new Button(cbBin, SWT.PUSH);
         binBrowseFileSystemButton.setText(Messages.OpenGmonDialog_FILE_SYSTEM);
 		binBrowseFileSystemButton.addSelectionListener(SelectionListener
-				.widgetSelectedAdapter(e -> handleBrowse(Messages.OpenGmonDialog_OPEN_BINARY_FILE, binText)));
+				.widgetSelectedAdapter(_ -> handleBrowse(Messages.OpenGmonDialog_OPEN_BINARY_FILE, binText)));
 
         /* 2sd line */
         errorLabel = new Label(composite, SWT.NONE);

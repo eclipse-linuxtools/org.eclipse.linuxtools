@@ -113,11 +113,11 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
         txtKernelLocation = new Text(kernelComp, SWT.SINGLE | SWT.BORDER);
         data = new GridData(GridData.FILL_HORIZONTAL);
         txtKernelLocation.setLayoutData(data);
-        txtKernelLocation.addModifyListener(mev -> handleKernelImageFileTextModify(txtKernelLocation));
+        txtKernelLocation.addModifyListener(_ -> handleKernelImageFileTextModify(txtKernelLocation));
 
         Button button = createPushButton(kernelComp, Messages.PerfOptionsTab_Browse, null);
         final Shell shell = top.getShell();
-		button.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> showFileDialog(shell)));
+		button.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> showFileDialog(shell)));
 
         createVerticalSpacer(top, 1);
 
@@ -138,13 +138,13 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
         showStatComp.setLayout(parallelLayout);
 
         chkShowStat = createCheckButtonHelper(showStatComp, PerfPlugin.STRINGS_ShowStat);
-		chkShowStat.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> handleShowStatSelection()));
+		chkShowStat.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> handleShowStatSelection()));
         statRunCount = new Spinner(showStatComp, SWT.BORDER);
         statRunCount.setEnabled(false);
         statRunCount.setMinimum(1);
-        statRunCount.addModifyListener(e -> updateLaunchConfigurationDialog());
+        statRunCount.addModifyListener(_ -> updateLaunchConfigurationDialog());
 
-		chkSourceLineNumbers.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		chkSourceLineNumbers.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			if ((chkKernelSourceLineNumbers != null) && (!chkSourceLineNumbers.getSelection())) {
 				chkKernelSourceLineNumbers.setEnabled(false);
 			} else {
@@ -157,18 +157,18 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
         realtimeComp.setLayout(parallelLayout);
 
         chkRecordRealtime = createCheckButtonHelper(realtimeComp, PerfPlugin.STRINGS_Record_Realtime);
-		chkRecordRealtime.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		chkRecordRealtime.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			rtPriority.setEnabled(chkRecordRealtime.getSelection());
 		}));
         rtPriority = new Spinner(realtimeComp, SWT.BORDER);
         rtPriority.setEnabled(chkRecordRealtime.getSelection());
         rtPriority.setMinimum(1);
-        rtPriority.addModifyListener(e -> updateLaunchConfigurationDialog());
+        rtPriority.addModifyListener(_ -> updateLaunchConfigurationDialog());
 
         // A disabled button does not respond to mouse events so use a composite.
         final Composite multiplexEventsComp = new Composite(chkBoxComp, SWT.NONE);
         multiplexEventsComp.setLayout(chkBoxLayout);
-        multiplexEventsComp.addListener(SWT.MouseHover, event -> multiplexEventsComp.setToolTipText(Messages.PerfOptionsTab_Requires_LTE + multiplexEventsVersion));
+        multiplexEventsComp.addListener(SWT.MouseHover, _ -> multiplexEventsComp.setToolTipText(Messages.PerfOptionsTab_Requires_LTE + multiplexEventsVersion));
         chkMultiplexEvents = createCheckButtonHelper(multiplexEventsComp, PerfPlugin.STRINGS_Multiplex);
 
         scrollTop.setContent(top);
@@ -186,7 +186,7 @@ public class PerfOptionsTab extends AbstractLaunchConfigurationTab {
     private Button createCheckButtonHelper(Composite parent, String label) {
         final Button b = new Button(parent, SWT.CHECK);
         b.setText(label);
-		b.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		b.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}));

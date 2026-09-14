@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2018 IBM Corporation and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -104,7 +104,7 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements
         if (edit) {
             txtTitle.setText(model.getGraphData().title);
         }
-        txtTitle.addModifyListener(e -> checkErrors(false));
+		txtTitle.addModifyListener(_ -> checkErrors(false));
 
         // Add the data series widgets
         String[] labels = model.getSeries();
@@ -282,8 +282,8 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements
 
         // Undo duplicate marking, as it is to be updated.
         markAsDuplicate(cboXItem, false);
-        for (int i = 0; i < cboYItems.length; i++) {
-            markAsDuplicate(cboYItems[i], false);
+        for (Combo cboYItem : cboYItems) {
+            markAsDuplicate(cboYItem, false);
         }
 
         for (int j, i = 0; i < cboYItems.length; i++) {
@@ -331,8 +331,8 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements
      * @return <code>true if some value is not selected, <code>false</code> otherwise.
      */
     private boolean isSeriesDeleted() {
-        for (int i = 0; i < deleted.length; i++) {
-            if (deleted[i]) {
+        for (boolean element : deleted) {
+            if (element) {
                 return true;
             }
         }
@@ -343,8 +343,8 @@ public class SelectGraphAndSeriesWizardPage extends WizardPage implements
     public void dispose() {
         super.dispose();
         if (null != btnGraphs) {
-            for (int i = 0; i < btnGraphs.length; i++) {
-                btnGraphs[i].dispose();
+            for (Button btnGraph : btnGraphs) {
+                btnGraph.dispose();
             }
         }
         btnGraphs = null;

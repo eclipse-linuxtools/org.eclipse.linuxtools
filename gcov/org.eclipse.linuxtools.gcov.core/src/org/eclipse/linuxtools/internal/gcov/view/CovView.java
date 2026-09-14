@@ -130,14 +130,14 @@ public class CovView extends AbstractSTDataView {
         fFilterText.setMessage(Messages.CovView_type_filter_text);
         fFilterText.setToolTipText(Messages.CovView_filter_by_name);
         fFilterText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        fFilterText.addModifyListener(e -> {
+		fFilterText.addModifyListener(_ -> {
 		    String text = fFilterText.getText();
 		    fViewerFilter.setMatchingText(text);
 		});
     }
 
     private static void setCovViewTitle(CovView view, String title, String binaryPath, String timestamp) {
-        String viewText = NLS.bind(Messages.CovView_view_title, new Object[] { title, binaryPath, timestamp });
+        String viewText = NLS.bind(Messages.CovView_view_title, title, binaryPath, timestamp);
         view.label.setText(viewText);
         view.label.getParent().layout(true);
     }

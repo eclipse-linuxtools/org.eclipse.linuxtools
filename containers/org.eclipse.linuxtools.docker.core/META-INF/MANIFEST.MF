@@ -17,7 +17,7 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.28.0",
  org.glassfish.jersey.core.jersey-common;bundle-version="4.0.2",
  org.glassfish.jersey.inject.jersey-hk2;bundle-version="4.0.2",
  org.eclipse.debug.core;bundle-version="3.21.100"
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.docker.core,
  org.eclipse.linuxtools.internal.docker.core;x-friends:="org.eclipse.linuxtools.docker.ui,org.eclipse.linuxtools.docker.ui.tests"

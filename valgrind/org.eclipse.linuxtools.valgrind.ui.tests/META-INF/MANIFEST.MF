@@ -8,7 +8,7 @@ Fragment-Host: org.eclipse.linuxtools.valgrind.ui
 Require-Bundle: junit-jupiter-api;bundle-version="[6.0.0,7.0.0)",
  org.eclipse.linuxtools.valgrind.memcheck,
  org.eclipse.cdt.codan.ui.cxx
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Import-Package: org.eclipse.linuxtools.internal.valgrind.tests,

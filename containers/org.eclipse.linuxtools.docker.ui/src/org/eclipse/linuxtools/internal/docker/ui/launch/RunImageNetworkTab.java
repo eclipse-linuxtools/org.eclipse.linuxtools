@@ -234,7 +234,7 @@ public class RunImageNetworkTab extends AbstractLaunchConfigurationTab {
 
 	private SelectionListener onContainerSelection(final Button containerButton,
 			final Combo containerList) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final boolean selection = containerButton.getSelection();
 			containerList.setEnabled(selection);
 		});
@@ -242,7 +242,7 @@ public class RunImageNetworkTab extends AbstractLaunchConfigurationTab {
 
 	private SelectionListener onOtherSelection(final Button otherButton,
 			final Text otherText) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final boolean selection = otherButton.getSelection();
 			otherText.setEnabled(selection);
 		});

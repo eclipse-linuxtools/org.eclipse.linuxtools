@@ -171,7 +171,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
         Button scriptButton = new Button(fileComp, SWT.PUSH);
         scriptButton.setText(Messages.getString("SystemTapOptionsTab.BrowseFiles")); //$NON-NLS-1$
         scriptButton.setLayoutData(new GridData());
-		scriptButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		scriptButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			String filePath = scriptLocation.getText();
 			FileDialog dialog = new FileDialog(sh, SWT.SAVE);
 			filePath = dialog.open();
@@ -191,7 +191,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
         textData.applyTo(binaryLocation);
         Button binaryButton = new Button(fileComp, SWT.PUSH);
         binaryButton.setText(Messages.getString("SystemTapOptionsTab.WorkspaceButton2")); //$NON-NLS-1$
-		binaryButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		binaryButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(sh, new WorkbenchLabelProvider(),
 					new WorkbenchContentProvider());
 			dialog.setTitle(Messages.getString("SystemTapOptionsTab.SelectResource")); //$NON-NLS-1$
@@ -220,7 +220,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
         Button argumentsButton = new Button(argumentsComp, SWT.PUSH);
         argumentsButton.setText(Messages.getString("LaunchWizard.Func")); //$NON-NLS-1$
 		argumentsButton.addSelectionListener(SelectionListener
-				.widgetSelectedAdapter(e -> argumentsLocation.setText(argumentsLocation.getText() + " process(\"" //$NON-NLS-1$
+				.widgetSelectedAdapter(_ -> argumentsLocation.setText(argumentsLocation.getText() + " process(\"" //$NON-NLS-1$
 						+ binaryLocation.getText() + "\").function(\"\")") //$NON-NLS-1$
 
 		));
@@ -233,7 +233,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
         Button launch = new Button(sh, SWT.PUSH);
         launch.setLayoutData(new GridData(GridData.CENTER, GridData.BEGINNING, false, false));
         launch.setText(Messages.getString("LaunchWizard.Launch")); //$NON-NLS-1$
-		launch.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		launch.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			scriptPath = scriptLocation.getText();
 			binaryPath = binaryLocation.getText();
 			arguments = argumentsLocation.getText();

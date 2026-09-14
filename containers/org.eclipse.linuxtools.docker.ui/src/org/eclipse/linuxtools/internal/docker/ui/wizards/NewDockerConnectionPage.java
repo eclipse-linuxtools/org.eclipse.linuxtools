@@ -395,7 +395,7 @@ public class NewDockerConnectionPage extends WizardPage {
 	}
 
 	private SelectionListener onBrowseUnixSocketPath() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final FileDialog fileDialog = new FileDialog(getShell());
 			final String selectedPath = fileDialog.open();
 			if (selectedPath != null) {
@@ -405,7 +405,7 @@ public class NewDockerConnectionPage extends WizardPage {
 	}
 
 	private SelectionListener onBrowseTcpCertPath() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final DirectoryDialog directoryDialog = new DirectoryDialog(
 					getShell());
 			directoryDialog.setFilterPath(model.getTcpCertPath());
@@ -542,13 +542,13 @@ public class NewDockerConnectionPage extends WizardPage {
 			final Control[] unixSocketControls, final Control[] tcpAuthControls,
 			final Control[] tcpConnectionControls) {
 
-		return event -> updateWidgetsState(bindingModeSelectionControls,
+		return _ -> updateWidgetsState(bindingModeSelectionControls,
 				unixSocketControls, tcpConnectionControls, tcpAuthControls);
 	}
 
 	private IChangeListener onUnixSocketBindingSelection(
 			final Control[] unixSocketControls) {
-		return event -> setWidgetsEnabled(
+		return _ -> setWidgetsEnabled(
 				model.isCustomSettings() && model.isUnixSocketBindingMode(),
 				unixSocketControls);
 	}
@@ -556,7 +556,7 @@ public class NewDockerConnectionPage extends WizardPage {
 	private IChangeListener onTcpConnectionBindingSelection(
 			final Control[] tcpConnectionControls,
 			final Control[] tcpAuthControls) {
-		return event -> {
+		return _ -> {
 			setWidgetsEnabled(model.isCustomSettings()
 					&& model.isTcpConnectionBindingMode()
 					&& model.isTcpTLSVerify(), tcpAuthControls);
@@ -570,7 +570,7 @@ public class NewDockerConnectionPage extends WizardPage {
 
 	private IValueChangeListener<Boolean> onTcpAuthSelection(
 			final Control[] tcpAuthControls) {
-		return event -> setWidgetsEnabled(model.isCustomSettings()
+		return _ -> setWidgetsEnabled(model.isCustomSettings()
 				&& model.isTcpConnectionBindingMode() && model.isTcpTLSVerify(),
 				tcpAuthControls);
 	}

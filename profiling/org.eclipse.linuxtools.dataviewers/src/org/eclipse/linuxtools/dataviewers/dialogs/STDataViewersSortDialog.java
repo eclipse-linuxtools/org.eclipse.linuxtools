@@ -123,10 +123,10 @@ public class STDataViewersSortDialog extends TrayDialog {
 
             ascendingButtons[i] = new Button(directionGroup, SWT.RADIO);
             ascendingButtons[i].setText(getAscendingText(i));
-			ascendingButtons[i].addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> markDirty()));
+			ascendingButtons[i].addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> markDirty()));
             descendingButtons[i] = new Button(directionGroup, SWT.RADIO);
             descendingButtons[i].setText(getDescendingText(i));
-			descendingButtons[i].addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> markDirty()));
+			descendingButtons[i].addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> markDirty()));
 
             if (i < priorityCombos.length - 1) {
                 priorityCombos[i].addSelectionListener(new SelectionAdapter() {
@@ -164,7 +164,7 @@ public class STDataViewersSortDialog extends TrayDialog {
                     }
                 });
             } else {
-				priorityCombos[i].addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> markDirty()));
+				priorityCombos[i].addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> markDirty()));
             }
         }
 
@@ -222,7 +222,7 @@ public class STDataViewersSortDialog extends TrayDialog {
         Button defaultsButton = new Button(parent, SWT.PUSH);
         defaultsButton.setText(STDataViewersMessages.restoreDefaults_text);
         setButtonSize(defaultsButton, new GridData(GridData.HORIZONTAL_ALIGN_END | GridData.FILL_HORIZONTAL));
-		defaultsButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		defaultsButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			restoreDefaults();
 			markDirty();
 		}));

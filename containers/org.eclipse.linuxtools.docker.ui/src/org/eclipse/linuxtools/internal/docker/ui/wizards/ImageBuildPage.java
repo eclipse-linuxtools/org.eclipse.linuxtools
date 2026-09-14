@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2015, 2018 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -103,7 +103,7 @@ public class ImageBuildPage extends WizardPage {
 		editors.clear();
 	}
 
-	private ModifyListener Listener = e -> validate();
+	private ModifyListener Listener = _ -> validate();
 
 	private void validate() {
 		boolean complete = true;
@@ -198,7 +198,7 @@ public class ImageBuildPage extends WizardPage {
 		Button browse = new Button(container, SWT.NULL);
 		browse.setText(WizardMessages.getString(BROWSE_LABEL));
 		browse.addSelectionListener(
-				SelectionListener.widgetSelectedAdapter(e -> {
+				SelectionListener.widgetSelectedAdapter(_ -> {
 					DirectoryDialog d = new DirectoryDialog(
 							container.getShell());
 					String k = d.open();
@@ -210,7 +210,7 @@ public class ImageBuildPage extends WizardPage {
 		editButton.setText(WizardMessages.getString(EDIT_LABEL));
 		editButton.setEnabled(false);
 		editButton.addSelectionListener(
-				SelectionListener.widgetSelectedAdapter(e -> {
+				SelectionListener.widgetSelectedAdapter(_ -> {
 					String dir = directoryText.getText();
 					IFileStore fileStore = EFS.getLocalFileSystem()
 							.getStore(new Path(dir).append("Dockerfile")); //$NON-NLS-1$

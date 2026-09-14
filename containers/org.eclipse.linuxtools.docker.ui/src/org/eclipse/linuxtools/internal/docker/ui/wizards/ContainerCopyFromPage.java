@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2018 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -96,7 +96,7 @@ public class ContainerCopyFromPage extends WizardPage {
 
     /**
 	 * Wizard page for copying files from container
-	 * 
+	 *
 	 * @param fileSystemElement
 	 *            - FileSystemElement of root
 	 * @param structureProvider
@@ -149,8 +149,8 @@ public class ContainerCopyFromPage extends WizardPage {
 		}
 	}
 
-	private ModifyListener Listener = e -> validate();
-	private ICheckStateListener CheckListener = e -> validate();
+	private ModifyListener Listener = _ -> validate();
+	private ICheckStateListener CheckListener = _ -> validate();
 
 	private void validate() {
 		boolean complete = true;
@@ -279,7 +279,7 @@ public class ContainerCopyFromPage extends WizardPage {
 
 	private SelectionListener onBrowseSelect() {
 		final ContainerCopyFromPage page = this;
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			DirectoryDialog d = new DirectoryDialog(
 					Activator.getActiveWorkbenchShell());
 			String x = d.open();

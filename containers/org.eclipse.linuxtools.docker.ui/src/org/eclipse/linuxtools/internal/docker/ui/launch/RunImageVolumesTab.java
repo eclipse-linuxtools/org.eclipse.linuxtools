@@ -234,7 +234,7 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 
 	private SelectionListener onAddDataVolume(
 			final CheckboxTableViewer dataVolumesTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final ContainerDataVolumeDialog dialog = new ContainerDataVolumeDialog(
 					getShell(), model.getConnection());
 			dialog.create();
@@ -250,7 +250,7 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 
 	private SelectionListener onEditDataVolume(
 			final CheckboxTableViewer dataVolumesTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 				final IStructuredSelection selection = dataVolumesTableViewer.getStructuredSelection();
 				if (selection.isEmpty()) {
 					return;
@@ -283,7 +283,7 @@ public class RunImageVolumesTab extends AbstractLaunchConfigurationTab {
 
 	private SelectionListener onRemoveDataVolumes(
 			final TableViewer dataVolumesTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final IStructuredSelection selection = dataVolumesTableViewer
 					.getStructuredSelection();
 			for (@SuppressWarnings("unchecked")

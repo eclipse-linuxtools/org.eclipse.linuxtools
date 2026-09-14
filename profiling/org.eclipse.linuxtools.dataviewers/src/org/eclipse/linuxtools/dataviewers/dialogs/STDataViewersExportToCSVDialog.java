@@ -81,7 +81,7 @@ public class STDataViewersExportToCSVDialog extends Dialog {
 
     private STDataViewersCSVExporter exporter = null;
 
-    private ModifyListener updatePreviewModifyListener = e -> updatePreview();
+    private ModifyListener updatePreviewModifyListener = _ -> updatePreview();
 
     private SelectionListener updatePreviewSelectionListener = new SelectionListener() {
         @Override
@@ -166,14 +166,14 @@ public class STDataViewersExportToCSVDialog extends Dialog {
 
         Button browseOutputButton = new Button(browseComposite, SWT.PUSH);
         browseOutputButton.setText("File System...");
-		browseOutputButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> handleBrowse()));
+		browseOutputButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> handleBrowse()));
         layoutData = new GridData(SWT.RIGHT, SWT.FILL, false, false, 1, 1);
         browseOutputButton.setLayoutData(layoutData);
 
         Button browseOutputInWorkspaceButton = new Button(browseComposite, SWT.PUSH);
         browseOutputInWorkspaceButton.setText("Workspace...");
 		browseOutputInWorkspaceButton
-				.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> handleBrowseWorkspace()));
+				.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> handleBrowseWorkspace()));
         layoutData = new GridData(SWT.RIGHT, SWT.FILL, false, false, 1, 1);
         browseOutputInWorkspaceButton.setLayoutData(layoutData);
     }

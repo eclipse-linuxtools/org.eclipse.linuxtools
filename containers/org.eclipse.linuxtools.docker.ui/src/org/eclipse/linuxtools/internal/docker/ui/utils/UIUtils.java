@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2010, 2018 Red Hat, Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -44,9 +44,9 @@ public class UIUtils {
 
 	/**
 	 * Returns the selection of the active workbench window.
-	 * 
+	 *
 	 * @return the selection
-	 * 
+	 *
 	 * @see IWorkbenchWindow#getSelectionService()
 	 */
 	public static ISelection getWorkbenchWindowSelection() {
@@ -55,7 +55,7 @@ public class UIUtils {
 
 	/**
 	 * Gets the structured selection.
-	 * 
+	 *
 	 * @return the structured selection
 	 */
 	public static IStructuredSelection getStructuredSelection() {
@@ -69,12 +69,12 @@ public class UIUtils {
 
 	/**
 	 * Gets the first element.
-	 * 
+	 *
 	 * @param selection
 	 *            the selection
 	 * @param expectedClass
 	 *            the expected class
-	 * 
+	 *
 	 * @return the first element
 	 */
 	@SuppressWarnings("unchecked")
@@ -97,7 +97,7 @@ public class UIUtils {
 
 	/**
 	 * Gets the active page.
-	 * 
+	 *
 	 * @return the active page
 	 */
 	public static IWorkbenchPage getActivePage() {
@@ -109,7 +109,7 @@ public class UIUtils {
 
 	/**
 	 * Returns the editor that's currently active (focused).
-	 * 
+	 *
 	 * @return the active editor
 	 */
 	public static IEditorPart getActiveEditor() {
@@ -120,7 +120,7 @@ public class UIUtils {
 
 	/**
 	 * Gets the active workbench window.
-	 * 
+	 *
 	 * @return the active workbench window
 	 */
 	public static IWorkbenchWindow getActiveWorkbenchWindow() {
@@ -132,7 +132,7 @@ public class UIUtils {
 
 	/**
 	 * Gets the workbench.
-	 * 
+	 *
 	 * @return the workbench
 	 */
 	public static IWorkbench getWorkbench() {
@@ -143,7 +143,7 @@ public class UIUtils {
 
 	/**
 	 * Replaces an image with the given key by the given image descriptor.
-	 * 
+	 *
 	 * @param imageKey
 	 *            the image key
 	 * @param imageDescriptor
@@ -161,14 +161,14 @@ public class UIUtils {
 	/**
 	 * Register the given ContributionManager with the given id. The
 	 * contribution manager gets unregistered on control disposal.
-	 * 
+	 *
 	 * @param id
 	 *            the id
 	 * @param contributionManager
 	 *            the contribution manager
 	 * @param control
 	 *            the control
-	 * 
+	 *
 	 * @see ContributionManager
 	 * @see IMenuService
 	 * @see DisposeListener
@@ -185,16 +185,16 @@ public class UIUtils {
 		menuService.populateContributionManager(
 				(ContributionManager) contributionManager, id);
 		contributionManager.update(true);
-		control.addDisposeListener(e -> menuService.releaseContributions(
+		control.addDisposeListener(_ -> menuService.releaseContributions(
 				(ContributionManager) contributionManager));
 	}
 
 	/**
 	 * Creates context menu to a given control.
-	 * 
+	 *
 	 * @param control
 	 *            the control
-	 * 
+	 *
 	 * @return the i menu manager
 	 */
 	public static IMenuManager createContextMenu(final Control control) {
@@ -211,12 +211,12 @@ public class UIUtils {
 
 	/**
 	 * Gets the dialog settings for the given identifer and plugin.
-	 * 
+	 *
 	 * @param identifier
 	 *            the identifier
 	 * @param plugin
 	 *            the plugin
-	 * 
+	 *
 	 * @return the dialog settings
 	 */
 	public static IDialogSettings getDialogSettings(final String identifier,
@@ -232,11 +232,11 @@ public class UIUtils {
 
 	/**
 	 * Returns the page for a given editor.
-	 * 
+	 *
 	 * @param editor
 	 *            the editor
 	 * @return the page
-	 * 
+	 *
 	 * @see IWorkbenchPage
 	 */
 	public static IWorkbenchPage getPage(EditorPart editor) {

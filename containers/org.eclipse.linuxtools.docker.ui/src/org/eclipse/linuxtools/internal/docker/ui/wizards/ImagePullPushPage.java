@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2018 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.Link;
 
 /**
  * Base {@link WizardPage} for {@link ImagePushPage} and {@link ImagePullPage}
- * 
+ *
  * @param <M>
  *            the type of model associated with this {@link WizardPage}
  */
@@ -58,14 +58,14 @@ public abstract class ImagePullPushPage<M extends ImagePullPushPageModel>
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param pageName
 	 *            the name of the page
 	 * @param title
 	 *            the title of the page
 	 * @param model
 	 *            the databinding model associated with this page
-	 * 
+	 *
 	 */
 	public ImagePullPushPage(final String pageName, final String title,
 			final M model) {
@@ -137,7 +137,7 @@ public abstract class ImagePullPushPage<M extends ImagePullPushPageModel>
 
 	private SelectionListener onAddRegistry(
 			final ComboViewer registryAccountComboViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final RegistryAccountDialog dialog = new RegistryAccountDialog(
 					getShell(),
 					WizardMessages

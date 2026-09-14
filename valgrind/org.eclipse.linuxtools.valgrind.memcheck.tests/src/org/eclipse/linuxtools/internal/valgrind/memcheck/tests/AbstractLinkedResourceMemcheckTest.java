@@ -37,7 +37,7 @@ public abstract class AbstractLinkedResourceMemcheckTest extends
         // delete source folder and replace it with a link to its bundle
         // location
         final Exception[] ex = new Exception[1];
-        ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) monitor -> {
+        ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) _ -> {
 		    try {
 		        URL location = FileLocator.find(getBundle(), new Path(
 		                "resources/linkedTest/src"), null); //$NON-NLS-1$

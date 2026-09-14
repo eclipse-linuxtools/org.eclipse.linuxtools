@@ -134,7 +134,7 @@ public abstract class AbstractChartWithAxisBuilder extends AbstractChartBuilder 
         // with blanks in the PaintListener and have the title paint after it
         // once the title has been altered.
         if (title instanceof Control) {
-            titleBoundsPaintListener = e -> {
+			titleBoundsPaintListener = _ -> {
 			    Rectangle bounds = chart.getPlotArea().getBounds();
 			    Control title1 = (Control) chart.getTitle();
 			    Rectangle titleBounds = title1.getBounds();

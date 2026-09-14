@@ -15,9 +15,9 @@ package org.eclipse.linuxtools.internal.vagrant.ui;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
-import org.eclipse.core.runtime.ILog;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -52,7 +52,7 @@ public class Activator extends AbstractUIPlugin {
 				File polkitDir = Paths.get("/", "usr", "share", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						"polkit-1", "actions").toFile(); //$NON-NLS-1$ //$NON-NLS-2$
 				if (polkitDir.exists()) {
-					File[] libvirtFiles = polkitDir.listFiles((File dir, String name) -> {
+					File[] libvirtFiles = polkitDir.listFiles((_, name) -> {
 						return name.matches("org\\.libvirt.*\\.policy"); //$NON-NLS-1$
 					});
 					if (libvirtFiles.length > 0) {

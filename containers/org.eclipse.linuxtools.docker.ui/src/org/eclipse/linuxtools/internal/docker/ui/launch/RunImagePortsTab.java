@@ -246,12 +246,12 @@ public class RunImagePortsTab extends AbstractLaunchConfigurationTab
 
 	private IValueChangeListener onPublishAllPortsChange(
 			final Control... controls) {
-		return event -> togglePortMappingControls(controls);
+		return _ -> togglePortMappingControls(controls);
 	}
 
 	private SelectionListener onAddPort(
 			final CheckboxTableViewer exposedPortsTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final ContainerPortDialog dialog = new ContainerPortDialog(
 					getShell());
 			dialog.create();
@@ -268,7 +268,7 @@ public class RunImagePortsTab extends AbstractLaunchConfigurationTab
 
 	private SelectionListener onEditPort(
 			final CheckboxTableViewer exposedPortsTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final IStructuredSelection selection = exposedPortsTableViewer
 					.getStructuredSelection();
 			final ExposedPortModel selectedContainerPort = (ExposedPortModel) selection
@@ -290,7 +290,7 @@ public class RunImagePortsTab extends AbstractLaunchConfigurationTab
 
 	private SelectionListener onRemovePorts(
 			final TableViewer portsTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final IStructuredSelection selection = portsTableViewer
 					.getStructuredSelection();
 			for (@SuppressWarnings("unchecked")

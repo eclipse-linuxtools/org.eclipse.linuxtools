@@ -49,7 +49,7 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
     private Text text[] = new Text[IDEPreferenceConstants.STAP_STRING_OPTIONS.length];
     private Text targetProgramText;
 
-    private ModifyListener modifyListener = e -> updateLaunchConfigurationDialog();
+	private ModifyListener modifyListener = _ -> updateLaunchConfigurationDialog();
     private FileDialog fileDialog;
     private Text miscCommandsText;
 
@@ -93,7 +93,7 @@ public class SystemTapScriptOptionsTab extends AbstractLaunchConfigurationTab {
         selectTargetProgramButton.setLayoutData(gridData);
         selectTargetProgramButton
                 .setText(Messages.SystemTapScriptLaunchConfigurationTab_browse);
-		selectTargetProgramButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		selectTargetProgramButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			String fileName = fileDialog.open();
 			if (fileName != null) {
 				targetProgramText.setText(fileName);

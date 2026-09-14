@@ -112,10 +112,10 @@ public class SpecfileNewWizardPage extends WizardPage {
 		projectText = new Text(container, SWT.BORDER | SWT.SINGLE);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		projectText.setLayoutData(gd);
-		projectText.addModifyListener(e -> dialogChanged());
+		projectText.addModifyListener(_ -> dialogChanged());
 		Button button = new Button(container, SWT.PUSH);
 		button.setText(Messages.SpecfileNewWizardPage_12);
-		button.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> handleBrowse()));
+		button.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> handleBrowse()));
 
 		// Template to use
 		label = new Label(container, SWT.NULL);
@@ -205,7 +205,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 		label.setText(textLabel);
 		Text text = new Text(container, SWT.BORDER | SWT.SINGLE);
 		text.setLayoutData(gd);
-		text.addModifyListener(e -> dialogChanged());
+		text.addModifyListener(_ -> dialogChanged());
 		// empty label for the last row.
 		new Label(container, SWT.NULL);
 		return text;

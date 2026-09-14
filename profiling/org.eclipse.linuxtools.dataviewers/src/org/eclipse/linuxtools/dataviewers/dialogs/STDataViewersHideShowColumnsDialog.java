@@ -131,7 +131,7 @@ public class STDataViewersHideShowColumnsDialog extends Dialog {
         }
     }
 
-    private ICheckStateListener checkStateListener = event -> dirty = true;
+    private ICheckStateListener checkStateListener = _ -> dirty = true;
 
     /**
      * Creates a separator line above the OK/Cancel buttons bar.

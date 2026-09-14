@@ -453,7 +453,7 @@ public class RunImageMainTab extends AbstractLaunchConfigurationTab {
 	}
 
 	private SelectionListener onSearchImage() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final ImageSearch imageSearchWizard = new ImageSearch(
 					RunImageMainTab.this.model.getSelectedConnection(),
 					RunImageMainTab.this.model.getSelectedImageName(),

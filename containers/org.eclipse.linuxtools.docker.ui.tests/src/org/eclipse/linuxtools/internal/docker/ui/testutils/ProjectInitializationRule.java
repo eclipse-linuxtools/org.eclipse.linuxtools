@@ -129,7 +129,7 @@ public class ProjectInitializationRule implements BeforeEachCallback {
 		final List<File> filesToImport = syncFileSystemStructureProvider.getChildren(projectSourcePath.toFile());
 		if (filesToImport != null && !filesToImport.isEmpty()) {
 			final ImportOperation operation = new ImportOperation(project.getFullPath(), projectSourcePath.toFile(),
-					syncFileSystemStructureProvider, pathString -> IOverwriteQuery.YES, filesToImport);
+					syncFileSystemStructureProvider, _ -> IOverwriteQuery.YES, filesToImport);
 			operation.setContext(null);
 			// need to overwrite modified files
 			operation.setOverwriteResources(true);

@@ -124,12 +124,12 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 		data.grabExcessVerticalSpace = false;
 		locateFileButton.setLayoutData(data);
 		locateFileButton.setText(Messages.STCSourceNotFoundEditor_locate_file);
-		locateFileButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> locateFile()));
+		locateFileButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> locateFile()));
 
 		editLookupButton = new Button(parent, SWT.PUSH);
 		editLookupButton.setLayoutData(data);
 		editLookupButton.setText(Messages.STCSourceNotFoundEditor_edit_source_lookup_path);
-		editLookupButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> editSourceLookupPath()));
+		editLookupButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> editSourceLookupPath()));
 		syncButtons();
 	}
 
@@ -185,8 +185,8 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
     private void locateFile() {
         FileDialog dialog = new FileDialog(getEditorSite().getShell(), SWT.NONE);
         IPath missingPath = getMissingFile();
-        dialog.setFilterNames(new String[] { Messages.STCSourceNotFoundEditor_missing_source_file });
-        dialog.setFilterExtensions(new String[] { "*." + missingPath.getFileExtension() }); //$NON-NLS-1$
+        dialog.setFilterNames(Messages.STCSourceNotFoundEditor_missing_source_file);
+        dialog.setFilterExtensions("*." + missingPath.getFileExtension()); //$NON-NLS-1$
         String res = dialog.open();
         if (res != null) {
             Path newPath = new Path(res);

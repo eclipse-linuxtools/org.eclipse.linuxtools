@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2018 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -109,13 +109,13 @@ public class ContainerFileSelectionDialog extends SelectionDialog {
         Button selectButton = new Button(buttonComposite, SWT.PUSH);
 		selectButton.setText(Messages.getString(SELECT_ALL_TITLE));
 		SelectionListener listener = SelectionListener.widgetSelectedAdapter(
-				e -> selectionGroup.setAllSelections(true));
+				_ -> selectionGroup.setAllSelections(true));
         selectButton.addSelectionListener(listener);
 
         Button deselectButton = new Button(buttonComposite, SWT.PUSH);
 		deselectButton.setText(Messages.getString(DESELECT_ALL_TITLE));
 		listener = SelectionListener.widgetSelectedAdapter(
-				e -> selectionGroup.setAllSelections(false));
+				_ -> selectionGroup.setAllSelections(false));
         deselectButton.addSelectionListener(listener);
 
     }
@@ -175,7 +175,7 @@ public class ContainerFileSelectionDialog extends SelectionDialog {
                 SIZING_SELECTION_WIDGET_HEIGHT); // widgets we need to hardcode the combined widget's
         // size, otherwise it will open too small
 
-        ICheckStateListener listener = event -> getOkButton().setEnabled(
+		ICheckStateListener listener = _ -> getOkButton().setEnabled(
 		        selectionGroup.getCheckedElementCount() > 0);
 
         WorkbenchViewerComparator comparator = new WorkbenchViewerComparator();

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2013, 2018 Red Hat, Inc.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -57,7 +57,7 @@ public class GraphContinuousXControl extends Composite {
         data.left = new FormAttachment(0, 0);
         data.bottom = new FormAttachment(100, 0);
         zoomOutButton.setLayoutData(data);
-		zoomOutButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		zoomOutButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			zoomScale.setSelection(zoomScale.getSelection() - CLICK_INCREMENT);
 			updateScale();
 		}));
@@ -70,7 +70,7 @@ public class GraphContinuousXControl extends Composite {
         data.right = new FormAttachment(100, 0);
         data.bottom = ((FormData) zoomOutButton.getLayoutData()).bottom;
         zoomInButton.setLayoutData(data);
-		zoomInButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		zoomInButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			zoomScale.setSelection(zoomScale.getSelection() + CLICK_INCREMENT);
 			updateScale();
 		}));
@@ -102,8 +102,8 @@ public class GraphContinuousXControl extends Composite {
         data.right = new FormAttachment(zoomInButton, 0);
         scrollBar.setLayoutData(data);
 
-		zoomScale.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> updateScale()));
-		scrollBar.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> updateScroll()));
+		zoomScale.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> updateScale()));
+		scrollBar.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> updateScroll()));
 
         updateScale();
         updateScroll();

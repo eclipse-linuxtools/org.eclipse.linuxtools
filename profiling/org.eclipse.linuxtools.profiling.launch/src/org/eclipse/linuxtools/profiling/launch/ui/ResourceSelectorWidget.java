@@ -175,9 +175,9 @@ public class ResourceSelectorWidget {
         // browse button
         browseButton = new Button(browserComp, SWT.PUSH);
         browseButton.setText(BROWSE_LABEL);
-        browseButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> handleURIBrowseButtonPressed()));
+        browseButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> handleURIBrowseButtonPressed()));
 
-        uriField.addModifyListener(e -> updateFilesystemSelector(uriField.getText()));
+        uriField.addModifyListener(_ -> updateFilesystemSelector(uriField.getText()));
     }
 
     public ResourceSelectorWidget(Composite parent, ResourceType resourceType, int colSpan, String sectionLabelText, String uriLabelText) {

@@ -57,7 +57,7 @@ public class RPMDetailsPanel {
 		defaultSettings.setSelection(true);
 
 		final Group specGrid = new Group(parent, SWT.NONE);
-		defaultSettings.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		defaultSettings.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			if (defaultSettings.getSelection()) {
 				for (Control control : specGrid.getChildren()) {
 					specGrid.setEnabled(false);

@@ -126,7 +126,7 @@ public class SpecfileQuickOutlineDialog extends PopupDialog {
 
 	private void createUIListenersTreeViewer() {
 		final Tree tree = treeViewer.getTree();
-		tree.addSelectionListener(SelectionListener.widgetDefaultSelectedAdapter(e -> gotoSelectedElement()));
+		tree.addSelectionListener(SelectionListener.widgetDefaultSelectedAdapter(_ -> gotoSelectedElement()));
 	}
 
 	private void gotoSelectedElement() {

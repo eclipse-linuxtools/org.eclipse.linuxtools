@@ -89,7 +89,7 @@ public abstract class AbstractProfilingOptionsTab extends AbstractLaunchConfigur
         tabgroup.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true,
                 true));
 
-		providerCombo.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		providerCombo.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			String curProviderId = comboItems.get(providerCombo.getText());
 			loadTabGroupItems(tabgroup, curProviderId);
 			initializeFrom(initial);

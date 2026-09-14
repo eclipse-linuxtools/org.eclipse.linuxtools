@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2015, 2023 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -168,7 +168,7 @@ public class RunImageLinksTab extends AbstractLaunchConfigurationTab {
 	}
 
 	private SelectionListener onAddLink() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final ContainerLinkDialog dialog = new ContainerLinkDialog(
 					getShell(), model.getSelectedConnection());
 			dialog.create();
@@ -181,7 +181,7 @@ public class RunImageLinksTab extends AbstractLaunchConfigurationTab {
 	}
 
 	private SelectionListener onEditLink(final TableViewer linksTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final IStructuredSelection selection = linksTableViewer
 					.getStructuredSelection();
 
@@ -204,7 +204,7 @@ public class RunImageLinksTab extends AbstractLaunchConfigurationTab {
 
 	private SelectionListener onRemoveLinks(
 			final TableViewer linksTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final IStructuredSelection selection = linksTableViewer
 					.getStructuredSelection();
 			for (@SuppressWarnings("unchecked")

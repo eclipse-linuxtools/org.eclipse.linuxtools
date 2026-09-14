@@ -142,11 +142,11 @@ public class OpenGCDialog extends Dialog {
         cbBin.setLayout(new GridLayout(2, true));
         Button binBrowseWorkspaceButton = new Button(cbBin, SWT.PUSH);
         binBrowseWorkspaceButton.setText(Messages.OpenGCDialog_bin_browser_button_text);
-        binBrowseWorkspaceButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e ->
+		binBrowseWorkspaceButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ ->
                 handleBrowseWorkspace(Messages.OpenGCDialog_bin_browser_handler_text, binText)));
         Button binBrowseFileSystemButton = new Button(cbBin, SWT.PUSH);
         binBrowseFileSystemButton.setText(Messages.OpenGCDialog_bin_browser_fs_button_text);
-        binBrowseFileSystemButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e ->
+		binBrowseFileSystemButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ ->
                 handleBrowse(Messages.OpenGCDialog_bin_browser_handler_text, binText)));
 
         Group covMode = new Group(composite, SWT.NONE);
@@ -166,7 +166,8 @@ public class OpenGCDialog extends Dialog {
 
         openCoverageSummaryButton.setSelection(true);
 
-        SelectionListener sa = SelectionListener.widgetSelectedAdapter(e ->
+		SelectionListener sa = SelectionListener
+				.widgetSelectedAdapter(_ ->
                 openCoverageSummary = openCoverageSummaryButton.getSelection());
         openCoverageSummaryButton.addSelectionListener(sa);
         openThisFileOnlyButton.addSelectionListener(sa);

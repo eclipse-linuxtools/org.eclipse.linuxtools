@@ -102,7 +102,7 @@ public class PerfProfileView extends ViewPart {
 
     private void hookDoubleClickAction() {
         doubleClickAction = new PerfDoubleClickAction(viewer);
-        viewer.addDoubleClickListener(event -> doubleClickAction.run());
+        viewer.addDoubleClickListener(_ -> doubleClickAction.run());
     }
 
     public TreeViewer getTreeViewer () {

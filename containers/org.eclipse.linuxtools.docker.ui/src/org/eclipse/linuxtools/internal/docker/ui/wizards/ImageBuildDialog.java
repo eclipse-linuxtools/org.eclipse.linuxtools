@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2015, 2019 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -190,7 +190,7 @@ public class ImageBuildDialog extends Dialog {
 	private IChangeListener onBuildSettingsChanged(final Label errorMessageIcon,
 			final Label errorMessageLabel) {
 
-		return event -> {
+		return _ -> {
 			final IStatus status = validateInput();
 			if (Display.getCurrent() == null) {
 				return;
@@ -225,7 +225,7 @@ public class ImageBuildDialog extends Dialog {
 	/**
 	 * Validates that the selected {@link IDockerConnection} exists and that the
 	 * optional image name is valid.
-	 * 
+	 *
 	 * @return a validation status
 	 */
 	private IStatus validateInput() {
@@ -260,7 +260,7 @@ public class ImageBuildDialog extends Dialog {
 	/**
 	 * Creates an {@link IContentProposalProvider} to propose
 	 * {@link IDockerContainer} names based on the current text.
-	 * 
+	 *
 	 * @param items
 	 * @return
 	 */

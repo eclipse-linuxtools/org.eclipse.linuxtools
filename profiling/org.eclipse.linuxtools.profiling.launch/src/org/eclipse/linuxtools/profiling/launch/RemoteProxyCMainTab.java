@@ -173,7 +173,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
         fTerminalButton = createCheckButton(mainComp,
                 LaunchMessages.CMainTab_UseTerminal);
 		fTerminalButton
-				.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> updateLaunchConfigurationDialog()));
+				.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> updateLaunchConfigurationDialog()));
         fTerminalButton.setEnabled(PTY.isSupported(Mode.CONSOLE));
     }
 
@@ -367,7 +367,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
         fProjText = new Text(projComp, SWT.SINGLE | SWT.BORDER);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         fProjText.setLayoutData(gd);
-        fProjText.addModifyListener(evt -> {
+        fProjText.addModifyListener(_ -> {
 		    // if project changes, invalidate program name cache
 		    fPreviouslyCheckedProgram = null;
 
@@ -377,7 +377,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 
         fProjButton = createPushButton(projComp,
                 LaunchMessages.Launch_common_Browse_1, null);
-		fProjButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		fProjButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			handleProjectButtonSelected();
 			updateLaunchConfigurationDialog();
 		}));
@@ -450,14 +450,14 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
 
         toLabel.setEnabled(false);
 
-		enableCopyFromExeButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		enableCopyFromExeButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			boolean copyEnabled = enableCopyFromExeButton.getSelection();
 			setEnableCopyFromSection(copyEnabled);
 			updateLaunchConfigurationDialog();
 		}));
 
         copyFromExeText = copyFromExeSelector.getURIText();
-        copyFromExeText.addModifyListener(evt -> updateLaunchConfigurationDialog());
+        copyFromExeText.addModifyListener(_ -> updateLaunchConfigurationDialog());
     }
 
 
@@ -475,7 +475,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
                 ResourceSelectorWidget.ResourceType.FILE,
                 2, "C/C++ executable", null); //$NON-NLS-1$
         fProgText = exeSelector.getURIText();
-        fProgText.addModifyListener(evt -> updateLaunchConfigurationDialog());
+        fProgText.addModifyListener(_ -> updateLaunchConfigurationDialog());
     }
 
     protected void updateWorkingDirFromConfig(ILaunchConfiguration config) {
@@ -515,7 +515,7 @@ public class RemoteProxyCMainTab extends CAbstractMainTab {
                 ResourceSelectorWidget.ResourceType.DIRECTORY,
                 2, "Working directory", null); //$NON-NLS-1$
         workingDirText = workingDirSelector.getURIText();
-        workingDirText.addModifyListener(evt -> updateLaunchConfigurationDialog());
+        workingDirText.addModifyListener(_ -> updateLaunchConfigurationDialog());
     }
 
     private boolean checkCopyFromExe(IProject project) {

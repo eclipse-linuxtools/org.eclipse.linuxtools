@@ -146,7 +146,7 @@ public class PackageVMPage extends WizardPage {
 	 * @return
 	 */
 	private SelectionListener onSearchFolder() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			DirectoryDialog fd = new DirectoryDialog(getShell());
 			String location = fd.open();
 			if (location != null && !location.isEmpty()) {
