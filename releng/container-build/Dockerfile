@@ -1,4 +1,4 @@
-FROM eclipsecbi/fedora-gtk3-mutter:43-gtk3.24
+FROM eclipsecbi/fedora-gtk3-mutter:44-gtk3.24
 
 # Back to root for install
 USER 0
@@ -7,7 +7,7 @@ USER 0
 RUN sed -i '/tsflags=nodocs/ d' /etc/dnf/dnf.conf
 
 RUN dnf -y update && dnf -y install \
-    webkit2gtk4.1 npm tigervnc-server java-21-openjdk-devel \
+    webkit2gtk4.1 npm tigervnc-server java-25-openjdk-devel \
     gcc-c++ perf systemtap rpmdevtools valgrind \
     gtk3-devel-docs gnome-shell ibus \
     && dnf clean all
@@ -22,7 +22,7 @@ RUN mv /usr/bin/bwrap /usr/bin/bwrap.real \
 RUN curl -L https://dlcdn.apache.org/maven/maven-3/3.9.16/binaries/apache-maven-3.9.16-bin.tar.gz | tar -xzv
 
 ENV PATH=/apache-maven-3.9.16/bin:/usr/lib/jvm/java-21/bin:$PATH
-ENV JAVA_HOME=/usr/lib/jvm/java-21
+ENV JAVA_HOME=/usr/lib/jvm/java-25
 ENV NO_AT_BRIDGE=1
 
 #Back to named user
