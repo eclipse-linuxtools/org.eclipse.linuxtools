@@ -59,7 +59,7 @@ The `releng/` module produces two p2 repositories:
 ## Key Conventions
 
 ### Java and OSGi
-- **Java 21** is required (`Bundle-RequiredExecutionEnvironment: JavaSE-21` in all manifests).
+- **Java 25** is required (`Bundle-RequiredExecutionEnvironment: JavaSE-25` in all manifests).
 - Plugin dependencies are declared in `META-INF/MANIFEST.MF` via `Require-Bundle` or `Import-Package`, not Maven `<dependency>`. Tycho resolves the classpath from these.
 - Each plugin `pom.xml` contains almost nothing — just the parent reference and `<packaging>eclipse-plugin</packaging>`.
 

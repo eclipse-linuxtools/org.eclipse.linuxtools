@@ -14,7 +14,7 @@ kind: Pod
 spec:
   containers:
   - name: container
-    image: akurtakov/linuxtools-build-test-dependencies:latest
+    image: akurtakov/linuxtools-build-test-dependencies:f44
     imagePullPolicy: "IfNotPresent"
     tty: true
     command: [ "cat" ]
