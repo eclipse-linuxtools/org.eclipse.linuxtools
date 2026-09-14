@@ -5,11 +5,11 @@ Bundle-SymbolicName: org.eclipse.linuxtools.man.core;singleton:=true
 Bundle-Version: 1.5.0.qualifier
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.jface.text,
- com.jcraft.jsch
+ org.eclipse.jface.text
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: org.eclipse.linuxtools.internal.man.parser;x-friends:="org.eclipse.linuxtools.man.help",
  org.eclipse.linuxtools.man.parser,
  org.eclipse.linuxtools.man.views
 Bundle-Vendor: %Bundle-Vendor
 Automatic-Module-Name: org.eclipse.linuxtools.man.core
+Import-Package: com.jcraft.jsch;version="[0.1.0,1.0.0)"
