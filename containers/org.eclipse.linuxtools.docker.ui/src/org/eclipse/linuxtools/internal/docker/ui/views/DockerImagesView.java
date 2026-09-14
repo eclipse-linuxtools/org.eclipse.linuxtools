@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2018 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -97,7 +97,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 	@Override
 	public void setFocus() {
 	}
-	
+
 	@Override
 	public void dispose() {
 		// remove this listener instance registered on the Docker connection
@@ -187,7 +187,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 					selection);
 		}
 	}
-	
+
 	private void createTableViewer(final Composite container) {
 		search = new Text(container, SWT.SEARCH | SWT.ICON_SEARCH);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, false).applyTo(search);
@@ -268,7 +268,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 		});
 		// 'Virtual Size' column
 		final TableViewerColumn virtsizeColumn = createColumn(DVMessages
-				.getString("VIRTSIZE")); //$NON-NLS-1$ 
+				.getString("VIRTSIZE")); //$NON-NLS-1$
 		setLayout(virtsizeColumn, tableLayout, 150);
 		virtsizeColumn.setLabelProvider(new SpecialColumnLabelProvider() {
 			@Override
@@ -321,7 +321,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 		propertyColumn.getColumn().addSelectionListener(onColumnSelected());
 		return propertyColumn;
 	}
-	
+
 	private SelectionListener onColumnSelected() {
 		return SelectionListener.widgetSelectedAdapter(e -> {
 			final TableColumn sortColumn = (TableColumn) e.getSource();
@@ -341,21 +341,21 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 	 * @return
 	 */
 	private ModifyListener onSearch() {
-		return e -> {
+		return _ -> {
 			if (viewer != null) {
 				viewer.refresh();
 				refreshViewTitle();
 			}
 		};
 	}
-	
+
 	/**
-	 * @return a {@link ViewerFilter} that will retain {@link IDockerContainer} that match the 
+	 * @return a {@link ViewerFilter} that will retain {@link IDockerContainer} that match the
 	 * content of the {@link DockerContainerView#search} text widget.
 	 */
 	private ViewerFilter getImagesFilter() {
 		return new ViewerFilter() {
-			
+
 			@Override
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
 				// filtering Docker images
@@ -367,7 +367,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 			}
 		};
 	}
-	
+
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		final ITreeSelection treeSelection = (ITreeSelection) selection;
@@ -380,7 +380,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 			setConnection(connection);
 		}
 	}
-	
+
 	@Override
 	public void listChanged(final IDockerConnection connection,
 			final List<IDockerImage> images) {
@@ -395,7 +395,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 			});
 		}
 	}
-	
+
 	private void refreshViewTitle() {
 		if (this.viewer == null || this.viewer.getControl().isDisposed()
 				|| this.form == null
@@ -420,14 +420,14 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 						Integer.toString(connection.getImages().size())));
 			} else {
 				this.form.setText(DVMessages.getFormattedString(ViewAllTitle,
-						new String[] { connection.getName(), Integer
-								.toString(connection.getImages().size()) }));
+						connection.getName(), Integer
+								.toString(connection.getImages().size())));
 
 			}
 			this.form.setEnabled(true);
 		}
 	}
-	
+
 	/**
 	 * @return the {@link IDockerConnection} used to display the current {@link IDockerContainer}
 	 */
@@ -488,7 +488,7 @@ public class DockerImagesView extends ViewPart implements IDockerImageListener,
 	 * Activates {@link HideDanglingImagesFilter} and
 	 * {@link HideIntermediateImagesFilter} if the given {@code enabled}
 	 * argument is <code>false</code>, deactivates the filter otherwise.
-	 * 
+	 *
 	 * @param enabled
 	 *            the argument to enable/disable the filter.
 	 */

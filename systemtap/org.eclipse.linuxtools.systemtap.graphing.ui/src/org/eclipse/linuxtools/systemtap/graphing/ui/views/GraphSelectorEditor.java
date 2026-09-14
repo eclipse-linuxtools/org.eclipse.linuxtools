@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2018 IBM Corporation and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -73,7 +73,7 @@ public class GraphSelectorEditor extends EditorPart {
             final GraphDisplaySet gds = new GraphDisplaySet(parent, dataSets.get(i));
             displaySets.add(gds);
             item.setControl(parent);
-            item.addDisposeListener(e -> gds.dispose());
+			item.addDisposeListener(_ -> gds.dispose());
         }
 
         scriptFolder.setSelection(item); // Choose the last created item.

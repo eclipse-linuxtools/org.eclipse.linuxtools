@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2018 IBM Corporation and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -128,7 +128,7 @@ public class ContainerCopyToPage
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param root
 	 *            - file system element root of the Container file system ("/")
 	 * @param provider
@@ -224,14 +224,14 @@ public class ContainerCopyToPage
 				IDialogConstants.SELECT_TYPES_ID, SELECT_TYPES_TITLE, false);
 
 		SelectionListener listener = SelectionListener
-				.widgetSelectedAdapter(e -> handleTypesEditButtonPressed());
+				.widgetSelectedAdapter(_ -> handleTypesEditButtonPressed());
 		selectTypesButton.addSelectionListener(listener);
 		setButtonLayoutData(selectTypesButton);
 
 		selectAllButton = createButton(buttonComposite,
 				IDialogConstants.SELECT_ALL_ID, SELECT_ALL_TITLE, false);
 
-		listener = SelectionListener.widgetSelectedAdapter(e -> {
+		listener = SelectionListener.widgetSelectedAdapter(_ -> {
 			setAllSelections(true);
 			updateWidgetEnablements();
 		});
@@ -241,7 +241,7 @@ public class ContainerCopyToPage
 		deselectAllButton = createButton(buttonComposite,
 				IDialogConstants.DESELECT_ALL_ID, DESELECT_ALL_TITLE, false);
 
-		listener = SelectionListener.widgetSelectedAdapter(e -> {
+		listener = SelectionListener.widgetSelectedAdapter(_ -> {
 			setAllSelections(false);
 			updateWidgetEnablements();
 		});
@@ -324,7 +324,7 @@ public class ContainerCopyToPage
 		BidiUtils.applyBidiProcessing(sourceNameField, "file");
 
 		sourceNameField.addSelectionListener(SelectionListener
-				.widgetSelectedAdapter(e -> updateFromSourceField()));
+				.widgetSelectedAdapter(_ -> updateFromSourceField()));
 
 		sourceNameField.addKeyListener(KeyListener.keyPressedAdapter(e -> {
 			if (e.character == SWT.CR) {
@@ -333,9 +333,9 @@ public class ContainerCopyToPage
 			}
 		}));
 
-		sourceNameField.addModifyListener(e -> entryChanged = true);
+		sourceNameField.addModifyListener(_ -> entryChanged = true);
 
-		sourceNameField.addFocusListener(FocusListener.focusLostAdapter(e -> {
+		sourceNameField.addFocusListener(FocusListener.focusLostAdapter(_ -> {
 			// Clear the flag to prevent constant update
 			if (entryChanged) {
 				entryChanged = false;
@@ -441,10 +441,8 @@ public class ContainerCopyToPage
 
 		saveWidgetValues();
 
-		Iterator resourcesEnum = this.selectionGroup.getAllWhiteCheckedItems()
-				.iterator();
-		while (resourcesEnum.hasNext()) {
-			fileSystemObjects.add(((FileSystemElement) resourcesEnum.next())
+		for (Object element : this.selectionGroup.getAllWhiteCheckedItems()) {
+			fileSystemObjects.add(((FileSystemElement) element)
 					.getFileSystemObject());
 		}
 
@@ -471,7 +469,7 @@ public class ContainerCopyToPage
 
 	/**
 	 * Return the destination path chosen by the user.
-	 * 
+	 *
 	 * @return IPath for destination in Container
 	 */
 	public IPath getDestination() {
@@ -480,7 +478,7 @@ public class ContainerCopyToPage
 
 	/**
 	 * Return the list of files to copy to the Container.
-	 * 
+	 *
 	 * @return List of files to copy
 	 */
 	public List<Object> getFilesToCopy() {
@@ -718,9 +716,8 @@ public class ContainerCopyToPage
 			return true;
 		}
 
-		Iterator itr = selectedTypes.iterator();
-		while (itr.hasNext()) {
-			if (extension.equalsIgnoreCase((String) itr.next())) {
+		for (Object selectedType : selectedTypes) {
+			if (extension.equalsIgnoreCase((String) selectedType)) {
 				return true;
 			}
 		}
@@ -751,8 +748,8 @@ public class ContainerCopyToPage
 			}
 
 			// set filenames history
-			for (int i = 0; i < sourceNames.length; i++) {
-				sourceNameField.add(sourceNames[i]);
+			for (String sourceName : sourceNames) {
+				sourceNameField.add(sourceName);
 			}
 
 			// // radio buttons and checkboxes
@@ -845,7 +842,7 @@ public class ContainerCopyToPage
 	/**
 	 * Set all of the selections in the selection group to value. Implemented
 	 * here to provide access for inner classes.
-	 * 
+	 *
 	 * @param value
 	 *            boolean
 	 */
@@ -920,11 +917,11 @@ public class ContainerCopyToPage
 				if (files == null) {
 					throw new InterruptedException();
 				}
-				for (int i = 0; i < files.length; i++) {
+				for (Object file : files) {
 					if (monitor.isCanceled()) {
 						throw new InterruptedException();
 					}
-					checkFile(files[i]);
+					checkFile(file);
 				}
 			}
 
@@ -987,7 +984,7 @@ public class ContainerCopyToPage
 	/**
 	 * Update the selections with those in map . Implemented here to give inner
 	 * class visibility
-	 * 
+	 *
 	 * @param map
 	 *            Map - key tree elements, values Lists of list elements
 	 */

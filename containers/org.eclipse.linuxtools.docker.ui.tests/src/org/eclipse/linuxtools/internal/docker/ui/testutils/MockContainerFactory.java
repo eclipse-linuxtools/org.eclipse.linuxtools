@@ -63,7 +63,7 @@ public class MockContainerFactory {
 		private Builder randomId() {
 			// generate a random id for the container
 			this.id = IntStream.range(0, 12)
-					.mapToObj(i -> Character.valueOf(hexa[new Random().nextInt(16)]).toString())
+					.mapToObj(_ -> Character.valueOf(hexa[new Random().nextInt(16)]).toString())
 					.collect(Collectors.joining());
 			return this;
 		}

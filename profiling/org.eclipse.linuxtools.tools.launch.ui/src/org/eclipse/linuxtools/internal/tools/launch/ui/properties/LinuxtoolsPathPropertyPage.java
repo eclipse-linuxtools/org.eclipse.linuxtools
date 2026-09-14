@@ -119,7 +119,7 @@ public class LinuxtoolsPathPropertyPage extends PropertyPage {
         systemEnvButton = new Button(radios, SWT.RADIO);
         systemEnvButton.setText(Messages.LINUXTOOLS_PATH_SYSTEM_ENV);
         systemEnvButton.setSelection(systemPathSelected);
-        systemEnvButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> updateOptionsEnable()));
+        systemEnvButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> updateOptionsEnable()));
 
         customButton = new Button(radios, SWT.RADIO);
         customButton.setText(Messages.LINUXTOOLS_PATH_CUSTOM);

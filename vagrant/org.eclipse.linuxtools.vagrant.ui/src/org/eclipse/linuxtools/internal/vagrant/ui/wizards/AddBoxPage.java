@@ -143,7 +143,7 @@ public class AddBoxPage extends WizardPage {
 	 * @return
 	 */
 	private SelectionListener onSearchImage() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			FileDialog fd = new FileDialog(getShell());
 			String location = fd.open();
 			if (location != null && !location.isEmpty()) {

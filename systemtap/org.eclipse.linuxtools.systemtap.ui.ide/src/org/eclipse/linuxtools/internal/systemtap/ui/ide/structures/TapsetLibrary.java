@@ -112,7 +112,7 @@ public final class TapsetLibrary {
 	    }
 	};
 
-    private static final IPropertyChangeListener credentialChangeListener = event -> runStapParser();
+	private static final IPropertyChangeListener credentialChangeListener = _ -> runStapParser();
 
     private static JobChangeAdapter parseCompletionListener = new JobChangeAdapter() {
         @Override

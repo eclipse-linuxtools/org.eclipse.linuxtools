@@ -123,13 +123,13 @@ public class SystemTapScriptLaunchConfigurationTab extends
         scriptSettingsGroup.setLayout(layout);
         scriptPathText = new Text(scriptSettingsGroup,  SWT.SINGLE | SWT.BORDER);
         scriptPathText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        scriptPathText.addModifyListener(e -> updateLaunchConfigurationDialog());
+		scriptPathText.addModifyListener(_ -> updateLaunchConfigurationDialog());
         Button selectScriptButon = new Button(scriptSettingsGroup, 0);
         GridData gridData = new GridData();
         gridData.widthHint = 110;
         selectScriptButon.setLayoutData(gridData);
         selectScriptButon.setText(Messages.SystemTapScriptLaunchConfigurationTab_browse);
-		selectScriptButon.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		selectScriptButon.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			String path = fileDialog.open();
 			if (path != null) {
 				scriptPathText.setText(path);
@@ -164,9 +164,9 @@ public class SystemTapScriptLaunchConfigurationTab extends
         userSettingsGroup.setLayoutData( new GridData(SWT.FILL, SWT.FILL, true, false));
         userSettingsGroup.setText(Messages.SystemTapScriptLaunchConfigurationTab_user);
 
-        userNameText.addModifyListener(e -> updateLaunchConfigurationDialog());
+		userNameText.addModifyListener(_ -> updateLaunchConfigurationDialog());
 
-        userPasswordText.addModifyListener(e -> updateLaunchConfigurationDialog());
+		userPasswordText.addModifyListener(_ -> updateLaunchConfigurationDialog());
 
         // Host settings
         hostSettingsGroup = new Group(top, SWT.SHADOW_ETCHED_IN);
@@ -187,7 +187,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
         hostNameText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         localHostCheckButton.setLayoutData(gridData);
         localHostCheckButton.addSelectionListener(checkListener);
-        hostNameText.addModifyListener(e -> updateLaunchConfigurationDialog());
+		hostNameText.addModifyListener(_ -> updateLaunchConfigurationDialog());
 
         portCheckButton = new Button(hostSettingsGroup, SWT.CHECK);
         portCheckButton.setText(Messages.SystemTapScriptLaunchConfigurationTab_useDefaultPort);
@@ -212,7 +212,7 @@ public class SystemTapScriptLaunchConfigurationTab extends
 		        }
 		    }
 		});
-        portText.addModifyListener(e -> updateLaunchConfigurationDialog());
+		portText.addModifyListener(_ -> updateLaunchConfigurationDialog());
     }
 
     private void setUserGroupEnablement(boolean enable) {

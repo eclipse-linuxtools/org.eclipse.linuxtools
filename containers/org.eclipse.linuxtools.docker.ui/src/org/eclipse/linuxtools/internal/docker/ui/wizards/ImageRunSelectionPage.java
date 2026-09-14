@@ -589,7 +589,7 @@ public class ImageRunSelectionPage extends WizardPage {
 	}
 
 	private SelectionListener onAddLink() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final ContainerLinkDialog dialog = new ContainerLinkDialog(
 					getShell(), model.getSelectedConnection());
 			dialog.create();
@@ -601,7 +601,7 @@ public class ImageRunSelectionPage extends WizardPage {
 	}
 
 	private SelectionListener onEditLink(final TableViewer linksTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final IStructuredSelection selection = linksTableViewer
 					.getStructuredSelection();
 
@@ -623,7 +623,7 @@ public class ImageRunSelectionPage extends WizardPage {
 
 	private SelectionListener onRemoveLinks(
 			final TableViewer linksTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final IStructuredSelection selection = linksTableViewer
 					.getStructuredSelection();
 			for (@SuppressWarnings("unchecked")
@@ -745,16 +745,16 @@ public class ImageRunSelectionPage extends WizardPage {
 
 	private SelectionListener onPullImage() {
 		return SelectionListener
-				.widgetDefaultSelectedAdapter(e -> pullSelectedImage());
+				.widgetDefaultSelectedAdapter(_ -> pullSelectedImage());
 	}
 
 	private IValueChangeListener onPublishAllPortsChange(
 			final Control... controls) {
-		return event -> togglePortMappingControls(controls);
+		return _ -> togglePortMappingControls(controls);
 	}
 
 	private SelectionListener onSearchImage() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final ImageSearch imageSearchWizard = new ImageSearch(
 					ImageRunSelectionPage.this.model.getSelectedConnection(),
 					ImageRunSelectionPage.this.model.getSelectedImageName(),
@@ -771,7 +771,7 @@ public class ImageRunSelectionPage extends WizardPage {
 
 	private SelectionListener onAddPort(
 			final CheckboxTableViewer exposedPortsTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final ContainerPortDialog dialog = new ContainerPortDialog(
 					getShell());
 			dialog.create();
@@ -787,7 +787,7 @@ public class ImageRunSelectionPage extends WizardPage {
 
 	private SelectionListener onEditPort(
 			final CheckboxTableViewer exposedPortsTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final IStructuredSelection selection = exposedPortsTableViewer
 					.getStructuredSelection();
 			final ExposedPortModel selectedContainerPort = (ExposedPortModel) selection
@@ -809,7 +809,7 @@ public class ImageRunSelectionPage extends WizardPage {
 
 	private SelectionListener onRemovePorts(
 			final TableViewer portsTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final IStructuredSelection selection = portsTableViewer
 					.getStructuredSelection();
 			for (@SuppressWarnings("unchecked")

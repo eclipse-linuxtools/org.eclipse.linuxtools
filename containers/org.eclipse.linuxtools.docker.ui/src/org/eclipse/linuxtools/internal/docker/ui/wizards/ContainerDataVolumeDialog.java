@@ -339,7 +339,7 @@ public class ContainerDataVolumeDialog extends Dialog {
 	}
 
 	private SelectionListener onHostDirectoryPath() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final DirectoryDialog directoryDialog = new DirectoryDialog(
 					getShell());
 			final String selectedPath = directoryDialog.open();
@@ -350,7 +350,7 @@ public class ContainerDataVolumeDialog extends Dialog {
 	}
 
 	private SelectionListener onHostFilePath() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final FileDialog fileDialog = new FileDialog(getShell());
 			final String selectedPath = fileDialog.open();
 			if (selectedPath != null) {
@@ -383,7 +383,7 @@ public class ContainerDataVolumeDialog extends Dialog {
 	private IChangeListener onDataVolumeSettingsChanged(
 			final Label errorMessageIcon, final Label errorMessageLabel) {
 
-		return event -> {
+		return _ -> {
 			// skip if dialog has been closed
 			if (Display.getCurrent() == null || getShell().isDisposed()) {
 				return;

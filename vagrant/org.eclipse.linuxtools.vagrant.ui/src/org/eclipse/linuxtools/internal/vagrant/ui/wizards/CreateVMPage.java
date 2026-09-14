@@ -178,7 +178,7 @@ public class CreateVMPage extends WizardPage {
 				.observe(model);
 		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(boxLocText),
 				boxLocObservable);
-		boxLocText.addModifyListener(e -> vmFileChanged(boxLocText.getText()));
+		boxLocText.addModifyListener(_ -> vmFileChanged(boxLocText.getText()));
 
 		// Vagrantfile search
 		final Button vgFilesearchButton = new Button(container, SWT.NONE);
@@ -235,7 +235,7 @@ public class CreateVMPage extends WizardPage {
 	}
 
 	private SelectionListener onSearchImage() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			FileDialog fd = new FileDialog(getShell());
 			String location = fd.open();
 			if (location != null && !location.isEmpty()) {
@@ -245,7 +245,7 @@ public class CreateVMPage extends WizardPage {
 	}
 
 	private SelectionListener onSearchVMFile() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			FileDialog fd = new FileDialog(getShell());
 			String location = fd.open();
 			if (location != null && !location.isEmpty()) {

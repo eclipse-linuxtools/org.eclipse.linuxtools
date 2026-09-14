@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2015, 2019 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -38,7 +38,7 @@ public class ImagePullPage extends ImagePullPushPage<ImagePullPageModel> {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param connection
 	 *            the {@link IDockerConnection} to use to pull the image
 	 */
@@ -125,11 +125,11 @@ public class ImagePullPage extends ImagePullPushPage<ImagePullPageModel> {
 
 	/**
 	 * Opens the {@link ImageSearch} dialog with current image name pre-filled.
-	 * 
+	 *
 	 * @return
 	 */
 	private SelectionListener onSearchImage() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final ImageSearch imageSearchWizard = new ImageSearch(
 					ImagePullPage.this.connection,
 					ImagePullPage.this.getModel().getSelectedImageName(),

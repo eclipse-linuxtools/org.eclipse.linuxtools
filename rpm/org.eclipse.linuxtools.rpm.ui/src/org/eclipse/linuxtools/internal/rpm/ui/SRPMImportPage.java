@@ -101,7 +101,7 @@ public class SRPMImportPage extends WizardPage {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		sourceSRPM.setLayoutData(gridData);
-		sourceSRPM.addModifyListener(e -> {
+		sourceSRPM.addModifyListener(_ -> {
 			boolean validSRPM = canFinish();
 			if (validSRPM) {
 				setPageComplete(validSRPM);
@@ -112,7 +112,7 @@ public class SRPMImportPage extends WizardPage {
 		Button srpmBrowse = new Button(sourceSpecComposite, SWT.PUSH);
 		srpmBrowse.setToolTipText(Messages.getString("SRPMImportPage.toolTip_Open_file_navigator")); //$NON-NLS-1$
 		srpmBrowse.setText(Messages.getString("RPMPage.Browse")); //$NON-NLS-1$
-		srpmBrowse.addListener(SWT.Selection, event -> {
+		srpmBrowse.addListener(SWT.Selection, _ -> {
 			FileDialog srpmBrowseDialog = new FileDialog(getContainer().getShell(), SWT.OPEN);
 			String selectedSRPMName = srpmBrowseDialog.open();
 			if (selectedSRPMName != null) {

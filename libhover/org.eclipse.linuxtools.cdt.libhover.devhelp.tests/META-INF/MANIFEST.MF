@@ -7,6 +7,6 @@ Bundle-Vendor: %provider
 Require-Bundle: junit-jupiter-api;bundle-version="[6.0.0,7.0.0)",
  org.eclipse.core.resources
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Fragment-Host: org.eclipse.linuxtools.cdt.libhover.devhelp
 Automatic-Module-Name: org.eclipse.linuxtools.cdt.libhover.devhelp.tests

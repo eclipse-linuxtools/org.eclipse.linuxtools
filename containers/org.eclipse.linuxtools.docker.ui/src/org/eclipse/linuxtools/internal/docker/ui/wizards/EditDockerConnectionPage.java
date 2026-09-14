@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2020 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -61,7 +61,6 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-
 import org.mandas.docker.client.exceptions.DockerCertificateException;
 
 /**
@@ -76,7 +75,7 @@ public class EditDockerConnectionPage extends WizardPage {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param currentConnection
 	 *            the {@link IDockerConnection} to edit
 	 */
@@ -122,7 +121,7 @@ public class EditDockerConnectionPage extends WizardPage {
 	/**
 	 * Creates the connection settings container, where the user can choose how
 	 * to connect to the docker daemon (using sockets or TCP with SSL - or not)
-	 * 
+	 *
 	 * @param parent
 	 *            the parent container (ie, the main container in the preference
 	 *            page)
@@ -319,7 +318,7 @@ public class EditDockerConnectionPage extends WizardPage {
 	}
 
 	private SelectionListener onBrowseUnixSocketPath() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final FileDialog fileDialog = new FileDialog(getShell());
 			final String selectedPath = fileDialog.open();
 			if (selectedPath != null) {
@@ -329,7 +328,7 @@ public class EditDockerConnectionPage extends WizardPage {
 	}
 
 	private SelectionListener onBrowseTcpCertPath() {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final DirectoryDialog directoryDialog = new DirectoryDialog(
 					getShell());
 			directoryDialog.setFilterPath(model.getTcpCertPath());
@@ -353,14 +352,14 @@ public class EditDockerConnectionPage extends WizardPage {
 
 	private IChangeListener onUnixSocketBindingSelection(
 			final Control[] unixSocketControls) {
-		return event -> setWidgetsEnabled(model.isUnixSocketBindingMode(),
+		return _ -> setWidgetsEnabled(model.isUnixSocketBindingMode(),
 				unixSocketControls);
 	}
 
 	private IChangeListener onTcpConnectionBindingSelection(
 			final Control[] tcpConnectionControls,
 			final Control[] tcpAuthControls) {
-		return event -> {
+		return _ -> {
 			setWidgetsEnabled(model.isTcpConnectionBindingMode()
 					&& model.isTcpTLSVerify(), tcpAuthControls);
 			// and give focus to the first given control (if applicable)
@@ -371,7 +370,7 @@ public class EditDockerConnectionPage extends WizardPage {
 
 	private IValueChangeListener<Boolean> onTcpAuthSelection(
 			final Control[] tcpAuthControls) {
-		return event -> setWidgetsEnabled(
+		return _ -> setWidgetsEnabled(
 				model.isTcpConnectionBindingMode() && model.isTcpTLSVerify(),
 				tcpAuthControls);
 	}
@@ -395,7 +394,7 @@ public class EditDockerConnectionPage extends WizardPage {
 	/**
 	 * Verifies that the given connection settings work by trying to connect to
 	 * the target Docker daemon
-	 * 
+	 *
 	 * @return
 	 */
 	private SelectionListener onTestConnectionButtonSelection() {
@@ -468,7 +467,7 @@ public class EditDockerConnectionPage extends WizardPage {
 	/**
 	 * Opens a new {@link DockerConnection} using the settings of this
 	 * {@link EditDockerConnectionPage}.
-	 * 
+	 *
 	 * @return
 	 * @throws DockerCertificateException
 	 */

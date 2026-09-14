@@ -148,7 +148,7 @@ public class DockerComposeUpLaunchConfigurationMainTab
 	 */
 	private SelectionListener onBrowseWorkspace(final Text pathText,
 			final Class<?> expectedType) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
 					getShell(), new WorkbenchLabelProvider(),
 					new WorkbenchContentProvider());
@@ -180,7 +180,7 @@ public class DockerComposeUpLaunchConfigurationMainTab
 	 */
 	private SelectionListener onBrowseFileSystemForDirectory(
 			final Text pathText) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final DirectoryDialog dialog = new DirectoryDialog(getShell());
 			final String selection = dialog.open();
 			if (selection != null) {

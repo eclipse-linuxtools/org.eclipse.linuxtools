@@ -115,7 +115,7 @@ public class GmonView extends AbstractSTDataView {
         fFilterText.setMessage(Messages.GmonView_type_filter_text);
         fFilterText.setToolTipText(Messages.GmonView_filter_by_name);
         fFilterText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        fFilterText.addModifyListener(e -> {
+		fFilterText.addModifyListener(_ -> {
 		    String text = fFilterText.getText();
 		    fViewerFilter.setMatchingText(text);
 		});

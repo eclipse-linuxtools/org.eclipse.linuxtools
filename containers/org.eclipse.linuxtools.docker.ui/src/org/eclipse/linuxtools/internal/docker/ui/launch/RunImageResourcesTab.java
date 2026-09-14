@@ -233,7 +233,7 @@ public class RunImageResourcesTab extends AbstractLaunchConfigurationTab {
 
 	private IChangeListener onEnableResourceLimitation(
 			final Composite container) {
-		return event -> toggleResourceLimitationControls(container);
+		return _ -> toggleResourceLimitationControls(container);
 	}
 
 	private void toggleResourceLimitationControls(Composite container) {

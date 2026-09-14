@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2015, 2018 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -65,7 +65,7 @@ public class ImageRemoveTagPage extends WizardPage {
 		final Combo tagCombo = new Combo(container, SWT.BORDER | SWT.READ_ONLY);
 		tagCombo.setToolTipText(WizardMessages.getString(REMOVE_TAG_TOOLTIP));
 		tagCombo.addSelectionListener(SelectionListener
-				.widgetSelectedAdapter(e -> selectedTag = tagCombo.getText()));
+				.widgetSelectedAdapter(_ -> selectedTag = tagCombo.getText()));
 		// Set up combo with repoTags that can be removed
 		final List<String> repoTags = image.repoTags();
 		tagCombo.setItems(repoTags.toArray(new String[0]));

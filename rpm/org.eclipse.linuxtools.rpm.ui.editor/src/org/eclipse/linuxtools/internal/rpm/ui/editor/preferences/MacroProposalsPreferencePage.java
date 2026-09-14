@@ -263,7 +263,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage impl
 				layout.marginWidth = 0;
 				buttonBox.setLayout(layout);
 				createButtons(buttonBox);
-				buttonBox.addDisposeListener(event -> {
+				buttonBox.addDisposeListener(_ -> {
 					addFileButton = null;
 					addDirButton = null;
 					removeButton = null;
@@ -292,7 +292,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage impl
 				list = new List(parent, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL | SWT.H_SCROLL);
 				list.setFont(parent.getFont());
 				list.addSelectionListener(getSelectionListener());
-				list.addDisposeListener(event -> list = null);
+				list.addDisposeListener(_ -> list = null);
 			} else {
 				checkParent(list, parent);
 			}

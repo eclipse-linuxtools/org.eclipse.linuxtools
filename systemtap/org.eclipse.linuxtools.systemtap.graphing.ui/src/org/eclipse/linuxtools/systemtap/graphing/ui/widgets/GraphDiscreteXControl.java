@@ -58,7 +58,7 @@ public class GraphDiscreteXControl extends Composite implements IUpdateListener 
         firstButton.setText(Messages.GraphDiscreteXControl_First);
         firstButton.setFont(font);
         firstButton.setEnabled(false);
-		firstButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		firstButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			builder.setScroll(0);
 			firstButton.setEnabled(false);
 			leftButton.setEnabled(false);
@@ -70,39 +70,39 @@ public class GraphDiscreteXControl extends Composite implements IUpdateListener 
         leftButton.setText(Messages.GraphDiscreteXControl_Left);
         leftButton.setFont(font);
         leftButton.setEnabled(false);
-		leftButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> stepScroll(-1)));
+		leftButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> stepScroll(-1)));
 
         zoomInButton = new Button(this, SWT.CENTER);
         zoomInButton.setText(Messages.GraphDiscreteXControl_ZoomIn);
         zoomInButton.setFont(font);
         zoomInButton.setEnabled(false);
 		zoomInButton.addSelectionListener(
-				SelectionListener.widgetSelectedAdapter(e -> builder.setScale(builder.getScale() / ZOOM_AMOUNT)));
+				SelectionListener.widgetSelectedAdapter(_ -> builder.setScale(builder.getScale() / ZOOM_AMOUNT)));
 
         zoomOutButton = new Button(this, SWT.CENTER);
         zoomOutButton.setText(Messages.GraphDiscreteXControl_ZoomOut);
         zoomOutButton.setFont(font);
         zoomOutButton.setEnabled(false);
 		zoomOutButton.addSelectionListener(
-				SelectionListener.widgetSelectedAdapter(e -> builder.setScale(builder.getScale() * ZOOM_AMOUNT)));
+				SelectionListener.widgetSelectedAdapter(_ -> builder.setScale(builder.getScale() * ZOOM_AMOUNT)));
 
         allButton = new Button(this, SWT.CENTER);
         allButton.setText(Messages.GraphDiscreteXControl_All);
         allButton.setFont(font);
         allButton.setEnabled(false);
-		allButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> builder.setScale(1.0)));
+		allButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> builder.setScale(1.0)));
 
         rightButton = new Button(this, SWT.CENTER);
         rightButton.setText(Messages.GraphDiscreteXControl_Right);
         rightButton.setFont(font);
         rightButton.setEnabled(false);
-		rightButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> stepScroll(1)));
+		rightButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> stepScroll(1)));
 
         lastButton = new Button(this, SWT.CENTER);
         lastButton.setText(Messages.GraphDiscreteXControl_Last);
         lastButton.setFont(font);
         lastButton.setEnabled(false);
-		lastButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		lastButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			builder.setScroll(1);
 			firstButton.setEnabled(true);
 			leftButton.setEnabled(true);

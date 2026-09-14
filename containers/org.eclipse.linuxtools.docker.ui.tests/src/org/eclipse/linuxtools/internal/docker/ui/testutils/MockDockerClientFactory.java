@@ -207,7 +207,7 @@ public class MockDockerClientFactory {
 			try {
 				Mockito.when(this.dockerClient.listImages(ArgumentMatchers.any())).thenReturn(this.images);
 				Mockito.when(this.dockerClient.listContainers(ArgumentMatchers.any()))
-						.thenAnswer(invocation -> containers);
+						.thenAnswer(_ -> containers);
 				for(Entry<String, List<ImageSearchResult>> searchResult : this.searchResults.entrySet()) {
 					Mockito.when(this.dockerClient.searchImages(searchResult.getKey())).thenReturn(searchResult.getValue());
 				}

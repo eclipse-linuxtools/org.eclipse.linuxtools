@@ -169,7 +169,7 @@ public class SystemTapScriptGraphOptionsTab extends
      */
     private List<GraphData> badGraphs = new LinkedList<>();
 
-    private ModifyListener regexListener = event -> {
+	private ModifyListener regexListener = _ -> {
 	    if (!textListenersEnabled || regularExpressionCombo.getSelectionIndex() != -1) {
 	        return;
 	    }
@@ -179,7 +179,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	    updateLaunchConfigurationDialog();
 	};
 
-    private ModifyListener sampleOutputListener = event -> {
+	private ModifyListener sampleOutputListener = _ -> {
 	    if (!textListenersEnabled) {
 	        return;
 	    }
@@ -188,7 +188,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	    updateLaunchConfigurationDialog();
 	};
 
-    private ModifyListener columnNameListener = event -> {
+	private ModifyListener columnNameListener = _ -> {
 	    if (!textListenersEnabled) {
 	        return;
 	    }
@@ -202,7 +202,7 @@ public class SystemTapScriptGraphOptionsTab extends
 	    updateLaunchConfigurationDialog();
 	};
 
-	private SelectionListener regexGenerator = SelectionListener.widgetSelectedAdapter(e -> {
+	private SelectionListener regexGenerator = SelectionListener.widgetSelectedAdapter(_ -> {
 		MessageDialog dialog;
 		IWorkbench workbench = PlatformUI.getWorkbench();
 		IPath scriptPath = null;
@@ -476,7 +476,7 @@ public class SystemTapScriptGraphOptionsTab extends
         regularExpressionCombo = new Combo(regexButtonLayout, SWT.DROP_DOWN);
         regularExpressionCombo.setTextLimit(MAX_REGEX_LENGTH);
         regularExpressionCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		regularExpressionCombo.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		regularExpressionCombo.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			int selected = regularExpressionCombo.getSelectionIndex();
 			if (selected == selectedRegex) {
 				return;
@@ -531,7 +531,7 @@ public class SystemTapScriptGraphOptionsTab extends
         removeRegexButton = new Button(regexButtonLayout, SWT.PUSH);
         removeRegexButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false));
         removeRegexButton.setText(Messages.SystemTapScriptGraphOptionsTab_regexRemove);
-		removeRegexButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		removeRegexButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			IWorkbench workbench = PlatformUI.getWorkbench();
 			MessageDialog dialog = new MessageDialog(workbench.getActiveWorkbenchWindow().getShell(),
 					Messages.SystemTapScriptGraphOptionsTab_removeRegexTitle, null,
@@ -646,7 +646,7 @@ public class SystemTapScriptGraphOptionsTab extends
 
         // Brings up a new dialog box when user clicks the add button. Allows
         // selecting a new graph to display.
-		addGraphButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		addGraphButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			SelectGraphAndSeriesWizard wizard = new SelectGraphAndSeriesWizard(getCurrentDataset(), null);
 			IWorkbench workbench = PlatformUI.getWorkbench();
 			wizard.init(workbench, null);
@@ -665,7 +665,7 @@ public class SystemTapScriptGraphOptionsTab extends
 		}));
 
         // Adds a new entry to the list of graphs that is a copy of the one selected.
-		duplicateGraphButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		duplicateGraphButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			GraphData gd = ((GraphData) selectedTableItem.getData()).getCopy();
 
 			TableItem item = new TableItem(graphsTable, SWT.NONE);
@@ -682,7 +682,7 @@ public class SystemTapScriptGraphOptionsTab extends
         // When button is clicked, brings up same wizard as the one for adding
         // a graph. Data in the wizard is filled out to match the properties
         // of the selected graph.
-		editGraphButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		editGraphButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			SelectGraphAndSeriesWizard wizard = new SelectGraphAndSeriesWizard(getCurrentDataset(),
 					(GraphData) selectedTableItem.getData());
 			IWorkbench workbench = PlatformUI.getWorkbench();
@@ -706,7 +706,7 @@ public class SystemTapScriptGraphOptionsTab extends
 		}));
 
         // Removes the selected graph/filter from the table
-		removeGraphButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		removeGraphButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			GraphData gd = (GraphData) selectedTableItem.getData();
 			graphsData.remove(gd);
 			badGraphs.remove(gd);

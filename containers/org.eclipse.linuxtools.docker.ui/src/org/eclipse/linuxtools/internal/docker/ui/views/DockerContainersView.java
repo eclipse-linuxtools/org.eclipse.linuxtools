@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2018 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -124,7 +124,7 @@ public class DockerContainersView extends ViewPart implements
 	@Override
 	public void setFocus() {
 	}
-	
+
 	@Override
 	public void dispose() {
 		// remove this listener instance registered on the Docker connection
@@ -220,7 +220,7 @@ public class DockerContainersView extends ViewPart implements
 					selection);
 		}
 	}
-	
+
 	private void createTableViewer(final Composite container) {
 		this.search = new Text(container, SWT.SEARCH | SWT.ICON_SEARCH);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, false).applyTo(search);
@@ -228,7 +228,7 @@ public class DockerContainersView extends ViewPart implements
 		Composite tableArea = new Composite(container, SWT.NONE);
 		GridLayoutFactory.fillDefaults().numColumns(1).margins(0,  0).applyTo(tableArea);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(tableArea);
-		
+
 		final TableColumnLayout tableLayout = new TableColumnLayout();
 		tableArea.setLayout(tableLayout);
 		this.viewer = new TableViewer(tableArea, SWT.FULL_SELECTION | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -325,7 +325,7 @@ public class DockerContainersView extends ViewPart implements
 			}
 		});
 		// 'Status' column
-		final TableViewerColumn statusColumn = createColumn(DVMessages.getString("STATUS")); //$NON-NLS-1$ 
+		final TableViewerColumn statusColumn = createColumn(DVMessages.getString("STATUS")); //$NON-NLS-1$
 		setLayout(statusColumn, tableLayout, 150);
 		statusColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -408,7 +408,7 @@ public class DockerContainersView extends ViewPart implements
 		propertyColumn.getColumn().addSelectionListener(onColumnSelected());
 		return propertyColumn;
 	}
-	
+
 	private SelectionListener onColumnSelected() {
 		return SelectionListener.widgetSelectedAdapter(e -> {
 			final TableColumn sortColumn = (TableColumn) e.getSource();
@@ -428,21 +428,21 @@ public class DockerContainersView extends ViewPart implements
 	 * @return
 	 */
 	private ModifyListener onSearch() {
-		return e -> {
+		return _ -> {
 			if (viewer != null) {
 				viewer.refresh();
 				refreshViewTitle();
 			}
 		};
 	}
-	
+
 	/**
-	 * @return a {@link ViewerFilter} that will retain {@link IDockerContainer} that match the 
+	 * @return a {@link ViewerFilter} that will retain {@link IDockerContainer} that match the
 	 * content of the {@link DockerContainerView#search} text widget.
 	 */
 	private ViewerFilter getContainersFilter() {
 		return new ViewerFilter() {
-			
+
 			@Override
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
 				// filtering Docker containers
@@ -487,7 +487,7 @@ public class DockerContainersView extends ViewPart implements
 			setLabelFilterIds();
 		}
 	}
-	
+
 	private void setLabelFilterIds() {
 		IEclipsePreferences preferences = InstanceScope.INSTANCE
 				.getNode(Activator.PLUGIN_ID);
@@ -539,7 +539,7 @@ public class DockerContainersView extends ViewPart implements
 			});
 		}
 	}
-	
+
 	/**
 	 * @return the {@link IDockerConnection} used to display the current {@link IDockerContainer}
 	 */
@@ -549,7 +549,7 @@ public class DockerContainersView extends ViewPart implements
 
 	/**
 	 * Sets the active connection
-	 * 
+	 *
 	 * @param connection
 	 *            the active connection
 	 */
@@ -603,7 +603,7 @@ public class DockerContainersView extends ViewPart implements
 	}
 
 	/**
-	 * Activates {@link HideStoppedContainersViewerFilter} if the given {@code enabled} argument is <code>false</code>, deactivates the filter otherwise. 
+	 * Activates {@link HideStoppedContainersViewerFilter} if the given {@code enabled} argument is <code>false</code>, deactivates the filter otherwise.
 	 * @param enabled the argument to enable/disable the filter.
 	 */
 	public void showAllContainers(boolean enabled) {
@@ -639,7 +639,7 @@ public class DockerContainersView extends ViewPart implements
 	 * Activates {@link ContainersWithLabelsViewerFilter} if the given
 	 * {@code enabled} argument is <code>false</code>, deactivates the filter
 	 * otherwise.
-	 * 
+	 *
 	 * @param enabled
 	 *            the argument to enable/disable the filter.
 	 */
@@ -694,8 +694,8 @@ public class DockerContainersView extends ViewPart implements
 						Integer.toString(containersSize)));
 			} else {
 				this.form.setText(DVMessages.getFormattedString(ViewAllTitle,
-						new String[] { connection.getName(), Integer.toString(
-								containersSize) }));
+						connection.getName(), Integer.toString(
+								containersSize)));
 			}
 			this.form.setEnabled(true);
 		}

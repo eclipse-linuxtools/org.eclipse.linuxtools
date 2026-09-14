@@ -74,7 +74,7 @@ public class StapNewWizardPage extends WizardPage {
         fileText = new Text(container, SWT.BORDER | SWT.SINGLE);
         GridData gd = new GridData(GridData.FILL_HORIZONTAL);
         fileText.setLayoutData(gd);
-        fileText.addModifyListener(e -> dialogChanged());
+		fileText.addModifyListener(_ -> dialogChanged());
         new Label(container, SWT.NULL); // XXX just create a new layout with different width
 
         label = new Label(container, SWT.NULL);
@@ -83,11 +83,11 @@ public class StapNewWizardPage extends WizardPage {
         containerText = new Text(container, SWT.BORDER | SWT.SINGLE);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         containerText.setLayoutData(gd);
-        containerText.addModifyListener(e -> dialogChanged());
+		containerText.addModifyListener(_ -> dialogChanged());
 
         Button button = new Button(container, SWT.PUSH);
         button.setText(resourceBundle.getString("StapNewWizardPage.Browse")); //$NON-NLS-1$
-		button.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> handleBrowse()));
+		button.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> handleBrowse()));
         initialize();
         dialogChanged();
         setControl(container);

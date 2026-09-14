@@ -209,7 +209,7 @@ public class VagrantVMView extends ViewPart implements IVagrantVMListener {
 	 * @return
 	 */
 	private ModifyListener onSearch() {
-		return e -> VagrantVMView.this.viewer.refresh();
+		return _ -> VagrantVMView.this.viewer.refresh();
 	}
 
 	/**

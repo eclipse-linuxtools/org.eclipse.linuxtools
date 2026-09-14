@@ -85,7 +85,7 @@ public class ReportComparisonView extends Viewer {
         reverse.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_ELCL_SYNCED));
         reverse.setToolTipText(Messages.StatComparisonView_reverseToolTip);
         reverse.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		reverse.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		reverse.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			toggleReverse();
 			setInput(fInput);
 		}));

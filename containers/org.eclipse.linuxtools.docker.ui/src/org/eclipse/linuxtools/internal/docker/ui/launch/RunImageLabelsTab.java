@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2018 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -178,7 +178,7 @@ public class RunImageLabelsTab extends AbstractLaunchConfigurationTab {
 
 	private SelectionListener onAddLabelVariable(
 			final TableViewer labelVariablesTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final ContainerLabelVariableDialog dialog = new ContainerLabelVariableDialog(
 					getShell());
 			dialog.create();
@@ -193,7 +193,7 @@ public class RunImageLabelsTab extends AbstractLaunchConfigurationTab {
 
 	private SelectionListener onEditLabelVariable(
 			final TableViewer labelVariablesTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final LabelVariableModel selectedVariable = (LabelVariableModel) labelVariablesTableViewer
 					.getStructuredSelection().getFirstElement();
 			final ContainerLabelVariableDialog dialog = new ContainerLabelVariableDialog(
@@ -210,7 +210,7 @@ public class RunImageLabelsTab extends AbstractLaunchConfigurationTab {
 
 	private SelectionListener onRemoveLabelVariable(
 			final TableViewer labelVariablesTableViewer) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final IStructuredSelection selection = labelVariablesTableViewer
 					.getStructuredSelection();
 			for (@SuppressWarnings("unchecked")

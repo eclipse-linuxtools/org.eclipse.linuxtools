@@ -45,7 +45,7 @@ public class CProjectHelper {
     private static ICProject createCProject(final String projectName, String binFolderName, final String indexerID) throws CoreException {
         final IWorkspace ws = ResourcesPlugin.getWorkspace();
         final ICProject newProject[] = new ICProject[1];
-        ws.run((IWorkspaceRunnable) monitor -> {
+        ws.run((IWorkspaceRunnable) _ -> {
 		    IWorkspaceRoot root = ws.getRoot();
 		    IProject project = root.getProject(projectName);
 		    if (indexerID != null) {
@@ -95,7 +95,7 @@ public class CProjectHelper {
     public static ICProject createCCProject(final String projectName, final String binFolderName, final String indexerID) throws CoreException {
         final IWorkspace ws = ResourcesPlugin.getWorkspace();
         final ICProject newProject[] = new ICProject[1];
-        ws.run((IWorkspaceRunnable) monitor -> {
+        ws.run((IWorkspaceRunnable) _ -> {
 		    ICProject cproject = createCProject(projectName, binFolderName, indexerID);
 		    if (!cproject.getProject().hasNature(CCProjectNature.CC_NATURE_ID)) {
 		        addNatureToProject(cproject.getProject(), CCProjectNature.CC_NATURE_ID, null);

@@ -61,8 +61,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mandas.docker.client.DockerClient;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -134,15 +134,15 @@ public class DockerComposeSWTBotTest {
 				.thenReturn(mockDockerComposeUpProcess);
 		final CountDownLatch processLatch = new CountDownLatch(1);
 		this.latch = processLatch;
-		Mockito.when(mockDockerComposeUpProcess.waitFor()).then(invocation -> {
+		Mockito.when(mockDockerComposeUpProcess.waitFor()).then(_ -> {
 			processLatch.await(5, TimeUnit.SECONDS);
 			return 0;
 		});
 		// behave like a running process until the latch is released: the debug
 		// framework relies on 'exitValue()' throwing to tell that a process is
 		// still alive
-		Mockito.when(mockDockerComposeUpProcess.isAlive()).then(invocation -> processLatch.getCount() > 0);
-		Mockito.when(mockDockerComposeUpProcess.exitValue()).then(invocation -> {
+		Mockito.when(mockDockerComposeUpProcess.isAlive()).then(_ -> processLatch.getCount() > 0);
+		Mockito.when(mockDockerComposeUpProcess.exitValue()).then(_ -> {
 			if (processLatch.getCount() > 0) {
 				throw new IllegalThreadStateException("process has not exited");
 			}
@@ -166,7 +166,7 @@ public class DockerComposeSWTBotTest {
 						.workingDir(ArgumentMatchers.anyString()).start())
 				.thenReturn(mockDockerComposeStopProcess);
 		final CountDownLatch processLatch = this.latch;
-		Mockito.when(mockDockerComposeStopProcess.waitFor()).then(invocation -> {
+		Mockito.when(mockDockerComposeStopProcess.waitFor()).then(_ -> {
 			processLatch.countDown();
 			return 0;
 		});

@@ -185,7 +185,7 @@ public class VagrantBoxView extends ViewPart implements IVagrantBoxListener {
 	 * @return
 	 */
 	private ModifyListener onSearch() {
-		return e -> VagrantBoxView.this.viewer.refresh();
+		return _ -> VagrantBoxView.this.viewer.refresh();
 	}
 
 	/**

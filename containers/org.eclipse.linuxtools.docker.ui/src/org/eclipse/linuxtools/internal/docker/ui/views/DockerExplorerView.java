@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2018 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -69,7 +69,7 @@ public class DockerExplorerView extends CommonNavigator implements
 
 	/** the id of the {@link DockerExplorerView}. */
 	public static final String VIEW_ID = "org.eclipse.linuxtools.docker.ui.dockerExplorerView";
-	
+
 	private Control connectionsPane;
 	private Control explanationsPane;
 	private Control currentPane;
@@ -108,7 +108,7 @@ public class DockerExplorerView extends CommonNavigator implements
 	public String getContributorId() {
 		return "org.eclipse.linuxtools.docker.ui.propertiesViewContributor"; //$NON-NLS-1$
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getAdapter(final Class<T> adapter) {
@@ -210,11 +210,11 @@ public class DockerExplorerView extends CommonNavigator implements
 	/**
 	 * Filters {@link IDockerContainer} and {@link IDockerImage} using the input
 	 * text in the search widget of this view.
-	 * 
+	 *
 	 * @return
 	 */
 	private ModifyListener onSearch() {
-		return e -> {
+		return _ -> {
 			final CommonViewer viewer = DockerExplorerView.this
 					.getCommonViewer();
 			final TreePath[] treePaths = viewer.getExpandedTreePaths();
@@ -247,7 +247,7 @@ public class DockerExplorerView extends CommonNavigator implements
 	}
 
 	private SelectionListener onExplanationClicked() {
-		return SelectionListener.widgetSelectedAdapter(e -> CommandUtils
+		return SelectionListener.widgetSelectedAdapter(_ -> CommandUtils
 				.openWizard(new NewDockerConnection(), PlatformUI.getWorkbench()
 						.getModalDialogShellProvider().getShell())
 

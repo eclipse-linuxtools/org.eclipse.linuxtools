@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2014, 2018 Red Hat Inc. and others.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -69,7 +69,7 @@ public class ContainerCommitPage extends WizardPage {
 		return commentText.getText();
 	}
 
-	private ModifyListener Listener = e -> validate();
+	private ModifyListener Listener = _ -> validate();
 
 	private void validate() {
 		boolean complete = true;

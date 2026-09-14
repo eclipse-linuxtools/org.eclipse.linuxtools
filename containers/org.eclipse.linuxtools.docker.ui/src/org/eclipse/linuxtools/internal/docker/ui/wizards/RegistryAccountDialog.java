@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2018 Red Hat.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -92,7 +92,7 @@ public class RegistryAccountDialog extends Dialog {
 		if (serverAddress != null) {
 			serverText.setText(serverAddress);
 		}
-		serverText.addModifyListener(e -> {
+		serverText.addModifyListener(_ -> {
 			serverAddress = serverText.getText();
 			validate();
 		});
@@ -110,7 +110,7 @@ public class RegistryAccountDialog extends Dialog {
 		if (username != null) {
 			usernameText.setText(username);
 		}
-		usernameText.addModifyListener(e -> {
+		usernameText.addModifyListener(_ -> {
 			username = usernameText.getText();
 			validate();
 		});
@@ -128,7 +128,7 @@ public class RegistryAccountDialog extends Dialog {
 		} else {
 			email = ""; //$NON-NLS-1$
 		}
-		emailText.addModifyListener(e -> {
+		emailText.addModifyListener(_ -> {
 			email = emailText.getText();
 		});
 
@@ -144,7 +144,7 @@ public class RegistryAccountDialog extends Dialog {
 		if (password != null) {
 			passwordText.setText(new String(password));
 		}
-		passwordText.addModifyListener(e -> {
+		passwordText.addModifyListener(_ -> {
 			password = passwordText.getText().toCharArray();
 			validate();
 		});

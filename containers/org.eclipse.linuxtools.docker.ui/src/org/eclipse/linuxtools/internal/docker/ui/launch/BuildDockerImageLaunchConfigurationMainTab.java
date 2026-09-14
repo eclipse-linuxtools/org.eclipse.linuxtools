@@ -251,7 +251,7 @@ public class BuildDockerImageLaunchConfigurationMainTab
 
 	private SelectionListener onAlwaysRemoveIntermediateContainers() {
 		return SelectionListener.widgetSelectedAdapter(
-				e -> toggleRemoveIntermediateContainersButtonState());
+				_ -> toggleRemoveIntermediateContainersButtonState());
 	}
 
 	/**
@@ -261,7 +261,7 @@ public class BuildDockerImageLaunchConfigurationMainTab
 	 */
 	private SelectionListener onBrowseWorkspace(final Text pathText,
 			final Class<?> expectedType) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
 					getShell(), new WorkbenchLabelProvider(),
 					new WorkbenchContentProvider());
@@ -292,7 +292,7 @@ public class BuildDockerImageLaunchConfigurationMainTab
 	 * @return
 	 */
 	private SelectionListener onBrowseFileSystemForDirectory(final Text pathText) {
-		return SelectionListener.widgetSelectedAdapter(e -> {
+		return SelectionListener.widgetSelectedAdapter(_ -> {
 			final DirectoryDialog dialog = new DirectoryDialog(getShell());
 			final String selection = dialog.open();
 			if (selection != null) {

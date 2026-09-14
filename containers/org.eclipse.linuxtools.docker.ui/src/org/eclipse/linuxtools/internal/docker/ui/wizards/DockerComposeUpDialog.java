@@ -163,7 +163,7 @@ public class DockerComposeUpDialog extends Dialog {
 	private IChangeListener onSettingsChanged(final Label errorMessageIcon,
 			final Label errorMessageLabel) {
 
-		return event -> {
+		return _ -> {
 			final IStatus status = validateInput();
 			if (Display.getCurrent() == null) {
 				return;

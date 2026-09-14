@@ -202,7 +202,7 @@ public class CopyFromDockerJob extends Job {
 	 */
 	public CopyFromDockerJob(IDockerConnection connection, CopyType copyType, String desc, Set<Path> copySet,
 			Path targetDir) {
-		this(connection, copyType, desc, copySet.stream().collect(Collectors.toMap(x -> x, x -> targetDir)));
+		this(connection, copyType, desc, copySet.stream().collect(Collectors.toMap(x -> x, _ -> targetDir)));
 	}
 
 	/**

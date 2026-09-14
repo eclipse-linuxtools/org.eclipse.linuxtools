@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.core,
  org.eclipse.cdt.core,
  org.eclipse.core.filesystem
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.remote.proxy.tests;
   x-friends:="org.eclipse.linuxtools.tools.launch.core.tests,
