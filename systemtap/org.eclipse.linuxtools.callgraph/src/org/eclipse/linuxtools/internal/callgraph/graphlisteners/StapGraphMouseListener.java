@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 Red Hat, Inc.
+ * Copyright (c) 2009, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.internal.callgraph.graphlisteners;
 
 import java.util.List;
 
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.internal.callgraph.StapGraph;
 import org.eclipse.linuxtools.internal.callgraph.StapNode;
@@ -22,7 +23,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.zest.core.widgets.GraphItem;
-import org.eclipse.zest.core.widgets.GraphNode;
 
 public class StapGraphMouseListener implements MouseListener {
     private StapGraph graph;
@@ -65,7 +65,7 @@ public class StapGraphMouseListener implements MouseListener {
             if (graph.getNodeData(id).isMarked()) {
                 node.setBackgroundColor(StapGraph.CONSTANT_MARKED);
             } else {
-                node.setBackgroundColor(graph.DEFAULT_NODE_COLOR);
+                node.setBackgroundColor(ColorConstants.lightBlue);
             }
             return;
         } else {

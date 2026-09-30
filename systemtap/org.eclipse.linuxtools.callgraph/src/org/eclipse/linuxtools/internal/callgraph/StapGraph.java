@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 Red Hat, Inc.
+ * Copyright (c) 2009, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -25,6 +25,7 @@ import java.util.TreeSet;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.draw2d.Animation;
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Label;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -473,7 +474,7 @@ public class StapGraph extends Graph {
         // -------------Draw nodes
         for (Entry<String, Long> ent : sortedValues) {
             String key = ent.getKey();
-            GraphNode n = new GraphNode(this.getGraphModel(), SWT.NONE);
+            GraphNode n = new GraphNode(this.getGraph(), SWT.NONE);
             aggregateNodes.add(n);
 
             percentage_count = (float) aggregateCount.get(key)
@@ -497,7 +498,7 @@ public class StapGraph extends Graph {
 
             Color c = new Color(primary, 0, secondary);
             n.setBackgroundColor(c);
-            n.setHighlightColor(c);
+            n.setBackgroundHighlightColor(c);
             n.setForegroundColor(new Color(255, 255, 255));
             n.setTooltip(new Label(
                     Messages.getString("StapGraph.Func") + key + "\n" //$NON-NLS-1$ //$NON-NLS-2$
@@ -637,8 +638,8 @@ public class StapGraph extends Graph {
 
         for (int i : bottomList) {
             if (getNode(i) != null) {
-                getNode(i).setBackgroundColor(DEFAULT_NODE_COLOR);
-                getParentNode(i).setBackgroundColor(DEFAULT_NODE_COLOR);
+                getNode(i).setBackgroundColor(ColorConstants.lightBlue);
+                getParentNode(i).setBackgroundColor(ColorConstants.lightBlue);
                 drawTree(i, getNode(i).getLocation().x, getNode(i)
                         .getLocation().y);
             }
