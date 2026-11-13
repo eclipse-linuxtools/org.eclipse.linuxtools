@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2018 Red Hat, Inc.
+ * Copyright (c) 2008, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -87,7 +87,9 @@ public class ChartTests extends AbstractMassifTest {
 
     @Test
     public void testByteScalingTiB() throws Exception {
-        byteScalingHelper(4, 1024 * 1024, 1024 * 1024 * 10,
+        // Few large allocations: massif's run time grows with the number of
+        // allocations, not their size, and untouched pages cost no memory.
+        byteScalingHelper(4, 4096, 1024L * 1024 * 1024,
                 "testByteScalingTiB"); //$NON-NLS-1$
     }
 
