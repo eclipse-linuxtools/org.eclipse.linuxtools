@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2018 Red Hat, Inc.
+ * Copyright (c) 2008, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -28,23 +28,24 @@ import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifTreeViewer;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifViewPart;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class DoubleClickTest extends AbstractMassifTest {
     private MassifHeapTreeNode node;
 
-    @BeforeEach
-    public void prep() throws Exception {
+    @BeforeAll
+    public void createProjects() throws Exception {
         proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
     }
 
-    @Override
-    @AfterEach
-    public void tearDown() throws CoreException {
+    @AfterAll
+    public void deleteProjects() throws CoreException {
         deleteProject(proj);
-        super.tearDown();
     }
 
     private void doDoubleClick() {
