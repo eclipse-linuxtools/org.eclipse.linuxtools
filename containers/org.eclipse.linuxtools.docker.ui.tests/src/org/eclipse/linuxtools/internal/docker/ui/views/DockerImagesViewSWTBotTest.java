@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat.
+ * Copyright (c) 2016, 2026 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -16,7 +16,6 @@ package org.eclipse.linuxtools.internal.docker.ui.views;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.eclipse.linuxtools.internal.docker.core.DockerConnection;
 import org.eclipse.linuxtools.internal.docker.core.DockerContainerRefreshManager;
@@ -177,8 +176,7 @@ public class DockerImagesViewSWTBotTest {
 		// open the context menu on one of the containers
 		selectImageInTable("angry_bar");
 		dockerImagesBotView.bot().table().contextMenu().menu("Open Image Hierarchy").click();
-		// wait 1sec
-		SWTUtils.wait(1, TimeUnit.SECONDS);
+		// getView waits for the view to show up
 		DockerImageHierarchyViewAssertions.assertThat(SWTUtils.getView(bot, DockerImageHierarchyView.VIEW_ID))
 				.isNotNull();
 	}
