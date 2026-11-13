@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2018 Red Hat, Inc.
+ * Copyright (c) 2008, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -198,11 +198,13 @@ public abstract class AbstractTest {
             InvocationTargetException, InterruptedException, IOException {
         ICProject proj = createProject(bundle, projname);
         buildProject(proj);
-		IBinary[] binaries = null;
-		do {
-			Thread.sleep(500)           ;
-			binaries = proj.getBinaryContainer().getBinaries();
-		} while (binaries == null || binaries.length < 1);
+        // the binary is usually there right after the build, so check before
+        // sleeping and poll briefly otherwise
+        IBinary[] binaries = proj.getBinaryContainer().getBinaries();
+        while (binaries == null || binaries.length < 1) {
+            Thread.sleep(50);
+            binaries = proj.getBinaryContainer().getBinaries();
+        }
 
         return proj;
     }
