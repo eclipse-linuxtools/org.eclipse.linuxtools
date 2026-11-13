@@ -39,21 +39,22 @@ import org.eclipse.swtchart.Chart;
 import org.eclipse.swtchart.ILineSeries;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class ChartTests extends AbstractMassifTest {
-    @BeforeEach
-    public void prep() throws Exception {
+    @BeforeAll
+    public void createProjects() throws Exception {
         proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
     }
 
-    @Override
-    @AfterEach
-    public void tearDown() throws CoreException {
+    @AfterAll
+    public void deleteProjects() throws CoreException {
         deleteProject(proj);
-        super.tearDown();
     }
 
     @Test

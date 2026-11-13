@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 Red Hat, Inc.
+ * Copyright (c) 2009, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -27,29 +27,34 @@ import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class SortTest extends AbstractMassifTest {
+
+    @BeforeAll
+    public void createProjects() throws Exception {
+        proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
+    }
+
+    @AfterAll
+    public void deleteProjects() throws CoreException {
+        deleteProject(proj);
+    }
 
     @BeforeEach
     public void prep() throws Exception {
-        proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
-
         ILaunchConfiguration config = createConfiguration(proj.getProject());
         ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
         wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_STACKS, true);
         wc.doSave();
         doLaunch(config, "testStacks"); //$NON-NLS-1$
-    }
-
-    @Override
-    @AfterEach
-    public void tearDown() throws CoreException {
-        deleteProject(proj);
-        super.tearDown();
     }
 
     @ParameterizedTest @ValueSource(ints = { 0, 1, 2, 3, 4, 5 })
