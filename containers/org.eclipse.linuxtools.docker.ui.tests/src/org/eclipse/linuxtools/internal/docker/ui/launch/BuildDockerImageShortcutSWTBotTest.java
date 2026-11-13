@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat.
+ * Copyright (c) 2016, 2026 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -37,6 +37,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.ProjectExplorerVi
 import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.wizards.WizardMessages;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
@@ -46,6 +47,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.ui.PlatformUI;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.Test;
@@ -285,8 +287,13 @@ public class BuildDockerImageShortcutSWTBotTest {
 		// be an error dialog
 		projectInit.getProject().findMember("Dockerfile").delete(true, new NullProgressMonitor());
 		// re-launch the configuration from the launch history (the label of the
-		// history entries has a decoration appended, so match on its start)
-		bot.menu("Run").menu("Run History")
+		// history entries has a decoration appended, so match on its start).
+		// Go through the workbench window's menu bar: bot.menu() needs an active
+		// shell, which there may not be (e.g. on a display without a window
+		// manager)
+		final Shell workbenchShell = UIThreadRunnable
+				.syncExec(() -> PlatformUI.getWorkbench().getWorkbenchWindows()[0].getShell());
+		new SWTBotShell(workbenchShell).menu().menu("Run").menu("Run History")
 				.menu(WidgetMatcherFactory.<MenuItem>withRegex("1 foo_bar \\[latest\\].*"), false, 0).click();
 		final SWTBotShell shell = bot.shell(JobMessages.getString("BuildImageJob.title")); //$NON-NLS-1$
 		assertThat(shell).isNotNull();
