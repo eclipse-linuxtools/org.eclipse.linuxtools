@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 QNX Software Systems adn others.
+ * Copyright (c) 2015, 2026 QNX Software Systems adn others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Proxy;
 
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
@@ -26,7 +27,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.io.TempDir;
-import org.mockito.Mockito;
 
 public class ValgrindCoreParserTest extends AbstractInlineDataTest {
 	private static final String VALGRIND_OUT1 = "valgrind_01.txt";
@@ -39,7 +39,8 @@ public class ValgrindCoreParserTest extends AbstractInlineDataTest {
 
 	@BeforeEach
 	public void setUp() {
-		launchMock = Mockito.mock(ILaunch.class);
+		launchMock = (ILaunch) Proxy.newProxyInstance(ILaunch.class.getClassLoader(),
+				new Class<?>[] { ILaunch.class }, (proxy, method, args) -> null);
 		file = new File(tmpfiles, VALGRIND_OUT1);
 	}
 
