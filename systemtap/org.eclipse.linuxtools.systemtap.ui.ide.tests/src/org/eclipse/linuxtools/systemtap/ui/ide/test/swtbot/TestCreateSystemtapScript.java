@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2024 Red Hat.
+ * Copyright (c) 2013, 2026 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -56,7 +56,6 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
-import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
@@ -76,6 +75,7 @@ import org.eclipse.swtchart.Chart;
 import org.eclipse.swtchart.IAxis;
 import org.eclipse.swtchart.ISeries;
 import org.eclipse.swtchart.Range;
+import org.eclipse.ui.PlatformUI;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -84,7 +84,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(SWTBotJunit5Extension.class)
-@Disabled("fails with Oxygen")
 public class TestCreateSystemtapScript {
     private static final String SYSTEMTAP_PROJECT_NAME = "SystemtapTest";
 
@@ -258,40 +257,18 @@ public class TestCreateSystemtapScript {
 
     @BeforeAll
     public static void beforeClass() {
-        SWTBotPreferences.TIMEOUT = 20000;
         bot = new SWTWorkbenchBot();
 
-        try {
-            bot.viewByTitle("Welcome").close();
-        } catch (WidgetNotFoundException e) {
-            //ignore
-        	e.printStackTrace();
-        }
+        // Close the Welcome view if it is open, without waiting for it.
+        bot.views().stream().filter(view -> "Welcome".equals(view.getTitle())).forEach(SWTBotView::close);
 
         prepareTreeSettings();
 
         // Set SystemTap IDE perspective.
         bot.perspectiveByLabel("SystemTap IDE").activate();
-        bot.sleep(5000);
-        for (SWTBotShell sh : bot.shells()) {
-            if (sh.getText().contains("SystemTap IDE")) {
-                mainShell = sh;
-                sh.activate();
-                bot.sleep(500);
-                break;
-            }
-        }
-
-        // Dismiss "Systemtap not installed" dialog(s) if present.
-        try {
-            SWTBotShell shell = bot.shell("Cannot Run SystemTap").activate();
-            shell.close();
-
-            shell = bot.shell("Cannot Run SystemTap").activate();
-            shell.close();
-        } catch (WidgetNotFoundException e) {
-            //ignore
-        }
+        mainShell = new SWTBotShell(UIThreadRunnable
+                .syncExec(() -> PlatformUI.getWorkbench().getWorkbenchWindows()[0].getShell()));
+        mainShell.activate();
 
         // Create a Systemtap project.
         clickMainMenu("File", "New", "Project...");
@@ -410,7 +387,7 @@ public class TestCreateSystemtapScript {
         openRunConfigurations(scriptName);
         SWTBotShell shell = bot.shell("Run Configurations");
         shell.setFocus();
-        bot.tree().select("SystemTap").contextMenu("New").click();
+        bot.tree().select("SystemTap").contextMenu("New Configuration").click();
 
         // Select the "Graphing" tab and enable output graphing.
         bot.cTabItem(Messages.SystemTapScriptGraphOptionsTab_graphingTitle).activate();
@@ -433,7 +410,7 @@ public class TestCreateSystemtapScript {
         openRunConfigurations(scriptName);
         SWTBotShell shell = bot.shell("Run Configurations");
         shell.setFocus();
-        bot.tree().select("SystemTap").contextMenu("New").click();
+        bot.tree().select("SystemTap").contextMenu("New Configuration").click();
     }
 
     @Test
@@ -739,7 +716,7 @@ public class TestCreateSystemtapScript {
         openRunConfigurations(scriptName);
         SWTBotShell shell = bot.shell("Run Configurations");
         shell.setFocus();
-        bot.tree().select("SystemTap").contextMenu("New").click();
+        bot.tree().select("SystemTap").contextMenu("New Configuration").click();
         bot.textWithLabel("Name:").setText(scriptName);
 
         // Select the "Graphing" tab.
@@ -893,6 +870,9 @@ public class TestCreateSystemtapScript {
         bot.radio(1).click();
         bot.button("Finish").click();
         bot.waitUntil(Conditions.shellCloses(shell));
+        // Without a window manager nothing reactivates the workbench window when
+        // the dialog closes, and lookups through the bot only search the active shell.
+        mainShell.activate();
         bot.waitUntil(new TableHasUpdated(graphEditorA.bot().table(), 9, true));
         assertEquals("3", dataTable.cell(2, 1));
         assertEquals("6", dataTable.cell(2, 2));
