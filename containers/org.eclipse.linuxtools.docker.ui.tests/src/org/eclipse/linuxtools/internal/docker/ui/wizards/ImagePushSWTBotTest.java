@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat.
+ * Copyright (c) 2016, 2026 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -34,6 +34,7 @@ import org.eclipse.linuxtools.internal.docker.ui.testutils.swt.SWTUtils;
 import org.eclipse.linuxtools.internal.docker.ui.views.DockerExplorerView;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.jupiter.api.AfterEach;
@@ -50,7 +51,7 @@ import org.mockito.Mockito;
 /**
  * Testing the {@link ImagePush} wizard
  */
-public class ImagePushSWTBotTests {
+public class ImagePushSWTBotTest {
 
 	private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 	private DockerExplorerView dockerExplorerView;
@@ -265,15 +266,21 @@ public class ImagePushSWTBotTests {
 		// given
 		final String registryAddress = "https://foo.com";
 		openPushWizard();
+		// scope lookups to the wizard and dialog shells: once the dialog closes,
+		// the active shell is not necessarily the wizard any more
+		final SWTBot wizardBot = SWTUtils.waitForShell(bot, WizardMessages.getString("ImagePush.name")); //$NON-NLS-1$
 		// when click on the "Add..." link
-		bot.link(0).click(WizardMessages.getString("ImagePullPushPage.add.label"));
+		wizardBot.link(0).click(WizardMessages.getString("ImagePullPushPage.add.label")); //$NON-NLS-1$
 		// fill the registry settings
-		bot.text(0).setText(registryAddress);
+		final SWTBot dialogBot = SWTUtils.waitForShell(bot,
+				WizardMessages.getString("ImagePullPushPage.addregistry.title")); //$NON-NLS-1$
+		dialogBot.textWithLabel(WizardMessages.getString("RegistryAccountDialog.server.label")) //$NON-NLS-1$
+				.setText(registryAddress);
 		// finish
-		bot.button("OK").click();
+		dialogBot.button("OK").click();
 		// wait for the model updates to complete
 		SWTUtils.waitForJobsToComplete();
-		assertThat(bot.comboBox(0).getText()).isEqualTo(registryAddress);
+		assertThat(wizardBot.comboBox(0).getText()).isEqualTo(registryAddress);
 	}
 
 }
