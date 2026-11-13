@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat.
+ * Copyright (c) 2016, 2026 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -222,7 +222,8 @@ public class ImagePullSWTBotTest {
 		// when opening the "Push Image..." wizard
 		SWTUtils.getTreeItem(dockerExplorerViewBot, "Test").select();
 		// then
-		SWTUtils.wait(1, TimeUnit.SECONDS);
+		SWTUtils.waitUntil(() -> dockerConnection.getState() == EnumDockerConnectionState.ESTABLISHED,
+				"Connection was not established");
 		assertThat(dockerConnection.getState()).isEqualTo(EnumDockerConnectionState.ESTABLISHED);
 		MenuAssertion.assertThat(dockerExplorerViewBot.bot().tree().contextMenu("Pull...")).isEnabled();
 	}

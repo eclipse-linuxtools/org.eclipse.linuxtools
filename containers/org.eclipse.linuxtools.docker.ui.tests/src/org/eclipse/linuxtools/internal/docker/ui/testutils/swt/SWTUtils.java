@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2023 Red Hat Inc. and others.
+ * Copyright (c) 2016, 2026 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,6 +32,7 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotRootMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -300,6 +302,36 @@ public class SWTUtils {
 		} catch (InterruptedException e) {
 			fail("Failed to wait for a " + unit.toMillis(duration) + "ms", e);
 		}
+	}
+
+	/**
+	 * Waits until the given condition is met, checking it every 50ms, instead
+	 * of sleeping for a fixed duration. A condition that throws a
+	 * {@link RuntimeException} is treated as not met yet.
+	 *
+	 * @param condition
+	 *            the condition to wait for
+	 * @param failureMessage
+	 *            the message to report if the condition is not met before the
+	 *            SWTBot timeout
+	 */
+	public static void waitUntil(final BooleanSupplier condition, final String failureMessage) {
+		new SWTBot().waitUntil(new DefaultCondition() {
+
+			@Override
+			public boolean test() {
+				try {
+					return condition.getAsBoolean();
+				} catch (RuntimeException e) {
+					return false;
+				}
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return failureMessage;
+			}
+		}, SWTBotPreferences.TIMEOUT, 50);
 	}
 
 	/**

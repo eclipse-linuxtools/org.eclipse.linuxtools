@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Red Hat.
+ * Copyright (c) 2015, 2026 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -16,7 +16,6 @@ package org.eclipse.linuxtools.internal.docker.ui.views;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import org.assertj.core.api.Assertions;
@@ -171,8 +170,7 @@ public class DockerExplorerViewSWTBotTest {
 		// when locating the 'Images' node and hit refresh
 		dockerExplorerViewBot.bot().tree().select(imagesTreeItem);
 		dockerExplorerViewBot.bot().tree().contextMenu("Refresh").click();
-		SWTUtils.wait(2, TimeUnit.SECONDS);
-		imagesTreeItem.expand();
+		SWTUtils.waitUntil(() -> imagesTreeItem.expand().getItems().length == 1, "Images were not refreshed");
 		Conditions.waitForJobs(DockerExplorerView.class, "Docker Explorer View jobs");
 		// then check that there are images now
 		Assertions.assertThat(imagesTreeItem.isExpanded()).isTrue();

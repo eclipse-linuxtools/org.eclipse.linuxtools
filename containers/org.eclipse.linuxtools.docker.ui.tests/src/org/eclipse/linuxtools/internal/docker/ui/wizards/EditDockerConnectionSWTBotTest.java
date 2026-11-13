@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Red Hat.
+ * Copyright (c) 2015, 2026 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -495,7 +495,8 @@ public class EditDockerConnectionSWTBotTest {
 		openConnectionEditionWizard("Test");
 		bot.text(0).setText("foo");
 		getFinishButton().click();
-		SWTUtils.wait(2, TimeUnit.SECONDS);
+		SWTUtils.waitUntil(() -> SWTUtils.getTreeItem(dockerExplorer.bot(), "foo") != null,
+				"Docker Explorer View does not show connection 'foo'");
 		// then
 		final SWTBotTreeItem updatedConnectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "foo");
 		assertThat(updatedConnectionTreeItem).isNotNull();
@@ -511,7 +512,10 @@ public class EditDockerConnectionSWTBotTest {
 		openConnectionEditionWizard("Test");
 		bot.text(0).setText("foo");
 		getFinishButton().click();
-		SWTUtils.wait(2, TimeUnit.SECONDS);
+		SWTUtils.waitUntil(
+				() -> UIThreadRunnable.syncExec(() -> ((DockerImagesView) dockerImages.view()).getFormTitle())
+						.contains("foo"),
+				"Docker Images View title does not show connection 'foo'");
 		// then
 		final DockerImagesView dockerImagesView = dockerImages.view();
 		final String formTitle = UIThreadRunnable.syncExec(() -> dockerImagesView.getFormTitle());
@@ -528,7 +532,10 @@ public class EditDockerConnectionSWTBotTest {
 		openConnectionEditionWizard("Test");
 		bot.text(0).setText("foo");
 		getFinishButton().click();
-		SWTUtils.wait(2, TimeUnit.SECONDS);
+		SWTUtils.waitUntil(
+				() -> UIThreadRunnable.syncExec(() -> ((DockerContainersView) dockerContainers.view()).getFormTitle())
+						.contains("foo"),
+				"Docker Containers View title does not show connection 'foo'");
 		// then
 		final DockerContainersView dockerContainersView = dockerContainers.view();
 		final String formTitle = UIThreadRunnable.syncExec(() -> dockerContainersView.getFormTitle());
@@ -545,12 +552,14 @@ public class EditDockerConnectionSWTBotTest {
 		openConnectionEditionWizard("Test");
 		bot.text(0).setText("foo");
 		getFinishButton().click();
-		SWTUtils.wait(2, TimeUnit.SECONDS);
+		SWTUtils.waitUntil(() -> SWTUtils.getTreeItem(dockerExplorer.bot(), "foo") != null,
+				"Docker Explorer View does not show connection 'foo'");
 		// name change #2
 		openConnectionEditionWizard("foo");
 		bot.text(0).setText("bar");
 		getFinishButton().click();
-		SWTUtils.wait(2, TimeUnit.SECONDS);
+		SWTUtils.waitUntil(() -> SWTUtils.getTreeItem(dockerExplorer.bot(), "bar") != null,
+				"Docker Explorer View does not show connection 'bar'");
 		// then
 		final SWTBotTreeItem updatedConnectionTreeItem = SWTUtils.getTreeItem(dockerExplorer.bot(), "bar");
 		assertThat(updatedConnectionTreeItem).isNotNull();
