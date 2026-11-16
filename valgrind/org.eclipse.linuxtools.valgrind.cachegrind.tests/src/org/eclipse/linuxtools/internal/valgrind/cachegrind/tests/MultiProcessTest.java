@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 Red Hat, Inc.
+ * Copyright (c) 2009, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -24,25 +24,26 @@ import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindFile;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindOutput;
 import org.eclipse.linuxtools.internal.valgrind.launch.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class MultiProcessTest extends AbstractCachegrindTest {
     private ICProject refProj;
 
-    @BeforeEach
-    public void prep() throws Exception {
+    @BeforeAll
+    public void createProjects() throws Exception {
         refProj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
         proj = createProjectAndBuild("multiProcTest"); //$NON-NLS-1$
     }
 
-    @Override
-    @AfterEach
-    public void tearDown() throws CoreException {
+    @AfterAll
+    public void deleteProjects() throws CoreException {
         deleteProject(proj);
         deleteProject(refProj);
-        super.tearDown();
     }
 
     @Test

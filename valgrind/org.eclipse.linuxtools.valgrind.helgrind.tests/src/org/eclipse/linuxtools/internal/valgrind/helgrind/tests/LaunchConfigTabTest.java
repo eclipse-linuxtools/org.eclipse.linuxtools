@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2018 IBM Corporation and others.
+ * Copyright (c) 2011, 2026 IBM Corporation and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -32,10 +32,15 @@ import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindOptionsTab;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class LaunchConfigTabTest extends AbstractHelgrindTest {
 
     private ILaunchConfiguration config;
@@ -43,10 +48,18 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
     private ValgrindOptionsTab tab;
     private HelgrindToolPage dynamicTab;
 
+    @BeforeAll
+    public void createProjects() throws Exception {
+        proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
+    }
+
+    @AfterAll
+    public void deleteProjects() throws CoreException {
+        deleteProject(proj);
+    }
+
     @BeforeEach
     public void prep() throws Exception {
-        proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
-
         config = createConfiguration(proj.getProject());
 
         testShell = new Shell(Display.getDefault());
@@ -59,7 +72,6 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
     public void tearDown() throws CoreException {
         tab.dispose();
         testShell.dispose();
-        deleteProject(proj);
         super.tearDown();
     }
 
