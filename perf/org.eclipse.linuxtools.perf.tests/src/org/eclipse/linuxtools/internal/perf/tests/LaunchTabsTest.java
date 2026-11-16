@@ -1,5 +1,5 @@
 /*******************************************************************************
- * (C) Copyright 2010, 2018 IBM Corp.
+ * (C) Copyright 2010, 2026 IBM Corp.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -34,18 +34,32 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.osgi.framework.FrameworkUtil;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class LaunchTabsTest extends AbstractTest {
     private ILaunchConfiguration config;
     private Shell testShell;
 
+    @BeforeAll
+    public void createProjects() throws Exception {
+        proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest"); //$NON-NLS-1$
+    }
+
+    @AfterAll
+    public void deleteProjects() throws CoreException {
+        deleteProject(proj);
+    }
+
     @BeforeEach
     public void setUp() throws Exception {
-        proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest"); //$NON-NLS-1$
         config = createConfiguration(proj.getProject());
         testShell = new Shell(Display.getDefault());
         testShell.setLayout(new GridLayout());
@@ -54,7 +68,6 @@ public class LaunchTabsTest extends AbstractTest {
     @AfterEach
     public void tearDown() throws Exception {
         testShell.dispose();
-        deleteProject(proj);
     }
 
     @Override

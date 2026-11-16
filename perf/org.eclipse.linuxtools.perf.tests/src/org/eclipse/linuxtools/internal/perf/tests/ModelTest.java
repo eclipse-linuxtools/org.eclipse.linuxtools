@@ -1,5 +1,5 @@
 /*******************************************************************************
- * (C) Copyright 2010, 2018 IBM Corp. and others.
+ * (C) Copyright 2010, 2026 IBM Corp. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -53,29 +53,37 @@ import org.eclipse.linuxtools.internal.perf.ui.PerfProfileView;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.osgi.framework.FrameworkUtil;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class ModelTest extends AbstractTest {
     private ILaunchConfiguration config;
     private Stack<Class<?>> stack;
 
+    @BeforeAll
+    public void createProjects() throws Exception {
+        proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest"); //$NON-NLS-1$
+    }
+
+    @AfterAll
+    public void deleteProjects() throws CoreException {
+        deleteProject(proj);
+    }
+
     @BeforeEach
     public void setUp() throws Exception {
-        proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest"); //$NON-NLS-1$
         config = createConfiguration(proj.getProject());
 
         Class<?>[] klassList = new Class<?>[] { PMSymbol.class, PMFile.class,
                 PMDso.class, PMCommand.class, PMEvent.class };
         stack = new Stack<>();
         Collections.addAll(stack, klassList);
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-        deleteProject(proj);
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2012, 2018 Red Hat, Inc.
+* Copyright (c) 2012, 2026 Red Hat, Inc.
 *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -28,11 +28,16 @@ import org.eclipse.linuxtools.internal.perf.launch.PerfEventsTab;
 import org.eclipse.linuxtools.internal.perf.launch.PerfLaunchConfigDelegate;
 import org.eclipse.linuxtools.internal.perf.launch.PerfOptionsTab;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.osgi.framework.FrameworkUtil;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class LaunchTest extends AbstractTest {
 
     protected ILaunchConfiguration config;
@@ -40,9 +45,18 @@ public class LaunchTest extends AbstractTest {
     protected ILaunch launch;
     protected ILaunchConfigurationWorkingCopy wc;
 
+    @BeforeAll
+    public void createProjects() throws Exception {
+        proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest"); //$NON-NLS-1$
+    }
+
+    @AfterAll
+    public void deleteProjects() throws CoreException {
+        deleteProject(proj);
+    }
+
     @BeforeEach
     public void setUp() throws Exception {
-        proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest"); //$NON-NLS-1$
         config = createConfiguration(proj.getProject());
 
         delegate = new PerfLaunchConfigDelegate();
@@ -53,7 +67,6 @@ public class LaunchTest extends AbstractTest {
 
     @AfterEach
     public void tearDown() throws CoreException {
-        deleteProject(proj);
         wc.delete();
     }
 
