@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 Red Hat, Inc.
+ * Copyright (c) 2009, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -42,11 +42,16 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.osgi.framework.Version;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class LaunchConfigTabTest extends AbstractMemcheckTest {
 
     private ValgrindOptionsTab tab;
@@ -54,10 +59,18 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
     private ILaunchConfiguration config;
     private Shell testShell;
 
+    @BeforeAll
+    public void createProjects() throws Exception {
+        proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
+    }
+
+    @AfterAll
+    public void deleteProjects() throws CoreException {
+        deleteProject(proj);
+    }
+
     @BeforeEach
     public void setUpProject() throws Exception {
-        proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
-
         config = createConfiguration(proj.getProject());
 
         testShell = new Shell(Display.getDefault());
@@ -69,7 +82,6 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
     public void cleanup() throws Exception {
         tab.dispose();
         testShell.dispose();
-        deleteProject(proj);
         super.tearDown();
     }
 

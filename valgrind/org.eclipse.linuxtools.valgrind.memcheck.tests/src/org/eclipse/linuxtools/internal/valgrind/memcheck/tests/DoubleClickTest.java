@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2018 Red Hat, Inc.
+ * Copyright (c) 2008, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -39,15 +39,18 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class DoubleClickTest extends AbstractMemcheckTest {
     private ValgrindStackFrame frame;
 
-    @BeforeEach
-    public void prep() throws Exception {
+    @BeforeAll
+    public void createProjects() throws Exception {
         proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
     }
 
@@ -80,11 +83,9 @@ public class DoubleClickTest extends AbstractMemcheckTest {
                 selection));
     }
 
-    @Override
-    @AfterEach
-    public void tearDown() throws CoreException {
+    @AfterAll
+    public void deleteProjects() throws CoreException {
         deleteProject(proj);
-        super.tearDown();
     }
 
     @Test
