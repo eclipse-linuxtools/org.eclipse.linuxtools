@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Red Hat, Inc.
+ * Copyright (c) 2013, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -37,11 +37,16 @@ import org.eclipse.linuxtools.internal.perf.handlers.AbstractSaveDataHandler;
 import org.eclipse.linuxtools.internal.perf.handlers.PerfSaveSessionHandler;
 import org.eclipse.linuxtools.internal.perf.handlers.PerfSaveStatsHandler;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.osgi.framework.FrameworkUtil;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class SaveSessionTest extends AbstractTest {
     private static final String WORKING_DIR = "resources/"; //$NON-NLS-1$
     private static final String DATA_FILE_PATH = "/mock/data/path"; //$NON-NLS-1$
@@ -52,15 +57,24 @@ public class SaveSessionTest extends AbstractTest {
     private ArrayList<IPath> testFiles = new ArrayList<>();
     private IProject proj;
 
-    @BeforeEach
-    public void setUp() {
+    @BeforeAll
+    public void createProjects() {
         try {
             proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest").getProject();
-            PerfPlugin.getDefault().setWorkingDir(proj.getLocation());
         } catch (InvocationTargetException | CoreException | URISyntaxException | InterruptedException | IOException e) {
             e.printStackTrace();
             fail("Failed to create test project");
         }
+    }
+
+    @AfterAll
+    public void deleteProjects() throws CoreException {
+        proj.delete(true, true, null);
+    }
+
+    @BeforeEach
+    public void setUp() {
+        PerfPlugin.getDefault().setWorkingDir(proj.getLocation());
     }
 
     @AfterEach
@@ -69,6 +83,7 @@ public class SaveSessionTest extends AbstractTest {
             File file = f.toFile();
             assertTrue(file.delete());
         }
+        testFiles.clear();
     }
 
     @Test

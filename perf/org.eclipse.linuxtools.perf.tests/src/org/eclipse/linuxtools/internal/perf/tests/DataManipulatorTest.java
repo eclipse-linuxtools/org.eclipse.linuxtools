@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Red Hat Inc.
+ * Copyright (c) 2013, 2026 Red Hat Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -33,18 +33,27 @@ import org.eclipse.linuxtools.internal.perf.SourceDisassemblyData;
 import org.eclipse.linuxtools.internal.perf.StatData;
 import org.eclipse.linuxtools.internal.perf.handlers.PerfStatDataOpenHandler;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.osgi.framework.FrameworkUtil;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class DataManipulatorTest extends AbstractTest {
 
     private static final String output = "output"; //$NON-NLS-1$
     private IProject proj;
 
-    @BeforeEach
-    public void setUp() throws InvocationTargetException, CoreException, URISyntaxException, InterruptedException, IOException {
+    @BeforeAll
+    public void createProjects() throws InvocationTargetException, CoreException, URISyntaxException, InterruptedException, IOException {
         proj = createProjectAndBuild(FrameworkUtil.getBundle(this.getClass()), "fibTest").getProject();
+    }
+
+    @AfterAll
+    public void deleteProjects() throws CoreException {
+        proj.delete(true, true, null);
     }
 
     @Test
