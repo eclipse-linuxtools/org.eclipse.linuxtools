@@ -8,7 +8,7 @@ int main() {
 		char *waste = (char *)malloc(sizeof(char) * SIZE);
 	}
 	else {
-		execv("../basicTest/Debug/basicTest", NULL);
+		execv("../basicTest/Debug/basicTest", (char *[]) { "basicTest", NULL });
 		perror("execv");
 	}
 	return 0;

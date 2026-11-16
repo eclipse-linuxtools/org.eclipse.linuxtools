@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 Red Hat, Inc.
+ * Copyright (c) 2009, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,11 +14,13 @@ package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindOptionsTab;
@@ -73,12 +75,25 @@ public class MinVersionTest extends AbstractMemcheckTest {
         // For some reason we downgraded
         saveVersion();
 
-        try {
-            doLaunch(config, "testDefaults"); //$NON-NLS-1$
-        } catch (CoreException e) {
-            assertNotNull(e);
-        }
+        doLaunch(config, "testDefaults"); //$NON-NLS-1$
 
+        // The launch reports the bad version in an asynchronously opened error
+        // dialog. Queue a runnable after it that closes the dialog from within
+        // its event loop, so the dialog does not block a later test.
+        Display display = Display.getCurrent();
+        boolean[] dialogShown = { false };
+        display.asyncExec(() -> {
+            for (Shell shell : display.getShells()) {
+                if (shell.getData() instanceof MessageDialog dialog) {
+                    dialogShown[0] = true;
+                    dialog.close();
+                }
+            }
+        });
+        while (display.readAndDispatch()) {
+            // process the queued runnables
+        }
+        assertTrue(dialogShown[0]);
     }
 
     @Test

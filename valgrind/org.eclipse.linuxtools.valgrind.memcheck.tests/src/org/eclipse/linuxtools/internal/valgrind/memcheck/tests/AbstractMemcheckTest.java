@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2018 Red Hat, Inc.
+ * Copyright (c) 2008, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -45,15 +45,15 @@ public abstract class AbstractMemcheckTest extends AbstractValgrindTest {
                     // check expected error messages exist for basicTest (child process in multiProcTest)
                     if (("testNumErrors".equals(testName) || "testExec".equals(testName)) //$NON-NLS-1$ //$NON-NLS-2$
                             && "test.c".equals(stackFrameMsg.getFile())) { //$NON-NLS-1$
-                        assertTrue(stackFrameMsg.getLine() >= 15);
+                        assertTrue(stackFrameMsg.getLine() >= 17);
                         switch (stackFrameMsg.getLine()) {
-                            case 15:
+                            case 17:
                                 assertTrue(message.getText().contains(lostBytesMsg));
                                 break;
-                            case 16:
+                            case 18:
                                 assertTrue(message.getText().contains(invalidReadMsg));
                                 break;
-                            case 17:
+                            case 19:
                                 assertTrue(message.getText().contains(invalidWriteMsg));
                                 break;
                             default:
