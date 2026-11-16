@@ -28,10 +28,15 @@ import org.eclipse.linuxtools.internal.valgrind.tests.ValgrindStubCommand;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class MinVersionTest extends AbstractMemcheckTest {
 
     static class ValgrindIncorrectVersion extends ValgrindStubCommand {
@@ -41,10 +46,18 @@ public class MinVersionTest extends AbstractMemcheckTest {
         }
     }
 
+    @BeforeAll
+    public void createProjects() throws Exception {
+        proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
+    }
+
+    @AfterAll
+    public void deleteProjects() throws CoreException {
+        deleteProject(proj);
+    }
+
     @BeforeEach
     public void prep() throws Exception {
-        proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
-
         saveVersion();
     }
 
@@ -57,8 +70,6 @@ public class MinVersionTest extends AbstractMemcheckTest {
     @AfterEach
     public void tearDown() throws CoreException {
         restoreVersion();
-
-        deleteProject(proj);
         super.tearDown();
     }
 

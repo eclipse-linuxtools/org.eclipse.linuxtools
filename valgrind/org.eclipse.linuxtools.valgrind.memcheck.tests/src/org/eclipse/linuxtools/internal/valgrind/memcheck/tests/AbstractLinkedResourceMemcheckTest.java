@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 Red Hat, Inc.
+ * Copyright (c) 2009, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -24,13 +24,16 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public abstract class AbstractLinkedResourceMemcheckTest extends
         AbstractMemcheckTest {
 
-    @BeforeEach
+    @BeforeAll
     public void linkedResourceSetUp() throws Exception {
         proj = createProject(getBundle(), "linkedTest"); //$NON-NLS-1$
 
@@ -59,7 +62,7 @@ public abstract class AbstractLinkedResourceMemcheckTest extends
         buildProject(proj);
     }
 
-    @AfterEach
+    @AfterAll
     public void cleanupLinkedResource() throws CoreException {
         deleteProject(proj);
     }
