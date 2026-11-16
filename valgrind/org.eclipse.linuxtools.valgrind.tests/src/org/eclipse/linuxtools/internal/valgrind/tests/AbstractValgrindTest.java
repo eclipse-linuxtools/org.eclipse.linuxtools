@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 Red Hat, Inc.
+ * Copyright (c) 2009, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -124,8 +124,13 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 	private void unbindLocation(IPath pathToFiles) throws IOException {
 		String bundleLoc = FileLocator.getBundleFileLocation(getBundle()).get().getCanonicalPath();
 		String workspaceLoc = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
+		File[] logs = pathToFiles.toFile().listFiles(NOT_TEMPLATE_FILTER);
+		if (logs == null) {
+			// no recorded output for this test
+			return;
+		}
 		File testDir = pathToFiles.toFile();
-		for (File log : testDir.listFiles(NOT_TEMPLATE_FILTER)) {
+		for (File log : logs) {
 			File template = new File(testDir, TEMPLATE_PREFIX + log.getName());
 			replaceLocation(log, template, new String[] { bundleLoc, workspaceLoc },
 					new String[] { SEARCH_STRING_BL, SEARCH_STRING_WS });
