@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2025 Red Hat, Inc. and others.
+ * Copyright (c) 2012, 2026 Red Hat, Inc. and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -112,14 +112,6 @@ public class PreferencesTest extends AbstractTest{
 
         // Set C/C++ perspective.
         bot.perspectiveByLabel("C/C++").activate(); //$NON-NLS-1$
-        bot.sleep(500);
-        for (SWTBotShell sh : bot.shells()) {
-            if (sh.getText().startsWith("C/C++")) { //$NON-NLS-1$
-                sh.activate();
-                bot.sleep(500);
-                break;
-            }
-        }
 
         // Turn off automatic building by default to avoid timing issues
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -146,6 +138,7 @@ public class PreferencesTest extends AbstractTest{
         checkDefaultPreference(PROFILING_PREFS_CATEGORY, PROFILING_PREFS_TYPE);
 
         // Open preferences shell.
+        activateWorkbenchShell();
         SWTBotMenu windowsMenu = bot.menu("Window"); //$NON-NLS-1$
         windowsMenu.menu("Preferences...").click(); //$NON-NLS-1$
         SWTBotShell shell = bot.shell("Preferences"); //$NON-NLS-1$
@@ -218,10 +211,20 @@ public class PreferencesTest extends AbstractTest{
         bot.waitUntil(shellCloses(profileShell));
     }
 
+    /**
+     * Menu lookups need an active shell, and there may be none after a dialog
+     * closes when no window manager is running.
+     */
+    private static void activateWorkbenchShell() {
+        Shell shell = UIThreadRunnable.syncExec(() -> PlatformUI.getWorkbench().getWorkbenchWindows()[0].getShell());
+        new SWTBotShell(shell).activate();
+    }
+
     private static void checkDefaultPreference(String preferenceCategory, String profilingType){
         SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
         // Open preferences shell.
+        activateWorkbenchShell();
         SWTBotMenu windowsMenu = bot.menu("Window"); //$NON-NLS-1$
         windowsMenu.menu("Preferences...").click(); //$NON-NLS-1$
         SWTBotShell shell = bot.shell("Preferences"); //$NON-NLS-1$
