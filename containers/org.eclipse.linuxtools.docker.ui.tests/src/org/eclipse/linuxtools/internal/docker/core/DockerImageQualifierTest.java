@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat.
+ * Copyright (c) 2016, 2026 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -37,7 +37,7 @@ import org.mandas.docker.client.messages.Image;
  * Verifying that images are properly qualified as {@code Top-Level},
  * {@code Intermediate} or {@code Dangling}.
  */
-public class DockerImageQualifierTestCase {
+public class DockerImageQualifierTest {
 
 	/**
 	 * A helper class to prepare dataset for parameterized test classes.
