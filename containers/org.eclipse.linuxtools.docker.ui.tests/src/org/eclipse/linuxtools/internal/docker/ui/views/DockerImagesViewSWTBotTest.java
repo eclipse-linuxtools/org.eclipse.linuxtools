@@ -167,7 +167,8 @@ public class DockerImagesViewSWTBotTest {
 	public void shouldOpenImageHierarchyView() {
 		// given
 		final DockerClient client = MockDockerClientFactory
-				.images(MockImageFactory.of("angry_bar"), MockImageFactory.of("", "", "gentle_foo")).build();
+				.images(MockImageFactory.of("1a2b3c", "", "angry_bar"), MockImageFactory.of("4d5e6f", "", "gentle_foo"))
+				.build();
 		final DockerConnection dockerConnection = MockDockerConnectionFactory.from("Test", client)
 				.withDefaultTCPConnectionSettings();
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
