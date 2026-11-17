@@ -46,7 +46,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
-import org.eclipse.zest.layouts.LayoutStyles;
 
 public class StapGraph extends Graph {
 
@@ -509,7 +508,7 @@ public class StapGraph extends Graph {
         }
 
         // Set layout to gridlayout
-        this.setLayoutAlgorithm(new AggregateLayoutAlgorithm(LayoutStyles.NONE,
+        this.setLayoutAlgorithm(new AggregateLayoutAlgorithm(
                 sortedValues, this.getTotalTime(), this.getBounds().width),
                 true);
     }
