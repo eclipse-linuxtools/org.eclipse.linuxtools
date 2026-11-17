@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2023 Red Hat.
+ * Copyright (c) 2016, 2026 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -33,12 +33,12 @@ import org.eclipse.linuxtools.internal.docker.core.RepositoryTag;
 import org.eclipse.linuxtools.internal.docker.core.RepositoryTagV2;
 import org.eclipse.osgi.util.NLS;
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.mandas.docker.client.ObjectMapperProvider;
 import org.mandas.docker.client.messages.ImageSearchResult;
 
 import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
@@ -104,7 +104,7 @@ public abstract class AbstractRegistry implements IRegistry {
 		String[] schemes = new String[] { "http://", "https://" }; //$NON-NLS-1$ //$NON-NLS-2$
 		final ClientConfig DEFAULT_CONFIG = new ClientConfig(
 				ObjectMapperProvider.class, JacksonFeature.class);
-		final Client client = ClientBuilder.newClient(DEFAULT_CONFIG);
+		final Client client = JerseyClientBuilder.createClient(DEFAULT_CONFIG);
 
 		for (String scheme : schemes) {
 			for (String ver : versions) {
@@ -133,7 +133,7 @@ public abstract class AbstractRegistry implements IRegistry {
 	public List<IDockerImageSearchResult> getImages(String term)
 			throws DockerException {
 
-		final Client client = ClientBuilder.newClient(DEFAULT_CONFIG);
+		final Client client = JerseyClientBuilder.createClient(DEFAULT_CONFIG);
 		List<IDockerImageSearchResult> result = new ArrayList<>();
 		WebTarget queryImagesResource;
 
@@ -192,7 +192,7 @@ public abstract class AbstractRegistry implements IRegistry {
 	public List<IRepositoryTag> getTags(String repository)
 			throws DockerException {
 
-		final Client client = ClientBuilder.newClient(DEFAULT_CONFIG);
+		final Client client = JerseyClientBuilder.createClient(DEFAULT_CONFIG);
 		try {
 			if (isVersion2()) {
 				return retrieveTagsFromRegistryV2(client, repository);
@@ -364,7 +364,7 @@ public abstract class AbstractRegistry implements IRegistry {
 		// We haven't cached the result, so let's evaluate
 		final ClientConfig DEFAULT_CONFIG = new ClientConfig(
 				ObjectMapperProvider.class, JacksonFeature.class);
-		final Client client = ClientBuilder.newClient(DEFAULT_CONFIG);
+		final Client client = JerseyClientBuilder.createClient(DEFAULT_CONFIG);
 		final WebTarget pingApiv2Resource = client
 				.target(getHTTPServerAddress()).path("v2"); //$NON-NLS-1$
 		try {
