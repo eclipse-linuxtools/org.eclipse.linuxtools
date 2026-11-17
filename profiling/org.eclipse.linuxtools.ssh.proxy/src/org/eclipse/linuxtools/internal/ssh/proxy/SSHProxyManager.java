@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2018 Red Hat Inc and others
+ * Copyright (c) 2011, 2026 Red Hat Inc and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -86,19 +87,10 @@ public class SSHProxyManager implements IRemoteEnvProxyManager {
 
     @Override
     public Map<String, String> getEnv(URI uri) throws CoreException {
-        Map<String, String> env = Collections.emptyMap();
+        Map<String, String> env = new HashMap<>();
         SSHCommandLauncher cmdLauncher = new SSHCommandLauncher(sanitizeURI(uri));
         Process p = cmdLauncher.execute(new Path("/bin/env"), new String[] {}, new String[] {}, null, null); //$NON-NLS-1$
 
-        String errorLine;
-		try (BufferedReader error = p.errorReader()) {
-            if((errorLine = error.readLine()) != null){
-                throw new IOException(errorLine);
-            }
-        } catch (IOException e) {
-			ILog.get().log(Status.error(e.getMessage(), e));
-            return Collections.emptyMap();
-        }
         /*
          * It is common to export functions declaration in the environment so
          *  this pattern filters out them because they get truncated
@@ -124,6 +116,17 @@ public class SSHProxyManager implements IRemoteEnvProxyManager {
                     env.put(m.group(1), m.group(2));
                 }
                 readLine = reader.readLine();
+            }
+        } catch (IOException e) {
+			ILog.get().log(Status.error(e.getMessage(), e));
+            return Collections.emptyMap();
+        }
+        // Check for errors only after reading the output, as the command can't
+        // finish and close its error stream while its output isn't consumed.
+        String errorLine;
+		try (BufferedReader error = p.errorReader()) {
+            if((errorLine = error.readLine()) != null){
+                throw new IOException(errorLine);
             }
         } catch (IOException e) {
 			ILog.get().log(Status.error(e.getMessage(), e));

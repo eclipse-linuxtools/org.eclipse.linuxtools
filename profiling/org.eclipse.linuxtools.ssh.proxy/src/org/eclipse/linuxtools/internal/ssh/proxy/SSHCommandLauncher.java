@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 IBM Corporation and others.
+ * Copyright (c) 2012, 2026 IBM Corporation and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.ssh.proxy;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 
@@ -77,10 +78,10 @@ public class SSHCommandLauncher extends SSHBase implements IRemoteCommandLaunche
                 }
 
             channel.setCommand(cmd.toString());
-            channel.connect();
             fProcess = new SSHProcess(channel);
+            channel.connect();
             return fProcess;
-        } catch (JSchException e) {
+        } catch (JSchException | IOException e) {
             throw new CoreException(Status.error(Messages.SSHCommandLauncher_execution_problem + e.getMessage(), e));
         }
     }
