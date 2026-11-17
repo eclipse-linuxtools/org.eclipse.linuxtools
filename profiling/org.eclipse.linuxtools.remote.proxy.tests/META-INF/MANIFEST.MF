@@ -18,10 +18,8 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.remote.proxy.tests;
   x-friends:="org.eclipse.linuxtools.tools.launch.core.tests,
    org.eclipse.linuxtools.rdt.proxy.tests";
-  uses:="org.eclipse.remote.core,
-   org.eclipse.linuxtools.profiling.launch,
+  uses:="org.eclipse.linuxtools.profiling.launch,
    org.eclipse.cdt.core.model,
-   org.eclipse.ptp.rdt.sync.core,
    org.eclipse.core.resources,
    org.eclipse.debug.core,
    org.eclipse.linuxtools.profiling.tests"

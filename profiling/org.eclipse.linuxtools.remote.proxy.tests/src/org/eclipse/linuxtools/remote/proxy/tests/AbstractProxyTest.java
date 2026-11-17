@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 IBM Corporation and others.
- * 
+ * Copyright (c) 2015, 2026 IBM Corporation and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -13,51 +13,38 @@
 package org.eclipse.linuxtools.remote.proxy.tests;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.profiling.launch.RemoteProxyManager;
-import org.eclipse.linuxtools.profiling.tests.AbstractRemoteTest;
-import org.eclipse.remote.core.IRemoteConnection;
-import org.eclipse.remote.core.exception.RemoteConnectionException;
+import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-public abstract class AbstractProxyTest extends AbstractRemoteTest {
+/**
+ * Base class for the proxy tests, providing a local C project.
+ */
+public abstract class AbstractProxyTest extends AbstractTest {
 	protected static RemoteProxyManager proxyManager;
-	protected static final String CONNECTION_NAME = "test_connection";
-	protected static IRemoteConnection connection = null;
 	protected ICProject localProject = null;
-	protected ICProject syncProject = null;
 	protected final String PLUGIN = "org.eclipse.linuxtools.remote.proxy.tests";
 
 	@BeforeEach
-	public void setUp() throws RemoteConnectionException {
+	public void setUp() throws Exception {
 		proxyManager = RemoteProxyManager.getInstance();
 		assertNotNull(proxyManager, "RemoteProxyManager object should not be null");
-		if(connection == null) {
-			connection = createJSchConnection(CONNECTION_NAME, CONNECTION_TYPE_JSCH);
-		}
-		createTestProjects();
+		localProject = createProject(Platform.getBundle(PLUGIN), "localTestProject");
+		assertNotNull(localProject);
 	}
 
 	@AfterEach
 	public void tearDown() throws CoreException {
-		if(localProject !=  null) {
+		if (localProject != null) {
 			deleteProject(localProject);
 			localProject = null;
-		}
-		if(syncProject !=  null) {
-			deleteProject(syncProject);
-			syncProject = null;
-		}
-		if(connection != null) {
-			deleteConnection(connection);
-			connection = null;
 		}
 	}
 
@@ -70,31 +57,5 @@ public abstract class AbstractProxyTest extends AbstractRemoteTest {
 	@Override
 	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) {
 		// Do nothing. This testsuite does not care about LaunchConfig
-	}
-
-	protected void createTestProjects() {
-		if (localProject == null) {
-			try {
-				localProject = createProject(Platform.getBundle(PLUGIN), "localTestProject");
-			} catch (Exception e) {
-				fail("Failed to create local project for the tests: " + e.getMessage());
-			}
-			assertNotNull(localProject);
-		}
-
-		if (syncProject == null) {
-			ICProject project = null;
-			try {
-				project = createProject(Platform.getBundle(PLUGIN), "syncTestProject");
-			} catch (Exception e) {
-				fail("Failed to create synchronized project for the tests: " + e.getMessage());
-			}
-			syncProject = project;
-			assertNotNull(syncProject);
-		}
-	}
-
-	public static IRemoteConnection getConnection() {
-		return connection;
 	}
 }
