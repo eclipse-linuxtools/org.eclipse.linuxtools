@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2019 Red Hat Inc. and others.
+ * Copyright (c) 2010, 2026 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -33,7 +33,6 @@ import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -67,7 +66,6 @@ public class AddChangelogEntrySWTBotTest extends AbstractSWTBotTest {
      *
      * @throws Exception
      */
-	@Disabled
     @Test
     public void canAddChangeLogEntryUsingShortCutIfSourceIsActive() throws Exception {
         // Add a Java source file
@@ -106,7 +104,7 @@ public class AddChangelogEntrySWTBotTest extends AbstractSWTBotTest {
         eclipseEditor.selectLine(getLineOfOffsetMarker(sourceCode));
 
         // Press: CTRL + ALT + c
-		eclipseEditor.pressShortcut(Keystrokes.CTRL, Keystrokes.ALT, KeyStroke.getInstance("c"));
+		eclipseEditor.pressShortcut(Keystrokes.CTRL, Keystrokes.ALT, KeyStroke.getInstance("C"));
         // Wait for ChangeLog editor to open
 		bot.waitUntil(Conditions.waitForEditor(withPartName("ChangeLog")));
         swtBoteditor = bot.activeEditor();

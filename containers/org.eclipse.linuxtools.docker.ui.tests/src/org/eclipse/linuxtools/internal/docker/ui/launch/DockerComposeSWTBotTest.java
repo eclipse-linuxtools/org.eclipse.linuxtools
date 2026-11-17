@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat.
+ * Copyright (c) 2016, 2026 Red Hat.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -59,7 +59,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -355,10 +354,6 @@ public class DockerComposeSWTBotTest {
 
 	@Test
 	@RunWithProject("foo")
-	@Disabled // ignored for now because the "Run" menu from the toolbar remains
-			// visible (on macOS) and this
-	// has side-effects on the other tests that fail because the widgets are not
-	// found.
 	public void shouldValidateLaunchConfiguration() throws CoreException {
 		// given
 		final DockerClient client = MockDockerClientFactory.build();

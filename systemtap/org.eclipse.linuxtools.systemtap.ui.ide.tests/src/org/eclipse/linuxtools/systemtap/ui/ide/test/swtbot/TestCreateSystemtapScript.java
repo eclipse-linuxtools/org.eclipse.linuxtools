@@ -79,7 +79,6 @@ import org.eclipse.ui.PlatformUI;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -1223,7 +1222,7 @@ public class TestCreateSystemtapScript {
         assertTrue(range2.upper - range2.lower == range.upper - range.lower && range2.upper > range.upper && getAxisScroll(cb, isXAxis) > scroll);
     }
 
-    @Test @Disabled
+    @Test
     public void testGraphTooltips() {
         createAndViewDummyData(new String[]{"Column 1"}, new Integer[]{1,2,3,4,5});
 
@@ -1273,6 +1272,17 @@ public class TestCreateSystemtapScript {
 					bot.getDisplay().post(event);
 				});
                 bot.sleep(100);
+				// Entering the plot area only fires a MouseEnter event, which is
+				// when the chart starts listening for mouse moves, so move next to
+				// the data point first and then onto it.
+				UIThreadRunnable.syncExec(() -> {
+					Point mousePoint = cb.getChart().getPlotArea().getControl()
+							.toDisplay(cb.getChart().getSeriesSet().getSeries()[0].getPixelCoordinates(dataPoint));
+					event.x = mousePoint.x - 1;
+					event.y = mousePoint.y;
+					bot.getDisplay().post(event);
+				});
+				bot.sleep(100);
 				UIThreadRunnable.syncExec(() -> {
 					Point mousePoint = cb.getChart().getPlotArea().getControl()
 							.toDisplay(cb.getChart().getSeriesSet().getSeries()[0].getPixelCoordinates(dataPoint));
