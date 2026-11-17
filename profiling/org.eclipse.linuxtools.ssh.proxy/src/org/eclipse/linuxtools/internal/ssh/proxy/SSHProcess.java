@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 IBM Corporation and others.
+ * Copyright (c) 2012, 2026 IBM Corporation and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -23,10 +23,18 @@ import com.jcraft.jsch.ChannelExec;
 public class SSHProcess extends Process {
 
     private ChannelExec channel;
+    private final InputStream inputStream;
+    private final InputStream errorStream;
     private static final long DELAY = 100;
 
-    public SSHProcess(ChannelExec channel) {
+    /**
+     * Must be created before the channel is connected, as JSch only passes
+     * the command output to streams that are requested before connecting.
+     */
+    public SSHProcess(ChannelExec channel) throws IOException {
         this.channel = channel;
+        this.inputStream = channel.getInputStream();
+        this.errorStream = channel.getErrStream();
     }
 
     @Override
@@ -40,20 +48,12 @@ public class SSHProcess extends Process {
 
     @Override
     public InputStream getInputStream() {
-        try {
-            return channel.getInputStream();
-        } catch (IOException e) {
-            return null;
-        }
+        return inputStream;
     }
 
     @Override
     public InputStream getErrorStream() {
-        try {
-            return channel.getErrStream();
-        } catch (IOException e) {
-            return null;
-        }
+        return errorStream;
     }
 
     @Override

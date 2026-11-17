@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 IBM Corporation and others.
+ * Copyright (c) 2012, 2026 IBM Corporation and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -44,7 +44,7 @@ public class SSHBase {
     private Session loadSession() throws CoreException {
         if (session == null || !session.isConnected()) {
             try {
-                session=jsch.getSession(uri.getUserInfo(), uri.getHost());
+                session = jsch.getSession(uri.getUserInfo(), uri.getHost(), uri.getPort() == -1 ? 22 : uri.getPort());
             } catch (JSchException e) {
                 throw new CoreException(Status.error(Messages.SSHBase_CreateSessionFailed + e.getMessage()));
             }
@@ -77,6 +77,9 @@ public class SSHBase {
     }
 
     private String askPassword(String user, String host) throws CoreException {
+        if (!PlatformUI.isWorkbenchRunning()) {
+            return ""; //$NON-NLS-1$
+        }
         IWorkbenchWindow w = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         if (w == null) {
             return ""; //$NON-NLS-1$
