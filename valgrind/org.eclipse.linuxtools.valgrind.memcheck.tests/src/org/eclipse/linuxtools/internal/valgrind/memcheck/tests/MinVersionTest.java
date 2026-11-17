@@ -57,7 +57,7 @@ public class MinVersionTest extends AbstractMemcheckTest {
     }
 
     @BeforeEach
-    public void prep() throws Exception {
+    public void prep() {
         saveVersion();
     }
 

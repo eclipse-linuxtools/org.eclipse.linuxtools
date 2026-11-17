@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2008, 2018 Red Hat, Inc.
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -67,8 +67,9 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
     private boolean isInitializing = false;
     private Version valgrindVersion;
 
-    private SelectionListener selectListener = SelectionListener.widgetSelectedAdapter(e -> updateLaunchConfigurationDialog());
-    private ModifyListener modifyListener = e -> updateLaunchConfigurationDialog();
+	private SelectionListener selectListener = SelectionListener
+			.widgetSelectedAdapter(_ -> updateLaunchConfigurationDialog());
+	private ModifyListener modifyListener = _ -> updateLaunchConfigurationDialog();
 
     @Override
     public void createControl(Composite parent) {
@@ -186,7 +187,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
         alignmentTop.setLayout(alignmentLayout);
         alignmentButton = new Button(alignmentTop, SWT.CHECK);
         alignmentButton.setText(Messages.getString("MassifToolPage.minimum_heap_block")); //$NON-NLS-1$
-		alignmentButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		alignmentButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			checkAlignmentEnablement();
 			updateLaunchConfigurationDialog();
 		}));
@@ -237,7 +238,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
         Button newButton = new Button(allocButtons, SWT.PUSH);
         newButton.setText(Messages.getString("MassifToolPage.New")); //$NON-NLS-1$
         newButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		newButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		newButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			handleAllocNewButtonPressed();
 			updateLaunchConfigurationDialog();
 		}));
@@ -245,7 +246,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
         Button removeButton = new Button(allocButtons, SWT.PUSH);
         removeButton.setText(Messages.getString("MassifToolPage.Remove")); //$NON-NLS-1$
         removeButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		removeButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		removeButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			handleAllocRemoveButtonPressed();
 			updateLaunchConfigurationDialog();
 		}));
@@ -266,7 +267,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
         Button newButton = new Button(ignoreButtons, SWT.PUSH);
         newButton.setText(Messages.getString("MassifToolPage.New")); //$NON-NLS-1$
         newButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		newButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		newButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			handleIgnoreNewButtonPressed();
 			updateLaunchConfigurationDialog();
 		}));
@@ -274,7 +275,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
         Button removeButton = new Button(ignoreButtons, SWT.PUSH);
         removeButton.setText(Messages.getString("MassifToolPage.Remove")); //$NON-NLS-1$
         removeButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		removeButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		removeButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 			handleIgnoreRemoveButtonPressed();
 			updateLaunchConfigurationDialog();
 		}));
