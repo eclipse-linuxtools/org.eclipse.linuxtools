@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2019 Red Hat, Inc. and others
+ * Copyright (c) 2004, 2026 Red Hat, Inc. and others
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -248,7 +248,7 @@ public class PerfLaunchConfigDelegate extends AbstractCLaunchDelegate {
                 PerfCore.refreshView(renderProcessLabel(binPath.toPortableString()));
                 if (config.getAttribute(PerfPlugin.ATTR_ShowSourceDisassembly,
                         PerfPlugin.ATTR_ShowSourceDisassembly_default)) {
-                    showSourceDisassembly(Path.fromPortableString(workingDirURI.toString() + IPath.SEPARATOR));
+                    showSourceDisassembly(workingDirPath);
                 }
 
             }
