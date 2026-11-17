@@ -41,7 +41,6 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.Test;
@@ -119,17 +118,6 @@ public class ImagePullSWTBotTest {
 	private void verifyImagePulled(final String imageName) throws DockerException, InterruptedException {
 		Mockito.verify(client, Mockito.timeout(TimeUnit.SECONDS.toMillis(10)).times(1)).pull(
 				ArgumentMatchers.eq(imageName), ArgumentMatchers.any(DockerProgressHandler.class));
-	}
-
-	@Disabled
-	@Test
-	public void shoulDisableSearchButtonWhenNoRegistrySelected() {
-		// given
-		openPullWizard();
-		// when
-		imageNameText().setText("jboss/wildfly:latest");
-		// then
-		assertFalse(wizardBot.button("Finish").isEnabled());
 	}
 
 	@Test

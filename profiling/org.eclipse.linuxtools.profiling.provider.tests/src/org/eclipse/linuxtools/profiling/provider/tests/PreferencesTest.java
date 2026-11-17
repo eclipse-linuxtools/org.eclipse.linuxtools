@@ -46,7 +46,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.PlatformUI;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.osgi.framework.FrameworkUtil;
@@ -166,7 +165,6 @@ public class PreferencesTest extends AbstractTest{
         bot.button("Apply and Close").click(); //$NON-NLS-1$
     }
 
-    @Disabled
     @Test
     public void testProfileProject() throws Exception {
         SWTWorkbenchBot bot = new SWTWorkbenchBot();
@@ -199,7 +197,7 @@ public class PreferencesTest extends AbstractTest{
         // Create new profiling configuration
         SWTBotTree profilingConfigs = bot.tree();
         SWTBotTree perfNode = profilingConfigs.select("Profile Timing"); //$NON-NLS-1$
-        perfNode.contextMenu("New").click(); //$NON-NLS-1$
+        perfNode.contextMenu("New Configuration").click(); //$NON-NLS-1$
         bot.button("Profile").click(); //$NON-NLS-1$
         bot.waitUntil(Conditions.shellCloses(shell));
 
@@ -207,7 +205,7 @@ public class PreferencesTest extends AbstractTest{
         SWTBotShell profileShell = bot.shell("Successful profile launch").activate(); //$NON-NLS-1$
         assertNotNull(profileShell);
 
-        bot.button("Apply and Close").click(); //$NON-NLS-1$
+        bot.button("OK").click(); //$NON-NLS-1$
         bot.waitUntil(shellCloses(profileShell));
     }
 
