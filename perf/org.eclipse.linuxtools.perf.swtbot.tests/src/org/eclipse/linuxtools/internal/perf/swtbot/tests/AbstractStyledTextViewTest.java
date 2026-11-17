@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Red Hat Inc.
+ * Copyright (c) 2013, 2026 Red Hat Inc.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -29,7 +29,7 @@ public abstract class AbstractStyledTextViewTest extends AbstractSWTBotTest {
     protected void testPerfView() {
         SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
-        SWTBotView view = bot.viewByTitle(getViewId());
+        SWTBotView view = bot.viewByPartName(getViewId());
         assertNotNull(view);
 
         view.setFocus();
