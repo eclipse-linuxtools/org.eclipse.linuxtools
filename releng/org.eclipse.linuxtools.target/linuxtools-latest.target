@@ -8,6 +8,8 @@
 <unit id="com.github.jnr.jffi.native" version="1.4.7.v20261103-1000"/>
 <unit id="org.aopalliance" version="1.0.0.v20230720-0728"/>
 <unit id="org.apache.httpcomponents.httpclient" version="4.5.14" />
+<unit id="org.apache.sshd.osgi" version="2.20.1"/>
+<unit id="org.apache.sshd.sftp" version="2.20.1"/>
 <repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/milestone/latest"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
