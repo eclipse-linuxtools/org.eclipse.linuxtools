@@ -189,14 +189,6 @@
 	    <!-- SWTBot still drags JUnit 4 onto the test classpath, which makes
 	         Tycho auto-detect the junit4 provider. Force JUnit 6 everywhere. -->
 	    <providerHint>junit6</providerHint>
-            <dependencies>
-               <dependency>
-                 <type>p2-installable-unit</type>
-                 <artifactId>org.eclipse.platform.feature.group</artifactId>
-                 <version>${sdk-version}</version>
-               </dependency>
-            </dependencies>
-            <product>org.eclipse.platform.ide</product>
  	    <argLine>${tycho.testArgLine}</argLine>
 	  </configuration>
 	</plugin>
