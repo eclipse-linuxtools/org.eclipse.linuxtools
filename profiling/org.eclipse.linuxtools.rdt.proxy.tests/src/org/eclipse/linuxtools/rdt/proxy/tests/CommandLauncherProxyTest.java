@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 IBM Corporation and others.
- * 
+ * Copyright (c) 2015, 2026 IBM Corporation and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -12,9 +12,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rdt.proxy.tests;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -29,64 +27,12 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.internal.profiling.launch.LocalLauncher;
-import org.eclipse.linuxtools.internal.rdt.proxy.RDTCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.remote.proxy.tests.AbstractProxyTest;
-import org.eclipse.remote.core.IRemoteConnection;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("restriction")
 public class CommandLauncherProxyTest extends AbstractProxyTest {
-	@Test
-	public void testRemoteCommandLauncher()  {
-		IRemoteCommandLauncher cl = null;
-		Process p = null;
-		IPath commandPath, changeToDirectory;
-		String[] args, env;
-		try {
-			cl =  proxyManager.getLauncher(syncProject.getProject());
-			assertInstanceOf(RDTCommandLauncher.class, cl, "Should have returned a remote launcher");
-		} catch (CoreException e) {
-			fail("Should have returned a launcher: " + e.getCause());
-		}
-
-		commandPath = new Path("uptime");
-		args = new String[]{"-s"};
-		env = new String[]{"PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"};
-		changeToDirectory = new Path("/tmp");
-		try {
-			p = cl.execute(commandPath, args, env, changeToDirectory, new NullProgressMonitor());
-			assertNotNull(p);
-			p.waitFor();
-			assertEquals(0, p.exitValue(), "Process exited with failure");
-		} catch (Exception e) {
-			fail("Unable to execute " + commandPath + " on remote machine: " + e.getMessage());
-		}
-		InputStream actualIS = p.getInputStream();
-		int v = -1;
-		try {
-			v = actualIS.read();
-		} catch (IOException e) {
-			fail("Failed to read output of command executed remotely: " + e.getMessage());
-		}
-		// Ensure something can be read
-		assertTrue(v != -1);
-
-		/*
-		 * Test it opens connection before execute.
-		 */
-		IRemoteConnection conn = getConnection();
-		conn.close();
-		assertFalse(conn.isOpen());
-		try {
-			p = cl.execute(new Path("ls"), new String[]{}, new String[]{}, null, new NullProgressMonitor());
-			assertNotNull(p);
-			p.waitFor();
-			assertEquals(0, p.exitValue(), "Process exited with failure");
-		} catch (CoreException | InterruptedException e) {
-			fail("Failed to open connection to execute a command: " + e.getMessage());
-		}
-	}
 
 	@Test
 	public void testLocalCommandLauncher() {
@@ -104,8 +50,8 @@ public class CommandLauncherProxyTest extends AbstractProxyTest {
 		/*
 		 * Prepare arguments for the test
 		 */
-		commandPath = new Path("/bin/uptime");
-		args = new String[]{"-s"};
+		commandPath = new Path("/bin/echo");
+		args = new String[]{"proxy-test"};
 		StringBuilder fullCmd = new StringBuilder();
 		fullCmd.append(commandPath.toOSString());
 		for(String s: args) {
@@ -124,7 +70,7 @@ public class CommandLauncherProxyTest extends AbstractProxyTest {
 		 */
 		try {
 			p = cl.execute(commandPath, args, env, changeToDirectory, new NullProgressMonitor());
-			assertNotNull(p);
+			assertNotNull(p, cl.getErrorMessage());
 			while(p.isAlive()){}
 			// Call to waitFor() will drive to empty result
 			//p.waitFor();

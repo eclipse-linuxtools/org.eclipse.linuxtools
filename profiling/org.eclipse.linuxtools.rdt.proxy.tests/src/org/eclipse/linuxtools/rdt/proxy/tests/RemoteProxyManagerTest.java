@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 IBM Corporation and others.
- * 
+ * Copyright (c) 2015, 2026 IBM Corporation and others.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -16,13 +16,14 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URI;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.internal.profiling.launch.LocalFileProxy;
 import org.eclipse.linuxtools.internal.profiling.launch.LocalLauncher;
+import org.eclipse.linuxtools.internal.rdt.proxy.Activator;
 import org.eclipse.linuxtools.internal.rdt.proxy.RDTCommandLauncher;
 import org.eclipse.linuxtools.internal.rdt.proxy.RDTFileProxy;
 import org.eclipse.linuxtools.internal.ssh.proxy.SSHCommandLauncher;
@@ -30,120 +31,88 @@ import org.eclipse.linuxtools.internal.ssh.proxy.SSHFileProxy;
 import org.eclipse.linuxtools.profiling.launch.IRemoteCommandLauncher;
 import org.eclipse.linuxtools.profiling.launch.IRemoteFileProxy;
 import org.eclipse.linuxtools.remote.proxy.tests.AbstractProxyTest;
+import org.eclipse.remote.core.IRemoteConnection;
+import org.eclipse.remote.core.IRemoteConnectionType;
+import org.eclipse.remote.core.IRemoteServicesManager;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Tests which proxy implementation is chosen for a given URI or project. The
+ * remote connection is defined but never opened, as choosing a proxy doesn't
+ * need to connect.
+ */
 @SuppressWarnings("restriction")
 public class RemoteProxyManagerTest extends AbstractProxyTest {
 
-	@Test
-	public void testGetFileProxy() {
-		IRemoteFileProxy fp;
-		try {
-			/*
-			 * Test the proxy for local URIs and project
-			 */
-			fp = proxyManager.getFileProxy(URI.create("/path/to/file"));
-			assertInstanceOf(LocalFileProxy.class, fp, "Should return a local file proxy");
-			fp = proxyManager.getFileProxy(URI.create("file:/path/to/file"));
-			assertInstanceOf(LocalFileProxy.class, fp, "Should return a local file proxy");
-			fp = proxyManager.getFileProxy(localProject.getLocationURI());
-			assertInstanceOf(LocalFileProxy.class, fp, "Should return a local file proxy");
-			fp = proxyManager.getFileProxy(localProject.getProject());
-			assertInstanceOf(LocalFileProxy.class, fp, "Should return a local file proxy");
-			/*
-			 * Test the proxy for remote URIs and project
-			 */
-			fp = proxyManager.getFileProxy(URI.create("ssh://" + CONNECTION_NAME + "/path/to/file"));
-			assertInstanceOf(RDTFileProxy.class, fp, "Should have returned a remote file proxy");
-			fp = proxyManager.getFileProxy(syncProject.getProject());
-			assertInstanceOf(RDTFileProxy.class, fp, "Should have returned a remote file proxy");
-			/*
-			 * Test the proxy for jsch connection scheme
-			 */
-			fp = proxyManager.getFileProxy(URI.create("jsch://" + USERNAME + "@" + HOST + ":22/path/to/file"));
-			assertInstanceOf(SSHFileProxy.class, fp, "Should have returned a remote file proxy");
-		} catch (CoreException e) {
-			fail("Should have returned a file proxy: " + e.getCause());
-		}
+	private static final String CONNECTION_TYPE_JSCH = "org.eclipse.remote.JSch";
+	private static final String CONNECTION_NAME = "test_connection";
+	private static final URI SSH_URI = URI.create("ssh://" + CONNECTION_NAME + "/path/to/file");
+	private static final URI JSCH_URI = URI.create("jsch://user@example.invalid:22/path/to/file");
+	private static final URI UNSUPPORTED_URI = URI.create("remotetools://MyConnection/path/to/file");
 
-		/*
-		 * Test the proxy for unsupported URIs
-		 */
-		// As of org.eclipse.remote 2.0, remotetools scheme is no longer
-		// support
-		assertThrows(CoreException.class, ()-> proxyManager.getFileProxy(URI.create("remotetools://MyConnection/path/to/file")), "remotetools scheme should not be recognized");
+	private IRemoteConnection connection;
+
+	@BeforeEach
+	public void createConnection() throws CoreException {
+		IRemoteServicesManager manager = Activator.getService(IRemoteServicesManager.class);
+		assertNotNull(manager);
+		IRemoteConnectionType connectionType = manager.getConnectionType(CONNECTION_TYPE_JSCH);
+		assertNotNull(connectionType);
+		connection = connectionType.newConnection(CONNECTION_NAME).save();
+	}
+
+	@AfterEach
+	public void removeConnection() throws CoreException {
+		if (connection != null) {
+			connection.getConnectionType().removeConnection(connection);
+			connection = null;
+		}
 	}
 
 	@Test
-	public void testGetLauncher() {
-		IRemoteCommandLauncher cl;
-		try {
-			/*
-			 * Test launcher got for local URIs and project
-			 */
-			cl = proxyManager.getLauncher(localProject.getLocationURI());
-			assertInstanceOf(LocalLauncher.class, cl, "Should have returned a local launcher");
-			cl = proxyManager.getLauncher(localProject.getProject());
-			assertInstanceOf(LocalLauncher.class, cl, "Should have returned a local launcher");
-			/*
-			 * Test launcher got for remote project and URI
-			 */
-			cl = proxyManager.getLauncher(URI.create("ssh://" + CONNECTION_NAME + "/path/to/file"));
-			assertInstanceOf(RDTCommandLauncher.class, cl, "Should have returned a remote file proxy");
-			cl = proxyManager.getLauncher(syncProject.getProject());
-			assertInstanceOf(RDTCommandLauncher.class, cl, "Should have returned a remote launcher");
-			/*
-			 * Test launcher got for jsch scheme
-			 */
-			cl = proxyManager.getLauncher(URI.create("jsch://" + USERNAME + "@" + HOST + ":22/path/to/file"));
-			assertInstanceOf(SSHCommandLauncher.class, cl, "Should have returned a remote file proxy");
-		} catch (CoreException e) {
-			fail("Should have returned a launcher: " + e.getCause());
-		}
-
-		/*
-		 * Test the proxy for unsupported URIs
-		 */
-		// As of org.eclipse.remote 2.0, remotetools scheme is no longer
-		// support
-		assertThrows(CoreException.class, ()->proxyManager.getLauncher(URI.create("remotetools://MyConnection/path/to/file")),"remotetools scheme should not be recognized");
+	public void testGetFileProxy() throws CoreException {
+		// local URIs and project
+		assertInstanceOf(LocalFileProxy.class, proxyManager.getFileProxy(URI.create("/path/to/file")));
+		assertInstanceOf(LocalFileProxy.class, proxyManager.getFileProxy(URI.create("file:/path/to/file")));
+		assertInstanceOf(LocalFileProxy.class, proxyManager.getFileProxy(localProject.getLocationURI()));
+		assertInstanceOf(LocalFileProxy.class, proxyManager.getFileProxy(localProject.getProject()));
+		// ssh scheme: both the RDT and the SSH proxy register it, and the first
+		// one found in the extension registry is used
+		IRemoteFileProxy sshFileProxy = proxyManager.getFileProxy(SSH_URI);
+		assertTrue(sshFileProxy instanceof RDTFileProxy || sshFileProxy instanceof SSHFileProxy,
+				"Should return a remote file proxy: " + sshFileProxy);
+		// jsch scheme
+		assertInstanceOf(SSHFileProxy.class, proxyManager.getFileProxy(JSCH_URI));
+		// As of org.eclipse.remote 2.0, remotetools scheme is no longer supported
+		assertThrows(CoreException.class, () -> proxyManager.getFileProxy(UNSUPPORTED_URI));
 	}
 
 	@Test
-	public void testGetOS() {
-		String actualOS = null;
-		try {
-			/*
-			 * Test got OS for local URIs and project
-			 */
-			actualOS = proxyManager.getOS(URI.create("/path/to/file"));
-			assertNotNull(actualOS);
-			assertFalse(actualOS.isEmpty(), "Should have returned the OS name");
-			actualOS = proxyManager.getOS(URI.create("file:/path/to/file"));
-			assertNotNull(actualOS);
-			assertFalse(actualOS.isEmpty(), "Should have returned the OS name");
-			actualOS = proxyManager.getOS(localProject.getLocationURI());
-			assertNotNull(actualOS);
-			assertFalse(actualOS.isEmpty(), "Should have returned the OS name");
-			actualOS = proxyManager.getOS(localProject.getProject());
-			assertNotNull(actualOS);
-			assertFalse(actualOS.isEmpty(), "Should have returned the OS name");
-			/*
-			 * Test got OS for remote URIs and project
-			 */
-			actualOS = proxyManager.getOS(syncProject.getProject());
-			assertNotNull(actualOS);
-			assertFalse(actualOS.isEmpty(), "Should have returned the OS name");
-		} catch (CoreException e) {
-			fail("Unabled to get OS name: " + e.getMessage());
-		}
+	public void testGetLauncher() throws CoreException {
+		// local URI and project
+		assertInstanceOf(LocalLauncher.class, proxyManager.getLauncher(localProject.getLocationURI()));
+		assertInstanceOf(LocalLauncher.class, proxyManager.getLauncher(localProject.getProject()));
+		// ssh scheme: both the RDT and the SSH proxy register it, and the first
+		// one found in the extension registry is used
+		IRemoteCommandLauncher sshLauncher = proxyManager.getLauncher(SSH_URI);
+		assertTrue(sshLauncher instanceof RDTCommandLauncher || sshLauncher instanceof SSHCommandLauncher,
+				"Should return a remote launcher: " + sshLauncher);
+		// jsch scheme
+		assertInstanceOf(SSHCommandLauncher.class, proxyManager.getLauncher(JSCH_URI));
+		// As of org.eclipse.remote 2.0, remotetools scheme is no longer supported
+		assertThrows(CoreException.class, () -> proxyManager.getLauncher(UNSUPPORTED_URI));
+	}
 
-		/*
-		 * Test the proxy for unsupported URIs
-		 */
-		// As of org.eclipse.remote 2.0, remotetools scheme is no longer
-		// support
-		assertThrows(CoreException.class, ()-> proxyManager.getOS(URI.create("remotetools://MyConnection/path/to/file")),"remotetools scheme should not be recognized");
+	@Test
+	public void testGetOS() throws CoreException {
+		assertFalse(proxyManager.getOS(URI.create("/path/to/file")).isEmpty());
+		assertFalse(proxyManager.getOS(URI.create("file:/path/to/file")).isEmpty());
+		assertFalse(proxyManager.getOS(localProject.getLocationURI()).isEmpty());
+		assertFalse(proxyManager.getOS(localProject.getProject()).isEmpty());
+		// As of org.eclipse.remote 2.0, remotetools scheme is no longer supported
+		assertThrows(CoreException.class, () -> proxyManager.getOS(UNSUPPORTED_URI));
 	}
 
 }

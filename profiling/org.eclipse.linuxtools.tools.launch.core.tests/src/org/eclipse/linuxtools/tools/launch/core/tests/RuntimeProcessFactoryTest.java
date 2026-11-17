@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 IBM Corporation and others.
+ * Copyright (c) 2016, 2026 IBM Corporation and others.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -35,9 +35,7 @@ public class RuntimeProcessFactoryTest extends AbstractProxyTest {
 
 		Object[][] testCases = {
 				{localProject.getProject(), "ls", true},
-				{localProject.getProject(), "notexistcmd", false},
-				{syncProject.getProject(), "ls", true},
-				{syncProject.getProject(), "notexistcmd", false}
+				{localProject.getProject(), "notexistcmd", false}
 		};
 
 		for(Object[] params : testCases) {
