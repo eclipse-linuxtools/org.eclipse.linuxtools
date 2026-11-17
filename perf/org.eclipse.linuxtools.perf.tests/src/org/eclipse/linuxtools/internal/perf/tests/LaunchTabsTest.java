@@ -66,7 +66,7 @@ public class LaunchTabsTest extends AbstractTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         testShell.dispose();
     }
 
