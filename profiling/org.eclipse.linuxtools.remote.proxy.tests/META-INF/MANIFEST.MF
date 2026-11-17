@@ -12,7 +12,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.linuxtools.profiling.tests;bundle-version="1.1.0",
  org.eclipse.debug.core,
  org.eclipse.cdt.core,
- org.eclipse.core.filesystem
+ org.eclipse.core.filesystem,
+ org.eclipse.linuxtools.ssh.proxy;bundle-version="1.2.0",
+ org.apache.sshd.osgi;bundle-version="2.20.0",
+ org.apache.sshd.sftp;bundle-version="2.20.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.remote.proxy.tests;
