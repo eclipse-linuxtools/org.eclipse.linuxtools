@@ -64,6 +64,11 @@
 <unit id="org.eclipse.swtbot.feature.group" version="0.0.0"/>
 <repository location="https://download.eclipse.org/technology/swtbot/releases/latest/"/>
 </location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.swtchart" version="0.0.0"/>
+<unit id="org.eclipse.swtchart.extensions" version="0.0.0"/>
+<repository location="https://download.eclipse.org/swtchart/integration/develop/repository/"/>
+</location>
 	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="error" type="Maven">
 		<dependencies>
 			<dependency>
@@ -257,18 +262,6 @@
 				<groupId>org.mandas</groupId>
 				<artifactId>docker-client</artifactId>
 				<version>11.0.3</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.swtchart</groupId>
-				<artifactId>org.eclipse.swtchart</artifactId>
-				<version>1.1.0</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.swtchart</groupId>
-				<artifactId>org.eclipse.swtchart.extensions</artifactId>
-				<version>1.1.0</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
