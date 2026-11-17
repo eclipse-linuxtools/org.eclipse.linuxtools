@@ -178,6 +178,11 @@ public class StapGraph extends Graph {
         this.addMouseListener(mListener);
         this.addKeyListener(new StapGraphKeyListener(this));
         this.addMouseWheelListener(new StapGraphMouseWheelListener(this));
+        this.addDisposeListener(e -> {
+            if (proj != null) {
+                proj.cancel();
+            }
+        });
 
     }
 

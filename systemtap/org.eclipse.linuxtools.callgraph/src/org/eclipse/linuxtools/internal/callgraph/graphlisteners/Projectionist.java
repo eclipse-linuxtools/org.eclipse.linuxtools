@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 Red Hat, Inc.
+ * Copyright (c) 2009, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -25,8 +25,8 @@ import org.eclipse.swt.widgets.Display;
 public class Projectionist extends Job {
     private StapGraph graph;
     private int frameTime = 2000;
-    private boolean pause;
-    private boolean busy;
+    private volatile boolean pause;
+    private volatile boolean busy;
 
 
     /**
@@ -46,7 +46,11 @@ public class Projectionist extends Job {
     public IStatus run(IProgressMonitor monitor) {
 
         long snapshot = System.currentTimeMillis();
-        while (true) {
+        while (!monitor.isCanceled()) {
+            if (pause || graph.isDisposed()) {
+                return Status.OK_STATUS;
+            }
+
             if (busy) {
                 try {
                     Thread.sleep(300);
@@ -56,17 +60,15 @@ public class Projectionist extends Job {
                 continue;
             }
 
-            if (pause) {
-                return Status.OK_STATUS;
-            }
-
             if (System.currentTimeMillis() - snapshot >= frameTime) {
                 snapshot = System.currentTimeMillis();
                 busy = true;
                 Display.getDefault().asyncExec(() -> {
-				    graph.drawNextNode();
-				    busy = false;
-				});
+                    if (!graph.isDisposed()) {
+                        graph.drawNextNode();
+                    }
+                    busy = false;
+                });
 
             } else {
                 try {
@@ -74,9 +76,6 @@ public class Projectionist extends Job {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
-            if (monitor.isCanceled()) {
-                break;
             }
         }
 
