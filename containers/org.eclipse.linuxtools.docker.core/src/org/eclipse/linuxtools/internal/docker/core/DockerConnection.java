@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2022 Red Hat Inc. and others.
+ * Copyright (c) 2014, 2026 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -1158,9 +1158,12 @@ public class DockerConnection
 	 */
 	private static DockerImageQualifier resolveQualifier(
 			final Image nativeImage, final List<Image> nativeImages) {
-		final boolean hasTag = !(nativeImage.repoTags() == null
-				|| (nativeImage.repoTags().size() == 1
-						&& nativeImage.repoTags().contains("<none>:<none>"))); //$NON-NLS-1$
+		// untagged images have no repo tags, or a single <none>:<none> one
+		// with older Docker versions
+		final List<String> repoTags = nativeImage.repoTags();
+		final boolean hasTag = !(repoTags == null || repoTags.isEmpty()
+				|| (repoTags.size() == 1
+						&& repoTags.contains("<none>:<none>"))); //$NON-NLS-1$
 		final boolean hasChildImage = nativeImages.stream()
 				.anyMatch(i -> nativeImage.id().equals(i.parentId()));
 		// imtermediate image
