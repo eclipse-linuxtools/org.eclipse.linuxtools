@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2024 Red Hat Inc.
+ * Copyright (c) 2013, 2026 Red Hat Inc.
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,10 +14,13 @@ package org.eclipse.linuxtools.internal.perf.swtbot.tests;
 
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.waitForWidget;
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.widgetIsEnabled;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.DebugUITools;
@@ -62,14 +65,6 @@ public abstract class AbstractSWTBotTest extends AbstractTest {
 
         // Set C/C++ perspective.
         bot.perspectiveByLabel("C/C++").activate();
-        bot.sleep(500);
-        for (SWTBotShell sh : bot.shells()) {
-            if (sh.getText().startsWith("C/C++")) {
-                sh.activate();
-                bot.sleep(500);
-                break;
-            }
-        }
 
         // Turn off automatic building by default to avoid timing issues
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -108,8 +103,10 @@ public abstract class AbstractSWTBotTest extends AbstractTest {
     }
 
     private void runPerfViewTestActions(SWTWorkbenchBot bot) throws Exception {
+        final Shell shellWidget = UIThreadRunnable
+                .syncExec(() -> PlatformUI.getWorkbench().getWorkbenchWindows()[0].getShell());
+        new SWTBotShell(shellWidget).activate();
         projectExplorer.bot().tree().select(PROJ_NAME);
-        final Shell shellWidget = bot.activeShell().widget;
 
         // Open profiling configurations dialog
 		UIThreadRunnable.asyncExec(() -> {
@@ -123,7 +120,7 @@ public abstract class AbstractSWTBotTest extends AbstractTest {
         // Create new Perf configuration
         SWTBotTree profilingConfigs = bot.tree();
         SWTBotTree perfNode = profilingConfigs.select("Profile with Perf");
-        perfNode.contextMenu("New").click();
+        perfNode.contextMenu("New Configuration").click();
 
         // Activate options tab
         bot.cTabItem("Perf Options").activate();
@@ -150,11 +147,15 @@ public abstract class AbstractSWTBotTest extends AbstractTest {
      */
     public void compareWithEachOther (String first, String second) {
         SWTWorkbenchBot bot = new SWTWorkbenchBot();
+        try {
+            proj.getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
+        } catch (CoreException e) {
+            fail("Failed to refresh the project", e);
+        }
         enterProjectFolder(bot);
 
-        // Refresh and Select
+        // Select
         SWTBotTree treeBot = projectExplorer.bot().tree();
-        treeBot.contextMenu("Refresh").click();
         treeBot.select(new String [] {first, second});
 
         // Workaround for context menu on multiple selections
