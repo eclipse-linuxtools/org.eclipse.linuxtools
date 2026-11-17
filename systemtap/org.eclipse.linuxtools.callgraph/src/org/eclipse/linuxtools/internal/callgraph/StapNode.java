@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 Red Hat, Inc.
+ * Copyright (c) 2009, 2026 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -28,7 +28,7 @@ public class StapNode extends GraphNode{
     static NumberFormat numberFormat = NumberFormat.getInstance(Locale.CANADA);
 
     public StapNode(StapGraph graphModel, int style, StapData data) {
-        super(graphModel, style, Messages.getString("StapNode.0")); //$NON-NLS-1$
+        super(graphModel, style);
         numberFormat.setMaximumFractionDigits(2);
         numberFormat.setMinimumFractionDigits(2);
         if (Display.getCurrent().getPrimaryMonitor().getBounds().width < 1000) {
