@@ -47,11 +47,18 @@
   <properties>
     <mirror-repo-name>updates-nightly</mirror-repo-name>
     <mirror-docker-repo-name>updates-docker-nightly</mirror-docker-repo-name>
-    <tycho-version>5.0.4</tycho-version>
+    <tycho-version>5.0.5-SNAPSHOT</tycho-version>
     <tycho.scmUrl>scm:git:https://github.com/eclipse-linuxtools/org.eclipse.linuxtools</tycho.scmUrl>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <pluginRepositories>
+    <pluginRepository>
+      <id>tycho-snapshots</id>
+      <url>https://repo.eclipse.org/content/repositories/tycho-snapshots/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
 	<pluginRepository>
 	  	<id>dash-licenses-snapshots</id>
 	  	<url>https://repo.eclipse.org/content/repositories/dash-licenses-snapshots/</url>
