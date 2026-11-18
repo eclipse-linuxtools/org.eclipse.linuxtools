@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2018 Red Hat Inc. and others.
+ * Copyright (c) 2010, 2026 Red Hat Inc. and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -82,10 +82,24 @@ public class ProjectExplorer {
         for (SWTBotTreeItem item : projectExplorerTree.getAllItems()) {
             String itemName = item.getText();
             if (itemName.equals(projectName) || itemName.startsWith(projectName + " ")) {
-                return item.expand();
+                return expandIfCollapsed(item);
             }
         }
         return null;
+    }
+
+    /**
+     * Expands the given tree item unless it is already expanded, in which case
+     * {@link SWTBotTreeItem#expand()} would do nothing but log a warning.
+     *
+     * @param item The tree item to expand.
+     * @return The given tree item.
+     */
+    private static SWTBotTreeItem expandIfCollapsed(SWTBotTreeItem item) {
+        if (!item.isExpanded()) {
+            item.expand();
+        }
+        return item;
     }
 
     /**
@@ -101,10 +115,10 @@ public class ProjectExplorer {
             itemName = item.getText();
             if (itemName.contains(projectName)) { // may also contain repo info
                 if (itemName.contains(teamProviderString)) {
-                    return projectExplorerTree.expandNode(projectName + " "
-                            + teamProviderString);
+                    return expandIfCollapsed(projectExplorerTree.getTreeItem(projectName + " "
+                            + teamProviderString));
                 } else {
-                    return projectExplorerTree.expandNode(projectName);
+                    return expandIfCollapsed(projectExplorerTree.getTreeItem(projectName));
                 }
             }
         }

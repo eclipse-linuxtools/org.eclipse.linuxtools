@@ -232,7 +232,7 @@ public class SWTUtils {
 			// Expand notification asynchronously to the UI thread, so calling it
 			// from within a syncExec would mark the item expanded before the viewer
 			// had a chance to create its children.
-			swtBotTreeItem.expand();
+			expandIfCollapsed(swtBotTreeItem);
 			final String[] remainingPath = new String[paths.length - 1];
 			System.arraycopy(paths, 1, remainingPath, 0, remainingPath.length);
 			return getTreeItem(getLoadedItems(swtBotTreeItem), remainingPath);
@@ -411,8 +411,23 @@ public class SWTUtils {
 		// let SWTBot drive the expansion from the test thread: it notifies the
 		// tree from a syncExec, so the viewer has created the children (or the
 		// "Loading..." stub) by the time expand() returns.
-		treeItem.expand();
+		expandIfCollapsed(treeItem);
 		waitForChildrenToLoad(treeItem);
+		return treeItem;
+	}
+
+	/**
+	 * Expands the given tree item unless it is already expanded, in which case
+	 * {@link SWTBotTreeItem#expand()} would do nothing but log a warning.
+	 *
+	 * @param treeItem
+	 *            the tree item to expand
+	 * @return the given tree item
+	 */
+	public static SWTBotTreeItem expandIfCollapsed(final SWTBotTreeItem treeItem) {
+		if (!treeItem.isExpanded()) {
+			treeItem.expand();
+		}
 		return treeItem;
 	}
 

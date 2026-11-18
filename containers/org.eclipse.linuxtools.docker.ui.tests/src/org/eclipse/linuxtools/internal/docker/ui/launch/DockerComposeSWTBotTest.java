@@ -186,7 +186,7 @@ public class DockerComposeSWTBotTest {
 		projectExplorerBotView.setFocus();
 		final SWTBotTreeItem fooProjectTreeItem = SWTUtils.getTreeItem(projectExplorerBotView, projectName);
 		assertThat(fooProjectTreeItem).isNotNull();
-		UIThreadRunnable.syncExec(() -> fooProjectTreeItem.expand());
+		UIThreadRunnable.syncExec(() -> SWTUtils.expandIfCollapsed(fooProjectTreeItem));
 		final SWTBotTreeItem dockerfileTreeItem = SWTUtils.getTreeItem(fooProjectTreeItem, dockerComposeFileName);
 		assertThat(dockerfileTreeItem).isNotNull();
 		// select the item itself: SWTUtils.select(item, matchers...) with no matchers

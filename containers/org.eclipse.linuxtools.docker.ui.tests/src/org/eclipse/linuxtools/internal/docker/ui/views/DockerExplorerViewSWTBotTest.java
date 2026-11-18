@@ -125,7 +125,7 @@ public class DockerExplorerViewSWTBotTest {
 		final SWTBotTreeItem imagesTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, connectionName, "Images");
 		// the images are retrieved by a background job once the node is
 		// expanded, so wait for them before selecting
-		UIThreadRunnable.syncExec(() -> imagesTreeItem.expand());
+		UIThreadRunnable.syncExec(() -> SWTUtils.expandIfCollapsed(imagesTreeItem));
 		SWTUtils.getLoadedItems(imagesTreeItem);
 		// select both images
 		SWTUtils.select(imagesTreeItem, imageNames);
@@ -170,7 +170,7 @@ public class DockerExplorerViewSWTBotTest {
 		// when locating the 'Images' node and hit refresh
 		dockerExplorerViewBot.bot().tree().select(imagesTreeItem);
 		dockerExplorerViewBot.bot().tree().contextMenu("Refresh").click();
-		SWTUtils.waitUntil(() -> imagesTreeItem.expand().getItems().length == 1, "Images were not refreshed");
+		SWTUtils.waitUntil(() -> SWTUtils.expandIfCollapsed(imagesTreeItem).getItems().length == 1, "Images were not refreshed");
 		Conditions.waitForJobs(DockerExplorerView.class, "Docker Explorer View jobs");
 		// then check that there are images now
 		Assertions.assertThat(imagesTreeItem.isExpanded()).isTrue();
@@ -199,7 +199,7 @@ public class DockerExplorerViewSWTBotTest {
 		dockerConnection.setClient(updatedClient);
 		dockerExplorerViewBot.bot().tree().select(containersTreeItem);
 		dockerExplorerViewBot.bot().tree().contextMenu("Refresh").click();
-		bot.getDisplay().asyncExec(() -> containersTreeItem.expand());
+		bot.getDisplay().asyncExec(() -> SWTUtils.expandIfCollapsed(containersTreeItem));
 
 		// then check that there are images now
 		Assertions.assertThat(containersTreeItem.isExpanded()).isTrue();
@@ -288,7 +288,7 @@ public class DockerExplorerViewSWTBotTest {
 		// when refreshing the container
 		dockerExplorerViewBot.bot().tree().select(containers);
 		dockerExplorerViewBot.bot().tree().contextMenu("Refresh").click();
-		bot.getDisplay().asyncExec(() -> containers.expand());
+		bot.getDisplay().asyncExec(() -> SWTUtils.expandIfCollapsed(containers));
 		// then all items should remain expanded (after they were reloaded)
 		SWTBotTreeItemAssertions.assertThat(SWTUtils.getTreeItem(containers, "foo_bar", "Links")).isExpanded();
 		SWTBotTreeItemAssertions.assertThat(SWTUtils.getTreeItem(containers, "foo_bar", "Ports")).isExpanded();
@@ -600,7 +600,7 @@ public class DockerExplorerViewSWTBotTest {
 		bot.getDisplay().asyncExec(() -> dockerExplorerView.getCommonViewer().expandAll());
 		final SWTBotTreeItem imagesTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test", "Images");
 		// when
-		bot.getDisplay().asyncExec(() -> imagesTreeItem.expand());
+		bot.getDisplay().asyncExec(() -> SWTUtils.expandIfCollapsed(imagesTreeItem));
 		// then 2 images should be displayed
 		final SWTBotTreeItem[] images = imagesTreeItem.getItems();
 		assertThat(images).hasSize(2);
@@ -618,7 +618,7 @@ public class DockerExplorerViewSWTBotTest {
 		DockerConnectionManagerUtils.configureConnectionManager(dockerConnection);
 		// when
 		final SWTBotTreeItem connectionTreeItem = SWTUtils.getTreeItem(dockerExplorerViewBot, "Test");
-		UIThreadRunnable.syncExec(() -> connectionTreeItem.expand());
+		UIThreadRunnable.syncExec(() -> SWTUtils.expandIfCollapsed(connectionTreeItem));
 		// then the ping should fail and the connection should be closed...
 		bot.waitUntil(new DefaultCondition() {
 
