@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2018 Red Hat, Inc. and others
+ * Copyright (c) 2004, 2026 Red Hat, Inc. and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -52,7 +52,7 @@ public class GcovLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
     @Override
     public void launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
         this.config = config;
-        this.project = getProject();
+        this.project = CDebugUtils.verifyCProject(config).getProject();
         IPath exePath = getExePath(config);
 
         //If pre-requisites fail, (e.g flag is not set & user does not wish to have them set automatically),
@@ -66,7 +66,7 @@ public class GcovLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
          * originally in the CDT under LocalCDILaunchDelegate::RunLocalApplication
          */
         //set up and launch the local c/c++ program
-        IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(getProject());
+        IRemoteCommandLauncher launcher = RemoteProxyManager.getInstance().getLauncher(project);
 
         File workDir = getWorkingDirectory(config);
         if (workDir == null) {
@@ -76,7 +76,7 @@ public class GcovLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
 
         //add a listener for termination of the launch
         ILaunchManager lmgr = DebugPlugin.getDefault().getLaunchManager();
-        lmgr.addLaunchListener(new LaunchTerminationWatcher(launch, exePath));
+        lmgr.addLaunchListener(new LaunchTerminationWatcher(launch, project, exePath));
 
        //gcov.out is generated here:
         Process process = launcher.execute(exePath, arguments, getEnvironment(config), new Path(workDir.getAbsolutePath()), monitor);
@@ -193,30 +193,30 @@ public class GcovLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
         }
     }
 
-    //A class used to listen for the termination of the current launch, and
-    // run some functions when it is finished.
-    class LaunchTerminationWatcher implements ILaunchesListener2 {
-        private ILaunch launch;
-        private IPath exePath;
-        public LaunchTerminationWatcher(ILaunch il, IPath exePath) {
+    // Listens for the termination of one launch and shows its coverage results.
+    // It keeps its own project as the delegate is shared by all gcov launches,
+    // and unregisters itself once its launch has terminated.
+    static class LaunchTerminationWatcher implements ILaunchesListener2 {
+        private final ILaunch launch;
+        private final IProject project;
+        private final IPath exePath;
+        public LaunchTerminationWatcher(ILaunch il, IProject project, IPath exePath) {
             launch = il;
+            this.project = project;
             this.exePath = exePath;
         }
         @Override
         public void launchesTerminated(ILaunch[] launches) {
 
             for (ILaunch l : launches) {
-                /**
-                 * Dump samples from the daemon,
-                 * shut down the daemon,
-                 * activate the OProfile view (open it if it isn't already),
-                 * refresh the view (which parses the data/ui model and displays it).
-                 */
             	if (l.equals(launch)) {
-            		//need to run this in the ui thread otherwise get SWT Exceptions
-            		// based on concurrency issues
+            		DebugPlugin.getDefault().getLaunchManager().removeLaunchListener(this);
+            		// the project may be gone by the time the launch terminates
+            		if (!project.exists()) {
+            			return;
+            		}
             		String s = exePath.toOSString();
-            		CovManager cvrgeMnger = new CovManager(s, getProject());
+            		CovManager cvrgeMnger = new CovManager(s, project);
 
             		try {
             			List<String> gcdaPaths = cvrgeMnger.getGCDALocations();
@@ -229,7 +229,7 @@ public class GcovLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
             				});
             			}
             			CovView.displayCovResults(s, null);
-            			GcovAnnotationModelTracker.getInstance().addProject(getProject(), exePath);
+            			GcovAnnotationModelTracker.getInstance().addProject(project, exePath);
         				PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
         					GcovAnnotationModelTracker.getInstance().annotateAllCEditors();
         				});
@@ -254,16 +254,6 @@ public class GcovLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
         return GcovLaunchPlugin.PLUGIN_ID;
     }
 
-    /* all these functions exist to be overridden by the test class in order to allow launch testing */
-
-    private IProject getProject(){
-        try{
-            return CDebugUtils.verifyCProject(config).getProject();
-        } catch (CoreException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
      /**
       *
       * Return the exe path of the binary to be profiled.
