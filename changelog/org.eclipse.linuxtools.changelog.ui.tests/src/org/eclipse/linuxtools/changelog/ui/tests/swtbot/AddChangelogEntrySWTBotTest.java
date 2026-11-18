@@ -94,7 +94,7 @@ public class AddChangelogEntrySWTBotTest extends AbstractSWTBotTest {
         "/ChangeLog")));
 
         // Open JavaTest.java in an editor
-        projectExplorerViewTree.expandNode(PROJECT_NAME).expandNode("src").expandNode("JavaTest.java").doubleClick();
+        ProjectExplorer.expandProject(projectExplorerViewTree, PROJECT_NAME).expandNode("src").expandNode("JavaTest.java").doubleClick();
 
         // Wait for Java editor to open
 		bot.waitUntil(Conditions.waitForEditor(withPartName("JavaTest.java")));
@@ -150,7 +150,7 @@ public class AddChangelogEntrySWTBotTest extends AbstractSWTBotTest {
         "/ChangeLog")));
 
         // Open JavaTest.java in an editor
-        SWTBotTreeItem projectItem = projectExplorerViewTree.expandNode(PROJECT_NAME);
+        SWTBotTreeItem projectItem = ProjectExplorer.expandProject(projectExplorerViewTree, PROJECT_NAME);
         projectItem.expandNode("src").expandNode("JavaTest.java").doubleClick();
 
         // Wait for editor to open
@@ -183,7 +183,7 @@ public class AddChangelogEntrySWTBotTest extends AbstractSWTBotTest {
         assertNotNull(project.getTestProject().findMember( new Path("/src/dummy")));
         // Make sure we are in the project explorer view and no editors are open
         bot.closeAllEditors();
-        projectExplorerViewTree.expandNode(PROJECT_NAME).expandNode("src");
+        ProjectExplorer.expandProject(projectExplorerViewTree, PROJECT_NAME).expandNode("src");
         // Try to create ChangeLog
 		assertThrows(WidgetNotFoundException.class, () -> bot.menu("Edit").menu("ChangeLog Entry").click());
         // Don't wait 5 secs

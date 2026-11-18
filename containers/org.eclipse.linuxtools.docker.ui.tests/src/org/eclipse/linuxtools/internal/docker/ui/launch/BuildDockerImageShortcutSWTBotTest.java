@@ -100,7 +100,7 @@ public class BuildDockerImageShortcutSWTBotTest {
 		projectExplorerBotView.setFocus();
 		final SWTBotTreeItem fooProjectTreeItem = SWTUtils.getTreeItem(projectExplorerBotView, projectName);
 		assertThat(fooProjectTreeItem).isNotNull();
-		UIThreadRunnable.syncExec(() -> fooProjectTreeItem.expand());
+		UIThreadRunnable.syncExec(() -> SWTUtils.expandIfCollapsed(fooProjectTreeItem));
 		final SWTBotTreeItem dockerfileTreeItem = SWTUtils.getTreeItem(fooProjectTreeItem, dockerFileName);
 		assertThat(dockerfileTreeItem).isNotNull();
 		// select the item itself: SWTUtils.select(item, matchers...) with no matchers
