@@ -1,4 +1,4 @@
-FROM eclipsecbi/fedora-gtk3-mutter:44-gtk3.24
+FROM eclipsecbi/fedora-gtk3-mutter:45-gtk3.24
 
 # Back to root for install
 USER 0
@@ -7,7 +7,7 @@ USER 0
 RUN sed -i '/tsflags=nodocs/ d' /etc/dnf/dnf.conf
 
 RUN dnf -y update && dnf -y install \
-    webkit2gtk4.1 npm tigervnc-server java-25-openjdk-devel \
+    webkit2gtk4.1 nodejs26-bin nodejs26-npm-bin tigervnc-server java-25-openjdk-devel \
     gcc-c++ perf systemtap rpmdevtools valgrind \
     gtk3-devel-docs gnome-shell ibus \
     && dnf clean all
@@ -18,6 +18,11 @@ RUN dnf -y update && dnf -y install \
 COPY glycin-bwrap-wrapper.sh /usr/local/bin/glycin-bwrap-wrapper.sh
 RUN mv /usr/bin/bwrap /usr/bin/bwrap.real \
     && install -m 0755 /usr/local/bin/glycin-bwrap-wrapper.sh /usr/bin/bwrap
+
+# mutter 50+ can no longer manage an X server such as Xvnc. with-mutter runs a
+# command under a headless mutter that provides Xwayland on DISPLAY.
+COPY with-mutter.sh /usr/local/bin/with-mutter
+RUN chmod 0755 /usr/local/bin/with-mutter
 
 RUN curl -L https://dlcdn.apache.org/maven/maven-3/3.9.16/binaries/apache-maven-3.9.16-bin.tar.gz | tar -xzv
 

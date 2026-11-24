@@ -14,7 +14,7 @@ kind: Pod
 spec:
   containers:
   - name: container
-    image: akurtakov/linuxtools-build-test-dependencies:f44
+    image: akurtakov/linuxtools-build-test-dependencies:f45
     imagePullPolicy: "IfNotPresent"
     tty: true
     command: [ "cat" ]
@@ -58,9 +58,7 @@ spec:
 			steps {
 				container('container') {
 				withCredentials([file(credentialsId: 'secret-subkeys.asc', variable: 'KEYRING'),string(credentialsId: 'gpg-passphrase', variable: 'MAVEN_GPG_PASSPHRASE') ]) {
-					wrap([$class: 'Xvnc', useXauthority: true]) {
-						sh '''mvn -e -Psign -Dmaven.test.failure.ignore=true -ntp -Ddash.fail=true -Dtycho.pgp.signer.bc.secretKeys="${KEYRING}" clean verify'''
-					}
+					sh '''with-mutter mvn -e -Psign -Dmaven.test.failure.ignore=true -ntp -Ddash.fail=true -Dtycho.pgp.signer.bc.secretKeys="${KEYRING}" clean verify'''
 				}}
 			}
 			post {	
