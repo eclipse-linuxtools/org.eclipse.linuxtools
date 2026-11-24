@@ -74,6 +74,7 @@ public class PrepareChangelogSWTBotTest extends AbstractSWTBotTest {
     @BeforeEach
     public void setUp() throws Exception {
         ProjectExplorer.openView();
+        projectExplorerViewTree = ProjectExplorer.getTree();
         // Every test starts from a clean checkout of the initial commit
         gitProject.resetHard();
     }
