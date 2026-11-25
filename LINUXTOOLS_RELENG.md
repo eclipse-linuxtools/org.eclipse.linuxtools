@@ -86,8 +86,12 @@ Proposed freeze periods:
         update-docker-5.5.0) instead of *updates-nightly* and
         *updates-docker-nightly* (reserved for the bleeding-edge
         *master*)
-
-3.  On master, update the version number in the pom.xml files (ex. mvn3
+3.  From <https://ci.eclipse.org/linuxtools/job/linuxtools/> click on the
+    Configure button on the left side of the page.  Under Branch Sources, find
+    the Regular expression that specifies branches to use and add the new branch
+    so builds will be performed for the new branch.  This used to be automatic
+    but is now manually specified.
+4.  On master, update the version number in the pom.xml files (ex. mvn3
     org.eclipse.tycho:tycho-versions-plugin:0.17.0:set-version
     -DnewVersion=\${to-be-released-version + 1}-SNAPSHOT; commit and
     push the resulting changes) Note that you will have to manually
@@ -99,15 +103,15 @@ Proposed freeze periods:
         from pom.xml files located in 1st level of directories. We don't
         need to update the version in plugins and features in this step.
 
-4.  On master, update the linuxtools-eX.X target file when the new
+5.  On master, update the linuxtools-eX.X target file when the new
     release is started to point to new I-build.
-5.  **Ensure the repos listed in our parent pom.xml contain the
+6.  **Ensure the repos listed in our parent pom.xml contain the
     dependencies of the correct versions against which we should be
     building/testing** \<--- this is important!
-6.  Commit any work not targetted at the release to master
-7.  Commit changes specifically targetted towards the release **only**
+7.  Commit any work not targetted at the release to master
+8.  Commit changes specifically targetted towards the release **only**
     on the release branch (ex. stable-0.9)
-8.  Commit changes targetted at **both** the release **and** trunk on
+9.  Commit changes targetted at **both** the release **and** trunk on
     master and then
     [EGit/User\_Guide\#Cherry\_Picking](EGit/User_Guide#Cherry_Picking "wikilink")
     the commit(s) from master to the branch
